@@ -15,15 +15,4 @@ declare const config: {
     rootURL: string;
     routerRootURL: string;
     apiBaseUrl: string;
-    cognito: {
-        userPoolWebClientId: string;
-        userPoolId: string;
-        region: string;
-        cookieStorage: {
-            domain: string;
-            path: string;
-            expires: number;
-            secure: boolean;
-        };
-    };
 };

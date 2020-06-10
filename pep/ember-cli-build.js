@@ -17,6 +17,13 @@ module.exports = function(defaults) {
                 'Safari >= 10',
                 'Android >= 6'
             ]
+        },
+        //needs to be disabled to run app from local filesystem
+        //TODO remove this once it becomes a real app
+        SRI: {
+            enabled: false,
+            runsIn: [],
+            crossorigin: 'anonymous'
         }
     });
 

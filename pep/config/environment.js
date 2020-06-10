@@ -8,7 +8,7 @@ module.exports = function(environment) {
         //@see https://blog.emberjs.com/2016/04/28/baseurl ("Configuring the Router" section)
         rootURL: '/',
         routerRootURL: process.env.ROOT_URL,
-        locationType: 'auto',
+        locationType: 'hash',
         EmberENV: {
             LOG_STACKTRACE_ON_DEPRECATION: false,
             FEATURES: {
@@ -57,20 +57,7 @@ module.exports = function(environment) {
         },
 
         //deployment environment-specific variables
-        apiBaseUrl: process.env.API_BASE_URL,
-        cognito: {
-            userPoolWebClientId: process.env.COGNITO_POOL_CLIENT_ID,
-            userPoolId: process.env.COGNITO_POOL_ID,
-            region: process.env.COGNITO_REGION,
-            cookieStorage: {
-                //TODO we could probably eventually set these cookie configs dynamically
-                //using `window.location` in the browser, and `fastboot.request` in fastboot
-                domain: process.env.COGNITO_COOKIE_DOMAIN,
-                path: process.env.COGNITO_COOKIE_PATH,
-                expires: 365,
-                secure: false
-            }
-        }
+        apiBaseUrl: process.env.API_BASE_URL
     };
 
     if (environment === 'development') {
@@ -95,15 +82,11 @@ module.exports = function(environment) {
 
     if (environment === 'production') {
         // here you can enable a production-specific feature
-
         //error logging
-        ENV['ember-error-tracker'].consumers.console = false;
-        ENV['ember-error-tracker'].consumers.api = {
-            endPoint: `${process.env.API_BASE_URL}/${process.env.API_ERRORS_ENDPOINT}`
-        };
-
-        //candidate/prod should ALWAYS be on https, so hard-code that
-        ENV.cognito.cookieStorage.secure = true;
+        // ENV['ember-error-tracker'].consumers.console = false;
+        // ENV['ember-error-tracker'].consumers.api = {
+        //     endPoint: `${process.env.API_BASE_URL}/${process.env.API_ERRORS_ENDPOINT}`
+        // };
     }
 
     return ENV;
