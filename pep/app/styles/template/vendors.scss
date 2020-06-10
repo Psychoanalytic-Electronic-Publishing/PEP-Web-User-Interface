@@ -1,0 +1,20 @@
+// ================================================================================================
+// 	File Name: vendors.scss
+// 	Description: Common vendors file to includ all theme specific common vendors.
+// 	----------------------------------------------------------------------------------------------
+// 	Item Name: Robust - Responsive Admin Template
+// 	Version: 2.1
+// 	Author: PIXINVENT
+// 	Author URL: http://www.themeforest.net/user/pixinvent
+// ================================================================================================
+
+
+// Bootstrap core
+@import url("bootstrap.css");
+// Font icons
+@import url("../fonts/feather/style.min.css");
+@import url("../fonts/font-awesome/css/font-awesome.min.css");
+@import url("../fonts/simple-line-icons/style.min.css");
+@import url("../fonts/flag-icon-css/css/flag-icon.min.css");
+// Pace Loader
+@import url("../vendors/css/extensions/pace.css");

@@ -1,0 +1,85 @@
+/*=========================================================================================
+	File Name: horizontal-top-icon-menu.scss
+	Description: A horizontal menu with icon on top side.
+	It support light & dark version, filpped layout, right side icons, borders menu for
+	item seperation.
+	----------------------------------------------------------------------------------------
+	Item Name: Robust - Responsive Admin Theme
+	Version: 1.2
+	Author: PIXINVENT
+	Author URL: http://www.themeforest.net/user/pixinvent
+==========================================================================================*/
+
+// Core variables and mixins
+@import "../../../bootstrap/functions";
+@import "../../../bootstrap/mixins";
+@import "../../../bootstrap-extended/mixins";
+
+// Core variables and mixins overrides
+@import "../../variables/variables";
+@import "../../variables/components-variables";
+
+// Overrides user variable
+@import "../../../../../assets/scss/variables/variables";
+@import "../../../../../assets/scss/variables/components-variables";
+
+// Import first main menu mixin
+@import "../../mixins/main-menu-mixin";
+
+/* html body.horizontal-top-icon-menu{
+	padding-top:0;
+} */
+// Horizontal Top Icon Menu
+//=========================
+.horizontal-top-icon-menu {
+	#main-menu-navigation {
+		li.nav-item {
+			.nav-link{ 
+				text-align: center;
+				i{
+					display: block;
+				    text-align: center;
+				    font-size: 1.5rem;
+				    margin-right: 0;
+				    margin-bottom: 0.5rem;
+				    float: none;
+				}
+			}
+		}
+	}
+	// Custom top for horizontal menu only
+	// .dropdown-toggle::after{
+	// 	top: -9px !important
+	// }
+	.dropdown-menu{
+		margin: 0;
+	}
+
+	&.menu-collapsed{
+		#main-menu-navigation{
+			.nav-item{
+				a span{
+					display: none;
+				}
+			}
+		}
+	}
+	.navbar-light{		
+		.active > a{
+			background: whitesmoke;
+		}		
+	}
+	.navbar-dark{
+		.nav-item{
+			&.active > a{
+				background-color: #0b1115;
+			}
+		}
+		.active > a{
+			background: whitesmoke;
+		}
+	}
+}
+
+// Import vertical-overlay-menu.scss for small screen support
+@import "vertical-overlay-menu.scss";

@@ -1,0 +1,20 @@
+//	===============================================================================================
+//  File Name: horizontal.scss
+//  Description: Horizontal layout SASS file for layout related changes only
+//  ----------------------------------------------------------------------------------------------
+//  Item Name: Robust - Responsive Admin Template
+//  Version: 2.1
+//  Author: PIXINVENT
+//  Author URL: http://www.themeforest.net/user/pixinvent
+// ================================================================================================
+
+.horizontal-menu-padding{
+	.header-navbar {
+		.navbar-container{
+			padding: 0;
+		}
+	}
+}
+.header-navbar .navbar-container{
+	height: auto;
+}
