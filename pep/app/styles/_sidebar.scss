@@ -3,12 +3,24 @@
     width: $sidebar-width;
     height: 100%;
 
+    &-collapsed {
+        position: absolute;
+    }
+
     &-left {
         border-right: 1px solid rgba($black, 0.06);
+
+        &.sidebar-collapsed {
+            left: -$sidebar-width;
+        }
     }
 
     &-right {
         border-left: 1px solid rgba($black, 0.06);
+
+        &.sidebar-collapsed {
+            right: -$sidebar-width;
+        }
     }
 
     &-content {
