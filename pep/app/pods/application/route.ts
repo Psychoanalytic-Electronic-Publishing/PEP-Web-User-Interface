@@ -19,28 +19,28 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
     async beforeModel(transition: Transition) {
         super.beforeModel(transition);
         this.intl.setLocale('en-us');
-        if (this.session.isAuthenticated) {
-            try {
-                await this.currentUser.load();
-            } catch (err) {
-                this.replaceWith('five-hundred');
-            }
-        }
+        // if (this.session.isAuthenticated) {
+        //     try {
+        //         await this.currentUser.load();
+        //     } catch (err) {
+        //         this.replaceWith('five-hundred');
+        //     }
+        // }
     }
 
     async sessionAuthenticated() {
-        try {
-            //get the current user's model before transitioning from the login page
-            const currentUser = await this.currentUser.load();
-            //@ts-ignore TODO we need a way to inform TS about class members coming from Ember-style mixins
-            super.sessionAuthenticated(...arguments);
-            return currentUser;
-        } catch (err) {
-            //handle failures of fetching the current user here (e.g. display error notification toast, etc)
-            //since current user fetch failed, the user should probably not stay logged in
-            this.session.invalidate();
-            throw err;
-        }
+        // try {
+        //     //get the current user's model before transitioning from the login page
+        //     const currentUser = await this.currentUser.load();
+        //     //@ts-ignore TODO we need a way to inform TS about class members coming from Ember-style mixins
+        //     super.sessionAuthenticated(...arguments);
+        //     return currentUser;
+        // } catch (err) {
+        //     //handle failures of fetching the current user here (e.g. display error notification toast, etc)
+        //     //since current user fetch failed, the user should probably not stay logged in
+        //     this.session.invalidate();
+        //     throw err;
+        // }
     }
 
     @action

@@ -1,5 +1,4 @@
 import ENV from 'pep/config/environment';
-import CognitoService from 'pep/services/cognito';
 import { inject as service } from '@ember/service';
 import DS from 'ember-data';
 import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
@@ -13,11 +12,6 @@ import FastbootService from 'ember-cli-fastboot/services/fastboot';
 export default class Application extends DS.JSONAPIAdapter.extend(DataAdapterMixin, FastbootAdapter) {
     @service session!: SessionService;
     @service fastboot!: FastbootService;
-    /**
-     * REMOVE THIS IF THE PROJECT DOES NOT USE AUTH/COGNITO
-     * (NOTE: delete this comment in the project version)
-     */
-    @service cognito!: CognitoService;
 
     host = ENV.apiBaseUrl;
 
@@ -33,23 +27,6 @@ export default class Application extends DS.JSONAPIAdapter.extend(DataAdapterMix
         }
 
         return headers;
-    }
-
-    /**
-     * REMOVE THIS IF THE PROJECT DOES NOT USE AUTH/COGNITO
-     * (NOTE: delete this comment in the project version)
-     */
-    /**
-     * Before ajax network requests are made to the API, check and make sure the
-     * cognito user session is valid, and if not, refresh it.
-     * @param {String} url
-     * @param {String} type
-     * @param {Object} options
-     * @returns Promise
-     */
-    async ajax(url: string, type: string, options: {}) {
-        await this.cognito.refreshSessionIfNeeded();
-        return super.ajax(url, type, options);
     }
 
     /**

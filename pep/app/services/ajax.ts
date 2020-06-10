@@ -1,5 +1,4 @@
 import ENV from 'pep/config/environment';
-import CognitoService from 'pep/services/cognito';
 import { computed, setProperties } from '@ember/object';
 import { assign } from '@ember/polyfills';
 import Service, { inject as service } from '@ember/service';
@@ -9,7 +8,6 @@ import { reject } from 'rsvp';
 
 export default class AjaxService extends Service {
     @service session!: SessionService;
-    @service cognito!: CognitoService;
 
     /**
      * Add the oauth token authorization header to all requests
@@ -46,10 +44,8 @@ export default class AjaxService extends Service {
      * @return {Promise}
      */
     async request(url: string, options: RequestInit = {}) {
-        await this.cognito.refreshSessionIfNeeded();
-
         setProperties(options, {
-            credentials: 'include',
+            // credentials: 'include',  //NOTE: only needed if cookies must be sent in API requests
             headers: this.headers
         });
 
