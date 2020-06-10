@@ -1,0 +1,16 @@
+.navbar {
+    &.fixed-top {
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    }
+
+    .navbar-brand {
+        padding-top: 0;
+        padding-bottom: 0;
+        font-size: 0.8rem;
+        line-height: 1.1;
+
+        img {
+            height: 40px;
+        }
+    }
+}

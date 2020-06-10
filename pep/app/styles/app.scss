@@ -10,7 +10,6 @@
 // Vendor / Template
 // ---------------------------
 @import 'node_modules/bootstrap/scss/bootstrap';
-// @import 'template/template-entry-file';
 // ---------------------------
 // Mixins, functions and utilities
 // ---------------------------
@@ -19,7 +18,9 @@
 // ---------------------------
 // Global app styles
 // ---------------------------
-/* add imports for other misc global styles here, e.g. layout/typography/etc */
+@import 'layout';
+@import 'navbar';
+@import 'sidebar';
 // ---------------------------
 // Components
 // ---------------------------

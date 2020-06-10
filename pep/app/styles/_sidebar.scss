@@ -1,0 +1,22 @@
+.sidebar {
+    position: relative;
+    width: $sidebar-width;
+    height: 100%;
+
+    &-left {
+        border-right: 1px solid rgba($black, 0.06);
+    }
+
+    &-right {
+        border-left: 1px solid rgba($black, 0.06);
+    }
+
+    &-content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        overflow: auto;
+    }
+}

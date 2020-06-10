@@ -1,7 +1,71 @@
-<div class="container py-4">
-    <h1>{{t "brand.slogan"}}</h1>
-    {{outlet "header"}}
-    {{outlet "nav"}}
-    {{outlet}}
-    {{outlet "footer"}}
+<div class="application-container">
+    {{!-- HEADER / NAV --}}
+    <nav class="navbar navbar-expand fixed-top navbar-dark bg-gradient-primary">
+        <a class="navbar-brand d-flex" href="#">
+            <img src="/assets/images/logo.jpg" alt="PEP" />
+            <div class="ml-2">
+                <div>Psychoanalytic</div>
+                <div>Electronic</div>
+                <div>Publishing</div>
+            </div>
+        </a>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="#">Search</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Read</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Browse</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="application-content">
+        {{!-- LEFT SIDEBAR --}}
+        <div class="sidebar sidebar-left sidebar-expanded">
+            <div class="sidebar-content">
+                <div class="p-3">
+                    <h4>Search</h4>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam imperdiet, orci nec viverra feugiat, elit ligula tempor eros, et feugiat massa nibh eu nunc. Praesent metus risus, posuere ac dui id, tempus pretium sapien. Mauris a purus in leo suscipit imperdiet. Nulla mollis suscipit mattis. Quisque cursus consequat faucibus. Mauris cursus pretium consequat. Nunc pellentesque tellus eget neque molestie, quis bibendum libero consectetur. Vestibulum quis purus risus. Nullam scelerisque id magna in tempor. Nullam a tempus velit, sed aliquam ipsum. Duis finibus egestas justo eu interdum. Integer vel commodo nisl, non tempor ligula. Nulla feugiat nec neque id dictum.</p>
+                </div>
+            </div>
+            <span class="sidebar-toggle-handle"></span>
+        </div>
+
+        {{!-- MAIN PAGE CONTENT --}}
+        <div class="page-content">
+            <div class="page-content-inner">
+                <div class="p-3">
+                    <p>Main page content.</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam imperdiet, orci nec viverra feugiat, elit ligula tempor eros, et feugiat massa nibh eu nunc. Praesent metus risus, posuere ac dui id, tempus pretium sapien. Mauris a purus in leo suscipit imperdiet. Nulla mollis suscipit mattis. Quisque cursus consequat faucibus. Mauris cursus pretium consequat. Nunc pellentesque tellus eget neque molestie, quis bibendum libero consectetur. Vestibulum quis purus risus. Nullam scelerisque id magna in tempor. Nullam a tempus velit, sed aliquam ipsum. Duis finibus egestas justo eu interdum. Integer vel commodo nisl, non tempor ligula. Nulla feugiat nec neque id dictum.</p>
+                    <p>Nulla id urna tortor. Mauris quis dolor dui. Etiam ultrices, turpis in auctor molestie, ex est consequat mauris, sed luctus ligula justo sit amet ipsum. Duis quam nisl, mattis sed consectetur id, scelerisque quis libero. Nulla dapibus maximus vehicula. Nulla facilisi. Duis sed mattis eros. Cras placerat eu massa sit amet ullamcorper. Aliquam elementum quam ut leo pretium, euismod bibendum tortor sodales. In sed convallis lacus, non dapibus nulla. Vestibulum tellus eros, pharetra non velit in, aliquet dictum quam. Mauris dui magna, viverra sit amet hendrerit id, commodo non quam.</p>
+                    <p>Nunc aliquet risus in lacus condimentum gravida. Nullam in vulputate mauris, et scelerisque nisi. Maecenas vitae odio libero. Mauris facilisis odio quam, eget imperdiet massa volutpat ac. Duis eu bibendum nibh. Proin sit amet consequat est. Nunc at viverra ligula. In id nisi fringilla, viverra tortor eget, dictum libero. Sed pulvinar magna imperdiet sagittis tincidunt. Duis tortor augue, euismod non purus eget, ultrices viverra nisi. Praesent condimentum enim a quam viverra cursus. Suspendisse dignissim tellus ut ullamcorper aliquam. In lacus diam, ultrices in sem non, bibendum maximus nulla. Sed vel finibus orci, id dictum dolor.</p>
+                </div>
+            </div>
+        </div>
+
+        {{!-- RIGHT SIDEBAR --}}
+        <div class="sidebar sidebar-right sidebar-expanded">
+            <div class="sidebar-content">
+                <div class="p-3">
+                    <h4>Related Info</h4>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam imperdiet, orci nec viverra feugiat, elit ligula tempor eros, et feugiat massa nibh eu nunc. Praesent metus risus, posuere ac dui id, tempus pretium sapien. Mauris a purus in leo suscipit imperdiet. Nulla mollis suscipit mattis. Quisque cursus consequat faucibus. Mauris cursus pretium consequat. Nunc pellentesque tellus eget neque molestie, quis bibendum libero consectetur. Vestibulum quis purus risus. Nullam scelerisque id magna in tempor. Nullam a tempus velit, sed aliquam ipsum. Duis finibus egestas justo eu interdum. Integer vel commodo nisl, non tempor ligula. Nulla feugiat nec neque id dictum.</p>
+                </div>
+            </div>
+            <span class="sidebar-toggle-handle"></span>
+        </div>
+    </div>
+
+    {{!-- FOOTER --}}
+    <footer class="footer mt-auto p-3 small text-center text-white-50">
+        Copyright &copy; Psychoanalytic Electronic Publishing (PEP)
+    </footer>
 </div>
+
+{{outlet "header"}}
+{{outlet "nav"}}
+{{outlet}}
+{{outlet "sidebar"}}
+{{outlet "footer"}}
