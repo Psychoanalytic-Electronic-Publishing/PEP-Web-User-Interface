@@ -1,0 +1,30 @@
+// ---------------------------
+// Web Fonts
+// ---------------------------
+@import 'fonts';
+// ---------------------------
+// Global variables
+// ---------------------------
+@import 'variables';
+// ---------------------------
+// Vendor / Template
+// ---------------------------
+@import 'node_modules/bootstrap/scss/bootstrap';
+// @import 'template/template-entry-file';
+// ---------------------------
+// Mixins, functions and utilities
+// ---------------------------
+@import 'mixins';
+@import 'utilities';
+// ---------------------------
+// Global app styles
+// ---------------------------
+/* add imports for other misc global styles here, e.g. layout/typography/etc */
+// ---------------------------
+// Components
+// ---------------------------
+@import 'components';
+// ---------------------------
+// Pages
+// ---------------------------
+@import 'pages';

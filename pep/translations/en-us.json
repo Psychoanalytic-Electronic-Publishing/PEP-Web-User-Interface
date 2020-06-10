@@ -1,0 +1,50 @@
+{
+    "brand": {
+        "name": "Pep",
+        "copywrite": "&copy; 2020",
+        "slogan": "Congrats, your Gavant Ember.js app is working! 🎉"
+    },
+    "actions": {
+        "save": "Save",
+        "submit": "Submit",
+        "search": "Search",
+        "cancel": "Cancel",
+        "remove": "Remove",
+        "goBack": "Go back"
+    },
+    "serverErrors": {
+        "heading": "The following {count, plural, =1 {error} other {errors}} occurred while attempting to process your request.",
+        "NotAuthorizedException": "Invalid username or password.",
+        "LimitExceededException": "You have exceeded the maximum number of attempts. Please try again in a little while.",
+        "TooManyRequestsException": "You have exceeded the maximum number of attempts. Please try again in a little while.",
+        "TooManyFailedAttemptsException": "Too many failed attempts. Please try again in a little while.",
+        "InvalidParameterException": "The entered password is not valid. Please make sure it meets all requirements and try again.",
+        "InvalidPasswordException": "The entered password is not valid. Please make sure it meets all requirements and try again.",
+        "CodeMismatchException": "The provided code is not valid.",
+        "ExpiredCodeException": "The provided code has expired.",
+        "UserNotFoundException": "The provided user could not be found.",
+        "UserNotConfirmedException": "The provided user is not confirmed.",
+        "undefined": "Sorry, an unexpected error has occurred.",
+        "unknown": {
+            "unexpected": "Sorry, an unexpected error has occurred."
+        }
+    },
+    "login": {
+        "title": "Login"
+    },
+    "fourOhFour": {
+        "title": "404",
+        "subtitle": "Page not found",
+        "message": "Sorry, the requested page could not be found."
+    },
+    "fourOhThree": {
+        "title": "403",
+        "subtitle": "Forbidden",
+        "message": "Sorry, you do not have permission to access this page."
+    },
+    "fiveHundred": {
+        "title": "500",
+        "subtitle": "Internal server error",
+        "message": "Sorry, an unexpected error has occurred."
+    }
+}
