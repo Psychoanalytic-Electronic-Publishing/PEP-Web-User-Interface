@@ -5,7 +5,7 @@ module.exports = {
     plugins: ['@gavant/ember-template-lint-forms'],
     rules: {
         'self-closing-void-elements': false,
-        'no-bare-strings': ['&copy', '&nbsp'],
+        'no-bare-strings': false, //['&copy', '&nbsp'], //TODO reenable this in real app!!!
         'block-indentation': 4,
         'attribute-indentation': {
             indentation: 4,

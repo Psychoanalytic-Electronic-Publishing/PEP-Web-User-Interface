@@ -27,7 +27,7 @@ module.exports = function(environment) {
         },
 
         fontawesome: {
-            defaultPrefix: 'fas' // free solid icons, use 'fal' for pro light icons
+            defaultPrefix: 'fal'
         },
 
         'ember-cli-notifications': {
