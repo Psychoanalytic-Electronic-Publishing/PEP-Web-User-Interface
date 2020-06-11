@@ -8,6 +8,7 @@ import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import IntlService from 'ember-intl/services/intl';
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 import SessionService from 'ember-simple-auth/services/session';
+import LoadingBar from 'pep/services/loading-bar';
 
 export default class Application extends PageLayout(Route.extend(ApplicationRouteMixin)) {
     routeAfterAuthentication = 'dashboard';
@@ -15,6 +16,7 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
     @service session!: SessionService;
     @service intl!: IntlService;
     @service fastboot!: FastbootService;
+    @service loadingBar!: LoadingBar;
 
     async beforeModel(transition: Transition) {
         super.beforeModel(transition);
@@ -41,6 +43,21 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
         //     this.session.invalidate();
         //     throw err;
         // }
+    }
+
+    /**
+     * Invoked when transitioning to routes that do not immediately resolve
+     * @param {Object} transition
+     */
+    @action
+    loading(transition) {
+        //show the app loading progress bar to indicate
+        //that the app is in a loading state when transitioning between routes
+        this.loadingBar.show();
+        transition.promise.finally(() => this.loadingBar.hide());
+
+        //allows loading routes to be shown if needed
+        return true;
     }
 
     @action

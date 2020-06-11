@@ -1,20 +1,23 @@
 // ---------------------------
 // Application variables
 // ---------------------------
-$progress-bar-height: 5px;
-$progress-bar-duration: 3s;
-$progress-bar-delay: 1.5s;
-
 //COLORS
 $color-brand-primary: #313b46;
 $color-backdrop: #e9eef1;
 $color-divider: rgba(#000, 0.06);
+$color-progress-spinner-loading1: rgba(0, 0, 0, 0.3);
+$color-progress-spinner-loading2: saturate(lighten($color-brand-primary, 30%), 40%);
 
 //DIMENSIONS
 $navbar-height: 58px;
 $footer-height: 35px;
 $sidebar-width: 320px;
 $sidebar-handle-width: 16px;
+$progress-bar-height: 5px;
+$progress-spinner-loading-border-width: 2px;
+$progress-spinner-loading-size: 15px;
+$progress-spinner-loading-border-width-lg: 4px;
+$progress-spinner-loading-size-lg: 50px;
 
 //Z-INDEX LAYERING
 $z-page-content: 2;
@@ -23,11 +26,14 @@ $z-sidebar-handle: 10;
 
 //TIMING
 $duration-sidebar-toggle: 0.3s;
+$duration-progress-bar: 3s;
+$duration-progress-bar-delay: 1.5s;
 
 // ---------------------------
 // Addon overrides
 // ---------------------------
-
+$button-spinner-loading-color1: rgba(#fff, 0.6);
+$button-spinner-loading-color2: saturate(lighten($color-brand-primary, 30%), 40%);
 // ---------------------------
 // Bootstrap overrides
 // ---------------------------
