@@ -5,3 +5,11 @@
         saturate(lighten($color-brand-primary, 20%), 20%) 100%
     );
 }
+
+.border-divider-b {
+    border-bottom: 1px solid $color-divider;
+}
+
+.border-divider-t {
+    border-top: 1px solid $color-divider;
+}

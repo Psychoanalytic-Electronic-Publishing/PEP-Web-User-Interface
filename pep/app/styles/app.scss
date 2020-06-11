@@ -11,6 +11,10 @@
 // ---------------------------
 @import 'node_modules/bootstrap/scss/bootstrap';
 @import 'vendor/perfect-scrollbar';
+@import 'ember-basic-dropdown';
+@import 'ember-power-select';
+@import 'ember-floating-labels';
+@import 'gavant-ember-bootstrap-dropdown';
 @import 'gavant-ember-button-spinner';
 // ---------------------------
 // Mixins, functions and utilities
@@ -21,6 +25,7 @@
 // Global app styles
 // ---------------------------
 @import 'layout';
+@import 'buttons';
 @import 'navbar';
 @import 'sidebar';
 @import 'card';

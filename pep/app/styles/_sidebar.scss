@@ -9,7 +9,7 @@
     }
 
     &-left {
-        border-right: 1px solid rgba($black, 0.06);
+        border-right: 1px solid $color-divider;
 
         &.sidebar-collapsed {
             left: -$sidebar-width;
@@ -17,7 +17,7 @@
     }
 
     &-right {
-        border-left: 1px solid rgba($black, 0.06);
+        border-left: 1px solid $color-divider;
 
         &.sidebar-collapsed {
             right: -$sidebar-width;
