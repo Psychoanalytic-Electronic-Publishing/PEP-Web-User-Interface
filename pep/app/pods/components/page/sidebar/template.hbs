@@ -1,0 +1,15 @@
+<div class="sidebar sidebar-{{@side}} {{if (not this.isOpen) "sidebar-collapsed"}}" ...attributes>
+    <div class="sidebar-inner">
+        <Scrollable class="sidebar-content">
+            {{yield}}
+        </Scrollable>
+    </div>
+    <button type="button" class="sidebar-toggle-handle" {{on "click" this.toggle}}>
+        <FaIcon @icon={{if
+            this.isOpen
+            (if this.isLeft "chevron-left" "chevron-right")
+            (if this.isLeft "chevron-right" "chevron-left")
+        }}
+        />
+    </button>
+</div>

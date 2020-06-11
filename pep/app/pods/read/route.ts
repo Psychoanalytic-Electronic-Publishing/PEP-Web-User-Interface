@@ -1,7 +1,4 @@
 import Route from '@ember/routing/route';
+import { PageNav } from 'pep/mixins/page-layout';
 
-export default class Read extends Route.extend({
-  // anything which *must* be merged to prototype here
-}) {
-  // normal class body definition here
-}
+export default class Read extends PageNav(Route) {}

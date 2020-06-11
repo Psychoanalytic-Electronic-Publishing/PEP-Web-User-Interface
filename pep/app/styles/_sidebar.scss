@@ -47,6 +47,7 @@
 
         .sidebar-inner {
             border-right: 1px solid $color-divider;
+            box-shadow: 2px 0 14px rgba(#000, 0.06);
         }
 
         .sidebar-toggle-handle {
@@ -68,6 +69,7 @@
 
         .sidebar-inner {
             border-left: 1px solid $color-divider;
+            box-shadow: -2px 0 14px rgba(#000, 0.06);
         }
 
         .sidebar-toggle-handle {

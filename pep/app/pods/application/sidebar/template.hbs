@@ -1,13 +1,6 @@
-<div class="sidebar sidebar-right {{~if (not this.sidebar.rightSidebarIsOpen) " sidebar-collapsed"}}">
-    <div class="sidebar-inner">
-        <Scrollable class="sidebar-content">
-            <div class="p-3">
-                <h5>Related Info</h5>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam imperdiet, orci nec viverra feugiat, elit ligula tempor eros, et feugiat massa nibh eu nunc. Praesent metus risus, posuere ac dui id, tempus pretium sapien. Mauris a purus in leo suscipit imperdiet. Nulla mollis suscipit mattis. Quisque cursus consequat faucibus. Mauris cursus pretium consequat. Nunc pellentesque tellus eget neque molestie, quis bibendum libero consectetur. Vestibulum quis purus risus. Nullam scelerisque id magna in tempor. Nullam a tempus velit, sed aliquam ipsum. Duis finibus egestas justo eu interdum. Integer vel commodo nisl, non tempor ligula. Nulla feugiat nec neque id dictum.</p>
-            </div>
-        </Scrollable>
+<Page::Sidebar @side="right">
+    <div class="p-3">
+        <h5>Related Info</h5>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam imperdiet, orci nec viverra feugiat, elit ligula tempor eros, et feugiat massa nibh eu nunc. Praesent metus risus, posuere ac dui id, tempus pretium sapien. Mauris a purus in leo suscipit imperdiet. Nulla mollis suscipit mattis. Quisque cursus consequat faucibus. Mauris cursus pretium consequat. Nunc pellentesque tellus eget neque molestie, quis bibendum libero consectetur. Vestibulum quis purus risus. Nullam scelerisque id magna in tempor. Nullam a tempus velit, sed aliquam ipsum. Duis finibus egestas justo eu interdum. Integer vel commodo nisl, non tempor ligula. Nulla feugiat nec neque id dictum.</p>
     </div>
-    <button type="button" class="sidebar-toggle-handle" {{on "click" this.toggleRightSidebar}}>
-        <FaIcon @icon={{if this.sidebar.rightSidebarIsOpen "chevron-right" "chevron-left"}} />
-    </button>
-</div>
+</Page::Sidebar>
