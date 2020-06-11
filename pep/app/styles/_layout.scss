@@ -3,10 +3,11 @@ body {
     height: 100%;
     min-height: 100%;
     background-color: $color-backdrop;
+    overflow: hidden;
 }
 
 body {
-    padding-top: 58px;
+    padding-top: $navbar-height;
 }
 
 .application-container {
@@ -23,6 +24,9 @@ body {
 .page-content {
     position: relative;
     flex: 1 0 0;
+    margin-left: -$sidebar-handle-width;
+    margin-right: -$sidebar-handle-width;
+    z-index: $z-page-content;
 
     &-inner {
         position: absolute;
@@ -30,6 +34,11 @@ body {
         left: 0;
         bottom: 0;
         right: 0;
+    }
+
+    @include media-breakpoint-down(md) {
+        margin-left: 0;
+        margin-right: 0;
     }
 }
 

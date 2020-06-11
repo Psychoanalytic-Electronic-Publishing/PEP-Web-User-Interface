@@ -11,7 +11,18 @@ $color-backdrop: #e9eef1;
 $color-divider: rgba(#000, 0.06);
 
 //DIMENSIONS
+$navbar-height: 58px;
+$footer-height: 35px;
 $sidebar-width: 320px;
+$sidebar-handle-width: 16px;
+
+//Z-INDEX LAYERING
+$z-page-content: 2;
+$z-sidebar-overlay: 10;
+$z-sidebar-handle: 10;
+
+//TIMING
+$duration-sidebar-toggle: 0.3s;
 
 // ---------------------------
 // Addon overrides

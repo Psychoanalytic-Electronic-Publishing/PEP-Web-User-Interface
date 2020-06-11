@@ -1,11 +1,21 @@
 .sidebar {
     position: relative;
-    width: $sidebar-width;
+    width: $sidebar-width + $sidebar-handle-width;
     height: 100%;
-    background-color: lighten($color-backdrop, 2%);
+    flex-shrink: 0;
+    transition: $duration-sidebar-toggle ease width;
+    overflow: hidden;
 
     &-collapsed {
-        position: absolute;
+        width: $sidebar-handle-width;
+    }
+
+    &-inner {
+        position: relative;
+        width: $sidebar-width;
+        height: 100%;
+        background-color: lighten($color-backdrop, 2%);
+        transition: $duration-sidebar-toggle ease transform;
     }
 
     &-content {
@@ -20,37 +30,73 @@
         position: absolute;
         top: 28px;
         padding: 8px 4px;
+        border: 0;
         background: $white;
         color: #ccc;
-        z-index: 2;
-        cursor: pointer;
+        z-index: $z-sidebar-handle;
+
+        &:hover,
+        &:focus {
+            color: #999;
+            outline: none;
+        }
     }
 
     &-left {
-        border-right: 1px solid $color-divider;
+        padding-right: $sidebar-handle-width;
 
-        &.sidebar-collapsed {
-            left: -$sidebar-width;
+        .sidebar-inner {
+            border-right: 1px solid $color-divider;
         }
 
         .sidebar-toggle-handle {
-            right: -17px;
+            right: 1px;
             border-top-right-radius: 4px;
             border-bottom-right-radius: 4px;
+            box-shadow: 1px 1px 2px rgba(#000, 0.1);
+        }
+
+        &.sidebar-collapsed {
+            .sidebar-inner {
+                transform: translateX(-$sidebar-width);
+            }
         }
     }
 
     &-right {
-        border-left: 1px solid $color-divider;
+        padding-left: $sidebar-handle-width;
 
-        &.sidebar-collapsed {
-            right: -$sidebar-width;
+        .sidebar-inner {
+            border-left: 1px solid $color-divider;
         }
 
         .sidebar-toggle-handle {
-            left: -17px;
+            left: 1px;
             border-top-left-radius: 4px;
             border-bottom-left-radius: 4px;
+            box-shadow: -1px 1px 2px rgba(#000, 0.1);
+        }
+
+        &.sidebar-collapsed {
+            .sidebar-inner {
+                transform: translateX(0);
+            }
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        position: fixed;
+        z-index: $z-sidebar-overlay;
+        top: $navbar-height;
+        bottom: $footer-height;
+        height: auto;
+
+        &-left {
+            left: 0;
+        }
+
+        &-right {
+            right: 0;
         }
     }
 }
