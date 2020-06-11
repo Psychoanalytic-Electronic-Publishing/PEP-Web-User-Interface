@@ -1,0 +1,37 @@
+<nav class="navbar navbar-expand fixed-top navbar-dark bg-gradient-primary">
+    <LinkTo @route="index" class="navbar-brand d-flex">
+        <img src="/assets/images/logo.jpg" alt="PEP" />
+        <div class="ml-2">
+            <div>Psychoanalytic</div>
+            <div>Electronic</div>
+            <div>Publishing</div>
+        </div>
+    </LinkTo>
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+            <LinkTo @route="search" class="nav-link">
+                Search
+            </LinkTo>
+        </li>
+        <li class="nav-item">
+            <LinkTo @route="read" class="nav-link">
+                Read
+            </LinkTo>
+        </li>
+        <li class="nav-item">
+            <LinkTo @route="browse" class="nav-link">
+                Browse
+            </LinkTo>
+        </li>
+        <li class="nav-item">
+            <LinkTo @route="index" class="nav-link">
+                <FaIcon @icon="home" @size="lg" />
+            </LinkTo>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">
+                <FaIcon @icon="user" @size="lg" />
+            </a>
+        </li>
+    </ul>
+</nav>

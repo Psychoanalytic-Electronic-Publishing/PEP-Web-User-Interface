@@ -10,7 +10,7 @@
         "test": "tests"
     },
     "scripts": {
-        "build": "ember build --environment=production",
+        "build": "ember build --environment=production --output-path=../build/",
         "lint": "npm-run-all --aggregate-output --continue-on-error --parallel lint:*",
         "lint:hbs": "ember-template-lint .",
         "lint:js": "eslint .",

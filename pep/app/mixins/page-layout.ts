@@ -130,14 +130,56 @@ export function PageNav<TBase extends Constructor>(Base: TBase) {
     return PageNavClass;
 }
 
+export function PageSidebar<TBase extends Constructor>(Base: TBase) {
+    class PageSidebarClass extends Base {
+        /**
+         * The name/path of the controller that will be used as the context for the sidebar template
+         * that is rendered. Defaults to `'application'`
+         * @type {string}
+         * @memberof PageHeaderClass
+         */
+        sidebarController = 'application';
+
+        /**
+         * The name/path of the template to render into the header outlet. This will default to
+         * `{this.routeName}/sidebar` (e.g. `'application/sidebar'` when appled to application route)
+         * @readonly
+         * @type {string}
+         * @memberof PageHeaderClass
+         */
+        @computed('routeName')
+        get sidebarTemplate(): string {
+            return `${this.routeName}/sidebar`;
+        }
+
+        /**
+         * Renders the default template for the route, and then also renders the sidebar template
+         * @param {Controller} controller
+         * @param {{}} model
+         * @memberof PageHeaderClass
+         */
+        renderTemplate(controller: Controller, model: {}): void {
+            super.renderTemplate(controller, model);
+
+            this.render(this.sidebarTemplate, {
+                into: 'application',
+                outlet: 'sidebar',
+                controller: this.sidebarController
+            });
+        }
+    }
+
+    return PageSidebarClass;
+}
+
 /**
- * A convenience mixin that applies the PageHeader, PageFooter, and PageNav mixins to the given class
- * In most cases you'll want to use this, e.g. for the application route where all 3 templates are needed
+ * A convenience mixin that applies the PageHeader, PageFooter, PageNav, PageSidebar mixins to the given class
+ * In most cases you'll want to use this, e.g. for the application route where all 4 templates are needed
  * @export
  * @template TBase
  * @param {TBase} Base
  * @returns
  */
 export default function PageLayout<TBase extends Constructor>(Base: TBase) {
-    return class extends PageNav(PageFooter(PageHeader(Base))) {};
+    return class extends PageSidebar(PageNav(PageFooter(PageHeader(Base)))) {};
 }

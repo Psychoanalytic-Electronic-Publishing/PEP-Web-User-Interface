@@ -10,6 +10,9 @@ export default class Router extends EmberRouter {
 
 Router.map(function() {
     this.route('login');
+    this.route('search');
+    this.route('read');
+    this.route('browse');
 
     //make sure these routes are always defined last!
     this.route('five-hundred', { path: '/500' });

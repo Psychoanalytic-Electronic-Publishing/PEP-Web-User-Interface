@@ -1,0 +1,86 @@
+<div class="sidebar sidebar-left {{if (not this.sidebar.leftSidebarIsOpen) "sidebar-collapsed"}}">
+    <div class="sidebar-inner">
+        <Scrollable class="sidebar-content">
+            <div class="bg-white border-divider-b p-3 mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="mb-0">
+                        Search for Documents
+                    </h5>
+                    <Button @type="link" title="Saved searches">
+                        <FaIcon @icon="bookmark" @size="lg" />
+                    </Button>
+                </div>
+                <form>
+                    <div class="form-group">
+                        <FlInput
+                            @placeholder="What are you looking for?"
+                            @value={{this.searchTerm}}
+                        />
+                    </div>
+                    <p class="text-muted mb-1">Find terms or phrases</p>
+                    <div class="form-row">
+                        <div class="col mb-2">
+                            <FlInput
+                                @placeholder="Type"
+                                @value={{this.type1}}
+                            />
+                        </div>
+                        <div class="col mb-2">
+                            <FlInput
+                                @placeholder="Terms"
+                                @value={{this.term1}}
+                            />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col mb-2">
+                            <FlInput
+                                @placeholder="Type"
+                                @value={{this.type2}}
+                            />
+                        </div>
+                        <div class="col mb-2">
+                            <FlInput
+                                @placeholder="Terms"
+                                @value={{this.term2}}
+                            />
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end mb-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="matchSynonyms" />
+                            <label class="form-check-label" for="matchSynonyms">
+                                Match Synonyms
+                            </label>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <Button
+                            @type="link"
+                            @label="Clear"
+                        />
+                        <ButtonSpinner
+                            @type="primary"
+                            @blockLayout={{false}}
+                            @wide={{true}}
+                            @label="Search"
+                        />
+                    </div>
+                </form>
+            </div>
+            <div class="p-3">
+                <h5>72 Premier Journals</h5>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam imperdiet, orci nec viverra feugiat, elit ligula tempor eros, et feugiat massa nibh eu nunc.
+                </p>
+                <h5>59 Classic Books</h5>
+                <p>
+                    Mauris cursus pretium consequat. Nunc pellentesque tellus eget neque molestie, quis bibendum libero consectetur.
+                </p>
+            </div>
+        </Scrollable>
+    </div>
+    <button type="button" class="sidebar-toggle-handle" {{on "click" this.toggleLeftSidebar}}>
+        <FaIcon @icon={{if this.sidebar.leftSidebarIsOpen "chevron-left" "chevron-right"}} />
+    </button>
+</div>
