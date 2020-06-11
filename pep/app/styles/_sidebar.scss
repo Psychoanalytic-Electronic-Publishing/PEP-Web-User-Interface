@@ -8,11 +8,35 @@
         position: absolute;
     }
 
+    &-content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+    }
+
+    &-toggle-handle {
+        position: absolute;
+        top: 28px;
+        padding: 8px 4px;
+        background: $white;
+        color: #ccc;
+        z-index: 2;
+        cursor: pointer;
+    }
+
     &-left {
         border-right: 1px solid $color-divider;
 
         &.sidebar-collapsed {
             left: -$sidebar-width;
+        }
+
+        .sidebar-toggle-handle {
+            right: -17px;
+            border-top-right-radius: 4px;
+            border-bottom-right-radius: 4px;
         }
     }
 
@@ -22,13 +46,11 @@
         &.sidebar-collapsed {
             right: -$sidebar-width;
         }
-    }
 
-    &-content {
-        position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
+        .sidebar-toggle-handle {
+            left: -17px;
+            border-top-left-radius: 4px;
+            border-bottom-left-radius: 4px;
+        }
     }
 }
