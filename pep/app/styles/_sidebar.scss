@@ -47,7 +47,7 @@
 
         .sidebar-inner {
             border-right: 1px solid $color-divider;
-            box-shadow: 2px 0 14px rgba(#000, 0.06);
+            box-shadow: 1px 0 5px rgba(#000, 0.04);
         }
 
         .sidebar-toggle-handle {
@@ -69,7 +69,7 @@
 
         .sidebar-inner {
             border-left: 1px solid $color-divider;
-            box-shadow: -2px 0 14px rgba(#000, 0.06);
+            box-shadow: -1px 0 5px rgba(#000, 0.04);
         }
 
         .sidebar-toggle-handle {
@@ -95,10 +95,18 @@
 
         &-left {
             left: 0;
+
+            .sidebar-inner {
+                box-shadow: 2px 0 14px rgba(#000, 0.08);
+            }
         }
 
         &-right {
             right: 0;
+
+            .sidebar-inner {
+                box-shadow: -2px 0 14px rgba(#000, 0.08);
+            }
         }
     }
 }
