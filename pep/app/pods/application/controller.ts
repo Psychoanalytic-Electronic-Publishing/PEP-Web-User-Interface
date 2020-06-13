@@ -16,7 +16,7 @@ export default class Application extends Controller {
         //TODO why is this promise rejecting (shaking submit button) when search includes values?
         return this.transitionToRoute('search', {
             queryParams: {
-                smartSearchTerm: this.smartSearchTerm,
+                q: this.smartSearchTerm,
                 searchTerms: this.searchTerms,
                 matchSynonyms: this.matchSynonyms
             }

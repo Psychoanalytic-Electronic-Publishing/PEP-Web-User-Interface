@@ -1,7 +1,30 @@
 <Page::Content>
-    <div class="py-3 px-4">
-        <h4 class="mb-3">
-            Search Results
-        </h4>
-    </div>
+    {{#if this.noResults}}
+        <div class="d-flex h-100 justify-content-center align-items-center">
+            <div class="px-4 py-5 text-muted">
+                {{#if this.hasSubmittedSearch}}
+                    Use the form on the left to enter terms or phrases and search our publication database.
+                {{else}}
+                    No results found. Try using different search terms or phrases to find what you're looking for.
+                {{/if}}
+            </div>
+        </div>
+    {{else}}
+        <div class="py-3 px-4">
+            {{#if this.model.length}}
+                <div>
+                    <h4>
+                        {{this.metadata.total}}
+                        <span class="text-muted">results</span>
+                    </h4>
+                </div>
+            {{/if}}
+            {{#if this.isLoadingPage}}
+                <div class="d-flex align-items-center">
+                    <Progress::Spinner class="mr-1" />
+                    <span class="text-muted">Loading results...</span>
+                </div>
+            {{/if}}
+        </div>
+    {{/if}}
 </Page::Content>

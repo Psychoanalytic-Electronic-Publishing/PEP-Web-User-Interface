@@ -19,7 +19,6 @@ export default class Scrollable extends Component<ScrollableArgs> {
 
     setup(element) {
         if (element && !this.ps) {
-            console.log('setup!');
             const ps = new PerfectScrollbar(element, {
                 //@see https://github.com/mdbootstrap/perfect-scrollbar#options
                 wheelSpeed: 1
@@ -32,7 +31,6 @@ export default class Scrollable extends Component<ScrollableArgs> {
 
     teardown() {
         if (this.ps) {
-            console.log('teardown!');
             this.ps.destroy();
             this.ps = null;
         }
