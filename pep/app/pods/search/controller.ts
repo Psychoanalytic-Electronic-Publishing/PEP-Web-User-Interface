@@ -9,11 +9,21 @@ export default class Search extends ControllerPagination(Controller) {
     queryParams = ['q', 'searchTerms', 'matchSynonyms'];
     @tracked q: string = '';
     @tracked matchSynonyms: boolean = false;
-    @tracked searchTerms = [];
+    @tracked searchTerms = ''; //@TODO need to fix bug w/array QPs
+    @tracked metadata = {};
 
     @tracked currentSmartSearchTerm: string = '';
     @tracked currentSearchTerms = [];
     @tracked currentMatchSynonyms: boolean = false;
+
+    //workaround for https://github.com/emberjs/ember.js/issues/18981
+    // get convertedSearchTerms() {
+    //     if (Array.isArray(array) && array.length > 0) {
+    //         this._projects = JSON.stringify(array).slice(1, -1);
+    //     } else {
+    //         this._projects = '';
+    //     }
+    // }
 
     get hasSubmittedSearch() {
         return this.q || this.searchTerms.length > 0;

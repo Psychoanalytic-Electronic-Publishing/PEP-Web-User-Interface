@@ -31,7 +31,7 @@ export default class Sidebar extends Service {
 
     private handleMediaChange() {
         //default sidebars to closed on mobile/tablet
-        if (!this.media.isDesktop && !this.media.isJumbo) {
+        if (this.media.isMobile || this.media.isTablet) {
             this.leftSidebarIsOpen = false;
             this.rightSidebarIsOpen = false;
         }
