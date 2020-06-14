@@ -42,6 +42,7 @@ $floating-label-control-label-size: $font-size-app-base;
 // Bootstrap overrides
 // ---------------------------
 $primary: #2f4764;
+$link-color: saturate(lighten($primary, 10%), 20%);
 $font-size-base: $font-size-app-base;
 $font-family-sans-serif: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
     'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';

@@ -1,20 +1,26 @@
 import Controller from '@ember/controller';
 import { action, setProperties, computed } from '@ember/object';
+import { isEmpty } from '@ember/utils';
 import { tracked } from '@glimmer/tracking';
 import { Promise } from 'rsvp';
 import { later } from '@ember/runloop';
 import ControllerPagination from '@gavant/ember-pagination/mixins/controller-pagination';
 import { SEARCH_TYPE_EVERYWHERE } from 'pep/constants/search';
+import { FIXTURE_SEARCH_RESULTS } from 'pep/constants/fixtures';
 
 export default class Search extends ControllerPagination(Controller) {
     queryParams = ['q', { _searchTerms: 'searchTerms' }, 'matchSynonyms'];
     @tracked q: string = '';
     @tracked matchSynonyms: boolean = false;
+
     @tracked metadata = {};
 
     @tracked currentSmartSearchTerm: string = '';
     @tracked currentSearchTerms = [];
     @tracked currentMatchSynonyms: boolean = false;
+
+    @tracked previewedResult = null;
+    @tracked previewExpanded = false;
 
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
@@ -34,7 +40,7 @@ export default class Search extends ControllerPagination(Controller) {
         if (Array.isArray(array) && array.length > 0) {
             this._searchTerms = JSON.stringify(array);
         } else {
-            this._searchTerms = '';
+            this._searchTerms = null;
         }
     }
 
@@ -51,21 +57,7 @@ export default class Search extends ControllerPagination(Controller) {
     fetchModels(params) {
         return new Promise((resolve) => {
             later(() => {
-                const models = [
-                    {
-                        id: 3,
-                        title: 'This is a test result'
-                    },
-                    {
-                        id: 4,
-                        title: 'This is another test result'
-                    },
-                    {
-                        id: 5,
-                        title: 'This is a third test result'
-                    }
-                ];
-                resolve(models);
+                resolve(FIXTURE_SEARCH_RESULTS);
             }, 1500);
         });
     }
@@ -76,7 +68,7 @@ export default class Search extends ControllerPagination(Controller) {
         const searchTerms = this.currentSearchTerms.filter((t) => !!t.term);
 
         this.q = this.currentSmartSearchTerm;
-        this.searchTerms = searchTerms;
+        this.searchTerms = !isEmpty(searchTerms) ? searchTerms : null;
         this.matchSynonyms = this.currentMatchSynonyms;
         //perform search
         return this.filter();
@@ -118,6 +110,22 @@ export default class Search extends ControllerPagination(Controller) {
     @action
     updateMatchSynonyms(isChecked: boolean) {
         this.currentMatchSynonyms = isChecked;
+    }
+
+    @action
+    openResultPreview(result, event) {
+        event.preventDefault();
+        this.previewedResult = result;
+    }
+
+    @action
+    closeResultPreview() {
+        this.previewedResult = null;
+    }
+
+    @action
+    togglePreviewExpanded() {
+        this.previewExpanded = !this.previewExpanded;
     }
 }
 

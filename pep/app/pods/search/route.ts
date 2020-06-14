@@ -4,6 +4,7 @@ import { isEmpty } from '@ember/utils';
 import { Promise } from 'rsvp';
 // import RoutePagination from '@gavant/ember-pagination/mixins/route-pagination';
 import { PageNav } from 'pep/mixins/page-layout';
+import { FIXTURE_SEARCH_RESULTS } from 'pep/constants/fixtures';
 
 export default class Search extends PageNav(Route) {
     navController = 'search';
@@ -15,20 +16,7 @@ export default class Search extends PageNav(Route) {
         if (params.q || (Array.isArray(searchTerms) && searchTerms.length > 0)) {
             return new Promise((resolve) => {
                 later(() => {
-                    resolve([
-                        {
-                            id: 1,
-                            title: 'This is a test result'
-                        },
-                        {
-                            id: 2,
-                            title: 'This is another test result'
-                        },
-                        {
-                            id: 3,
-                            title: 'This is a third test result'
-                        }
-                    ]);
+                    resolve(FIXTURE_SEARCH_RESULTS);
                 }, 1500);
             });
         } else {
@@ -39,7 +27,7 @@ export default class Search extends PageNav(Route) {
     setupController(controller, model) {
         super.setupController(controller, model);
         //TODO eventually RoutePagination will do this
-        controller.metadata = { total: 20 };
+        controller.metadata = { total: 7 };
         controller.modelName = 'publication';
         controller.hasMore = true;
 
