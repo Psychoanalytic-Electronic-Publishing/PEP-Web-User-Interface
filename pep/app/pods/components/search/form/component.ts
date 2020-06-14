@@ -1,10 +1,12 @@
 import Component from '@glimmer/component';
-import { action } from '@ember/object';
+import { action, computed } from '@ember/object';
 import { SEARCH_TYPES, SEARCH_TYPE_EVERYWHERE } from 'pep/constants/search';
 import move from 'ember-animated/motions/move';
 import { fadeIn, fadeOut } from 'ember-animated/motions/opacity';
 
-interface SearchFormArgs {}
+interface SearchFormArgs {
+    //TODO
+}
 
 export default class SearchForm extends Component<SearchFormArgs> {
     searchTypes = SEARCH_TYPES;
@@ -21,6 +23,14 @@ export default class SearchForm extends Component<SearchFormArgs> {
         for (let sprite of insertedSprites) {
             fadeIn(sprite);
         }
+    }
+
+    @computed('args.{smartSearchTerm,searchTerms.@each.term}')
+    get hasEnteredSearch() {
+        return (
+            this.args.smartSearchTerm ||
+            (Array.isArray(this.args.searchTerms) && this.args.searchTerms.filter((t) => !!t.term).length > 0)
+        );
     }
 
     @action

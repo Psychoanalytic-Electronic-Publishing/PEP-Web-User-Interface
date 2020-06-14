@@ -1,5 +1,6 @@
 import Controller from '@ember/controller';
 import { action, setProperties } from '@ember/object';
+import { isEmpty } from '@ember/utils';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import LoadingBar from 'pep/services/loading-bar';
@@ -18,12 +19,14 @@ export default class Application extends Controller {
 
     @action
     submitSearch() {
+        const searchTerms = this.searchTerms.filter((t) => !!t.term);
+
         const queryParams = {
             q: this.smartSearchTerm,
             matchSynonyms: this.matchSynonyms,
             //json stringify is workaround for bug w/array-based query param values
             //@see https://github.com/emberjs/ember.js/issues/18981
-            searchTerms: JSON.stringify(this.searchTerms.filter((t) => !!t.term))
+            searchTerms: !isEmpty(searchTerms) ? JSON.stringify(searchTerms) : null
         };
 
         return this.transitionToRoute('search', { queryParams });

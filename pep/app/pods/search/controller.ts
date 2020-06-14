@@ -1,5 +1,5 @@
 import Controller from '@ember/controller';
-import { action, setProperties } from '@ember/object';
+import { action, setProperties, computed } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { Promise } from 'rsvp';
 import { later } from '@ember/runloop';
@@ -24,7 +24,7 @@ export default class Search extends ControllerPagination(Controller) {
         { type: 'author', term: '' }
     ]);
     get searchTerms() {
-        if (this._searchTerms === '') {
+        if (!this._searchTerms) {
             return [];
         } else {
             return JSON.parse(this._searchTerms);
@@ -38,8 +38,9 @@ export default class Search extends ControllerPagination(Controller) {
         }
     }
 
+    @computed('q,searchTerms.@each.term')
     get hasSubmittedSearch() {
-        return this.q || this.searchTerms.length > 0;
+        return this.q || this.searchTerms.filter((t) => !!t.term).length > 0;
     }
 
     get noResults() {
@@ -72,8 +73,10 @@ export default class Search extends ControllerPagination(Controller) {
     @action
     submitSearch() {
         //update query params
+        const searchTerms = this.currentSearchTerms.filter((t) => !!t.term);
+
         this.q = this.currentSmartSearchTerm;
-        this.searchTerms = this.currentSearchTerms;
+        this.searchTerms = searchTerms;
         this.matchSynonyms = this.currentMatchSynonyms;
         //perform search
         return this.filter();

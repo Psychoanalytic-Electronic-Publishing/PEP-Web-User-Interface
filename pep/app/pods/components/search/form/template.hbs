@@ -73,8 +73,10 @@
                 @type="primary"
                 @blockLayout={{false}}
                 @wide={{true}}
+                @showSuccess={{false}}
                 @label="Search"
                 @action={{@submit}}
+                disabled={{not this.hasEnteredSearch}}
             />
         </div>
     </form>
