@@ -15,7 +15,7 @@
                 {{#if this.model.length}}
                     <div class="d-md-flex justify-content-between align-items-center mb-3">
                         <h4 class="mb-0">
-                            {{this.metadata.total}}
+                            {{or this.metadata.total 0}}
                             <span class="text-muted">results</span>
                         </h4>
                         <div class="d-flex align-items-center">
