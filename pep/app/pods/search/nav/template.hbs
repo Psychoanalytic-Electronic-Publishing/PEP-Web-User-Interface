@@ -4,13 +4,27 @@
         @searchTerms={{this.currentSearchTerms}}
         @matchSynonyms={{this.currentMatchSynonyms}}
         @submit={{this.submitSearch}}
-        @clear={{this.clearSearch}}
+        @resetForm={{this.clearSearch}}
         @addSearchTerm={{this.addSearchTerm}}
         @removeSearchTerm={{this.removeSearchTerm}}
+        @updateSearchTerm={{this.updateSearchTerm}}
         @matchSynonymsChange={{this.updateMatchSynonyms}}
+        class="mb-2"
     />
-    <div class="p-3">
-        <h5>Refine</h5>
-        <p>Refine UI here</p>
-    </div>
+    {{#if this.hasSubmittedSearch}}
+        <Search::Refine
+            class="mb-2"
+        />
+    {{else}}
+        <div class="p-3">
+            <h5>72 Premier Journals</h5>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam imperdiet, orci nec viverra feugiat, elit ligula tempor eros, et feugiat massa nibh eu nunc.
+            </p>
+            <h5>59 Classic Books</h5>
+            <p>
+                Mauris cursus pretium consequat. Nunc pellentesque tellus eget neque molestie, quis bibendum libero consectetur.
+            </p>
+        </div>
+    {{/if}}
 </Page::Sidebar>

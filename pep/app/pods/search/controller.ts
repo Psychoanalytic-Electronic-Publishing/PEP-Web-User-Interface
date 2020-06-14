@@ -1,29 +1,42 @@
 import Controller from '@ember/controller';
-import { action } from '@ember/object';
+import { action, setProperties } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { Promise } from 'rsvp';
 import { later } from '@ember/runloop';
 import ControllerPagination from '@gavant/ember-pagination/mixins/controller-pagination';
+import { SEARCH_TYPE_EVERYWHERE } from 'pep/constants/search';
 
 export default class Search extends ControllerPagination(Controller) {
-    queryParams = ['q', 'searchTerms', 'matchSynonyms'];
+    queryParams = ['q', { _searchTerms: 'searchTerms' }, 'matchSynonyms'];
     @tracked q: string = '';
     @tracked matchSynonyms: boolean = false;
-    @tracked searchTerms = ''; //@TODO need to fix bug w/array QPs
     @tracked metadata = {};
 
     @tracked currentSmartSearchTerm: string = '';
     @tracked currentSearchTerms = [];
     @tracked currentMatchSynonyms: boolean = false;
 
-    //workaround for https://github.com/emberjs/ember.js/issues/18981
-    // get convertedSearchTerms() {
-    //     if (Array.isArray(array) && array.length > 0) {
-    //         this._projects = JSON.stringify(array).slice(1, -1);
-    //     } else {
-    //         this._projects = '';
-    //     }
-    // }
+    //workaround for bug w/array-based query param values
+    //@see https://github.com/emberjs/ember.js/issues/18981
+    @tracked _searchTerms = JSON.stringify([
+        { type: 'everywhere', term: '' },
+        { type: 'title', term: '' },
+        { type: 'author', term: '' }
+    ]);
+    get searchTerms() {
+        if (this._searchTerms === '') {
+            return [];
+        } else {
+            return JSON.parse(this._searchTerms);
+        }
+    }
+    set searchTerms(array) {
+        if (Array.isArray(array) && array.length > 0) {
+            this._searchTerms = JSON.stringify(array);
+        } else {
+            this._searchTerms = '';
+        }
+    }
 
     get hasSubmittedSearch() {
         return this.q || this.searchTerms.length > 0;
@@ -69,15 +82,35 @@ export default class Search extends ControllerPagination(Controller) {
     @action
     clearSearch() {
         this.currentSmartSearchTerm = '';
-        this.currentSearchTerms = [];
         this.currentMatchSynonyms = false;
+        this.currentSearchTerms = [{ type: 'everywhere', term: '' }];
     }
 
     @action
-    addSearchTerm() {}
+    addSearchTerm(newSearchTerm) {
+        this.currentSearchTerms = this.currentSearchTerms.concat([newSearchTerm]);
+    }
 
     @action
-    removeSearchTerm() {}
+    removeSearchTerm(removedSearchTerm) {
+        const searchTerms = this.currentSearchTerms.concat([]);
+        searchTerms.removeObject(removedSearchTerm);
+
+        if (searchTerms.length === 0) {
+            searchTerms.pushObject({ type: SEARCH_TYPE_EVERYWHERE.id, term: '' });
+        }
+
+        this.currentSearchTerms = searchTerms;
+    }
+
+    @action
+    updateSearchTerm(oldTerm, newTerm) {
+        const searchTerms = this.currentSearchTerms.concat([]);
+        //workaround to retain the same term object, instead of splicing in
+        //a brand new one like we normally would, so that it doesnt trigger an insert animation
+        setProperties(oldTerm, newTerm);
+        this.currentSearchTerms = searchTerms;
+    }
 
     @action
     updateMatchSynonyms(isChecked: boolean) {

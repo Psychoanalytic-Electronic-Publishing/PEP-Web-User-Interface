@@ -29,16 +29,20 @@ $duration-sidebar-toggle: 0.3s;
 $duration-progress-bar: 3s;
 $duration-progress-bar-delay: 1.5s;
 
+//TYPOGRAPHY
+$font-size-app-base: 0.875rem;
+
 // ---------------------------
 // Addon overrides
 // ---------------------------
 $button-spinner-loading-color1: rgba(#fff, 0.75);
 $button-spinner-loading-color2: saturate(lighten($color-brand-primary, 35%), 45%);
+$floating-label-control-label-size: $font-size-app-base;
 // ---------------------------
 // Bootstrap overrides
 // ---------------------------
 $primary: #2f4764;
-$font-size-base: 0.875rem;
+$font-size-base: $font-size-app-base;
 $font-family-sans-serif: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
     'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 $headings-font-family: Muli, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',

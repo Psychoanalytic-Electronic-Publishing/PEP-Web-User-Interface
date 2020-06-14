@@ -9,7 +9,7 @@ export default class Search extends PageNav(Route) {
 
     model(params) {
         //if no search was submitted, don't fetch any results
-        if (params.q || params.searchTerms.length > 0) {
+        if (params.q || (Array.isArray(params.searchTerms) && params.searchTerms.length > 0)) {
             return new Promise((resolve) => {
                 later(() => {
                     resolve([
@@ -41,9 +41,8 @@ export default class Search extends PageNav(Route) {
         controller.hasMore = true;
 
         //map the query params to current search values to populate the form
-        const params = this.paramsFor('search');
-        controller.currentSmartSearchTerm = params.q;
-        controller.currentSearchTerms = params.searchTerms;
-        controller.currentMatchSynonyms = params.matchSynonyms;
+        controller.currentSmartSearchTerm = controller.q;
+        controller.currentSearchTerms = controller.searchTerms;
+        controller.currentMatchSynonyms = controller.matchSynonyms;
     }
 }

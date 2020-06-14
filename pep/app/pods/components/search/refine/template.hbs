@@ -1,0 +1,25 @@
+<div class="bg-white border-divider-b border-divider-t p-3" ...attributes>
+    <h5>Refine</h5>
+    <p class="text-muted">Check to limit results to only matching articles.</p>
+    <ul class="list-unstyled">
+        {{#each this.groups as |group|}}
+            <li>
+                <div>
+                    <strong>{{group.label}}</strong>
+                </div>
+                <ul class="list-unstyled ml-3 mb-2">
+                    {{#each group.options as |option|}}
+                        <li>
+                            <CheckboxInput>
+                                {{option.label}}
+                                <span class="text-muted small">
+                                    ({{format-number option.numResults}})
+                                </span>
+                            </CheckboxInput>
+                        </li>
+                    {{/each}}
+                </ul>
+            </li>
+        {{/each}}
+    </ul>
+</div>
