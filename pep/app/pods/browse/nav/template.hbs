@@ -1,5 +1,14 @@
 <Page::Sidebar @side="left">
     <Search::Form
+        @smartSearchTerm={{this.smartSearchTerm}}
+        @searchTerms={{this.searchTerms}}
+        @matchSynonyms={{this.matchSynonyms}}
+        @submit={{this.submitSearch}}
+        @resetForm={{this.clearSearch}}
+        @addSearchTerm={{this.addSearchTerm}}
+        @removeSearchTerm={{this.removeSearchTerm}}
+        @updateSearchTerm={{this.updateSearchTerm}}
+        @matchSynonymsChange={{this.updateMatchSynonyms}}
         class="mb-2"
     />
     <div class="p-3">

@@ -12,8 +12,9 @@ export default class Search extends PageNav(Route) {
     model(params) {
         //workaround for https://github.com/emberjs/ember.js/issues/18981
         const searchTerms = params._searchTerms ? JSON.parse(params._searchTerms) : [];
+        const nonEmptyTerms = searchTerms.filter((t) => !!t.term);
         //if no search was submitted, don't fetch any results
-        if (params.q || (Array.isArray(searchTerms) && searchTerms.length > 0)) {
+        if (params.q || (Array.isArray(nonEmptyTerms) && nonEmptyTerms.length > 0)) {
             return new Promise((resolve) => {
                 later(() => {
                     resolve(FIXTURE_SEARCH_RESULTS);

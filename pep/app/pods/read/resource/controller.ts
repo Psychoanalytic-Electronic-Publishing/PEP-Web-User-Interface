@@ -1,7 +1,7 @@
 import Controller from '@ember/controller';
 import { tracked } from '@glimmer/tracking';
 
-export default class Read extends Controller {
+export default class ReadResource extends Controller {
     queryParams = ['q', { _searchTerms: 'searchTerms' }, 'matchSynonyms'];
     @tracked q: string = '';
     @tracked matchSynonyms: boolean = false;
@@ -36,6 +36,6 @@ export default class Read extends Controller {
 // DO NOT DELETE: this is how TypeScript knows how to look up your controllers.
 declare module '@ember/controller' {
     interface Registry {
-        read: Read;
+        readResource: ReadResource;
     }
 }

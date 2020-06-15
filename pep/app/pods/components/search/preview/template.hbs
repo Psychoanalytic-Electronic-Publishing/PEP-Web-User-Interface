@@ -31,7 +31,11 @@
                 </h5>
                 <p>{{@result.abstract}}</p>
                 <div>
-                    <LinkTo @route="read" @model={{@result.id}} @query={{@queryParams}} class="btn btn-primary btn-wide mr-2">
+                    <LinkTo
+                        @route="read.resource"
+                        @model={{@result.id}} @query={{@queryParams}}
+                        class="btn btn-primary btn-wide mr-2"
+                    >
                         <FaIcon @icon="book-open" />
                         Read
                     </LinkTo>
