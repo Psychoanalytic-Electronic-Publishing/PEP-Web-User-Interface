@@ -28,6 +28,15 @@ body {
     margin-right: -$sidebar-handle-width;
     z-index: $z-page-content;
 
+    &.page-content-sectioned {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &-section {
+        position: relative;
+    }
+
     &-inner {
         position: absolute;
         top: 0;

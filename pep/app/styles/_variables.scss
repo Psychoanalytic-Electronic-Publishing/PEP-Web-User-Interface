@@ -13,19 +13,21 @@ $navbar-height: 58px;
 $footer-height: 32px;
 $sidebar-width: 320px;
 $sidebar-handle-width: 16px;
+$search-preview-collapsed-height: 15rem;
 $progress-bar-height: 5px;
 $progress-spinner-loading-border-width: 2px;
 $progress-spinner-loading-size: 15px;
 $progress-spinner-loading-border-width-lg: 4px;
 $progress-spinner-loading-size-lg: 50px;
 
-//Z-INDEX LAYERING
+//Z-INDICES / LAYERING
 $z-page-content: 2;
 $z-sidebar-overlay: 10;
 $z-sidebar-handle: 10;
 
 //TIMING
 $duration-sidebar-toggle: 0.3s;
+$duration-search-preview-toggle: 0.3s;
 $duration-progress-bar: 3s;
 $duration-progress-bar-delay: 1.5s;
 

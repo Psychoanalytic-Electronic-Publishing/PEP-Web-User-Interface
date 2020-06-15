@@ -13,14 +13,15 @@ export default class Search extends ControllerPagination(Controller) {
     @tracked q: string = '';
     @tracked matchSynonyms: boolean = false;
 
-    @tracked metadata = {};
-
     @tracked currentSmartSearchTerm: string = '';
     @tracked currentSearchTerms = [];
     @tracked currentMatchSynonyms: boolean = false;
 
     @tracked previewedResult = null;
-    @tracked previewExpanded = false;
+    @tracked previewIsExpanded = false;
+
+    //TODO will be removed once proper pagination is hooked up
+    @tracked metadata = {};
 
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
@@ -53,13 +54,19 @@ export default class Search extends ControllerPagination(Controller) {
         return !this.isLoadingPage && (!this.hasSubmittedSearch || !this.model.length);
     }
 
-    //TODO overrides ControllerPagination method, for now
+    //TODO TBD - overrides ControllerPagination method to provide fake data
     fetchModels(params) {
         return new Promise((resolve) => {
             later(() => {
                 resolve(FIXTURE_SEARCH_RESULTS);
             }, 1500);
         });
+    }
+    //TODO  TBD - overrides ControllerPagination method to provide fake data
+    async _loadModels(reset) {
+        const result = await super._loadModels(reset);
+        this.metadata = { total: result.length };
+        return result;
     }
 
     @action
@@ -121,11 +128,12 @@ export default class Search extends ControllerPagination(Controller) {
     @action
     closeResultPreview() {
         this.previewedResult = null;
+        this.previewIsExpanded = false;
     }
 
     @action
     togglePreviewExpanded() {
-        this.previewExpanded = !this.previewExpanded;
+        this.previewIsExpanded = !this.previewIsExpanded;
     }
 }
 

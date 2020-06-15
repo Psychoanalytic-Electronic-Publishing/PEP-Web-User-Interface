@@ -1,0 +1,50 @@
+{{#if @result}}
+    <div class="search-preview {{if @isExpanded " expanded"}}" ...attributes>
+        <Scrollable class="page-content-inner">
+            <div class="d-flex justify-content-between align-items-center px-3 py-2">
+                <div class="small text-muted mr-2">{{@result.source}}</div>
+                <div>
+                    <Button
+                        @icon={{if @isExpanded "chevron-square-down" "chevron-square-up"}}
+                        @type="link"
+                        @action={{@toggleExpanded}}
+                        class="mr-2 p-0"
+                        title={{if @isExpanded "Collapse" "Expand"}}
+                    />
+                    <Button
+                        @icon="times"
+                        @type="link"
+                        @action={{@close}}
+                        class="p-0"
+                        title="Close"
+                    />
+                </div>
+            </div>
+            <div class="px-3 pb-3">
+                <h5>
+                    {{@result.heading}}
+                    {{#if @result.author}}
+                        <div class="small text-muted">
+                            {{@result.author}}
+                        </div>
+                    {{/if}}
+                </h5>
+                <p>{{@result.abstract}}</p>
+                <div>
+                    <LinkTo @route="read" @model={{@result.id}} @query={{@queryParams}} class="btn btn-primary btn-wide mr-2">
+                        <FaIcon @icon="book-open" />
+                        Read
+                    </LinkTo>
+                    <Button
+                        @icon="download"
+                        @label="Download docs"
+                        @type="link"
+                        class="px-2"
+                    >
+                        <FaIcon @icon="angle-down" class="ml-1 text-muted" />
+                    </Button>
+                </div>
+            </div>
+        </Scrollable>
+    </div>
+{{/if}}

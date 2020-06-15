@@ -1,88 +1,101 @@
-<div class="page-content">
-    <Scrollable class="page-content-inner">
-        {{#if this.noResults}}
-            <div class="d-flex h-50 justify-content-center align-items-center">
-                <div class="px-4 py-5 text-muted">
-                    {{#if this.hasSubmittedSearch}}
-                        No results found. Try using different search terms or phrases to find what you're looking for.
-                    {{else}}
-                        Use the form on the left to enter terms or phrases and search our publication database.
+<div class="page-content page-content-sectioned">
+    <div class="page-content-section flex-fill">
+        <Scrollable class="page-content-inner">
+            {{#if this.noResults}}
+                <div class="d-flex h-50 justify-content-center align-items-center">
+                    <div class="px-4 py-5 text-muted">
+                        {{#if this.hasSubmittedSearch}}
+                            No results found. Try using different search terms or phrases to find what you're looking for.
+                        {{else}}
+                            Use the form on the left to enter terms or phrases and search our publication database.
+                        {{/if}}
+                    </div>
+                </div>
+            {{else}}
+                <div class="py-3 px-4">
+                    {{#if this.model.length}}
+                        <div class="d-md-flex justify-content-between align-items-center mb-3">
+                            <h4 class="mb-0">
+                                {{or this.metadata.total 0}}
+                                <span class="text-muted">results</span>
+                            </h4>
+                            <div class="d-flex align-items-center">
+                                <Button
+                                    @type="link"
+                                    class="text-decoration-none p-1 mr-1"
+                                >
+                                    <span class="text-muted">Sort:</span>
+                                    <span class="text-dark mr-1">Year</span>
+                                    <FaIcon @icon="angle-down" class="text-muted" />
+                                </Button>
+                                <Button
+                                    @type="link"
+                                    class="text-decoration-none p-1 mr-2"
+                                >
+                                    <span class="text-muted">View:</span>
+                                    <span class="text-dark mr-1">Bibliographic</span>
+                                    <FaIcon @icon="angle-down" class="text-muted" />
+                                </Button>
+                                <Button
+                                    @type="link"
+                                    @icon="download"
+                                    @iconSize="lg"
+                                    title="Export"
+                                    class="p-1"
+                                />
+                                <Button
+                                    @type="link"
+                                    @icon="print"
+                                    @iconSize="lg"
+                                    title="Print"
+                                    class="p-1"
+                                />
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <VerticalCollection
+                                    @items={{this.model}}
+                                    @tagName="ul"
+                                    @containerSelector=".page-content-inner"
+                                    @class="list-unstyled"
+                                    @estimateHeight={{100}}
+                                    as |result|
+                                >
+                                    <li class="mb-4">
+                                        <a href="" {{on "click" (fn this.openResultPreview result)}}>{{result.title}}</a>
+                                        {{#if result.matches}}
+                                            <ul class="small">
+                                                {{#each result.matches as |match|}}
+                                                    <li>{{{match.text}}}</li>
+                                                {{/each}}
+                                            </ul>
+                                        {{/if}}
+                                    </li>
+                                </VerticalCollection>
+                            </div>
+                        </div>
+                    {{/if}}
+                    {{#if this.isLoadingPage}}
+                        <div class="d-flex align-items-center">
+                            <Progress::Spinner class="mr-1" />
+                            <span class="text-muted">Loading results...</span>
+                        </div>
                     {{/if}}
                 </div>
-            </div>
-        {{else}}
-            <div class="py-3 px-4">
-                {{#if this.model.length}}
-                    <div class="d-md-flex justify-content-between align-items-center mb-3">
-                        <h4 class="mb-0">
-                            {{or this.metadata.total 0}}
-                            <span class="text-muted">results</span>
-                        </h4>
-                        <div class="d-flex align-items-center">
-                            <Button
-                                @type="link"
-                                class="text-decoration-none p-1 mr-1"
-                            >
-                                <span class="text-muted">Sort:</span>
-                                <span class="text-dark mr-1">Year</span>
-                                <FaIcon @icon="angle-down" class="text-muted" />
-                            </Button>
-                            <Button
-                                @type="link"
-                                class="text-decoration-none p-1 mr-2"
-                            >
-                                <span class="text-muted">View:</span>
-                                <span class="text-dark mr-1">Bibliographic</span>
-                                <FaIcon @icon="angle-down" class="text-muted" />
-                            </Button>
-                            <Button
-                                @type="link"
-                                @icon="download"
-                                @iconSize="lg"
-                                title="Export"
-                                class="p-1"
-                            />
-                            <Button
-                                @type="link"
-                                @icon="print"
-                                @iconSize="lg"
-                                title="Print"
-                                class="p-1"
-                            />
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-body">
-                            <VerticalCollection
-                                @items={{this.model}}
-                                @tagName="ul"
-                                @containerSelector=".page-content-inner"
-                                @class="list-unstyled"
-                                @estimateHeight={{100}}
-                                as |result|
-                            >
-                                <li class="mb-4">
-                                    <a href="" {{on "click" (fn this.openResultPreview result)}}>{{result.title}}</a>
-                                    {{#if result.matches}}
-                                        <ul>
-                                            {{#each result.matches as |match|}}
-                                                <li>{{{match.text}}}</li>
-                                            {{/each}}
-                                        </ul>
-                                    {{/if}}
-                                </li>
-                            </VerticalCollection>
-                        </div>
-                    </div>
-                {{/if}}
-                {{#if this.isLoadingPage}}
-                    <div class="d-flex align-items-center">
-                        <Progress::Spinner class="mr-1" />
-                        <span class="text-muted">Loading results...</span>
-                    </div>
-                {{/if}}
-            </div>
-        {{/if}}
-    </Scrollable>
-    {{!-- TODO render preview pane here, need flex container for main page content and preview section --}}
+            {{/if}}
+        </Scrollable>
+    </div>
+    <Search::Preview
+        @result={{this.previewedResult}}
+        @queryParams={{hash
+            q=this.q
+            matchSynonyms=this.matchSynonyms
+            searchTerms=this._searchTerms
+        }}
+        @isExpanded={{this.previewIsExpanded}}
+        @toggleExpanded={{this.togglePreviewExpanded}}
+        @close={{this.closeResultPreview}}
+        class="page-content-section"
+    />
 </div>

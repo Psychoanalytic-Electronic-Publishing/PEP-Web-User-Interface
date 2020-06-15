@@ -17,7 +17,7 @@ export default class Search extends PageNav(Route) {
             return new Promise((resolve) => {
                 later(() => {
                     resolve(FIXTURE_SEARCH_RESULTS);
-                }, 1500);
+                }, 1200);
             });
         } else {
             return [];
@@ -27,7 +27,7 @@ export default class Search extends PageNav(Route) {
     setupController(controller, model) {
         super.setupController(controller, model);
         //TODO eventually RoutePagination will do this
-        controller.metadata = { total: 7 };
+        controller.metadata = { total: model.length };
         controller.modelName = 'publication';
         controller.hasMore = true;
 
