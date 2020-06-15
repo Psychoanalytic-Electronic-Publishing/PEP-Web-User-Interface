@@ -39,4 +39,10 @@ export default class Search extends PageNav(Route) {
             ? [{ type: 'everywhere', term: '' }]
             : controller.searchTerms;
     }
+
+    resetController(controller, isExiting, transition) {
+        super.resetController(controller, isExiting, transition);
+        controller.previewedResult = null;
+        controller.previewIsExpanded = false;
+    }
 }
