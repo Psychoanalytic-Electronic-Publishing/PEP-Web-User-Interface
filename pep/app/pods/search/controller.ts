@@ -2,13 +2,16 @@ import Controller from '@ember/controller';
 import { action, setProperties, computed } from '@ember/object';
 import { isEmpty } from '@ember/utils';
 import { tracked } from '@glimmer/tracking';
-import { Promise } from 'rsvp';
-import { later } from '@ember/runloop';
+import { inject as service } from '@ember/service';
 import ControllerPagination from '@gavant/ember-pagination/mixins/controller-pagination';
+import AjaxService from 'pep/services/ajax';
 import { SEARCH_TYPE_EVERYWHERE } from 'pep/constants/search';
-import { FIXTURE_SEARCH_RESULTS } from 'pep/constants/fixtures';
+import { removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
+import { serializeQueryParams } from 'pep/utils/serialize-query-params';
 
 export default class Search extends ControllerPagination(Controller) {
+    @service ajax!: AjaxService;
+
     queryParams = ['q', { _searchTerms: 'searchTerms' }, 'matchSynonyms'];
     @tracked q: string = '';
     @tracked matchSynonyms: boolean = false;
@@ -54,19 +57,16 @@ export default class Search extends ControllerPagination(Controller) {
         return !this.isLoadingPage && (!this.hasSubmittedSearch || !this.model.length);
     }
 
-    //TODO TBD - overrides ControllerPagination method to provide fake data
-    fetchModels(params) {
-        return new Promise((resolve) => {
-            later(() => {
-                resolve(FIXTURE_SEARCH_RESULTS);
-            }, 1500);
-        });
-    }
-    //TODO  TBD - overrides ControllerPagination method to provide fake data
-    async _loadModels(reset) {
-        const result = await super._loadModels(reset);
-        this.metadata = { total: result.length };
-        return result;
+    //TODO TBD - overrides ControllerPagination, will not be needed once api is integrated w/ember-data
+    async fetchModels(params) {
+        const queryParams = removeEmptyQueryParams(params);
+        const queryStr = serializeQueryParams(queryParams);
+        const result = await this.ajax.request(`Database/Search?${queryStr}`);
+        return {
+            toArray: () => result.documentList.responseSet,
+            data: result.documentList.responseSet,
+            meta: result.documentList.responseInfo
+        };
     }
 
     @action

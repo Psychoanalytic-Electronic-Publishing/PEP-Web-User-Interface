@@ -13,7 +13,7 @@ Router.map(function() {
     this.route('search');
     this.route('browse');
     this.route('read', function() {
-        this.route('resource', { path: '/:resource_id' });
+        this.route('document', { path: '/:document_id' });
     });
 
     //make sure these routes are always defined last!

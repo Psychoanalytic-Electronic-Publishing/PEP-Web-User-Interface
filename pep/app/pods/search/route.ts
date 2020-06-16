@@ -1,12 +1,15 @@
 import Route from '@ember/routing/route';
-import { later } from '@ember/runloop';
 import { isEmpty } from '@ember/utils';
-import { Promise } from 'rsvp';
 // import RoutePagination from '@gavant/ember-pagination/mixins/route-pagination';
 import { PageNav } from 'pep/mixins/page-layout';
-import { FIXTURE_SEARCH_RESULTS } from 'pep/constants/fixtures';
+import AjaxService from 'pep/services/ajax';
+import { inject as service } from '@ember/service';
+import { serializeQueryParams } from 'pep/utils/serialize-query-params';
+import { removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
 
 export default class Search extends PageNav(Route) {
+    @service ajax!: AjaxService;
+
     navController = 'search';
 
     model(params) {
@@ -15,22 +18,24 @@ export default class Search extends PageNav(Route) {
         const nonEmptyTerms = searchTerms.filter((t) => !!t.term);
         //if no search was submitted, don't fetch any results
         if (params.q || (Array.isArray(nonEmptyTerms) && nonEmptyTerms.length > 0)) {
-            return new Promise((resolve) => {
-                later(() => {
-                    resolve(FIXTURE_SEARCH_RESULTS);
-                }, 1200);
+            const queryParams = removeEmptyQueryParams({
+                limit: 10,
+                offset: 0,
+                synonyms: params.matchSynonyms
             });
+            const queryStr = serializeQueryParams(queryParams);
+            return this.ajax.request(`Database/Search?${queryStr}`);
         } else {
             return [];
         }
     }
 
     setupController(controller, model) {
-        super.setupController(controller, model);
         //TODO eventually RoutePagination will do this
-        controller.metadata = { total: model.length };
-        controller.modelName = 'publication';
-        controller.hasMore = true;
+        const modelForController = model.documentList.responseSet;
+        controller.modelName = 'document';
+        controller.metadata = model.documentList.responseInfo;
+        controller.hasMore = modelForController >= controller.limit;
 
         //map the query params to current search values to populate the form
         controller.currentSmartSearchTerm = controller.q;
@@ -38,6 +43,8 @@ export default class Search extends PageNav(Route) {
         controller.currentSearchTerms = isEmpty(controller.searchTerms)
             ? [{ type: 'everywhere', term: '' }]
             : controller.searchTerms;
+
+        super.setupController(controller, modelForController);
     }
 
     resetController(controller, isExiting, transition) {

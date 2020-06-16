@@ -4,12 +4,12 @@ import { Promise } from 'rsvp';
 import { PageNav } from 'pep/mixins/page-layout';
 import { FIXTURE_SEARCH_RESULTS } from 'pep/constants/fixtures';
 
-export default class ReadResource extends PageNav(Route) {
-    navController = 'read/resource';
+export default class ReadDocument extends PageNav(Route) {
+    navController = 'read/document';
     searchResults = null;
 
     model(params) {
-        const id = params.resource_id;
+        const id = params.document_id;
         return new Promise((resolve) => {
             later(() => resolve(FIXTURE_SEARCH_RESULTS.find((res) => `${res.id}` === id)), 600);
         });
