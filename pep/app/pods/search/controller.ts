@@ -8,6 +8,7 @@ import AjaxService from 'pep/services/ajax';
 import { SEARCH_TYPE_EVERYWHERE } from 'pep/constants/search';
 import { removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
 import { serializeQueryParams } from 'pep/utils/serialize-query-params';
+import { FIXTURE_SEARCH_RESULTS } from 'pep/constants/fixtures';
 
 export default class Search extends ControllerPagination(Controller) {
     @service ajax!: AjaxService;
@@ -22,6 +23,10 @@ export default class Search extends ControllerPagination(Controller) {
 
     @tracked previewedResult = null;
     @tracked previewIsExpanded = false;
+
+    //pagination config
+    pagingRootKey = null;
+    filterRootKey = null;
 
     //TODO will be removed once proper pagination is hooked up
     @tracked metadata = {};
@@ -53,6 +58,7 @@ export default class Search extends ControllerPagination(Controller) {
         return this.q || this.searchTerms.filter((t) => !!t.term).length > 0;
     }
 
+    @computed('isLoadingPage,hasSubmittedSearch,model.length')
     get noResults() {
         return !this.isLoadingPage && (!this.hasSubmittedSearch || !this.model.length);
     }
@@ -62,11 +68,21 @@ export default class Search extends ControllerPagination(Controller) {
         const queryParams = removeEmptyQueryParams(params);
         const queryStr = serializeQueryParams(queryParams);
         const result = await this.ajax.request(`Database/Search?${queryStr}`);
+        //TODO add matches dummy data for demo purposes
+        const matches = FIXTURE_SEARCH_RESULTS[0].matches;
+        const results = result.documentList.responseSet.map((r) => ({ ...r, matches }));
         return {
-            toArray: () => result.documentList.responseSet,
-            data: result.documentList.responseSet,
+            toArray: () => results,
+            data: results,
             meta: result.documentList.responseInfo
         };
+    }
+
+    @action
+    loadNextPage() {
+        if (!this.isLoadingPage && this.hasMore) {
+            return this.loadMoreModels();
+        }
     }
 
     @action

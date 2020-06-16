@@ -4,8 +4,10 @@ import { isEmpty } from '@ember/utils';
 import { PageNav } from 'pep/mixins/page-layout';
 import AjaxService from 'pep/services/ajax';
 import { inject as service } from '@ember/service';
+import { A } from '@ember/array';
 import { serializeQueryParams } from 'pep/utils/serialize-query-params';
 import { removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
+import { FIXTURE_SEARCH_RESULTS } from 'pep/constants/fixtures';
 
 export default class Search extends PageNav(Route) {
     @service ajax!: AjaxService;
@@ -26,16 +28,18 @@ export default class Search extends PageNav(Route) {
             const queryStr = serializeQueryParams(queryParams);
             return this.ajax.request(`Database/Search?${queryStr}`);
         } else {
-            return [];
+            return A();
         }
     }
 
     setupController(controller, model) {
         //TODO eventually RoutePagination will do this
-        const modelForController = model.documentList.responseSet;
+        //TODO add matches dummy data for demo purposes
+        const matches = FIXTURE_SEARCH_RESULTS[0].matches;
+        const modelForController = model.documentList?.responseSet.map((r) => ({ ...r, matches })) ?? A();
         controller.modelName = 'document';
-        controller.metadata = model.documentList.responseInfo;
-        controller.hasMore = modelForController >= controller.limit;
+        controller.metadata = model.documentList?.responseInfo;
+        controller.hasMore = modelForController.length >= controller.limit;
 
         //map the query params to current search values to populate the form
         controller.currentSmartSearchTerm = controller.q;

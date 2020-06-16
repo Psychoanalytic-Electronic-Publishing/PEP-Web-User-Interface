@@ -2,7 +2,7 @@
     <div class="bg-white border-divider-b p-3">
         <div class="d-flex justify-content-between align-items-center mb-2">
             <h4 class="mb-0">
-                {{or this.metadata.total 0}}
+                {{format-number (or this.metadata.fullCount 0)}}
                 <span class="text-muted">results</span>
             </h4>
             <div class="d-flex align-items-center">
@@ -46,23 +46,38 @@
             @containerSelector=".sidebar-content"
             @class="list-unstyled"
             @estimateHeight={{100}}
+            @lastReached={{this.loadNextPage}}
             as |result|
         >
             <li class="mb-2">
                 <LinkTo
                     @route="read.document"
-                    @model={{result.id}}
-                    class="{{if (eq result.id this.model.id) "font-weight-bold"}}"
+                    @model={{result.documentID}}
+                    @query={{hash
+                        q=this.q
+                        matchSynonyms=this.matchSynonyms
+                        searchTerms=this._searchTerms
+                    }}
+                    class="{{if (eq result.documentID this.model.documentID) "font-weight-bold"}}"
                 >
-                    {{#if (eq result.id this.model.id)}}
+                    {{#if (eq result.documentID this.model.documentID)}}
                         <FaIcon @icon="caret-right" />
                     {{/if}}
-                    {{result.heading}}
+                    {{#if result.authorMast}}
+                        {{result.authorMast}}.
+                    {{/if}}
+                    {{{result.title}}}
                 </LinkTo>
                 <ul class="list-unstyled small ml-3">
-                    <li>{{result.source}}</li>
+                    <li>{{result.sourceTitle}} ({{result.year}})</li>
                 </ul>
             </li>
         </VerticalCollection>
+        {{#if this.isLoadingPage}}
+            <div class="d-flex align-items-center pt-2">
+                <Progress::Spinner class="mr-1" />
+                <span class="text-muted">Loading results...</span>
+            </div>
+        {{/if}}
     </div>
 </Page::Sidebar>

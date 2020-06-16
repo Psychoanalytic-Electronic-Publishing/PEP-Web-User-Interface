@@ -1,9 +1,9 @@
 {{#if @result}}
     <div class="search-preview {{if @isExpanded " expanded"}}" ...attributes>
         <Scrollable class="page-content-inner">
-            <div class="d-flex justify-content-between align-items-center px-4 py-2">
-                <div class="small text-muted mr-2">{{@result.source}}</div>
-                <div>
+            <div class="d-flex justify-content-between align-items-start px-4 py-2">
+                <div class="small text-muted mr-2">{{@result.documentRef}}</div>
+                <div class="d-flex flex-nowrap">
                     <Button
                         @icon={{if @isExpanded "chevron-square-down" "chevron-square-up"}}
                         @type="link"
@@ -22,18 +22,21 @@
             </div>
             <div class="px-4 pb-3">
                 <h5>
-                    {{@result.heading}}
-                    {{#if @result.author}}
+                    {{{@result.title}}}
+                    {{#if @result.authorMast}}
                         <div class="small text-muted">
-                            {{@result.author}}
+                            {{@result.authorMast}}
                         </div>
                     {{/if}}
                 </h5>
-                <p>{{@result.abstract}}</p>
+                <div class="mb-2">
+                    {{{@result.abstract}}}
+                </div>
                 <div>
                     <LinkTo
                         @route="read.document"
-                        @model={{@result.id}} @query={{@queryParams}}
+                        @model={{@result.documentID}}
+                        @query={{@queryParams}}
                         class="btn btn-primary btn-wide mr-2"
                     >
                         <FaIcon @icon="book-open" />
