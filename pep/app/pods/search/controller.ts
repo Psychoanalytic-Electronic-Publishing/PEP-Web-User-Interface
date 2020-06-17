@@ -1,6 +1,7 @@
 import Controller from '@ember/controller';
-import { action, setProperties, computed } from '@ember/object';
+import { action, setProperties } from '@ember/object';
 import { isEmpty } from '@ember/utils';
+import { later } from '@ember/runloop';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import ControllerPagination from '@gavant/ember-pagination/mixins/controller-pagination';
@@ -25,7 +26,7 @@ export default class Search extends ControllerPagination(Controller) {
     @tracked currentMatchSynonyms: boolean = false;
 
     @tracked previewedResult = null;
-    @tracked previewIsExpanded = false;
+    @tracked previewMode = 'fit';
 
     //pagination config
     pagingRootKey = null;
@@ -96,6 +97,9 @@ export default class Search extends ControllerPagination(Controller) {
         this.searchTerms = !isEmpty(searchTerms) ? searchTerms : null;
         this.matchSynonyms = this.currentMatchSynonyms;
 
+        //clear any open document preview
+        this.closeResultPreview();
+
         //close overlay sidebar on submit in mobile/tablet
         if (this.media.isMobile || this.media.isTablet) {
             this.sidebar.toggleLeftSidebar();
@@ -146,18 +150,24 @@ export default class Search extends ControllerPagination(Controller) {
     @action
     openResultPreview(result, event) {
         event.preventDefault();
-        this.previewedResult = result;
+        if (this.previewedResult) {
+            //set the new result in the next runloop, so its "fit" height is recalculated
+            this.previewedResult = null;
+            later(this, () => (this.previewedResult = result), 50);
+        } else {
+            this.previewedResult = result;
+        }
     }
 
     @action
     closeResultPreview() {
         this.previewedResult = null;
-        this.previewIsExpanded = false;
+        this.previewMode = 'fit';
     }
 
     @action
-    togglePreviewExpanded() {
-        this.previewIsExpanded = !this.previewIsExpanded;
+    setPreviewMode(mode) {
+        this.previewMode = mode;
     }
 }
 

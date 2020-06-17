@@ -101,9 +101,10 @@
             matchSynonyms=this.matchSynonyms
             searchTerms=this._searchTerms
         }}
-        @isExpanded={{this.previewIsExpanded}}
-        @toggleExpanded={{this.togglePreviewExpanded}}
+        @mode={{this.previewMode}}
+        @setMode={{this.setPreviewMode}}
         @close={{this.closeResultPreview}}
+        @containerSelector=".page-content"
         class="page-content-section"
     />
 </div>

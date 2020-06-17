@@ -1,12 +1,19 @@
 .search-preview {
     flex-shrink: 0;
     background-color: $white;
-    height: $search-preview-collapsed-height;
     box-shadow: 0 -10px 6px -4px rgba(#000, 0.1);
     transition: $duration-search-preview-toggle ease height;
 
-    &.expanded {
+    &-minimized {
+        height: $search-preview-collapsed-height;
+    }
+
+    &-maximized {
         height: 100%;
         box-shadow: none;
+    }
+
+    &-fit {
+        max-height: 100%;
     }
 }

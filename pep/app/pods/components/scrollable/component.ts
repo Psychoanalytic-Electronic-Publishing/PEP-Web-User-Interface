@@ -49,6 +49,9 @@ export default class Scrollable extends Component<ScrollableArgs> {
     onElementInsert(element) {
         if (!this.media.isMobile && !this.media.isTablet) {
             this.setup(element);
+            if (this.args.onInsert) {
+                this.args.onInsert(element);
+            }
         }
     }
 }

@@ -63,6 +63,6 @@ export default class Search extends PageNav(Route) {
     resetController(controller, isExiting, transition) {
         super.resetController(controller, isExiting, transition);
         controller.previewedResult = null;
-        controller.previewIsExpanded = false;
+        controller.previewMode = 'fit';
     }
 }
