@@ -1,8 +1,7 @@
 <Page::Content>
     <div class="py-3 px-4 bg-white-TBD">
-        <p class="small text-muted">
+        <div class="mb-2">
             <LinkTo
-                class="mr-2"
                 @route="search"
                 @query={{hash
                     q=this.q
@@ -12,6 +11,8 @@
             >
                 <FaIcon @icon="arrow-left" /> Back to search
             </LinkTo>
+        </div>
+        <p class="small text-muted">
             {{this.model.documentRef}}
         </p>
         <div class="card -TBD">
