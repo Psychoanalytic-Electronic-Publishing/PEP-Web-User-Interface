@@ -154,7 +154,7 @@ export default class Search extends ControllerPagination(Controller) {
         if (this.previewedResult) {
             //set the new result in the next runloop, so its "fit" height is recalculated
             this.previewedResult = null;
-            later(this, () => (this.previewedResult = result), 50);
+            later(this, () => (this.previewedResult = result), 20);
         } else {
             this.previewedResult = result;
         }
