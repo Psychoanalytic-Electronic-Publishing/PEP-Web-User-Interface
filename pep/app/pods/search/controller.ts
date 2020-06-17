@@ -56,12 +56,10 @@ export default class Search extends ControllerPagination(Controller) {
         }
     }
 
-    @computed('q,searchTerms.@each.term')
     get hasSubmittedSearch() {
         return this.q || this.searchTerms.filter((t) => !!t.term).length > 0;
     }
 
-    @computed('isLoadingPage,hasSubmittedSearch,model.length')
     get noResults() {
         return !this.isLoadingPage && (!this.hasSubmittedSearch || !this.model.length);
     }

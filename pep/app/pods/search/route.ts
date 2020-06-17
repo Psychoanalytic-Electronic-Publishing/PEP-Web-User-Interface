@@ -14,6 +14,18 @@ export default class Search extends PageNav(Route) {
 
     navController = 'search';
 
+    queryParams = {
+        q: {
+            replace: true
+        },
+        _searchTerms: {
+            replace: true
+        },
+        matchSynonyms: {
+            replace: true
+        }
+    };
+
     model(params) {
         //workaround for https://github.com/emberjs/ember.js/issues/18981
         const searchTerms = params._searchTerms ? JSON.parse(params._searchTerms) : [];
