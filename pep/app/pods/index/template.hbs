@@ -12,6 +12,16 @@
                     <div class="card-body">
                         <h5 class="card-title">Your search starts here</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Search all of the literature in PEP-WEB in seconds.</h6>
+                        <p class="d-md-none">
+                            <Button
+                                @type="primary"
+                                @size="lg"
+                                @blockLayout={{true}}
+                                @icon="search"
+                                @label="Search for documents"
+                                @action={{this.showSearch}}
+                            />
+                        </p>
                         <p class="card-text">
                             <strong>Smart Search</strong> taskes all kinds of search inputs:
                         </p>

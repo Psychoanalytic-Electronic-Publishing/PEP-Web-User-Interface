@@ -1,5 +1,6 @@
 import Route from '@ember/routing/route';
 import { isEmpty } from '@ember/utils';
+import { next } from '@ember/runloop';
 // import RoutePagination from '@gavant/ember-pagination/mixins/route-pagination';
 import { PageNav } from 'pep/mixins/page-layout';
 import AjaxService from 'pep/services/ajax';
@@ -8,9 +9,11 @@ import { A } from '@ember/array';
 import { serializeQueryParams } from 'pep/utils/serialize-query-params';
 import { FIXTURE_SEARCH_RESULTS } from 'pep/constants/fixtures';
 import { buildSearchQueryParams } from 'pep/utils/search';
+import Sidebar from 'pep/services/sidebar';
 
 export default class Search extends PageNav(Route) {
     @service ajax!: AjaxService;
+    @service sidebar!: Sidebar;
 
     navController = 'search';
 
@@ -39,6 +42,15 @@ export default class Search extends PageNav(Route) {
         } else {
             return A();
         }
+    }
+
+    afterModel(model, transition) {
+        //if coming to the search page w/no search or results, make sure the search form is shown
+        if (isEmpty(model)) {
+            next(this, () => this.sidebar.toggleLeftSidebar(true));
+        }
+
+        return super.afterModel(model, transition);
     }
 
     setupController(controller, model) {

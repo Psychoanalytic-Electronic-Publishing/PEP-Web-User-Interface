@@ -150,6 +150,7 @@ export default class Search extends ControllerPagination(Controller) {
     @action
     openResultPreview(result, event) {
         event.preventDefault();
+        //TODO get rid of the need for this delay, by just recalcing the fit height whenever the result changes
         if (this.previewedResult) {
             //set the new result in the next runloop, so its "fit" height is recalculated
             this.previewedResult = null;
