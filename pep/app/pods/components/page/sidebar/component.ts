@@ -9,6 +9,7 @@ interface PageSidebarArgs {
 
 export default class PageSidebar extends Component<PageSidebarArgs> {
     @service sidebar!: Sidebar;
+    @service media;
 
     get isLeft() {
         return this.args.side === 'left';
@@ -20,6 +21,10 @@ export default class PageSidebar extends Component<PageSidebarArgs> {
 
     get isOpen() {
         return this.isLeft ? this.sidebar.leftSidebarIsOpen : this.sidebar.rightSidebarIsOpen;
+    }
+
+    get otherSidebarIsOpen() {
+        return this.isLeft ? this.sidebar.rightSidebarIsOpen : this.sidebar.leftSidebarIsOpen;
     }
 
     @action

@@ -96,7 +96,8 @@ export default class Search extends ControllerPagination(Controller) {
         this.searchTerms = !isEmpty(searchTerms) ? searchTerms : null;
         this.matchSynonyms = this.currentMatchSynonyms;
 
-        if (this.media.isMobile) {
+        //close overlay sidebar on submit in mobile/tablet
+        if (this.media.isMobile || this.media.isTablet) {
             this.sidebar.toggleLeftSidebar();
         }
 

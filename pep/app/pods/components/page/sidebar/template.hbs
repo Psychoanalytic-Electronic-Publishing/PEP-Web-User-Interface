@@ -1,4 +1,7 @@
-<div class="sidebar sidebar-{{@side}} {{if (not this.isOpen) "sidebar-collapsed"}}" ...attributes>
+<div
+    class="sidebar sidebar-{{@side}} {{if (not this.isOpen) "sidebar-collapsed"}} {{if this.otherSidebarIsOpen "other-sidebar-is-open"}}"
+    ...attributes
+>
     <div class="sidebar-inner">
         <Scrollable class="sidebar-content">
             {{yield}}

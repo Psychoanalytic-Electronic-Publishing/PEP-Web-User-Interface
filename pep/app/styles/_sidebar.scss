@@ -6,6 +6,16 @@
     transition: $duration-sidebar-toggle ease width;
     overflow: hidden;
 
+    &-mask {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        z-index: $z-sidebar-mask;
+        background-color: rgba(#000, 0.4);
+    }
+
     &-collapsed {
         width: $sidebar-handle-width;
     }
@@ -107,6 +117,10 @@
             .sidebar-inner {
                 box-shadow: -2px 0 14px rgba(#000, 0.08);
             }
+        }
+
+        &.other-sidebar-is-open {
+            z-index: $z-page-content;
         }
     }
 }

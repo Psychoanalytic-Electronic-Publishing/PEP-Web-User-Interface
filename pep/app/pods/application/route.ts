@@ -9,6 +9,7 @@ import IntlService from 'ember-intl/services/intl';
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 import SessionService from 'ember-simple-auth/services/session';
 import LoadingBar from 'pep/services/loading-bar';
+import Sidebar from 'pep/services/sidebar';
 
 export default class Application extends PageLayout(Route.extend(ApplicationRouteMixin)) {
     routeAfterAuthentication = 'dashboard';
@@ -17,6 +18,8 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
     @service intl!: IntlService;
     @service fastboot!: FastbootService;
     @service loadingBar!: LoadingBar;
+    @service sidebar!: Sidebar;
+    @service media;
 
     async beforeModel(transition: Transition) {
         super.beforeModel(transition);
@@ -58,6 +61,14 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
 
         //allows loading routes to be shown if needed
         return true;
+    }
+
+    @action
+    didTransition() {
+        //when transitioning to a new route, close sidebars on mobile/tablet
+        if (this.media.isMobile || this.media.isTablet) {
+            this.sidebar.toggleAll(false);
+        }
     }
 
     @action

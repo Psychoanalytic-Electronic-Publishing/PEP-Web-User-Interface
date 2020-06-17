@@ -1,4 +1,5 @@
 import Service from '@ember/service';
+import { isNone } from '@ember/utils';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 
@@ -7,26 +8,35 @@ export default class Sidebar extends Service {
     @tracked leftSidebarIsOpen = true;
     @tracked rightSidebarIsOpen = true;
 
+    get hasOpenSidebar() {
+        return this.leftSidebarIsOpen || this.rightSidebarIsOpen;
+    }
+
     constructor() {
         super(...arguments);
         this.handleMediaChange();
         this.media.on('mediaChanged', this, this.handleMediaChange);
     }
 
-    toggleLeftSidebar() {
-        this.leftSidebarIsOpen = !this.leftSidebarIsOpen;
+    toggleLeftSidebar(open?: boolean) {
+        this.leftSidebarIsOpen = !isNone(open) ? open : !this.leftSidebarIsOpen;
         //only allow one sidebar open at a time on mobile
         if (this.leftSidebarIsOpen && this.media.isMobile) {
             this.rightSidebarIsOpen = false;
         }
     }
 
-    toggleRightSidebar() {
-        this.rightSidebarIsOpen = !this.rightSidebarIsOpen;
+    toggleRightSidebar(open?: boolean) {
+        this.rightSidebarIsOpen = !isNone(open) ? open : !this.rightSidebarIsOpen;
         //only allow one sidebar open at a time on mobile
         if (this.rightSidebarIsOpen && this.media.isMobile) {
             this.leftSidebarIsOpen = false;
         }
+    }
+
+    toggleAll(open?: boolean) {
+        this.toggleLeftSidebar(open);
+        this.toggleRightSidebar(open);
     }
 
     private handleMediaChange() {

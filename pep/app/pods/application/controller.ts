@@ -32,10 +32,6 @@ export default class Application extends Controller {
             searchTerms: !isEmpty(searchTerms) ? JSON.stringify(searchTerms) : null
         };
 
-        if (this.media.isMobile) {
-            this.sidebar.toggleLeftSidebar();
-        }
-
         return this.transitionToRoute('search', { queryParams });
     }
 
@@ -75,6 +71,11 @@ export default class Application extends Controller {
     @action
     updateMatchSynonyms(isChecked: boolean) {
         this.matchSynonyms = isChecked;
+    }
+
+    @action
+    closeSidebars() {
+        this.sidebar.toggleAll(false);
     }
 }
 
