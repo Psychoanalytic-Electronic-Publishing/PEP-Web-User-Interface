@@ -5,9 +5,12 @@ import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import LoadingBar from 'pep/services/loading-bar';
 import { SEARCH_TYPE_EVERYWHERE } from 'pep/constants/search';
+import Sidebar from 'pep/services/sidebar';
 
 export default class Application extends Controller {
     @service loadingBar!: LoadingBar;
+    @service sidebar!: Sidebar;
+    @service media;
 
     @tracked smartSearchTerm: string = '';
     @tracked matchSynonyms: boolean = false;
@@ -28,6 +31,10 @@ export default class Application extends Controller {
             //@see https://github.com/emberjs/ember.js/issues/18981
             searchTerms: !isEmpty(searchTerms) ? JSON.stringify(searchTerms) : null
         };
+
+        if (this.media.isMobile) {
+            this.sidebar.toggleLeftSidebar();
+        }
 
         return this.transitionToRoute('search', { queryParams });
     }

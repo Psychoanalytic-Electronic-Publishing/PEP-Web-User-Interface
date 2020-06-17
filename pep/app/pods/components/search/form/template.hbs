@@ -13,6 +13,7 @@
                 @placeholder="What are you looking for?"
                 @value={{@smartSearchTerm}}
                 maxlength="255"
+                autocomplete="off"
             />
         </div>
         <p class="text-muted">Find terms or phrases</p>
@@ -36,6 +37,7 @@
                                 @placeholder="Terms"
                                 @value={{searchTerm.term}}
                                 maxlength="255"
+                                autocomplete="off"
                             />
                             <Button
                                 @icon="trash-alt"

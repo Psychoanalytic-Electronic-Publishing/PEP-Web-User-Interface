@@ -9,6 +9,7 @@ import AjaxService from 'pep/services/ajax';
 import { removeEmptyQueryParams, buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
 import { serializeQueryParams } from 'pep/utils/serialize-query-params';
 import { FIXTURE_SEARCH_RESULTS } from 'pep/constants/fixtures';
+import { buildSearchQueryParams } from 'pep/utils/search';
 
 export default class ReadDocument extends ControllerPagination(Controller) {
     @service ajax!: AjaxService;
@@ -77,7 +78,8 @@ export default class ReadDocument extends ControllerPagination(Controller) {
 
     //TODO TBD - overrides ControllerPagination, will not be needed once api is integrated w/ember-data
     async fetchModels(params) {
-        const queryParams = removeEmptyQueryParams(params);
+        const searchQueryParams = buildSearchQueryParams(this.q, this.searchTerms, this.matchSynonyms);
+        const queryParams = { ...params, ...searchQueryParams };
         const queryStr = serializeQueryParams(queryParams);
         const result = await this.ajax.request(`Database/Search?${queryStr}`);
         //TODO add matches dummy data for demo purposes

@@ -6,8 +6,8 @@ import AjaxService from 'pep/services/ajax';
 import { inject as service } from '@ember/service';
 import { A } from '@ember/array';
 import { serializeQueryParams } from 'pep/utils/serialize-query-params';
-import { removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
 import { FIXTURE_SEARCH_RESULTS } from 'pep/constants/fixtures';
+import { buildSearchQueryParams } from 'pep/utils/search';
 
 export default class Search extends PageNav(Route) {
     @service ajax!: AjaxService;
@@ -17,14 +17,11 @@ export default class Search extends PageNav(Route) {
     model(params) {
         //workaround for https://github.com/emberjs/ember.js/issues/18981
         const searchTerms = params._searchTerms ? JSON.parse(params._searchTerms) : [];
-        const nonEmptyTerms = searchTerms.filter((t) => !!t.term);
-        //if no search was submitted, don't fetch any results
-        if (params.q || (Array.isArray(nonEmptyTerms) && nonEmptyTerms.length > 0)) {
-            const queryParams = removeEmptyQueryParams({
-                limit: 10,
-                offset: 0,
-                synonyms: params.matchSynonyms
-            });
+        const queryParams = buildSearchQueryParams(params.q, searchTerms, params.matchSynonyms);
+        //if no search was submitted, don't fetch any results (will have at least 1 param for synonyms)
+        if (Object.keys(queryParams).length > 1) {
+            queryParams.offset = 0;
+            queryParams.limit = 10;
             const queryStr = serializeQueryParams(queryParams);
             return this.ajax.request(`Database/Search?${queryStr}`);
         } else {

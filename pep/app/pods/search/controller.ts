@@ -6,12 +6,15 @@ import { inject as service } from '@ember/service';
 import ControllerPagination from '@gavant/ember-pagination/mixins/controller-pagination';
 import AjaxService from 'pep/services/ajax';
 import { SEARCH_TYPE_EVERYWHERE } from 'pep/constants/search';
-import { removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
 import { serializeQueryParams } from 'pep/utils/serialize-query-params';
 import { FIXTURE_SEARCH_RESULTS } from 'pep/constants/fixtures';
+import { buildSearchQueryParams } from 'pep/utils/search';
+import Sidebar from 'pep/services/sidebar';
 
 export default class Search extends ControllerPagination(Controller) {
     @service ajax!: AjaxService;
+    @service sidebar!: Sidebar;
+    @service media;
 
     queryParams = ['q', { _searchTerms: 'searchTerms' }, 'matchSynonyms'];
     @tracked q: string = '';
@@ -65,7 +68,8 @@ export default class Search extends ControllerPagination(Controller) {
 
     //TODO TBD - overrides ControllerPagination, will not be needed once api is integrated w/ember-data
     async fetchModels(params) {
-        const queryParams = removeEmptyQueryParams(params);
+        const searchQueryParams = buildSearchQueryParams(this.q, this.searchTerms, this.matchSynonyms);
+        const queryParams = { ...params, ...searchQueryParams };
         const queryStr = serializeQueryParams(queryParams);
         const result = await this.ajax.request(`Database/Search?${queryStr}`);
         //TODO add matches dummy data for demo purposes
@@ -93,6 +97,11 @@ export default class Search extends ControllerPagination(Controller) {
         this.q = this.currentSmartSearchTerm;
         this.searchTerms = !isEmpty(searchTerms) ? searchTerms : null;
         this.matchSynonyms = this.currentMatchSynonyms;
+
+        if (this.media.isMobile) {
+            this.sidebar.toggleLeftSidebar();
+        }
+
         //perform search
         return this.filter();
     }
