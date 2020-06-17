@@ -36,10 +36,16 @@ export const SEARCH_TYPE_QUOTE = {
     label: 'Quotes*'
 };
 
-export const SEARCH_TYPE_YEAR = {
-    id: 'year',
+export const SEARCH_TYPE_START_YEAR = {
+    id: 'start-year',
     param: 'startyear',
     label: 'Start Year'
+};
+
+export const SEARCH_TYPE_END_YEAR = {
+    id: 'end-year',
+    param: 'endyear',
+    label: 'End Year'
 };
 
 export const SEARCH_TYPE_BIBLIO = {
@@ -74,7 +80,8 @@ export const SEARCH_TYPES = [
     SEARCH_TYPE_GLOSSARY,
     SEARCH_TYPE_DIALOG,
     SEARCH_TYPE_QUOTE,
-    SEARCH_TYPE_YEAR,
+    SEARCH_TYPE_START_YEAR,
+    SEARCH_TYPE_END_YEAR,
     SEARCH_TYPE_BIBLIO,
     SEARCH_TYPE_CITED,
     SEARCH_TYPE_VIEWED,

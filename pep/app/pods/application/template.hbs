@@ -5,9 +5,7 @@
         {{outlet "nav"}}
         {{outlet}}
         {{outlet "sidebar"}}
-        {{#if (and this.sidebar.hasOpenSidebar (or this.media.isMobile this.media.isTablet))}}
-            <div class="sidebar-mask" {{on "click" this.closeSidebars}}></div>
-        {{/if}}
+        <Page::Sidebar::Mask />
     </div>
     {{outlet "footer"}}
 </div>

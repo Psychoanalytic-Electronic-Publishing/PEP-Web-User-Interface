@@ -1,4 +1,4 @@
-<div class="bg-white border-divider-b p-3" ...attributes>
+<div class="bg-white border-divider-b p-3 search-form" ...attributes>
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h5 class="mb-0">
             Search for Documents
@@ -16,38 +16,34 @@
                 autocomplete="off"
             />
         </div>
-        <p class="text-muted">Find terms or phrases</p>
+        <p class="text-muted mb-2">Find terms or phrases</p>
         <AnimatedContainer>
             {{#animated-each @searchTerms use=this.termsTransition duration=300 as |searchTerm|}}
-                <div class="form-row">
-                    <div class="col mb-2">
-                        <FlSelect
-                            @placeholder="Type"
-                            @valuePath="id"
-                            @labelPath="label"
-                            @options={{this.searchTypes}}
-                            @value={{searchTerm.type}}
-                            @allowClear={{false}}
-                            @onChange={{fn this.updateTermType searchTerm}}
+                <div class="d-flex mb-2">
+                    {{!-- TODO extract term control into <Search::Form::TermControl /> --}}
+                    <div class="search-form-term-control flex-fill">
+                        <FlInput
+                            @placeholder="Terms or phrase"
+                            @value={{searchTerm.term}}
+                            class="search-form-term-control-text"
+                            maxlength="255"
+                            autocomplete="off"
                         />
+                        <select class="custom-select search-form-term-control-type" {{on "change" (fn this.updateTermType searchTerm)}}>
+                            {{#each this.searchTypes as |searchType|}}
+                                <option value={{searchType.id}} selected={{eq searchType.id searchTerm.type}}>
+                                    {{searchType.label}}
+                                </option>
+                            {{/each}}
+                        </select>
                     </div>
-                    <div class="col mb-2">
-                        <div class="d-flex align-items-center">
-                            <FlInput
-                                @placeholder="Terms"
-                                @value={{searchTerm.term}}
-                                maxlength="255"
-                                autocomplete="off"
-                            />
-                            <Button
-                                @icon="trash-alt"
-                                @type="link"
-                                @action={{fn @removeSearchTerm searchTerm}}
-                                class="ml-1 p-0"
-                                title="Remove term"
-                            />
-                        </div>
-                    </div>
+                    <Button
+                        @icon="trash-alt"
+                        @type="link"
+                        @action={{fn @removeSearchTerm searchTerm}}
+                        class="ml-1 p-0"
+                        title="Remove term"
+                    />
                 </div>
             {{/animated-each}}
         </AnimatedContainer>

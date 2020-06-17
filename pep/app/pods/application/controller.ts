@@ -5,12 +5,9 @@ import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import LoadingBar from 'pep/services/loading-bar';
 import { SEARCH_TYPE_EVERYWHERE } from 'pep/constants/search';
-import Sidebar from 'pep/services/sidebar';
 
 export default class Application extends Controller {
     @service loadingBar!: LoadingBar;
-    @service sidebar!: Sidebar;
-    @service media;
 
     @tracked smartSearchTerm: string = '';
     @tracked matchSynonyms: boolean = false;
@@ -71,11 +68,6 @@ export default class Application extends Controller {
     @action
     updateMatchSynonyms(isChecked: boolean) {
         this.matchSynonyms = isChecked;
-    }
-
-    @action
-    closeSidebars() {
-        this.sidebar.toggleAll(false);
     }
 }
 

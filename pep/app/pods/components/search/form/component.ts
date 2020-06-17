@@ -42,7 +42,8 @@ export default class SearchForm extends Component<SearchFormArgs> {
     }
 
     @action
-    updateTermType(oldTerm, type) {
+    updateTermType(oldTerm, event) {
+        const type = event.target.value;
         const newTerm = { ...oldTerm, type };
         this.args.updateSearchTerm(oldTerm, newTerm);
     }
