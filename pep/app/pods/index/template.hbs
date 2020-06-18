@@ -12,11 +12,11 @@
                     <div class="card-body">
                         <h5 class="card-title">Your search starts here</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Search all of the literature in PEP-WEB in seconds.</h6>
-                        <p class="d-md-none">
+                        <p class="d-lg-none">
                             <Button
                                 @type="primary"
                                 @size="lg"
-                                @blockLayout={{true}}
+                                @blockLayout={{this.media.isMobile}}
                                 @icon="search"
                                 @label="Search for documents"
                                 @action={{this.showSearch}}

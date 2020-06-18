@@ -5,6 +5,7 @@ import Sidebar from 'pep/services/sidebar';
 
 export default class Index extends Controller {
     @service sidebar!: Sidebar;
+    @service media;
 
     @action
     showSearch() {
