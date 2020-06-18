@@ -29,9 +29,30 @@
             </LinkTo>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">
-                <FaIcon @icon="user" @size="lg" />
-            </a>
+            <DropdownMenu @horizontalPosition="auto-right" as |DD|>
+                <DD.Trigger @htmlTag="a" class="nav-link">
+                    <FaIcon @icon="user" @size="lg" />
+                </DD.Trigger>
+                <DD.Content class="dropdown-menu">
+                    <DropdownAction @dd={{DD}}>
+                        <FaIcon @icon="cog" @fixedWidth={{true}} class="text-muted" />
+                        Preferences
+                    </DropdownAction>
+                    <DropdownAction @dd={{DD}}>
+                        <FaIcon @icon="question-square" @fixedWidth={{true}} class="text-muted" />
+                        Help
+                    </DropdownAction>
+                    <DropdownAction @dd={{DD}}>
+                        <FaIcon @icon="comment-exclamation" @fixedWidth={{true}} class="text-muted" />
+                        Report a problem
+                    </DropdownAction>
+                    <div class="dropdown-divider"></div>
+                    <DropdownAction @dd={{DD}}>
+                        <FaIcon @icon="sign-out" @fixedWidth={{true}} class="text-muted" />
+                        Logout
+                    </DropdownAction>
+                </DD.Content>
+            </DropdownMenu>
         </li>
     </ul>
 </nav>

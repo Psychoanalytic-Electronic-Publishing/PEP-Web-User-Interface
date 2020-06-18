@@ -10,9 +10,21 @@
         font-weight: bold;
         line-height: 1.1;
 
+        &:focus {
+            outline: none;
+        }
+
         img {
             height: 42px;
             box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.3);
+        }
+    }
+
+    .nav-link {
+        &:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(#fff, 0.2);
+            border-radius: 0.25rem;
         }
     }
 }
