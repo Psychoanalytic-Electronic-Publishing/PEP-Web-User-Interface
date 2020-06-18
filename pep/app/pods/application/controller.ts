@@ -17,6 +17,17 @@ export default class Application extends Controller {
         { type: 'author', term: '' }
     ];
 
+    @tracked sidebarPastFiveSearchesIsOpen = true;
+    @tracked sidebarYourInterestsIsOpen = true;
+    @tracked sidebarGlossaryTermsIsOpen = true;
+    @tracked sidebarMoreLikeTheseIsOpen = false;
+    @tracked sidebarSeminalPapersIsOpen = false;
+    @tracked sidebarExpertPicksIsOpen = false;
+    @tracked sidebarRevelantSearchesIsOpen = false;
+    @tracked sidebarWhatsNewIsOpen = false;
+    @tracked sidebarMostCitedIsOpen = false;
+    @tracked sidebarMostViewedIsOpen = false;
+
     @action
     submitSearch() {
         const searchTerms = this.searchTerms.filter((t) => !!t.term);

@@ -1,5 +1,18 @@
-<div class="collapsible-panel" ...attributes>
-    <h6>{{@title}}</h6>
-    <hr />
-    {{yield}}
+<div class="collapsible-panel bg-white" ...attributes>
+    <a class="collapsible-panel-header d-block p-3" href="" {{on "click" this.toggle}}>
+        <h5 class="mb-0 text-dark">
+            <FaIcon
+                @icon={{if @isOpen "caret-down" "caret-right"}}
+                @fixedWidth={{true}}
+                class="text-primary mr-1"
+            />{{@title}}
+        </h5>
+    </a>
+    <AnimatedContainer>
+        {{#animated-if @isOpen use=this.transition duration=300}}
+            <div class="collapsible-panel-body border-divider-t p-3">
+                {{yield}}
+            </div>
+        {{/animated-if}}
+    </AnimatedContainer>
 </div>
