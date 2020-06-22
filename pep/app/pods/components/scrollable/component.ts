@@ -3,7 +3,9 @@ import { action } from '@ember/object';
 import PerfectScrollbar from 'perfect-scrollbar';
 import { inject as service } from '@ember/service';
 
-interface ScrollableArgs {}
+interface ScrollableArgs {
+    //TODO
+}
 
 export default class Scrollable extends Component<ScrollableArgs> {
     @service media;
@@ -49,9 +51,10 @@ export default class Scrollable extends Component<ScrollableArgs> {
     onElementInsert(element) {
         if (!this.media.isMobile && !this.media.isTablet) {
             this.setup(element);
-            if (this.args.onInsert) {
-                this.args.onInsert(element);
-            }
+        }
+
+        if (this.args.onInsert) {
+            this.args.onInsert(element);
         }
     }
 }
