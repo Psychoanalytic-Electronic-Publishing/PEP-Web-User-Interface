@@ -1,129 +1,131 @@
-<Page::Sidebar @side="right">
-    <div class="p-3">
-        <h5 class="mb-3">Related Info</h5>
-        <CollapsiblePanel
-            @title="Your past 5 searches"
-            @isOpen={{this.sidebarPastFiveSearchesIsOpen}}
-            @toggle={{action (mut this.sidebarPastFiveSearchesIsOpen)}}
-            class="mb-2"
-        >
-            <ol>
-                <li><a href="#">Freud and Lacan</a></li>
-                <li><a href="#">emotional distress</a></li>
-                <li><a href="#">family discord</a></li>
-                <li><a href="#">separation and anxiety</a></li>
-                <li><a href="#">fear and loathing</a></li>
-            </ol>
-        </CollapsiblePanel>
-        <CollapsiblePanel
-            @title="Your interests"
-            @isOpen={{this.sidebarYourInterestsIsOpen}}
-            @toggle={{action (mut this.sidebarYourInterestsIsOpen)}}
-            class="mb-2"
-        >
-            <ul>
-                <li>This is an interest</li>
-                <li>Here is another interest</li>
-                <li>Here's another thing I like</li>
-                <li>Something else</li>
-                <li>Yet another thing</li>
-            </ul>
-        </CollapsiblePanel>
-        <CollapsiblePanel
-            @title="Glossary terms"
-            @isOpen={{this.sidebarGlossaryTermsIsOpen}}
-            @toggle={{action (mut this.sidebarGlossaryTermsIsOpen)}}
-            class="mb-2"
-        >
-            <ul class="word-cloud text-muted mb-3">
-                <li>Lacan</li>
-                <li>psychoanalytical</li>
-                <li>family</li>
-                <li>delusions</li>
-                <li>anxiety</li>
-                <li>Freud</li>
-                <li>emotions</li>
-                <li>fear</li>
-                <li>religion</li>
-                <li>parenting</li>
-                <li>feminism</li>
-                <li>behavior</li>
-            </ul>
-            <p class="mb-0">
-                <a href="#">
-                    View complete glossary <FaIcon @icon="arrow-right" />
-                </a>
-            </p>
-        </CollapsiblePanel>
-        <CollapsiblePanel
-            @title="More like these"
-            @isOpen={{this.sidebarMoreLikeTheseIsOpen}}
-            @toggle={{action (mut this.sidebarMoreLikeTheseIsOpen)}}
-            class="mb-2"
-        >
-            <p>
-                Duis lacinia justo ut blandit aliquet. Nullam volutpat porttitor velit, nec vulputate tellus facilisis ut. Sed dui metus, ullamcorper eu mollis sed, venenatis sit amet sapien. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nam molestie efficitur massa, eget suscipit nulla. Mauris tincidunt vehicula dolor, sit amet pellentesque odio eleifend nec.
-            </p>
-        </CollapsiblePanel>
-        <CollapsiblePanel
-            @title="Seminal papers"
-            @isOpen={{this.sidebarSeminalPapersIsOpen}}
-            @toggle={{action (mut this.sidebarSeminalPapersIsOpen)}}
-            class="mb-2"
-        >
-            <p>
-                Duis lacinia justo ut blandit aliquet. Nullam volutpat porttitor velit, nec vulputate tellus facilisis ut. Sed dui metus, ullamcorper eu mollis sed, venenatis sit amet sapien. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nam molestie efficitur massa, eget suscipit nulla. Mauris tincidunt vehicula dolor, sit amet pellentesque odio eleifend nec.
-            </p>
-        </CollapsiblePanel>
-        <CollapsiblePanel
-            @title="Expert picks"
-            @isOpen={{this.sidebarExpertPicksIsOpen}}
-            @toggle={{action (mut this.sidebarExpertPicksIsOpen)}}
-            class="mb-2"
-        >
-            <p>
-                Duis lacinia justo ut blandit aliquet. Nullam volutpat porttitor velit, nec vulputate tellus facilisis ut. Sed dui metus, ullamcorper eu mollis sed, venenatis sit amet sapien. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nam molestie efficitur massa, eget suscipit nulla. Mauris tincidunt vehicula dolor, sit amet pellentesque odio eleifend nec.
-            </p>
-        </CollapsiblePanel>
-        <CollapsiblePanel
-            @title="Revelant searches"
-            @isOpen={{this.sidebarRevelantSearchesIsOpen}}
-            @toggle={{action (mut this.sidebarRevelantSearchesIsOpen)}}
-            class="mb-2"
-        >
-            <p>
-                Duis lacinia justo ut blandit aliquet. Nullam volutpat porttitor velit, nec vulputate tellus facilisis ut. Sed dui metus, ullamcorper eu mollis sed, venenatis sit amet sapien. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nam molestie efficitur massa, eget suscipit nulla. Mauris tincidunt vehicula dolor, sit amet pellentesque odio eleifend nec.
-            </p>
-        </CollapsiblePanel>
-        <CollapsiblePanel
-            @title="What's new?"
-            @isOpen={{this.sidebarWhatsNewIsOpen}}
-            @toggle={{action (mut this.sidebarWhatsNewIsOpen)}}
-            class="mb-2"
-        >
-            <p>
-                Duis lacinia justo ut blandit aliquet. Nullam volutpat porttitor velit, nec vulputate tellus facilisis ut. Sed dui metus, ullamcorper eu mollis sed, venenatis sit amet sapien. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nam molestie efficitur massa, eget suscipit nulla. Mauris tincidunt vehicula dolor, sit amet pellentesque odio eleifend nec.
-            </p>
-        </CollapsiblePanel>
-        <CollapsiblePanel
-            @title="Most cited"
-            @isOpen={{this.sidebarMostCitedIsOpen}}
-            @toggle={{action (mut this.sidebarMostCitedIsOpen)}}
-            class="mb-2"
-        >
-            <p>
-                Duis lacinia justo ut blandit aliquet. Nullam volutpat porttitor velit, nec vulputate tellus facilisis ut. Sed dui metus, ullamcorper eu mollis sed, venenatis sit amet sapien. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nam molestie efficitur massa, eget suscipit nulla. Mauris tincidunt vehicula dolor, sit amet pellentesque odio eleifend nec.
-            </p>
-        </CollapsiblePanel>
-        <CollapsiblePanel
-            @title="Most viewed"
-            @isOpen={{this.sidebarMostViewedIsOpen}}
-            @toggle={{action (mut this.sidebarMostViewedIsOpen)}}
-            class="mb-2"
-        >
-            <p>
-                Duis lacinia justo ut blandit aliquet. Nullam volutpat porttitor velit, nec vulputate tellus facilisis ut. Sed dui metus, ullamcorper eu mollis sed, venenatis sit amet sapien. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nam molestie efficitur massa, eget suscipit nulla. Mauris tincidunt vehicula dolor, sit amet pellentesque odio eleifend nec.
-            </p>
-        </CollapsiblePanel>
-    </div>
+<Page::Sidebar @side="right" as |Sidebar|>
+    <Sidebar.content>
+        <div class="p-3">
+            <h5 class="mb-3">Related Info</h5>
+            <CollapsiblePanel
+                @title="Your past 5 searches"
+                @isOpen={{this.sidebarPastFiveSearchesIsOpen}}
+                @toggle={{action (mut this.sidebarPastFiveSearchesIsOpen)}}
+                class="mb-2"
+            >
+                <ol>
+                    <li><a href="#">Freud and Lacan</a></li>
+                    <li><a href="#">emotional distress</a></li>
+                    <li><a href="#">family discord</a></li>
+                    <li><a href="#">separation and anxiety</a></li>
+                    <li><a href="#">fear and loathing</a></li>
+                </ol>
+            </CollapsiblePanel>
+            <CollapsiblePanel
+                @title="Your interests"
+                @isOpen={{this.sidebarYourInterestsIsOpen}}
+                @toggle={{action (mut this.sidebarYourInterestsIsOpen)}}
+                class="mb-2"
+            >
+                <ul>
+                    <li>This is an interest</li>
+                    <li>Here is another interest</li>
+                    <li>Here's another thing I like</li>
+                    <li>Something else</li>
+                    <li>Yet another thing</li>
+                </ul>
+            </CollapsiblePanel>
+            <CollapsiblePanel
+                @title="Glossary terms"
+                @isOpen={{this.sidebarGlossaryTermsIsOpen}}
+                @toggle={{action (mut this.sidebarGlossaryTermsIsOpen)}}
+                class="mb-2"
+            >
+                <ul class="word-cloud text-muted mb-3">
+                    <li>Lacan</li>
+                    <li>psychoanalytical</li>
+                    <li>family</li>
+                    <li>delusions</li>
+                    <li>anxiety</li>
+                    <li>Freud</li>
+                    <li>emotions</li>
+                    <li>fear</li>
+                    <li>religion</li>
+                    <li>parenting</li>
+                    <li>feminism</li>
+                    <li>behavior</li>
+                </ul>
+                <p class="mb-0">
+                    <a href="#">
+                        View complete glossary <FaIcon @icon="arrow-right" />
+                    </a>
+                </p>
+            </CollapsiblePanel>
+            <CollapsiblePanel
+                @title="More like these"
+                @isOpen={{this.sidebarMoreLikeTheseIsOpen}}
+                @toggle={{action (mut this.sidebarMoreLikeTheseIsOpen)}}
+                class="mb-2"
+            >
+                <p>
+                    Duis lacinia justo ut blandit aliquet. Nullam volutpat porttitor velit, nec vulputate tellus facilisis ut. Sed dui metus, ullamcorper eu mollis sed, venenatis sit amet sapien. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nam molestie efficitur massa, eget suscipit nulla. Mauris tincidunt vehicula dolor, sit amet pellentesque odio eleifend nec.
+                </p>
+            </CollapsiblePanel>
+            <CollapsiblePanel
+                @title="Seminal papers"
+                @isOpen={{this.sidebarSeminalPapersIsOpen}}
+                @toggle={{action (mut this.sidebarSeminalPapersIsOpen)}}
+                class="mb-2"
+            >
+                <p>
+                    Duis lacinia justo ut blandit aliquet. Nullam volutpat porttitor velit, nec vulputate tellus facilisis ut. Sed dui metus, ullamcorper eu mollis sed, venenatis sit amet sapien. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nam molestie efficitur massa, eget suscipit nulla. Mauris tincidunt vehicula dolor, sit amet pellentesque odio eleifend nec.
+                </p>
+            </CollapsiblePanel>
+            <CollapsiblePanel
+                @title="Expert picks"
+                @isOpen={{this.sidebarExpertPicksIsOpen}}
+                @toggle={{action (mut this.sidebarExpertPicksIsOpen)}}
+                class="mb-2"
+            >
+                <p>
+                    Duis lacinia justo ut blandit aliquet. Nullam volutpat porttitor velit, nec vulputate tellus facilisis ut. Sed dui metus, ullamcorper eu mollis sed, venenatis sit amet sapien. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nam molestie efficitur massa, eget suscipit nulla. Mauris tincidunt vehicula dolor, sit amet pellentesque odio eleifend nec.
+                </p>
+            </CollapsiblePanel>
+            <CollapsiblePanel
+                @title="Revelant searches"
+                @isOpen={{this.sidebarRevelantSearchesIsOpen}}
+                @toggle={{action (mut this.sidebarRevelantSearchesIsOpen)}}
+                class="mb-2"
+            >
+                <p>
+                    Duis lacinia justo ut blandit aliquet. Nullam volutpat porttitor velit, nec vulputate tellus facilisis ut. Sed dui metus, ullamcorper eu mollis sed, venenatis sit amet sapien. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nam molestie efficitur massa, eget suscipit nulla. Mauris tincidunt vehicula dolor, sit amet pellentesque odio eleifend nec.
+                </p>
+            </CollapsiblePanel>
+            <CollapsiblePanel
+                @title="What's new?"
+                @isOpen={{this.sidebarWhatsNewIsOpen}}
+                @toggle={{action (mut this.sidebarWhatsNewIsOpen)}}
+                class="mb-2"
+            >
+                <p>
+                    Duis lacinia justo ut blandit aliquet. Nullam volutpat porttitor velit, nec vulputate tellus facilisis ut. Sed dui metus, ullamcorper eu mollis sed, venenatis sit amet sapien. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nam molestie efficitur massa, eget suscipit nulla. Mauris tincidunt vehicula dolor, sit amet pellentesque odio eleifend nec.
+                </p>
+            </CollapsiblePanel>
+            <CollapsiblePanel
+                @title="Most cited"
+                @isOpen={{this.sidebarMostCitedIsOpen}}
+                @toggle={{action (mut this.sidebarMostCitedIsOpen)}}
+                class="mb-2"
+            >
+                <p>
+                    Duis lacinia justo ut blandit aliquet. Nullam volutpat porttitor velit, nec vulputate tellus facilisis ut. Sed dui metus, ullamcorper eu mollis sed, venenatis sit amet sapien. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nam molestie efficitur massa, eget suscipit nulla. Mauris tincidunt vehicula dolor, sit amet pellentesque odio eleifend nec.
+                </p>
+            </CollapsiblePanel>
+            <CollapsiblePanel
+                @title="Most viewed"
+                @isOpen={{this.sidebarMostViewedIsOpen}}
+                @toggle={{action (mut this.sidebarMostViewedIsOpen)}}
+                class="mb-2"
+            >
+                <p>
+                    Duis lacinia justo ut blandit aliquet. Nullam volutpat porttitor velit, nec vulputate tellus facilisis ut. Sed dui metus, ullamcorper eu mollis sed, venenatis sit amet sapien. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nam molestie efficitur massa, eget suscipit nulla. Mauris tincidunt vehicula dolor, sit amet pellentesque odio eleifend nec.
+                </p>
+            </CollapsiblePanel>
+        </div>
+    </Sidebar.content>
 </Page::Sidebar>

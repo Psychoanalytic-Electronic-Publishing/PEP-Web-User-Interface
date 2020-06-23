@@ -13,7 +13,7 @@ import { buildSearchQueryParams } from 'pep/utils/search';
 export default class ReadDocument extends ControllerPagination(Controller) {
     @service ajax!: AjaxService;
 
-    queryParams = ['q', { _searchTerms: 'searchTerms' }, 'matchSynonyms'];
+    queryParams = ['q', { _searchTerms: 'searchTerms' }, 'matchSynonyms', { _facets: 'facets' }];
     @tracked q: string = '';
     @tracked matchSynonyms: boolean = false;
 
@@ -50,6 +50,24 @@ export default class ReadDocument extends ControllerPagination(Controller) {
         }
     }
 
+    //workaround for bug w/array-based query param values
+    //@see https://github.com/emberjs/ember.js/issues/18981
+    @tracked _facets = JSON.stringify([]);
+    get facets() {
+        if (!this._facets) {
+            return [];
+        } else {
+            return JSON.parse(this._facets);
+        }
+    }
+    set facets(array) {
+        if (Array.isArray(array) && array.length > 0) {
+            this._facets = JSON.stringify(array);
+        } else {
+            this._facets = null;
+        }
+    }
+
     async _loadModels(reset: boolean) {
         this.set('isLoadingPage', true);
         if (reset) {
@@ -77,7 +95,7 @@ export default class ReadDocument extends ControllerPagination(Controller) {
 
     //TODO TBD - overrides ControllerPagination, will not be needed once api is integrated w/ember-data
     async fetchModels(params) {
-        const searchQueryParams = buildSearchQueryParams(this.q, this.searchTerms, this.matchSynonyms);
+        const searchQueryParams = buildSearchQueryParams(this.q, this.searchTerms, this.matchSynonyms, this.facets);
         const queryParams = { ...params, ...searchQueryParams };
         const queryStr = serializeQueryParams(queryParams);
         const result = await this.ajax.request(`Database/Search?${queryStr}`);

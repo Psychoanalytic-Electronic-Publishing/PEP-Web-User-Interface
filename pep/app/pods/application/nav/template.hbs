@@ -1,24 +1,26 @@
-<Page::Sidebar @side="left">
-    <Search::Form
-        @smartSearchTerm={{this.smartSearchTerm}}
-        @searchTerms={{this.searchTerms}}
-        @matchSynonyms={{this.matchSynonyms}}
-        @submit={{this.submitSearch}}
-        @resetForm={{this.clearSearch}}
-        @addSearchTerm={{this.addSearchTerm}}
-        @removeSearchTerm={{this.removeSearchTerm}}
-        @updateSearchTerm={{this.updateSearchTerm}}
-        @matchSynonymsChange={{this.updateMatchSynonyms}}
-        class="mb-2"
-    />
-    <div class="p-3">
-        <h5>72 Premier Journals</h5>
-        <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam imperdiet, orci nec viverra feugiat, elit ligula tempor eros, et feugiat massa nibh eu nunc.
-        </p>
-        <h5>59 Classic Books</h5>
-        <p>
-            Mauris cursus pretium consequat. Nunc pellentesque tellus eget neque molestie, quis bibendum libero consectetur.
-        </p>
-    </div>
+<Page::Sidebar @side="left" as |Sidebar|>
+    <Sidebar.content>
+        <Search::Form
+            @smartSearchTerm={{this.smartSearchTerm}}
+            @searchTerms={{this.searchTerms}}
+            @matchSynonyms={{this.matchSynonyms}}
+            @submit={{this.submitSearch}}
+            @resetForm={{this.clearSearch}}
+            @addSearchTerm={{this.addSearchTerm}}
+            @removeSearchTerm={{this.removeSearchTerm}}
+            @updateSearchTerm={{this.updateSearchTerm}}
+            @matchSynonymsChange={{this.updateMatchSynonyms}}
+            class="mb-2"
+        />
+        <div class="p-3">
+            <h5>72 Premier Journals</h5>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam imperdiet, orci nec viverra feugiat, elit ligula tempor eros, et feugiat massa nibh eu nunc.
+            </p>
+            <h5>59 Classic Books</h5>
+            <p>
+                Mauris cursus pretium consequat. Nunc pellentesque tellus eget neque molestie, quis bibendum libero consectetur.
+            </p>
+        </div>
+    </Sidebar.content>
 </Page::Sidebar>

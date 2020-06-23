@@ -16,13 +16,14 @@ export default class Search extends ControllerPagination(Controller) {
     @service sidebar!: Sidebar;
     @service media;
 
-    queryParams = ['q', { _searchTerms: 'searchTerms' }, 'matchSynonyms'];
+    queryParams = ['q', { _searchTerms: 'searchTerms' }, 'matchSynonyms', { _facets: 'facets' }];
     @tracked q: string = '';
     @tracked matchSynonyms: boolean = false;
 
     @tracked currentSmartSearchTerm: string = '';
     @tracked currentSearchTerms = [];
     @tracked currentMatchSynonyms: boolean = false;
+    @tracked currentFacets = [];
 
     @tracked previewedResult = null;
     @tracked previewMode = 'fit';
@@ -56,6 +57,24 @@ export default class Search extends ControllerPagination(Controller) {
         }
     }
 
+    //workaround for bug w/array-based query param values
+    //@see https://github.com/emberjs/ember.js/issues/18981
+    @tracked _facets = JSON.stringify([]);
+    get facets() {
+        if (!this._facets) {
+            return [];
+        } else {
+            return JSON.parse(this._facets);
+        }
+    }
+    set facets(array) {
+        if (Array.isArray(array) && array.length > 0) {
+            this._facets = JSON.stringify(array);
+        } else {
+            this._facets = null;
+        }
+    }
+
     get hasSubmittedSearch() {
         return this.q || this.searchTerms.filter((t) => !!t.term).length > 0;
     }
@@ -64,9 +83,13 @@ export default class Search extends ControllerPagination(Controller) {
         return !this.isLoadingPage && (!this.hasSubmittedSearch || !this.model.length);
     }
 
+    get hasRefineChanges() {
+        return JSON.stringify(this.currentFacets) !== JSON.stringify(this.facets);
+    }
+
     //TODO TBD - overrides ControllerPagination, will not be needed once api is integrated w/ember-data
     async fetchModels(params) {
-        const searchQueryParams = buildSearchQueryParams(this.q, this.searchTerms, this.matchSynonyms);
+        const searchQueryParams = buildSearchQueryParams(this.q, this.searchTerms, this.matchSynonyms, this.facets);
         const queryParams = { ...params, ...searchQueryParams };
         const queryStr = serializeQueryParams(queryParams);
         const result = await this.ajax.request(`Database/Search?${queryStr}`);
@@ -107,6 +130,13 @@ export default class Search extends ControllerPagination(Controller) {
     }
 
     @action
+    resubmitSearchWithFacets() {
+        this.facets = this.currentFacets;
+        this.closeResultPreview();
+        return this.filter();
+    }
+
+    @action
     clearSearch() {
         this.currentSmartSearchTerm = '';
         this.currentMatchSynonyms = false;
@@ -142,6 +172,13 @@ export default class Search extends ControllerPagination(Controller) {
     @action
     updateMatchSynonyms(isChecked: boolean) {
         this.currentMatchSynonyms = isChecked;
+    }
+
+    @action
+    updateSelectedFacets(newSelection) {
+        this.currentFacets = newSelection;
+        // //TODO debounced call to initiate a new search
+        // return this.resubmitSearchWithFacets();
     }
 
     @action

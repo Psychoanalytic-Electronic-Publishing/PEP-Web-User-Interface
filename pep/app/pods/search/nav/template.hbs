@@ -1,30 +1,46 @@
-<Page::Sidebar @side="left">
-    <Search::Form
-        @smartSearchTerm={{this.currentSmartSearchTerm}}
-        @searchTerms={{this.currentSearchTerms}}
-        @matchSynonyms={{this.currentMatchSynonyms}}
-        @submit={{this.submitSearch}}
-        @resetForm={{this.clearSearch}}
-        @addSearchTerm={{this.addSearchTerm}}
-        @removeSearchTerm={{this.removeSearchTerm}}
-        @updateSearchTerm={{this.updateSearchTerm}}
-        @matchSynonymsChange={{this.updateMatchSynonyms}}
-        class="mb-2"
-    />
-    {{#if this.hasSubmittedSearch}}
-        <Search::Refine
+<Page::Sidebar @side="left" as |Sidebar|>
+    <Sidebar.content>
+        <Search::Form
+            @smartSearchTerm={{this.currentSmartSearchTerm}}
+            @searchTerms={{this.currentSearchTerms}}
+            @matchSynonyms={{this.currentMatchSynonyms}}
+            @submit={{this.submitSearch}}
+            @resetForm={{this.clearSearch}}
+            @addSearchTerm={{this.addSearchTerm}}
+            @removeSearchTerm={{this.removeSearchTerm}}
+            @updateSearchTerm={{this.updateSearchTerm}}
+            @matchSynonymsChange={{this.updateMatchSynonyms}}
             class="mb-2"
         />
-    {{else}}
-        <div class="p-3">
-            <h5>72 Premier Journals</h5>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam imperdiet, orci nec viverra feugiat, elit ligula tempor eros, et feugiat massa nibh eu nunc.
-            </p>
-            <h5>59 Classic Books</h5>
-            <p>
-                Mauris cursus pretium consequat. Nunc pellentesque tellus eget neque molestie, quis bibendum libero consectetur.
-            </p>
+        {{#if this.hasSubmittedSearch}}
+            <Search::Refine
+                @metadata={{this.metadata}}
+                @selection={{this.currentFacets}}
+                @updateSelection={{this.updateSelectedFacets}}
+                @submitSearch={{this.resubmitSearchWithFacets}}
+                class={{concat "mb-2" (if this.hasRefineChanges " search-refine-has-changes" "")}}
+            />
+        {{else}}
+            <div class="p-3">
+                <h5>72 Premier Journals</h5>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam imperdiet, orci nec viverra feugiat, elit ligula tempor eros, et feugiat massa nibh eu nunc.
+                </p>
+                <h5>59 Classic Books</h5>
+                <p>
+                    Mauris cursus pretium consequat. Nunc pellentesque tellus eget neque molestie, quis bibendum libero consectetur.
+                </p>
+            </div>
+        {{/if}}
+    </Sidebar.content>
+    {{#if this.hasRefineChanges}}
+        <div class="search-refine-apply-bar">
+            <Button
+                @type="primary"
+                @label="Refine search"
+                @wide={{true}}
+                @action={{this.resubmitSearchWithFacets}}
+            />
         </div>
     {{/if}}
 </Page::Sidebar>

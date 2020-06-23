@@ -1,10 +1,8 @@
 import Route from '@ember/routing/route';
-import { isEmpty } from '@ember/utils';
 import { inject as service } from '@ember/service';
 import AjaxService from 'pep/services/ajax';
 import { PageNav } from 'pep/mixins/page-layout';
 import { serializeQueryParams } from 'pep/utils/serialize-query-params';
-import { removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
 import { buildSearchQueryParams } from 'pep/utils/search';
 
 export default class ReadDocument extends PageNav(Route) {
@@ -24,6 +22,8 @@ export default class ReadDocument extends PageNav(Route) {
         const params = this.paramsFor('read.document');
         //workaround for https://github.com/emberjs/ember.js/issues/18981
         const searchTerms = params._searchTerms ? JSON.parse(params._searchTerms) : [];
+        const facets = params._facets ? JSON.parse(params._facets) : [];
+
         const queryParams = buildSearchQueryParams(params.q, searchTerms, params.matchSynonyms);
         //if no search was submitted, don't fetch any results (will have at least 1 param for synonyms)
         if (Object.keys(queryParams).length > 1) {

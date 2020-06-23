@@ -1,25 +1,62 @@
 <div class="bg-white border-divider-b border-divider-t p-3" ...attributes>
     <h5>Refine</h5>
-    <p class="text-muted">Check to limit results to only matching articles.</p>
-    <ul class="list-unstyled">
-        {{#each this.groups as |group|}}
-            <li>
-                <div>
-                    <strong>{{group.label}}</strong>
-                </div>
-                <ul class="list-unstyled ml-3 mb-2">
-                    {{#each group.options as |option|}}
-                        <li>
-                            <CheckboxInput>
-                                {{option.label}}
-                                <span class="text-muted small">
-                                    ({{format-number option.numResults}})
-                                </span>
-                            </CheckboxInput>
-                        </li>
-                    {{/each}}
-                </ul>
-            </li>
-        {{/each}}
-    </ul>
+    {{#if this.groups}}
+        <p class="text-muted">Check to limit results to only matching articles.</p>
+        <ul class="list-unstyled">
+            {{#each this.groups as |group|}}
+                <li>
+                    <div>
+                        <strong>{{group.label}}</strong>
+                    </div>
+                    <ul class="list-unstyled ml-3 mb-2">
+                        {{#each group.optionsWithResults as |option|}}
+                            <Search::Refine::Option
+                                @facetId={{group.id}}
+                                @option={{option}}
+                                @selection={{@selection}}
+                                @onFacetChange={{this.onFacetChange}}
+                            />
+                        {{/each}}
+                        {{#if group.optionsWithoutResults}}
+                            {{#if (contains group.id this.expandedGroups)}}
+                                {{#each group.optionsWithoutResults as |option|}}
+                                    <Search::Refine::Option
+                                        @facetId={{group.id}}
+                                        @option={{option}}
+                                        @selection={{@selection}}
+                                        @onFacetChange={{this.onFacetChange}}
+                                    />
+                                {{/each}}
+                                <li>
+                                    <Button
+                                        @type="link"
+                                        @label="Show less"
+                                        @icon="chevron-up"
+                                        @iconFixedWidth={{true}}
+                                        @action={{fn this.toggleGroup group.id}}
+                                        class="p-0"
+                                    />
+                                </li>
+                            {{else}}
+                                <li>
+                                    <Button
+                                        @type="link"
+                                        @label="Show all"
+                                        @icon="chevron-down"
+                                        @iconFixedWidth={{true}}
+                                        @action={{fn this.toggleGroup group.id}}
+                                        class="p-0"
+                                    />
+                                </li>
+                            {{/if}}
+                        {{/if}}
+                    </ul>
+                </li>
+            {{/each}}
+        </ul>
+    {{else}}
+        <p class="text-muted text-center p-4">
+            No refine options available
+        </p>
+    {{/if}}
 </div>

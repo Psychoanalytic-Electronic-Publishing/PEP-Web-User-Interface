@@ -25,13 +25,18 @@ export default class Search extends PageNav(Route) {
         },
         matchSynonyms: {
             replace: true
+        },
+        _facets: {
+            replace: true
         }
     };
 
     model(params) {
         //workaround for https://github.com/emberjs/ember.js/issues/18981
         const searchTerms = params._searchTerms ? JSON.parse(params._searchTerms) : [];
-        const queryParams = buildSearchQueryParams(params.q, searchTerms, params.matchSynonyms);
+        const facets = params._facets ? JSON.parse(params._facets) : [];
+
+        const queryParams = buildSearchQueryParams(params.q, searchTerms, params.matchSynonyms, facets);
         //if no search was submitted, don't fetch any results (will have at least 1 param for synonyms)
         if (Object.keys(queryParams).length > 1) {
             queryParams.offset = 0;
@@ -65,6 +70,7 @@ export default class Search extends PageNav(Route) {
         controller.currentSearchTerms = isEmpty(controller.searchTerms)
             ? [{ type: 'everywhere', term: '' }]
             : controller.searchTerms;
+        controller.currentFacets = controller.facets;
 
         super.setupController(controller, modelForController);
     }

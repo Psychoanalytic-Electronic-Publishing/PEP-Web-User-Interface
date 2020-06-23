@@ -3,9 +3,11 @@
     ...attributes
 >
     <div class="sidebar-inner">
-        <Scrollable class="sidebar-content">
-            {{yield}}
-        </Scrollable>
+        {{yield
+            (hash
+                content=(component 'page/sidebar/content')
+            )
+        }}
     </div>
     <button type="button" class="sidebar-toggle-handle" {{on "click" this.toggle}}>
         <FaIcon @icon={{if

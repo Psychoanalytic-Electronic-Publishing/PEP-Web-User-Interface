@@ -1,0 +1,11 @@
+<li>
+    <CheckboxInput
+        @checked={{this.isChecked}}
+        @onChange={{fn @onFacetChange @facetId @option.id}}
+    >
+        {{@option.label}}
+        <span class="text-muted small">
+            ({{format-number @option.numResults}})
+        </span>
+    </CheckboxInput>
+</li>
