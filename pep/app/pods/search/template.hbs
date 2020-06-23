@@ -72,10 +72,10 @@
                                         <a href="" {{on "click" (fn this.openResultPreview result)}}>
                                             {{result.documentRef}}
                                         </a>
-                                        {{#if result.matches}}
+                                        {{#if result.kwicList}}
                                             <ul class="small">
-                                                {{#each result.matches as |match|}}
-                                                    <li>{{{match.text}}}</li>
+                                                {{#each result.kwicList as |searchHit|}}
+                                                    <li>{{{searchHit}}}</li>
                                                 {{/each}}
                                             </ul>
                                         {{/if}}

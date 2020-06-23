@@ -7,7 +7,6 @@ import AjaxService from 'pep/services/ajax';
 import { inject as service } from '@ember/service';
 import { A } from '@ember/array';
 import { serializeQueryParams } from 'pep/utils/serialize-query-params';
-import { FIXTURE_SEARCH_RESULTS } from 'pep/constants/fixtures';
 import { buildSearchQueryParams } from 'pep/utils/search';
 import Sidebar from 'pep/services/sidebar';
 
@@ -55,9 +54,7 @@ export default class Search extends PageNav(Route) {
 
     setupController(controller, model) {
         //TODO eventually RoutePagination will do this
-        //TODO add matches dummy data for demo purposes
-        const matches = FIXTURE_SEARCH_RESULTS[0].matches;
-        const modelForController = model.documentList?.responseSet.map((r) => ({ ...r, matches })) ?? A();
+        const modelForController = model.documentList?.responseSet ?? A();
         controller.modelName = 'document';
         controller.metadata = model.documentList?.responseInfo;
         controller.hasMore = modelForController.length >= controller.limit;

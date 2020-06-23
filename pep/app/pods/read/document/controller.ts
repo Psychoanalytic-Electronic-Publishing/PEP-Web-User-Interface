@@ -6,9 +6,8 @@ import { inject as service } from '@ember/service';
 import { reject } from 'rsvp';
 import ControllerPagination from '@gavant/ember-pagination/mixins/controller-pagination';
 import AjaxService from 'pep/services/ajax';
-import { removeEmptyQueryParams, buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
+import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
 import { serializeQueryParams } from 'pep/utils/serialize-query-params';
-import { FIXTURE_SEARCH_RESULTS } from 'pep/constants/fixtures';
 import { buildSearchQueryParams } from 'pep/utils/search';
 
 export default class ReadDocument extends ControllerPagination(Controller) {
@@ -82,9 +81,7 @@ export default class ReadDocument extends ControllerPagination(Controller) {
         const queryParams = { ...params, ...searchQueryParams };
         const queryStr = serializeQueryParams(queryParams);
         const result = await this.ajax.request(`Database/Search?${queryStr}`);
-        //TODO add matches dummy data for demo purposes
-        const matches = FIXTURE_SEARCH_RESULTS[0].matches;
-        const results = result.documentList.responseSet.map((r) => ({ ...r, matches }));
+        const results = result.documentList.responseSet;
         return {
             toArray: () => results,
             data: results,

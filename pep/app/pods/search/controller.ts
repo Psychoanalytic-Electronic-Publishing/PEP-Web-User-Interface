@@ -8,7 +8,6 @@ import ControllerPagination from '@gavant/ember-pagination/mixins/controller-pag
 import AjaxService from 'pep/services/ajax';
 import { SEARCH_TYPE_EVERYWHERE } from 'pep/constants/search';
 import { serializeQueryParams } from 'pep/utils/serialize-query-params';
-import { FIXTURE_SEARCH_RESULTS } from 'pep/constants/fixtures';
 import { buildSearchQueryParams } from 'pep/utils/search';
 import Sidebar from 'pep/services/sidebar';
 
@@ -71,9 +70,7 @@ export default class Search extends ControllerPagination(Controller) {
         const queryParams = { ...params, ...searchQueryParams };
         const queryStr = serializeQueryParams(queryParams);
         const result = await this.ajax.request(`Database/Search?${queryStr}`);
-        //TODO add matches dummy data for demo purposes
-        const matches = FIXTURE_SEARCH_RESULTS[0].matches;
-        const results = result.documentList.responseSet.map((r) => ({ ...r, matches }));
+        const results = result.documentList.responseSet;
         return {
             toArray: () => results,
             data: results,
