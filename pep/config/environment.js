@@ -56,6 +56,10 @@ module.exports = function(environment) {
             hostWhitelist: [new RegExp(process.env.FASTBOOT_WHITELIST_DOMAIN), /^localhost:\d+$/]
         },
 
+        pageTitle: {
+            prepend: false
+        },
+
         //deployment environment-specific variables
         apiBaseUrl: process.env.API_BASE_URL
     };

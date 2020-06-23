@@ -7,6 +7,23 @@ module.exports = function(defaults) {
         fingerprint: {
             prepend: process.env.ASSETS_BASE_URL
         },
+        outputPaths: {
+            app: {
+                css: {
+                    app: '/assets/pep.css',
+                    'themes/tomato': '/assets/themes/tomato.css'
+                }
+            }
+        },
+        sassOptions: {
+            includePaths: [
+                'node_modules/ember-basic-dropdown/app/styles',
+                'node_modules/ember-power-select/app/styles',
+                'node_modules/@gavant/ember-floating-labels/app/styles',
+                'node_modules/@gavant/ember-bootstrap-dropdown/app/styles',
+                'node_modules/@gavant/ember-button-spinner/app/styles'
+            ]
+        },
         autoprefixer: {
             browsers: [
                 'Chrome >= 60',

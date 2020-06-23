@@ -1,0 +1,67 @@
+// ---------------------------
+// Web Fonts
+// ---------------------------
+@import '../fonts';
+// ---------------------------
+// Global variables
+// ---------------------------
+@import '../variables';
+// ---------------------------
+// Theme variables
+// ---------------------------
+// Application variables
+$logo-path: '/assets/images/logo-tomato.jpeg';
+$color-brand-primary: #bf3c30;
+$color-backdrop: #fbf5f2;
+$color-divider: rgba(#000, 0.06);
+$color-progress-spinner-loading1: rgba(0, 0, 0, 0.25);
+$color-progress-spinner-loading2: saturate(lighten($color-brand-primary, 35%), 45%);
+// Addon overrides
+$button-spinner-loading-color1: rgba(#fff, 0.75);
+$button-spinner-loading-color2: saturate(lighten($color-brand-primary, 35%), 45%);
+// Bootstrap overrides
+$enable-shadows: false;
+$primary: #bf3c30;
+$link-color: saturate(lighten($primary, 10%), 20%);
+$font-size-base: $font-size-app-base;
+$font-family-sans-serif: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+$headings-font-family: Muli, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
+    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+$hr-border-color: rgba(#000, 0.06);
+$dropdown-border-color: #dbdbdb;
+$dropdown-border-radius: 0.21rem;
+
+// ---------------------------
+// Vendor / Template
+// ---------------------------
+@import 'node_modules/bootstrap/scss/bootstrap';
+@import '../vendor/perfect-scrollbar';
+@import 'ember-basic-dropdown';
+@import 'ember-power-select';
+@import 'ember-floating-labels';
+@import 'gavant-ember-bootstrap-dropdown';
+@import 'gavant-ember-button-spinner';
+// ---------------------------
+// Mixins, functions and utilities
+// ---------------------------
+@import '../mixins';
+@import '../utilities';
+// ---------------------------
+// Global app styles
+// ---------------------------
+@import '../typography';
+@import '../layout';
+@import '../buttons';
+@import '../navbar';
+@import '../sidebar';
+@import '../card';
+@import '../dropdown';
+// ---------------------------
+// Components
+// ---------------------------
+@import '../components';
+// ---------------------------
+// Pages
+// ---------------------------
+@import '../pages';
