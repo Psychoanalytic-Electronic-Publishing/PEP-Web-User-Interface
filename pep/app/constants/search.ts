@@ -1,3 +1,5 @@
+export const SEARCH_RESULTS_WARNING_COUNT = 200;
+
 /**
  * Search term types
  */

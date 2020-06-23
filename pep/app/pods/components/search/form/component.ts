@@ -1,17 +1,18 @@
 import Component from '@glimmer/component';
 import { action, computed } from '@ember/object';
-import { SEARCH_TYPES, SEARCH_TYPE_EVERYWHERE } from 'pep/constants/search';
+import { SEARCH_TYPES, SEARCH_TYPE_EVERYWHERE, SEARCH_RESULTS_WARNING_COUNT } from 'pep/constants/search';
 import move from 'ember-animated/motions/move';
 import { fadeIn, fadeOut } from 'ember-animated/motions/opacity';
 
 interface SearchFormArgs {
     //TODO
+    resultsCount?: number;
 }
 
 export default class SearchForm extends Component<SearchFormArgs> {
     searchTypes = SEARCH_TYPES;
 
-    *termsTransition({ keptSprites, removedSprites, insertedSprites }) {
+    *animateTransition({ keptSprites, removedSprites, insertedSprites }) {
         for (let sprite of keptSprites) {
             move(sprite);
         }
@@ -31,6 +32,10 @@ export default class SearchForm extends Component<SearchFormArgs> {
             this.args.smartSearchTerm ||
             (Array.isArray(this.args.searchTerms) && this.args.searchTerms.filter((t) => !!t.term).length > 0)
         );
+    }
+
+    get hasTooManyResults() {
+        return this.args.resultsCount > SEARCH_RESULTS_WARNING_COUNT;
     }
 
     @action

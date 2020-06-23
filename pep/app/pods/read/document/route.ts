@@ -24,7 +24,7 @@ export default class ReadDocument extends PageNav(Route) {
         const searchTerms = params._searchTerms ? JSON.parse(params._searchTerms) : [];
         const facets = params._facets ? JSON.parse(params._facets) : [];
 
-        const queryParams = buildSearchQueryParams(params.q, searchTerms, params.matchSynonyms);
+        const queryParams = buildSearchQueryParams(params.q, searchTerms, params.matchSynonyms, facets);
         //if no search was submitted, don't fetch any results (will have at least 1 param for synonyms)
         if (Object.keys(queryParams).length > 1) {
             queryParams.offset = 0;

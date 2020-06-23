@@ -10,6 +10,7 @@
             @removeSearchTerm={{this.removeSearchTerm}}
             @updateSearchTerm={{this.updateSearchTerm}}
             @matchSynonymsChange={{this.updateMatchSynonyms}}
+            @resultsCount={{this.metadata.fullCount}}
             class="mb-2"
         />
         {{#if this.hasSubmittedSearch}}
