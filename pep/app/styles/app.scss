@@ -8,35 +8,6 @@
 @import 'variables';
 @import 'theme-variables';
 // ---------------------------
-// Vendor / Template
+// Common app styles
 // ---------------------------
-@import 'node_modules/bootstrap/scss/bootstrap';
-@import 'vendor/perfect-scrollbar';
-@import 'ember-basic-dropdown';
-@import 'ember-power-select';
-@import 'ember-floating-labels';
-@import 'gavant-ember-bootstrap-dropdown';
-@import 'gavant-ember-button-spinner';
-// ---------------------------
-// Mixins, functions and utilities
-// ---------------------------
-@import 'mixins';
-@import 'utilities';
-// ---------------------------
-// Global app styles
-// ---------------------------
-@import 'typography';
-@import 'layout';
-@import 'buttons';
-@import 'navbar';
-@import 'sidebar';
-@import 'card';
-@import 'dropdown';
-// ---------------------------
-// Components
-// ---------------------------
-@import 'components';
-// ---------------------------
-// Pages
-// ---------------------------
-@import 'pages';
+@import 'common';

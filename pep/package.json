@@ -37,8 +37,10 @@
         "@gavant/ember-button-basic": "^1.0.1",
         "@gavant/ember-button-spinner": "^1.0.1",
         "@gavant/ember-floating-labels": "^1.0.1",
+        "@gavant/ember-modals": "^1.0.2",
         "@gavant/ember-pagination": "^1.0.4",
         "@gavant/ember-template-lint-forms": "^0.0.2",
+        "@gavant/ember-validations": "^2.0.6",
         "@glimmer/component": "^1.0.0",
         "@glimmer/tracking": "^1.0.0",
         "@html-next/vertical-collection": "^1.0.0",
@@ -48,6 +50,7 @@
         "@types/ember__test-helpers": "^0.7.9",
         "@types/qunit": "^2.9.0",
         "@types/rsvp": "^4.0.3",
+        "animate.css": "3.7.2",
         "babel-eslint": "^10.1.0",
         "bootstrap": "^4.4.1",
         "broccoli-asset-rev": "^3.0.0",
@@ -115,5 +118,8 @@
     "fastbootDependencies": [
         "node-fetch",
         "moment"
-    ]
+    ],
+    "resolutions": {
+        "validated-changeset": "0.7.1"
+    }
 }

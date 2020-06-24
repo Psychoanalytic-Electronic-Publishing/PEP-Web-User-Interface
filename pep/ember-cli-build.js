@@ -60,5 +60,7 @@ module.exports = function(defaults) {
     //@see https://github.com/jasonmit/ember-cli-moment-shim/issues/165
     app.import('node_modules/moment/moment.js', { using: [{ transformation: 'amd', as: 'moment' }] });
 
+    app.import('node_modules/animate.css/animate.min.css');
+
     return app.toTree();
 };

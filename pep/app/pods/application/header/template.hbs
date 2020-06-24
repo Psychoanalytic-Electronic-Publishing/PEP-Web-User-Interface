@@ -34,7 +34,7 @@
                     <FaIcon @icon="user" @size="lg" />
                 </DD.Trigger>
                 <DD.Content class="dropdown-menu">
-                    <DropdownAction @dd={{DD}}>
+                    <DropdownAction @dd={{DD}} @action={{this.openPreferencesModal}}>
                         <FaIcon @icon="cog" @fixedWidth={{true}} class="text-muted" />
                         Preferences
                     </DropdownAction>

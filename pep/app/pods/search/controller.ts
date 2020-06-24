@@ -133,6 +133,12 @@ export default class Search extends ControllerPagination(Controller) {
     resubmitSearchWithFacets() {
         this.facets = this.currentFacets;
         this.closeResultPreview();
+
+        //close overlay sidebar on submit in mobile/tablet
+        if (this.media.isMobile || this.media.isTablet) {
+            this.sidebar.toggleLeftSidebar();
+        }
+
         return this.filter();
     }
 

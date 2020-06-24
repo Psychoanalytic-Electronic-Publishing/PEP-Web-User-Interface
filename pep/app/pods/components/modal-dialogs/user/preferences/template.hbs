@@ -1,0 +1,32 @@
+<ModalDialog @onClose={{@onClose}} @size="md" as |Modal|>
+    <Modal.header @title="Preferences" />
+    <Modal.body>
+        <p class="text-muted">
+            Customize and personalize your PEP experience using the settings below.
+        </p>
+        <div class="mb-4">
+            <div class="form-row">
+                <div class="col-sm-7">
+                    <FlSelect
+                        @options={{this.theme.allThemes}}
+                        @value={{this.theme.currentTheme.id}}
+                        @valuePath="id"
+                        @labelPath="label"
+                        @placeholder="Color theme"
+                        @emptyOptionText="Select a theme"
+                        @allowClear={{false}}
+                        @onChange={{this.updateTheme}}
+                    />
+                </div>
+            </div>
+        </div>
+    </Modal.body>
+    <Modal.footer>
+        <Button
+            @type="primary"
+            @label="Done"
+            @wide={{true}}
+            @action={{this.done}}
+        />
+    </Modal.footer>
+</ModalDialog>

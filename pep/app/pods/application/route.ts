@@ -8,8 +8,9 @@ import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import IntlService from 'ember-intl/services/intl';
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 import SessionService from 'ember-simple-auth/services/session';
-import LoadingBar from 'pep/services/loading-bar';
-import Sidebar from 'pep/services/sidebar';
+import LoadingBarService from 'pep/services/loading-bar';
+import SidebarService from 'pep/services/sidebar';
+import ThemeService from 'pep/services/theme';
 
 export default class Application extends PageLayout(Route.extend(ApplicationRouteMixin)) {
     routeAfterAuthentication = 'dashboard';
@@ -17,13 +18,15 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
     @service session!: SessionService;
     @service intl!: IntlService;
     @service fastboot!: FastbootService;
-    @service loadingBar!: LoadingBar;
-    @service sidebar!: Sidebar;
+    @service loadingBar!: LoadingBarService;
+    @service sidebar!: SidebarService;
+    @service theme!: ThemeService;
     @service media;
 
     async beforeModel(transition: Transition) {
         super.beforeModel(transition);
         this.intl.setLocale('en-us');
+        this.theme.setup();
         // if (this.session.isAuthenticated) {
         //     try {
         //         await this.currentUser.load();

@@ -3,11 +3,13 @@ import { action, setProperties } from '@ember/object';
 import { isEmpty } from '@ember/utils';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
+import ModalService from '@gavant/ember-modals/services/modal';
 import LoadingBar from 'pep/services/loading-bar';
 import { SEARCH_TYPE_EVERYWHERE } from 'pep/constants/search';
 
 export default class Application extends Controller {
     @service loadingBar!: LoadingBar;
+    @service modal!: ModalService;
 
     @tracked smartSearchTerm: string = '';
     @tracked matchSynonyms: boolean = false;
@@ -79,6 +81,11 @@ export default class Application extends Controller {
     @action
     updateMatchSynonyms(isChecked: boolean) {
         this.matchSynonyms = isChecked;
+    }
+
+    @action
+    openPreferencesModal() {
+        this.modal.open('user/preferences', {});
     }
 }
 

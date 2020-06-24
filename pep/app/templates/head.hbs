@@ -5,4 +5,6 @@ setting values on the 'head-data' service.
 --}}
 <title>{{this.model.title}}</title>
 <meta name="description" content="A Psychoanalytic Library at your fingertips" />
-<link integrity="" rel="stylesheet" href="/assets/themes/tomato.css" />
+{{#if this.model.themePath}}
+    <link integrity="" rel="stylesheet" href={{this.model.themePath}} />
+{{/if}}
