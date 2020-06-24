@@ -3,6 +3,9 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { htmlSafe } from '@ember/template';
 import { scheduleOnce, next } from '@ember/runloop';
+import { inject as service } from '@ember/service';
+import SessionService from 'ember-simple-auth/services/session';
+import AuthService from 'pep/services/auth';
 
 interface SearchPreviewArgs {
     mode: 'minimized' | 'maximized' | 'fit';
@@ -10,6 +13,9 @@ interface SearchPreviewArgs {
 }
 
 export default class SearchPreview extends Component<SearchPreviewArgs> {
+    @service session!: SessionService;
+    @service auth!: AuthService;
+
     @tracked fitHeight?: number;
 
     get mode() {
@@ -36,5 +42,11 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
     onElementInsert(element) {
         this.previewElement = element;
         scheduleOnce('afterRender', this, this.calculateFitHeight);
+    }
+
+    @action
+    login(event) {
+        event.preventDefault();
+        return this.auth.openLoginModal(true);
     }
 }

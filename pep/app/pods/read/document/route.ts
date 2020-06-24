@@ -12,7 +12,7 @@ export default class ReadDocument extends PageNav(Route) {
     searchResults = null;
 
     async model(params) {
-        const result = await this.ajax.request(`Documents/Document/${params.document_id}`);
+        const result = await this.ajax.request(`Documents/Document/${params.document_id}/`);
         return result?.documents?.responseSet[0];
     }
 
@@ -30,7 +30,7 @@ export default class ReadDocument extends PageNav(Route) {
             queryParams.offset = 0;
             queryParams.limit = 10;
             const queryStr = serializeQueryParams(queryParams);
-            const results = await this.ajax.request(`Database/Search?${queryStr}`);
+            const results = await this.ajax.request(`Database/Search/?${queryStr}`);
             this.searchResults = results;
         }
     }

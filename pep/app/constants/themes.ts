@@ -1,7 +1,7 @@
 export const THEME_DEFAULT = {
     id: 'default',
     cssPath: '/assets/pep.css',
-    label: 'Navy'
+    label: 'Navy (default)'
 };
 
 export const THEME_TOMATO = {

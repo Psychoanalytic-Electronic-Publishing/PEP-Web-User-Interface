@@ -11,12 +11,12 @@ export default class Theme extends Service {
 
     allThemes = THEMES;
 
-    setup() {
-        this.headData.set('themePath', this.currentTheme.cssPath);
-    }
-
     get currentTheme() {
         return THEMES.findBy('id', this.session.data?.themeId) ?? THEME_DEFAULT;
+    }
+
+    setup() {
+        this.headData.set('themePath', this.currentTheme.cssPath);
     }
 
     updateTheme(newThemeId) {

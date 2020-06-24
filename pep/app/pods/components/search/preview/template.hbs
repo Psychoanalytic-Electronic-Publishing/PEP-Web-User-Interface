@@ -44,23 +44,30 @@
                     {{{@result.abstract}}}
                 </div>
                 <div>
-                    <LinkTo
-                        @route="read.document"
-                        @model={{@result.documentID}}
-                        @query={{@queryParams}}
-                        class="btn btn-primary btn-wide mr-2"
-                    >
-                        <FaIcon @icon="book-open" />
-                        Read
-                    </LinkTo>
-                    <Button
-                        @icon="download"
-                        @label="Download docs"
-                        @type="link"
-                        class="px-2"
-                    >
-                        <FaIcon @icon="angle-down" class="ml-1 text-muted" />
-                    </Button>
+                    {{#if this.session.isAuthenticated}}
+                        <LinkTo
+                            @route="read.document"
+                            @model={{@result.documentID}}
+                            @query={{@queryParams}}
+                            class="btn btn-primary btn-wide mr-2"
+                        >
+                            <FaIcon @icon="book-open" />
+                            Read
+                        </LinkTo>
+                        <Button
+                            @icon="download"
+                            @label="Download docs"
+                            @type="link"
+                            class="px-2"
+                        >
+                            <FaIcon @icon="angle-down" class="ml-1 text-muted" />
+                        </Button>
+                    {{else}}
+                        <p class="p-3 bg-light rounded">
+                            You must be logged in to read or download this document.
+                            <a href="" {{on "click" this.login}}>Click here to login</a>.
+                        </p>
+                    {{/if}}
                 </div>
             </div>
         </Scrollable>

@@ -1,0 +1,56 @@
+<ModalDialog @onClose={{@onClose}} @size="md" as |Modal|>
+    <Modal.header @title="Login" />
+    <FormValidator
+        @changeset={{@options.changeset}}
+        @submit={{this.login}}
+        as |changeset validator|
+    >
+        <Modal.body>
+            <p class="text-muted">
+                This is the Psychoanalytic Electronic Publishing Archive full text database. It is freely available for everyone to search, view tables of contents, and view summaries. However you will need a subscription in order to view the full text of articles and books and follow links within the database.
+            </p>
+            {{#if this.loginError}}
+                {{!-- convert to use future <Alert /> component --}}
+                <div class="alert alert-danger" role="alert">
+                    Unable to login with the provided credentials.
+                </div>
+            {{/if}}
+            <div class="form-row">
+                <div class="col-sm-8">
+                    <validator.input @errors={{changeset.error.username.validation}} class="input-validator-compact">
+                        <FlInput
+                            @value={{changeset.username}}
+                            @placeholder="Username"
+                            maxlength="128"
+                        />
+                    </validator.input>
+                    <validator.input @errors={{changeset.error.password.validation}} class="input-validator-compact">
+                        <FlInput
+                            @value={{changeset.password}}
+                            @placeholder="Password"
+                            maxlength="128"
+                            type="password"
+                        />
+                    </validator.input>
+                    <p class="mb-0 text-muted">
+                        Not a member?
+                        <a href="" {{on "click" this.transitionToSubscribe}}>Click here to subscribe</a>.
+                    </p>
+                </div>
+            </div>
+        </Modal.body>
+        <Modal.footer>
+            <Button
+                @type="link"
+                @label="Cancel"
+                @action={{@onClose}}
+            />
+            <ButtonSpinner
+                @type="primary"
+                @label="Login"
+                @wide={{true}}
+                @action={{validator.submit}}
+            />
+        </Modal.footer>
+    </FormValidator>
+</ModalDialog>

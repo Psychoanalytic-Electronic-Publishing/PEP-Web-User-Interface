@@ -42,7 +42,7 @@ export default class Search extends PageNav(Route) {
             queryParams.offset = 0;
             queryParams.limit = 10;
             const queryStr = serializeQueryParams(queryParams);
-            return this.ajax.request(`Database/Search?${queryStr}`);
+            return this.ajax.request(`Database/Search/?${queryStr}`);
         } else {
             return A();
         }

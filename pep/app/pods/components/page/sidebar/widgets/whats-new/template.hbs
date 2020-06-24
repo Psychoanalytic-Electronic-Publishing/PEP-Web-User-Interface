@@ -1,0 +1,31 @@
+<CollapsiblePanel
+    @title="What's new?"
+    @isOpen={{this.isOpen}}
+    @toggle={{action (mut this.isOpen)}}
+    class="mb-2"
+    {{did-insert this.onElementInsert}}
+    ...attributes
+>
+    {{#if this.isLoading}}
+        <Progress::Spinner />
+    {{else}}
+        <ul class="list-unstyled">
+            {{#each this.results as |result|}}
+                <li class="mb-2">
+                    <div>
+                        {{{result.displayTitle}}}
+                    </div>
+                    <div class="text-muted small">
+                        Issue #{{result.issue}}, Vol {{result.volume}}
+                        &bull;
+                        {{moment-format result.updated "MMMM Do, YYYY"}}
+                    </div>
+                </li>
+            {{else}}
+                <li class="py-3 mb-0 text-center text-muted">
+                    No results found
+                </li>
+            {{/each}}
+        </ul>
+    {{/if}}
+</CollapsiblePanel>

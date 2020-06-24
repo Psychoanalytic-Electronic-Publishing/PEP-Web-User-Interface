@@ -16,10 +16,11 @@ export default class AjaxService extends Service {
     @computed('session.{isAuthenticated,data.authenticated.access_token}')
     get authorizationHeaders() {
         const headers = {} as any;
-        if (this.session.isAuthenticated) {
-            const { access_token } = this.session.data!.authenticated;
-            headers['Authorization'] = `Bearer ${access_token}`;
-        }
+        // api auth token is sent in cookies
+        // if (this.session.isAuthenticated) {
+        //     const { access_token } = this.session.data!.authenticated;
+        //     headers['Authorization'] = `Bearer ${access_token}`;
+        // }
         return headers;
     }
 
@@ -45,7 +46,7 @@ export default class AjaxService extends Service {
      */
     async request(url: string, options: RequestInit = {}) {
         setProperties(options, {
-            // credentials: 'include',  //NOTE: only needed if cookies must be sent in API requests
+            credentials: 'include', //NOTE: only needed if cookies must be sent in API requests
             headers: this.headers
         });
 
@@ -83,13 +84,9 @@ export default class AjaxService extends Service {
         error.response = response;
         error.payload = await response.json();
 
-        if (status === 401) {
-            if (this.session.isAuthenticated) {
-                this.session.invalidate();
-                return reject();
-            } else {
-                return this.browserRedirect('/login');
-            }
+        if (status === 401 && this.session.isAuthenticated) {
+            this.session.invalidate();
+            return reject();
         }
 
         return error;

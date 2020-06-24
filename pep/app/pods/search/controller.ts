@@ -92,7 +92,7 @@ export default class Search extends ControllerPagination(Controller) {
         const searchQueryParams = buildSearchQueryParams(this.q, this.searchTerms, this.matchSynonyms, this.facets);
         const queryParams = { ...params, ...searchQueryParams };
         const queryStr = serializeQueryParams(queryParams);
-        const result = await this.ajax.request(`Database/Search?${queryStr}`);
+        const result = await this.ajax.request(`Database/Search/?${queryStr}`);
         const results = result.documentList.responseSet;
         return {
             toArray: () => results,

@@ -47,10 +47,17 @@
                         Report a problem
                     </DropdownAction>
                     <div class="dropdown-divider"></div>
-                    <DropdownAction @dd={{DD}}>
-                        <FaIcon @icon="sign-out" @fixedWidth={{true}} class="text-muted" />
-                        Logout
-                    </DropdownAction>
+                    {{#if this.session.isAuthenticated}}
+                        <DropdownAction @dd={{DD}} @action={{this.logout}}>
+                            <FaIcon @icon="sign-out" @fixedWidth={{true}} class="text-muted" />
+                            Logout
+                        </DropdownAction>
+                    {{else}}
+                        <DropdownAction @dd={{DD}} @action={{this.openLoginModal}}>
+                            <FaIcon @icon="sign-in" @fixedWidth={{true}} class="text-muted" />
+                            Login
+                        </DropdownAction>
+                    {{/if}}
                 </DD.Content>
             </DropdownMenu>
         </li>

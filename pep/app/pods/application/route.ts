@@ -11,9 +11,10 @@ import SessionService from 'ember-simple-auth/services/session';
 import LoadingBarService from 'pep/services/loading-bar';
 import SidebarService from 'pep/services/sidebar';
 import ThemeService from 'pep/services/theme';
+import AuthService from 'pep/services/auth';
 
 export default class Application extends PageLayout(Route.extend(ApplicationRouteMixin)) {
-    routeAfterAuthentication = 'dashboard';
+    routeAfterAuthentication = 'index';
     @service currentUser!: CurrentUserService;
     @service session!: SessionService;
     @service intl!: IntlService;
@@ -21,6 +22,7 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
     @service loadingBar!: LoadingBarService;
     @service sidebar!: SidebarService;
     @service theme!: ThemeService;
+    @service auth!: AuthService;
     @service media;
 
     async beforeModel(transition: Transition) {
@@ -37,11 +39,11 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
     }
 
     async sessionAuthenticated() {
+        //TODO hook up getting current user data from /v2/Session/WhoAmI/
+
         // try {
         //     //get the current user's model before transitioning from the login page
         //     const currentUser = await this.currentUser.load();
-        //     //@ts-ignore TODO we need a way to inform TS about class members coming from Ember-style mixins
-        //     super.sessionAuthenticated(...arguments);
         //     return currentUser;
         // } catch (err) {
         //     //handle failures of fetching the current user here (e.g. display error notification toast, etc)
@@ -49,6 +51,14 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
         //     this.session.invalidate();
         //     throw err;
         // }
+
+        //dont redirect the user on login if the behavior is suppressed
+        if (this.auth.dontRedirectOnLogin) {
+            this.auth.dontRedirectOnLogin = false;
+        } else {
+            //@ts-ignore TODO we need a way to inform TS about class members coming from Ember-style mixins
+            super.sessionAuthenticated(...arguments);
+        }
     }
 
     /**

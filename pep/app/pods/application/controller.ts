@@ -3,13 +3,17 @@ import { action, setProperties } from '@ember/object';
 import { isEmpty } from '@ember/utils';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
+import SessionService from 'ember-simple-auth/services/session';
 import ModalService from '@gavant/ember-modals/services/modal';
 import LoadingBar from 'pep/services/loading-bar';
+import AuthService from 'pep/services/auth';
 import { SEARCH_TYPE_EVERYWHERE } from 'pep/constants/search';
 
 export default class Application extends Controller {
     @service loadingBar!: LoadingBar;
     @service modal!: ModalService;
+    @service session!: SessionService;
+    @service auth!: AuthService;
 
     @tracked smartSearchTerm: string = '';
     @tracked matchSynonyms: boolean = false;
@@ -18,17 +22,6 @@ export default class Application extends Controller {
         { type: 'title', term: '' },
         { type: 'author', term: '' }
     ];
-
-    @tracked sidebarPastFiveSearchesIsOpen = true;
-    @tracked sidebarYourInterestsIsOpen = true;
-    @tracked sidebarGlossaryTermsIsOpen = true;
-    @tracked sidebarMoreLikeTheseIsOpen = false;
-    @tracked sidebarSeminalPapersIsOpen = false;
-    @tracked sidebarExpertPicksIsOpen = false;
-    @tracked sidebarRevelantSearchesIsOpen = false;
-    @tracked sidebarWhatsNewIsOpen = false;
-    @tracked sidebarMostCitedIsOpen = false;
-    @tracked sidebarMostViewedIsOpen = false;
 
     @action
     submitSearch() {
@@ -86,6 +79,16 @@ export default class Application extends Controller {
     @action
     openPreferencesModal() {
         this.modal.open('user/preferences', {});
+    }
+
+    @action
+    openLoginModal() {
+        return this.auth.openLoginModal(true);
+    }
+
+    @action
+    logout() {
+        return this.session.invalidate();
     }
 }
 

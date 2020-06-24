@@ -1,17 +1,23 @@
 import Controller from '@ember/controller';
-import { action } from '@ember/object';
+import { action, set } from '@ember/object';
 import { readOnly } from '@ember/object/computed';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import { reject } from 'rsvp';
 import ControllerPagination from '@gavant/ember-pagination/mixins/controller-pagination';
-import AjaxService from 'pep/services/ajax';
 import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
+import SessionService from 'ember-simple-auth/services/session';
+import AjaxService from 'pep/services/ajax';
+import AuthService from 'pep/services/auth';
+import LoadingBarService from 'pep/services/loading-bar';
 import { serializeQueryParams } from 'pep/utils/serialize-query-params';
 import { buildSearchQueryParams } from 'pep/utils/search';
 
 export default class ReadDocument extends ControllerPagination(Controller) {
+    @service session!: SessionService;
     @service ajax!: AjaxService;
+    @service auth!: AuthService;
+    @service loadingBar!: LoadingBarService;
 
     queryParams = ['q', { _searchTerms: 'searchTerms' }, 'matchSynonyms', { _facets: 'facets' }];
     @tracked q: string = '';
@@ -98,7 +104,7 @@ export default class ReadDocument extends ControllerPagination(Controller) {
         const searchQueryParams = buildSearchQueryParams(this.q, this.searchTerms, this.matchSynonyms, this.facets);
         const queryParams = { ...params, ...searchQueryParams };
         const queryStr = serializeQueryParams(queryParams);
-        const result = await this.ajax.request(`Database/Search?${queryStr}`);
+        const result = await this.ajax.request(`Database/Search/?${queryStr}`);
         const results = result.documentList.responseSet;
         return {
             toArray: () => results,
@@ -111,6 +117,32 @@ export default class ReadDocument extends ControllerPagination(Controller) {
     loadNextPage() {
         if (!this.isLoadingPage && this.hasMore) {
             return this.loadMoreModels();
+        }
+    }
+
+    @action
+    login(event) {
+        event.preventDefault();
+        return this.auth.openLoginModal(true, {
+            actions: {
+                onAuthenticated: this.onAuthenticated
+            }
+        });
+    }
+
+    @action
+    async onAuthenticated() {
+        try {
+            this.loadingBar.show();
+            //reload the document now that the user is logged in
+            const result = await this.ajax.request(`Documents/Document/${this.model.documentID}/`);
+            const model = result?.documents?.responseSet[0];
+            set(this, 'model', model);
+            this.loadingBar.hide();
+            return model;
+        } catch (err) {
+            this.loadingBar.hide();
+            return reject(err);
         }
     }
 }

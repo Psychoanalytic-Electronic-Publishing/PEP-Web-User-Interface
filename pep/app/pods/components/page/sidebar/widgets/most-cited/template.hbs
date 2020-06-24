@@ -1,0 +1,31 @@
+<CollapsiblePanel
+    @title="Most cited"
+    @isOpen={{this.isOpen}}
+    @toggle={{action (mut this.isOpen)}}
+    class="mb-2"
+    {{did-insert this.onElementInsert}}
+    ...attributes
+>
+    {{#if this.isLoading}}
+        <Progress::Spinner />
+    {{else}}
+        <ul class="list-unstyled">
+            {{#each this.results as |result|}}
+                <li class="mb-2">
+                    <div>
+                        <LinkTo @route="read.document" @model={{result.documentID}}>
+                            {{{result.title}}}
+                        </LinkTo>
+                        <div class="text-muted small">
+                            {{{result.sourceTitle}}}
+                        </div>
+                    </div>
+                </li>
+            {{else}}
+                <li class="py-3 mb-0 text-center text-muted">
+                    No results found
+                </li>
+            {{/each}}
+        </ul>
+    {{/if}}
+</CollapsiblePanel>

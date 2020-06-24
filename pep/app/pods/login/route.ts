@@ -1,9 +1,20 @@
-import PageLayout from 'pep/mixins/page-layout';
 import Route from '@ember/routing/route';
+import { inject as service } from '@ember/service';
 import UnauthenticatedRouteMixin from 'ember-simple-auth/mixins/unauthenticated-route-mixin';
+import SessionService from 'ember-simple-auth/services/session';
+import AuthService from 'pep/services/auth';
 
-//TODO login will probably be a modal instead of a full page in this app
-export default class Login extends PageLayout(Route.extend(UnauthenticatedRouteMixin)) {
+export default class Login extends Route.extend(UnauthenticatedRouteMixin) {
+    @service session!: SessionService;
+    @service auth!: AuthService;
     classNames = ['login'];
-    routeIfAlreadyAuthenticated = 'landing-route-here';
+    routeIfAlreadyAuthenticated = 'index';
+
+    async redirect() {
+        if (!this.session.isAuthenticated) {
+            //redirect to the home page and open the login modal
+            await this.transitionTo('index');
+            return this.auth.openLoginModal();
+        }
+    }
 }
