@@ -3,6 +3,7 @@ import { action, set } from '@ember/object';
 import { readOnly } from '@ember/object/computed';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
+import { isEmpty } from '@ember/utils';
 import { reject } from 'rsvp';
 import ControllerPagination from '@gavant/ember-pagination/mixins/controller-pagination';
 import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
@@ -12,6 +13,8 @@ import AuthService from 'pep/services/auth';
 import LoadingBarService from 'pep/services/loading-bar';
 import { serializeQueryParams } from 'pep/utils/serialize-query-params';
 import { buildSearchQueryParams } from 'pep/utils/search';
+
+const HTML_BODY_REGEX = /^.*?<body[^>]*>(.*?)<\/body>.*?$/i;
 
 export default class ReadDocument extends ControllerPagination(Controller) {
     @service session!: SessionService;
@@ -72,6 +75,11 @@ export default class ReadDocument extends ControllerPagination(Controller) {
         } else {
             this._facets = null;
         }
+    }
+
+    get documentCleaned() {
+        const document = !isEmpty(this.model.document) ? this.model.document : '';
+        return document.replace(HTML_BODY_REGEX, '$1');
     }
 
     async _loadModels(reset: boolean) {
