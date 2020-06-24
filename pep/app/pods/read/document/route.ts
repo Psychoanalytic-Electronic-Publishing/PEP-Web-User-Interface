@@ -44,4 +44,13 @@ export default class ReadDocument extends PageNav(Route) {
         controller.searchResults = this.searchResults?.documentList?.responseSet ?? [];
         controller.hasMore = (this.searchResults?.documentList?.responseSet?.length ?? 0) >= controller.limit;
     }
+
+    resetController(controller, isExiting, transition) {
+        super.resetController(controller, isExiting, transition);
+        if (isExiting) {
+            controller.searchResults = [];
+            controller.metadata = {};
+            controller.hasMore = false;
+        }
+    }
 }

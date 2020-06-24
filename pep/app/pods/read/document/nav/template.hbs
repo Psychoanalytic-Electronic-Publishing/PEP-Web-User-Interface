@@ -1,17 +1,23 @@
 <Page::Sidebar @side="left" as |Sidebar|>
     <Sidebar.content>
-        {{#if this.metadata.fullCount}}
+        {{!-- TODO isLoadingRoute state should show loading content placeholders --}}
+        {{#if (or this.metadata.fullCount this.isLoadingRoute)}}
             <div class="bg-white border-divider-b p-3">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <h4 class="mb-0">
-                        {{format-number (or this.metadata.fullCount 0)}}
-                        <span class="text-muted">results</span>
+                        {{#if this.this.isLoadingRoute}}
+                            <span class="text-muted">Loading&hellip;</span>
+                        {{else}}
+                            {{format-number (or this.metadata.fullCount 0)}}
+                            <span class="text-muted">results</span>
+                        {{/if}}
                     </h4>
                     <div class="d-flex align-items-center">
                         <Button
                             @type="link"
                             @icon="download"
                             @iconSize="lg"
+                            disabled={{this.this.isLoadingRoute}}
                             title="Export"
                             class="p-1"
                         />
@@ -19,29 +25,32 @@
                             @type="link"
                             @icon="print"
                             @iconSize="lg"
+                            disabled={{this.this.isLoadingRoute}}
                             title="Print"
                             class="p-1"
                         />
                     </div>
                 </div>
-                <div class="mb-3">
-                    <Button
-                        @type="link"
-                        class="text-decoration-none p-1 mr-1"
-                    >
-                        <span class="text-muted">Sort:</span>
-                        <span class="text-dark mr-1">Year</span>
-                        <FaIcon @icon="angle-down" class="text-muted" />
-                    </Button>
-                    <Button
-                        @type="link"
-                        class="text-decoration-none p-1 mr-2"
-                    >
-                        <span class="text-muted">View:</span>
-                        <span class="text-dark mr-1">Bibliographic</span>
-                        <FaIcon @icon="angle-down" class="text-muted" />
-                    </Button>
-                </div>
+                {{#unless this.this.isLoadingRoute}}
+                    <div class="mb-3">
+                        <Button
+                            @type="link"
+                            class="text-decoration-none p-1 mr-1"
+                        >
+                            <span class="text-muted">Sort:</span>
+                            <span class="text-dark mr-1">Year</span>
+                            <FaIcon @icon="angle-down" class="text-muted" />
+                        </Button>
+                        <Button
+                            @type="link"
+                            class="text-decoration-none p-1 mr-2"
+                        >
+                            <span class="text-muted">View:</span>
+                            <span class="text-dark mr-1">Bibliographic</span>
+                            <FaIcon @icon="angle-down" class="text-muted" />
+                        </Button>
+                    </div>
+                {{/unless}}
                 <VerticalCollection
                     @items={{this.searchResults}}
                     @tagName="ul"
