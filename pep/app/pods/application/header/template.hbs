@@ -9,7 +9,16 @@
     </LinkTo>
     <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-            <LinkTo @route="search" @query={{hash q=''}} class="nav-link">
+            <LinkTo
+                @route="search"
+                @query={{hash
+                    q=""
+                    matchSynonyms=false
+                    searchTerms=this.defaultSearchTerms
+                    facets=this.defaultSearchFacets
+                }}
+                class="nav-link"
+            >
                 Search
             </LinkTo>
         </li>

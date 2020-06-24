@@ -1,18 +1,20 @@
 <Page::Content>
-    <div class="py-3 px-4 bg-white-TBD">
-        <div class="mb-2">
-            <LinkTo
-                @route="search"
-                @query={{hash
-                    q=this.q
-                    matchSynonyms=this.matchSynonyms
-                    searchTerms=this._searchTerms
-                    facets=this._facets
-                }}
-            >
-                <FaIcon @icon="arrow-left" /> Back to search
-            </LinkTo>
-        </div>
+    <div class="py-3 px-4">
+        {{#if this.metadata.fullCount}}
+            <div class="mb-2">
+                <LinkTo
+                    @route="search"
+                    @query={{hash
+                        q=this.q
+                        matchSynonyms=this.matchSynonyms
+                        searchTerms=this._searchTerms
+                        facets=this._facets
+                    }}
+                >
+                    <FaIcon @icon="arrow-left" /> Back to search
+                </LinkTo>
+            </div>
+        {{/if}}
         <p class="small text-muted">
             {{this.model.documentRef}}
         </p>

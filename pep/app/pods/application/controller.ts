@@ -7,13 +7,16 @@ import SessionService from 'ember-simple-auth/services/session';
 import ModalService from '@gavant/ember-modals/services/modal';
 import LoadingBar from 'pep/services/loading-bar';
 import AuthService from 'pep/services/auth';
-import { SEARCH_TYPE_EVERYWHERE } from 'pep/constants/search';
+import { SEARCH_TYPE_EVERYWHERE, SEARCH_DEFAULT_TERMS, SEARCH_DEFAULT_FACETS } from 'pep/constants/search';
 
 export default class Application extends Controller {
     @service loadingBar!: LoadingBar;
     @service modal!: ModalService;
     @service session!: SessionService;
     @service auth!: AuthService;
+
+    defaultSearchTerms = JSON.stringify(SEARCH_DEFAULT_TERMS);
+    defaultSearchFacets = JSON.stringify(SEARCH_DEFAULT_FACETS);
 
     @tracked smartSearchTerm: string = '';
     @tracked matchSynonyms: boolean = false;

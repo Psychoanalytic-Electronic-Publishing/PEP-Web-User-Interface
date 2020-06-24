@@ -1,85 +1,108 @@
 <Page::Sidebar @side="left" as |Sidebar|>
     <Sidebar.content>
-        <div class="bg-white border-divider-b p-3">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-                <h4 class="mb-0">
-                    {{format-number (or this.metadata.fullCount 0)}}
-                    <span class="text-muted">results</span>
-                </h4>
-                <div class="d-flex align-items-center">
-                    <Button
-                        @type="link"
-                        @icon="download"
-                        @iconSize="lg"
-                        title="Export"
-                        class="p-1"
-                    />
-                    <Button
-                        @type="link"
-                        @icon="print"
-                        @iconSize="lg"
-                        title="Print"
-                        class="p-1"
-                    />
+        {{#if this.metadata.fullCount}}
+            <div class="bg-white border-divider-b p-3">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h4 class="mb-0">
+                        {{format-number (or this.metadata.fullCount 0)}}
+                        <span class="text-muted">results</span>
+                    </h4>
+                    <div class="d-flex align-items-center">
+                        <Button
+                            @type="link"
+                            @icon="download"
+                            @iconSize="lg"
+                            title="Export"
+                            class="p-1"
+                        />
+                        <Button
+                            @type="link"
+                            @icon="print"
+                            @iconSize="lg"
+                            title="Print"
+                            class="p-1"
+                        />
+                    </div>
                 </div>
-            </div>
-            <div class="mb-3">
-                <Button
-                    @type="link"
-                    class="text-decoration-none p-1 mr-1"
-                >
-                    <span class="text-muted">Sort:</span>
-                    <span class="text-dark mr-1">Year</span>
-                    <FaIcon @icon="angle-down" class="text-muted" />
-                </Button>
-                <Button
-                    @type="link"
-                    class="text-decoration-none p-1 mr-2"
-                >
-                    <span class="text-muted">View:</span>
-                    <span class="text-dark mr-1">Bibliographic</span>
-                    <FaIcon @icon="angle-down" class="text-muted" />
-                </Button>
-            </div>
-            <VerticalCollection
-                @items={{this.searchResults}}
-                @tagName="ul"
-                @containerSelector=".sidebar-content"
-                @class="list-unstyled"
-                @estimateHeight={{100}}
-                @lastReached={{this.loadNextPage}}
-                as |result|
-            >
-                <li class="mb-2">
-                    <LinkTo
-                        @route="read.document"
-                        @model={{result.documentID}}
-                        @query={{hash
-                            q=this.q
-                            matchSynonyms=this.matchSynonyms
-                            searchTerms=this._searchTerms
-                        }}
-                        class="{{if (eq result.documentID this.model.documentID) "font-weight-bold"}}"
+                <div class="mb-3">
+                    <Button
+                        @type="link"
+                        class="text-decoration-none p-1 mr-1"
                     >
-                        {{#if (eq result.documentID this.model.documentID)}}
-                            <FaIcon @icon="caret-right" />
-                        {{/if}}
-                        {{#if result.authorMast}}
-                            {{result.authorMast}}.
-                        {{/if}}
-                        {{{result.title}}}
-                    </LinkTo>
-                    <ul class="list-unstyled small ml-3">
-                        <li>{{result.sourceTitle}} ({{result.year}})</li>
-                    </ul>
-                </li>
-            </VerticalCollection>
-            {{#if this.isLoadingPage}}
-                <div class="d-flex align-items-center pt-2">
-                    <Progress::Spinner class="mr-1" />
-                    <span class="text-muted">Loading results...</span>
+                        <span class="text-muted">Sort:</span>
+                        <span class="text-dark mr-1">Year</span>
+                        <FaIcon @icon="angle-down" class="text-muted" />
+                    </Button>
+                    <Button
+                        @type="link"
+                        class="text-decoration-none p-1 mr-2"
+                    >
+                        <span class="text-muted">View:</span>
+                        <span class="text-dark mr-1">Bibliographic</span>
+                        <FaIcon @icon="angle-down" class="text-muted" />
+                    </Button>
                 </div>
-            {{/if}}
-        </div>
+                <VerticalCollection
+                    @items={{this.searchResults}}
+                    @tagName="ul"
+                    @containerSelector=".sidebar-content"
+                    @class="list-unstyled"
+                    @estimateHeight={{100}}
+                    @lastReached={{this.loadNextPage}}
+                    as |result|
+                >
+                    <li class="mb-2">
+                        <LinkTo
+                            @route="read.document"
+                            @model={{result.documentID}}
+                            @query={{hash
+                                q=this.q
+                                matchSynonyms=this.matchSynonyms
+                                searchTerms=this._searchTerms
+                            }}
+                            class="{{if (eq result.documentID this.model.documentID) "font-weight-bold"}}"
+                        >
+                            {{#if (eq result.documentID this.model.documentID)}}
+                                <FaIcon @icon="caret-right" />
+                            {{/if}}
+                            {{#if result.authorMast}}
+                                {{result.authorMast}}.
+                            {{/if}}
+                            {{{result.title}}}
+                        </LinkTo>
+                        <ul class="list-unstyled small ml-3">
+                            <li>{{result.sourceTitle}} ({{result.year}})</li>
+                        </ul>
+                    </li>
+                </VerticalCollection>
+                {{#if this.isLoadingPage}}
+                    <div class="d-flex align-items-center pt-2">
+                        <Progress::Spinner class="mr-1" />
+                        <span class="text-muted">Loading results...</span>
+                    </div>
+                {{/if}}
+            </div>
+        {{else}}
+            <div class="bg-white border-divider-b px-3 py-4 mb-2">
+                <p class="text-muted">
+                    Want to find more articles and resources?
+                </p>
+                <p>
+                    <LinkTo @route="search" class="btn btn-outline-primary btn-block">
+                        Start a new search
+                    </LinkTo>
+                </p>
+            </div>
+            <div class="p-3">
+                <h5>72 Premier Journals</h5>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam imperdiet, orci nec viverra feugiat, elit ligula tempor eros, et feugiat massa nibh eu nunc.
+                </p>
+                <h5>59 Classic Books</h5>
+                <p>
+                    Mauris cursus pretium consequat. Nunc pellentesque tellus eget neque molestie, quis bibendum libero consectetur.
+                </p>
+            </div>
+        {{/if}}
     </Sidebar.content>
 </Page::Sidebar>

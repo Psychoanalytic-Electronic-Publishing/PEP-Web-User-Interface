@@ -9,12 +9,53 @@
                 </div>
             {{else}}
                 {{#if this.noResults}}
-                    <div class="d-flex h-50 justify-content-center align-items-center">
-                        <div class="px-4 py-5 text-muted">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <div class="p-5 text-muted">
                             {{#if this.hasSubmittedSearch}}
-                                No results found. Try using different search terms or phrases to find what you're looking for.
+                                <p class="my-4 p-3 bg-backdrop-well rounded">
+                                    No results found. Try using different search terms or phrases to find what you're looking for.
+                                </p>
+                                <p class="d-lg-none mb-4">
+                                    <Button
+                                        @type="primary"
+                                        @size="lg"
+                                        @blockLayout={{this.media.isMobile}}
+                                        @icon="search"
+                                        @label="Start a new search"
+                                        @action={{this.showSearch}}
+                                    />
+                                </p>
                             {{else}}
-                                Use the form on the left to enter terms or phrases and search our publication database.
+                                <h5>Your search starts here</h5>
+                                <p class="mb-4">
+                                    <FaIcon @icon="arrow-left" />
+                                    Use the form on the left to enter terms or phrases and search our publication database.
+                                </p>
+                                <p class="d-lg-none mb-4">
+                                    <Button
+                                        @type="primary"
+                                        @size="lg"
+                                        @blockLayout={{this.media.isMobile}}
+                                        @icon="search"
+                                        @label="Start a new search"
+                                        @action={{this.showSearch}}
+                                    />
+                                </p>
+                                <h5>Search tips</h5>
+                                <p>
+                                    Smart Search taskes all kinds of search inputs:
+                                </p>
+                                <ul>
+                                    <li>
+                                        Find terms or keywords - to get the best search results, <strong>enter at least two terms at a time.</strong><br>
+                                        This will make the search more precise, returning only the most relevant results.
+                                    </li>
+                                    <li>Paste a reference from an article</li>
+                                    <li>Use a Journal name or part of a journal name</li>
+                                    <li>Search on author name (or multiple authors)</li>
+                                    <li>Use part of a title (two or more words)</li>
+                                    <li>Search by Year / Vol / Page #</li>
+                                </ul>
                             {{/if}}
                         </div>
                     </div>

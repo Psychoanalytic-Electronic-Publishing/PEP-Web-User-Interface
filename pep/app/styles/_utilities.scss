@@ -6,6 +6,10 @@
     );
 }
 
+.bg-backdrop-well {
+    background-color: $color-backdrop-well;
+}
+
 .border-divider-b {
     border-bottom: 1px solid $color-divider;
 }

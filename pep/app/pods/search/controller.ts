@@ -9,11 +9,13 @@ import AjaxService from 'pep/services/ajax';
 import { SEARCH_TYPE_EVERYWHERE } from 'pep/constants/search';
 import { serializeQueryParams } from 'pep/utils/serialize-query-params';
 import { buildSearchQueryParams } from 'pep/utils/search';
-import Sidebar from 'pep/services/sidebar';
+import SidebarService from 'pep/services/sidebar';
+import LoadingBarService from 'pep/services/loading-bar';
 
 export default class Search extends ControllerPagination(Controller) {
     @service ajax!: AjaxService;
-    @service sidebar!: Sidebar;
+    @service sidebar!: SidebarService;
+    @service loadingBar!: LoadingBarService;
     @service media;
 
     queryParams = ['q', { _searchTerms: 'searchTerms' }, 'matchSynonyms', { _facets: 'facets' }];
@@ -109,37 +111,53 @@ export default class Search extends ControllerPagination(Controller) {
     }
 
     @action
-    submitSearch() {
-        //update query params
-        const searchTerms = this.currentSearchTerms.filter((t) => !!t.term);
+    async submitSearch() {
+        try {
+            //update query params
+            const searchTerms = this.currentSearchTerms.filter((t) => !!t.term);
 
-        this.q = this.currentSmartSearchTerm;
-        this.searchTerms = !isEmpty(searchTerms) ? searchTerms : null;
-        this.matchSynonyms = this.currentMatchSynonyms;
+            this.q = this.currentSmartSearchTerm;
+            this.searchTerms = !isEmpty(searchTerms) ? searchTerms : null;
+            this.matchSynonyms = this.currentMatchSynonyms;
 
-        //clear any open document preview
-        this.closeResultPreview();
+            //clear any open document preview
+            this.closeResultPreview();
 
-        //close overlay sidebar on submit in mobile/tablet
-        if (this.media.isMobile || this.media.isTablet) {
-            this.sidebar.toggleLeftSidebar();
+            //close overlay sidebar on submit in mobile/tablet
+            if (this.media.isMobile || this.media.isTablet) {
+                this.sidebar.toggleLeftSidebar();
+            }
+
+            //perform search
+            this.loadingBar.show();
+            const results = await this.filter();
+            this.loadingBar.hide();
+            return results;
+        } catch (err) {
+            this.loadingBar.hide();
+            throw err;
         }
-
-        //perform search
-        return this.filter();
     }
 
     @action
-    resubmitSearchWithFacets() {
-        this.facets = this.currentFacets;
-        this.closeResultPreview();
+    async resubmitSearchWithFacets() {
+        try {
+            this.facets = this.currentFacets;
+            this.closeResultPreview();
 
-        //close overlay sidebar on submit in mobile/tablet
-        if (this.media.isMobile || this.media.isTablet) {
-            this.sidebar.toggleLeftSidebar();
+            //close overlay sidebar on submit in mobile/tablet
+            if (this.media.isMobile || this.media.isTablet) {
+                this.sidebar.toggleLeftSidebar();
+            }
+
+            this.loadingBar.show();
+            const results = await this.filter();
+            this.loadingBar.hide();
+            return results;
+        } catch (err) {
+            this.loadingBar.hide();
+            throw err;
         }
-
-        return this.filter();
     }
 
     @action
@@ -209,6 +227,11 @@ export default class Search extends ControllerPagination(Controller) {
     @action
     setPreviewMode(mode) {
         this.previewMode = mode;
+    }
+
+    @action
+    showSearch() {
+        this.sidebar.toggleLeftSidebar(true);
     }
 }
 

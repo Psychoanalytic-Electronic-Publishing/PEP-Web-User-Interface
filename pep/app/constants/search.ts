@@ -1,5 +1,13 @@
 export const SEARCH_RESULTS_WARNING_COUNT = 200;
 
+export const SEARCH_DEFAULT_TERMS = [
+    { type: 'everywhere', term: '' },
+    { type: 'title', term: '' },
+    { type: 'author', term: '' }
+];
+
+export const SEARCH_DEFAULT_FACETS = [];
+
 /**
  * Search term types
  */
@@ -22,25 +30,25 @@ export const SEARCH_TYPE_TITLE = {
     label: 'Title'
 };
 
-export const SEARCH_TYPE_FREUD = {
-    id: 'freud',
-    label: "Freud's Work*"
-};
+// export const SEARCH_TYPE_FREUD = {
+//     id: 'freud',
+//     label: "Freud's Work"
+// };
 
-export const SEARCH_TYPE_GLOSSARY = {
-    id: 'glossary',
-    label: 'PEP Glossary*'
-};
+// export const SEARCH_TYPE_GLOSSARY = {
+//     id: 'glossary',
+//     label: 'PEP Glossary'
+// };
 
-export const SEARCH_TYPE_DIALOG = {
-    id: 'dialog',
-    label: 'Dialogs*'
-};
+// export const SEARCH_TYPE_DIALOG = {
+//     id: 'dialog',
+//     label: 'Dialogs'
+// };
 
-export const SEARCH_TYPE_QUOTE = {
-    id: 'quote',
-    label: 'Quotes*'
-};
+// export const SEARCH_TYPE_QUOTE = {
+//     id: 'quote',
+//     label: 'Quotes'
+// };
 
 export const SEARCH_TYPE_START_YEAR = {
     id: 'start-year',
@@ -54,10 +62,10 @@ export const SEARCH_TYPE_END_YEAR = {
     label: 'End Year'
 };
 
-export const SEARCH_TYPE_BIBLIO = {
-    id: 'bibliography',
-    label: 'Bilbiographies*'
-};
+// export const SEARCH_TYPE_BIBLIO = {
+//     id: 'bibliography',
+//     label: 'Bilbiographies'
+// };
 
 export const SEARCH_TYPE_CITED = {
     id: 'cited',
@@ -73,25 +81,25 @@ export const SEARCH_TYPE_VIEWED = {
     shortLabel: 'Viewed #'
 };
 
-export const SEARCH_TYPE_SCHOLAR = {
-    id: 'scholar',
-    label: 'Google Scholar*'
-};
+// export const SEARCH_TYPE_SCHOLAR = {
+//     id: 'scholar',
+//     label: 'Google Scholar'
+// };
 
 export const SEARCH_TYPES = [
     SEARCH_TYPE_EVERYWHERE,
     SEARCH_TYPE_AUTHOR,
     SEARCH_TYPE_TITLE,
-    SEARCH_TYPE_FREUD,
-    SEARCH_TYPE_GLOSSARY,
-    SEARCH_TYPE_DIALOG,
-    SEARCH_TYPE_QUOTE,
+    // SEARCH_TYPE_FREUD,
+    // SEARCH_TYPE_GLOSSARY,
+    // SEARCH_TYPE_DIALOG,
+    // SEARCH_TYPE_QUOTE,
     SEARCH_TYPE_START_YEAR,
     SEARCH_TYPE_END_YEAR,
-    SEARCH_TYPE_BIBLIO,
+    // SEARCH_TYPE_BIBLIO,
     SEARCH_TYPE_CITED,
-    SEARCH_TYPE_VIEWED,
-    SEARCH_TYPE_SCHOLAR
+    SEARCH_TYPE_VIEWED
+    // SEARCH_TYPE_SCHOLAR
 ];
 
 /**
