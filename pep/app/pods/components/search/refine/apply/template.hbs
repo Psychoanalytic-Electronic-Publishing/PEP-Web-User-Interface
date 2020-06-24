@@ -1,0 +1,10 @@
+{{#animated-if @hasChanges use=this.animateTransition duration=300 initialInsertion=true}}
+    <div class="search-refine-apply-bar border-divider-t">
+        <Button
+            @type="primary"
+            @label="Refine search"
+            @wide={{true}}
+            @action={{@apply}}
+        />
+    </div>
+{{/animated-if}}

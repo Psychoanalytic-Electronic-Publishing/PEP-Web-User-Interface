@@ -34,14 +34,8 @@
             </div>
         {{/if}}
     </Sidebar.content>
-    {{#if this.hasRefineChanges}}
-        <div class="search-refine-apply-bar">
-            <Button
-                @type="primary"
-                @label="Refine search"
-                @wide={{true}}
-                @action={{this.resubmitSearchWithFacets}}
-            />
-        </div>
-    {{/if}}
+    <Search::Refine::Apply
+        @hasChanges={{this.hasRefineChanges}}
+        @apply={{this.resubmitSearchWithFacets}}
+    />
 </Page::Sidebar>
