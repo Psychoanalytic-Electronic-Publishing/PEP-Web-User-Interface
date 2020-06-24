@@ -13,6 +13,7 @@ import AuthService from 'pep/services/auth';
 import LoadingBarService from 'pep/services/loading-bar';
 import { serializeQueryParams } from 'pep/utils/serialize-query-params';
 import { buildSearchQueryParams } from 'pep/utils/search';
+import { SEARCH_DEFAULT_TERMS, SEARCH_DEFAULT_FACETS } from 'pep/constants/search';
 
 const HTML_BODY_REGEX = /^.*?<body[^>]*>(.*?)<\/body>.*?$/i;
 
@@ -21,6 +22,9 @@ export default class ReadDocument extends ControllerPagination(Controller) {
     @service ajax!: AjaxService;
     @service auth!: AuthService;
     @service loadingBar!: LoadingBarService;
+
+    defaultSearchTerms = JSON.stringify(SEARCH_DEFAULT_TERMS);
+    defaultSearchFacets = JSON.stringify(SEARCH_DEFAULT_FACETS);
 
     queryParams = ['q', { _searchTerms: 'searchTerms' }, 'matchSynonyms', { _facets: 'facets' }];
     @tracked q: string = '';
