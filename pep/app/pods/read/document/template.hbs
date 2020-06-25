@@ -19,14 +19,14 @@
             {{this.model.documentRef}}
         </p>
         <div class="card">
-            <div class="card-body pep-document-content">
+            <div class="card-body">
                 <h4 class="mb-3">
                     {{{this.model.title}}}
                     <div class="small text-muted">
                         {{this.model.authorMast}}
                     </div>
                 </h4>
-                <p class="text-muted">
+                <p class="text-muted pep-document-content">
                     {{{this.model.abstract}}}
                 </p>
                 {{#if this.model.accessLimited}}
@@ -45,7 +45,9 @@
                     </div>
                 {{else}}
                     {{!-- TODO document pagination --}}
-                    {{{this.documentCleaned}}}
+                    <div class="pep-document-content">
+                        {{{this.documentCleaned}}}
+                    </div>
                 {{/if}}
             </div>
         </div>
