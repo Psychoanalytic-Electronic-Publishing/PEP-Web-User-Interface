@@ -27,7 +27,8 @@ export function buildSearchQueryParams(
 ) {
     const queryParams = {
         facetfields: !isEmpty(facetFields) ? facetFields.join(',') : null,
-        smartSearchTerm,
+        //TODO smartSearchTerm needs to actually be "smart"
+        fulltext1: smartSearchTerm,
         synonyms
     };
 
