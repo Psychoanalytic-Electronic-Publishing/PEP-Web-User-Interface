@@ -47,10 +47,9 @@ export default class ReadDocument extends PageNav(Route) {
 
     resetController(controller, isExiting, transition) {
         super.resetController(controller, isExiting, transition);
-        if (isExiting) {
-            controller.searchResults = [];
-            controller.metadata = {};
-            controller.hasMore = false;
-        }
+        controller.searchResults = [];
+        controller.metadata = {};
+        controller.hasMore = false;
+        this.searchResults = null;
     }
 }

@@ -37,9 +37,16 @@ export default class ReadDocument extends ControllerPagination(Controller) {
 
     @readOnly('searchResults.length') offset: number | undefined;
 
+    @tracked currentPage = 1;
     @tracked searchResults = [];
+
     //TODO will be removed once proper pagination is hooked up
     @tracked metadata = {};
+
+    get lastPage() {
+        //TODO get from metadata
+        return 5;
+    }
 
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
@@ -109,6 +116,10 @@ export default class ReadDocument extends ControllerPagination(Controller) {
 
         this.set('isLoadingPage', false);
         return models;
+    }
+
+    clearModels() {
+        this.searchResults = [];
     }
 
     //TODO TBD - overrides ControllerPagination, will not be needed once api is integrated w/ember-data

@@ -1,7 +1,7 @@
 <Page::Content>
     <div class="py-3 px-4">
-        {{#if this.metadata.fullCount}}
-            <div class="mb-2">
+        <div class="d-flex {{if this.metadata.fullCount "justify-content-between" "justify-content-end"}} align-items-center mb-2">
+            {{#if this.metadata.fullCount}}
                 <LinkTo
                     @route="search"
                     @query={{hash
@@ -13,8 +13,37 @@
                 >
                     <FaIcon @icon="arrow-left" /> Back to search
                 </LinkTo>
+            {{/if}}
+            <div class="ml-2 d-flex align-items-center">
+                <Button
+                    @type="link"
+                    @icon="chevron-left"
+                    @iconOnly={{true}}
+                    class="py-0 px-2 text-muted"
+                />
+                <div class="input-group input-group-minimal mx-1">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="doc-page-control-label">Page</span>
+                    </div>
+                    <input
+                        type="number"
+                        min={{1}}
+                        max={{this.lastPage}}
+                        value={{this.currentPage}}
+                        class="form-control text-center"
+                        maxlength="255"
+                        aria-label="Page"
+                        aria-describedby="doc-page-control-label"
+                    />
+                </div>
+                <Button
+                    @type="link"
+                    @icon="chevron-right"
+                    @iconOnly={{true}}
+                    class="py-0 px-2 text-muted"
+                />
             </div>
-        {{/if}}
+        </div>
         <p class="small text-muted">
             {{this.model.documentRef}}
         </p>

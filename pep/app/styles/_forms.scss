@@ -18,3 +18,28 @@ select:-webkit-autofill:focus {
         min-height: 0;
     }
 }
+
+.input-group-minimal {
+    .input-group-text {
+        color: $text-muted;
+        padding: 0.25rem 0.25rem 0.25rem 0.5rem;
+        line-height: 1.2;
+        border-right: 0;
+        background-color: transparent;
+    }
+
+    .form-control {
+        height: calc(1.2em + 0.5rem + 2px);
+        padding: 0.25rem 0.5rem 0.25rem 0.25rem;
+        line-height: 1.2;
+        background-color: transparent;
+    }
+
+    .input-group-prepend + .form-control {
+        border-left: 0;
+    }
+
+    &:hover {
+        background-color: rgba(#fff, 0.4);
+    }
+}
