@@ -10,8 +10,8 @@
             {{else}}
                 {{#if this.noResults}}
                     <div class="d-flex justify-content-center align-items-center">
-                        <div class="p-5 text-muted">
-                            {{#if this.hasSubmittedSearch}}
+                        {{#if this.hasSubmittedSearch}}
+                            <div class="m-3 m-md-5 text-muted">
                                 <p class="my-4 p-3 bg-backdrop-well rounded">
                                     No results found. Try using different search terms or phrases to find what you're looking for.
                                 </p>
@@ -25,7 +25,9 @@
                                         @action={{this.showSearch}}
                                     />
                                 </p>
-                            {{else}}
+                            </div>
+                        {{else}}
+                            <div class="m-3 m-md-5 p-3 bg-backdrop-well rounded text-muted">
                                 <h5>Your search starts here</h5>
                                 <p class="mb-4">
                                     <FaIcon @icon="arrow-left" />
@@ -56,8 +58,8 @@
                                     <li>Use part of a title (two or more words)</li>
                                     <li>Search by Year / Vol / Page #</li>
                                 </ul>
-                            {{/if}}
-                        </div>
+                            </div>
+                        {{/if}}
                     </div>
                 {{else}}
                     <div class="py-3 px-4">
