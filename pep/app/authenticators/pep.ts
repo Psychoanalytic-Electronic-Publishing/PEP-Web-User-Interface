@@ -19,8 +19,14 @@ export default class PepAuthenticator extends BaseAuthenticator {
     }
 
     async invalidate() {
-        const result = await this.ajax.request('Session/Logout/');
-        return result;
+        try {
+            const result = await this.ajax.request('Session/Logout/');
+            return result;
+        } catch (err) {
+            //TODO for now, just pretend that logouts always succeed
+            //as there is an issue where the user's session will just expire in the api w/no notice
+            return resolve();
+        }
     }
 
     restore(data) {
