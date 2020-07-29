@@ -1,6 +1,5 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
-import PerfectScrollbar from 'perfect-scrollbar';
 import { inject as service } from '@ember/service';
 
 interface ScrollableArgs {
@@ -9,6 +8,7 @@ interface ScrollableArgs {
 
 export default class Scrollable extends Component<ScrollableArgs> {
     @service media;
+    @service fastboot;
 
     ps = null;
     scrollElement = null;
@@ -20,12 +20,11 @@ export default class Scrollable extends Component<ScrollableArgs> {
     }
 
     setup(element) {
-        if (element && !this.ps) {
+        if (element && !this.ps && !this.fastboot.isFastBoot) {
             const ps = new PerfectScrollbar(element, {
                 //@see https://github.com/mdbootstrap/perfect-scrollbar#options
                 wheelSpeed: 1
             });
-
             this.ps = ps;
             this.scrollElement = element;
         }

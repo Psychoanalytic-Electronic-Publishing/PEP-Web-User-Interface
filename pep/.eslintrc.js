@@ -25,6 +25,9 @@ module.exports = {
         'prefer-template': 'error',
         'prettier/prettier': 'error'
     },
+    globals: {
+        PerfectScrollbar: true
+    },
     overrides: [
         // node files
         {

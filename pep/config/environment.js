@@ -8,7 +8,7 @@ module.exports = function(environment) {
         //@see https://blog.emberjs.com/2016/04/28/baseurl ("Configuring the Router" section)
         rootURL: '/',
         routerRootURL: process.env.ROOT_URL,
-        locationType: 'hash',
+        locationType: 'auto',
         EmberENV: {
             LOG_STACKTRACE_ON_DEPRECATION: false,
             FEATURES: {
