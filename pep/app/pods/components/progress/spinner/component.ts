@@ -2,7 +2,8 @@ import Component from '@glimmer/component';
 
 interface ProgressSpinnerArgs {
     active: boolean;
-    //TODO other args
+    light?: boolean;
+    size?: string;
 }
 
 export default class ProgressSpinner extends Component<ProgressSpinnerArgs> {

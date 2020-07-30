@@ -2,9 +2,10 @@ import Service from '@ember/service';
 import { isNone } from '@ember/utils';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
+import MediaService from 'ember-responsive/services/media';
 
 export default class Sidebar extends Service {
-    @service media;
+    @service media!: MediaService;
     @tracked leftSidebarIsOpen = true;
     @tracked rightSidebarIsOpen = true;
 
@@ -12,12 +13,19 @@ export default class Sidebar extends Service {
         return this.leftSidebarIsOpen || this.rightSidebarIsOpen;
     }
 
+    /**
+     * Close the sidebars by default on mobile
+     */
     constructor() {
         super(...arguments);
         this.handleMediaChange();
         this.media.on('mediaChanged', this, this.handleMediaChange);
     }
 
+    /**
+     * Toggles the state of the left sidebar
+     * @param {Boolean} open
+     */
     toggleLeftSidebar(open?: boolean) {
         this.leftSidebarIsOpen = !isNone(open) ? open : !this.leftSidebarIsOpen;
         //only allow one sidebar open at a time on mobile
@@ -26,6 +34,10 @@ export default class Sidebar extends Service {
         }
     }
 
+    /**
+     * Toggles the state of the right sidebar
+     * @param {Boolean} open
+     */
     toggleRightSidebar(open?: boolean) {
         this.rightSidebarIsOpen = !isNone(open) ? open : !this.rightSidebarIsOpen;
         //only allow one sidebar open at a time on mobile
@@ -34,13 +46,20 @@ export default class Sidebar extends Service {
         }
     }
 
+    /**
+     * Toggles the state of both sidebars
+     * @param {Boolean} open
+     */
     toggleAll(open?: boolean) {
         this.toggleLeftSidebar(open);
         this.toggleRightSidebar(open);
     }
 
+    /**
+     * Default sidebars to closed on mobile/tablet
+     * @private
+     */
     private handleMediaChange() {
-        //default sidebars to closed on mobile/tablet
         if (this.media.isMobile || this.media.isTablet) {
             this.leftSidebarIsOpen = false;
             this.rightSidebarIsOpen = false;

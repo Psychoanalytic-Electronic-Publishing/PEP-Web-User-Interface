@@ -14,7 +14,7 @@ export default class CurrentUserService extends Service {
 
     /**
      * Loads the current user from the API
-     * @return Promise<User>
+     * @return {Promise<User>}
      */
     load(): Promise<User> {
         return this.fetchUser();

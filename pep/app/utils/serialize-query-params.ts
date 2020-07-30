@@ -1,12 +1,38 @@
 const RBRACKET = /\[\]$/;
 
+/**
+ * Part of the `serializeQueryParams` helper function.
+ * @param {any} obj
+ * @return {Boolean}
+ */
 function isPlainObject(obj: any): boolean {
     return Object.prototype.toString.call(obj) === '[object Object]';
 }
 
-/*
+/**
+ * Part of the `serializeQueryParams` helper function.
+ * @param {Array<any>} s
+ * @param {String} k
+ * @param {string | () => string} v
+ */
+function add(s: Array<any>, k: string, v?: string | (() => string)) {
+    // Strip out keys with undefined value and replace null values with
+    // empty strings (mimics jQuery.ajax)
+    if (v === undefined) {
+        return;
+    } else if (v === null) {
+        v = '';
+    }
+
+    v = typeof v === 'function' ? v() : v;
+    s[s.length] = `${encodeURIComponent(k)}=${encodeURIComponent(v)}`;
+}
+
+/**
  * Helper function that turns the data/body of a request into a query param string.
  * This is directly copied from jQuery.param.
+ * @param {Object | String} queryParamsObject
+ * @return {String}
  */
 export function serializeQueryParams(queryParamsObject: object | string): string {
     var s: any[] = [];
@@ -45,20 +71,4 @@ export function serializeQueryParams(queryParamsObject: object | string): string
     return buildParams('', queryParamsObject)
         .join('&')
         .replace(/%20/g, '+');
-}
-
-/*
- * Part of the `serializeQueryParams` helper function.
- */
-function add(s: Array<any>, k: string, v?: string | (() => string)) {
-    // Strip out keys with undefined value and replace null values with
-    // empty strings (mimics jQuery.ajax)
-    if (v === undefined) {
-        return;
-    } else if (v === null) {
-        v = '';
-    }
-
-    v = typeof v === 'function' ? v() : v;
-    s[s.length] = `${encodeURIComponent(k)}=${encodeURIComponent(v)}`;
 }

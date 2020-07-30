@@ -1,10 +1,16 @@
-export const THEME_DEFAULT = {
+export interface Theme {
+    id: string;
+    cssPath: string;
+    label: string;
+}
+
+export const THEME_DEFAULT: Theme = {
     id: 'default',
     cssPath: '/assets/pep.css',
     label: 'Navy (default)'
 };
 
-export const THEME_TOMATO = {
+export const THEME_TOMATO: Theme = {
     id: 'tomato',
     cssPath: '/assets/themes/tomato.css',
     label: 'Tomato'

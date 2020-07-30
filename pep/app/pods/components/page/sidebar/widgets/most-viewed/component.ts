@@ -14,8 +14,13 @@ export default class PageSidebarWidgetsMostViewed extends Component<PageSidebarW
     @tracked isLoading = false;
     @tracked results = [];
 
-    //TODO use ember-concurrency task
+    /**
+     * Load the widget results data
+     */
     async loadResults() {
+        // TODO switch to ember-concurrency task (with TS-friendly decorators, etc)
+        // to remove manual `isLoading` state management etc
+        // @see https://jamescdavis.com/using-ember-concurrency-with-typescript/
         try {
             this.isLoading = true;
             const params = serializeQueryParams({ period: 'all', sourcecode: 'AOP', morethan: 3, limit: 3 });
@@ -27,6 +32,9 @@ export default class PageSidebarWidgetsMostViewed extends Component<PageSidebarW
         }
     }
 
+    /**
+     * Load the widget results on render
+     */
     @action
     onElementInsert() {
         this.loadResults();

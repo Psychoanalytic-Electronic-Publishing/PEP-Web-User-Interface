@@ -10,9 +10,11 @@ export default class Login extends Route.extend(UnauthenticatedRouteMixin) {
     classNames = ['login'];
     routeIfAlreadyAuthenticated = 'index';
 
+    /**
+     * Redirect to the home page and open the login modal
+     */
     async redirect() {
         if (!this.session.isAuthenticated) {
-            //redirect to the home page and open the login modal
             await this.transitionTo('index');
             return this.auth.openLoginModal();
         }

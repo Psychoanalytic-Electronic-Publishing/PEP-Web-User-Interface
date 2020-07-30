@@ -10,11 +10,18 @@ interface ModalDialogsUserPreferencesArgs {
 export default class ModalDialogsUserPreferences extends Component<ModalDialogsUserPreferencesArgs> {
     @service theme!: ThemeService;
 
+    /**
+     * Close the preferences modal dialog
+     */
     @action
     done() {
         this.args.onClose();
     }
 
+    /**
+     * Update the current theme
+     * @param {String} newThemeId
+     */
     @action
     updateTheme(newThemeId: string) {
         this.theme.updateTheme(newThemeId);

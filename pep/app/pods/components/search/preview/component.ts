@@ -17,6 +17,7 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
     @service auth!: AuthService;
 
     @tracked fitHeight?: number;
+    previewElement: HTMLElement | null = null;
 
     get mode() {
         return this.args.mode || 'fit';
@@ -26,26 +27,39 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
         return this.mode === 'fit' && this.fitHeight ? htmlSafe(`height: ${this.fitHeight}px;`) : null;
     }
 
-    //TODO this should be called again whenever the browser window size changes, using ember-resize's Resize service
+    /**
+     * Calculates the height that will allow all the content to show w/o scrolling
+     * constrained to a maximum height that is the parent container's height
+     */
     calculateFitHeight() {
+        //TODO call this whenever the parent container's dimensions change using ember-did-resize-modifier
         this.fitHeight = 0;
         if (this.previewElement) {
             //dont allow the fit height to be taller than the container height
             const scrollHeight = this.previewElement.scrollHeight;
-            const containerHeight = document.querySelector(this.args.containerSelector)?.offsetHeight;
+            const containerEl = document.querySelector(this.args.containerSelector) as HTMLDivElement;
+            const containerHeight = containerEl?.offsetHeight;
             const fitHeight = Math.min(scrollHeight, containerHeight || scrollHeight);
             next(this, () => (this.fitHeight = fitHeight));
         }
     }
 
+    /**
+     * Calculate the content's "fit" height on render
+     * @param {HTMLElement} element
+     */
     @action
-    onElementInsert(element) {
+    onElementInsert(element: HTMLElement) {
         this.previewElement = element;
         scheduleOnce('afterRender', this, this.calculateFitHeight);
     }
 
+    /**
+     * Show the login modal dialog
+     * @param {Event} event
+     */
     @action
-    login(event) {
+    login(event: Event) {
         event.preventDefault();
         return this.auth.openLoginModal(true);
     }

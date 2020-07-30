@@ -8,10 +8,12 @@ import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import IntlService from 'ember-intl/services/intl';
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 import SessionService from 'ember-simple-auth/services/session';
+import MediaService from 'ember-responsive/services/media';
 import LoadingBarService from 'pep/services/loading-bar';
 import SidebarService from 'pep/services/sidebar';
 import ThemeService from 'pep/services/theme';
 import AuthService from 'pep/services/auth';
+import { ApiServerError, ApiServerErrorResponse } from './adapter';
 
 export default class Application extends PageLayout(Route.extend(ApplicationRouteMixin)) {
     routeAfterAuthentication = 'index';
@@ -23,8 +25,13 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
     @service sidebar!: SidebarService;
     @service theme!: ThemeService;
     @service auth!: AuthService;
-    @service media;
+    @service media!: MediaService;
 
+    /**
+     * App bootup initialization tasks, set locale/theme, etc
+     * If the user is already authenticated, load their data here
+     * @param {Transition} transition
+     */
     async beforeModel(transition: Transition) {
         super.beforeModel(transition);
         this.intl.setLocale('en-us');
@@ -38,6 +45,9 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
         // }
     }
 
+    /**
+     * Handler called by ember-simple-auth upon successful login
+     */
     async sessionAuthenticated() {
         //TODO hook up getting current user data from /v2/Session/WhoAmI/
 
@@ -63,34 +73,44 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
 
     /**
      * Invoked when transitioning to routes that do not immediately resolve
+     *
+     * Show the app loading progress bar to indicate that the app is in a
+     * loading state when transitioning between routes
      * @param {Object} transition
      */
     @action
-    loading(transition) {
-        //show the app loading progress bar to indicate
-        //that the app is in a loading state when transitioning between routes
+    loading(transition: Transition) {
         this.loadingBar.show();
+        //@ts-ignore - `promise` appears to technically be a private api
         transition.promise.finally(() => this.loadingBar.hide());
-
         //allows loading routes to be shown if needed
         return true;
     }
 
+    /**
+     * When transitioning to a new route, close sidebars on mobile/tablet
+     */
     @action
     didTransition() {
-        //when transitioning to a new route, close sidebars on mobile/tablet
         if (this.media.isMobile || this.media.isTablet) {
             this.sidebar.toggleAll(false);
         }
     }
 
+    /**
+     * Top level route error event handler - If routes reject with an error
+     * i.e. do not explicitly catch and handle errors return by their
+     * model()/beforeModel()/afterModel() hooks, this will be invoked.
+     * Which will redirect the user as needed, depending the type of error returned
+     * @param {any} error
+     */
     @action
-    error(error?: any) {
+    error(error?: ApiServerErrorResponse) {
         if (this.fastboot.isFastBoot) {
-            this.fastboot.response.statusCode = error?.errors?.firstObject?.status ?? 200;
+            this.fastboot.response.statusCode = error?.errors?.[0]?.status ?? 200;
         }
-        if (error?.errors?.length > 0) {
-            const status = error.errors.firstObject.status;
+        if (error?.errors?.length && error?.errors?.length > 0) {
+            const status = error?.errors?.[0].status;
             if (status === '403') {
                 this.replaceWith('four-oh-three');
                 //marks error as being handled

@@ -33,7 +33,7 @@
             </div>
             <div class="px-4 pb-3">
                 <h5>
-                    {{{@result.title}}}
+                    {{html-safe @result.title}}
                     {{#if @result.authorMast}}
                         <div class="small text-muted">
                             {{@result.authorMast}}
@@ -41,7 +41,7 @@
                     {{/if}}
                 </h5>
                 <div class="mb-2">
-                    {{{@result.abstract}}}
+                    {{html-safe @result.abstract}}
                 </div>
                 <div>
                     {{#if this.session.isAuthenticated}}

@@ -4,23 +4,14 @@ import { render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
 module('Integration | Component | page/sidebar/mask', function(hooks) {
-  setupRenderingTest(hooks);
+    setupRenderingTest(hooks);
 
-  test('it renders', async function(assert) {
-    // Set any properties with this.set('myProperty', 'value');
-    // Handle any actions with this.set('myAction', function(val) { ... });
+    test('it renders', async function(assert) {
+        // Set any properties with this.set('myProperty', 'value');
+        // Handle any actions with this.set('myAction', function(val) { ... });
 
-    await render(hbs`{{page/sidebar/mask}}`);
+        await render(hbs`{{page/sidebar/mask}}`);
 
-    assert.equal(this.element.textContent.trim(), '');
-
-    // Template block usage:
-    await render(hbs`
-      {{#page/sidebar/mask}}
-        template block text
-      {{/page/sidebar/mask}}
-    `);
-
-    assert.equal(this.element.textContent.trim(), 'template block text');
-  });
+        assert.equal(this.element.textContent?.trim(), '');
+    });
 });

@@ -10,8 +10,8 @@ module('Integration | Component | modal-dialogs/user/preferences', function(hook
         // Set any properties with this.set('myProperty', 'value');
         // Handle any actions with this.set('myAction', function(val) { ... });
 
-        await render(hbs`{{modal-dialogs/user/preferences}}`);
+        await render(hbs`<ModalDialogs::User::Preferences />`);
 
-        assert.equal(this.element.textContent.trim(), '');
+        assert.equal(this.element.textContent?.trim(), '');
     });
 });

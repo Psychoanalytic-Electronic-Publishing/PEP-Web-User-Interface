@@ -24,3 +24,28 @@ export function unsendable(target: any, propertyKey: string) {
         target.unsendableAttributes.push(propertyKey);
     }
 }
+
+/**
+ * Annotates a DS.Model attribute as always sent, meaning it will ALWAYS be serialized
+ * in the JSON payload for API requests (e.g. POST, PATCH), regardless of whether or
+ * not it what was changed.
+ *
+ * NOTE: The proper modifications need to be made to the application/serializer's
+ * `serializeAttribute()` method to support this decorator.
+ *
+ * Usage:
+ * ```
+ * class MyModel extends Model {
+ *     \@unsendable \@attr('date') dateCreated!: Date;
+ * }
+ * ```
+ */
+export function alwaysSend(target: any, propertyKey: string) {
+    if (!isArray(target.alwaysSentAttributes)) {
+        target.alwaysSentAttributes = [];
+    }
+
+    if (target.alwaysSentAttributes.indexOf(propertyKey) === -1) {
+        target.alwaysSentAttributes.push(propertyKey);
+    }
+}

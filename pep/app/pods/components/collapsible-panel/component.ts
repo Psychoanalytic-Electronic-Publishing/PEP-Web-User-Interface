@@ -1,5 +1,6 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
+import { TransitionArgs } from 'ember-animated';
 import move from 'ember-animated/motions/move';
 import { fadeIn, fadeOut } from 'ember-animated/motions/opacity';
 
@@ -10,7 +11,11 @@ interface CollapsiblePanelArgs {
 }
 
 export default class CollapsiblePanel extends Component<CollapsiblePanelArgs> {
-    *transition({ keptSprites, removedSprites, insertedSprites }) {
+    /**
+     * ember-animated transition for panel collapse/expand
+     * @param {TransitionArgs}
+     */
+    *transition({ keptSprites, removedSprites, insertedSprites }: TransitionArgs) {
         for (let sprite of keptSprites) {
             move(sprite);
         }
@@ -24,8 +29,12 @@ export default class CollapsiblePanel extends Component<CollapsiblePanelArgs> {
         }
     }
 
+    /**
+     * Toggles the collapsed/expanded state of the panel
+     * @param {Event} event
+     */
     @action
-    toggle(event) {
+    toggle(event: Event) {
         event.preventDefault();
         return this.args.toggle(!this.args.isOpen);
     }

@@ -50,19 +50,19 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="mb-3">
-                    {{{this.model.title}}}
+                    {{html-safe this.model.title}}
                     <div class="small text-muted">
                         {{this.model.authorMast}}
                     </div>
                 </h4>
                 <p class="text-muted pep-document-content">
-                    {{{this.model.abstract}}}
+                    {{html-safe this.model.abstract}}
                 </p>
                 {{#if this.model.accessLimited}}
                     <div class="alert alert-warning" role="alert">
                         {{#if this.model.accessLimitedDescription}}
                             <p class={{if this.session.isAuthenticated "mb-0"}}>
-                                {{{this.model.accessLimitedDescription}}}
+                                {{html-safe this.model.accessLimitedDescription}}
                             </p>
                         {{/if}}
                         {{#unless this.session.isAuthenticated}}
@@ -75,7 +75,7 @@
                 {{else}}
                     {{!-- TODO document pagination --}}
                     <div class="pep-document-content">
-                        {{{this.documentCleaned}}}
+                        {{html-safe this.documentCleaned}}
                     </div>
                 {{/if}}
             </div>

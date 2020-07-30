@@ -77,7 +77,7 @@
                             {{#if result.authorMast}}
                                 {{result.authorMast}}.
                             {{/if}}
-                            {{{result.title}}}
+                            {{html-safe result.title}}
                         </LinkTo>
                         <ul class="list-unstyled small ml-3">
                             <li>{{result.sourceTitle}} ({{result.year}})</li>

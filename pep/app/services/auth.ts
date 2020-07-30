@@ -1,6 +1,4 @@
 import Service from '@ember/service';
-// import { isNone } from '@ember/utils';
-// import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import SessionService from 'ember-simple-auth/services/session';
 import ModalService from '@gavant/ember-modals/services/modal';
@@ -13,6 +11,11 @@ export default class Auth extends Service {
 
     dontRedirectOnLogin = false;
 
+    /**
+     * Opens the login modal dialog
+     * @param {Boolean} dontRedirectOnLogin
+     * @param {Object} modalOptions
+     */
     openLoginModal(dontRedirectOnLogin = false, modalOptions = {}) {
         const changeset = createChangeset({ username: null, password: null }, LoginValidations);
         this.dontRedirectOnLogin = dontRedirectOnLogin;

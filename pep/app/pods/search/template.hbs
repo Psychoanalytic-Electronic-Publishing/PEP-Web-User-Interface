@@ -119,7 +119,7 @@
                                         {{#if result.kwicList}}
                                             <ul class="small">
                                                 {{#each result.kwicList as |searchHit|}}
-                                                    <li>{{{searchHit}}}</li>
+                                                    <li>{{html-safe searchHit}}</li>
                                                 {{/each}}
                                             </ul>
                                         {{/if}}

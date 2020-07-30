@@ -1,7 +1,7 @@
 <CollapsiblePanel
     @title="Most viewed"
     @isOpen={{this.isOpen}}
-    @toggle={{action (mut this.isOpen)}}
+    @toggle={{fn (mut this.isOpen)}}
     class="mb-2"
     {{did-insert this.onElementInsert}}
     ...attributes
@@ -14,10 +14,10 @@
                 <li class="mb-2">
                     <div>
                         <LinkTo @route="read.document" @model={{result.documentID}}>
-                            {{{result.title}}}
+                            {{html-safe result.title}}
                         </LinkTo>
                         <div class="text-muted small">
-                            {{{result.sourceTitle}}}
+                            {{html-safe result.sourceTitle}}
                         </div>
                     </div>
                 </li>
