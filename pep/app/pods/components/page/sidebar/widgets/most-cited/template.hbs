@@ -1,5 +1,5 @@
 <CollapsiblePanel
-    @title="Most cited"
+    @title={{t "relatedInfo.widgets.mostCited.title"}}
     @isOpen={{this.isOpen}}
     @toggle={{fn (mut this.isOpen)}}
     class="mb-2"
@@ -23,7 +23,7 @@
                 </li>
             {{else}}
                 <li class="py-3 mb-0 text-center text-muted">
-                    No results found
+                    {{t "common.noResults"}}
                 </li>
             {{/each}}
         </ul>

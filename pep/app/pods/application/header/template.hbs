@@ -2,9 +2,9 @@
     <LinkTo @route="index" class="navbar-brand d-flex">
         <div class="navbar-brand-logo"></div>
         <div class="ml-2">
-            <div>Psychoanalytic</div>
-            <div>Electronic</div>
-            <div>Publishing</div>
+            <div>{{t "brand.nameFull.psychoanalytic"}}</div>
+            <div>{{t "brand.nameFull.electronic"}}</div>
+            <div>{{t "brand.nameFull.publishing"}}</div>
         </div>
     </LinkTo>
     <ul class="navbar-nav ml-auto">
@@ -19,19 +19,19 @@
                 }}
                 class="nav-link"
             >
-                Search
+                {{t "common.search"}}
             </LinkTo>
         </li>
         {{!-- TODO project reqs state that there should be a "Read" nav item         --}}
         {{!-- but where does it go/show? Seems like it would be redundant w/"Browse" --}}
         {{!-- <li class="nav-item">
             <LinkTo @route="read" class="nav-link">
-                Read
+                {{t "nav.read"}}
             </LinkTo>
         </li> --}}
         <li class="nav-item">
             <LinkTo @route="browse" class="nav-link">
-                Browse
+                {{t "nav.browse"}}
             </LinkTo>
         </li>
         <li class="nav-item">
@@ -47,26 +47,26 @@
                 <DD.Content class="dropdown-menu">
                     <DropdownAction @dd={{DD}} @action={{this.openPreferencesModal}}>
                         <FaIcon @icon="cog" @fixedWidth={{true}} class="text-muted" />
-                        Preferences
+                        {{t "nav.user.preferences"}}
                     </DropdownAction>
                     <DropdownAction @dd={{DD}}>
                         <FaIcon @icon="question-square" @fixedWidth={{true}} class="text-muted" />
-                        Help
+                        {{t "nav.user.help"}}
                     </DropdownAction>
                     <DropdownAction @dd={{DD}}>
                         <FaIcon @icon="comment-exclamation" @fixedWidth={{true}} class="text-muted" />
-                        Report a problem
+                        {{t "nav.user.reportProblem"}}
                     </DropdownAction>
                     <div class="dropdown-divider"></div>
                     {{#if this.session.isAuthenticated}}
                         <DropdownAction @dd={{DD}} @action={{this.logout}}>
                             <FaIcon @icon="sign-out" @fixedWidth={{true}} class="text-muted" />
-                            Logout
+                            {{t "nav.user.logout"}}
                         </DropdownAction>
                     {{else}}
                         <DropdownAction @dd={{DD}} @action={{this.openLoginModal}}>
                             <FaIcon @icon="sign-in" @fixedWidth={{true}} class="text-muted" />
-                            Login
+                            {{t "nav.user.login"}}
                         </DropdownAction>
                     {{/if}}
                 </DD.Content>

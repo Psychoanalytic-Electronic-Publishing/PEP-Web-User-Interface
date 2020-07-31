@@ -1,36 +1,108 @@
 {
     "brand": {
         "name": "PEP",
-        "copywrite": "&copy; 2020",
+        "nameFull": {
+            "psychoanalytic": "Psychoanalytic",
+            "electronic": "Electronic",
+            "publishing": "Publishing"
+        },
+        "copywrite": "Copyright &copy; Psychoanalytic Electronic Publishing (PEP)",
         "slogan": "A Psychoanalytic Library at your fingertips"
     },
-    "actions": {
+    "common": {
         "save": "Save",
         "submit": "Submit",
         "search": "Search",
         "cancel": "Cancel",
         "remove": "Remove",
-        "goBack": "Go back"
+        "goBack": "Go back",
+        "done": "Done",
+        "noResults": "No results found"
     },
     "serverErrors": {
         "heading": "The following {count, plural, =1 {error} other {errors}} occurred while attempting to process your request.",
-        "NotAuthorizedException": "Invalid username or password.",
-        "LimitExceededException": "You have exceeded the maximum number of attempts. Please try again in a little while.",
-        "TooManyRequestsException": "You have exceeded the maximum number of attempts. Please try again in a little while.",
-        "TooManyFailedAttemptsException": "Too many failed attempts. Please try again in a little while.",
-        "InvalidParameterException": "The entered password is not valid. Please make sure it meets all requirements and try again.",
-        "InvalidPasswordException": "The entered password is not valid. Please make sure it meets all requirements and try again.",
-        "CodeMismatchException": "The provided code is not valid.",
-        "ExpiredCodeException": "The provided code has expired.",
-        "UserNotFoundException": "The provided user could not be found.",
-        "UserNotConfirmedException": "The provided user is not confirmed.",
         "undefined": "Sorry, an unexpected error has occurred.",
         "unknown": {
             "unexpected": "Sorry, an unexpected error has occurred."
         }
     },
+    "nav": {
+        "browse": "Browse",
+        "read": "Read",
+        "user": {
+            "preferences": "Preferences",
+            "help": "Help",
+            "reportProblem": "Report a problem",
+            "login": "Login",
+            "logout": "Logout"
+        }
+    },
+    "browse": {
+        "title": "Browse"
+    },
+    "relatedInfo": {
+        "title": "Related Info",
+        "widgets": {
+            "accolades": {
+                "journals": {
+                    "title": "72 Premier Journals",
+                    "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam imperdiet, orci nec viverra feugiat, elit ligula tempor eros, et feugiat massa nibh eu nunc."
+                },
+                "books": {
+                    "title": "Classic Books",
+                    "content": "Mauris cursus pretium consequat. Nunc pellentesque tellus eget neque molestie, quis bibendum libero consectetur."
+                }
+            },
+            "expertPicks": {
+                "title": "Expert picks"
+            },
+            "glossaryTerms": {
+                "title": "Glossary terms",
+                "view": "View complete glossary"
+            },
+            "moreLikeThese": {
+                "title": "More like these"
+            },
+            "mostCited": {
+                "title": "Most cited"
+            },
+            "mostViewed": {
+                "title": "Most viewed"
+            },
+            "pastSearches": {
+                "title": "Your past searches"
+            },
+            "relevantSearches": {
+                "title": "Revelant searches"
+            },
+            "seminalPapers": {
+                "title": "Seminal papers"
+            },
+            "whatsNew": {
+                "title": "What's new?",
+                "issue": "Issue #{issueNum}, Vol {volNum} &bull; {updatedDate}"
+            },
+            "yourInterests": {
+                "title": "Your interests"
+            }
+        }
+    },
     "login": {
-        "title": "Login"
+        "title": "Login",
+        "info": "This is the Psychoanalytic Electronic Publishing Archive full text database. It is freely available for everyone to search, view tables of contents, and view summaries. However you will need a subscription in order to view the full text of articles and books and follow links within the database.",
+        "error": "Unable to login with the provided credentials.",
+        "username": "Username",
+        "password": "Password",
+        "notAMember": "Not a member?",
+        "clickToSubscribe": "Click here to subscribe"
+    },
+    "preferences": {
+        "title": "Preferences",
+        "info": "Customize and personalize your PEP experience using the settings below.",
+        "theme": {
+            "label": "Color theme",
+            "select": "Select a theme"
+        }
     },
     "fourOhFour": {
         "title": "404",

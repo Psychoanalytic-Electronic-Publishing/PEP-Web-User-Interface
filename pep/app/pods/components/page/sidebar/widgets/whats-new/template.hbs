@@ -1,7 +1,7 @@
 <CollapsiblePanel
-    @title="What's new?"
+    @title={{t "relatedInfo.widgets.whatsNew.title"}}
     @isOpen={{this.isOpen}}
-    @toggle={{action (mut this.isOpen)}}
+    @toggle={{fn (mut this.isOpen)}}
     class="mb-2"
     {{did-insert this.onElementInsert}}
     ...attributes
@@ -13,17 +13,21 @@
             {{#each this.results as |result|}}
                 <li class="mb-2">
                     <div>
-                        {{{result.displayTitle}}}
+                        {{html-safe result.displayTitle}}
                     </div>
                     <div class="text-muted small">
-                        Issue #{{result.issue}}, Vol {{result.volume}}
-                        &bull;
-                        {{moment-format result.updated "MMMM Do, YYYY"}}
+                        {{html-safe
+                            (t "relatedInfo.widgets.whatsNew.issue"
+                                issueNum=result.issue
+                                volNum=result.volume
+                                updatedDate=(moment-format result.updated "MMMM Do, YYYY")
+                            )
+                        }}
                     </div>
                 </li>
             {{else}}
                 <li class="py-3 mb-0 text-center text-muted">
-                    No results found
+                    {{t "common.noResults"}}
                 </li>
             {{/each}}
         </ul>
