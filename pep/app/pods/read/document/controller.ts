@@ -35,9 +35,7 @@ export default class ReadDocument extends ControllerPagination(Controller) {
 
     //pagination config
     limit = 10;
-    //@ts-ignore TODO null is allowed by the ember-pagination addon, we need to update the type there
     pagingRootKey = null;
-    //@ts-ignore TODO null is allowed by the ember-pagination addon, we need to update the type there
     filterRootKey = null;
 
     @readOnly('searchResults.length') offset: number | undefined;

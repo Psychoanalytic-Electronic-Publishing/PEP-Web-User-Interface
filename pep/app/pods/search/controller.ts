@@ -37,9 +37,7 @@ export default class Search extends ControllerPagination(Controller) {
     @tracked previewMode = 'fit';
 
     //pagination config
-    //@ts-ignore TODO null is allowed by the ember-pagination addon, we need to update the type there
     pagingRootKey = null;
-    //@ts-ignore TODO null is allowed by the ember-pagination addon, we need to update the type there
     filterRootKey = null;
 
     //TODO will be removed once proper pagination is hooked up

@@ -5,6 +5,11 @@ import ModalService from '@gavant/ember-modals/services/modal';
 import createChangeset from '@gavant/ember-validations/utilities/create-changeset';
 import LoginValidations from 'pep/validations/user/login';
 
+export interface LoginForm {
+    username: string | null;
+    password: string | null;
+}
+
 export default class Auth extends Service {
     @service session!: SessionService;
     @service modal!: ModalService;
@@ -17,7 +22,8 @@ export default class Auth extends Service {
      * @param {Object} modalOptions
      */
     openLoginModal(dontRedirectOnLogin = false, modalOptions = {}) {
-        const changeset = createChangeset({ username: null, password: null }, LoginValidations);
+        const model: LoginForm = { username: null, password: null };
+        const changeset = createChangeset<LoginForm>(model, LoginValidations);
         this.dontRedirectOnLogin = dontRedirectOnLogin;
         this.modal.open('user/login', { ...modalOptions, changeset });
     }

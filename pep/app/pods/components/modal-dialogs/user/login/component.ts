@@ -5,8 +5,9 @@ import { inject as service } from '@ember/service';
 import { reject } from 'rsvp';
 import RouterService from '@ember/routing/router-service';
 import SessionService from 'ember-simple-auth/services/session';
-import { BufferedChangeset } from 'ember-changeset/types';
 import LoadingBar from 'pep/services/loading-bar';
+import { LoginForm } from 'pep/services/auth';
+import { ModelChangeset } from '@gavant/ember-validations/utilities/create-changeset';
 
 interface ModalDialogsUserLoginArgs {
     onClose: () => void;
@@ -25,16 +26,13 @@ export default class ModalDialogsUserLogin extends Component<ModalDialogsUserLog
 
     /**
      * Submits the login dialog form and logs the user in
-     * @param {BufferedChangeset} changeset
+     * @param {ModelChangeset<LoginForm>} changeset
      */
     @action
-    async login(changeset: BufferedChangeset) {
+    async login(changeset: ModelChangeset<LoginForm>) {
         try {
-            //TODO eventually want to improve our ember-changesets typing story
-            //e.g. be able to do `changeset: BufferedChangeset<LoginModel>` or
-            // `changeset = createChangeset<LoginModel>(model, validations)`
-            const username = changeset.username as string;
-            const password = changeset.password as string;
+            const username = changeset.username;
+            const password = changeset.password;
             this.loadingBar.show();
             this.loginError = null;
             const response = await this.session.authenticate('authenticator:pep', username, password);
