@@ -18,4 +18,7 @@ export function initialize() {
     });
 }
 
-export default { initialize };
+export default {
+    name: 'ignored-deprecations',
+    initialize
+};

@@ -1,1 +1,1 @@
-declare module 'ember-changeset-conditional-validations/validators/sometimes';
+declare module 'ember-useragent/initializers/user-agent';

@@ -4,7 +4,6 @@ import { isEmpty } from '@ember/utils';
 import { later } from '@ember/runloop';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
-import MediaService from 'ember-responsive/services/media';
 import ControllerPagination from '@gavant/ember-pagination/mixins/controller-pagination';
 import { PaginationController } from '@gavant/ember-pagination/utils/query-params';
 import AjaxService from 'pep/services/ajax';
@@ -13,12 +12,13 @@ import { serializeQueryParams } from 'pep/utils/serialize-query-params';
 import { buildSearchQueryParams } from 'pep/utils/search';
 import SidebarService from 'pep/services/sidebar';
 import LoadingBarService from 'pep/services/loading-bar';
+import FastbootMediaService from 'pep/services/fastboot-media';
 
 export default class Search extends ControllerPagination(Controller) {
     @service ajax!: AjaxService;
     @service sidebar!: SidebarService;
     @service loadingBar!: LoadingBarService;
-    @service media!: MediaService;
+    @service fastbootMedia!: FastbootMediaService;
 
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
@@ -141,7 +141,7 @@ export default class Search extends ControllerPagination(Controller) {
             this.closeResultPreview();
 
             //close overlay sidebar on submit in mobile/tablet
-            if (this.media.isMobile || this.media.isTablet) {
+            if (this.fastbootMedia.isSmallDevice) {
                 this.sidebar.toggleLeftSidebar();
             }
 
@@ -168,7 +168,7 @@ export default class Search extends ControllerPagination(Controller) {
             this.closeResultPreview();
 
             //close overlay sidebar on submit in mobile/tablet
-            if (this.media.isMobile || this.media.isTablet) {
+            if (this.fastbootMedia.isSmallDevice) {
                 this.sidebar.toggleLeftSidebar();
             }
 

@@ -1,12 +1,12 @@
 import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import MediaService from 'ember-responsive/services/media';
 import Sidebar from 'pep/services/sidebar';
+import FastbootMediaService from 'pep/services/fastboot-media';
 
 export default class Index extends Controller {
     @service sidebar!: Sidebar;
-    @service media!: MediaService;
+    @service fastbootMedia!: FastbootMediaService;
 
     /**
      * Open the search form sidebar

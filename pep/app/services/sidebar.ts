@@ -2,10 +2,10 @@ import Service from '@ember/service';
 import { isNone } from '@ember/utils';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
-import MediaService from 'ember-responsive/services/media';
+import FastbootMediaService from './fastboot-media';
 
 export default class Sidebar extends Service {
-    @service media!: MediaService;
+    @service fastbootMedia!: FastbootMediaService;
     @tracked leftSidebarIsOpen = true;
     @tracked rightSidebarIsOpen = true;
 
@@ -19,7 +19,7 @@ export default class Sidebar extends Service {
     constructor() {
         super(...arguments);
         this.handleMediaChange();
-        this.media.on('mediaChanged', this, this.handleMediaChange);
+        this.fastbootMedia.on('mediaChanged', this, this.handleMediaChange);
     }
 
     /**
@@ -29,7 +29,7 @@ export default class Sidebar extends Service {
     toggleLeftSidebar(open?: boolean) {
         this.leftSidebarIsOpen = !isNone(open) ? open : !this.leftSidebarIsOpen;
         //only allow one sidebar open at a time on mobile
-        if (this.leftSidebarIsOpen && this.media.isMobile) {
+        if (this.leftSidebarIsOpen && this.fastbootMedia.isMobile) {
             this.rightSidebarIsOpen = false;
         }
     }
@@ -41,7 +41,7 @@ export default class Sidebar extends Service {
     toggleRightSidebar(open?: boolean) {
         this.rightSidebarIsOpen = !isNone(open) ? open : !this.rightSidebarIsOpen;
         //only allow one sidebar open at a time on mobile
-        if (this.rightSidebarIsOpen && this.media.isMobile) {
+        if (this.rightSidebarIsOpen && this.fastbootMedia.isMobile) {
             this.leftSidebarIsOpen = false;
         }
     }
@@ -60,7 +60,7 @@ export default class Sidebar extends Service {
      * @private
      */
     private handleMediaChange() {
-        if (this.media.isMobile || this.media.isTablet) {
+        if (this.fastbootMedia.isSmallDevice) {
             this.leftSidebarIsOpen = false;
             this.rightSidebarIsOpen = false;
         }
