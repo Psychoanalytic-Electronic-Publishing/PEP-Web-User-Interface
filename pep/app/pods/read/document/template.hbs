@@ -11,7 +11,8 @@
                         facets=this._facets
                     }}
                 >
-                    <FaIcon @icon="arrow-left" /> Back to search
+                    <FaIcon @icon="arrow-left" />
+                    {{t "read.document.backToSearch"}}
                 </LinkTo>
             {{/if}}
             <div class="ml-2 d-flex align-items-center">
@@ -23,7 +24,7 @@
                 />
                 <div class="input-group input-group-minimal mx-1">
                     <div class="input-group-prepend">
-                        <span class="input-group-text" id="doc-page-control-label">Page</span>
+                        <span class="input-group-text" id="doc-page-control-label">{{t "read.document.page"}}</span>
                     </div>
                     <input
                         type="number"
@@ -32,7 +33,7 @@
                         value={{this.currentPage}}
                         class="form-control text-center"
                         maxlength="255"
-                        aria-label="Page"
+                        aria-label={{t "read.document.page"}}
                         aria-describedby="doc-page-control-label"
                     />
                 </div>
@@ -67,8 +68,8 @@
                         {{/if}}
                         {{#unless this.session.isAuthenticated}}
                             <p class="mb-0">
-                                You must be logged in to read the full document.
-                                <a href="" {{on "click" this.login}}>Click here to login</a>.
+                                {{t "read.document.limitedAccess"}}
+                                <a href="" {{on "click" this.login}}>{{t "read.document.login"}}</a>.
                             </p>
                         {{/unless}}
                     </div>

@@ -17,7 +17,12 @@
         "remove": "Remove",
         "goBack": "Go back",
         "done": "Done",
-        "noResults": "No results found"
+        "export": "Export",
+        "print": "Print",
+        "numResults": "{count} {count, plural, =1 {'<span class=\"text-muted\">'result'</span>'} other {'<span class=\"text-muted\">'results'</span>'}}",
+        "noResults": "No results found",
+        "loadingResults": "Loading results...",
+        "loading": "Loading..."
     },
     "serverErrors": {
         "heading": "The following {count, plural, =1 {error} other {errors}} occurred while attempting to process your request.",
@@ -37,8 +42,84 @@
             "logout": "Logout"
         }
     },
+    "home": {
+        "title": "Psychoanalytic Electronic Publishing",
+        "heading": "PEP - Psychoanalytic Electronic Publishing",
+        "search": {
+            "heading": "Your search starts here",
+            "subheading": "Search all of the literature in PEP-WEB in seconds.",
+            "searchForDocs": "Search for documents",
+            "tips": {
+                "instructions": "'<strong>'Smart Search'</strong>' taskes all kinds of search inputs:",
+                "tip1": "Find terms or keywords - to get the best search results, '<strong>'enter at least two terms at a time.'</strong>''<br>'This will make the search more precise, returning only the most relevant results.",
+                "tip2": "Paste a reference from an article",
+                "tip3": "Journal name or part of a journal name",
+                "tip4": "Author name",
+                "tip5": "Part of a title (two or more words)",
+                "tip6": "Year / Vol / Page #"
+            }
+        },
+        "guide": {
+            "heading": "Let PEP be your guide",
+            "subheading": "PEP-WEB helps to guide you to important source material in your research, and provides numerous tools.",
+            "tips": {
+                "instructions": "While you '<strong>'research and explore'</strong>', PEP:",
+                "tip1": "Helps find related publications",
+                "tip2": "Expert guidance selects the most important related Psychoanalytic works",
+                "tip3": "Find what's new and exciting in the field, what others are reading",
+                "tip4": "What work is most cited by new publications",
+                "tip5": "Links content to an integrated Psychoanalytic Glossary incluing Laplanche and Pontails"
+            }
+        },
+        "pickOfTheDay": {
+            "heading": "Expert Pick of the Day"
+        }
+    },
+    "search": {
+        "title": "Search",
+        "new": "Start a new search",
+        "sort": {
+            "label": "Sort:",
+            "year": "Year"
+        },
+        "view": {
+            "label": "View:",
+            "biblio": "Bibliographic"
+        },
+        "empty": {
+            "heading": "Your search starts here",
+            "instructions": "Use the form on the left to enter terms or phrases and search our publication database.",
+            "tips": {
+                "heading": "Search tips",
+                "instructions": "Smart Search taskes all kinds of search inputs:",
+                "tip1": "Find terms or keywords - to get the best search results, '<strong>'enter at least two terms at a time.'</strong>''<br>'This will make the search more precise, returning only the most relevant results.",
+                "tip2": "Paste a reference from an article",
+                "tip3": "Use a Journal name or part of a journal name",
+                "tip4": "Search on author name (or multiple authors)",
+                "tip5": "Use part of a title (two or more words)",
+                "tip6": "Search by Year / Vol / Page #"
+            }
+        },
+        "results": {
+            "none": "No results found. Try using different search terms or phrases to find what you're looking for.",
+            "sidebar": {
+                "title": "{title} ({year})"
+            }
+        }
+    },
     "browse": {
         "title": "Browse"
+    },
+    "read": {
+        "title": "Read",
+        "document": {
+            "page": "Page",
+            "findMore": "Want to find more articles and resources?",
+            "newSearch": "Start a new search",
+            "backToSearch": "Back to search",
+            "limitedAccess": "You must be logged in to read the full document.",
+            "login": "Click here to login"
+        }
     },
     "relatedInfo": {
         "title": "Related Info",

@@ -6,10 +6,13 @@
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <h4 class="mb-0">
                         {{#if this.this.isLoadingRoute}}
-                            <span class="text-muted">Loading&hellip;</span>
+                            <span class="text-muted">{{t "common.loading"}}</span>
                         {{else}}
-                            {{format-number (or this.metadata.fullCount 0)}}
-                            <span class="text-muted">results</span>
+                            {{t
+                                "common.numResults"
+                                count=(format-number (or this.metadata.fullCount 0))
+                                htmlSafe=true
+                            }}
                         {{/if}}
                     </h4>
                     <div class="d-flex align-items-center">
@@ -18,7 +21,7 @@
                             @icon="download"
                             @iconSize="lg"
                             disabled={{this.this.isLoadingRoute}}
-                            title="Export"
+                            title={{t "common.export"}}
                             class="p-1"
                         />
                         <Button
@@ -26,7 +29,7 @@
                             @icon="print"
                             @iconSize="lg"
                             disabled={{this.this.isLoadingRoute}}
-                            title="Print"
+                            title={{t "common.print"}}
                             class="p-1"
                         />
                     </div>
@@ -37,16 +40,16 @@
                             @type="link"
                             class="text-decoration-none p-1 mr-1"
                         >
-                            <span class="text-muted">Sort:</span>
-                            <span class="text-dark mr-1">Year</span>
+                            <span class="text-muted">{{t "search.sort.label"}}</span>
+                            <span class="text-dark mr-1">{{t "search.sort.year"}}</span>
                             <FaIcon @icon="angle-down" class="text-muted" />
                         </Button>
                         <Button
                             @type="link"
                             class="text-decoration-none p-1 mr-2"
                         >
-                            <span class="text-muted">View:</span>
-                            <span class="text-dark mr-1">Bibliographic</span>
+                            <span class="text-muted">{{t "search.view.label"}}</span>
+                            <span class="text-dark mr-1">{{t "search.view.biblio"}}</span>
                             <FaIcon @icon="angle-down" class="text-muted" />
                         </Button>
                     </div>
@@ -80,21 +83,21 @@
                             {{html-safe result.title}}
                         </LinkTo>
                         <ul class="list-unstyled small ml-3">
-                            <li>{{result.sourceTitle}} ({{result.year}})</li>
+                            <li>{{t "search.results.sidebar.title" title=result.sourceTitle year=result.year}}</li>
                         </ul>
                     </li>
                 </VerticalCollection>
                 {{#if this.isLoadingPage}}
                     <div class="d-flex align-items-center pt-2">
                         <Progress::Spinner class="mr-1" />
-                        <span class="text-muted">Loading results...</span>
+                        <span class="text-muted">{{t "common.loadingResults"}}</span>
                     </div>
                 {{/if}}
             </div>
         {{else}}
             <div class="bg-white border-divider-b px-3 py-4 mb-2">
                 <p class="text-muted">
-                    Want to find more articles and resources?
+                    {{t "read.document.findMore"}}
                 </p>
                 <p>
                     <LinkTo
@@ -107,7 +110,7 @@
                         }}
                         class="btn btn-outline-primary btn-block"
                     >
-                        Start a new search
+                        {{t "read.document.newSearch"}}
                     </LinkTo>
                 </p>
             </div>
