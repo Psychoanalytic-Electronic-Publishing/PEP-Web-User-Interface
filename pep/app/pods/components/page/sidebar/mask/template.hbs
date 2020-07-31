@@ -1,3 +1,3 @@
 {{#if (and this.sidebar.hasOpenSidebar (or this.media.isMobile this.media.isTablet))}}
-    <div class="sidebar-mask" {{on "click" this.closeSidebars}}></div>
+    <div class="sidebar-mask" role="button" {{on "click" this.closeSidebars}}></div>
 {{/if}}

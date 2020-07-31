@@ -12,6 +12,6 @@ module('Integration | Component | modal-dialogs/user/preferences', function(hook
 
         await render(hbs`<ModalDialogs::User::Preferences />`);
 
-        assert.equal(this.element.textContent?.trim(), '');
+        assert.ok(this.element.textContent);
     });
 });

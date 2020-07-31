@@ -10,8 +10,8 @@ module('Integration | Component | modal-dialogs/user/login', function(hooks) {
         // Set any properties with this.set('myProperty', 'value');
         // Handle any actions with this.set('myAction', function(val) { ... });
 
-        await render(hbs`<Modal-dialogs::User::Login />`);
+        await render(hbs`<ModalDialogs::User::Login />`);
 
-        assert.equal(this.element.textContent?.trim(), '');
+        assert.ok(this.element.textContent);
     });
 });

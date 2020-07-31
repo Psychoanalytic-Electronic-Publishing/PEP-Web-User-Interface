@@ -10,7 +10,7 @@ module('Integration | Component | page/sidebar/mask', function(hooks) {
         // Set any properties with this.set('myProperty', 'value');
         // Handle any actions with this.set('myAction', function(val) { ... });
 
-        await render(hbs`{{page/sidebar/mask}}`);
+        await render(hbs`<Page::Sidebar::Mask />`);
 
         assert.equal(this.element.textContent?.trim(), '');
     });

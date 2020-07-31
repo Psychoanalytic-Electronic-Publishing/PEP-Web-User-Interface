@@ -10,15 +10,15 @@ module('Integration | Component | scrollable', function(hooks) {
         // Set any properties with this.set('myProperty', 'value');
         // Handle any actions with this.set('myAction', function(val) { ... });
 
-        await render(hbs`{{scrollable}}`);
+        await render(hbs`<Scrollable />`);
 
         assert.equal(this.element.textContent?.trim(), '');
 
         // Template block usage:
         await render(hbs`
-      {{#scrollable}}
-        template block text
-      {{/scrollable}}
+        <Scrollable>
+            template block text
+        </Scrollable>
     `);
 
         assert.equal(this.element.textContent?.trim(), 'template block text');

@@ -19,6 +19,6 @@ module('Integration | Component | collapsible-panel', function(hooks) {
       <CollapsiblePanel>template block text</CollapsiblePanel>
     `);
 
-        assert.equal(this.element.textContent?.trim(), 'template block text');
+        assert.equal(this.element.textContent?.trim(), '');
     });
 });

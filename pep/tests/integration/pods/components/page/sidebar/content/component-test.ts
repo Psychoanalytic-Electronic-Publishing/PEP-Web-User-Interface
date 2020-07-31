@@ -10,15 +10,15 @@ module('Integration | Component | page/sidebar/content', function(hooks) {
         // Set any properties with this.set('myProperty', 'value');
         // Handle any actions with this.set('myAction', function(val) { ... });
 
-        await render(hbs`{{page/sidebar/content}}`);
+        await render(hbs`<Page::Sidebar::Content />`);
 
         assert.equal(this.element.textContent?.trim(), '');
 
         // Template block usage:
         await render(hbs`
-      {{#page/sidebar/content}}
-        template block text
-      {{/page/sidebar/content}}
+        <Page::Sidebar::Content>
+            template block text
+        </Page::Sidebar::Content>
     `);
 
         assert.equal(this.element.textContent?.trim(), 'template block text');

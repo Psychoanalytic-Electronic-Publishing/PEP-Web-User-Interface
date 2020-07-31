@@ -5,6 +5,7 @@
     "description": "pep Ember.js application",
     "repository": "",
     "author": "Gavant Software, Inc.",
+    "license": "UNLICENSED",
     "directories": {
         "doc": "doc",
         "test": "tests"

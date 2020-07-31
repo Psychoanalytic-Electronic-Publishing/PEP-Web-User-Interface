@@ -13,7 +13,7 @@ import LoadingBarService from 'pep/services/loading-bar';
 import SidebarService from 'pep/services/sidebar';
 import ThemeService from 'pep/services/theme';
 import AuthService from 'pep/services/auth';
-import { ApiServerError, ApiServerErrorResponse } from './adapter';
+import { ApiServerErrorResponse } from './adapter';
 
 export default class Application extends PageLayout(Route.extend(ApplicationRouteMixin)) {
     routeAfterAuthentication = 'index';
@@ -102,7 +102,7 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
      * i.e. do not explicitly catch and handle errors return by their
      * model()/beforeModel()/afterModel() hooks, this will be invoked.
      * Which will redirect the user as needed, depending the type of error returned
-     * @param {any} error
+     * @param {ApiServerErrorResponse} error
      */
     @action
     error(error?: ApiServerErrorResponse) {
