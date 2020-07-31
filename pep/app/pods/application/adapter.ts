@@ -1,5 +1,6 @@
 import ENV from 'pep/config/environment';
 import { inject as service } from '@ember/service';
+import { classify } from '@ember/string';
 import DS from 'ember-data';
 import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
 import SessionService from 'ember-simple-auth/services/session';
@@ -20,12 +21,22 @@ export interface ApiServerErrorResponse {
     errors: ApiServerError[];
 }
 
-//@ts-ignore TODO we need to figure out how to allow DS.JSONAPIAdapter with custom properties correctly
-export default class Application extends DS.JSONAPIAdapter.extend(DataAdapterMixin, FastbootAdapter) {
+//@ts-ignore TODO we need to figure out how to allow DS.RESTAdapter with custom properties correctly
+export default class Application extends DS.RESTAdapter.extend(DataAdapterMixin, FastbootAdapter) {
     @service session!: SessionService;
     @service fastboot!: FastbootService;
 
     host = ENV.apiBaseUrl;
+    namespace = '/v2/Database';
+
+    /**
+     * Customize the default model endpoint paths
+     * @param {String} modelName
+     */
+    pathForType<K extends string | number>(modelName: K) {
+        const path = super.pathForType(modelName);
+        return classify(path);
+    }
 
     /**
      * When using ember-fetch with ember-simple-auth, authorization headers must be manually set
