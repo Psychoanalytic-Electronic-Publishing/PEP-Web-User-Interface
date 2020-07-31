@@ -121,7 +121,11 @@
                     <strong>{{t "search.form.tooManyResults.heading"}}</strong>
                 </p>
                 <p class="mb-1">
-                    {{t "search.form.tooManyResults.numResults" count=(format-number @resultsCount)}}
+                    {{t
+                        "search.form.tooManyResults.numResults"
+                        count=(format-number @resultsCount)
+                        htmlSafe=true
+                    }}
                 </p>
                 <p class="mb-0">
                     {{t "search.form.tooManyResults.instructions"}}

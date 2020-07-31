@@ -1779,10 +1779,10 @@
   resolved "https://registry.yarnpkg.com/@gavant/ember-template-lint-forms/-/ember-template-lint-forms-0.0.2.tgz#a7a931dc7b6975eacbc7abf7fcb925856e709e62"
   integrity sha512-L9XLSTpI8TEh3wAMbiZKSprGfBTLWosaUT1MsPem+otaudJx/qkirPuzc0AS0KG3j7YuICsUHK1sTpjrOsXlAg==
 
-"@gavant/ember-validations@^2.0.6":
-  version "2.0.6"
-  resolved "https://registry.yarnpkg.com/@gavant/ember-validations/-/ember-validations-2.0.6.tgz#b50d0d3541d84d373ddda467586c69d275976630"
-  integrity sha512-dG2v6fKFSEpSQ6y5/4mzLwUF1AZl2MRf366aso6Ntyy/0rJ4/7k6VR6i+sEvoSTvb/EpqfCZiMMn6NWNLr6BTw==
+"@gavant/ember-validations@2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@gavant/ember-validations/-/ember-validations-2.1.0.tgz#74607ec9acb280a23b0e17a5321e654e9beef910"
+  integrity sha512-0YNdr6ZCtfoVOtVG511DHmGyiBQAuTJ6hW3kZyoVm7dABOhQBlOkBiOXEioqi1+ld7U9/evEwQ78owNYtecN6Q==
   dependencies:
     ember-changeset "3.0.9"
     ember-changeset-conditional-validations "0.5.0"
