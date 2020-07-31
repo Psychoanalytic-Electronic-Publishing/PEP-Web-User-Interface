@@ -2,7 +2,7 @@
     <div class="p-3">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h5 class="mb-0">
-                Search for Documents
+                {{t "search.form.heading"}}
             </h5>
             <div>
                 <DropdownMenu @horizontalPosition="right" as |DD|>
@@ -12,16 +12,20 @@
                     <DD.Content class="dropdown-menu">
                         <h6 class="dropdown-header">
                             <FaIcon @icon="bookmark" class="mr-1" />
-                            My saved searches
+                            {{t "search.form.savedSearch.mine"}}
                         </h6>
+                        {{!-- TODO static content TBD -this will be backend driven --}}
+                        {{!-- template-lint-disable no-bare-strings --}}
                         <DropdownAction @dd={{DD}}>
                             disjunction feminine
                             <small class="text-muted">(all, 132 matches)</small>
                         </DropdownAction>
+                        {{!-- template-lint-disable no-bare-strings --}}
                         <DropdownAction @dd={{DD}}>
                             family discord
                             <small class="text-muted">(books, 3 matches)</small>
                         </DropdownAction>
+                        {{!-- template-lint-disable no-bare-strings --}}
                         <DropdownAction @dd={{DD}}>
                             depression anxiety
                             <small class="text-muted">(videos, 5 matches)</small>
@@ -29,7 +33,7 @@
                         <div class="dropdown-divider"></div>
                         <DropdownAction @dd={{DD}} disabled={{not this.hasEnteredSearch}}>
                             <FaIcon @icon="plus-circle" @fixedWidth={{true}} class="text-muted" />
-                            Save this search
+                            {{t "search.form.savedSearch.save"}}
                         </DropdownAction>
                     </DD.Content>
                 </DropdownMenu>
@@ -38,20 +42,20 @@
         <form>
             <div class="form-group">
                 <FlInput
-                    @placeholder="What are you looking for?"
+                    @placeholder={{t "search.form.smartSearch"}}
                     @value={{@smartSearchTerm}}
                     maxlength="255"
                     autocomplete="off"
                 />
             </div>
-            <p class="text-muted mb-2">Find terms or phrases</p>
+            <p class="text-muted mb-2">{{t "search.form.terms.heading"}}</p>
             <AnimatedContainer>
                 {{#animated-each @searchTerms use=this.animateTransition duration=300 as |searchTerm|}}
                     <div class="d-flex mb-2">
                         {{!-- TODO extract term control into <Search::Form::TermControl /> --}}
                         <div class="search-form-term-control flex-fill">
                             <FlInput
-                                @placeholder="Terms or phrase"
+                                @placeholder={{t "search.form.terms.label"}}
                                 @value={{searchTerm.term}}
                                 class="search-form-term-control-text"
                                 maxlength="255"
@@ -70,14 +74,14 @@
                             @type="link"
                             @action={{fn @removeSearchTerm searchTerm}}
                             class="ml-1 p-0"
-                            title="Remove term"
+                            title={{t "search.form.terms.remove"}}
                         />
                     </div>
                 {{/animated-each}}
             </AnimatedContainer>
             <div class="d-flex justify-content-between mb-3">
                 <Button
-                    @label="Add term"
+                    @label={{t "search.form.terms.add"}}
                     @icon="plus"
                     @type="link"
                     @action={{this.addSearchTerm}}
@@ -86,7 +90,7 @@
                 <CheckboxInput
                     @checked={{@matchSynonyms}}
                     @onChange={{@matchSynonymsChange}}
-                    @label="Match Synonyms"
+                    @label={{t "search.form.terms.synonyms"}}
                 />
             </div>
             <div class="d-flex justify-content-end">
@@ -101,7 +105,7 @@
                     @blockLayout={{false}}
                     @wide={{true}}
                     @showSuccess={{false}}
-                    @label="Search"
+                    @label={{t "common.search"}}
                     @action={{@submit}}
                     disabled={{not this.hasEnteredSearch}}
                 />
@@ -114,13 +118,13 @@
             <div class="alert alert-warning mb-0 rounded-0 border-left-0 border-right-0 small">
                 <p class="mb-1">
                     <FaIcon @icon="info-circle" />
-                    <strong>Try refining your search</strong>
+                    <strong>{{t "search.form.tooManyResults.heading"}}</strong>
                 </p>
                 <p class="mb-1">
-                    There are <strong>{{format-number @resultsCount}}</strong> results that match your criteria.
+                    {{t "search.form.tooManyResults.numResults" count=(format-number @resultsCount)}}
                 </p>
                 <p class="mb-0">
-                    Enter at least two terms, additional criteria, and/or use the 'Refine' form below to increase search precision.
+                    {{t "search.form.tooManyResults.instructions"}}
                 </p>
             </div>
         {{/animated-if}}

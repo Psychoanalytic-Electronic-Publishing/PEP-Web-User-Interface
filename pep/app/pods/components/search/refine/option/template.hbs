@@ -5,7 +5,7 @@
     >
         {{@option.label}}
         <span class="text-muted small">
-            ({{format-number @option.numResults}})
+            {{t "search.refine.option.numResults" count=(format-number @option.numResults)}}
         </span>
     </CheckboxInput>
 </li>

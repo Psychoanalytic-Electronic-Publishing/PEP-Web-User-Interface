@@ -14,6 +14,7 @@
         "submit": "Submit",
         "search": "Search",
         "cancel": "Cancel",
+        "close": "Close",
         "remove": "Remove",
         "goBack": "Go back",
         "done": "Done",
@@ -104,6 +105,50 @@
             "none": "No results found. Try using different search terms or phrases to find what you're looking for.",
             "sidebar": {
                 "title": "{title} ({year})"
+            }
+        },
+        "form": {
+            "heading": "Search for Documents",
+            "smartSearch": "What are you looking for?",
+            "savedSearch": {
+                "mine": "My saved searches",
+                "save": "Save this search"
+            },
+            "terms": {
+                "heading": "Find terms or phrases",
+                "label": "Terms or phrase",
+                "remove": "Remove term",
+                "add": "Add term",
+                "synonyms": "Match Synonyms"
+            },
+            "tooManyResults": {
+                "heading": "Try refining your search",
+                "numResults": "There are '<strong>'{count}'</strong>' {count, plural, =1 {result} other {results}} that match your criteria.",
+                "instructions": "Enter at least two terms, additional criteria, and/or use the 'Refine' form below to increase search precision."
+            }
+        },
+        "refine": {
+            "heading": "Refine",
+            "instructions": "Check to limit results to only matching articles.",
+            "showLess": "Show less",
+            "showAll": "show all",
+            "none": "No refine options available",
+            "apply": {
+                "label": "Refine search"
+            },
+            "option": {
+                "numResults": "({count})"
+            }
+        },
+        "preview": {
+            "fit": "Expand to fit",
+            "maximize": "Minimize",
+            "minimize": "Minimize",
+            "read": "Read",
+            "mustBeLoggedIn": "You must be logged in to read or download this document.",
+            "login": "Click here to login",
+            "download": {
+                "label": "Download docs"
             }
         }
     },

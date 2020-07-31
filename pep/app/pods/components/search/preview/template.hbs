@@ -13,12 +13,12 @@
                         @type="link"
                         @action={{fn @setMode "fit"}}
                         class="mr-2 p-0"
-                        title="Expand to fit"
+                        title={{t "search.preview.fit"}}
                     />
                     <Button
                         @icon={{if (eq @mode "maximized") "window-minimize" "window-maximize"}}
                         @action={{fn @setMode (if (eq @mode "maximized") "minimized" "maximized")}}
-                        title={{if (eq @mode "maximized") "Minimize" "Maximize"}}
+                        title={{t (if (eq @mode "maximized") "search.preview.minimize" "search.preview.maximize")}}
                         @type="link"
                         class="mr-2 p-0"
                     />
@@ -27,7 +27,7 @@
                         @type="link"
                         @action={{@close}}
                         class="p-0"
-                        title="Close"
+                        title={{t "common.close"}}
                     />
                 </div>
             </div>
@@ -52,11 +52,11 @@
                             class="btn btn-primary btn-wide mr-2"
                         >
                             <FaIcon @icon="book-open" />
-                            Read
+                            {{t "search.preview.read"}}
                         </LinkTo>
                         <Button
                             @icon="download"
-                            @label="Download docs"
+                            @label={{t "search.preview.download.label"}}
                             @type="link"
                             class="px-2"
                         >
@@ -64,8 +64,8 @@
                         </Button>
                     {{else}}
                         <p class="p-3 bg-light rounded">
-                            You must be logged in to read or download this document.
-                            <a href="" {{on "click" this.login}}>Click here to login</a>.
+                            {{t "search.preview.mustBeLoggedIn"}}
+                            <a href="" {{on "click" this.login}}>{{t "search.preview.login"}}</a>.
                         </p>
                     {{/if}}
                 </div>
