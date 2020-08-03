@@ -3,16 +3,14 @@ import Controller from '@ember/controller';
 import { isEmpty } from '@ember/utils';
 import { next } from '@ember/runloop';
 import Transition from '@ember/routing/-private/transition';
-// import RoutePagination from '@gavant/ember-pagination/mixins/route-pagination';
+import RoutePagination from '@gavant/ember-pagination/mixins/route-pagination';
 import { PageNav } from 'pep/mixins/page-layout';
-import AjaxService from 'pep/services/ajax';
 import { inject as service } from '@ember/service';
-import { A } from '@ember/array';
-import { serializeQueryParams } from 'pep/utils/serialize-query-params';
 import { buildSearchQueryParams } from 'pep/utils/search';
 import Sidebar from 'pep/services/sidebar';
 import SearchController from './controller';
 import { PaginationController } from '@gavant/ember-pagination/utils/query-params';
+import Document from 'pep/pods/document/model';
 
 export interface SearchParams {
     q: string;
@@ -21,15 +19,7 @@ export interface SearchParams {
     _facets?: string;
 }
 
-export interface SearchResults {
-    documentList?: {
-        responseInfo: object;
-        responseSet: Array<any>;
-    };
-}
-
-export default class Search extends PageNav(Route) {
-    @service ajax!: AjaxService;
+export default class Search extends PageNav(RoutePagination(Route)) {
     @service sidebar!: Sidebar;
 
     navController = 'search';
@@ -63,10 +53,12 @@ export default class Search extends PageNav(Route) {
         if (Object.keys(queryParams).length > 2) {
             queryParams.offset = 0;
             queryParams.limit = 10;
-            const queryStr = serializeQueryParams(queryParams);
-            return this.ajax.request(`Database/Search/?${queryStr}`);
+            return this.store.query('document', queryParams);
         } else {
-            return A();
+            //so that RoutePagination will continue to work, just unload any cached documents
+            //and return an empty documents RecordArray by peeking at the now empty store cache
+            this.store.unloadAll('document');
+            return this.store.peekAll('document');
         }
     }
 
@@ -86,19 +78,13 @@ export default class Search extends PageNav(Route) {
     /**
      * Sets the pagination data and search form data on the controller
      * @param {SearchController} controller
-     * @param {SearchResults} model
+     * @param {Document} model
      */
     //@ts-ignore TODO mixin issues
-    setupController(controller: SearchController, model: SearchResults) {
-        //TODO this is pretty ugly, its a result of the mixin issues
+    setupController(controller: SearchController, model: Document[]) {
+        //TODO this is pretty ugly, its a result of the pagination mixin issues
         const ctrlr = (controller as unknown) as Controller;
         const paginationCtrlr = (ctrlr as unknown) as PaginationController;
-        //TODO eventually RoutePagination will do this
-        const modelForController = model.documentList?.responseSet ?? A();
-        paginationCtrlr.modelName = 'document';
-        paginationCtrlr.metadata = model.documentList?.responseInfo;
-        paginationCtrlr.hasMore = modelForController.length >= controller.limit;
-
         //map the query params to current search values to populate the form
         paginationCtrlr.currentSmartSearchTerm = controller.q;
         paginationCtrlr.currentMatchSynonyms = controller.matchSynonyms;
@@ -107,7 +93,7 @@ export default class Search extends PageNav(Route) {
             : controller.searchTerms;
         paginationCtrlr.currentFacets = controller.facets;
 
-        super.setupController(ctrlr, modelForController);
+        super.setupController(ctrlr, model);
     }
 
     /**
@@ -116,9 +102,9 @@ export default class Search extends PageNav(Route) {
      * @param {Boolean} isExiting
      * @param {Transition} transition
      */
-    //@ts-ignore TODO mixin issues
+    //@ts-ignore TODO pagination mixin issues
     resetController(controller: SearchController, isExiting: boolean, transition: Transition) {
-        //TODO this is pretty ugly, its a result of the mixin issues
+        //TODO this is pretty ugly, its a result of the pagination mixin issues
         const ctrlr = (controller as unknown) as Controller;
         super.resetController(ctrlr, isExiting, transition);
         controller.previewedResult = null;

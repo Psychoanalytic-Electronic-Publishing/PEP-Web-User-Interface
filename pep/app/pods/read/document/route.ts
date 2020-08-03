@@ -1,12 +1,12 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import ArrayProxy from '@ember/array/proxy';
 import Transition from '@ember/routing/-private/transition';
 import AjaxService from 'pep/services/ajax';
 import { PageNav } from 'pep/mixins/page-layout';
-import { serializeQueryParams } from 'pep/utils/serialize-query-params';
 import { buildSearchQueryParams } from 'pep/utils/search';
 import ReadDocumentController from './controller';
-import { SearchResults } from 'pep/pods/search/route';
+import Document from 'pep/pods/document/model';
 
 export interface ReadDocumentParams {
     document_id: string;
@@ -20,15 +20,14 @@ export default class ReadDocument extends PageNav(Route) {
     @service ajax!: AjaxService;
 
     navController = 'read/document';
-    searchResults: SearchResults | null = null;
+    searchResults: ArrayProxy<Document> | null = null;
 
     /**
      * Fetch the requested document
      * @param {ReadDocumentParams} params
      */
-    async model(params: ReadDocumentParams) {
-        const result = await this.ajax.request(`Documents/Document/${params.document_id}/`);
-        return result?.documents?.responseSet[0];
+    model(params: ReadDocumentParams) {
+        return this.store.findRecord('document', params.document_id, { reload: true });
     }
 
     /**
@@ -49,8 +48,7 @@ export default class ReadDocument extends PageNav(Route) {
         if (Object.keys(queryParams).length > 2) {
             queryParams.offset = 0;
             queryParams.limit = 10;
-            const queryStr = serializeQueryParams(queryParams);
-            const results = await this.ajax.request(`Database/Search/?${queryStr}`);
+            const results = await this.store.query('document', queryParams);
             this.searchResults = results;
         }
     }
@@ -61,14 +59,13 @@ export default class ReadDocument extends PageNav(Route) {
      * @param {object} model
      */
     //@ts-ignore TODO mixin issues
-    setupController(controller: ReadDocumentController, model: object) {
-        //@ts-ignore TODO mixin issues
+    setupController(controller: ReadDocumentController, model: Document) {
+        //@ts-ignore TODO pagination mixin issues
         super.setupController(controller, model);
-        //TODO eventually RoutePagination will do this
         controller.modelName = 'document';
-        controller.metadata = this.searchResults?.documentList?.responseInfo ?? {};
-        controller.searchResults = this.searchResults?.documentList?.responseSet ?? [];
-        controller.hasMore = (this.searchResults?.documentList?.responseSet?.length ?? 0) >= controller.limit;
+        controller.metadata = this.searchResults?.meta ?? {};
+        controller.searchResults = this.searchResults?.toArray() ?? [];
+        controller.hasMore = (controller.searchResults.length ?? 0) >= controller.limit;
     }
 
     /**
@@ -77,9 +74,9 @@ export default class ReadDocument extends PageNav(Route) {
      * @param {boolean} isExiting
      * @param {Transition} transition
      */
-    //@ts-ignore TODO mixin issues
+    //@ts-ignore TODO pagination mixin issues
     resetController(controller: ReadDocumentController, isExiting: boolean, transition: Transition) {
-        //@ts-ignore TODO mixin issues
+        //@ts-ignore TODO pagination mixin issues
         super.resetController(controller, isExiting, transition);
         controller.searchResults = [];
         controller.metadata = {};

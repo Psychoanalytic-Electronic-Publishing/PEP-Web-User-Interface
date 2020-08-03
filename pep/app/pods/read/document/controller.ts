@@ -3,23 +3,18 @@ import { action, set } from '@ember/object';
 import { readOnly } from '@ember/object/computed';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
-import { isEmpty } from '@ember/utils';
 import { reject } from 'rsvp';
 import ControllerPagination from '@gavant/ember-pagination/mixins/controller-pagination';
 import { buildQueryParams, PaginationController } from '@gavant/ember-pagination/utils/query-params';
 import SessionService from 'ember-simple-auth/services/session';
-import AjaxService from 'pep/services/ajax';
 import AuthService from 'pep/services/auth';
 import LoadingBarService from 'pep/services/loading-bar';
-import { serializeQueryParams } from 'pep/utils/serialize-query-params';
 import { buildSearchQueryParams } from 'pep/utils/search';
 import { SEARCH_DEFAULT_TERMS, SEARCH_DEFAULT_FACETS } from 'pep/constants/search';
-
-const HTML_BODY_REGEX = /^.*?<body[^>]*>(.*?)<\/body>.*?$/i;
+import Document from 'pep/pods/document/model';
 
 export default class ReadDocument extends ControllerPagination(Controller) {
     @service session!: SessionService;
-    @service ajax!: AjaxService;
     @service auth!: AuthService;
     @service loadingBar!: LoadingBarService;
 
@@ -41,9 +36,7 @@ export default class ReadDocument extends ControllerPagination(Controller) {
     @readOnly('searchResults.length') offset: number | undefined;
 
     @tracked currentPage = 1;
-    @tracked searchResults: Array<any> = [];
-
-    //TODO will be removed once proper pagination is hooked up
+    @tracked searchResults: Document[] = [];
     @tracked metadata = {};
 
     get lastPage() {
@@ -91,11 +84,6 @@ export default class ReadDocument extends ControllerPagination(Controller) {
         }
     }
 
-    get documentCleaned() {
-        const document = !isEmpty(this.model.document) ? this.model.document : '';
-        return document.replace(HTML_BODY_REGEX, '$1');
-    }
-
     /**
      * Loads the search results for the sidebar
      * @param {Boolean} reset
@@ -108,7 +96,7 @@ export default class ReadDocument extends ControllerPagination(Controller) {
 
         const offset = this.offset;
         const limit = this.limit;
-        //TODO this is pretty ugly, its a result of the mixin issues
+        //TODO this is pretty ugly, its a result of the pagination mixin issues
         const controller = (this as unknown) as PaginationController;
         const queryParams = buildQueryParams(controller, offset, limit);
         let models = [];
@@ -117,7 +105,6 @@ export default class ReadDocument extends ControllerPagination(Controller) {
             models = result.toArray();
             this.metadata = result.meta;
             this.hasMore = models.length >= limit;
-
             this.searchResults.pushObjects(models);
         } catch (errors) {
             reject(errors);
@@ -132,20 +119,14 @@ export default class ReadDocument extends ControllerPagination(Controller) {
     }
 
     /**
-     * TODO TBD - overrides ControllerPagination, will not be needed once api is integrated w/ember-data
+     Run custom query params object generation before sending query request
      * @param {Object} params
      */
     async fetchModels(params: object) {
         const searchQueryParams = buildSearchQueryParams(this.q, this.searchTerms, this.matchSynonyms, this.facets);
         const queryParams = { ...params, ...searchQueryParams };
-        const queryStr = serializeQueryParams(queryParams);
-        const result = await this.ajax.request(`Database/Search/?${queryStr}`);
-        const results = result.documentList.responseSet;
-        return {
-            toArray: () => results,
-            data: results,
-            meta: result.documentList.responseInfo
-        };
+        //@ts-ignore TODO pagination mixin issues
+        return super.fetchModels(queryParams);
     }
 
     /**
@@ -154,7 +135,7 @@ export default class ReadDocument extends ControllerPagination(Controller) {
     @action
     loadNextPage() {
         if (!this.isLoadingPage && this.hasMore) {
-            //TODO this is pretty ugly, its a result of the mixin issues
+            //TODO this is pretty ugly, its a result of the pagination mixin issues
             const controller = (this as unknown) as PaginationController;
             return controller.loadMoreModels();
         }
@@ -181,8 +162,7 @@ export default class ReadDocument extends ControllerPagination(Controller) {
     async onAuthenticated() {
         try {
             this.loadingBar.show();
-            const result = await this.ajax.request(`Documents/Document/${this.model.documentID}/`);
-            const model = result?.documents?.responseSet[0];
+            const model = await this.store.findRecord('document', this.model.id, { reload: true });
             set(this, 'model', model);
             this.loadingBar.hide();
             return model;

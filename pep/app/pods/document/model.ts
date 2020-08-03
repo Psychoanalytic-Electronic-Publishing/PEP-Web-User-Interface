@@ -1,7 +1,12 @@
 import DS from 'ember-data';
 import attr from 'ember-data/attr';
+import { isEmpty } from '@ember/utils';
+
+const HTML_BODY_REGEX = /^.*?<body[^>]*>(.*?)<\/body>.*?$/i;
+const INVALID_ABSTRACT_TAGS = /(<\!DOCTYPE html>|<\/?html>|<\/?body>|<head>.*<\/head>)/gim;
 
 export default class Document extends DS.Model {
+    // attributes
     @attr('string') PEPCode!: string;
     @attr('string') abstract!: string;
     @attr('string') accessClassification!: string;
@@ -36,6 +41,21 @@ export default class Document extends DS.Model {
     @attr('date') updated!: Date;
     @attr('string') vol!: string;
     @attr('string') year!: string;
+
+    // computeds
+    get abstractCleaned() {
+        //TODO needs to be be improved, possibly use something like ember-purify
+        //(though DOMPurify may not be workabout in Fastboot)
+        const abstract = !isEmpty(this.abstract) ? this.abstract.replace(/\s+/g, ' ') : '';
+        return abstract.replace(INVALID_ABSTRACT_TAGS, '');
+    }
+
+    get documentCleaned() {
+        //TODO needs to be be improved, possibly use something like ember-purify
+        //(though DOMPurify may not be workabout in Fastboot)
+        const document = !isEmpty(this.document) ? this.document : '';
+        return document.replace(HTML_BODY_REGEX, '$1');
+    }
 }
 
 declare module 'ember-data/types/registries/model' {

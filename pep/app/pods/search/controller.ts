@@ -8,11 +8,11 @@ import ControllerPagination from '@gavant/ember-pagination/mixins/controller-pag
 import { PaginationController } from '@gavant/ember-pagination/utils/query-params';
 import AjaxService from 'pep/services/ajax';
 import { SEARCH_TYPE_EVERYWHERE, SearchTermValue, SearchFacetValue } from 'pep/constants/search';
-import { serializeQueryParams } from 'pep/utils/serialize-query-params';
 import { buildSearchQueryParams } from 'pep/utils/search';
 import SidebarService from 'pep/services/sidebar';
 import LoadingBarService from 'pep/services/loading-bar';
 import FastbootMediaService from 'pep/services/fastboot-media';
+import Document from 'pep/pods/document/model';
 
 export default class Search extends ControllerPagination(Controller) {
     @service ajax!: AjaxService;
@@ -32,16 +32,12 @@ export default class Search extends ControllerPagination(Controller) {
     @tracked currentMatchSynonyms: boolean = false;
     @tracked currentFacets: SearchFacetValue[] = [];
 
-    //TODO this will eventually be a DS.Model type
-    @tracked previewedResult: object | null = null;
+    @tracked previewedResult: Document | null = null;
     @tracked previewMode = 'fit';
 
     //pagination config
     pagingRootKey = null;
     filterRootKey = null;
-
-    //TODO will be removed once proper pagination is hooked up
-    @tracked metadata = {};
 
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
@@ -96,20 +92,14 @@ export default class Search extends ControllerPagination(Controller) {
     }
 
     /**
-     * TODO TBD - overrides ControllerPagination, will not be needed once api is integrated w/ember-data
+     * Run custom query params object generation before sending query request
      * @param {Object} params
      */
-    async fetchModels(params: object) {
+    fetchModels(params: object) {
         const searchQueryParams = buildSearchQueryParams(this.q, this.searchTerms, this.matchSynonyms, this.facets);
         const queryParams = { ...params, ...searchQueryParams };
-        const queryStr = serializeQueryParams(queryParams);
-        const result = await this.ajax.request(`Database/Search/?${queryStr}`);
-        const results = result.documentList.responseSet;
-        return {
-            toArray: () => results,
-            data: results,
-            meta: result.documentList.responseInfo
-        };
+        //@ts-ignore TODO pagination mixin issues
+        return super.fetchModels(queryParams);
     }
 
     /**
@@ -118,7 +108,7 @@ export default class Search extends ControllerPagination(Controller) {
     @action
     loadNextPage() {
         if (!this.isLoadingPage && this.hasMore) {
-            //TODO this is pretty ugly, its a result of the mixin issues
+            //TODO this is pretty ugly, its a result of the pagination mixin issues
             const controller = (this as unknown) as PaginationController;
             return controller.loadMoreModels();
         }
@@ -147,7 +137,7 @@ export default class Search extends ControllerPagination(Controller) {
 
             //perform search
             this.loadingBar.show();
-            //TODO this is pretty ugly, its a result of the mixin issues
+            //TODO this is pretty ugly, its a result of the pagination mixin issues
             const controller = (this as unknown) as PaginationController;
             const results = await controller.filter();
             this.loadingBar.hide();
@@ -173,7 +163,7 @@ export default class Search extends ControllerPagination(Controller) {
             }
 
             this.loadingBar.show();
-            //TODO this is pretty ugly, its a result of the mixin issues
+            //TODO this is pretty ugly, its a result of the pagination mixin issues
             const controller = (this as unknown) as PaginationController;
             const results = await controller.filter();
             this.loadingBar.hide();
@@ -249,8 +239,6 @@ export default class Search extends ControllerPagination(Controller) {
     @action
     updateSelectedFacets(newSelection: SearchFacetValue[]) {
         this.currentFacets = newSelection;
-        // //TODO debounced call to initiate a new search
-        // return this.resubmitSearchWithFacets();
     }
 
     /**
@@ -259,7 +247,7 @@ export default class Search extends ControllerPagination(Controller) {
      * @param {Event} event
      */
     @action
-    openResultPreview(result: object, event: Event) {
+    openResultPreview(result: Document, event: Event) {
         event.preventDefault();
         //TODO get rid of the need for this delay, by just recalcing the fit height whenever the result changes
         if (this.previewedResult) {

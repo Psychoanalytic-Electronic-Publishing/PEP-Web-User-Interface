@@ -2,6 +2,7 @@ import DS from 'ember-data';
 import attr from 'ember-data/attr';
 
 export default class WhatsNew extends DS.Model {
+    // attributes
     @attr('string') PEPCode!: string;
     @attr('string') abbrev!: string;
     @attr('string') displayTitle!: string;

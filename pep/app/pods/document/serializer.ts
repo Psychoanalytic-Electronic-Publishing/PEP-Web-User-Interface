@@ -32,6 +32,32 @@ export default class Document extends ApplicationSerializerMixin(DS.RESTSerializ
 
         return super.normalizeArrayResponse(store, primaryModelClass, payload, id, requestType);
     }
+
+    /**
+     * The API returns individual documents in the json as any array under documents.responseSet
+     * @param {DS.Store} store
+     * @param {DS.Model} primaryModelClass
+     * @param {object} payload
+     * @param {string} id
+     * @param {string} requestType
+     */
+    normalizeFindRecordResponse(
+        store: DS.Store,
+        primaryModelClass: DS.Model,
+        payload: any,
+        id: string | number,
+        requestType: string
+    ) {
+        //@ts-ignore modelName does exist on the model class instance
+        const modelKey = camelize(primaryModelClass.modelName);
+        if (payload?.documents) {
+            payload.meta = payload.documents.responseInfo;
+            payload[modelKey] = payload.documents.responseSet?.[0];
+            delete payload.documents;
+        }
+
+        return super.normalizeFindRecordResponse(store, primaryModelClass, payload, id, requestType);
+    }
 }
 
 // DO NOT DELETE: this is how TypeScript knows how to look up your serializers.

@@ -13,7 +13,7 @@
             {{#each this.results as |result|}}
                 <li class="mb-2">
                     <div>
-                        <LinkTo @route="read.document" @model={{result.documentID}}>
+                        <LinkTo @route="read.document" @model={{result.id}}>
                             {{html-safe result.title}}
                         </LinkTo>
                         <div class="text-muted small">
