@@ -6,9 +6,6 @@ import {
     SEARCH_RESULTS_WARNING_COUNT,
     SearchTermValue
 } from 'pep/constants/search';
-import move from 'ember-animated/motions/move';
-import { fadeIn, fadeOut } from 'ember-animated/motions/opacity';
-import { TransitionArgs } from 'ember-animated';
 
 interface SearchFormArgs {
     resultsCount?: number;
@@ -31,24 +28,6 @@ export default class SearchForm extends Component<SearchFormArgs> {
 
     get hasTooManyResults() {
         return this.args.resultsCount && this.args.resultsCount > SEARCH_RESULTS_WARNING_COUNT;
-    }
-
-    /**
-     * ember-animated transition for panel collapse/expand
-     * @param {TransitionArgs}
-     */
-    *animateTransition({ keptSprites, removedSprites, insertedSprites }: TransitionArgs) {
-        for (let sprite of keptSprites) {
-            move(sprite);
-        }
-
-        for (let sprite of removedSprites) {
-            fadeOut(sprite);
-        }
-
-        for (let sprite of insertedSprites) {
-            fadeIn(sprite);
-        }
     }
 
     /**

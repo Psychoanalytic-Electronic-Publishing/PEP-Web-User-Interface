@@ -9,12 +9,12 @@
             <p class="text-muted">
                 {{t "login.info"}}
             </p>
-            {{#if this.loginError}}
-                {{!-- convert to use future <Alert /> component --}}
-                <div class="alert alert-danger" role="alert">
-                    {{t "login.error"}}
-                </div>
-            {{/if}}
+            <Alert
+                @isShown={{bool this.loginError}}
+                @message={{t "login.error"}}
+                @type="danger"
+                @icon="exclamation-circle"
+            />
             <div class="form-row">
                 <div class="col-sm-8">
                     <validator.input @errors={{changeset.error.username.validation}} class="input-validator-compact">
