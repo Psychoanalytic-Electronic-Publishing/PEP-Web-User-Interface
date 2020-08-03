@@ -1,25 +1,30 @@
 import DS from 'ember-data';
-import { isArray } from '@ember/array';
+import { camelize } from '@ember/string';
+import { pluralize } from 'ember-inflector';
+import ApplicationSerializerMixin from 'pep/mixins/application-serializer';
 
-export default class ApplicationSerializer extends DS.RESTSerializer {
+export default class ApplicationSerializer extends ApplicationSerializerMixin(DS.RESTSerializer) {
     /**
-     * Do not serialize attributes if the record is being updated and the attribute
-     * value was not modified. Also never serialize attributes that have been
-     * annotated with the `@unsendable` decorator.
-     *
-     * @param snapshot {DS.Snapshot<string | number>}
-     * @param json {Object}
-     * @param key {String}
-     * @param attribute {Object}
-     * @see https://github.com/emberjs/data/issues/3467#issuecomment-543176123
+     * The API returns result sets in the JSON under modelName.responseSet
+     * and the metadata under modelName.responseInfo
+     * @param {DS.Store} store
+     * @param {DS.Model} primaryModelClass
+     * @param {object} payload
+     * @param {string} id
+     * @param {string} requestType
      */
-    serializeAttribute(snapshot: DS.Snapshot<string | number>, json: {}, key: string, attribute: {}) {
-        if (
-            (snapshot.record.get('isNew') || snapshot.changedAttributes()[key]) &&
-            (!isArray(snapshot.record.unsendableAttributes) || snapshot.record.unsendableAttributes.indexOf(key) === -1)
-        ) {
-            super.serializeAttribute(snapshot, json, key, attribute);
-        }
+    normalizeArrayResponse(
+        store: DS.Store,
+        primaryModelClass: DS.Model,
+        payload: any,
+        id: string | number,
+        requestType: string
+    ) {
+        //@ts-ignore modelName does exist on the model class instance
+        const modelKey = pluralize(camelize(primaryModelClass.modelName));
+        payload.meta = payload?.[modelKey].responseInfo;
+        payload[modelKey] = payload?.[modelKey].responseSet;
+        return super.normalizeArrayResponse(store, primaryModelClass, payload, id, requestType);
     }
 }
 
