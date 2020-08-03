@@ -1,0 +1,7 @@
+{{#if this.showPlaceholder}}
+    {{#if this.placeholderComponent}}
+        {{component this.placeholderComponent options=@options}}
+    {{/if}}
+{{else}}
+    {{yield}}
+{{/if}}

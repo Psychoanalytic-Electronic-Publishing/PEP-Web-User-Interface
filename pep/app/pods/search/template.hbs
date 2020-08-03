@@ -3,10 +3,10 @@
     <div class="page-content-section flex-fill">
         <Scrollable class="page-content-inner">
             {{#if (and (not this.model) this.isLoadingPage)}}
-                <div class="d-flex align-items-center py-3 px-4">
-                    <Progress::Spinner class="mr-1" />
-                    <span class="text-muted">{{t "common.loadingResults"}}</span>
-                </div>
+                <Loading::Spinner
+                    @options={{hash text=(t "common.loadingResults")}}
+                    class="py-3 px-4"
+                />
             {{else}}
                 {{#if this.noResults}}
                     <div class="d-flex justify-content-center align-items-center">
@@ -126,10 +126,7 @@
                                     </li>
                                 </VerticalCollection>
                                 {{#if this.isLoadingPage}}
-                                    <div class="d-flex align-items-center">
-                                        <Progress::Spinner class="mr-1" />
-                                        <span class="text-muted">{{t "common.loadingResults"}}</span>
-                                    </div>
+                                    <Loading::Spinner @options={{hash text=(t "common.loadingResults")}} />
                                 {{/if}}
                             </div>
                         </div>

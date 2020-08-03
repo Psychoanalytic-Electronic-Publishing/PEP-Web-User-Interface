@@ -88,10 +88,10 @@
                     </li>
                 </VerticalCollection>
                 {{#if this.isLoadingPage}}
-                    <div class="d-flex align-items-center pt-2">
-                        <Progress::Spinner class="mr-1" />
-                        <span class="text-muted">{{t "common.loadingResults"}}</span>
-                    </div>
+                    <Loading::Spinner
+                        @options={{hash text=(t "common.loadingResults")}}
+                        class="pt-2"
+                    />
                 {{/if}}
             </div>
         {{else}}

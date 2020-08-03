@@ -57,7 +57,9 @@
                     </div>
                 </h4>
                 <div class="text-muted pep-document-content mb-3">
-                    {{html-safe this.model.abstractCleaned}}
+                    <ContentWithPlaceholder @placeholderInFastboot={{true}}>
+                        {{html-safe this.model.abstractCleaned}}
+                    </ContentWithPlaceholder>
                 </div>
                 {{#if this.model.accessLimited}}
                     <div class="alert alert-warning" role="alert">
@@ -76,7 +78,9 @@
                 {{else}}
                     <div class="pep-document-content">
                         {{!-- TODO document pagination --}}
-                        {{html-safe this.model.documentCleaned}}
+                        <ContentWithPlaceholder @placeholderInFastboot={{true}} @placeholderComponent="">
+                            {{html-safe this.model.documentCleaned}}
+                        </ContentWithPlaceholder>
                     </div>
                 {{/if}}
             </div>
