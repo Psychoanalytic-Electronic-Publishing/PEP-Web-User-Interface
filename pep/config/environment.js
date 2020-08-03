@@ -61,7 +61,9 @@ module.exports = function(environment) {
         },
 
         //deployment environment-specific variables
-        apiBaseUrl: process.env.API_BASE_URL
+        apiBaseUrl: process.env.API_BASE_URL,
+        apiNamespace: process.env.API_NAMESPACE,
+        apiDataNamespace: process.env.API_DATA_NAMESPACE
     };
 
     if (environment === 'development') {

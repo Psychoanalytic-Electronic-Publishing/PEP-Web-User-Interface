@@ -1,7 +1,7 @@
-// import DS from 'ember-data';
 import ApplicationAdapter from '../application/adapter';
 import { classify } from '@ember/string';
 import { pluralize } from 'ember-inflector';
+import ENV from 'pep/config/environment';
 
 export default class Document extends ApplicationAdapter {
     /**
@@ -12,6 +12,8 @@ export default class Document extends ApplicationAdapter {
      */
     urlForQuery<K extends string | number>(query: { queryType: string }, modelName: K) {
         const modelNameStr = modelName.toString();
+        const origNamespace = ENV.apiNamespace;
+        const newNamespace = `${ENV.apiNamespace}/${ENV.apiDataNamespace}`;
         const origPathSegment = pluralize(classify(modelNameStr));
         const newPathSegment = query?.queryType ?? 'Search';
         if (query?.queryType) {
@@ -19,7 +21,9 @@ export default class Document extends ApplicationAdapter {
         }
 
         const url = super.urlForQuery(query, modelName);
-        return url.replace(`/${origPathSegment}`, `/${newPathSegment}`);
+        return url
+            .replace(`/${origNamespace}`, `/${newNamespace}`)
+            .replace(`/${origPathSegment}`, `/${newPathSegment}`);
     }
 }
 

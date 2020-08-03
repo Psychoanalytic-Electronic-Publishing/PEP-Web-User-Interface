@@ -9,6 +9,9 @@ import { reject } from 'rsvp';
 export default class AjaxService extends Service {
     @service session!: SessionService;
 
+    host: string = ENV.apiBaseUrl;
+    namespace: string = ENV.apiNamespace;
+
     /**
      * Add the oauth token authorization header to all requests
      * @return {Object}
@@ -46,11 +49,12 @@ export default class AjaxService extends Service {
      */
     async request(url: string, options: RequestInit = {}) {
         setProperties(options, {
-            credentials: 'include', //NOTE: only needed if cookies must be sent in API requests
-            headers: this.headers
+            credentials: 'include', //NOTE: only needed if cookies must be sent in API requests (which are needed for auth right now)
+            headers: { ...this.headers, ...(options.headers || {}) }
         });
 
-        const response = await fetch(`${ENV.apiBaseUrl}/${url.replace(/^\//, '')}`, options);
+        const baseUrl = /^https?\:\/\//.test(url) ? '' : `${this.host}/${this.namespace}/`;
+        const response = await fetch(`${baseUrl}${url.replace(/^\//, '')}`, options);
         const responseHeaders = this.parseHeaders(response.headers);
         const result = await this.handleResponse(response.status, responseHeaders, response);
         if (this.isSuccess(response.status)) {

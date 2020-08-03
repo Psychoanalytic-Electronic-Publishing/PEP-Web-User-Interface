@@ -15,6 +15,8 @@ declare const config: {
     rootURL: string;
     routerRootURL: string;
     apiBaseUrl: string;
+    apiNamespace: string;
+    apiDataNamespace: string;
     fastboot: {
         hostWhitelist: Array<string | RegExp>;
     };

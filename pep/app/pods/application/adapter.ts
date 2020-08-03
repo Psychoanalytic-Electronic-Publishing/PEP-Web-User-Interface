@@ -27,7 +27,7 @@ export default class Application extends DS.RESTAdapter.extend(DataAdapterMixin,
     @service fastboot!: FastbootService;
 
     host = ENV.apiBaseUrl;
-    namespace = 'Database';
+    namespace = ENV.apiNamespace;
 
     /**
      * Customize the default model endpoint paths

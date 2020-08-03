@@ -9,6 +9,8 @@ module.exports = function(env) {
         clientAllowedKeys: [
             'ROOT_URL',
             'API_BASE_URL',
+            'API_NAMESPACE',
+            'API_DATA_NAMESPACE',
             'API_ERRORS_ENDPOINT',
             'ASSETS_BASE_URL',
             'FASTBOOT_WHITELIST_DOMAIN',
@@ -17,6 +19,8 @@ module.exports = function(env) {
         fastbootAllowedKeys: [
             'ROOT_URL',
             'API_BASE_URL',
+            'API_NAMESPACE',
+            'API_DATA_NAMESPACE',
             'API_ERRORS_ENDPOINT',
             'ASSETS_BASE_URL',
             'FASTBOOT_WHITELIST_DOMAIN',
