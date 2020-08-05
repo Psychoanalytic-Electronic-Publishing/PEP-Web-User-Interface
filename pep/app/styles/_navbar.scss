@@ -37,4 +37,11 @@
             border-radius: 0.25rem;
         }
     }
+
+    .navbar-toggler {
+        &:focus {
+            outline: 0;
+            box-shadow: 0 0 0 0.2rem rgba($white, 0.25);
+        }
+    }
 }

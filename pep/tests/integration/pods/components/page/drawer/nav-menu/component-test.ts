@@ -3,7 +3,7 @@ import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
-module('Integration | Component | page/drawer/nav-item', function(hooks) {
+module('Integration | Component | page/drawer/nav-menu', function(hooks) {
     setupRenderingTest(hooks);
 
     test('it renders', async function(assert) {
@@ -12,11 +12,9 @@ module('Integration | Component | page/drawer/nav-item', function(hooks) {
 
         // Template block usage:
         await render(hbs`
-        <Page::Drawer::NavItem>
-            template block text
-        </Page::Drawer::NavItem>
-    `);
+            <Page::Drawer::NavMenu></Page::Drawer::NavMenu>
+        `);
 
-        assert.equal(this.element.textContent?.trim(), 'template block text');
+        assert.equal(this.element.textContent?.trim(), '');
     });
 });
