@@ -1,0 +1,86 @@
+<nav class="navbar navbar-expand fixed-top navbar-dark bg-gradient-primary" ...attributes>
+    <LinkTo @route="index" class="navbar-brand mr-auto d-flex">
+        <div class="navbar-brand-logo"></div>
+        <div class="ml-2">
+            <div>{{t "brand.nameFull.psychoanalytic"}}</div>
+            <div>{{t "brand.nameFull.electronic"}}</div>
+            <div>{{t "brand.nameFull.publishing"}}</div>
+        </div>
+    </LinkTo>
+    <button
+        type="button"
+        class="navbar-toggler d-block d-md-none"
+        aria-controls="page-drawer"
+        aria-expanded={{this.drawer.isOpen}}
+        aria-label={{t "nav.toggle"}}
+        {{on "click" this.toggleDrawer}}
+    >
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <ul class="navbar-nav d-none d-md-flex">
+        <li class="nav-item">
+            <LinkTo
+                @route="search"
+                @query={{hash
+                    q=""
+                    matchSynonyms=false
+                    searchTerms=this.defaultSearchTerms
+                    facets=this.defaultSearchFacets
+                }}
+                class="nav-link"
+            >
+                {{t "nav.search"}}
+            </LinkTo>
+        </li>
+        {{!-- TODO project reqs state that there should be a "Read" nav item         --}}
+        {{!-- but where does it go/show? Seems like it would be redundant w/"Browse" --}}
+        {{!-- <li class="nav-item">
+            <LinkTo @route="read" class="nav-link">
+                {{t "nav.read"}}
+            </LinkTo>
+        </li> --}}
+        <li class="nav-item">
+            <LinkTo @route="browse" class="nav-link">
+                {{t "nav.browse"}}
+            </LinkTo>
+        </li>
+        <li class="nav-item">
+            <LinkTo @route="index" class="nav-link">
+                <FaIcon @icon="home" @size="lg" />
+            </LinkTo>
+        </li>
+        <li class="nav-item">
+            <DropdownMenu @horizontalPosition="auto-right" as |DD|>
+                <DD.Trigger @htmlTag="a" class="nav-link">
+                    <FaIcon @icon="user" @size="lg" />
+                </DD.Trigger>
+                <DD.Content class="dropdown-menu">
+                    <DropdownAction @dd={{DD}} @action={{this.openPreferencesModal}}>
+                        <FaIcon @icon="cog" @fixedWidth={{true}} class="text-muted" />
+                        {{t "nav.user.preferences"}}
+                    </DropdownAction>
+                    <DropdownAction @dd={{DD}}>
+                        <FaIcon @icon="question-square" @fixedWidth={{true}} class="text-muted" />
+                        {{t "nav.user.help"}}
+                    </DropdownAction>
+                    <DropdownAction @dd={{DD}}>
+                        <FaIcon @icon="comment-exclamation" @fixedWidth={{true}} class="text-muted" />
+                        {{t "nav.user.reportProblem"}}
+                    </DropdownAction>
+                    <div class="dropdown-divider"></div>
+                    {{#if this.session.isAuthenticated}}
+                        <DropdownAction @dd={{DD}} @action={{this.logout}}>
+                            <FaIcon @icon="sign-out" @fixedWidth={{true}} class="text-muted" />
+                            {{t "nav.user.logout"}}
+                        </DropdownAction>
+                    {{else}}
+                        <DropdownAction @dd={{DD}} @action={{this.openLoginModal}}>
+                            <FaIcon @icon="sign-in" @fixedWidth={{true}} class="text-muted" />
+                            {{t "nav.user.login"}}
+                        </DropdownAction>
+                    {{/if}}
+                </DD.Content>
+            </DropdownMenu>
+        </li>
+    </ul>
+</nav>

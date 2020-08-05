@@ -4,29 +4,13 @@ import { isEmpty } from '@ember/utils';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import SessionService from 'ember-simple-auth/services/session';
-import ModalService from '@gavant/ember-modals/services/modal';
 
 import LoadingBarService from 'pep/services/loading-bar';
-import AuthService from 'pep/services/auth';
-import DrawerService from 'pep/services/drawer';
-import {
-    SEARCH_TYPE_EVERYWHERE,
-    SEARCH_DEFAULT_TERMS,
-    SEARCH_DEFAULT_FACETS,
-    SearchTermValue
-} from 'pep/constants/search';
+import { SEARCH_TYPE_EVERYWHERE, SearchTermValue } from 'pep/constants/search';
 
 export default class Application extends Controller {
     @service loadingBar!: LoadingBarService;
-    @service modal!: ModalService;
     @service session!: SessionService;
-    @service auth!: AuthService;
-    @service drawer!: DrawerService;
-
-    //json stringify is workaround for bug w/array-based query param values
-    //@see https://github.com/emberjs/ember.js/issues/18981
-    defaultSearchTerms = JSON.stringify(SEARCH_DEFAULT_TERMS);
-    defaultSearchFacets = JSON.stringify(SEARCH_DEFAULT_FACETS);
 
     @tracked smartSearchTerm: string = '';
     @tracked matchSynonyms: boolean = false;
@@ -111,38 +95,6 @@ export default class Application extends Controller {
     @action
     updateMatchSynonyms(isChecked: boolean) {
         this.matchSynonyms = isChecked;
-    }
-
-    /**
-     * Opens the user preferences modal dialog
-     */
-    @action
-    openPreferencesModal() {
-        return this.modal.open('user/preferences', {});
-    }
-
-    /**
-     * Opens the login modal dialog
-     */
-    @action
-    openLoginModal() {
-        return this.auth.openLoginModal(true);
-    }
-
-    /**
-     * Logs the user out
-     */
-    @action
-    logout() {
-        return this.session.invalidate();
-    }
-
-    /**
-     * Toggle page drawer nav
-     */
-    @action
-    toggleDrawer() {
-        return this.drawer.toggle();
     }
 }
 
