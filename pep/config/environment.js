@@ -60,6 +60,10 @@ module.exports = function(environment) {
             prepend: false
         },
 
+        storefront: {
+            maxAge: 10
+        },
+
         //deployment environment-specific variables
         apiBaseUrl: process.env.API_BASE_URL,
         apiNamespace: process.env.API_NAMESPACE,

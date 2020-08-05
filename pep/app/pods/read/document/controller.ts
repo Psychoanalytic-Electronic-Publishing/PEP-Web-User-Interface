@@ -7,6 +7,7 @@ import { reject } from 'rsvp';
 import ControllerPagination from '@gavant/ember-pagination/mixins/controller-pagination';
 import { buildQueryParams, PaginationController } from '@gavant/ember-pagination/utils/query-params';
 import SessionService from 'ember-simple-auth/services/session';
+import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import AuthService from 'pep/services/auth';
 import LoadingBarService from 'pep/services/loading-bar';
 import { buildSearchQueryParams } from 'pep/utils/search';
@@ -16,6 +17,7 @@ import Document from 'pep/pods/document/model';
 export default class ReadDocument extends ControllerPagination(Controller) {
     @service session!: SessionService;
     @service auth!: AuthService;
+    @service fastboot!: FastbootService;
     @service loadingBar!: LoadingBarService;
 
     defaultSearchTerms = JSON.stringify(SEARCH_DEFAULT_TERMS);

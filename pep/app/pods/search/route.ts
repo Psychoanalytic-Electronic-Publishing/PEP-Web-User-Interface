@@ -1,15 +1,17 @@
 import Route from '@ember/routing/route';
 import Controller from '@ember/controller';
+import { inject as service } from '@ember/service';
 import { isEmpty } from '@ember/utils';
 import { next } from '@ember/runloop';
 import Transition from '@ember/routing/-private/transition';
+import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import RoutePagination from '@gavant/ember-pagination/mixins/route-pagination';
+import { PaginationController } from '@gavant/ember-pagination/utils/query-params';
+
 import { PageNav } from 'pep/mixins/page-layout';
-import { inject as service } from '@ember/service';
 import { buildSearchQueryParams } from 'pep/utils/search';
 import Sidebar from 'pep/services/sidebar';
 import SearchController from './controller';
-import { PaginationController } from '@gavant/ember-pagination/utils/query-params';
 import Document from 'pep/pods/document/model';
 
 export interface SearchParams {
@@ -21,6 +23,7 @@ export interface SearchParams {
 
 export default class Search extends PageNav(RoutePagination(Route)) {
     @service sidebar!: Sidebar;
+    @service fastboot!: FastbootService;
 
     navController = 'search';
 
@@ -68,7 +71,7 @@ export default class Search extends PageNav(RoutePagination(Route)) {
      * @param {Transition} transition
      */
     afterModel(model: object, transition: Transition) {
-        if (isEmpty(model)) {
+        if (isEmpty(model) && !this.fastboot.isFastBoot) {
             next(this, () => this.sidebar.toggleLeftSidebar(true));
         }
 

@@ -3,6 +3,7 @@ import { action, setProperties } from '@ember/object';
 import { isEmpty } from '@ember/utils';
 import { later } from '@ember/runloop';
 import { tracked } from '@glimmer/tracking';
+import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import { inject as service } from '@ember/service';
 import ControllerPagination from '@gavant/ember-pagination/mixins/controller-pagination';
 import { PaginationController } from '@gavant/ember-pagination/utils/query-params';
@@ -18,6 +19,7 @@ export default class Search extends ControllerPagination(Controller) {
     @service ajax!: AjaxService;
     @service sidebar!: SidebarService;
     @service loadingBar!: LoadingBarService;
+    @service fastboot!: FastbootService;
     @service fastbootMedia!: FastbootMediaService;
 
     //workaround for bug w/array-based query param values

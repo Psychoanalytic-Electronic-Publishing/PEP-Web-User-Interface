@@ -26,6 +26,9 @@ declare const config: {
     fontawesome: {
         defaultPrefix: string;
     };
+    storefront: {
+        maxAge: number;
+    };
     'ember-cli-notifications': {
         autoClear: boolean;
         clearDuration: number;
