@@ -14,6 +14,7 @@ export default class Scrollable extends Component<ScrollableArgs> {
 
     ps: PerfectScrollbar | null = null;
     scrollElement: HTMLElement | null = null;
+    resizeDebounceDelay: number = 250;
 
     /**
      * Update the scrollable instance when the device media/dimensions change
@@ -37,7 +38,6 @@ export default class Scrollable extends Component<ScrollableArgs> {
                 wheelSpeed: 1
             });
             this.ps = ps;
-            this.scrollElement = element;
         }
     }
 
@@ -69,12 +69,24 @@ export default class Scrollable extends Component<ScrollableArgs> {
      */
     @action
     onElementInsert(element: HTMLElement) {
+        this.scrollElement = element;
         if (!this.media.isMobile && !this.media.isTablet) {
             this.setup(element);
         }
 
         if (this.args.onInsert) {
             this.args.onInsert(element);
+        }
+    }
+
+    /**
+     * When the container element resizes, make sure the PerfectScrollbar
+     * instance is updated with the new scroll height
+     */
+    @action
+    onResize() {
+        if (this.ps) {
+            this.ps.update();
         }
     }
 }

@@ -84,6 +84,7 @@
         "ember-content-placeholders": "^1.0.0",
         "ember-data": "~3.20.0",
         "ember-data-storefront": "0.17.3",
+        "ember-did-resize-modifier": "^1.0.0",
         "ember-error-tracker": "^1.2.0",
         "ember-export-application-global": "^2.0.1",
         "ember-fetch": "^8.0.1",
