@@ -6,7 +6,10 @@
     {{did-insert this.onElementInsert}}
     ...attributes
 >
-    <ContentWithPlaceholder @isLoading={{this.isLoading}}>
+    <ContentWithPlaceholder
+        @placeholderComponent="loading/widget"
+        @isLoading={{this.isLoading}}
+    >
         <ul class="list-unstyled">
             {{#each this.results as |result|}}
                 <li class="mb-2">

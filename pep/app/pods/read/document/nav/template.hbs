@@ -1,40 +1,37 @@
 <Page::Sidebar @side="left" as |Sidebar|>
     <Sidebar.content>
-        {{!-- TODO isLoadingRoute state should show loading content placeholders --}}
         {{#if (or this.metadata.fullCount this.isLoadingRoute)}}
             <div class="bg-white border-divider-b p-3">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                    <h4 class="mb-0">
-                        {{#if this.this.isLoadingRoute}}
-                            <span class="text-muted">{{t "common.loading"}}</span>
-                        {{else}}
+                {{#if this.isLoadingRoute}}
+                    <Loading::Read::Results />
+                {{else}}
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h4 class="mb-0">
                             {{t
                                 "common.numResults"
                                 count=(format-number (or this.metadata.fullCount 0))
                                 htmlSafe=true
                             }}
-                        {{/if}}
-                    </h4>
-                    <div class="d-flex align-items-center">
-                        <Button
-                            @type="link"
-                            @icon="download"
-                            @iconSize="lg"
-                            disabled={{this.this.isLoadingRoute}}
-                            title={{t "common.export"}}
-                            class="p-1"
-                        />
-                        <Button
-                            @type="link"
-                            @icon="print"
-                            @iconSize="lg"
-                            disabled={{this.this.isLoadingRoute}}
-                            title={{t "common.print"}}
-                            class="p-1"
-                        />
+                        </h4>
+                        <div class="d-flex align-items-center">
+                            <Button
+                                @type="link"
+                                @icon="download"
+                                @iconSize="lg"
+                                disabled={{this.this.isLoadingRoute}}
+                                title={{t "common.export"}}
+                                class="p-1"
+                            />
+                            <Button
+                                @type="link"
+                                @icon="print"
+                                @iconSize="lg"
+                                disabled={{this.this.isLoadingRoute}}
+                                title={{t "common.print"}}
+                                class="p-1"
+                            />
+                        </div>
                     </div>
-                </div>
-                {{#unless this.this.isLoadingRoute}}
                     <div class="mb-3">
                         <Button
                             @type="link"
@@ -53,45 +50,45 @@
                             <FaIcon @icon="angle-down" class="text-muted" />
                         </Button>
                     </div>
-                {{/unless}}
-                <VerticalCollection
-                    @items={{this.searchResults}}
-                    @tagName="ul"
-                    @containerSelector=".sidebar-content"
-                    @class="list-unstyled"
-                    @estimateHeight={{100}}
-                    @lastReached={{this.loadNextPage}}
-                    as |result|
-                >
-                    <li class="mb-2">
-                        <LinkTo
-                            @route="read.document"
-                            @model={{result.id}}
-                            @query={{hash
-                                q=this.q
-                                matchSynonyms=this.matchSynonyms
-                                searchTerms=this._searchTerms
-                            }}
-                            class="{{if (eq result.id this.model.id) "font-weight-bold"}}"
-                        >
-                            {{#if (eq result.id this.model.id)}}
-                                <FaIcon @icon="caret-right" />
-                            {{/if}}
-                            {{#if result.authorMast}}
-                                {{result.authorMast}}.
-                            {{/if}}
-                            {{html-safe result.title}}
-                        </LinkTo>
-                        <ul class="list-unstyled small ml-3">
-                            <li>{{t "search.results.sidebar.title" title=result.sourceTitle year=result.year}}</li>
-                        </ul>
-                    </li>
-                </VerticalCollection>
-                {{#if this.isLoadingPage}}
-                    <Loading::Spinner
-                        @options={{hash text=(t "common.loadingResults")}}
-                        class="pt-2"
-                    />
+                    <VerticalCollection
+                        @items={{this.searchResults}}
+                        @tagName="ul"
+                        @containerSelector=".sidebar-content"
+                        @class="list-unstyled"
+                        @estimateHeight={{100}}
+                        @lastReached={{this.loadNextPage}}
+                        as |result|
+                    >
+                        <li class="mb-2">
+                            <LinkTo
+                                @route="read.document"
+                                @model={{result.id}}
+                                @query={{hash
+                                    q=this.q
+                                    matchSynonyms=this.matchSynonyms
+                                    searchTerms=this._searchTerms
+                                }}
+                                class="{{if (eq result.id this.model.id) "font-weight-bold"}}"
+                            >
+                                {{#if (eq result.id this.model.id)}}
+                                    <FaIcon @icon="caret-right" />
+                                {{/if}}
+                                {{#if result.authorMast}}
+                                    {{result.authorMast}}.
+                                {{/if}}
+                                {{html-safe result.title}}
+                            </LinkTo>
+                            <ul class="list-unstyled small ml-3">
+                                <li>{{t "search.results.sidebar.title" title=result.sourceTitle year=result.year}}</li>
+                            </ul>
+                        </li>
+                    </VerticalCollection>
+                    {{#if this.isLoadingPage}}
+                        <Loading::Spinner
+                            @options={{hash text=(t "common.loadingResults")}}
+                            class="pt-2"
+                        />
+                    {{/if}}
                 {{/if}}
             </div>
         {{else}}

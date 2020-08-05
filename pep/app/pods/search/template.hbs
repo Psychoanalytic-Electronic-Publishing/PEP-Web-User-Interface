@@ -3,10 +3,9 @@
     <div class="page-content-section flex-fill">
         <Scrollable class="page-content-inner">
             {{#if (and (not this.model) this.isLoadingPage)}}
-                <Loading::Spinner
-                    @options={{hash text=(t "common.loadingResults")}}
-                    class="py-3 px-4"
-                />
+                <div class="py-3 px-4">
+                    <Loading::Search::Results />
+                </div>
             {{else}}
                 {{#if this.noResults}}
                     <div class="d-flex justify-content-center align-items-center">

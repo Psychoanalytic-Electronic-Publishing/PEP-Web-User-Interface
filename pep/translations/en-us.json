@@ -220,7 +220,8 @@
         "username": "Username",
         "password": "Password",
         "notAMember": "Not a member?",
-        "clickToSubscribe": "Click here to subscribe"
+        "clickToSubscribe": "Click here to subscribe",
+        "success": "You are now logged in."
     },
     "preferences": {
         "title": "Preferences",

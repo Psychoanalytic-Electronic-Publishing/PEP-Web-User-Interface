@@ -5,9 +5,11 @@ import { inject as service } from '@ember/service';
 import { reject } from 'rsvp';
 import RouterService from '@ember/routing/router-service';
 import SessionService from 'ember-simple-auth/services/session';
+import NotificationService from 'ember-cli-notifications/services/notifications';
+import { ModelChangeset } from '@gavant/ember-validations/utilities/create-changeset';
+import intl from 'ember-intl/services/intl';
 import LoadingBar from 'pep/services/loading-bar';
 import { LoginForm } from 'pep/services/auth';
-import { ModelChangeset } from '@gavant/ember-validations/utilities/create-changeset';
 
 interface ModalDialogsUserLoginArgs {
     onClose: () => void;
@@ -21,6 +23,8 @@ export default class ModalDialogsUserLogin extends Component<ModalDialogsUserLog
     @service session!: SessionService;
     @service router!: RouterService;
     @service loadingBar!: LoadingBar;
+    @service notifications!: NotificationService;
+    @service intl!: intl;
 
     @tracked loginError = null;
 
@@ -38,6 +42,7 @@ export default class ModalDialogsUserLogin extends Component<ModalDialogsUserLog
             this.loginError = null;
             this.loadingBar.hide();
             this.args.onClose();
+            this.notifications.success(this.intl.t('login.success'));
             await this.args.options.onAuthenticated?.(response);
             return response;
         } catch (err) {
