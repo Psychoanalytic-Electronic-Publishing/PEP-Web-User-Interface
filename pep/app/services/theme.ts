@@ -4,7 +4,7 @@ import SessionService from 'ember-simple-auth/services/session';
 import THEMES, { THEME_DEFAULT } from 'pep/constants/themes';
 import HeadDataService from 'ember-cli-head/services/head-data';
 
-export default class Theme extends Service {
+export default class ThemeService extends Service {
     @service headData!: HeadDataService;
     @service session!: SessionService;
 
@@ -26,7 +26,9 @@ export default class Theme extends Service {
      * @param {String} newThemeId
      */
     updateTheme(newThemeId: string) {
-        //@ts-ignore TODO need to allow arbitrary set() paths in ember-simple-auth/services/session
+        //@ts-ignore TODO need to allow arbitrary session.set() paths in ember-simple-auth/services/session
+        //session.set() MUST be used (can't use Ember.set()/tracked/etc) as it performs custom logic
+        //to sync changes to the user's browser cookies
         this.session.set('data.themeId', newThemeId);
         this.setup();
     }
@@ -35,6 +37,6 @@ export default class Theme extends Service {
 // DO NOT DELETE: this is how TypeScript knows how to look up your services.
 declare module '@ember/service' {
     interface Registry {
-        theme: Theme;
+        theme: ThemeService;
     }
 }

@@ -5,7 +5,7 @@ import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import SessionService from 'ember-simple-auth/services/session';
 import ModalService from '@gavant/ember-modals/services/modal';
-import LoadingBar from 'pep/services/loading-bar';
+import LoadingBarService from 'pep/services/loading-bar';
 import AuthService from 'pep/services/auth';
 import {
     SEARCH_TYPE_EVERYWHERE,
@@ -15,7 +15,7 @@ import {
 } from 'pep/constants/search';
 
 export default class Application extends Controller {
-    @service loadingBar!: LoadingBar;
+    @service loadingBar!: LoadingBarService;
     @service modal!: ModalService;
     @service session!: SessionService;
     @service auth!: AuthService;

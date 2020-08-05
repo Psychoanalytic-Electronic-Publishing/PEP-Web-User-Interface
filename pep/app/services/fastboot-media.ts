@@ -4,7 +4,7 @@ import MediaService from 'ember-responsive/services/media';
 import UserAgentService from 'ember-useragent/services/user-agent';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 
-export default class FastbootMedia extends Service {
+export default class FastbootMediaService extends Service {
     @service fastboot!: FastbootService;
     @service media!: MediaService;
     @service userAgent!: UserAgentService;
@@ -50,6 +50,6 @@ export default class FastbootMedia extends Service {
 
 declare module '@ember/service' {
     interface Registry {
-        'fastboot-media': FastbootMedia;
+        'fastboot-media': FastbootMediaService;
     }
 }

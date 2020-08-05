@@ -2,14 +2,14 @@ import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import MediaService from 'ember-responsive/services/media';
-import Sidebar from 'pep/services/sidebar';
+import SidebarService from 'pep/services/sidebar';
 
 interface PageSidebarArgs {
     side: 'left' | 'right';
 }
 
 export default class PageSidebar extends Component<PageSidebarArgs> {
-    @service sidebar!: Sidebar;
+    @service sidebar!: SidebarService;
     @service media!: MediaService;
 
     get isLeft() {

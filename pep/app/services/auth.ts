@@ -10,7 +10,7 @@ export interface LoginForm {
     password: string | null;
 }
 
-export default class Auth extends Service {
+export default class AuthService extends Service {
     @service session!: SessionService;
     @service modal!: ModalService;
 
@@ -32,6 +32,6 @@ export default class Auth extends Service {
 // DO NOT DELETE: this is how TypeScript knows how to look up your services.
 declare module '@ember/service' {
     interface Registry {
-        auth: Auth;
+        auth: AuthService;
     }
 }

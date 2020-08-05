@@ -10,7 +10,7 @@ import { PaginationController } from '@gavant/ember-pagination/utils/query-param
 
 import { PageNav } from 'pep/mixins/page-layout';
 import { buildSearchQueryParams } from 'pep/utils/search';
-import Sidebar from 'pep/services/sidebar';
+import SidebarService from 'pep/services/sidebar';
 import SearchController from './controller';
 import Document from 'pep/pods/document/model';
 
@@ -22,7 +22,7 @@ export interface SearchParams {
 }
 
 export default class Search extends PageNav(RoutePagination(Route)) {
-    @service sidebar!: Sidebar;
+    @service sidebar!: SidebarService;
     @service fastboot!: FastbootService;
 
     navController = 'search';

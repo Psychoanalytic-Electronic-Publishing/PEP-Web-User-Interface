@@ -4,7 +4,7 @@ import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import FastbootMediaService from './fastboot-media';
 
-export default class Sidebar extends Service {
+export default class SidebarService extends Service {
     @service fastbootMedia!: FastbootMediaService;
     @tracked leftSidebarIsOpen = true;
     @tracked rightSidebarIsOpen = true;
@@ -70,6 +70,6 @@ export default class Sidebar extends Service {
 // DO NOT DELETE: this is how TypeScript knows how to look up your services.
 declare module '@ember/service' {
     interface Registry {
-        sidebar: Sidebar;
+        sidebar: SidebarService;
     }
 }
