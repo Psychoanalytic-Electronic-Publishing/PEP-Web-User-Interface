@@ -17,6 +17,7 @@ $color-backdrop-well: darken($color-backdrop, 2.5%);
 $color-divider: rgba(#000, 0.06);
 $color-progress-spinner-loading1: rgba(0, 0, 0, 0.25);
 $color-progress-spinner-loading2: saturate(lighten($color-brand-primary, 35%), 45%);
+$color-mask-background: rgba(#000, 0.4);
 // Addon overrides
 $button-spinner-loading-color1: rgba(#fff, 0.75);
 $button-spinner-loading-color2: saturate(lighten($color-brand-primary, 35%), 45%);

@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand fixed-top navbar-dark bg-gradient-primary">
-    <LinkTo @route="index" class="navbar-brand d-flex">
+    <LinkTo @route="index" class="navbar-brand mr-auto d-flex">
         <div class="navbar-brand-logo"></div>
         <div class="ml-2">
             <div>{{t "brand.nameFull.psychoanalytic"}}</div>
@@ -7,7 +7,17 @@
             <div>{{t "brand.nameFull.publishing"}}</div>
         </div>
     </LinkTo>
-    <ul class="navbar-nav ml-auto">
+    <button
+        type="button"
+        class="navbar-toggler d-block d-md-none"
+        aria-controls="page-drawer"
+        aria-expanded={{this.drawer.isOpen}}
+        aria-label={{t "nav.toggle"}}
+        {{on "click" this.toggleDrawer}}
+    >
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <ul class="navbar-nav d-none d-md-flex">
         <li class="nav-item">
             <LinkTo
                 @route="search"
@@ -19,7 +29,7 @@
                 }}
                 class="nav-link"
             >
-                {{t "common.search"}}
+                {{t "nav.search"}}
             </LinkTo>
         </li>
         {{!-- TODO project reqs state that there should be a "Read" nav item         --}}

@@ -33,9 +33,13 @@
         }
     },
     "nav": {
+        "toggle": "Toggle navigation",
+        "home": "Home",
+        "search": "Search",
         "browse": "Browse",
         "read": "Read",
         "user": {
+            "account": "My account",
             "preferences": "Preferences",
             "help": "Help",
             "reportProblem": "Report a problem",

@@ -1,2 +1,94 @@
-{{!-- TODO --}}
-<span>.</span>
+<div
+    class="page-drawer d-block d-md-none {{~if this.drawer.isOpen " is-open"}}"
+    ...attributes
+>
+    {{!-- TODO use <Scrollable></Scrollable> --}}
+    <div class="px-3 py-4">
+        {{!-- Close circle-times icon button aligned top right --}}
+        PEP Logo Here
+    </div>
+    <div class="px-3 py-4">
+        <div class="list-group">
+            <Page::Drawer::NavItem>
+                <LinkTo @route="index" class="list-group-item list-group-item-action">
+                    {{t "nav.home"}}
+                </LinkTo>
+            </Page::Drawer::NavItem>
+            <Page::Drawer::NavItem>
+                <LinkTo @route="search" class="list-group-item list-group-item-action">
+                    {{t "nav.search"}}
+                </LinkTo>
+            </Page::Drawer::NavItem>
+            <Page::Drawer::NavItem>
+                <LinkTo @route="browse" class="list-group-item list-group-item-action">
+                    {{t "nav.browse"}}
+                </LinkTo>
+            </Page::Drawer::NavItem>
+            <CollapsiblePanel
+                @title={{t "nav.user.account"}}
+                @isOpen={{this.isUserMenuOpen}}
+                @toggle={{fn (mut this.isUserMenuOpen)}}
+            >
+                <Page::Drawer::NavItem>
+                    <button
+                        type="button"
+                        class="list-group-item list-group-item-action"
+                        {{on "click" this.openPreferencesModal}}
+                    >
+                        <FaIcon @icon="cog" @fixedWidth={{true}} class="text-muted" />
+                        {{t "nav.user.preferences"}}
+                    </button>
+                </Page::Drawer::NavItem>
+                <Page::Drawer::NavItem>
+                    <button
+                        type="button"
+                        class="list-group-item list-group-item-action"
+                    >
+                        <FaIcon @icon="question-square" @fixedWidth={{true}} class="text-muted" />
+                        {{t "nav.user.help"}}
+                    </button>
+                </Page::Drawer::NavItem>
+                <Page::Drawer::NavItem>
+                    <button
+                        type="button"
+                        class="list-group-item list-group-item-action"
+                    >
+                        <FaIcon @icon="comment-exclamation" @fixedWidth={{true}} class="text-muted" />
+                        {{t "nav.user.reportProblem"}}
+                    </button>
+                </Page::Drawer::NavItem>
+                {{#if this.session.isAuthenticated}}
+                    <Page::Drawer::NavItem>
+                        <button
+                            type="button"
+                            class="list-group-item list-group-item-action"
+                            {{on "click" this.logout}}
+                        >
+                            <FaIcon @icon="sign-out" @fixedWidth={{true}} class="text-muted" />
+                            {{t "nav.user.logout"}}
+                        </button>
+                    </Page::Drawer::NavItem>
+                {{else}}
+                    <Page::Drawer::NavItem>
+                        <button
+                            type="button"
+                            class="list-group-item list-group-item-action"
+                            {{on "click" this.openLoginModal}}
+                        >
+                            <FaIcon @icon="sign-in" @fixedWidth={{true}} class="text-muted" />
+                            {{t "nav.user.login"}}
+                        </button>
+                    </Page::Drawer::NavItem>
+                {{/if}}
+            </CollapsiblePanel>
+        </div>
+    </div>
+</div>
+{{#if this.drawer.isOpen}}
+    <div
+        class="page-drawer-mask"
+        role="button"
+        {{on "click" this.closeDrawer}}
+    >
+    </div>
+{{/if}}

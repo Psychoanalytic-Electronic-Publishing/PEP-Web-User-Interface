@@ -1,0 +1,26 @@
+.page-drawer {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 100%;
+    z-index: $z-drawer-content;
+    width: $drawer-width;
+    visibility: hidden;
+    background-color: $color-brand-primary;
+    transition: transform 0.3s ease-in-out, visibility 0.3s ease-in-out;
+
+    &.is-open {
+        visibility: visible;
+        transform: translateX(-100%);
+    }
+
+    &-mask {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        z-index: $z-drawer-mask;
+        background-color: $color-mask-background;
+    }
+}

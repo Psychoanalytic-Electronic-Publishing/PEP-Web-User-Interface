@@ -5,8 +5,10 @@ import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import SessionService from 'ember-simple-auth/services/session';
 import ModalService from '@gavant/ember-modals/services/modal';
+
 import LoadingBarService from 'pep/services/loading-bar';
 import AuthService from 'pep/services/auth';
+import DrawerService from 'pep/services/drawer';
 import {
     SEARCH_TYPE_EVERYWHERE,
     SEARCH_DEFAULT_TERMS,
@@ -19,6 +21,7 @@ export default class Application extends Controller {
     @service modal!: ModalService;
     @service session!: SessionService;
     @service auth!: AuthService;
+    @service drawer!: DrawerService;
 
     //json stringify is workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
@@ -115,7 +118,7 @@ export default class Application extends Controller {
      */
     @action
     openPreferencesModal() {
-        this.modal.open('user/preferences', {});
+        return this.modal.open('user/preferences', {});
     }
 
     /**
@@ -132,6 +135,14 @@ export default class Application extends Controller {
     @action
     logout() {
         return this.session.invalidate();
+    }
+
+    /**
+     * Toggle page drawer nav
+     */
+    @action
+    toggleDrawer() {
+        return this.drawer.toggle();
     }
 }
 
