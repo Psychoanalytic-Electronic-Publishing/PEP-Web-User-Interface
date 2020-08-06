@@ -1,16 +1,25 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
+import { inject as service } from '@ember/service';
+import { later } from '@ember/runloop';
 import { TransitionArgs } from 'ember-animated';
 import move from 'ember-animated/motions/move';
 import { fadeIn, fadeOut } from 'ember-animated/motions/opacity';
 
+import ScrollableService from 'pep/services/scrollable';
+
 export interface CollapsiblePanelArgs {
     isOpen: boolean;
     title: string;
+    scrollableNamespace?: string;
     toggle: (isOpen: boolean) => void;
 }
 
 export default class CollapsiblePanel extends Component<CollapsiblePanelArgs> {
+    @service scrollable!: ScrollableService;
+
+    animateDuration = 300;
+
     /**
      * ember-animated transition for panel collapse/expand
      * @param {TransitionArgs}
@@ -36,6 +45,9 @@ export default class CollapsiblePanel extends Component<CollapsiblePanelArgs> {
     @action
     toggle(event: Event) {
         event.preventDefault();
-        return this.args.toggle(!this.args.isOpen);
+        this.args.toggle(!this.args.isOpen);
+        if (this.args.scrollableNamespace) {
+            later(() => this.scrollable.recalculate(this.args.scrollableNamespace), this.animateDuration);
+        }
     }
 }

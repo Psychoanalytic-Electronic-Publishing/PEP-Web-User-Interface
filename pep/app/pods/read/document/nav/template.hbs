@@ -1,5 +1,5 @@
 <Page::Sidebar @side="left" as |Sidebar|>
-    <Sidebar.content>
+    <Sidebar.content @scrollableNamespace="sidebar-left">
         {{#if (or this.metadata.fullCount this.isLoadingRoute)}}
             <div class="bg-white border-divider-b p-3">
                 {{#if this.isLoadingRoute}}

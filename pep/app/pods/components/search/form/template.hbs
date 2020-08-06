@@ -50,7 +50,7 @@
             </div>
             <p class="text-muted mb-2">{{t "search.form.terms.heading"}}</p>
             <AnimatedContainer>
-                {{#animated-each @searchTerms use=this.animateTransition duration=300 as |searchTerm|}}
+                {{#animated-each @searchTerms use=this.animateTransition duration=this.animateDuration as |searchTerm|}}
                     <div class="d-flex mb-2">
                         {{!-- TODO extract term control into <Search::Form::TermControl /> --}}
                         <div class="search-form-term-control flex-fill">
@@ -72,7 +72,7 @@
                         <Button
                             @icon="trash-alt"
                             @type="link"
-                            @action={{fn @removeSearchTerm searchTerm}}
+                            @action={{fn this.removeSearchTerm searchTerm}}
                             class="ml-1 p-0"
                             title={{t "search.form.terms.remove"}}
                         />
@@ -115,6 +115,7 @@
     <Alert
         @isShown={{this.hasTooManyResults}}
         @type="warning"
+        @scrollableNamespace="sidebar-left"
         class="mb-0 border-left-0 rounded-0 small"
     >
         <p class="mb-1 d-flex">

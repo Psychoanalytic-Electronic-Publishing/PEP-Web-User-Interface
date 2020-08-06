@@ -1,5 +1,5 @@
 <Page::Sidebar @side="right" as |Sidebar|>
-    <Sidebar.content>
+    <Sidebar.content @scrollableNamespace="sidebar-right">
         <div class="p-3">
             <h5 class="mb-3">{{t "relatedInfo.title"}}</h5>
             <Page::Sidebar::Widgets::WhatsNew />

@@ -7,6 +7,7 @@ import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import { inject as service } from '@ember/service';
 import ControllerPagination from '@gavant/ember-pagination/mixins/controller-pagination';
 import { PaginationController } from '@gavant/ember-pagination/utils/query-params';
+
 import AjaxService from 'pep/services/ajax';
 import { SEARCH_TYPE_EVERYWHERE, SearchTermValue, SearchFacetValue } from 'pep/constants/search';
 import { buildSearchQueryParams } from 'pep/utils/search';
@@ -14,6 +15,7 @@ import SidebarService from 'pep/services/sidebar';
 import LoadingBarService from 'pep/services/loading-bar';
 import FastbootMediaService from 'pep/services/fastboot-media';
 import Document from 'pep/pods/document/model';
+import ScrollableService from 'pep/services/scrollable';
 
 export default class Search extends ControllerPagination(Controller) {
     @service ajax!: AjaxService;
@@ -21,6 +23,7 @@ export default class Search extends ControllerPagination(Controller) {
     @service loadingBar!: LoadingBarService;
     @service fastboot!: FastbootService;
     @service fastbootMedia!: FastbootMediaService;
+    @service scrollable!: ScrollableService;
 
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
@@ -139,10 +142,12 @@ export default class Search extends ControllerPagination(Controller) {
 
             //perform search
             this.loadingBar.show();
+            this.scrollable.scrollToTop('search-results');
             //TODO this is pretty ugly, its a result of the pagination mixin issues
             const controller = (this as unknown) as PaginationController;
             const results = await controller.filter();
             this.loadingBar.hide();
+            this.scrollable.recalculate('sidebar-left');
             return results;
         } catch (err) {
             this.loadingBar.hide();

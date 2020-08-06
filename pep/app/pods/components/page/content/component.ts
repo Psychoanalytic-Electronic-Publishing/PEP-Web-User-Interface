@@ -1,5 +1,11 @@
 import Component from '@glimmer/component';
 
-interface PageContentArgs {}
+interface PageContentArgs {
+    scrollableNamespace?: string;
+}
 
-export default class PageContent extends Component<PageContentArgs> {}
+export default class PageContent extends Component<PageContentArgs> {
+    get scrollableNamespace() {
+        return this.args.scrollableNamespace ?? 'page-content';
+    }
+}

@@ -1,22 +1,33 @@
 import Component from '@glimmer/component';
 import { action, computed } from '@ember/object';
+import { later } from '@ember/runloop';
+import { inject as service } from '@ember/service';
+import move from 'ember-animated/motions/move';
+import { fadeIn, fadeOut } from 'ember-animated/motions/opacity';
+import { TransitionArgs } from 'ember-animated';
+
 import {
     SEARCH_TYPES,
     SEARCH_TYPE_EVERYWHERE,
     SEARCH_RESULTS_WARNING_COUNT,
     SearchTermValue
 } from 'pep/constants/search';
+import ScrollableService from 'pep/services/scrollable';
 
 interface SearchFormArgs {
     resultsCount?: number;
     smartSearchTerm?: string;
     searchTerms?: SearchTermValue[];
     addSearchTerm: (term: SearchTermValue) => void;
+    removeSearchTerm: (term: SearchTermValue) => void;
     updateSearchTerm: (oldTerm: SearchTermValue, newTerm: SearchTermValue) => void;
 }
 
 export default class SearchForm extends Component<SearchFormArgs> {
+    @service scrollable!: ScrollableService;
+
     searchTypes = SEARCH_TYPES;
+    animateDuration = 300;
 
     @computed('args.{smartSearchTerm,searchTerms.@each.term}')
     get hasEnteredSearch() {
@@ -31,6 +42,24 @@ export default class SearchForm extends Component<SearchFormArgs> {
     }
 
     /**
+     * ember-animated transition to show/hide alert
+     * @param {TransitionArgs}
+     */
+    *animateTransition({ keptSprites, removedSprites, insertedSprites }: TransitionArgs) {
+        for (let sprite of keptSprites) {
+            move(sprite);
+        }
+
+        for (let sprite of removedSprites) {
+            fadeOut(sprite);
+        }
+
+        for (let sprite of insertedSprites) {
+            fadeIn(sprite);
+        }
+    }
+
+    /**
      * Add a new search term field
      */
     @action
@@ -39,6 +68,16 @@ export default class SearchForm extends Component<SearchFormArgs> {
             type: SEARCH_TYPE_EVERYWHERE.id,
             term: ''
         });
+        later(() => this.scrollable.recalculate('sidebar-left'), this.animateDuration);
+    }
+
+    /**
+     * Remove a search term field
+     */
+    @action
+    removeSearchTerm(searchTerm: SearchTermValue) {
+        this.args.removeSearchTerm(searchTerm);
+        later(() => this.scrollable.recalculate('sidebar-left'), this.animateDuration);
     }
 
     /**

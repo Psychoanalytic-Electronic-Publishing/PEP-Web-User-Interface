@@ -1,7 +1,7 @@
 {{page-title (t "search.title")}}
 <div class="page-content page-content-sectioned">
     <div class="page-content-section flex-fill">
-        <Scrollable class="page-content-inner">
+        <Scrollable @namespace="search-results" class="page-content-inner">
             {{#if (and (not this.model) this.isLoadingPage)}}
                 <div class="py-3 px-4">
                     <Loading::Search::Results />

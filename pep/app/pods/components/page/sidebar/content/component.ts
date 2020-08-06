@@ -1,5 +1,7 @@
 import Component from '@glimmer/component';
 
-interface PageSidebarContentArgs {}
+interface PageSidebarContentArgs {
+    scrollableNamespace?: string;
+}
 
 export default class PageSidebarContent extends Component<PageSidebarContentArgs> {}

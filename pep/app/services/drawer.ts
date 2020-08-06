@@ -1,11 +1,8 @@
 import Service from '@ember/service';
 import { isNone } from '@ember/utils';
 import { tracked } from '@glimmer/tracking';
-// import { inject as service } from '@ember/service';
-// import FastbootMediaService from './fastboot-media';
 
 export default class DrawerService extends Service {
-    // @service fastbootMedia!: FastbootMediaService;
     @tracked isOpen = false;
 
     /**

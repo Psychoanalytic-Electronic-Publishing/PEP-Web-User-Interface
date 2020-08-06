@@ -4,13 +4,17 @@ import { inject as service } from '@ember/service';
 import MediaService from 'ember-responsive/services/media';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 
+import ScrollableService from 'pep/services/scrollable';
+
 interface ScrollableArgs {
+    namespace?: string;
     onInsert: (element: HTMLElement) => void;
 }
 
 export default class Scrollable extends Component<ScrollableArgs> {
     @service media!: MediaService;
     @service fastboot!: FastbootService;
+    @service scrollable!: ScrollableService;
 
     ps: PerfectScrollbar | null = null;
     scrollElement: HTMLElement | null = null;
@@ -25,6 +29,18 @@ export default class Scrollable extends Component<ScrollableArgs> {
         super(owner, args);
         this.handleMediaChange();
         this.media.on('mediaChanged', this, this.handleMediaChange);
+        this.scrollable.on('recalculate', this, this.handleRecalculate);
+        this.scrollable.on('scrollToTop', this, this.handleScrollToTop);
+    }
+
+    /**
+     * Destroy PerfectScrollbar instance and remove listeners
+     */
+    willDestroy() {
+        this.media.off('mediaChanged', this, this.handleMediaChange);
+        this.scrollable.off('recalculate', this, this.handleRecalculate);
+        this.scrollable.off('scrollToTop', this, this.handleScrollToTop);
+        this.teardown();
     }
 
     /**
@@ -48,6 +64,28 @@ export default class Scrollable extends Component<ScrollableArgs> {
         if (this.ps) {
             this.ps.destroy();
             this.ps = null;
+        }
+    }
+
+    /**
+     * Recalculates the PerfectScrollbar scroll height when
+     * receiving an event from the Scrollable service
+     * @param {String} namespace
+     */
+    handleRecalculate(namespace?: string) {
+        if ((!namespace || this.args.namespace === namespace) && this.ps) {
+            this.ps.update();
+        }
+    }
+
+    /**
+     * Scrolls the <Scrollable> to top when
+     * receiving an event from the Scrollable service
+     * @param {String} namespace
+     */
+    handleScrollToTop(namespace?: string) {
+        if ((!namespace || this.args.namespace === namespace) && this.scrollElement) {
+            this.scrollElement.scrollTop = 0;
         }
     }
 
