@@ -1,33 +1,37 @@
 import { isEmpty } from '@ember/utils';
-import { SEARCH_TYPES, SEARCH_FACETS } from 'pep/constants/search';
+import { SEARCH_TYPES, SEARCH_FACETS, SearchTermValue, SearchFacetValue } from 'pep/constants/search';
 import { removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
 
 const defaultFacetFields = SEARCH_FACETS.mapBy('id');
 
-//TODO move
-interface SearchQueryTerm {
-    term: string;
-    type: string; //TODO should be enum
+interface SearchQueryStrParams {
+    fulltext1: string;
+    author?: string;
+    sourcetype?: string;
+    articletype?: string;
+    sourcelangcode?: string;
+    title?: string;
+    startyear?: string;
+    endyear?: string;
+    citecount?: string;
+    viewcount?: string;
 }
 
-//TODO move
-interface SearchQueryFacet {
-    value: string;
-    id: string; //TODO should be enum
+interface SearchQueryParams extends SearchQueryStrParams {
+    facetfields: string | null;
+    synonyms: boolean;
 }
 
-//TODO not using smartSearchTerm yet
 export function buildSearchQueryParams(
     smartSearchTerm: string,
-    searchTerms: SearchQueryTerm[],
+    searchTerms: SearchTermValue[],
     synonyms: boolean,
-    facetValues: SearchQueryFacet[] = [],
+    facetValues: SearchFacetValue[] = [],
     facetFields: string[] = defaultFacetFields,
     logicalOperator: 'AND' | 'OR' = 'OR'
 ) {
-    const queryParams = {
+    const queryParams: SearchQueryParams = {
         facetfields: !isEmpty(facetFields) ? facetFields.join(',') : null,
-        //TODO smartSearchTerm needs to actually be "smart"
         fulltext1: smartSearchTerm,
         synonyms
     };
@@ -38,10 +42,11 @@ export function buildSearchQueryParams(
         let searchType = SEARCH_TYPES.findBy('id', term.type);
         if (searchType && searchType.param) {
             //if a term of this type already exists, join it to the existing one
-            if (queryParams[searchType.param]) {
-                queryParams[searchType.param] = `${queryParams[searchType.param]} ${logicalOperator} ${term.term}`;
+            const p = searchType.param as keyof SearchQueryStrParams;
+            if (queryParams[p]) {
+                queryParams[p] = `${queryParams[p]} ${logicalOperator} ${term.term}`;
             } else {
-                queryParams[searchType.param] = term.term;
+                queryParams[p] = term.term;
             }
         }
     });
@@ -49,15 +54,18 @@ export function buildSearchQueryParams(
     const nonEmptyFacets = facetValues.filter((facet) => !!facet.value);
 
     //group facets together by id
-    const groupedFacets = nonEmptyFacets.reduce((prev, facet) => {
-        if (prev[facet.id]) {
-            prev[facet.id].push(facet);
-        } else {
-            prev[facet.id] = [facet];
-        }
+    const groupedFacets = nonEmptyFacets.reduce(
+        (prev: { [x: string]: SearchFacetValue[] }, facet: SearchFacetValue) => {
+            if (prev[facet.id]) {
+                prev[facet.id].push(facet);
+            } else {
+                prev[facet.id] = [facet];
+            }
 
-        return prev;
-    }, {});
+            return prev;
+        },
+        {}
+    );
 
     Object.keys(groupedFacets).forEach((id) => {
         let facetType = SEARCH_FACETS.findBy('id', id);

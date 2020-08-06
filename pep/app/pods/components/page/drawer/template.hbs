@@ -1,0 +1,108 @@
+<div
+    class="page-drawer d-block d-md-none {{~if this.drawer.isOpen " is-open"}}"
+    ...attributes
+>
+    <Scrollable @namespace="page-drawer" class="page-drawer-scrollable">
+        <div class="p-4 d-flex align-items-center page-drawer-header">
+            <button type="button" class="page-drawer-close" {{on "click" this.closeDrawer}}>
+                <FaIcon @icon="times-circle" @prefix="fas" @size="lg" />
+            </button>
+            <div class="page-drawer-brand d-flex">
+                <div class="page-drawer-brand-logo"></div>
+                <div class="ml-2">
+                    <div>{{t "brand.nameFull.psychoanalytic"}}</div>
+                    <div>{{t "brand.nameFull.electronic"}}</div>
+                    <div>{{t "brand.nameFull.publishing"}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="px-3 py-4 page-drawer-content">
+            <div class="list-group">
+                <Page::Drawer::NavItem class="mt-1">
+                    <LinkTo @route="index" class="list-group-item list-group-item-action">
+                        <FaIcon @icon="home" @fixedWidth={{true}} class="mr-2" />
+                        {{t "nav.home"}}
+                    </LinkTo>
+                </Page::Drawer::NavItem>
+                <Page::Drawer::NavItem class="mt-1">
+                    <LinkTo @route="search" class="list-group-item list-group-item-action">
+                        <FaIcon @icon="search" @fixedWidth={{true}} class="mr-2" />
+                        {{t "nav.search"}}
+                    </LinkTo>
+                </Page::Drawer::NavItem>
+                <Page::Drawer::NavItem class="mt-1">
+                    <LinkTo @route="browse" class="list-group-item list-group-item-action">
+                        <FaIcon @icon="list" @fixedWidth={{true}} class="mr-2" />
+                        {{t "nav.browse"}}
+                    </LinkTo>
+                </Page::Drawer::NavItem>
+                <Page::Drawer::NavMenu
+                    @title={{t "nav.user.account"}}
+                    @isOpen={{this.isUserMenuOpen}}
+                    @toggle={{fn (mut this.isUserMenuOpen)}}
+                    class="mt-1"
+                >
+                    <Page::Drawer::NavItem class="mt-1">
+                        <button
+                            type="button"
+                            class="list-group-item list-group-item-action"
+                            {{on "click" this.openPreferencesModal}}
+                        >
+                            <FaIcon @icon="cog" @fixedWidth={{true}}  class="mr-2" />
+                            {{t "nav.user.preferences"}}
+                        </button>
+                    </Page::Drawer::NavItem>
+                    <Page::Drawer::NavItem class="mt-1">
+                        <button
+                            type="button"
+                            class="list-group-item list-group-item-action"
+                        >
+                            <FaIcon @icon="question-square" @fixedWidth={{true}} class="mr-2" />
+                            {{t "nav.user.help"}}
+                        </button>
+                    </Page::Drawer::NavItem>
+                    <Page::Drawer::NavItem class="mt-1">
+                        <button
+                            type="button"
+                            class="list-group-item list-group-item-action"
+                        >
+                            <FaIcon @icon="comment-exclamation" @fixedWidth={{true}} class="mr-2" />
+                            {{t "nav.user.reportProblem"}}
+                        </button>
+                    </Page::Drawer::NavItem>
+                    {{#if this.session.isAuthenticated}}
+                        <Page::Drawer::NavItem class="mt-1">
+                            <button
+                                type="button"
+                                class="list-group-item list-group-item-action"
+                                {{on "click" this.logout}}
+                            >
+                                <FaIcon @icon="sign-out" @fixedWidth={{true}} class="mr-2" />
+                                {{t "nav.user.logout"}}
+                            </button>
+                        </Page::Drawer::NavItem>
+                    {{else}}
+                        <Page::Drawer::NavItem class="mt-1">
+                            <button
+                                type="button"
+                                class="list-group-item list-group-item-action"
+                                {{on "click" this.openLoginModal}}
+                            >
+                                <FaIcon @icon="sign-in" @fixedWidth={{true}} class="mr-2" />
+                                {{t "nav.user.login"}}
+                            </button>
+                        </Page::Drawer::NavItem>
+                    {{/if}}
+                </Page::Drawer::NavMenu>
+            </div>
+        </div>
+    </Scrollable>
+</div>
+{{#if this.drawer.isOpen}}
+    <div
+        class="page-drawer-mask d-block d-md-none"
+        role="button"
+        {{on "click" this.closeDrawer}}
+    >
+    </div>
+{{/if}}

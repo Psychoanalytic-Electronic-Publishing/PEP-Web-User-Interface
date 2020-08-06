@@ -1,31 +1,33 @@
 <CollapsiblePanel
-    @title="Most cited"
+    @scrollableNamespace="sidebar-right"
+    @title={{t "relatedInfo.widgets.mostCited.title"}}
     @isOpen={{this.isOpen}}
-    @toggle={{action (mut this.isOpen)}}
+    @toggle={{fn (mut this.isOpen)}}
     class="mb-2"
     {{did-insert this.onElementInsert}}
     ...attributes
 >
-    {{#if this.isLoading}}
-        <Progress::Spinner />
-    {{else}}
+    <ContentWithPlaceholder
+        @placeholderComponent="loading/widget"
+        @isLoading={{this.isLoading}}
+    >
         <ul class="list-unstyled">
             {{#each this.results as |result|}}
                 <li class="mb-2">
                     <div>
-                        <LinkTo @route="read.document" @model={{result.documentID}}>
-                            {{{result.title}}}
+                        <LinkTo @route="read.document" @model={{result.id}}>
+                            {{html-safe result.title}}
                         </LinkTo>
                         <div class="text-muted small">
-                            {{{result.sourceTitle}}}
+                            {{html-safe result.sourceTitle}}
                         </div>
                     </div>
                 </li>
             {{else}}
                 <li class="py-3 mb-0 text-center text-muted">
-                    No results found
+                    {{t "common.noResults"}}
                 </li>
             {{/each}}
         </ul>
-    {{/if}}
+    </ContentWithPlaceholder>
 </CollapsiblePanel>

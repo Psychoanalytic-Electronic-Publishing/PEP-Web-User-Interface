@@ -1,35 +1,30 @@
 import DS from 'ember-data';
-import { isArray } from '@ember/array';
+import { camelize } from '@ember/string';
+import { pluralize } from 'ember-inflector';
+import ApplicationSerializerMixin from 'pep/mixins/application-serializer';
 
-// [PRO-TIP!] Do you need to save models along with changes to their relationships?
-//
-// JSON-API does not support this (currently) out-of-the-box, however, we may
-// be able to use the `ember-data-save-relationships` addon to accomplish that.
-// Alternatively, we can just follow a simpler (but less efficient/more brittle)
-// solution of performing multiple consecutive API requests.
-//
-// @see https://github.com/psteininger/ember-data-save-relationships
-// @see https://emberigniter.com/saving-models-relationships-json-api/
-
-export default class ApplicationSerializer extends DS.JSONAPISerializer {
+export default class ApplicationSerializer extends ApplicationSerializerMixin(DS.RESTSerializer) {
     /**
-     * Do not serialize attributes if the record is being updated and the attribute
-     * value was not modified. Also never serialize attributes that have been
-     * annotated with the `@unsendable` decorator.
-     *
-     * @param snapshot {DS.Snapshot<string | number>}
-     * @param json {Object}
-     * @param key {String}
-     * @param attribute {Object}
-     * @see https://github.com/emberjs/data/issues/3467#issuecomment-543176123
+     * The API returns result sets in the JSON under modelName.responseSet
+     * and the metadata under modelName.responseInfo
+     * @param {DS.Store} store
+     * @param {DS.Model} primaryModelClass
+     * @param {object} payload
+     * @param {string} id
+     * @param {string} requestType
      */
-    serializeAttribute(snapshot: DS.Snapshot<string | number>, json: {}, key: string, attribute: {}) {
-        if (
-            (snapshot.record.get('isNew') || snapshot.changedAttributes()[key]) &&
-            (!isArray(snapshot.record.unsendableAttributes) || snapshot.record.unsendableAttributes.indexOf(key) === -1)
-        ) {
-            super.serializeAttribute(snapshot, json, key, attribute);
-        }
+    normalizeArrayResponse(
+        store: DS.Store,
+        primaryModelClass: DS.Model,
+        payload: any,
+        id: string | number,
+        requestType: string
+    ) {
+        //@ts-ignore modelName does exist on the model class instance
+        const modelKey = pluralize(camelize(primaryModelClass.modelName));
+        payload.meta = payload?.[modelKey].responseInfo;
+        payload[modelKey] = payload?.[modelKey].responseSet;
+        return super.normalizeArrayResponse(store, primaryModelClass, payload, id, requestType);
     }
 }
 

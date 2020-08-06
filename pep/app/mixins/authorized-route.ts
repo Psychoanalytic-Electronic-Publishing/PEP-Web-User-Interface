@@ -5,7 +5,6 @@ import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import ModelRegistry from 'ember-data/types/registries/model';
 
-
 type Constructor<T = Route> = new (...args: any[]) => T;
 
 /**
@@ -14,7 +13,6 @@ type Constructor<T = Route> = new (...args: any[]) => T;
  * @export
  * @template TBase
  * @param {TBase} Base
- * @returns
  */
 export default function AuthorizedRoute<TBase extends Constructor>(Base: TBase) {
     class AuthorizedRouteClass extends Base {

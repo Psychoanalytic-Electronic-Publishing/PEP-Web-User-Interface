@@ -5,6 +5,11 @@ import NotificationService from 'ember-cli-notifications/services/notifications'
 export default class Notifications extends NotificationService {
     @service intl;
 
+    /**
+     * Displays toast notifications for the given server errors
+     * @param {ApiServerErrorResponse} payload
+     * @param {Object} options
+     */
     errors(payload, options) {
         const errors = !payload || isEmpty(payload.errors) ? [{ code: 'unknown.unexpected' }] : payload.errors;
 
@@ -25,6 +30,11 @@ export default class Notifications extends NotificationService {
         });
     }
 
+    /**
+     * Displays a single grouped toast notification for the given server errors
+     * @param {ApiServerErrorResponse} payload
+     * @param {Object} options
+     */
     groupErrors(payload, options) {
         if (!payload || isEmpty(payload.errors)) {
             return this.errors(payload, options);

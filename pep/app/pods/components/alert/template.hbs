@@ -1,0 +1,28 @@
+<AnimatedContainer>
+    {{#animated-if
+        @isShown
+        use=this.animateTransition
+        duration=this.animateDuration
+        initialInsertion=this.animateInitialInsert
+    }}
+        <div
+            class="alert alert-{{@type}}"
+            role="alert"
+            {{did-update this.onIsShownUpdate @isShown}}
+            ...attributes
+        >
+            {{#if hasBlock}}
+                {{yield}}
+            {{else}}
+                <div class="d-flex">
+                    {{#if @icon}}
+                        <span class="mr-1">
+                            <FaIcon @icon={{@icon}} @size="lg" />
+                        </span>
+                    {{/if}}
+                    <span>{{@message}}</span>
+                </div>
+            {{/if}}
+        </div>
+    {{/animated-if}}
+</AnimatedContainer>

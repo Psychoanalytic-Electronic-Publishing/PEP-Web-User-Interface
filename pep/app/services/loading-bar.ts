@@ -1,13 +1,19 @@
 import Service from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 
-export default class LoadingBar extends Service {
+export default class LoadingBarService extends Service {
     @tracked isShown: boolean = false;
 
+    /**
+     * Shows the loading bar
+     */
     show() {
         this.isShown = true;
     }
 
+    /**
+     * Hides the loading bar
+     */
     hide() {
         this.isShown = false;
     }
@@ -15,6 +21,6 @@ export default class LoadingBar extends Service {
 
 declare module '@ember/service' {
     interface Registry {
-        'loading-bar': LoadingBar;
+        'loading-bar': LoadingBarService;
     }
 }

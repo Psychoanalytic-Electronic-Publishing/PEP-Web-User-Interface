@@ -1,5 +1,5 @@
 <Page::Sidebar @side="left" as |Sidebar|>
-    <Sidebar.content>
+    <Sidebar.content @scrollableNamespace="sidebar-left">
         <Search::Form
             @smartSearchTerm={{this.currentSmartSearchTerm}}
             @searchTerms={{this.currentSearchTerms}}

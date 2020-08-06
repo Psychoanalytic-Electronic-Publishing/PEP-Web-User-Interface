@@ -4,28 +4,26 @@ import { isEmpty } from '@ember/utils';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import SessionService from 'ember-simple-auth/services/session';
-import ModalService from '@gavant/ember-modals/services/modal';
-import LoadingBar from 'pep/services/loading-bar';
-import AuthService from 'pep/services/auth';
-import { SEARCH_TYPE_EVERYWHERE, SEARCH_DEFAULT_TERMS, SEARCH_DEFAULT_FACETS } from 'pep/constants/search';
+
+import LoadingBarService from 'pep/services/loading-bar';
+import { SEARCH_TYPE_EVERYWHERE, SearchTermValue } from 'pep/constants/search';
 
 export default class Application extends Controller {
-    @service loadingBar!: LoadingBar;
-    @service modal!: ModalService;
+    @service loadingBar!: LoadingBarService;
     @service session!: SessionService;
-    @service auth!: AuthService;
-
-    defaultSearchTerms = JSON.stringify(SEARCH_DEFAULT_TERMS);
-    defaultSearchFacets = JSON.stringify(SEARCH_DEFAULT_FACETS);
 
     @tracked smartSearchTerm: string = '';
     @tracked matchSynonyms: boolean = false;
-    @tracked searchTerms = [
+    @tracked searchTerms: SearchTermValue[] = [
         { type: 'everywhere', term: '' },
         { type: 'title', term: '' },
         { type: 'author', term: '' }
     ];
 
+    /**
+     * Submits the application/nav sidebar's search form and transitions the
+     * user to the search results page to fetch and display the results
+     */
     @action
     submitSearch() {
         const searchTerms = this.searchTerms.filter((t) => !!t.term);
@@ -41,6 +39,9 @@ export default class Application extends Controller {
         return this.transitionToRoute('search', { queryParams });
     }
 
+    /**
+     * Clears/resets the application/nav sidebar's search form
+     */
     @action
     clearSearch() {
         this.smartSearchTerm = '';
@@ -48,13 +49,21 @@ export default class Application extends Controller {
         this.searchTerms = [{ type: 'everywhere', term: '' }];
     }
 
+    /**
+     * Adds a new blank search term value field
+     * @param {SearchTermValue} newSearchTerm
+     */
     @action
-    addSearchTerm(newSearchTerm) {
+    addSearchTerm(newSearchTerm: SearchTermValue) {
         this.searchTerms = this.searchTerms.concat([newSearchTerm]);
     }
 
+    /**
+     * Removes a search term value field
+     * @param {SearchTermValue} removedSearchTerm
+     */
     @action
-    removeSearchTerm(removedSearchTerm) {
+    removeSearchTerm(removedSearchTerm: SearchTermValue) {
         const searchTerms = this.searchTerms.concat([]);
         searchTerms.removeObject(removedSearchTerm);
 
@@ -65,8 +74,13 @@ export default class Application extends Controller {
         this.searchTerms = searchTerms;
     }
 
+    /**
+     * Updates a search term field's value
+     * @param {SearchTermValue} oldTerm
+     * @param {SearchTermValue} newTerm
+     */
     @action
-    updateSearchTerm(oldTerm, newTerm) {
+    updateSearchTerm(oldTerm: SearchTermValue, newTerm: SearchTermValue) {
         const searchTerms = this.searchTerms.concat([]);
         //workaround to retain the same term object, instead of splicing in
         //a brand new one like we normally would, so that it doesnt trigger an insert animation
@@ -74,24 +88,13 @@ export default class Application extends Controller {
         this.searchTerms = searchTerms;
     }
 
+    /**
+     * Update match synonyms checkbox
+     * @param {Boolean} isChecked
+     */
     @action
     updateMatchSynonyms(isChecked: boolean) {
         this.matchSynonyms = isChecked;
-    }
-
-    @action
-    openPreferencesModal() {
-        this.modal.open('user/preferences', {});
-    }
-
-    @action
-    openLoginModal() {
-        return this.auth.openLoginModal(true);
-    }
-
-    @action
-    logout() {
-        return this.session.invalidate();
     }
 }
 

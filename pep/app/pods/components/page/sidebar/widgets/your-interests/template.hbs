@@ -1,11 +1,13 @@
 <CollapsiblePanel
-    @title="Your interests"
+    @scrollableNamespace="sidebar-right"
+    @title={{t "relatedInfo.widgets.yourInterests.title"}}
     @isOpen={{this.isOpen}}
-    @toggle={{action (mut this.isOpen)}}
+    @toggle={{fn (mut this.isOpen)}}
     class="mb-2"
     ...attributes
 >
     <ul>
+        {{!-- template-lint-disable no-bare-strings --}}
         <li>This is an interest</li>
         <li>Here is another interest</li>
         <li>Here's another thing I like</li>

@@ -1,11 +1,10 @@
-{{page-title "Search"}}
+{{page-title (t "search.title")}}
 <div class="page-content page-content-sectioned">
     <div class="page-content-section flex-fill">
-        <Scrollable class="page-content-inner">
+        <Scrollable @namespace="search-results" class="page-content-inner">
             {{#if (and (not this.model) this.isLoadingPage)}}
-                <div class="d-flex align-items-center py-3 px-4">
-                    <Progress::Spinner class="mr-1" />
-                    <span class="text-muted">Loading results...</span>
+                <div class="py-3 px-4">
+                    <Loading::Search::Results />
                 </div>
             {{else}}
                 {{#if this.noResults}}
@@ -13,50 +12,47 @@
                         {{#if this.hasSubmittedSearch}}
                             <div class="m-3 m-md-5 text-muted">
                                 <p class="my-4 p-3 bg-backdrop-well rounded">
-                                    No results found. Try using different search terms or phrases to find what you're looking for.
+                                    {{t "search.results.none"}}
                                 </p>
                                 <p class="d-lg-none mb-4">
                                     <Button
                                         @type="primary"
                                         @size="lg"
-                                        @blockLayout={{this.media.isMobile}}
+                                        @blockLayout={{this.fastbootMedia.isMobile}}
                                         @icon="search"
-                                        @label="Start a new search"
+                                        @label={{t "search.new"}}
                                         @action={{this.showSearch}}
                                     />
                                 </p>
                             </div>
                         {{else}}
                             <div class="m-3 m-md-5 p-3 bg-backdrop-well rounded text-muted">
-                                <h5>Your search starts here</h5>
+                                <h5>{{t "search.empty.heading"}}</h5>
                                 <p class="mb-4">
                                     <FaIcon @icon="arrow-left" />
-                                    Use the form on the left to enter terms or phrases and search our publication database.
+                                    {{t "search.empty.instructions"}}
                                 </p>
                                 <p class="d-lg-none mb-4">
                                     <Button
                                         @type="primary"
                                         @size="lg"
-                                        @blockLayout={{this.media.isMobile}}
+                                        @blockLayout={{this.fastbootMedia.isMobile}}
                                         @icon="search"
-                                        @label="Start a new search"
+                                        @label={{t "search.new"}}
                                         @action={{this.showSearch}}
                                     />
                                 </p>
-                                <h5>Search tips</h5>
+                                <h5>{{t "search.empty.tips.heading"}}</h5>
                                 <p>
-                                    Smart Search taskes all kinds of search inputs:
+                                    {{t "search.empty.tips.instructions"}}
                                 </p>
                                 <ul>
-                                    <li>
-                                        Find terms or keywords - to get the best search results, <strong>enter at least two terms at a time.</strong><br>
-                                        This will make the search more precise, returning only the most relevant results.
-                                    </li>
-                                    <li>Paste a reference from an article</li>
-                                    <li>Use a Journal name or part of a journal name</li>
-                                    <li>Search on author name (or multiple authors)</li>
-                                    <li>Use part of a title (two or more words)</li>
-                                    <li>Search by Year / Vol / Page #</li>
+                                    <li>{{t "search.empty.tips.tip1" htmlSafe=true}}</li>
+                                    <li>{{t "search.empty.tips.tip2" htmlSafe=true}}</li>
+                                    <li>{{t "search.empty.tips.tip3" htmlSafe=true}}</li>
+                                    <li>{{t "search.empty.tips.tip4" htmlSafe=true}}</li>
+                                    <li>{{t "search.empty.tips.tip5" htmlSafe=true}}</li>
+                                    <li>{{t "search.empty.tips.tip6" htmlSafe=true}}</li>
                                 </ul>
                             </div>
                         {{/if}}
@@ -65,38 +61,41 @@
                     <div class="py-3 px-4">
                         <div class="d-md-flex justify-content-between align-items-center mb-3">
                             <h4 class="mb-0">
-                                {{format-number (or this.metadata.fullCount 0)}}
-                                <span class="text-muted">results</span>
+                                {{t
+                                    "common.numResults"
+                                    count=(format-number (or this.metadata.fullCount 0))
+                                    htmlSafe=true
+                                }}
                             </h4>
                             <div class="d-flex align-items-center">
                                 <Button
                                     @type="link"
                                     class="text-decoration-none p-1 mr-1"
                                 >
-                                    <span class="text-muted">Sort:</span>
-                                    <span class="text-dark mr-1">Year</span>
+                                    <span class="text-muted">{{t "search.sort.label"}}</span>
+                                    <span class="text-dark mr-1">{{t "search.sort.year"}}</span>
                                     <FaIcon @icon="angle-down" class="text-muted" />
                                 </Button>
                                 <Button
                                     @type="link"
                                     class="text-decoration-none p-1 mr-2"
                                 >
-                                    <span class="text-muted">View:</span>
-                                    <span class="text-dark mr-1">Bibliographic</span>
+                                    <span class="text-muted">{{t "search.view.label"}}</span>
+                                    <span class="text-dark mr-1">{{t "search.view.biblio"}}</span>
                                     <FaIcon @icon="angle-down" class="text-muted" />
                                 </Button>
                                 <Button
                                     @type="link"
                                     @icon="download"
                                     @iconSize="lg"
-                                    title="Export"
+                                    title={{t "common.export"}}
                                     class="p-1"
                                 />
                                 <Button
                                     @type="link"
                                     @icon="print"
                                     @iconSize="lg"
-                                    title="Print"
+                                    title={{t "common.print"}}
                                     class="p-1"
                                 />
                             </div>
@@ -109,6 +108,7 @@
                                     @containerSelector=".page-content-inner"
                                     @class="list-unstyled"
                                     @estimateHeight={{100}}
+                                    @renderAll={{this.fastboot.isFastBoot}}
                                     @lastReached={{this.loadNextPage}}
                                     as |result|
                                 >
@@ -119,17 +119,14 @@
                                         {{#if result.kwicList}}
                                             <ul class="small">
                                                 {{#each result.kwicList as |searchHit|}}
-                                                    <li>{{{searchHit}}}</li>
+                                                    <li>{{html-safe searchHit}}</li>
                                                 {{/each}}
                                             </ul>
                                         {{/if}}
                                     </li>
                                 </VerticalCollection>
                                 {{#if this.isLoadingPage}}
-                                    <div class="d-flex align-items-center">
-                                        <Progress::Spinner class="mr-1" />
-                                        <span class="text-muted">Loading results...</span>
-                                    </div>
+                                    <Loading::Spinner @options={{hash text=(t "common.loadingResults")}} />
                                 {{/if}}
                             </div>
                         </div>

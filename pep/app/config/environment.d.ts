@@ -15,4 +15,38 @@ declare const config: {
     rootURL: string;
     routerRootURL: string;
     apiBaseUrl: string;
+    apiNamespace: string;
+    apiDataNamespace: string;
+    fastboot: {
+        hostWhitelist: Array<string | RegExp>;
+    };
+    pageTitle: {
+        prepend: boolean;
+    };
+    fontawesome: {
+        defaultPrefix: string;
+    };
+    storefront: {
+        maxAge: number;
+    };
+    'ember-cli-notifications': {
+        autoClear: boolean;
+        clearDuration: number;
+    };
+    'ember-error-tracker': {
+        maxLogStackSize: number;
+        events: boolean;
+        listeners: {
+            window: boolean;
+            ember: {
+                rsvp: boolean;
+                ember: boolean;
+                actions: boolean;
+            };
+        };
+        consumers: {
+            console: boolean;
+            api: boolean;
+        };
+    };
 };

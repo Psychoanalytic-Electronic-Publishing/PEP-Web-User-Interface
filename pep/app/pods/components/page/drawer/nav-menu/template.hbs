@@ -1,0 +1,17 @@
+<div class="collapsible-panel page-drawer-nav-menu{{~if @isOpen " is-open"}}" ...attributes>
+    <a class="collapsible-panel-header d-block" href="" {{on "click" this.toggle}}>
+        <FaIcon
+            @icon={{if @isOpen "caret-down" "caret-right"}}
+            @fixedWidth={{true}}
+            class="mr-2"
+        />
+        {{@title}}
+    </a>
+    <AnimatedContainer>
+        {{#animated-if @isOpen use=this.transition duration=300}}
+            <div class="collapsible-panel-body pl-4 pt-2">
+                {{yield}}
+            </div>
+        {{/animated-if}}
+    </AnimatedContainer>
+</div>

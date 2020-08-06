@@ -1,9 +1,11 @@
 <CollapsiblePanel
-    @title="More like these"
+    @scrollableNamespace="sidebar-right"
+    @title={{t "relatedInfo.widgets.moreLikeThese.title"}}
     @isOpen={{this.isOpen}}
-    @toggle={{action (mut this.isOpen)}}
+    @toggle={{fn (mut this.isOpen)}}
     class="mb-2"
 >
+    {{!-- template-lint-disable no-bare-strings --}}
     <p>
         Duis lacinia justo ut blandit aliquet. Nullam volutpat porttitor velit, nec vulputate tellus facilisis ut. Sed dui metus, ullamcorper eu mollis sed, venenatis sit amet sapien. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nam molestie efficitur massa, eget suscipit nulla. Mauris tincidunt vehicula dolor, sit amet pellentesque odio eleifend nec.
     </p>

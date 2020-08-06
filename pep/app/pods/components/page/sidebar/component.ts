@@ -1,15 +1,16 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
-import Sidebar from 'pep/services/sidebar';
+import MediaService from 'ember-responsive/services/media';
+import SidebarService from 'pep/services/sidebar';
 
 interface PageSidebarArgs {
     side: 'left' | 'right';
 }
 
 export default class PageSidebar extends Component<PageSidebarArgs> {
-    @service sidebar!: Sidebar;
-    @service media;
+    @service sidebar!: SidebarService;
+    @service media!: MediaService;
 
     get isLeft() {
         return this.args.side === 'left';
@@ -27,6 +28,9 @@ export default class PageSidebar extends Component<PageSidebarArgs> {
         return this.isLeft ? this.sidebar.rightSidebarIsOpen : this.sidebar.leftSidebarIsOpen;
     }
 
+    /**
+     * Toggles the open/closed state of the sidebar
+     */
     @action
     toggle() {
         return this.isLeft ? this.sidebar.toggleLeftSidebar() : this.sidebar.toggleRightSidebar();

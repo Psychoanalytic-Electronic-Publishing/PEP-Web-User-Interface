@@ -1,0 +1,11 @@
+{
+    "name": "perfect-scrollbar",
+    "keywords": [
+        "ember-addon"
+    ],
+    "dependencies": {
+        "broccoli-funnel": "1.2.0",
+        "broccoli-merge-trees": "2.0.0",
+        "broccoli-stew": "1.5.0"
+    }
+}

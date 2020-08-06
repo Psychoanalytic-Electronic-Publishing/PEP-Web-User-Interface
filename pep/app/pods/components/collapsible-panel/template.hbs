@@ -9,7 +9,7 @@
         </h5>
     </a>
     <AnimatedContainer>
-        {{#animated-if @isOpen use=this.transition duration=300}}
+        {{#animated-if @isOpen use=this.transition duration=this.animateDuration}}
             <div class="collapsible-panel-body border-divider-t p-3">
                 {{yield}}
             </div>

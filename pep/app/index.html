@@ -8,9 +8,6 @@
         {{content-for "head"}}
 
         <link integrity="" rel="stylesheet" href="{{rootURL}}assets/vendor.css" />
-        <!-- TODO if running in fastboot, we SHOULD be able to remove this .css link entirely -->
-        <!-- and just drive it from the templates/head.hbs <link> to reduce downloaded CSS and color flash -->
-        <link integrity="" rel="stylesheet" href="{{rootURL}}assets/pep.css" />
 
         {{content-for "head-footer"}}
     </head>

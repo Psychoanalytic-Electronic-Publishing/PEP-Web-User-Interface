@@ -11,7 +11,8 @@
                         facets=this._facets
                     }}
                 >
-                    <FaIcon @icon="arrow-left" /> Back to search
+                    <FaIcon @icon="arrow-left" />
+                    {{t "read.document.backToSearch"}}
                 </LinkTo>
             {{/if}}
             <div class="ml-2 d-flex align-items-center">
@@ -23,7 +24,7 @@
                 />
                 <div class="input-group input-group-minimal mx-1">
                     <div class="input-group-prepend">
-                        <span class="input-group-text" id="doc-page-control-label">Page</span>
+                        <span class="input-group-text" id="doc-page-control-label">{{t "read.document.page"}}</span>
                     </div>
                     <input
                         type="number"
@@ -32,7 +33,7 @@
                         value={{this.currentPage}}
                         class="form-control text-center"
                         maxlength="255"
-                        aria-label="Page"
+                        aria-label={{t "read.document.page"}}
                         aria-describedby="doc-page-control-label"
                     />
                 </div>
@@ -50,32 +51,36 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="mb-3">
-                    {{{this.model.title}}}
+                    {{html-safe this.model.title}}
                     <div class="small text-muted">
                         {{this.model.authorMast}}
                     </div>
                 </h4>
-                <p class="text-muted pep-document-content">
-                    {{{this.model.abstract}}}
-                </p>
+                <div class="text-muted pep-document-content mb-3">
+                    <ContentWithPlaceholder @placeholderInFastboot={{true}}>
+                        {{html-safe this.model.abstractCleaned}}
+                    </ContentWithPlaceholder>
+                </div>
                 {{#if this.model.accessLimited}}
                     <div class="alert alert-warning" role="alert">
                         {{#if this.model.accessLimitedDescription}}
                             <p class={{if this.session.isAuthenticated "mb-0"}}>
-                                {{{this.model.accessLimitedDescription}}}
+                                {{html-safe this.model.accessLimitedDescription}}
                             </p>
                         {{/if}}
                         {{#unless this.session.isAuthenticated}}
                             <p class="mb-0">
-                                You must be logged in to read the full document.
-                                <a href="" {{on "click" this.login}}>Click here to login</a>.
+                                {{t "read.document.limitedAccess"}}
+                                <a href="" {{on "click" this.login}}>{{t "read.document.login"}}</a>.
                             </p>
                         {{/unless}}
                     </div>
                 {{else}}
-                    {{!-- TODO document pagination --}}
                     <div class="pep-document-content">
-                        {{{this.documentCleaned}}}
+                        {{!-- TODO document pagination --}}
+                        <ContentWithPlaceholder @placeholderInFastboot={{true}} @placeholderComponent="">
+                            {{html-safe this.model.documentCleaned}}
+                        </ContentWithPlaceholder>
                     </div>
                 {{/if}}
             </div>

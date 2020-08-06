@@ -1,5 +1,7 @@
 <div
-    class="sidebar sidebar-{{@side}} {{if (not this.isOpen) "sidebar-collapsed"}} {{if this.otherSidebarIsOpen "other-sidebar-is-open"}}"
+    class="sidebar sidebar-{{@side}}
+        {{~unless this.isOpen " sidebar-collapsed"}}
+        {{~if this.otherSidebarIsOpen " other-sidebar-is-open"}}"
     ...attributes
 >
     <div class="sidebar-inner">

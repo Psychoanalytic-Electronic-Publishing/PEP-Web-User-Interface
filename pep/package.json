@@ -5,6 +5,7 @@
     "description": "pep Ember.js application",
     "repository": "",
     "author": "Gavant Software, Inc.",
+    "license": "UNLICENSED",
     "directories": {
         "doc": "doc",
         "test": "tests"
@@ -39,9 +40,9 @@
         "@gavant/ember-button-spinner": "^1.0.1",
         "@gavant/ember-floating-labels": "^1.0.1",
         "@gavant/ember-modals": "^1.0.2",
-        "@gavant/ember-pagination": "^1.0.4",
+        "@gavant/ember-pagination": "1.0.5",
         "@gavant/ember-template-lint-forms": "^0.0.2",
-        "@gavant/ember-validations": "^2.0.6",
+        "@gavant/ember-validations": "2.1.0",
         "@glimmer/component": "^1.0.1",
         "@glimmer/tracking": "^1.0.0",
         "@html-next/vertical-collection": "^1.0.0",
@@ -53,7 +54,7 @@
         "@types/rsvp": "^4.0.3",
         "animate.css": "3.7.2",
         "babel-eslint": "^10.1.0",
-        "bootstrap": "4.5.0",
+        "bootstrap": "4.5.1",
         "broccoli-asset-rev": "^3.0.0",
         "ember-animated": "^0.10.1",
         "ember-auto-import": "^1.6.0",
@@ -80,8 +81,10 @@
         "ember-cli-typescript-blueprints": "^3.0.0",
         "ember-cli-uglify": "^3.0.0",
         "ember-composable-helpers": "^4.2.1",
+        "ember-content-placeholders": "^1.0.0",
         "ember-data": "~3.20.0",
         "ember-data-storefront": "0.17.3",
+        "ember-did-resize-modifier": "^1.0.0",
         "ember-error-tracker": "^1.2.0",
         "ember-export-application-global": "^2.0.1",
         "ember-fetch": "^8.0.1",
@@ -98,6 +101,7 @@
         "ember-source": "~3.20.2",
         "ember-template-lint": "^2.9.1",
         "ember-truth-helpers": "^2.1.0",
+        "ember-useragent": "^0.10.0",
         "eslint": "^7.5.0",
         "eslint-plugin-ember": "^8.9.1",
         "eslint-plugin-node": "^11.1.0",
@@ -115,6 +119,11 @@
     },
     "ember": {
         "edition": "octane"
+    },
+    "ember-addon": {
+        "paths": [
+            "lib/perfect-scrollbar"
+        ]
     },
     "fastbootDependencies": [
         "node-fetch",

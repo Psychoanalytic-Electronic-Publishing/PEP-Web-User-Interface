@@ -1,38 +1,38 @@
-{{page-title "Psychoanalytic Electronic Publishing"}}
+{{page-title (t "home.title")}}
 <Page::Content>
     <div class="py-3 px-4">
         <h4 class="mb-3">
-            PEP - Psychoanalytic Electronic Publishing
+            {{t "home.heading"}}
             <div class="small text-muted">
-                A Psychoanalytic Library at your fingertips
+                {{t "brand.slogan"}}
             </div>
         </h4>
         <div class="row">
             <div class="col-xl-6">
                 <div class="card mb-4">
                     <div class="card-body">
-                        <h5 class="card-title">Your search starts here</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">Search all of the literature in PEP-WEB in seconds.</h6>
+                        <h5 class="card-title">{{t "home.search.heading"}}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">{{t "home.search.subheading"}}</h6>
                         <p class="d-lg-none">
                             <Button
                                 @type="primary"
                                 @size="lg"
-                                @blockLayout={{this.media.isMobile}}
+                                @blockLayout={{this.fastbootMedia.isMobile}}
                                 @icon="search"
-                                @label="Search for documents"
+                                @label={{t "home.search.searchForDocs"}}
                                 @action={{this.showSearch}}
                             />
                         </p>
                         <p class="card-text">
-                            <strong>Smart Search</strong> taskes all kinds of search inputs:
+                            {{t "home.search.tips.instructions" htmlSafe=true}}
                         </p>
                         <ul>
-                            <li>Find terms or keywords - to get the best search results, <strong>enter at least two terms at a time.</strong> This will make the search more precise, returning only the most relevant results.</li>
-                            <li>Paste a reference from an article</li>
-                            <li>Journal name or part of a journal name</li>
-                            <li>Author name</li>
-                            <li>Part of a title (two or more words)</li>
-                            <li>Year / Vol / Page #</li>
+                            <li>{{t "home.search.tips.tip1" htmlSafe=true}}</li>
+                            <li>{{t "home.search.tips.tip2" htmlSafe=true}}</li>
+                            <li>{{t "home.search.tips.tip3" htmlSafe=true}}</li>
+                            <li>{{t "home.search.tips.tip4" htmlSafe=true}}</li>
+                            <li>{{t "home.search.tips.tip5" htmlSafe=true}}</li>
+                            <li>{{t "home.search.tips.tip6" htmlSafe=true}}</li>
                         </ul>
                     </div>
                 </div>
@@ -40,17 +40,17 @@
             <div class="col-xl-6">
                 <div class="card mb-4">
                     <div class="card-body">
-                        <h5 class="card-title">Let PEP be your guide</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">PEP-WEB helps to guide you to important source material in your research, and provides numerous tools.</h6>
+                        <h5 class="card-title">{{t "home.guide.heading"}}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">{{t "home.guide.subheading"}}</h6>
                         <p class="card-text">
-                            While you <strong>research and explore</strong>, PEP:
+                            {{t "home.guide.tips.instructions" htmlSafe=true}}
                         </p>
                         <ul>
-                            <li>Helps find related publications</li>
-                            <li>Expert guidance selects the most important related Psychoanalytic works</li>
-                            <li>Find what's new and exciting in the field, what others are reading</li>
-                            <li>What work is most cited by new publications</li>
-                            <li>Links content to an integrated Psychoanalytic Glossary incluing Laplanche and Pontails</li>
+                            <li>{{t "home.guide.tips.tip1" htmlSafe=true}}</li>
+                            <li>{{t "home.guide.tips.tip2" htmlSafe=true}}</li>
+                            <li>{{t "home.guide.tips.tip3" htmlSafe=true}}</li>
+                            <li>{{t "home.guide.tips.tip4" htmlSafe=true}}</li>
+                            <li>{{t "home.guide.tips.tip5" htmlSafe=true}}</li>
                         </ul>
                     </div>
                 </div>
@@ -60,12 +60,17 @@
             <div class="col">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Expert Pick of the Day</h5>
+                        <h5 class="card-title">{{t "home.pickOfTheDay.heading"}}</h5>
+                        {{!-- TODO static content TBD -- will be backend-driven --}}
+                        {{!-- template-lint-disable no-bare-strings --}}
                         <h6 class="card-subtitle mb-3 text-muted">(1893). The Standard Edition of the Complete Pyschological Works of Sigmund Freud, (2):183-251</h6>
                         <div class="float-xl-right ml-xl-2 mb-xl-2">
+                            {{!-- template-lint-disable no-inline-styles --}}
                             <img src="/assets/images/content/sigmund-freud.jpg" alt="sigmund freud" class="rounded img-fluid" style="max-width:250px" />
                         </div>
+                        {{!-- template-lint-disable no-bare-strings --}}
                         <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam imperdiet, orci nec viverra feugiat, elit ligula tempor eros, et feugiat massa nibh eu nunc. Praesent metus risus, posuere ac dui id, tempus pretium sapien. Mauris a purus in leo suscipit imperdiet. Nulla mollis suscipit mattis. Quisque cursus consequat faucibus. Mauris cursus pretium consequat. Nunc pellentesque tellus eget neque molestie, quis bibendum libero consectetur. Vestibulum quis purus risus. Nullam scelerisque id magna in tempor. Nullam a tempus velit, sed aliquam ipsum. Duis finibus egestas justo eu interdum. Integer vel commodo nisl, non tempor ligula. Nulla feugiat nec neque id dictum.</p>
+                        {{!-- template-lint-disable no-bare-strings --}}
                         <p class="card-text">Nulla id urna tortor. Mauris quis dolor dui. Etiam ultrices, turpis in auctor molestie, ex est consequat mauris, sed luctus ligula justo sit amet ipsum. Duis quam nisl, mattis sed consectetur id, scelerisque quis libero. Nulla dapibus maximus vehicula. Nulla facilisi. Duis sed mattis eros. Cras placerat eu massa sit amet ullamcorper. Aliquam elementum quam ut leo pretium, euismod bibendum tortor sodales. In sed convallis lacus, non dapibus nulla. Vestibulum tellus eros, pharetra non velit in, aliquet dictum quam. Mauris dui magna, viverra sit amet hendrerit id, commodo non quam.</p>
                         <p class="card-text">
                             <Button @type="primary" @label="Login and Read" />

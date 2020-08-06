@@ -17,7 +17,7 @@ declare module 'ember-cli-fastboot/services/fastboot' {
         retrieve(key: string): undefined | JSON;
     }
 
-    export default class Fastboot extends Service {
+    export default class FastbootService extends Service {
         public isFastBoot: boolean;
         public request: Request;
         public shoebox: Shoebox;

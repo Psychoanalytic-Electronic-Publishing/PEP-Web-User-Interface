@@ -2,21 +2,43 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { isEmpty } from '@ember/utils';
-import { SEARCH_FACETS } from 'pep/constants/search';
+import { SEARCH_FACETS, SearchFacetValue } from 'pep/constants/search';
 import { capitalize } from '@ember/string';
 
+export interface RefineOption {
+    id: string;
+    label: string;
+    numResults: number;
+}
+
+export interface RefineGroup {
+    id: string;
+    label: string;
+    optionsWithResults: RefineOption[];
+    optionsWithoutResults: RefineOption[];
+}
+
+export interface SearchMetadata {
+    facetCounts: {
+        facet_fields: {
+            [x: string]: {
+                [x: string]: number;
+            };
+        };
+    };
+}
+
 interface SearchRefineArgs {
-    //TODO
-    metadata: any;
-    selection: any;
-    updateSelection: (newSelection: any) => void;
+    metadata?: SearchMetadata;
+    selection: SearchFacetValue[];
+    updateSelection: (newSelection: SearchFacetValue[]) => void;
 }
 
 export default class SearchRefine extends Component<SearchRefineArgs> {
-    @tracked expandedGroups = [];
+    @tracked expandedGroups: string[] = [];
 
     get groups() {
-        const groups = [];
+        const groups: RefineGroup[] = [];
         const fieldsMap = this.args.metadata?.facetCounts?.facet_fields ?? {};
         const incFields = Object.keys(fieldsMap);
 
@@ -24,8 +46,7 @@ export default class SearchRefine extends Component<SearchRefineArgs> {
             if (incFields.includes(facetType.id)) {
                 let fieldCountsMap = fieldsMap[facetType.id];
                 let fieldCountIds = Object.keys(fieldCountsMap);
-                //TODO should non-dynamic facet options be sorted by constant's array order?
-                let allOptions = fieldCountIds.map((optId) => ({
+                let allOptions: RefineOption[] = fieldCountIds.map((optId) => ({
                     id: optId,
                     label: facetType.dynamicValues
                         ? capitalize(optId)
@@ -52,8 +73,13 @@ export default class SearchRefine extends Component<SearchRefineArgs> {
         return groups;
     }
 
+    /**
+     * Updates the refine selection when a facet option is toggled
+     * @param {String} facetId
+     * @param {String} optionValue
+     */
     @action
-    onFacetChange(facetId, optionValue) {
+    onFacetChange(facetId: string, optionValue: string) {
         const newSelection = this.args.selection.concat([]);
         const existingFacet = newSelection.find((f) => f.id === facetId && f.value === optionValue);
         if (existingFacet) {
@@ -65,8 +91,12 @@ export default class SearchRefine extends Component<SearchRefineArgs> {
         this.args.updateSelection(newSelection);
     }
 
+    /**
+     * Toggles the expanded/collapsed state of a group
+     * @param {String} groupId
+     */
     @action
-    toggleGroup(groupId) {
+    toggleGroup(groupId: string) {
         return this.expandedGroups.includes(groupId)
             ? this.expandedGroups.removeObject(groupId)
             : this.expandedGroups.pushObject(groupId);

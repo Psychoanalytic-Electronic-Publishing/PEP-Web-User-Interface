@@ -1,5 +1,5 @@
 <Page::Sidebar @side="left" as |Sidebar|>
-    <Sidebar.content>
+    <Sidebar.content @scrollableNamespace="sidebar-left">
         <Search::Form
             @smartSearchTerm={{this.smartSearchTerm}}
             @searchTerms={{this.searchTerms}}
@@ -13,8 +13,8 @@
             class="mb-2"
         />
         <div class="p-3">
-            <h5>Browse</h5>
-            <p>Browse UI here</p>
+            <h5>{{t "browse.title"}}</h5>
+            {{!-- Browse UI here --}}
         </div>
     </Sidebar.content>
 </Page::Sidebar>

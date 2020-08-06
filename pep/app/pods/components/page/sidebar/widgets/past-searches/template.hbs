@@ -1,11 +1,13 @@
 <CollapsiblePanel
-    @title="Your past 5 searches"
+    @scrollableNamespace="sidebar-right"
+    @title={{t "relatedInfo.widgets.pastSearches.title"}}
     @isOpen={{this.isOpen}}
-    @toggle={{action (mut this.isOpen)}}
+    @toggle={{fn (mut this.isOpen)}}
     class="mb-2"
     ...attributes
 >
     <ol>
+        {{!-- template-lint-disable no-bare-strings --}}
         <li><a href="#">Freud and Lacan</a></li>
         <li><a href="#">emotional distress</a></li>
         <li><a href="#">family discord</a></li>

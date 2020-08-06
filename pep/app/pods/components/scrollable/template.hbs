@@ -1,3 +1,8 @@
-<div class="scrollable" {{did-insert this.onElementInsert}} ...attributes>
+<div
+    class="scrollable"
+    {{did-insert this.onElementInsert}}
+    {{did-resize this.onResize debounce=this.resizeDebounceDelay}}
+    ...attributes
+>
     {{yield}}
 </div>

@@ -1,7 +1,12 @@
 import Component from '@glimmer/component';
+import { SearchFacetValue } from 'pep/constants/search';
+import { RefineOption } from '../component';
 
 interface SearchRefineOptionArgs {
-    //TODO
+    facetId: string;
+    selection: SearchFacetValue[];
+    option: RefineOption;
+    onFacetChange: (facetId: string, optionId: string) => void;
 }
 
 export default class SearchRefineOption extends Component<SearchRefineOptionArgs> {

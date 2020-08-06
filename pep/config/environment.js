@@ -8,7 +8,7 @@ module.exports = function(environment) {
         //@see https://blog.emberjs.com/2016/04/28/baseurl ("Configuring the Router" section)
         rootURL: '/',
         routerRootURL: process.env.ROOT_URL,
-        locationType: 'hash',
+        locationType: 'auto',
         EmberENV: {
             LOG_STACKTRACE_ON_DEPRECATION: false,
             FEATURES: {
@@ -60,8 +60,14 @@ module.exports = function(environment) {
             prepend: false
         },
 
+        storefront: {
+            maxAge: 10
+        },
+
         //deployment environment-specific variables
-        apiBaseUrl: process.env.API_BASE_URL
+        apiBaseUrl: process.env.API_BASE_URL,
+        apiNamespace: process.env.API_NAMESPACE,
+        apiDataNamespace: process.env.API_DATA_NAMESPACE
     };
 
     if (environment === 'development') {

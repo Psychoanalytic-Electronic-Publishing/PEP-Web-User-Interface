@@ -1,5 +1,5 @@
 <HeadLayout />
-{{page-title "PEP"}}
+{{page-title (t "brand.name")}}
 <Progress::Bar class="app-progress-bar" @light={{true}} />
 <div class="application-container">
     {{outlet "header"}}
@@ -11,4 +11,6 @@
     </div>
     {{outlet "footer"}}
 </div>
+<Page::Drawer />
+<NotificationContainer @position="top" />
 <ModalOutlet />
