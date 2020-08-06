@@ -1,13 +1,14 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import ArrayProxy from '@ember/array/proxy';
+
 import Transition from '@ember/routing/-private/transition';
 import AjaxService from 'pep/services/ajax';
 import { PageNav } from 'pep/mixins/page-layout';
 import { buildSearchQueryParams } from 'pep/utils/search';
-import ReadDocumentController from './controller';
 import Document from 'pep/pods/document/model';
-
+import { FulfilledPagingQuery } from '@gavant/ember-pagination/mixins/controller-pagination';
+import { RoutePagination } from '@gavant/ember-pagination/mixins/route-pagination';
+import ReadDocumentController from './controller';
 export interface ReadDocumentParams {
     document_id: string;
     q: string;
@@ -16,11 +17,11 @@ export interface ReadDocumentParams {
     _facets?: string;
 }
 
-export default class ReadDocument extends PageNav(Route) {
+export default class ReadDocument extends RoutePagination(PageNav(Route)) {
     @service ajax!: AjaxService;
 
     navController = 'read/document';
-    searchResults: ArrayProxy<Document> | null = null;
+    searchResults: FulfilledPagingQuery<Document> | null = null;
 
     /**
      * Fetch the requested document
@@ -58,9 +59,13 @@ export default class ReadDocument extends PageNav(Route) {
      * @param {ReadDocumentController} controller
      * @param {object} model
      */
-    //@ts-ignore TODO mixin issues
+    //workaround for bug w/array-based query param values
+    //@see https://github.com/emberjs/ember.js/issues/18981
+    //@ts-ignore
     setupController(controller: ReadDocumentController, model: Document) {
-        //@ts-ignore TODO pagination mixin issues
+        //workaround for bug w/array-based query param values
+        //@see https://github.com/emberjs/ember.js/issues/18981
+        //@ts-ignore
         super.setupController(controller, model);
         controller.modelName = 'document';
         controller.metadata = this.searchResults?.meta ?? {};
@@ -74,10 +79,15 @@ export default class ReadDocument extends PageNav(Route) {
      * @param {boolean} isExiting
      * @param {Transition} transition
      */
-    //@ts-ignore TODO pagination mixin issues
+    //workaround for bug w/array-based query param values
+    //@see https://github.com/emberjs/ember.js/issues/18981
+    //@ts-ignore
     resetController(controller: ReadDocumentController, isExiting: boolean, transition: Transition) {
-        //@ts-ignore TODO pagination mixin issues
+        //workaround for bug w/array-based query param values
+        //@see https://github.com/emberjs/ember.js/issues/18981
+        //@ts-ignore
         super.resetController(controller, isExiting, transition);
+
         controller.searchResults = [];
         controller.metadata = {};
         controller.hasMore = false;
