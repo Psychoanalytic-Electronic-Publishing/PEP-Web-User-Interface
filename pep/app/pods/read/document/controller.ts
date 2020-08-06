@@ -171,9 +171,6 @@ export default class ReadDocument extends ControllerPagination(Controller) {
     }
 }
 
-// const ReadDocument = ReadDocumentClass as GenericConstructor<ReadDocumentClass & PaginationController>;
-// export default ReadDocument;
-// export const Test = ReadDocumentClass;
 // DO NOT DELETE: this is how TypeScript knows how to look up your controllers.
 declare module '@ember/controller' {
     interface Registry {
