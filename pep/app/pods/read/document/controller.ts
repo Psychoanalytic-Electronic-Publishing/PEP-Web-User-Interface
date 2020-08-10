@@ -4,15 +4,16 @@ import { readOnly } from '@ember/object/computed';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import { reject } from 'rsvp';
-import { ControllerPagination } from '@gavant/ember-pagination/mixins/controller-pagination';
-import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
+import SessionService from 'ember-simple-auth/services/session';
+import FastbootService from 'ember-cli-fastboot/services/fastboot';
+import ControllerPagination from '@gavant/ember-pagination/mixins/controller-pagination';
+import { buildQueryParams, PaginationController } from '@gavant/ember-pagination/utils/query-params';
+
 import AuthService from 'pep/services/auth';
 import LoadingBarService from 'pep/services/loading-bar';
 import { buildSearchQueryParams } from 'pep/utils/search';
 import { SEARCH_DEFAULT_TERMS, SEARCH_DEFAULT_FACETS } from 'pep/constants/search';
 import Document from 'pep/pods/document/model';
-import SessionService from 'ember-simple-auth/services/session';
-import FastbootService from 'ember-cli-fastboot/services/fastboot';
 
 export default class ReadDocument extends ControllerPagination(Controller) {
     @service session!: SessionService;
@@ -98,11 +99,13 @@ export default class ReadDocument extends ControllerPagination(Controller) {
 
         const offset = this.offset;
         const limit = this.limit;
+        //TODO this is pretty ugly, its a result of the pagination mixin issues
+        const controller = (this as unknown) as PaginationController;
+        const queryParams = buildQueryParams(controller, offset, limit);
+        let models = [];
 
-        const queryParams = buildQueryParams(this as any, offset, limit);
-        let models: Document[] = [];
         try {
-            const result = await this.fetchModels<Document>(queryParams);
+            const result = await this.fetchModels(queryParams);
             models = result.toArray();
             this.metadata = result.meta;
             this.hasMore = models.length >= limit;
@@ -123,10 +126,11 @@ export default class ReadDocument extends ControllerPagination(Controller) {
      Run custom query params object generation before sending query request
      * @param {Object} params
      */
-    fetchModels<T>(params: object) {
+    fetchModels(params: object) {
         const searchQueryParams = buildSearchQueryParams(this.q, this.searchTerms, this.matchSynonyms, this.facets);
         const queryParams = { ...params, ...searchQueryParams };
-        return super.fetchModels<T>(queryParams);
+        //@ts-ignore TODO pagination mixin issues
+        return super.fetchModels(queryParams);
     }
 
     /**
@@ -135,7 +139,9 @@ export default class ReadDocument extends ControllerPagination(Controller) {
     @action
     loadNextPage() {
         if (!this.isLoadingPage && this.hasMore) {
-            return this.loadMoreModels();
+            //TODO this is pretty ugly, its a result of the pagination mixin issues
+            const controller = (this as unknown) as PaginationController;
+            return controller.loadMoreModels();
         }
     }
 
