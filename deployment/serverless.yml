@@ -1,0 +1,30 @@
+#serverless.yml
+
+service: ${env:SvcName}-fastboot
+
+provider:
+  name: aws
+  runtime: ${env:AwsRuntime}
+  region: ${env:AwsRegion}
+  stage: ${env:AwsStage}
+  profile: ${env:SvcName}-${env:AwsStage}
+  deploymentBucket:
+    name: ${env:AwsBucket}
+
+functions:
+  launchFastboot:
+    handler: ${env:AwsEntryPoint}
+    events:
+      - http:
+          method: any
+          path: /
+      - http:
+          method: any
+          path: /{proxy+}
+
+custom:
+  customDomain:
+    domainName: ${env:Domain}
+    basePath: ''
+    stage: ${self:provider.stage}
+    enabled: ${env:UseCustomGatewayUrl}
