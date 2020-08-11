@@ -1,13 +1,10 @@
 import Route from '@ember/routing/route';
-import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { isEmpty } from '@ember/utils';
 import { next } from '@ember/runloop';
 import Transition from '@ember/routing/-private/transition';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
-import RoutePagination from '@gavant/ember-pagination/mixins/route-pagination';
-import { PaginationController } from '@gavant/ember-pagination/utils/query-params';
-
+import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hooks/pagination';
 import { PageNav } from 'pep/mixins/page-layout';
 import { buildSearchQueryParams } from 'pep/utils/search';
 import SidebarService from 'pep/services/sidebar';
@@ -21,7 +18,7 @@ export interface SearchParams {
     _facets?: string;
 }
 
-export default class Search extends PageNav(RoutePagination(Route)) {
+export default class Search extends PageNav(Route) {
     @service sidebar!: SidebarService;
     @service fastboot!: FastbootService;
 
@@ -84,19 +81,26 @@ export default class Search extends PageNav(RoutePagination(Route)) {
      * @param {Document} model
      */
     //@ts-ignore TODO mixin issues
-    setupController(controller: SearchController, model: Document[]) {
-        //TODO this is pretty ugly, its a result of the pagination mixin issues
-        const ctrlr = (controller as unknown) as Controller;
-        const paginationCtrlr = (ctrlr as unknown) as PaginationController;
+    setupController(controller: SearchController, model: RecordArrayWithMeta<Document>) {
         //map the query params to current search values to populate the form
-        paginationCtrlr.currentSmartSearchTerm = controller.q;
-        paginationCtrlr.currentMatchSynonyms = controller.matchSynonyms;
-        paginationCtrlr.currentSearchTerms = isEmpty(controller.searchTerms)
+        controller.currentSmartSearchTerm = controller.q;
+        controller.currentMatchSynonyms = controller.matchSynonyms;
+        controller.currentSearchTerms = isEmpty(controller.searchTerms)
             ? [{ type: 'everywhere', term: '' }]
             : controller.searchTerms;
-        paginationCtrlr.currentFacets = controller.facets;
+        controller.currentFacets = controller.facets;
 
-        super.setupController(ctrlr, model);
+        controller.paginator = usePagination<Document>({
+            context: controller,
+            modelName: 'document',
+            models: model.toArray(),
+            metadata: model.meta,
+            pagingRootKey: null,
+            filterRootKey: null,
+            processQueryParams: controller.processQueryParams
+        });
+
+        super.setupController(controller as any, model);
     }
 
     /**
@@ -107,9 +111,7 @@ export default class Search extends PageNav(RoutePagination(Route)) {
      */
     //@ts-ignore TODO pagination mixin issues
     resetController(controller: SearchController, isExiting: boolean, transition: Transition) {
-        //TODO this is pretty ugly, its a result of the pagination mixin issues
-        const ctrlr = (controller as unknown) as Controller;
-        super.resetController(ctrlr, isExiting, transition);
+        super.resetController(controller as any, isExiting, transition);
         controller.previewedResult = null;
         controller.previewMode = 'fit';
     }

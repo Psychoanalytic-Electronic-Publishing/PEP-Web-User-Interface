@@ -1,15 +1,15 @@
 <Page::Sidebar @side="left" as |Sidebar|>
     <Sidebar.content @scrollableNamespace="sidebar-left">
-        {{#if (or this.metadata.fullCount this.isLoadingRoute)}}
+        {{#if (or this.paginator.metadata.fullCount this.paginator.isLoadingRoute)}}
             <div class="bg-white border-divider-b p-3">
-                {{#if this.isLoadingRoute}}
+                {{#if this.paginator.isLoadingRoute}}
                     <Loading::Read::Results />
                 {{else}}
                     <div class="d-flex justify-content-between align-items-center mb-2">
                         <h4 class="mb-0">
                             {{t
                                 "common.numResults"
-                                count=(format-number (or this.metadata.fullCount 0))
+                                count=(format-number (or this.paginator.metadata.fullCount 0))
                                 htmlSafe=true
                             }}
                         </h4>
@@ -18,7 +18,7 @@
                                 @type="link"
                                 @icon="download"
                                 @iconSize="lg"
-                                disabled={{this.this.isLoadingRoute}}
+                                disabled={{this.paginator.isLoadingRoute}}
                                 title={{t "common.export"}}
                                 class="p-1"
                             />
@@ -26,7 +26,7 @@
                                 @type="link"
                                 @icon="print"
                                 @iconSize="lg"
-                                disabled={{this.this.isLoadingRoute}}
+                                disabled={{this.paginator.isLoadingRoute}}
                                 title={{t "common.print"}}
                                 class="p-1"
                             />
@@ -51,7 +51,7 @@
                         </Button>
                     </div>
                     <VerticalCollection
-                        @items={{this.searchResults}}
+                        @items={{this.paginator.models}}
                         @tagName="ul"
                         @containerSelector=".sidebar-content"
                         @class="list-unstyled"
@@ -84,7 +84,7 @@
                             </ul>
                         </li>
                     </VerticalCollection>
-                    {{#if this.isLoadingPage}}
+                    {{#if this.paginator.isLoadingModels}}
                         <Loading::Spinner
                             @options={{hash text=(t "common.loadingResults")}}
                             class="pt-2"

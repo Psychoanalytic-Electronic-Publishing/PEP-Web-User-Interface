@@ -5,19 +5,18 @@ import { later } from '@ember/runloop';
 import { tracked } from '@glimmer/tracking';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import { inject as service } from '@ember/service';
-import ControllerPagination from '@gavant/ember-pagination/mixins/controller-pagination';
-import { PaginationController } from '@gavant/ember-pagination/utils/query-params';
 
 import AjaxService from 'pep/services/ajax';
 import { SEARCH_TYPE_EVERYWHERE, SearchTermValue, SearchFacetValue } from 'pep/constants/search';
-import { buildSearchQueryParams } from 'pep/utils/search';
 import SidebarService from 'pep/services/sidebar';
 import LoadingBarService from 'pep/services/loading-bar';
 import FastbootMediaService from 'pep/services/fastboot-media';
 import Document from 'pep/pods/document/model';
 import ScrollableService from 'pep/services/scrollable';
-
-export default class Search extends ControllerPagination(Controller) {
+import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
+import { buildSearchQueryParams } from 'pep/utils/search';
+import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
+export default class Search extends Controller {
     @service ajax!: AjaxService;
     @service sidebar!: SidebarService;
     @service loadingBar!: LoadingBarService;
@@ -31,6 +30,7 @@ export default class Search extends ControllerPagination(Controller) {
     queryParams = ['q', { _searchTerms: 'searchTerms' }, 'matchSynonyms', { _facets: 'facets' }];
     @tracked q: string = '';
     @tracked matchSynonyms: boolean = false;
+    @tracked paginator!: Pagination<Document>;
 
     @tracked currentSmartSearchTerm: string = '';
     @tracked currentSearchTerms: SearchTermValue[] = [];
@@ -39,10 +39,6 @@ export default class Search extends ControllerPagination(Controller) {
 
     @tracked previewedResult: Document | null = null;
     @tracked previewMode = 'fit';
-
-    //pagination config
-    pagingRootKey = null;
-    filterRootKey = null;
 
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
@@ -89,22 +85,17 @@ export default class Search extends ControllerPagination(Controller) {
     }
 
     get noResults() {
-        return !this.isLoadingPage && (!this.hasSubmittedSearch || !this.model.length);
+        return !this.paginator.isLoadingModels && (!this.hasSubmittedSearch || !this.model.length);
     }
 
     get hasRefineChanges() {
         return JSON.stringify(this.currentFacets) !== JSON.stringify(this.facets);
     }
 
-    /**
-     * Run custom query params object generation before sending query request
-     * @param {Object} params
-     */
-    fetchModels(params: object) {
-        const searchQueryParams = buildSearchQueryParams(this.q, this.searchTerms, this.matchSynonyms, this.facets);
-        const queryParams = { ...params, ...searchQueryParams };
-        //@ts-ignore TODO pagination mixin issues
-        return super.fetchModels(queryParams);
+    @action
+    processQueryParams(params: QueryParamsObj) {
+        const searchParams = buildSearchQueryParams(this.q, this.searchTerms, this.matchSynonyms, this.facets);
+        return { ...params, ...searchParams };
     }
 
     /**
@@ -112,11 +103,10 @@ export default class Search extends ControllerPagination(Controller) {
      */
     @action
     loadNextPage() {
-        if (!this.isLoadingPage && this.hasMore) {
-            //TODO this is pretty ugly, its a result of the pagination mixin issues
-            const controller = (this as unknown) as PaginationController;
-            return controller.loadMoreModels();
+        if (!this.paginator.isLoadingModels && this.paginator.hasMore) {
+            return this.paginator.loadMoreModels();
         }
+        return undefined;
     }
 
     /**
@@ -143,9 +133,7 @@ export default class Search extends ControllerPagination(Controller) {
             //perform search
             this.loadingBar.show();
             this.scrollable.scrollToTop('search-results');
-            //TODO this is pretty ugly, its a result of the pagination mixin issues
-            const controller = (this as unknown) as PaginationController;
-            const results = await controller.filter();
+            const results = await this.paginator.filterModels();
             this.loadingBar.hide();
             this.scrollable.recalculate('sidebar-left');
             return results;
@@ -170,9 +158,7 @@ export default class Search extends ControllerPagination(Controller) {
             }
 
             this.loadingBar.show();
-            //TODO this is pretty ugly, its a result of the pagination mixin issues
-            const controller = (this as unknown) as PaginationController;
-            const results = await controller.filter();
+            const results = await this.paginator.filterModels();
             this.loadingBar.hide();
             return results;
         } catch (err) {

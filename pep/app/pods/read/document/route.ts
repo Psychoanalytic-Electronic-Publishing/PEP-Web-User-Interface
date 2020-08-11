@@ -1,6 +1,5 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import ArrayProxy from '@ember/array/proxy';
 import Transition from '@ember/routing/-private/transition';
 
 import AjaxService from 'pep/services/ajax';
@@ -8,6 +7,7 @@ import { PageNav } from 'pep/mixins/page-layout';
 import { buildSearchQueryParams } from 'pep/utils/search';
 import Document from 'pep/pods/document/model';
 import ReadDocumentController from './controller';
+import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hooks/pagination';
 
 export interface ReadDocumentParams {
     document_id: string;
@@ -21,7 +21,7 @@ export default class ReadDocument extends PageNav(Route) {
     @service ajax!: AjaxService;
 
     navController = 'read/document';
-    searchResults: ArrayProxy<Document> | null = null;
+    searchResults?: RecordArrayWithMeta<Document>;
 
     /**
      * Fetch the requested document
@@ -49,7 +49,7 @@ export default class ReadDocument extends PageNav(Route) {
         if (Object.keys(queryParams).length > 2) {
             queryParams.offset = 0;
             queryParams.limit = 10;
-            const results = await this.store.query('document', queryParams);
+            const results = (await this.store.query('document', queryParams)) as RecordArrayWithMeta<Document>;
             this.searchResults = results;
         }
     }
@@ -60,13 +60,18 @@ export default class ReadDocument extends PageNav(Route) {
      * @param {object} model
      */
     //@ts-ignore TODO mixin issues
-    setupController(controller: ReadDocumentController, model: Document) {
+    setupController(controller: ReadDocumentController, model: RecordArrayWithMeta<Document>) {
         //@ts-ignore TODO pagination mixin issues
         super.setupController(controller, model);
-        controller.modelName = 'document';
-        controller.metadata = this.searchResults?.meta ?? {};
-        controller.searchResults = this.searchResults?.toArray() ?? [];
-        controller.hasMore = (controller.searchResults.length ?? 0) >= controller.limit;
+        controller.paginator = usePagination<Document>({
+            context: controller,
+            modelName: 'document',
+            models: this.searchResults?.toArray() ?? [],
+            metadata: this.searchResults?.meta,
+            pagingRootKey: null,
+            filterRootKey: null,
+            processQueryParams: controller.processQueryParams
+        });
     }
 
     /**
@@ -79,10 +84,6 @@ export default class ReadDocument extends PageNav(Route) {
     resetController(controller: ReadDocumentController, isExiting: boolean, transition: Transition) {
         //@ts-ignore TODO pagination mixin issues
         super.resetController(controller, isExiting, transition);
-
-        controller.searchResults = [];
-        controller.metadata = {};
-        controller.hasMore = false;
-        this.searchResults = null;
+        this.searchResults = undefined;
     }
 }
