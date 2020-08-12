@@ -1,7 +1,7 @@
 <Page::Content>
     <div class="py-3 px-4">
-        <div class="d-flex {{if this.metadata.fullCount "justify-content-between" "justify-content-end"}} align-items-center mb-2">
-            {{#if this.metadata.fullCount}}
+        <div class="d-flex {{if this.paginator.metadata.fullCount "justify-content-between" "justify-content-end"}} align-items-center mb-2">
+            {{#if this.paginator.metadata.fullCount}}
                 <LinkTo
                     @route="search"
                     @query={{hash

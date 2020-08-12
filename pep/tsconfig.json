@@ -18,7 +18,7 @@
         "inlineSourceMap": true,
         "inlineSources": true,
         "strictFunctionTypes": false,
-        "baseUrl": ".",
+        "baseUrl": "pep",
         "module": "es6",
         "experimentalDecorators": true,
         "paths": {

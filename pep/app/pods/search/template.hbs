@@ -2,7 +2,7 @@
 <div class="page-content page-content-sectioned">
     <div class="page-content-section flex-fill">
         <Scrollable @namespace="search-results" class="page-content-inner">
-            {{#if (and (not this.model) this.isLoadingPage)}}
+            {{#if (and (not this.model) this.paginator.isLoadingModels)}}
                 <div class="py-3 px-4">
                     <Loading::Search::Results />
                 </div>
@@ -63,7 +63,7 @@
                             <h4 class="mb-0">
                                 {{t
                                     "common.numResults"
-                                    count=(format-number (or this.metadata.fullCount 0))
+                                    count=(format-number (or this.paginator.metadata.fullCount 0))
                                     htmlSafe=true
                                 }}
                             </h4>
@@ -103,13 +103,13 @@
                         <div class="card">
                             <div class="card-body">
                                 <VerticalCollection
-                                    @items={{this.model}}
+                                    @items={{this.paginator.models}}
                                     @tagName="ul"
                                     @containerSelector=".page-content-inner"
                                     @class="list-unstyled"
                                     @estimateHeight={{100}}
                                     @renderAll={{this.fastboot.isFastBoot}}
-                                    @lastReached={{this.loadNextPage}}
+                                    @lastReached={{this.paginator.loadMoreModels}}
                                     as |result|
                                 >
                                     <li class="mb-4">
@@ -125,7 +125,7 @@
                                         {{/if}}
                                     </li>
                                 </VerticalCollection>
-                                {{#if this.isLoadingPage}}
+                                {{#if this.paginator.isLoadingModels}}
                                     <Loading::Spinner @options={{hash text=(t "common.loadingResults")}} />
                                 {{/if}}
                             </div>
