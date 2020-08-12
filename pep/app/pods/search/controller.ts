@@ -86,7 +86,7 @@ export default class Search extends Controller {
     }
 
     get noResults() {
-        return !this.paginator.isLoadingModels && (!this.hasSubmittedSearch || !this.model.length);
+        return !this.paginator.isLoadingModels && (!this.hasSubmittedSearch || !this.paginator.models.length);
     }
 
     get hasRefineChanges() {
