@@ -1,19 +1,18 @@
 import Controller from '@ember/controller';
 import { action, set } from '@ember/object';
-import { readOnly } from '@ember/object/computed';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import { reject } from 'rsvp';
 import SessionService from 'ember-simple-auth/services/session';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
+import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
+import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 
 import AuthService from 'pep/services/auth';
 import LoadingBarService from 'pep/services/loading-bar';
 import { buildSearchQueryParams } from 'pep/utils/search';
 import { SEARCH_DEFAULT_TERMS, SEARCH_DEFAULT_FACETS } from 'pep/constants/search';
 import Document from 'pep/pods/document/model';
-import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
-import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 
 export default class ReadDocument extends Controller {
     @service session!: SessionService;
@@ -77,21 +76,17 @@ export default class ReadDocument extends Controller {
         }
     }
 
+    /**
+     * Process query params
+     *
+     * @param {QueryParamsObj} params
+     * @returns
+     * @memberof ReadDocument
+     */
     @action
     processQueryParams(params: QueryParamsObj) {
         const searchParams = buildSearchQueryParams(this.q, this.searchTerms, this.matchSynonyms, this.facets);
         return { ...params, ...searchParams };
-    }
-
-    /**
-     * Loads the next page of results
-     */
-    @action
-    loadNextPage() {
-        if (!this.paginator.isLoadingModels && this.paginator.hasMore) {
-            return this.paginator.loadMoreModels();
-        }
-        return undefined;
     }
 
     /**

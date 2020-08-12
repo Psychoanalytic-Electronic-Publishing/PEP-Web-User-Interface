@@ -5,6 +5,8 @@ import { later } from '@ember/runloop';
 import { tracked } from '@glimmer/tracking';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import { inject as service } from '@ember/service';
+import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
+import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
 
 import AjaxService from 'pep/services/ajax';
 import { SEARCH_TYPE_EVERYWHERE, SearchTermValue, SearchFacetValue } from 'pep/constants/search';
@@ -13,9 +15,8 @@ import LoadingBarService from 'pep/services/loading-bar';
 import FastbootMediaService from 'pep/services/fastboot-media';
 import Document from 'pep/pods/document/model';
 import ScrollableService from 'pep/services/scrollable';
-import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
 import { buildSearchQueryParams } from 'pep/utils/search';
-import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
+
 export default class Search extends Controller {
     @service ajax!: AjaxService;
     @service sidebar!: SidebarService;
@@ -92,21 +93,17 @@ export default class Search extends Controller {
         return JSON.stringify(this.currentFacets) !== JSON.stringify(this.facets);
     }
 
+    /**
+     * Process query params
+     *
+     * @param {QueryParamsObj} params
+     * @returns
+     * @memberof Search
+     */
     @action
     processQueryParams(params: QueryParamsObj) {
         const searchParams = buildSearchQueryParams(this.q, this.searchTerms, this.matchSynonyms, this.facets);
         return { ...params, ...searchParams };
-    }
-
-    /**
-     * Loads the next page of results
-     */
-    @action
-    loadNextPage() {
-        if (!this.paginator.isLoadingModels && this.paginator.hasMore) {
-            return this.paginator.loadMoreModels();
-        }
-        return undefined;
     }
 
     /**

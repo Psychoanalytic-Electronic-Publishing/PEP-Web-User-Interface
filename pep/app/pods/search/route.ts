@@ -5,10 +5,12 @@ import { next } from '@ember/runloop';
 import Transition from '@ember/routing/-private/transition';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hooks/pagination';
+import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
+
 import { PageNav } from 'pep/mixins/page-layout';
 import { buildSearchQueryParams } from 'pep/utils/search';
 import SidebarService from 'pep/services/sidebar';
-import SearchController from './controller';
+import SearchController from 'pep/pods/search/controller';
 import Document from 'pep/pods/document/model';
 
 export interface SearchParams {
@@ -18,7 +20,7 @@ export interface SearchParams {
     _facets?: string;
 }
 
-export default class Search extends PageNav(Route) {
+export default class Search extends Route {
     @service sidebar!: SidebarService;
     @service fastboot!: FastbootService;
 
@@ -48,17 +50,19 @@ export default class Search extends PageNav(Route) {
         const searchTerms = params._searchTerms ? JSON.parse(params._searchTerms) : [];
         const facets = params._facets ? JSON.parse(params._facets) : [];
 
-        const queryParams = buildSearchQueryParams(params.q, searchTerms, params.matchSynonyms, facets);
+        const searchParams = buildSearchQueryParams(params.q, searchTerms, params.matchSynonyms, facets);
         //if no search was submitted, don't fetch any results (will have at least 2 params for synonyms and facetfields)
-        if (Object.keys(queryParams).length > 2) {
-            queryParams.offset = 0;
-            queryParams.limit = 10;
+        if (Object.keys(searchParams).length > 2) {
+            const controller = this.controllerFor(this.routeName);
+            const queryParams = buildQueryParams({
+                context: controller,
+                pagingRootKey: null,
+                filterRootKey: null,
+                processQueryParams: (params) => ({ ...params, ...searchParams })
+            });
             return this.store.query('document', queryParams);
         } else {
-            //so that RoutePagination will continue to work, just unload any cached documents
-            //and return an empty documents RecordArray by peeking at the now empty store cache
-            this.store.unloadAll('document');
-            return this.store.peekAll('document');
+            return [];
         }
     }
 
@@ -80,7 +84,9 @@ export default class Search extends PageNav(Route) {
      * @param {SearchController} controller
      * @param {Document} model
      */
-    //@ts-ignore TODO mixin issues
+    //workaround for bug w/array-based query param values
+    //@see https://github.com/emberjs/ember.js/issues/18981
+    //@ts-ignore
     setupController(controller: SearchController, model: RecordArrayWithMeta<Document>) {
         //map the query params to current search values to populate the form
         controller.currentSmartSearchTerm = controller.q;
@@ -99,8 +105,10 @@ export default class Search extends PageNav(Route) {
             filterRootKey: null,
             processQueryParams: controller.processQueryParams
         });
-
-        super.setupController(controller as any, model);
+        //workaround for bug w/array-based query param values
+        //@see https://github.com/emberjs/ember.js/issues/18981
+        //@ts-ignore
+        super.setupController(controller, model);
     }
 
     /**
@@ -109,9 +117,14 @@ export default class Search extends PageNav(Route) {
      * @param {Boolean} isExiting
      * @param {Transition} transition
      */
-    //@ts-ignore TODO pagination mixin issues
+    //workaround for bug w/array-based query param values
+    //@see https://github.com/emberjs/ember.js/issues/18981
+    //@ts-ignore
     resetController(controller: SearchController, isExiting: boolean, transition: Transition) {
-        super.resetController(controller as any, isExiting, transition);
+        //workaround for bug w/array-based query param values
+        //@see https://github.com/emberjs/ember.js/issues/18981
+        //@ts-ignore
+        super.resetController(controller, isExiting, transition);
         controller.previewedResult = null;
         controller.previewMode = 'fit';
     }
