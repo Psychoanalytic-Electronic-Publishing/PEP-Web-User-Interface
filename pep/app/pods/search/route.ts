@@ -20,7 +20,7 @@ export interface SearchParams {
     _facets?: string;
 }
 
-export default class Search extends Route {
+export default class Search extends PageNav(Route) {
     @service sidebar!: SidebarService;
     @service fastboot!: FastbootService;
 
