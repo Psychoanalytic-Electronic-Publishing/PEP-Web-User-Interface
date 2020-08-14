@@ -29,8 +29,8 @@ export default class PageSidebarWidgetsMostViewed extends Component<PageSidebarW
                 queryType: 'MostViewed',
                 period: 'all',
                 sourcecode: 'AOP',
-                morethan: 3,
-                limit: 3
+                morethan: 10,
+                limit: 10
             });
             this.results = results.toArray();
             this.isLoading = false;

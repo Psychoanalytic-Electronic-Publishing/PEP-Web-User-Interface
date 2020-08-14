@@ -30,7 +30,7 @@ export default class PageSidebarWidgetsMostCited extends Component<PageSidebarWi
                 period: 'all',
                 sourcecode: 'AOP',
                 morethan: 10,
-                limit: 3
+                limit: 10
             });
             this.results = results.toArray();
             this.isLoading = false;

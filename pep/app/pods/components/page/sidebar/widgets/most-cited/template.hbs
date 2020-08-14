@@ -11,6 +11,12 @@
         @placeholderComponent="loading/widget"
         @isLoading={{this.isLoading}}
     >
+
+        <LinkTo @route="most-cited">
+            <FaIcon @icon="table" @prefix="fas" @size="lg" />
+        </LinkTo>
+
+
         <ul class="list-unstyled">
             {{#each this.results as |result|}}
                 <li class="mb-2">

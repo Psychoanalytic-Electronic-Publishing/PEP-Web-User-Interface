@@ -25,7 +25,7 @@ export default class PageSidebarWidgetsWhatsNew extends Component<PageSidebarWid
         // @see https://jamescdavis.com/using-ember-concurrency-with-typescript/
         try {
             this.isLoading = true;
-            const results = await this.store.query('whats-new', { days_back: 30, limit: 3 });
+            const results = await this.store.query('whats-new', { days_back: 30, limit: 10 });
             this.results = results.toArray();
             this.isLoading = false;
         } catch (err) {

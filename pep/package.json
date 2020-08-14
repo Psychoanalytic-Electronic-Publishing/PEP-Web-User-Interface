@@ -21,6 +21,7 @@
         "test:ember": "ember test"
     },
     "dependencies": {
+        "@gavant/ember-table": "^0.5.0",
         "abortcontroller-polyfill": "^1.4.0",
         "aws-serverless-express": "^3.3.6",
         "dotenv": "^8.2.0",
