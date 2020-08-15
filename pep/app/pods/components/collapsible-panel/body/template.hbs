@@ -1,0 +1,7 @@
+<AnimatedContainer>
+    {{#animated-if @isOpen use=@transition duration=@animateDuration}}
+        <div class="collapsible-panel-body border-divider-t p-3">
+            {{yield}}
+        </div>
+    {{/animated-if}}
+</AnimatedContainer>

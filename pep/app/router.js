@@ -20,4 +20,5 @@ Router.map(function() {
     this.route('five-hundred', { path: '/500' });
     this.route('four-oh-three', { path: '/403' });
     this.route('four-oh-four', { path: '/*path' });
+    this.route('most-cited-loading');
 });

@@ -1,23 +1,36 @@
 import Route from '@ember/routing/route';
-
-export default class MostCited extends Route {
+import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hooks/pagination';
+import Document from 'pep/pods/document/model';
+import MostCitedController from 'pep/pods/most-cited/controller';
+import { PageNav } from 'pep/mixins/page-layout';
+export default class MostCited extends PageNav(Route) {
+    navController = 'most-cited';
     /**
      * Load the widget results data
      */
     async model() {
-        // TODO switch to ember-concurrency task (with TS-friendly decorators, etc)
-        // to remove manual `isLoading` state management etc
-        // @see https://jamescdavis.com/using-ember-concurrency-with-typescript/
-        try {
-            const results = await this.store.query('document', {
-                queryType: 'MostCited',
-                period: 'all',
-                sourcecode: 'AOP',
-                limit: 10
-            });
-            return results.toArray();
-        } catch (err) {
-            return [];
-        }
+        return this.store.query('document', {
+            queryType: 'MostCited',
+            period: 'all',
+            limit: 40
+        });
+    }
+
+    /**
+     * Set the search results data on the controller
+     * @param {ReadDocumentController} controller
+     * @param {object} model
+     */
+    setupController(controller: MostCitedController, model: RecordArrayWithMeta<Document>) {
+        super.setupController(controller, model);
+        controller.paginator = usePagination<Document>({
+            context: controller,
+            modelName: 'document',
+            models: model?.toArray() ?? [],
+            metadata: model?.meta,
+            filterList: ['author', 'title', 'sourcename', 'period', 'queryType'],
+            pagingRootKey: null,
+            filterRootKey: null
+        });
     }
 }

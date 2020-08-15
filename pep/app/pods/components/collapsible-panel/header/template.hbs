@@ -1,0 +1,14 @@
+<a class="collapsible-panel-header d-block p-3" href="" {{on "click" @toggle}}>
+    <h5 class="mb-0 text-dark">
+        <FaIcon
+            @icon={{if @isOpen "caret-down" "caret-right"}}
+            @fixedWidth={{true}}
+            class="text-primary mr-1 d-inline-block"
+        />
+        {{#if hasBlock}}
+            {{yield}}
+        {{else}}
+             {{@title}}
+        {{/if}}
+    </h5>
+</a>

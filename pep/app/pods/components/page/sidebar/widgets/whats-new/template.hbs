@@ -6,32 +6,35 @@
     class="mb-2"
     {{did-insert this.onElementInsert}}
     ...attributes
->
-    <ContentWithPlaceholder
-        @placeholderComponent="loading/widget"
-        @isLoading={{this.isLoading}}
-    >
-        <ul class="list-unstyled">
-            {{#each this.results as |result|}}
-                <li class="mb-2">
-                    <div>
-                        {{html-safe result.displayTitle}}
-                    </div>
-                    <div class="text-muted small">
-                        {{html-safe
-                            (t "relatedInfo.widgets.whatsNew.issue"
-                                issueNum=result.issue
-                                volNum=result.volume
-                                updatedDate=(moment-format result.updated "MMMM Do, YYYY")
-                            )
-                        }}
-                    </div>
-                </li>
-            {{else}}
-                <li class="py-3 mb-0 text-center text-muted">
-                    {{t "common.noResults"}}
-                </li>
-            {{/each}}
-        </ul>
-    </ContentWithPlaceholder>
+as |Panel|>
+    <Panel.header />
+    <Panel.body>
+        <ContentWithPlaceholder
+            @placeholderComponent="loading/widget"
+            @isLoading={{this.isLoading}}
+        >
+            <ul class="list-unstyled">
+                {{#each this.results as |result|}}
+                    <li class="mb-2">
+                        <div>
+                            {{html-safe result.displayTitle}}
+                        </div>
+                        <div class="text-muted small">
+                            {{html-safe
+                                (t "relatedInfo.widgets.whatsNew.issue"
+                                    issueNum=result.issue
+                                    volNum=result.volume
+                                    updatedDate=(moment-format result.updated "MMMM Do, YYYY")
+                                )
+                            }}
+                        </div>
+                    </li>
+                {{else}}
+                    <li class="py-3 mb-0 text-center text-muted">
+                        {{t "common.noResults"}}
+                    </li>
+                {{/each}}
+            </ul>
+        </ContentWithPlaceholder>
+    </Panel.body>
 </CollapsiblePanel>

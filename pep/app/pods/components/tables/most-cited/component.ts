@@ -2,6 +2,9 @@ import Component from '@glimmer/component';
 import { ColumnValue } from '@gavant/ember-table';
 interface TablesMostCitedArgs {
     rows: Document[];
+    hasMoreRows: boolean;
+    loadMoreRows: () => Document[];
+    isLoading: boolean;
 }
 
 export default class TablesMostCited extends Component<TablesMostCitedArgs> {
@@ -11,68 +14,38 @@ export default class TablesMostCited extends Component<TablesMostCitedArgs> {
             valuePath: 'title',
             name: 'Title',
             isFixedLeft: false,
-            width: 600,
-            staticWidth: 600,
-            maxWidth: 600,
-            minWidth: 600,
-            cellComponent: 'tables/cell/html'
-        },
-        {
-            id: '1',
-            valuePath: 'title',
-            name: 'Title',
-            isFixedLeft: false,
-            width: 100,
-            staticWidth: 100,
-            maxWidth: 100,
-            minWidth: 100,
-            cellComponent: 'tables/cell/html'
-        },
-        {
-            id: '2',
-            valuePath: 'title',
-            name: 'Title',
-            isFixedLeft: false,
-            width: 100,
-            staticWidth: 100,
-            maxWidth: 100,
-            minWidth: 100,
-            cellComponent: 'tables/cell/html'
-        },
-        {
-            id: '3',
-            valuePath: 'title',
-            name: 'Title',
-            isFixedLeft: false,
-            width: 100,
-            staticWidth: 100,
-            maxWidth: 100,
-            minWidth: 100,
-            cellComponent: 'tables/cell/html'
-        },
-        {
-            id: '4',
-            valuePath: 'title',
-            name: 'Title',
-            isFixedLeft: false,
-            width: 100,
-            staticWidth: 100,
-            maxWidth: 100,
-            minWidth: 100,
-            cellComponent: 'tables/cell/html'
+            width: 200,
+            staticWidth: 200,
+            maxWidth: 200,
+            minWidth: 200,
+            cellComponent: 'tables/cell/html',
+            isSortable: true
         },
 
         {
-            name: 'Test',
+            id: '1',
+            name: 'Publication Citations',
+            width: 400,
+            staticWidth: 400,
+            maxWidth: 400,
+            minWidth: 400,
             subcolumns: [
-                { name: 'A A', valuePath: 'A A', width: 100, staticWidth: 100 },
-                { name: 'A B', valuePath: 'A B', width: 100, staticWidth: 100 },
-                { name: 'A C', valuePath: 'A C', width: 100, staticWidth: 100 },
-                { name: 'A B', valuePath: 'A B', width: 100, staticWidth: 100 },
-                { name: 'A B', valuePath: 'A B', width: 100, staticWidth: 100 },
-                { name: 'A B', valuePath: 'A B', width: 100, staticWidth: 100 },
-                { name: 'A B', valuePath: 'A B', width: 100, staticWidth: 100 },
-                { name: 'A B', valuePath: 'A B', width: 100, staticWidth: 100 }
+                { name: 'Last 5 years', valuePath: 'stat.art_cited_5', width: 100, staticWidth: 100, isSortable: true },
+                {
+                    name: 'Last 10 years',
+                    valuePath: 'stat.art_cited_10',
+                    width: 100,
+                    staticWidth: 100,
+                    isSortable: true
+                },
+                {
+                    name: 'Last 20 years',
+                    valuePath: 'stat.art_cited_20',
+                    width: 100,
+                    staticWidth: 100,
+                    isSortable: true
+                },
+                { name: 'All Time', valuePath: 'stat.art_cited_all', width: 100, staticWidth: 100, isSortable: true }
             ]
         }
     ];

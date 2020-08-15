@@ -5,13 +5,16 @@
     @toggle={{fn (mut this.isOpen)}}
     class="mb-2"
     ...attributes
->
-    <ol>
-        {{!-- template-lint-disable no-bare-strings --}}
-        <li><a href="#">Freud and Lacan</a></li>
-        <li><a href="#">emotional distress</a></li>
-        <li><a href="#">family discord</a></li>
-        <li><a href="#">separation and anxiety</a></li>
-        <li><a href="#">fear and loathing</a></li>
-    </ol>
+as |Panel|>
+    <Panel.header />
+    <Panel.body>
+        <ol>
+            {{!-- template-lint-disable no-bare-strings --}}
+            <li><a href="#">Freud and Lacan</a></li>
+            <li><a href="#">emotional distress</a></li>
+            <li><a href="#">family discord</a></li>
+            <li><a href="#">separation and anxiety</a></li>
+            <li><a href="#">fear and loathing</a></li>
+        </ol>
+    </Panel.body>
 </CollapsiblePanel>

@@ -23,7 +23,8 @@
         "numResults": "{count} {count, plural, =1 {'<span class=\"text-muted\">'result'</span>'} other {'<span class=\"text-muted\">'results'</span>'}}",
         "noResults": "No results found",
         "loadingResults": "Loading results...",
-        "loading": "Loading..."
+        "loading": "Loading...",
+        "filter": "Filter"
     },
     "serverErrors": {
         "heading": "The following {count, plural, =1 {error} other {errors}} occurred while attempting to process your request.",

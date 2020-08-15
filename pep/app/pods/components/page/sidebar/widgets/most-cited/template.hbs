@@ -3,37 +3,40 @@
     @title={{t "relatedInfo.widgets.mostCited.title"}}
     @isOpen={{this.isOpen}}
     @toggle={{fn (mut this.isOpen)}}
-    class="mb-2"
+    class="mb-2 page-widget"
     {{did-insert this.onElementInsert}}
     ...attributes
->
-    <ContentWithPlaceholder
-        @placeholderComponent="loading/widget"
-        @isLoading={{this.isLoading}}
-    >
+as |Panel|>
+    <Panel.header>
+        {{t "relatedInfo.widgets.mostCited.title"}}
+        <span class="chart" {{on "click" this.viewTable}}>
+            <FaIcon @icon="table" @prefix="fal"/>
+        </span>
+    </Panel.header>
+    <Panel.body>
+        <ContentWithPlaceholder
+            @placeholderComponent="loading/widget"
+            @isLoading={{this.isLoading}}
+        >
 
-        <LinkTo @route="most-cited">
-            <FaIcon @icon="table" @prefix="fas" @size="lg" />
-        </LinkTo>
-
-
-        <ul class="list-unstyled">
-            {{#each this.results as |result|}}
-                <li class="mb-2">
-                    <div>
-                        <LinkTo @route="read.document" @model={{result.id}}>
-                            {{html-safe result.title}}
-                        </LinkTo>
-                        <div class="text-muted small">
-                            {{html-safe result.sourceTitle}}
+            <ul class="list-unstyled">
+                {{#each this.results as |result|}}
+                    <li class="mb-2">
+                        <div>
+                            <LinkTo @route="read.document" @model={{result.id}}>
+                                {{html-safe result.title}}
+                            </LinkTo>
+                            <div class="text-muted small">
+                                {{html-safe result.sourceTitle}}
+                            </div>
                         </div>
-                    </div>
-                </li>
-            {{else}}
-                <li class="py-3 mb-0 text-center text-muted">
-                    {{t "common.noResults"}}
-                </li>
-            {{/each}}
-        </ul>
-    </ContentWithPlaceholder>
+                    </li>
+                {{else}}
+                    <li class="py-3 mb-0 text-center text-muted">
+                        {{t "common.noResults"}}
+                    </li>
+                {{/each}}
+            </ul>
+        </ContentWithPlaceholder>
+    </Panel.body>
 </CollapsiblePanel>

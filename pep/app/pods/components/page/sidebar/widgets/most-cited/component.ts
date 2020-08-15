@@ -5,12 +5,15 @@ import { inject as service } from '@ember/service';
 import DS from 'ember-data';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import Document from 'pep/pods/document/model';
+import Router from 'pep/router';
+import FastbootService from 'ember-cli-fastboot/services/fastboot';
 
 interface PageSidebarWidgetsMostCitedArgs {}
 
 export default class PageSidebarWidgetsMostCited extends Component<PageSidebarWidgetsMostCitedArgs> {
     @service store!: DS.Store;
-
+    @service router!: Router;
+    @service fastboot!: FastbootService;
     @tracked isOpen = true;
     @tracked isLoading = false;
     @tracked results: Document[] = [];
@@ -45,5 +48,12 @@ export default class PageSidebarWidgetsMostCited extends Component<PageSidebarWi
     @action
     onElementInsert() {
         this.loadResults();
+    }
+
+    @action
+    viewTable(event: Event) {
+        event.preventDefault();
+        event.stopPropagation();
+        this.router.transitionTo('most-cited');
     }
 }

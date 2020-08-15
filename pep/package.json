@@ -21,7 +21,6 @@
         "test:ember": "ember test"
     },
     "dependencies": {
-        "@gavant/ember-table": "^0.5.0",
         "abortcontroller-polyfill": "^1.4.0",
         "aws-serverless-express": "^3.3.6",
         "dotenv": "^8.2.0",
@@ -42,6 +41,7 @@
         "@gavant/ember-floating-labels": "^1.0.1",
         "@gavant/ember-modals": "^1.0.2",
         "@gavant/ember-pagination": "3.0.0-beta.0",
+        "@gavant/ember-table": "0.6.2",
         "@gavant/ember-template-lint-forms": "^0.0.2",
         "@gavant/ember-validations": "2.1.0",
         "@glimmer/component": "^1.0.1",
