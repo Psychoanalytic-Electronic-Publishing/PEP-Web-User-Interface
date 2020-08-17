@@ -19,8 +19,8 @@ $button-spinner-loading-color2: saturate(lighten($color-brand-primary, 35%), 45%
 // Bootstrap overrides
 // ---------------------------
 $enable-shadows: false;
-$primary: #2f4764;
-$link-color: saturate(lighten($primary, 10%), 20%);
+$primary: saturate(lighten($color-brand-primary, 15%), 15%);
+$link-color: saturate($primary, 10%);
 $font-size-base: $font-size-app-base;
 $font-family-sans-serif: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
     'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';

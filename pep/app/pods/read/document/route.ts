@@ -1,10 +1,8 @@
 import Route from '@ember/routing/route';
-import { inject as service } from '@ember/service';
 import Transition from '@ember/routing/-private/transition';
 import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hooks/pagination';
 import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
 
-import AjaxService from 'pep/services/ajax';
 import { PageNav } from 'pep/mixins/page-layout';
 import { buildSearchQueryParams } from 'pep/utils/search';
 import Document from 'pep/pods/document/model';
@@ -19,8 +17,6 @@ export interface ReadDocumentParams {
 }
 
 export default class ReadDocument extends PageNav(Route) {
-    @service ajax!: AjaxService;
-
     navController = 'read/document';
     searchResults?: RecordArrayWithMeta<Document>;
 

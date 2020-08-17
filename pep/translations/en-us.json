@@ -56,7 +56,7 @@
             "searchForDocs": "Search for documents",
             "tips": {
                 "instructions": "'<strong>'Smart Search'</strong>' taskes all kinds of search inputs:",
-                "tip1": "Find terms or keywords - to get the best search results, '<strong>'enter at least two terms at a time.'</strong>''<br>'This will make the search more precise, returning only the most relevant results.",
+                "tip1": "Find terms or keywords - to get the best search results, '<strong>'enter at least two terms at a time.'</strong>' '<br>'This will make the search more precise, returning only the most relevant results.",
                 "tip2": "Paste a reference from an article",
                 "tip3": "Journal name or part of a journal name",
                 "tip4": "Author name",

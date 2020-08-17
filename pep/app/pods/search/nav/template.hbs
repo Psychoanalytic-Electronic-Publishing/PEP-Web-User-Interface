@@ -10,12 +10,12 @@
             @removeSearchTerm={{this.removeSearchTerm}}
             @updateSearchTerm={{this.updateSearchTerm}}
             @matchSynonymsChange={{this.updateMatchSynonyms}}
-            @resultsCount={{this.metadata.fullCount}}
+            @resultsCount={{this.paginator.metadata.fullCount}}
             class="mb-2"
         />
         {{#if this.hasSubmittedSearch}}
             <Search::Refine
-                @metadata={{this.metadata}}
+                @metadata={{this.paginator.metadata}}
                 @selection={{this.currentFacets}}
                 @updateSelection={{this.updateSelectedFacets}}
                 @submitSearch={{this.resubmitSearchWithFacets}}
