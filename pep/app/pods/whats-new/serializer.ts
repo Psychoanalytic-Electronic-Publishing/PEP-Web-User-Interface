@@ -1,4 +1,3 @@
-// import DS from 'ember-data';
 import ApplicationSerializer from 'pep/pods/application/serializer';
 
 export default class WhatsNew extends ApplicationSerializer {
