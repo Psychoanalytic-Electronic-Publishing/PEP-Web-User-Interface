@@ -5,6 +5,7 @@ import { htmlSafe } from '@ember/template';
 import { scheduleOnce, next } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 import SessionService from 'ember-simple-auth/services/session';
+
 import AuthService from 'pep/services/auth';
 
 interface SearchPreviewArgs {

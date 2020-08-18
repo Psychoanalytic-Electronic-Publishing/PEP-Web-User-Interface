@@ -1,10 +1,12 @@
-import ENV from 'pep/config/environment';
 import { computed, setProperties } from '@ember/object';
 import { assign } from '@ember/polyfills';
 import Service, { inject as service } from '@ember/service';
 import SessionService from 'ember-simple-auth/services/session';
 import fetch from 'fetch';
 import { reject } from 'rsvp';
+
+import ENV from 'pep/config/environment';
+import { appendTrailingSlash } from 'pep/utils/url';
 
 export default class AjaxService extends Service {
     @service session!: SessionService;
@@ -14,7 +16,7 @@ export default class AjaxService extends Service {
 
     /**
      * Add the oauth token authorization header to all requests
-     * @return {Object}
+     * @returns {Object}
      */
     @computed('session.{isAuthenticated,data.authenticated.access_token}')
     get authorizationHeaders() {
@@ -29,7 +31,7 @@ export default class AjaxService extends Service {
 
     /**
      * The default headers on all requests
-     * @return {Object}
+     * @returns {Object}
      */
     @computed('authorizationHeaders', 'clientIdentity.uuidHeader')
     get headers() {
@@ -45,7 +47,7 @@ export default class AjaxService extends Service {
      * });
      * @param  {String}  url
      * @param  {RequestInit}  [options={}]
-     * @return {Promise}
+     * @returns {Promise}
      */
     async request(url: string, options: RequestInit = {}) {
         setProperties(options, {
@@ -54,7 +56,8 @@ export default class AjaxService extends Service {
         });
 
         const baseUrl = /^https?\:\/\//.test(url) ? '' : `${this.host}/${this.namespace}/`;
-        const response = await fetch(`${baseUrl}${url.replace(/^\//, '')}`, options);
+        const requestUrl = appendTrailingSlash(`${baseUrl}${url.replace(/^\//, '')}`);
+        const response = await fetch(requestUrl, options);
         const responseHeaders = this.parseHeaders(response.headers);
         const result = await this.handleResponse(response.status, responseHeaders, response);
         if (this.isSuccess(response.status)) {
@@ -74,7 +77,7 @@ export default class AjaxService extends Service {
      * @param  {Number} status
      * @param  {Object} headers
      * @param  {Object} response
-     * @return {Promise}
+     * @returns {Promise}
      */
     async handleResponse(status: number, _headers: {}, response: Response) {
         // uncomment when using the @gavant/ember-app-version-update addon
@@ -99,7 +102,7 @@ export default class AjaxService extends Service {
     /**
      * returns true if the request contains a "success" status
      * @param  {String|Number}  status
-     * @return {Boolean}
+     * @returns {Boolean}
      */
     isSuccess(status: string | number) {
         let s = this.normalizeStatus(status);
@@ -109,7 +112,7 @@ export default class AjaxService extends Service {
     /**
      * Converts string status codes to an integer value
      * @param  {String|Number}  status
-     * @return {Number}
+     * @returns {Number}
      */
     normalizeStatus(status: string | number) {
         let s = status;
@@ -123,7 +126,7 @@ export default class AjaxService extends Service {
     /**
      * Converts a Headers instance into a plain POJO
      * @param  {Headers} headers
-     * @return {Object}
+     * @returns {Object}
      */
     parseHeaders(headers: Headers) {
         if (headers && typeof headers.keys === 'function') {
@@ -142,7 +145,7 @@ export default class AjaxService extends Service {
      * @param  {String}  url
      * @param  {Number}  [statusCode=307]
      * @param  {Boolean} [replace=false]
-     * @return {Void}
+     * @returns {Void}
      */
     browserRedirect(url: string, _statusCode: number = 307, replace: boolean = false) {
         if (replace) {
@@ -155,7 +158,7 @@ export default class AjaxService extends Service {
     /**
      * Converts a POJO to a JSON string, wrapped with a "data" object as the root key
      * @param  {Object} data
-     * @return {String}
+     * @returns {String}
      */
     stringifyData(data: any) {
         return JSON.stringify({ data });

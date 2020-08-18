@@ -1,9 +1,10 @@
 // app/mixins/authorized-route.ts
-import CanService from 'pep/services/can';
 import Transition from '@ember/routing/-private/transition';
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import ModelRegistry from 'ember-data/types/registries/model';
+
+import CanService from 'pep/services/can';
 
 type Constructor<T = Route> = new (...args: any[]) => T;
 

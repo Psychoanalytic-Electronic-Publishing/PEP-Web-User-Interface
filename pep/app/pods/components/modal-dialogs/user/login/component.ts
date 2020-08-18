@@ -8,6 +8,7 @@ import SessionService from 'ember-simple-auth/services/session';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import { ModelChangeset } from '@gavant/ember-validations/utilities/create-changeset';
 import intl from 'ember-intl/services/intl';
+
 import LoadingBar from 'pep/services/loading-bar';
 import { LoginForm } from 'pep/services/auth';
 

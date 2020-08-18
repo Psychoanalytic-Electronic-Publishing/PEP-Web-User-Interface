@@ -1,6 +1,7 @@
 import Component from '@glimmer/component';
+
 import { SearchFacetValue } from 'pep/constants/search';
-import { RefineOption } from '../component';
+import { RefineOption } from 'pep/pods/components/search/refine/component';
 
 interface SearchRefineOptionArgs {
     facetId: string;

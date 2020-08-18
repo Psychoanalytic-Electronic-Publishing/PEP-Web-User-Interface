@@ -1,6 +1,7 @@
 import DS from 'ember-data';
 import { camelize } from '@ember/string';
 import { pluralize } from 'ember-inflector';
+
 import ApplicationSerializerMixin from 'pep/mixins/application-serializer';
 
 export default class Document extends ApplicationSerializerMixin(DS.RESTSerializer) {

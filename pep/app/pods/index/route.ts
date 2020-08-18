@@ -1,6 +1,7 @@
 import Route from '@ember/routing/route';
-import Application from '../application/controller';
-import IndexController from './controller';
+
+import Application from 'pep/pods/application/controller';
+import IndexController from 'pep/pods/index/controller';
 
 export default class Index extends Route {
     /**

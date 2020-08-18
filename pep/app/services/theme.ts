@@ -1,8 +1,9 @@
 import Service from '@ember/service';
 import { inject as service } from '@ember/service';
 import SessionService from 'ember-simple-auth/services/session';
-import THEMES, { THEME_DEFAULT } from 'pep/constants/themes';
 import HeadDataService from 'ember-cli-head/services/head-data';
+
+import THEMES, { THEME_DEFAULT } from 'pep/constants/themes';
 
 export default class ThemeService extends Service {
     @service headData!: HeadDataService;

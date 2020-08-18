@@ -1,6 +1,7 @@
 import { isEmpty } from '@ember/utils';
-import { SEARCH_TYPES, SEARCH_FACETS, SearchTermValue, SearchFacetValue } from 'pep/constants/search';
 import { removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
+
+import { SEARCH_TYPES, SEARCH_FACETS, SearchTermValue, SearchFacetValue } from 'pep/constants/search';
 
 const defaultFacetFields = SEARCH_FACETS.mapBy('id');
 
