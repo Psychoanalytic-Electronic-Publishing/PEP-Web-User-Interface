@@ -2,76 +2,78 @@
     <div
         class="search-preview search-preview-{{this.mode}}"
         style={{this.styles}}
+        {{did-update this.onResultUpdate @result}}
         ...attributes
     >
-        <Scrollable
-            @namespace="search-preview"
-            @onInsert={{this.onElementInsert}}
-            class="page-content-inner"
-        >
-            <div class="d-flex justify-content-between align-items-start px-4 py-2">
-                <div class="small text-muted mr-2">{{@result.documentRef}}</div>
-                <div class="d-flex flex-nowrap">
-                    <Button
-                        @icon="expand-alt"
-                        @type="link"
-                        @action={{fn @setMode "fit"}}
-                        class="mr-2 p-0"
-                        title={{t "search.preview.fit"}}
-                    />
-                    <Button
-                        @icon={{if (eq @mode "maximized") "window-minimize" "window-maximize"}}
-                        @action={{fn @setMode (if (eq @mode "maximized") "minimized" "maximized")}}
-                        title={{t (if (eq @mode "maximized") "search.preview.minimize" "search.preview.maximize")}}
-                        @type="link"
-                        class="mr-2 p-0"
-                    />
-                    <Button
-                        @icon="times"
-                        @type="link"
-                        @action={{@close}}
-                        class="p-0"
-                        title={{t "common.close"}}
-                    />
-                </div>
-            </div>
-            <div class="px-4 pb-3">
-                <h5>
-                    {{html-safe @result.title}}
-                    {{#if @result.authorMast}}
-                        <div class="small text-muted">
-                            {{@result.authorMast}}
-                        </div>
-                    {{/if}}
-                </h5>
-                <div class="mb-2">
-                    {{html-safe @result.abstract}}
-                </div>
-                <div>
-                    {{#if this.session.isAuthenticated}}
-                        <LinkTo
-                            @route="read.document"
-                            @model={{@result.id}}
-                            @query={{@queryParams}}
-                            class="btn btn-primary btn-wide mr-2"
-                        >
-                            <FaIcon @icon="book-open" />
-                            {{t "search.preview.read"}}
-                        </LinkTo>
+        <Scrollable @namespace="search-preview" class="page-content-inner">
+            <div
+                class="search-preview-inner"
+                {{did-insert this.onElementInsert}}
+            >
+                <div class="d-flex justify-content-between align-items-start px-4 py-2">
+                    <div class="small text-muted mr-2">{{@result.documentRef}}</div>
+                    <div class="d-flex flex-nowrap">
                         <Button
-                            @icon="download"
-                            @label={{t "search.preview.download.label"}}
+                            @icon="expand-alt"
                             @type="link"
-                            class="px-2"
-                        >
-                            <FaIcon @icon="angle-down" class="ml-1 text-muted" />
-                        </Button>
-                    {{else}}
-                        <p class="p-3 bg-light rounded">
-                            {{t "search.preview.mustBeLoggedIn"}}
-                            <a href="" {{on "click" this.login}}>{{t "search.preview.login"}}</a>.
-                        </p>
-                    {{/if}}
+                            @action={{fn @setMode "fit"}}
+                            class="mr-2 p-0"
+                            title={{t "search.preview.fit"}}
+                        />
+                        <Button
+                            @icon={{if (eq @mode "maximized") "window-minimize" "window-maximize"}}
+                            @action={{fn @setMode (if (eq @mode "maximized") "minimized" "maximized")}}
+                            title={{t (if (eq @mode "maximized") "search.preview.minimize" "search.preview.maximize")}}
+                            @type="link"
+                            class="mr-2 p-0"
+                        />
+                        <Button
+                            @icon="times"
+                            @type="link"
+                            @action={{this.close}}
+                            class="p-0"
+                            title={{t "common.close"}}
+                        />
+                    </div>
+                </div>
+                <div class="px-4 pb-3">
+                    <h5>
+                        {{html-safe @result.title}}
+                        {{#if @result.authorMast}}
+                            <div class="small text-muted">
+                                {{@result.authorMast}}
+                            </div>
+                        {{/if}}
+                    </h5>
+                    <div class="mb-2">
+                        {{html-safe @result.abstract}}
+                    </div>
+                    <div>
+                        {{#if this.session.isAuthenticated}}
+                            <LinkTo
+                                @route="read.document"
+                                @model={{@result.id}}
+                                @query={{@queryParams}}
+                                class="btn btn-primary btn-wide mr-2"
+                            >
+                                <FaIcon @icon="book-open" />
+                                {{t "search.preview.read"}}
+                            </LinkTo>
+                            <Button
+                                @icon="download"
+                                @label={{t "search.preview.download.label"}}
+                                @type="link"
+                                class="px-2"
+                            >
+                                <FaIcon @icon="angle-down" class="ml-1 text-muted" />
+                            </Button>
+                        {{else}}
+                            <p class="p-3 bg-light rounded">
+                                {{t "search.preview.mustBeLoggedIn"}}
+                                <a href="" {{on "click" this.login}}>{{t "search.preview.login"}}</a>.
+                            </p>
+                        {{/if}}
+                    </div>
                 </div>
             </div>
         </Scrollable>

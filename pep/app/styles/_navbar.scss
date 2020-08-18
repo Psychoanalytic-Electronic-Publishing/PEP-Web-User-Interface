@@ -44,9 +44,15 @@
         border-color: rgba($black, 0.2);
         box-shadow: inset 0 -3px 0 rgba($black, 0.2);
 
-        &:focus {
+        &:focus,
+        &.focus {
             outline: 0;
-            box-shadow: none;
+            box-shadow: inset 0 -3px 0 rgba($black, 0.2), 0 0 0 2px rgba($white, 0.2);
+        }
+
+        &:active,
+        &.active {
+            box-shadow: 0 0 0 2px rgba($white, 0.2);
         }
     }
 }
