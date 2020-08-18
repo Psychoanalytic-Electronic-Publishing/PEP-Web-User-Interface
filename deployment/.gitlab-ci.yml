@@ -167,7 +167,7 @@ staging:
     variables:
         AwsStage: "staging"
         Domain: $Domain_Staging
-        AwsBucket: $AssetsDomain_Staging
+        AwsBucket: $SvcName-fastboot-$AwsStage
         UseCustomGatewayUrl: "true"
     artifacts:
         name: "artifact-staging-$SvcName-$CI_PIPELINE_ID"
@@ -203,7 +203,7 @@ production:
     variables:
         AwsStage: "production"
         Domain: $Domain_Prod
-        AwsBucket: $AssetsDomain_Prod
+        AwsBucket: =$SvcName-fastboot-$AwsStage
         UseCustomGatewayUrl: "true"
     artifacts:
         name: "artifact-production-$SvcName-$CI_PIPELINE_ID"
