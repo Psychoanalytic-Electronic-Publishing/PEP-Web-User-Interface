@@ -1,6 +1,7 @@
-import LoadingBar from 'pep/services/loading-bar';
 import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
+
+import LoadingBar from 'pep/services/loading-bar';
 
 interface ProgressBarArgs {
     light: boolean;

@@ -2,8 +2,9 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { isEmpty } from '@ember/utils';
-import { SEARCH_FACETS, SearchFacetValue } from 'pep/constants/search';
 import { capitalize } from '@ember/string';
+
+import { SEARCH_FACETS, SearchFacetValue } from 'pep/constants/search';
 
 export interface RefineOption {
     id: string;

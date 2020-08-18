@@ -2,6 +2,7 @@ import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import MediaService from 'ember-responsive/services/media';
+
 import SidebarService from 'pep/services/sidebar';
 
 interface PageSidebarArgs {

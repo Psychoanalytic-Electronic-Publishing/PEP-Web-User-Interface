@@ -72,3 +72,13 @@ export function serializeQueryParams(queryParamsObject: object | string): string
         .join('&')
         .replace(/%20/g, '+');
 }
+
+/**
+ * Appends a trailing slash to a URL, accounting for query strings
+ * @param {String} url
+ * @returns {String}
+ */
+export function appendTrailingSlash(url: string) {
+    const hasQueryStr = url.indexOf('?') !== -1;
+    return hasQueryStr ? url.replace('?', '/?') : `${url}/`;
+}

@@ -1,4 +1,3 @@
-import ENV from 'pep/config/environment';
 import { inject as service } from '@ember/service';
 import { classify } from '@ember/string';
 import DS from 'ember-data';
@@ -7,6 +6,9 @@ import SessionService from 'ember-simple-auth/services/session';
 import { reject } from 'rsvp';
 import FastbootAdapter from 'ember-data-storefront/mixins/fastboot-adapter';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
+
+import ENV from 'pep/config/environment';
+import { appendTrailingSlash } from 'pep/utils/url';
 
 export interface ApiServerError {
     code: string;
@@ -36,6 +38,27 @@ export default class Application extends DS.RESTAdapter.extend(DataAdapterMixin,
     pathForType<K extends string | number>(modelName: K) {
         const path = super.pathForType(modelName);
         return classify(path);
+    }
+
+    /**
+     * Modifies all request URLs to have a trailing slash
+     * @template K
+     * @param {(K | undefined)} [modelName]
+     * @param {(string | {} | any[] | null | undefined)} [id]
+     * @param {(any[] | DS.Snapshot<K> | null | undefined)} [snapshot]
+     * @param {(string | undefined)} [requestType]
+     * @param {({} | undefined)} [query]
+     * @returns {string}
+     */
+    buildURL<K extends string | number>(
+        modelName?: K | undefined,
+        id?: string | {} | any[] | null | undefined,
+        snapshot?: any[] | DS.Snapshot<K> | null | undefined,
+        requestType?: string | undefined,
+        query?: {} | undefined
+    ): string {
+        const url = super.buildURL(modelName, id, snapshot, requestType, query);
+        return appendTrailingSlash(url);
     }
 
     /**

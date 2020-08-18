@@ -1,0 +1,35 @@
+.sidebar-widget-accolades {
+    &-section {
+        position: relative;
+
+        &:before {
+            content: '';
+            position: absolute;
+            z-index: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            opacity: 0.125;
+            background-position: center center;
+            background-repeat: no-repeat;
+        }
+
+        &-inner {
+            position: relative;
+            z-index: 2;
+        }
+    }
+
+    &-journals {
+        &:before {
+            background-image: url('/assets/images/marketing/journals.jpg');
+        }
+    }
+
+    &-books {
+        &:before {
+            background-image: url('/assets/images/marketing/books.jpg');
+        }
+    }
+}

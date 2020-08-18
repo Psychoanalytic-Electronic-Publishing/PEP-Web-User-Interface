@@ -1,5 +1,5 @@
 // import DS from 'ember-data';
-import ApplicationSerializer from '../application/serializer';
+import ApplicationSerializer from 'pep/pods/application/serializer';
 
 export default class WhatsNew extends ApplicationSerializer {
     primaryKey = 'volumeURL'; //TODO make sure this is unique
