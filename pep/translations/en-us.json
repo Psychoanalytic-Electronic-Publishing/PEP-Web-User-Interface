@@ -175,12 +175,12 @@
         "widgets": {
             "accolades": {
                 "journals": {
-                    "title": "72 Premier Journals",
-                    "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam imperdiet, orci nec viverra feugiat, elit ligula tempor eros, et feugiat massa nibh eu nunc."
+                    "title": "59 Premier Psychoanalytic Journals",
+                    "content": "The PEP-Web Archive is the quintessential website for psychoanalytic scholarship, with the full text of 59 journals dating back to 1918, cross-linked to each other and full bibliographic references to external sources, and where a multi-source psychoanalytic glossary is a click away for any technical term."
                 },
                 "books": {
-                    "title": "Classic Books",
-                    "content": "Mauris cursus pretium consequat. Nunc pellentesque tellus eget neque molestie, quis bibendum libero consectetur."
+                    "title": "96 Classic Psychoanalytic Books",
+                    "content": "The complete content of Sigmund Freud’s Standard Edition where each paragraph is cross-linked to the corresponding text in the German Freud Gesammelte Werke.  Including 96 books from classic authors such as Bion, Bowlby, Klein, Meltzer, Winnicott, and many more."
                 }
             },
             "expertPicks": {
