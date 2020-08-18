@@ -47,12 +47,13 @@ export default class SearchRefine extends Component<SearchRefineArgs> {
             if (incFields.includes(facetType.id)) {
                 let fieldCountsMap = fieldsMap[facetType.id];
                 let fieldCountIds = Object.keys(fieldCountsMap);
-                let allOptions: RefineOption[] = fieldCountIds.map((optId) => ({
+                let allOptIds = facetType.dynamicValues ? fieldCountIds : facetType.values.mapBy('id');
+                let allOptions: RefineOption[] = allOptIds.map((optId) => ({
                     id: optId,
                     label: facetType.dynamicValues
                         ? capitalize(optId)
                         : facetType.values.findBy('id', optId)?.label ?? optId,
-                    numResults: fieldCountsMap[optId]
+                    numResults: fieldCountsMap[optId] ?? 0
                 }));
 
                 //sort options w/no results at the bottom
