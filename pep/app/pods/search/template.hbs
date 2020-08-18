@@ -1,5 +1,9 @@
 {{page-title (t "search.title")}}
-<div class="page-content page-content-sectioned">
+<div
+    class="page-content page-content-sectioned"
+    {{did-insert this.updateContainerMaxHeight}}
+    {{did-resize this.updateContainerMaxHeight debounce=250}}
+>
     <div class="page-content-section flex-fill">
         <Scrollable @namespace="search-results" class="page-content-inner">
             {{#if (and (not this.model) this.paginator.isLoadingModels)}}
@@ -146,7 +150,7 @@
         @mode={{this.previewMode}}
         @setMode={{this.setPreviewMode}}
         @close={{this.closeResultPreview}}
-        @containerSelector=".page-content"
+        @maxHeight={{this.containerMaxHeight}}
         class="page-content-section"
     />
 </div>

@@ -12,7 +12,7 @@ import Document from 'pep/pods/document/model';
 
 interface SearchPreviewArgs {
     mode: 'minimized' | 'maximized' | 'fit';
-    containerSelector: string;
+    maxHeight?: number;
     result?: Document;
     close: () => void;
 }
@@ -21,7 +21,7 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
     @service session!: SessionService;
     @service auth!: AuthService;
 
-    @tracked fitHeight?: number;
+    @tracked fitHeight: number = 0;
     innerElement: HTMLElement | null = null;
 
     get mode() {
@@ -29,7 +29,13 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
     }
 
     get styles() {
-        return this.mode === 'fit' && this.fitHeight ? htmlSafe(`height: ${this.fitHeight}px;`) : null;
+        return this.mode === 'fit' && this.adjustedFitHeight && this.args.result
+            ? htmlSafe(`height: ${this.adjustedFitHeight}px;`)
+            : null;
+    }
+
+    get adjustedFitHeight() {
+        return Math.min(this.fitHeight, this.args.maxHeight || this.fitHeight);
     }
 
     /**
@@ -37,15 +43,8 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
      * constrained to a maximum height that is the parent container's height
      */
     @dontRunInFastboot
-    calculateFitHeight() {
-        if (this.innerElement) {
-            //dont allow the fit height to be taller than the container height
-            const contentHeight = this.innerElement.offsetHeight;
-            const containerEl = document.querySelector(this.args.containerSelector) as HTMLDivElement;
-            const containerHeight = containerEl?.offsetHeight;
-            const fitHeight = Math.min(contentHeight, containerHeight || contentHeight);
-            this.fitHeight = fitHeight;
-        }
+    updateFitHeight() {
+        this.fitHeight = this.innerElement?.offsetHeight ?? 0;
     }
 
     /**
@@ -55,7 +54,7 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
     @action
     onElementInsert(element: HTMLElement) {
         this.innerElement = element;
-        scheduleOnce('afterRender', this, this.calculateFitHeight);
+        scheduleOnce('afterRender', this, this.updateFitHeight);
     }
 
     /**
@@ -63,7 +62,7 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
      */
     @action
     onResultUpdate() {
-        scheduleOnce('afterRender', this, this.calculateFitHeight);
+        scheduleOnce('afterRender', this, this.updateFitHeight);
     }
 
     /**
