@@ -13,6 +13,11 @@ declare global {
         target: T;
         currentTarget: T;
     };
+
+    type HTMLElementTouchEvent<T extends HTMLElement> = TouchEvent & {
+        target: T;
+        currentTarget: T;
+    };
 }
 
 export {};

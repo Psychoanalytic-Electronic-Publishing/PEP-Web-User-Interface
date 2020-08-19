@@ -2,10 +2,9 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { htmlSafe } from '@ember/template';
-import { scheduleOnce } from '@ember/runloop';
+import { scheduleOnce, next } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 import SessionService from 'ember-simple-auth/services/session';
-import FastbootService from 'ember-cli-fastboot/services/fastboot';
 
 import AuthService from 'pep/services/auth';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
@@ -21,23 +20,15 @@ interface SearchPreviewArgs {
     close: () => void;
 }
 
-// TODO MOVE TO utilities/dom.ts
-function getElementOffset(el: HTMLElement) {
-    const rect = el.getBoundingClientRect();
-    const scrollLeft = window?.pageXOffset || document?.documentElement?.scrollLeft || 0;
-    const scrollTop = window?.pageYOffset || document?.documentElement?.scrollTop || 0;
-    return {
-        top: rect.top + scrollTop,
-        left: rect.left + scrollLeft
-    };
-}
-
 export default class SearchPreview extends Component<SearchPreviewArgs> {
     @service session!: SessionService;
     @service auth!: AuthService;
 
     @tracked fitHeight: number = 0;
+    @tracked isDragResizing: boolean = false;
+
     innerElement: HTMLElement | null = null;
+    minFitHeight: number = 40;
 
     get mode() {
         return this.args.mode || 'fit';
@@ -113,75 +104,25 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
         return this.auth.openLoginModal(true);
     }
 
-    //TODO EXTRACT INTO <DragBar> COMPONENT
-    @service fastboot!: FastbootService;
-
-    @tracked dragBarPosition: number | null = null;
-    @tracked dragBarOffset: { top: number; left: number } | null = null;
-    @tracked isDragging: boolean = false;
-    barThickness = 5;
-
-    //TODO turn into arg
-    orientation: 'vertical' | 'horizontal' = 'horizontal';
-    minClientY = 58;
-    maxClientY = 32;
-    minClientX = 0;
-    maxClientX = 0;
-
-    get maskDestination() {
-        return !this.fastboot.isFastBoot ? document?.body : null;
-    }
-
-    get dragBarStyles() {
-        const prop = this.orientation === 'horizontal' ? 'top' : 'left';
-        return this.dragBarPosition !== null ? htmlSafe(`${prop}: ${this.dragBarPosition}px;`) : null;
-    }
-
-    @dontRunInFastboot
-    willDestroy() {
-        document.removeEventListener('mousemove', this.onDragMove);
-        document.removeEventListener('mouseup', this.onDragStop);
-    }
-
+    /**
+     * When drag resizing starts, set the pane to not animate height changes
+     */
     @action
-    @dontRunInFastboot
-    onDragStart(event: HTMLElementMouseEvent<HTMLDivElement>) {
-        //TODO handle touchstart/touchmove/touchend events for mobile
-        document.addEventListener('mousemove', this.onDragMove);
-        document.addEventListener('mouseup', this.onDragStop);
-        this.isDragging = true;
-        this.dragBarOffset = getElementOffset(event.target);
+    onDragStart() {
+        this.isDragResizing = true;
     }
 
+    /**
+     * When drag resizing ends, update the pane with the new height
+     * @param {number} position
+     */
     @action
-    onDragMove(event: MouseEvent) {
-        if (this.orientation === 'horizontal') {
-            const minY = this.minClientY;
-            const maxY = document.body.offsetHeight - this.barThickness - this.maxClientY;
-            const yOffset = Math.max(minY, Math.min(maxY, event.clientY));
-            this.dragBarPosition = yOffset - (this.dragBarOffset?.top ?? 0);
-        } else {
-            const minX = this.minClientX;
-            const maxX = document.body.offsetWidth - this.barThickness - this.maxClientX;
-            const xOffset = Math.max(minX, Math.min(maxX, event.clientX));
-            this.dragBarPosition = xOffset - (this.dragBarOffset?.left ?? 0);
-        }
-    }
-
-    @action
-    onDragStop(event: MouseEvent) {
-        document.removeEventListener('mousemove', this.onDragMove);
-        document.removeEventListener('mouseup', this.onDragStop);
-        const endPosition = event.clientY - (this.dragBarOffset?.top ?? 0);
-        this.isDragging = false;
-        this.dragBarPosition = null;
-        this.dragBarOffset = null;
-
-        //TODO send an action here w/the new bar offset position
+    onDragEnd(position: number) {
         if (this.mode !== 'fit') {
             this.args.setMode('fit');
         }
 
-        this.fitHeight = Math.max(40, this.fitHeight - endPosition);
+        this.fitHeight = Math.max(this.minFitHeight, this.fitHeight - position);
+        next(this, () => (this.isDragResizing = false));
     }
 }

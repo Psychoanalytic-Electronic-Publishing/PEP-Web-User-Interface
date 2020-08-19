@@ -1,24 +1,16 @@
 {{#if @result}}
     <div
-        class="search-preview search-preview-{{this.mode}}"
+        class="search-preview search-preview-{{this.mode}} {{~if this.isDragResizing " is-drag-resizing"}}"
         style={{this.styles}}
         {{did-update this.onResultUpdate @result}}
         ...attributes
     >
-        {{!-- TODO EXTRACT INTO <DragBar> COMPONENT --}}
-        <div
-            class="drag-bar {{this.orientation}} {{~if this.isDragging " is-dragging"}}"
-            role="button"
-            style={{this.dragBarStyles}}
-            {{on "mousedown" this.onDragStart}}
-        >
-        </div>
-        {{#if this.isDragging}}
-            {{#in-element this.maskDestination insertBefore=null}}
-                <div class="drag-bar-mask {{this.orientation}}"></div>
-            {{/in-element}}
-        {{/if}}
-
+        <DragBar
+            @orientation="horizontal"
+            @maxClientY={{68}}
+            @onDragStart={{this.onDragStart}}
+            @onDragEnd={{this.onDragEnd}}
+        />
         <Scrollable @namespace="search-preview" class="page-content-inner">
             <div
                 class="search-preview-inner"

@@ -4,6 +4,10 @@
     box-shadow: 0 -10px 6px -4px rgba($black, 0.1);
     transition: $duration-search-preview-toggle ease height;
 
+    &.is-drag-resizing {
+        transition: none;
+    }
+
     &-minimized {
         height: $search-preview-collapsed-height;
     }
@@ -15,55 +19,5 @@
 
     &-fit {
         max-height: 100%;
-    }
-}
-
-//TODO EXTRACT INTO <DragBar> COMPONENT
-$drag-bar-thickness: 5px;
-$z-drag-bar-mask: 2000;
-
-.drag-bar {
-    position: absolute;
-    z-index: 2;
-    opacity: 0;
-    background-color: lighten(saturate($primary, 30%), 10%);
-
-    &:hover,
-    &.is-dragging {
-        opacity: 0.5;
-    }
-
-    &.horizontal {
-        top: 0;
-        left: 0;
-        right: 0;
-        height: $drag-bar-thickness;
-        cursor: ns-resize;
-    }
-
-    &.vertical {
-        top: 0;
-        left: 0;
-        bottom: 0;
-        width: $drag-bar-thickness;
-        cursor: ew-resize;
-    }
-
-    &-mask {
-        position: absolute;
-        z-index: $z-drag-bar-mask;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        background-color: transparent;
-
-        &.horizontal {
-            cursor: ns-resize;
-        }
-
-        &.vertical {
-            cursor: ew-resize;
-        }
     }
 }

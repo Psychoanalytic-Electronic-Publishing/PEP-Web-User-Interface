@@ -1,0 +1,13 @@
+<div
+    class="drag-bar {{this.orientation}} {{~if this.isDragging " is-dragging"}}"
+    role="button"
+    style={{this.dragBarStyles}}
+    {{on "mousedown" this.onDragStart}}
+    {{on "touchstart" this.onDragStart}}
+>
+</div>
+{{#if this.isDragging}}
+    {{#in-element this.maskDestination insertBefore=null}}
+        <div class="drag-bar-mask {{this.orientation}}"></div>
+    {{/in-element}}
+{{/if}}
