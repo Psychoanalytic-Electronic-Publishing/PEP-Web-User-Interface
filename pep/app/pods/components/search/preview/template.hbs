@@ -5,6 +5,20 @@
         {{did-update this.onResultUpdate @result}}
         ...attributes
     >
+        {{!-- TODO EXTRACT INTO <DragBar> COMPONENT --}}
+        <div
+            class="drag-bar {{this.orientation}} {{~if this.isDragging " is-dragging"}}"
+            role="button"
+            style={{this.dragBarStyles}}
+            {{on "mousedown" this.onDragStart}}
+        >
+        </div>
+        {{#if this.isDragging}}
+            {{#in-element this.maskDestination insertBefore=null}}
+                <div class="drag-bar-mask {{this.orientation}}"></div>
+            {{/in-element}}
+        {{/if}}
+
         <Scrollable @namespace="search-preview" class="page-content-inner">
             <div
                 class="search-preview-inner"
@@ -16,13 +30,13 @@
                         <Button
                             @icon="expand-alt"
                             @type="link"
-                            @action={{fn @setMode "fit"}}
+                            @action={{fn this.setMode "fit"}}
                             class="mr-2 p-0"
                             title={{t "search.preview.fit"}}
                         />
                         <Button
                             @icon={{if (eq @mode "maximized") "window-minimize" "window-maximize"}}
-                            @action={{fn @setMode (if (eq @mode "maximized") "minimized" "maximized")}}
+                            @action={{fn this.setMode (if (eq @mode "maximized") "minimized" "maximized")}}
                             title={{t (if (eq @mode "maximized") "search.preview.minimize" "search.preview.maximize")}}
                             @type="link"
                             class="mr-2 p-0"
