@@ -7,13 +7,13 @@
                 {{else}}
                     <div class="d-flex justify-content-between align-items-center mb-2">
                         <h4 class="mb-0">
-                            {{t "mostCited.title"}}
+                            {{t "mostViewed.title"}}
                         </h4>
                     </div>
                     <div class="bg-white search-form">
                         <form>
                             <div class="form-group d-flex justify-content-between align-items-center">
-                                <span>{{t "mostCited.period"}}</span>
+                                <span>{{t "mostViewed.period"}}</span>
                                 <select class="custom-select ml-5" {{on "change" (fn this.updatePeriod)}}>
                                     {{#each this.periods as |period|}}
                                         <option value={{period.value}} selected={{eq period.value this.period}}>

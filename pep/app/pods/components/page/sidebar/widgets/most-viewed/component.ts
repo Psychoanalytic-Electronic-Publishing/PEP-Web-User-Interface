@@ -5,12 +5,15 @@ import { inject as service } from '@ember/service';
 import DS from 'ember-data';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import Document from 'pep/pods/document/model';
+import FastbootService from 'ember-cli-fastboot/services/fastboot';
+import Router from 'pep/router';
 
 interface PageSidebarWidgetsMostViewedArgs {}
 
 export default class PageSidebarWidgetsMostViewed extends Component<PageSidebarWidgetsMostViewedArgs> {
     @service store!: DS.Store;
-
+    @service router!: Router;
+    @service fastboot!: FastbootService;
     @tracked isOpen = true;
     @tracked isLoading = false;
     @tracked results: Document[] = [];
@@ -27,8 +30,7 @@ export default class PageSidebarWidgetsMostViewed extends Component<PageSidebarW
             this.isLoading = true;
             const results = await this.store.query('document', {
                 queryType: 'MostViewed',
-                period: 'all',
-                sourcecode: 'AOP',
+                viewperiod: 0,
                 morethan: 10,
                 limit: 10
             });
@@ -45,5 +47,19 @@ export default class PageSidebarWidgetsMostViewed extends Component<PageSidebarW
     @action
     onElementInsert() {
         this.loadResults();
+    }
+
+    /**
+     * Transition to the table on click. Stop anything else from happening so we dont close/open the
+     * widget
+     *
+     * @param {Event} event
+     * @memberof PageSidebarWidgetsMostViewed
+     */
+    @action
+    viewTable(event: Event) {
+        event.preventDefault();
+        event.stopPropagation();
+        this.router.transitionTo('most-cited');
     }
 }

@@ -51,6 +51,13 @@ export default class PageSidebarWidgetsMostCited extends Component<PageSidebarWi
         this.loadResults();
     }
 
+    /**
+     * Transition to the table on click. Stop anything else from happening so we dont close/open the
+     * widget
+     *
+     * @param {Event} event
+     * @memberof PageSidebarWidgetsMostCited
+     */
     @action
     viewTable(event: Event) {
         event.preventDefault();

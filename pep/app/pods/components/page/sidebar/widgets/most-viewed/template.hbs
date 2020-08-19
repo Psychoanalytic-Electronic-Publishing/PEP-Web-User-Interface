@@ -3,11 +3,16 @@
     @title={{t "relatedInfo.widgets.mostViewed.title"}}
     @isOpen={{this.isOpen}}
     @toggle={{fn (mut this.isOpen)}}
-    class="mb-2"
+    class="mb-2 page-widget"
     {{did-insert this.onElementInsert}}
     ...attributes
 as |Panel|>
-    <Panel.header />
+    <Panel.header>
+        {{t "relatedInfo.widgets.mostViewed.title"}}
+        <span class="chart" {{on "click" this.viewTable}}>
+            <FaIcon @icon="table" @prefix="fal"/>
+        </span>
+    </Panel.header>
     <Panel.body>
         <ContentWithPlaceholder
             @placeholderComponent="loading/widget"
