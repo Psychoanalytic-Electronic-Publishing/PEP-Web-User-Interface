@@ -8,7 +8,7 @@ import LoadingBarService from 'pep/services/loading-bar';
 import FastbootMediaService from 'pep/services/fastboot-media';
 import SidebarService from 'pep/services/sidebar';
 
-type PossiblePeriodValues = 5 | 10 | 20 | 'all';
+type PossiblePeriodValues = '5' | '10' | '20' | 'all';
 type period = { label: string; value: PossiblePeriodValues };
 
 export default class MostCited extends Controller {
@@ -26,9 +26,9 @@ export default class MostCited extends Controller {
     queryType = 'MostCited';
 
     periods: period[] = [
-        { label: '5 years', value: 5 },
-        { label: '10 years', value: 10 },
-        { label: '20 years', value: 20 },
+        { label: '5 years', value: '5' },
+        { label: '10 years', value: '10' },
+        { label: '20 years', value: '20' },
         { label: 'All years', value: 'all' }
     ];
 
@@ -66,7 +66,7 @@ export default class MostCited extends Controller {
         if (value === 'all') {
             this.period = value;
         } else {
-            this.period = Number(value) as PossiblePeriodValues;
+            this.period = value as PossiblePeriodValues;
         }
     }
 }
