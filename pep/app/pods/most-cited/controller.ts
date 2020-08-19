@@ -32,6 +32,12 @@ export default class MostCited extends Controller {
         { label: 'All years', value: 'all' }
     ];
 
+    /**
+     * Filter table results based on query params
+     *
+     * @returns Document[]
+     * @memberof MostCited
+     */
     @action
     async filterTableResults() {
         try {
@@ -60,14 +66,16 @@ export default class MostCited extends Controller {
         this.sourcename = '';
     }
 
+    /**
+     * Sets the period value after its changed
+     *
+     * @param {HTMLElementEvent<HTMLSelectElement>} event
+     * @memberof MostCited
+     */
     @action
     updatePeriod(event: HTMLElementEvent<HTMLSelectElement>) {
         const value = event.target?.value;
-        if (value === 'all') {
-            this.period = value;
-        } else {
-            this.period = value as PossiblePeriodValues;
-        }
+        this.period = value as PossiblePeriodValues;
     }
 }
 
