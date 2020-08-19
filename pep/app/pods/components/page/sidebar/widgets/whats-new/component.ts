@@ -3,6 +3,7 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import DS from 'ember-data';
+
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import WhatsNew from 'pep/pods/whats-new/model';
 

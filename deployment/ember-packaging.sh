@@ -28,8 +28,8 @@ function PopulateConfigFile() #Parameters: Filename
 
     RootUrl=""
     CookieUrl=""
-    AssetsDomain="$AssetsDomain.s3.amazonaws.com"
     if [ $UseCustomGatewayUrl == 'false' ]; then
+        AssetsDomain="$AssetsDomain.s3.amazonaws.com"
         RootUrl="$AwsStage/"
         CookieUrl=$AwsStage
     fi

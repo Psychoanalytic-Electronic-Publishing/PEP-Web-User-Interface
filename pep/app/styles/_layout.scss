@@ -46,6 +46,15 @@ body {
         right: 0;
     }
 
+    &-heading {
+        padding: 1.5rem 1.5rem 3rem 1.5rem;
+        background-color: desaturate(darken($color-backdrop, 7%), 5%);
+    }
+
+    &-heading-inset {
+        margin-top: -3.5rem;
+    }
+
     @include media-breakpoint-down(md) {
         margin-left: 0;
         margin-right: 0;

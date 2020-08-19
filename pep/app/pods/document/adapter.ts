@@ -1,6 +1,7 @@
 import { classify } from '@ember/string';
 import DS from 'ember-data';
 import { pluralize } from 'ember-inflector';
+
 import ENV from 'pep/config/environment';
 import ApplicationAdapter from 'pep/pods/application/adapter';
 
@@ -10,6 +11,7 @@ export default class Document extends ApplicationAdapter {
      * URL path changes, defaulting to /Search
      * @param {Object} query
      * @param {String | Number} modelName
+     * @returns {String}
      */
     urlForQuery<K extends string | number>(query: { queryType: string }, modelName: K): string {
         const modelNameStr = modelName.toString();
@@ -29,9 +31,10 @@ export default class Document extends ApplicationAdapter {
 
     /**
      * The endpoint for individual documents is /v2/Documents/Document/{id}
-     * @param id
-     * @param modelName
-     * @param snapshot
+     * @param {String} id
+     * @param {String | Number} modelName
+     * @param {DS.Snapshot<K>} snapshot
+     * @returns {String}
      */
     urlForFindRecord<K extends string | number>(id: string, modelName: K, snapshot: DS.Snapshot<K>): string {
         const modelNameStr = modelName.toString();

@@ -2,8 +2,9 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { isEmpty } from '@ember/utils';
-import { SEARCH_FACETS, SearchFacetValue } from 'pep/constants/search';
 import { capitalize } from '@ember/string';
+
+import { SEARCH_FACETS, SearchFacetValue } from 'pep/constants/search';
 
 export interface RefineOption {
     id: string;
@@ -46,12 +47,13 @@ export default class SearchRefine extends Component<SearchRefineArgs> {
             if (incFields.includes(facetType.id)) {
                 let fieldCountsMap = fieldsMap[facetType.id];
                 let fieldCountIds = Object.keys(fieldCountsMap);
-                let allOptions: RefineOption[] = fieldCountIds.map((optId) => ({
+                let allOptIds = facetType.dynamicValues ? fieldCountIds : facetType.values.mapBy('id');
+                let allOptions: RefineOption[] = allOptIds.map((optId) => ({
                     id: optId,
                     label: facetType.dynamicValues
                         ? capitalize(optId)
                         : facetType.values.findBy('id', optId)?.label ?? optId,
-                    numResults: fieldCountsMap[optId]
+                    numResults: fieldCountsMap[optId] ?? 0
                 }));
 
                 //sort options w/no results at the bottom

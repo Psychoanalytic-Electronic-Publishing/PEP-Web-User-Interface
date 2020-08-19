@@ -2,6 +2,7 @@ import Controller from '@ember/controller';
 import { action, set } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
+import RouterService from '@ember/routing/router-service';
 import { reject } from 'rsvp';
 import SessionService from 'ember-simple-auth/services/session';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
@@ -19,6 +20,7 @@ export default class ReadDocument extends Controller {
     @service auth!: AuthService;
     @service fastboot!: FastbootService;
     @service loadingBar!: LoadingBarService;
+    @service router!: RouterService;
 
     defaultSearchTerms = JSON.stringify(SEARCH_DEFAULT_TERMS);
     defaultSearchFacets = JSON.stringify(SEARCH_DEFAULT_FACETS);
@@ -37,6 +39,10 @@ export default class ReadDocument extends Controller {
         { type: 'author', term: '' }
     ]);
     @tracked paginator!: Pagination<Document>;
+
+    get isLoadingRoute(): boolean {
+        return /loading$/.test(this.router.currentRouteName);
+    }
 
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981

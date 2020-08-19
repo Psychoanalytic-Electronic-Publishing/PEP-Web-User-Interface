@@ -9,7 +9,7 @@ select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
     -webkit-text-fill-color: $input-color;
-    -webkit-box-shadow: 0 0 0px 1000px #fff inset;
+    -webkit-box-shadow: 0 0 0px 1000px $white inset;
     transition: background-color 5000s ease-in-out 0s;
 }
 
@@ -40,6 +40,6 @@ select:-webkit-autofill:focus {
     }
 
     &:hover {
-        background-color: rgba(#fff, 0.4);
+        background-color: rgba($white, 0.4);
     }
 }

@@ -112,41 +112,6 @@ ondemand-teardown:
         - /^bug\/tp[0-9]+-[0-9a-zA-Z-]+$/
         - master
 
-# candidate:
-#     stage: deploy_to_lower
-#     when: manual
-#     environment:
-#         name: candidate
-#         url: "https://$Domain_Cand"
-#     script:
-#     #Setup S3 bucket for dist
-#     - bash deployment/utilities.sh SetAwsProfile
-#     - bash deployment/utilities.sh CreatePublicBucket $SvcName-fastboot-$AwsStage
-#     - bash deployment/utilities.sh DeleteBucketFolder $SvcName-fastboot-$AwsStage/assets
-#     - bash deployment/utilities.sh CopyToBucket dist-$CI_PIPELINE_ID-candidate $SvcName-fastboot-$AwsStage
-#     #Setup serverless deploy
-#     - cd $SvcName-$CI_PIPELINE_ID-candidate
-#     - bash ../deployment/utilities.sh SetServerlessProfile
-#     - sls deploy --stage $AwsStage
-#     variables:
-#         AwsStage: "candidate"
-#         Domain: $Domain_Cand
-#         AwsBucket: $AssetsDomain_Cand
-#         UseCustomGatewayUrl: "true"
-#     artifacts:
-#         name: "artifact-candidate-$SvcName-$CI_PIPELINE_ID"
-#         paths:
-#         - $SvcName-$CI_PIPELINE_ID-candidate
-#         - $SvcName-$CI_PIPELINE_ID-production
-#         - dist-$CI_PIPELINE_ID-candidate
-#         - dist-$CI_PIPELINE_ID-production
-#     only:
-#         - /^release\/[0-9]+-[0-9a-zA-Z-]+$/
-#         - /^release\/[0-9]$/
-#         - /^feature\/tp[0-9]+-[0-9a-zA-Z-]+$/
-#         - /^story\/tp[0-9]+-[0-9a-zA-Z-]+$/
-#         - /^bug\/tp[0-9]+-[0-9a-zA-Z-]+$/
-#         - master
 
 staging:
     stage: deploy_to_lower
@@ -157,9 +122,9 @@ staging:
     script:
     #Setup S3 bucket for dist
     - bash deployment/utilities.sh SetAwsProfile
-    - bash deployment/utilities.sh CreatePublicBucket $SvcName-fastboot-$AwsStage
-    - bash deployment/utilities.sh DeleteBucketFolder $SvcName-fastboot-$AwsStage/assets
-    - bash deployment/utilities.sh CopyToBucket dist-$CI_PIPELINE_ID-staging $SvcName-fastboot-$AwsStage
+    - bash deployment/utilities.sh CreatePublicBucket $AssetsDomain_Staging
+    - bash deployment/utilities.sh DeleteBucketFolder $AssetsDomain_Staging/assets
+    - bash deployment/utilities.sh CopyToBucket dist-$CI_PIPELINE_ID-staging $AssetsDomain_Staging
     #Setup serverless deploy
     - cd $SvcName-$CI_PIPELINE_ID-staging
     - bash ../deployment/utilities.sh SetServerlessProfile
@@ -193,9 +158,9 @@ production:
     script:
     #Setup S3 bucket for dist
     - bash deployment/utilities.sh SetAwsProfile
-    - bash deployment/utilities.sh CreatePublicBucket $SvcName-fastboot-$AwsStage
-    - bash deployment/utilities.sh DeleteBucketFolder $SvcName-fastboot-$AwsStage/assets
-    - bash deployment/utilities.sh CopyToBucket dist-$CI_PIPELINE_ID-production $SvcName-fastboot-$AwsStage
+    - bash deployment/utilities.sh CreatePublicBucket $AssetsDomain_Prod
+    - bash deployment/utilities.sh DeleteBucketFolder $AssetsDomain_Prod/assets
+    - bash deployment/utilities.sh CopyToBucket dist-$CI_PIPELINE_ID-production $AssetsDomain_Prod
     #Setup serverless deploy
     - cd $SvcName-$CI_PIPELINE_ID-production
     - bash ../deployment/utilities.sh SetServerlessProfile

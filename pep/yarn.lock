@@ -2489,10 +2489,10 @@
     ember-modal-dialog "^3.0.0-beta.4"
     ember-spread "^7.0.1"
 
-"@gavant/ember-pagination@3.0.0-beta.0":
-  version "3.0.0-beta.0"
-  resolved "https://registry.yarnpkg.com/@gavant/ember-pagination/-/ember-pagination-3.0.0-beta.0.tgz#750f209eb0d0cbd2b454a1ce36fa2bd139367cf5"
-  integrity sha512-CKYfVeOFnko5Oq2bp74u48qYiozMHVKB4y1Ju/1Y1lU7GZaTYzWopsCIKOlHinyVymZ8oLSOJcJrdhhMA1AK8w==
+"@gavant/ember-pagination@3.0.0-beta.1":
+  version "3.0.0-beta.1"
+  resolved "https://registry.yarnpkg.com/@gavant/ember-pagination/-/ember-pagination-3.0.0-beta.1.tgz#d11c4e29d9916740fc1d21969fb7675ce36389de"
+  integrity sha512-Vl/i6dPtc4gs3aIgzEQ8ZsyQfcmoBcm8zl2Vfo0Xl0D/u47URSkk2K0hxZL4izlxTihIn8xIsCOKPRSaNDBTKA==
   dependencies:
     ember-cli-babel "^7.17.2"
     ember-cli-htmlbars "^4.2.2"

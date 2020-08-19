@@ -1,5 +1,4 @@
-// import DS from 'ember-data';
-import ApplicationAdapter from '../application/adapter';
+import ApplicationAdapter from 'pep/pods/application/adapter';
 import ENV from 'pep/config/environment';
 
 export default class WhatsNew extends ApplicationAdapter {

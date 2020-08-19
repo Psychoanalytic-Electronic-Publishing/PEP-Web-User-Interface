@@ -1,8 +1,8 @@
 <Page::Sidebar @side="left" as |Sidebar|>
     <Sidebar.content @scrollableNamespace="sidebar-left">
-        {{#if (or this.paginator.metadata.fullCount this.paginator.isLoadingRoute)}}
+        {{#if (or this.paginator.metadata.fullCount this.isLoadingRoute)}}
             <div class="bg-white border-divider-b p-3">
-                {{#if this.paginator.isLoadingRoute}}
+                {{#if this.isLoadingRoute}}
                     <Loading::Read::Results />
                 {{else}}
                     <div class="d-flex justify-content-between align-items-center mb-2">
@@ -18,7 +18,6 @@
                                 @type="link"
                                 @icon="download"
                                 @iconSize="lg"
-                                disabled={{this.paginator.isLoadingRoute}}
                                 title={{t "common.export"}}
                                 class="p-1"
                             />
@@ -26,7 +25,6 @@
                                 @type="link"
                                 @icon="print"
                                 @iconSize="lg"
-                                disabled={{this.paginator.isLoadingRoute}}
                                 title={{t "common.print"}}
                                 class="p-1"
                             />

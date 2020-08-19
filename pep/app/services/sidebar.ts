@@ -2,7 +2,8 @@ import Service from '@ember/service';
 import { isNone } from '@ember/utils';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
-import FastbootMediaService from './fastboot-media';
+
+import FastbootMediaService from 'pep/services/fastboot-media';
 
 export default class SidebarService extends Service {
     @service fastbootMedia!: FastbootMediaService;

@@ -1,5 +1,3 @@
-import PageLayout from 'pep/mixins/page-layout';
-import CurrentUserService from 'pep/services/current-user';
 import { action } from '@ember/object';
 import Transition from '@ember/routing/-private/transition';
 import Route from '@ember/routing/route';
@@ -9,11 +7,14 @@ import IntlService from 'ember-intl/services/intl';
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 import SessionService from 'ember-simple-auth/services/session';
 import MediaService from 'ember-responsive/services/media';
+
+import PageLayout from 'pep/mixins/page-layout';
+import CurrentUserService from 'pep/services/current-user';
 import LoadingBarService from 'pep/services/loading-bar';
 import SidebarService from 'pep/services/sidebar';
 import ThemeService from 'pep/services/theme';
 import AuthService from 'pep/services/auth';
-import { ApiServerErrorResponse } from './adapter';
+import { ApiServerErrorResponse } from 'pep/pods/application/adapter';
 
 export default class Application extends PageLayout(Route.extend(ApplicationRouteMixin)) {
     routeAfterAuthentication = 'index';

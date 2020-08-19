@@ -1,7 +1,6 @@
 import Controller from '@ember/controller';
 import { action, setProperties } from '@ember/object';
 import { isEmpty } from '@ember/utils';
-import { later } from '@ember/runloop';
 import { tracked } from '@glimmer/tracking';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import { inject as service } from '@ember/service';
@@ -86,7 +85,7 @@ export default class Search extends Controller {
     }
 
     get noResults() {
-        return !this.paginator.isLoadingModels && (!this.hasSubmittedSearch || !this.model.length);
+        return !this.paginator.isLoadingModels && (!this.hasSubmittedSearch || !this.paginator.models.length);
     }
 
     get hasRefineChanges() {
@@ -239,14 +238,7 @@ export default class Search extends Controller {
     @action
     openResultPreview(result: Document, event: Event) {
         event.preventDefault();
-        //TODO get rid of the need for this delay, by just recalcing the fit height whenever the result changes
-        if (this.previewedResult) {
-            //set the new result in the next runloop, so its "fit" height is recalculated
-            this.previewedResult = null;
-            later(this, () => (this.previewedResult = result), 20);
-        } else {
-            this.previewedResult = result;
-        }
+        this.previewedResult = result;
     }
 
     /**
