@@ -88,18 +88,18 @@
                                     <span class="text-dark mr-1">{{t "search.view.biblio"}}</span>
                                     <FaIcon @icon="angle-down" class="text-muted" />
                                 </Button>
-                                <Button
+                                <Button::WithTooltip
                                     @type="link"
                                     @icon="download"
                                     @iconSize="lg"
-                                    title={{t "common.export"}}
+                                    @tooltip={{t "common.export"}}
                                     class="p-1"
                                 />
-                                <Button
+                                <Button::WithTooltip
                                     @type="link"
                                     @icon="print"
                                     @iconSize="lg"
-                                    title={{t "common.print"}}
+                                    @tooltip={{t "common.print"}}
                                     class="p-1"
                                 />
                             </div>

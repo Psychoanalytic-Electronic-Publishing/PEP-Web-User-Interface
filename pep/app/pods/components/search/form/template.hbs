@@ -8,6 +8,14 @@
                 <DropdownMenu @horizontalPosition="right" as |DD|>
                     <DD.Trigger @htmlTag="button" class="btn btn-link">
                         <FaIcon @icon="bookmark" @size="lg" />
+                        <EmberTooltip
+                            @text={{t "search.form.savedSearch.label"}}
+                            @popperContainer="body"
+                            @side="bottom"
+                            @spacing={{5}}
+                            @effect="slide"
+                            @innerClass=""
+                        />
                     </DD.Trigger>
                     <DD.Content class="dropdown-menu">
                         <h6 class="dropdown-header">

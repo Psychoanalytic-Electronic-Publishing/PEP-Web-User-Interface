@@ -1,0 +1,18 @@
+<span class="button-with-tooltip {{@containerClass}}">
+    <Button
+        @label={{@label}}
+        @icon={{@icon}}
+        @iconSize={{@iconSize}}
+        @type={{@type}}
+        @action={{@action}}
+        ...attributes
+    />
+    <EmberTooltip
+        @text={{@tooltip}}
+        @class={{@tooltipClass}}
+        @side={{this.tooltipSide}}
+        @spacing={{this.tooltipSpacing}}
+        @effect={{this.tooltipEffect}}
+        @innerClass=""
+    />
+</span>

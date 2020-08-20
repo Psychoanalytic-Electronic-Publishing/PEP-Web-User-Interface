@@ -28,10 +28,15 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
     @tracked isDragResizing: boolean = false;
 
     innerElement: HTMLElement | null = null;
+    scrollableElement: HTMLElement | null = null;
     minFitHeight: number = 40;
 
     get mode() {
         return this.args.mode || 'fit';
+    }
+
+    get showMaximize() {
+        return this.mode === 'minimized' || this.mode === 'fit';
     }
 
     get styles() {
@@ -61,6 +66,15 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
     onElementInsert(element: HTMLElement) {
         this.innerElement = element;
         scheduleOnce('afterRender', this, this.updateFitHeight);
+    }
+
+    /**
+     * Saves a reference to the <Scrollable>'s element
+     * @param {HTMLElement} element
+     */
+    @action
+    onScrollableInsert(element: HTMLElement) {
+        this.scrollableElement = element;
     }
 
     /**
@@ -110,6 +124,11 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
     @action
     onDragStart() {
         this.isDragResizing = true;
+
+        if (this.mode !== 'fit' && this.scrollableElement) {
+            this.fitHeight = this.scrollableElement.offsetHeight;
+            this.args.setMode('fit');
+        }
     }
 
     /**

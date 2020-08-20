@@ -115,6 +115,7 @@
             "heading": "Search for Documents",
             "smartSearch": "What are you looking for?",
             "savedSearch": {
+                "label": "Saved searches",
                 "mine": "My saved searches",
                 "save": "Save this search"
             },
@@ -146,7 +147,7 @@
         },
         "preview": {
             "fit": "Expand to fit",
-            "maximize": "Minimize",
+            "maximize": "Maximize",
             "minimize": "Minimize",
             "read": "Read",
             "mustBeLoggedIn": "You must be logged in to read or download this document.",
