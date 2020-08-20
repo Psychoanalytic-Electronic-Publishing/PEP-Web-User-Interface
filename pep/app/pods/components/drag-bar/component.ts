@@ -25,7 +25,7 @@ export default class DragBar extends Component<DragBarArgs> {
     @service fastboot!: FastbootService;
 
     @tracked dragBarPosition: number | null = null;
-    @tracked dragBarOffset: { top: number; left: number } | null = null;
+    @tracked dragBarOffset: ElementOffset | null = null;
     @tracked isDragging: boolean = false;
 
     barThickness: number = 5;
