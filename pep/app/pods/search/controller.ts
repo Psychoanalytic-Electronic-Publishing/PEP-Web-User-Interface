@@ -39,6 +39,7 @@ export default class Search extends Controller {
 
     @tracked previewedResult: Document | null = null;
     @tracked previewMode = 'fit';
+    @tracked containerMaxHeight = 0;
 
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
@@ -265,6 +266,15 @@ export default class Search extends Controller {
     @action
     showSearch() {
         this.sidebar.toggleLeftSidebar(true);
+    }
+
+    /**
+     * Sets the max height of the search preview pane
+     * @param {HTMLElement} element
+     */
+    @action
+    updateContainerMaxHeight(element: HTMLElement) {
+        this.containerMaxHeight = element.offsetHeight;
     }
 }
 
