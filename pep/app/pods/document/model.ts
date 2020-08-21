@@ -42,6 +42,15 @@ export default class Document extends DS.Model {
     @attr('string') vol!: string;
     @attr('string') year!: string;
 
+    // TODO we should consider using the XML return format for documents instead of the HTML format
+    // for more control and render safety with the returned content, however will probably require
+    // more work to render/style initially (e.g. handing embedded videos)
+
+    // From the functional requirements doc:
+    // Requesting full document return data in XML from OPAS will give the most control for the client
+    // formatting, in addition to providing faster data return. The XML return format from OPAS follows
+    // the PEP-Web pepkbd3 DTD.
+
     // computeds
     get abstractCleaned() {
         //TODO needs to be be improved, possibly use something like ember-purify

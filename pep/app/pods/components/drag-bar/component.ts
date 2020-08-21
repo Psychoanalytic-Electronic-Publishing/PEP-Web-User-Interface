@@ -56,7 +56,7 @@ export default class DragBar extends Component<DragBarArgs> {
      * @returns {number}
      */
     get maxClientY() {
-        return this.args.maxClientY ?? 32;
+        return this.args.maxClientY ?? 48;
     }
 
     /**

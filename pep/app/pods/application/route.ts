@@ -70,6 +70,11 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
             throw err;
         }
 
+        //update configurations based on the newly logged in user session
+        this.theme.setup();
+        this.lang.setup();
+        await this.configuration.setup();
+
         //dont redirect the user on login if the behavior is suppressed
         if (this.auth.dontRedirectOnLogin) {
             this.auth.dontRedirectOnLogin = false;

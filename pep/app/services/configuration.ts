@@ -1,17 +1,18 @@
 import Service, { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import DS from 'ember-data';
+import { BaseConfiguration, ContentConfiguration } from 'pep/constants/configuration';
 
 export default class ConfigurationService extends Service {
     @service store!: DS.Store;
 
-    @tracked base = {};
-    @tracked content = {};
+    @tracked base: BaseConfiguration = {};
+    @tracked content: ContentConfiguration = {};
 
     /**
      * Initialize the app by loading the applicable configurations
      */
-    setup() {
+    async setup() {
         //TODO
     }
 }

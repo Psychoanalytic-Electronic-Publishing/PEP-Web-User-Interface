@@ -63,4 +63,10 @@ body {
 
 .footer {
     background-color: $color-brand-primary;
+
+    &-branding-img {
+        height: 38px;
+        margin-top: -11px;
+        margin-bottom: -11px;
+    }
 }
