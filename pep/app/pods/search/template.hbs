@@ -6,7 +6,7 @@
 >
     <div class="page-content-section flex-fill">
         <Scrollable @namespace="search-results" class="page-content-inner">
-            {{#if (and (not this.model) this.paginator.isLoadingModels)}}
+            {{#if (and (not this.paginator.models) this.paginator.isLoadingModels)}}
                 <div class="py-3 px-4">
                     <Loading::Search::Results />
                 </div>
