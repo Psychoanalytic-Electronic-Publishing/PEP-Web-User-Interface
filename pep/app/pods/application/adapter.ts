@@ -66,7 +66,7 @@ export default class Application extends DS.RESTAdapter.extend(DataAdapterMixin,
      * @returns Object
      */
     get headers() {
-        const headers = {} as any;
+        const headers = { client_id: ENV.clientId } as any;
         if (this.session.isAuthenticated) {
             const { access_token } = this.session.data!.authenticated;
             headers['Authorization'] = `Bearer ${access_token}`;

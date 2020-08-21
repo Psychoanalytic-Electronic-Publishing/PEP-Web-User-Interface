@@ -33,9 +33,13 @@ export default class AjaxService extends Service {
      * The default headers on all requests
      * @returns {Object}
      */
-    @computed('authorizationHeaders', 'clientIdentity.uuidHeader')
+    @computed('authorizationHeaders')
     get headers() {
-        const headers = assign({ 'Content-Type': 'application/vnd.api+json' }, this.authorizationHeaders);
+        const baseHeaders = {
+            'Content-Type': 'application/vnd.api+json',
+            client_id: ENV.clientId
+        };
+        const headers = assign(baseHeaders, this.authorizationHeaders);
         return headers;
     }
 

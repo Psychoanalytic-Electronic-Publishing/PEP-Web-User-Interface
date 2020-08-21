@@ -38,8 +38,24 @@ export default class CurrentUserService extends Service {
      * @returns Promise<User>
      */
     async fetchUser(): Promise<User> {
-        const result = await this.store.query('user', { me: true });
-        const user = get(result, 'firstObject') as User;
+        // TODO reenable when we have a real endpoint to hit
+        // const result = await this.store.query('user', { me: true });
+        // const user = get(result, 'firstObject') as User;
+
+        //TODO remove this when we have a real endpoint to hit
+        this.store.pushPayload('user', {
+            user: {
+                id: 1,
+                firstName: 'Joe',
+                lastName: 'User',
+                username: 'joe.user',
+                institutionBrandLogoUrl:
+                    'https://catalyst.library.jhu.edu/assets/libraries.logo.small.horizontal.blue-e562a5b49ab09e4e094f1f7319db1db836793645202eed0f2cc7b9b311bd4228.png'
+            }
+        });
+
+        const user = this.store.peekRecord('user', 1)!;
+
         // TODO can we improve this at all so we dont need to ts-ignore it?
         // @ts-ignore allow setting a non-standard property `user` on the session service instance
         set(this.session, 'user', user);
