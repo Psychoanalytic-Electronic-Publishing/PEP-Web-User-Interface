@@ -219,12 +219,36 @@
         }
     },
     "mostCited": {
-        "title": "Most cited journal articles",
-        "period": "Period"
+        "pageTitle": "Most cited journal articles",
+        "period": "Period",
+        "periodSelect": "Seelct a period",
+        "fiveYears": "5 years",
+        "tenYears": "10 years",
+        "twentyYears": "20 years",
+        "allYears": "All years",
+        "author": "Author",
+        "journal": "Journal",
+        "title": "Title",
+        "table": {
+            "title": "Title",
+            "citations": "Publication citations",
+            "fiveYears": "Last 5 years",
+            "tenYears": "Last 10 years",
+            "twentyYears": "Last 20 years",
+            "allTime": "All time"
+        }
     },
     "mostViewed": {
         "title": "Most viewed journal articles",
-        "period": "Period"
+        "period": "Period",
+        "table": {
+            "publication": "Publication",
+            "popularity": "Popularity by requests",
+            "week": "Last week",
+            "month": "Last month",
+            "sixMonths": "Last 6 months",
+            "calendarYear": "Last calendar year"
+        }
     },
 
     "login": {

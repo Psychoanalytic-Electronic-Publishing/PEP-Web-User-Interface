@@ -1,0 +1,38 @@
+<PowerSelect
+    @options={{this.options}}
+    @selected={{@selected}}
+    @placeholder={{@placeholder}}
+    @searchEnabled={{true}}
+    @searchPlaceholder={{@searchPlaceholder}}
+    @searchMessage={{this.searchMessage}}
+    @searchField={{@searchField}}
+    @onChange={{@onChange}}
+    @renderInPlace={{@renderInPlace}}
+    @onInput={{this.onSearchInput}}
+    @search={{this.onSearch}}
+    @loadingMessage={{@loadingMessage}}
+    @loadMore={{@loadMore}}
+    @canLoadMore={{@canLoadMore}}
+    @matchTriggerWidth={{this.matchTriggerWidth}}
+    @allowClear={{@allowClear}}
+    @triggerClass={{this.triggerClass}}
+    @disabled={{@disabled}}
+    @dropdownClass={{@dropdownClass}}
+    @optionsComponent="power-select-infinity/options"
+    @selectedItemComponent={{@selectedItemComponent}}
+    @extra={{assign
+        (hash
+            bufferSize=this.bufferSize
+            estimateHeight=this.estimateHeight
+            staticHeight=this.staticHeight
+            isLoadingMore=this.isLoadingMore
+            isSearching=this.searchTask.isRunning
+            onLastReached=this.onLastReached
+            loadingBelow=this.loadingBelow
+        )
+        @extra
+    }}
+    as |option|
+>
+    {{yield option}}
+</PowerSelect>

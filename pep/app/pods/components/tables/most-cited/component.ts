@@ -1,5 +1,10 @@
 import Component from '@glimmer/component';
 import { ColumnValue } from '@gavant/ember-table';
+import IntlService from 'ember-intl/services/intl';
+import { inject as service } from '@ember/service';
+import FastbootMediaService from 'pep/services/fastboot-media';
+import { tracked } from '@glimmer/tracking';
+import { computed } from '@ember/object';
 interface TablesMostCitedArgs {
     rows: Document[];
     hasMoreRows: boolean;
@@ -8,45 +13,112 @@ interface TablesMostCitedArgs {
 }
 
 export default class TablesMostCited extends Component<TablesMostCitedArgs> {
-    columns: ColumnValue[] = [
-        {
-            id: '0',
-            valuePath: 'title',
-            name: 'Title',
-            isFixedLeft: false,
-            width: 200,
-            staticWidth: 200,
-            maxWidth: 200,
-            minWidth: 200,
-            cellComponent: 'tables/cell/html',
-            isSortable: true
-        },
+    @service intl!: IntlService;
+    @service fastbootMedia!: FastbootMediaService;
 
-        {
-            id: '1',
-            name: 'Publication Citations',
-            width: 400,
-            staticWidth: 400,
-            maxWidth: 400,
-            minWidth: 400,
-            subcolumns: [
-                { name: 'Last 5 years', valuePath: 'stat.art_cited_5', width: 100, staticWidth: 100, isSortable: true },
-                {
-                    name: 'Last 10 years',
-                    valuePath: 'stat.art_cited_10',
-                    width: 100,
-                    staticWidth: 100,
-                    isSortable: true
-                },
-                {
-                    name: 'Last 20 years',
-                    valuePath: 'stat.art_cited_20',
-                    width: 100,
-                    staticWidth: 100,
-                    isSortable: true
-                },
-                { name: 'All Time', valuePath: 'stat.art_cited_all', width: 100, staticWidth: 100, isSortable: true }
-            ]
-        }
-    ];
+    /**
+     * Columns for the table. The `computed` is required
+     *
+     * @readonly
+     * @type {ColumnValue[]}
+     * @memberof TablesMostCited
+     */
+    @computed
+    get columns(): ColumnValue[] {
+        return this.fastbootMedia.isSmallDevice
+            ? [
+                  {
+                      id: '0',
+                      valuePath: 'title',
+                      name: this.intl.t('mostCited.table.title'),
+                      isFixedLeft: false,
+                      width: 200,
+                      staticWidth: 200,
+                      cellComponent: 'tables/cell/html',
+                      isSortable: true
+                  },
+
+                  {
+                      name: this.intl.t('mostCited.table.fiveYears'),
+                      valuePath: 'stat.art_cited_5',
+                      width: 100,
+                      staticWidth: 100,
+                      isSortable: true
+                  },
+                  {
+                      name: this.intl.t('mostCited.table.tenYears'),
+                      valuePath: 'stat.art_cited_10',
+                      width: 100,
+                      staticWidth: 100,
+                      isSortable: true
+                  },
+                  {
+                      name: this.intl.t('mostCited.table.twentyYears'),
+                      valuePath: 'stat.art_cited_20',
+                      width: 100,
+                      staticWidth: 100,
+                      isSortable: true
+                  },
+                  {
+                      name: this.intl.t('mostCited.table.allTime'),
+                      valuePath: 'stat.art_cited_all',
+                      width: 100,
+                      staticWidth: 100,
+                      isSortable: true
+                  }
+              ]
+            : [
+                  {
+                      id: '0',
+                      valuePath: 'title',
+                      name: this.intl.t('mostCited.table.title'),
+                      isFixedLeft: false,
+                      width: 200,
+                      staticWidth: 200,
+                      maxWidth: 200,
+                      minWidth: 200,
+                      cellComponent: 'tables/cell/html',
+                      isSortable: true
+                  },
+
+                  {
+                      id: '1',
+                      name: this.intl.t('mostCited.table.citations'),
+                      width: 400,
+                      staticWidth: 400,
+                      maxWidth: 400,
+                      minWidth: 400,
+                      subcolumns: [
+                          {
+                              name: this.intl.t('mostCited.table.fiveYears'),
+                              valuePath: 'stat.art_cited_5',
+                              width: 100,
+                              staticWidth: 100,
+                              isSortable: true
+                          },
+                          {
+                              name: this.intl.t('mostCited.table.tenYears'),
+                              valuePath: 'stat.art_cited_10',
+                              width: 100,
+                              staticWidth: 100,
+                              isSortable: true
+                          },
+                          {
+                              name: this.intl.t('mostCited.table.twentyYears'),
+                              valuePath: 'stat.art_cited_20',
+                              width: 100,
+                              staticWidth: 100,
+                              isSortable: true
+                          },
+                          {
+                              name: this.intl.t('mostCited.table.allTime'),
+                              valuePath: 'stat.art_cited_all',
+                              width: 100,
+                              staticWidth: 100,
+                              isSortable: true
+                          }
+                      ]
+                  }
+              ];
+    }
 }

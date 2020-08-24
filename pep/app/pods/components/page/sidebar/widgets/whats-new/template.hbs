@@ -1,13 +1,12 @@
 <CollapsiblePanel
     @scrollableNamespace="sidebar-right"
-    @title={{t "relatedInfo.widgets.whatsNew.title"}}
     @isOpen={{this.isOpen}}
     @toggle={{fn (mut this.isOpen)}}
     class="mb-2"
     {{did-insert this.onElementInsert}}
     ...attributes
 as |Panel|>
-    <Panel.header />
+    <Panel.header @title={{t "relatedInfo.widgets.whatsNew.title"}} />
     <Panel.body>
         <ContentWithPlaceholder
             @placeholderComponent="loading/widget"

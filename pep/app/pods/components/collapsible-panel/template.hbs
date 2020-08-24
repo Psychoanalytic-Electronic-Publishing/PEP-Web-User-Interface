@@ -1,6 +1,8 @@
 <div class="collapsible-panel bg-white" ...attributes>
-   {{yield (hash
-        header=(component 'collapsible-panel/header' toggle=this.toggle isOpen=@isOpen title=@title)
-        body=(component 'collapsible-panel/body' transition=this.transition animateDuration=this.animateDuration isOpen=@isOpen)
-    )}}
+    {{yield
+        (hash
+            header=(component 'collapsible-panel/header' toggle=this.toggle isOpen=@isOpen)
+            body=(component 'collapsible-panel/body' transition=this.transition animateDuration=this.animateDuration isOpen=@isOpen)
+        )
+    }}
 </div>

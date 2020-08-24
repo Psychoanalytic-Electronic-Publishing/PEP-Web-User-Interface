@@ -3,22 +3,25 @@ import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hoo
 import Document from 'pep/pods/document/model';
 import MostCitedController from 'pep/pods/most-cited/controller';
 import { PageNav } from 'pep/mixins/page-layout';
+import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
 export default class MostCited extends PageNav(Route) {
     navController = 'most-cited';
     /**
      * Load the widget results data
      */
     async model() {
-        return this.store.query('document', {
-            queryType: 'MostCited',
-            period: 'all',
-            limit: 40
+        const queryParams = buildQueryParams({
+            context: this.controllerFor('most-cited'),
+            pagingRootKey: null,
+            filterRootKey: null,
+            filterList: ['author', 'title', 'sourcename', 'period', 'queryType']
         });
+        return this.store.query('document', queryParams);
     }
 
     /**
      * Set the search results data on the controller
-     * @param {ReadDocumentController} controller
+     * @param {MostCitedController} controller
      * @param {object} model
      */
     setupController(controller: MostCitedController, model: RecordArrayWithMeta<Document>) {

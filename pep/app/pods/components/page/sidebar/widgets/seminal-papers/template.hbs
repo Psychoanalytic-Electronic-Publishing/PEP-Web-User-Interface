@@ -1,11 +1,10 @@
 <CollapsiblePanel
     @scrollableNamespace="sidebar-right"
-    @title={{t "relatedInfo.widgets.seminalPapers.title"}}
     @isOpen={{this.isOpen}}
     @toggle={{fn (mut this.isOpen)}}
     class="mb-2"
 as |Panel|>
-    <Panel.header />
+    <Panel.header @title={{t "relatedInfo.widgets.seminalPapers.title"}} />
     <Panel.body>
         {{!-- template-lint-disable no-bare-strings --}}
         <p>

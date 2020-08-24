@@ -10,7 +10,6 @@ import ScrollableService from 'pep/services/scrollable';
 
 export interface CollapsiblePanelArgs {
     isOpen: boolean;
-    title: string;
     scrollableNamespace?: string;
     toggle: (isOpen: boolean) => void;
 }
