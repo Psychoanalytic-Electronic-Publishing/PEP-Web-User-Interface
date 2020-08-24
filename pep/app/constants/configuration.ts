@@ -9,7 +9,7 @@ export interface BaseConfiguration {
     home: {
         expertPick: {
             articleId: string;
-            graphicId: string;
+            imageId: string;
         };
     };
 }
@@ -62,8 +62,8 @@ export const CONTENT_CONFIG_NAME = 'pep-content';
 export const DEFAULT_BASE_CONFIGURATION: BaseConfiguration = {
     home: {
         expertPick: {
-            articleId: 'IJP.001.0203A',
-            graphicId: 'AIM.036.0275A.FIG001'
+            articleId: 'CJP.024A.0233A',
+            imageId: 'CJP.024-025.0233A.FIG001'
         }
     }
 };

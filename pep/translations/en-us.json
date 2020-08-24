@@ -51,8 +51,10 @@
         "title": "Psychoanalytic Electronic Publishing",
         "heading": "PEP - Psychoanalytic Electronic Publishing",
         "searchForDocs": "Search for documents",
-        "pickOfTheDay": {
-            "heading": "Expert Pick of the Day"
+        "expertPick": {
+            "heading": "Expert Pick of the Day",
+            "read": "Read",
+            "loginAndRead": "Login and read"
         }
     },
     "search": {
@@ -143,7 +145,10 @@
             "newSearch": "Start a new search",
             "backToSearch": "Back to search",
             "limitedAccess": "You must be logged in to read the full document.",
-            "login": "Click here to login"
+            "login": "Click here to login",
+            "image": {
+                "alt": "Article image {id}"
+            }
         }
     },
     "relatedInfo": {

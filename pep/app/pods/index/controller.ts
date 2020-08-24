@@ -18,6 +18,15 @@ export default class Index extends Controller {
     showSearch() {
         return this.sidebar.toggleLeftSidebar(true);
     }
+
+    /**
+     * Opens login modal (if user is not logged in already)
+     * and then transitions to the document read page
+     */
+    @action
+    readExpertPick() {
+        //TODO (same as search preview pane logic)
+    }
 }
 
 // DO NOT DELETE: this is how TypeScript knows how to look up your controllers.

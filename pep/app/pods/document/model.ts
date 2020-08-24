@@ -4,6 +4,7 @@ import { isEmpty } from '@ember/utils';
 
 const HTML_BODY_REGEX = /^.*?<body[^>]*>(.*?)<\/body>.*?$/i;
 const INVALID_ABSTRACT_TAGS = /(<\!DOCTYPE html>|<\/?html>|<\/?body>|<head>.*<\/head>)/gim;
+const INVALID_ABSTRACT_PREVIEW_TAGS = /(<\!DOCTYPE html>|<\/?html>|<\/?body>|<head>.*<\/head>|<img[^>]*>)/gim;
 
 export default class Document extends DS.Model {
     // attributes
@@ -57,6 +58,13 @@ export default class Document extends DS.Model {
         //(though DOMPurify may not be workabout in Fastboot)
         const abstract = !isEmpty(this.abstract) ? this.abstract.replace(/\s+/g, ' ') : '';
         return abstract.replace(INVALID_ABSTRACT_TAGS, '');
+    }
+
+    get abstractPreview() {
+        //TODO needs to be be improved, possibly use something like ember-purify
+        //(though DOMPurify may not be workabout in Fastboot)
+        const abstract = !isEmpty(this.abstract) ? this.abstract.replace(/\s+/g, ' ') : '';
+        return abstract.replace(INVALID_ABSTRACT_PREVIEW_TAGS, '');
     }
 
     get documentCleaned() {

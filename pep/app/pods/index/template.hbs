@@ -54,23 +54,32 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="border-divider-b mb-3">
-                            <h5 class="card-title">{{t "home.pickOfTheDay.heading"}}</h5>
-                            {{!-- TODO static content TBD -- will be backend-driven --}}
-                            {{!-- template-lint-disable no-bare-strings --}}
-                            <h6 class="card-subtitle mb-3 text-muted">(1893). The Standard Edition of the Complete Pyschological Works of Sigmund Freud, (2):183-251</h6>
+                            <h5 class="card-title">{{t "home.expertPick.heading"}}</h5>
+                            <h6 class="card-subtitle mb-3 text-muted">
+                                {{html-safe this.model.title}}
+                            </h6>
                         </div>
-                        <div class="float-xl-right ml-xl-2 mb-xl-2">
-                            {{!-- template-lint-disable no-inline-styles --}}
-                            {{!-- template-lint-disable no-bare-strings --}}
-                            <img src="/assets/images/content/sigmund-freud.jpg" alt="sigmund freud" class="rounded img-fluid" style="max-width:250px" />
-                        </div>
-                        {{!-- template-lint-disable no-bare-strings --}}
-                        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam imperdiet, orci nec viverra feugiat, elit ligula tempor eros, et feugiat massa nibh eu nunc. Praesent metus risus, posuere ac dui id, tempus pretium sapien. Mauris a purus in leo suscipit imperdiet. Nulla mollis suscipit mattis. Quisque cursus consequat faucibus. Mauris cursus pretium consequat. Nunc pellentesque tellus eget neque molestie, quis bibendum libero consectetur. Vestibulum quis purus risus. Nullam scelerisque id magna in tempor. Nullam a tempus velit, sed aliquam ipsum. Duis finibus egestas justo eu interdum. Integer vel commodo nisl, non tempor ligula. Nulla feugiat nec neque id dictum.</p>
-                        {{!-- template-lint-disable no-bare-strings --}}
-                        <p class="card-text">Nulla id urna tortor. Mauris quis dolor dui. Etiam ultrices, turpis in auctor molestie, ex est consequat mauris, sed luctus ligula justo sit amet ipsum. Duis quam nisl, mattis sed consectetur id, scelerisque quis libero. Nulla dapibus maximus vehicula. Nulla facilisi. Duis sed mattis eros. Cras placerat eu massa sit amet ullamcorper. Aliquam elementum quam ut leo pretium, euismod bibendum tortor sodales. In sed convallis lacus, non dapibus nulla. Vestibulum tellus eros, pharetra non velit in, aliquet dictum quam. Mauris dui magna, viverra sit amet hendrerit id, commodo non quam.</p>
-                        <p class="card-text">
-                            <Button @type="primary" @label="Login and Read" />
-                        </p>
+                        {{!-- TODO needed because abstracts can contain broken/invalid HTML --}}
+                        {{!-- that fastboot/server render chokes on. Need to come up with a --}}
+                        {{!-- better solution for this problem general --}}
+                        <ContentWithPlaceholder @placeholderInFastboot={{true}}>
+                            <div class="float-xl-right mw-xl-50 ml-xl-2 mb-xl-2">
+                                <Document::Image
+                                    @id={{this.configuration.base.home.expertPick.imageId}}
+                                    class="rounded img-fluid"
+                                />
+                            </div>
+                            <div class="card-text mb-3">
+                                {{html-safe this.model.abstractPreview}}
+                            </div>
+                            <div class="card-text mb-3">
+                                <Button
+                                    @type="primary"
+                                    @action={{this.readExpertPick}}
+                                    @label={{t (if this.session.isAuthenticated "home.expertPick.read" "home.expertPick.loginAndRead")}}
+                                />
+                            </div>
+                        </ContentWithPlaceholder>
                     </div>
                 </div>
             </div>
