@@ -1,7 +1,7 @@
-import DS from 'ember-data';
+import ApplicationAdapter from 'pep/pods/application/adapter';
 import ENV from 'pep/config/environment';
 
-export default class Configuration extends DS.JSONAPIAdapter {
+export default class Configuration extends ApplicationAdapter {
     namespace = `${ENV.apiNamespace}/${ENV.apiAdminNamespace}/Client`;
 }
 

@@ -4,10 +4,12 @@ import { inject as service } from '@ember/service';
 
 import SidebarService from 'pep/services/sidebar';
 import FastbootMediaService from 'pep/services/fastboot-media';
+import ConfigurationService from 'pep/services/configuration';
 
 export default class Index extends Controller {
     @service sidebar!: SidebarService;
     @service fastbootMedia!: FastbootMediaService;
+    @service configuration!: ConfigurationService;
 
     /**
      * Open the search form sidebar
