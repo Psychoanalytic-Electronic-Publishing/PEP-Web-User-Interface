@@ -2,6 +2,7 @@ import Service, { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import DS from 'ember-data';
 import { hash } from 'rsvp';
+import merge from 'lodash.merge';
 
 import ENV from 'pep/config/environment';
 import LangService from 'pep/services/lang';
@@ -51,8 +52,14 @@ export default class ConfigurationService extends Service {
             const content = this.store.peekRecord('configuration', contentConfigName)!;
 
             const configs = await hash({ base, content });
-            this.base = configs.base.configSettings as BaseConfiguration;
-            this.content = configs.content.configSettings as ContentConfiguration;
+            const contentCfg = configs.content.configSettings;
+            const baseCfg = configs.base.configSettings;
+            // merge the returned configs with the default config values
+            // to ensure the app can always safely access config data
+            // e.g. even if a new version is released w/new configs that
+            // do not yet exist in the saved config records
+            this.base = merge({}, baseCfg, DEFAULT_BASE_CONFIGURATION) as BaseConfiguration;
+            this.content = merge({}, contentCfg, DEFAULT_CONTENT_CONFIGURATION) as ContentConfiguration;
         } catch (err) {
             // if configs fail to load, fall back to the default config values
             this.base = DEFAULT_BASE_CONFIGURATION;

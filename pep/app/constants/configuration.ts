@@ -1,3 +1,10 @@
+/**
+ * Base admin configuration fields for the application
+ * MUST NOT contain any configuration data/content that is language-dependent
+ * (that should be stored in ContentConfiguration)
+ * @export
+ * @interface BaseConfiguration
+ */
 export interface BaseConfiguration {
     home: {
         expertPick: {
@@ -7,6 +14,12 @@ export interface BaseConfiguration {
     };
 }
 
+/**
+ * Content admin configuration fields for the application
+ * All language-dependent data/content should be stored here
+ * @export
+ * @interface ContentConfiguration
+ */
 export interface ContentConfiguration {
     global: {
         tips: {
@@ -64,6 +77,11 @@ export const DEFAULT_CONTENT_CONFIGURATION: ContentConfiguration = {
                     shortDescription: 'Protip! You can save your most often used searches.',
                     longDescription:
                         'This is some optional extended text to give more information on how to actually save searches.'
+                },
+                {
+                    shortDescription:
+                        'This is yet another with a short description that is really kinda long. beep. bop. boop.',
+                    longDescription: 'This is the long description, that is kinda short.'
                 }
             ]
         }
