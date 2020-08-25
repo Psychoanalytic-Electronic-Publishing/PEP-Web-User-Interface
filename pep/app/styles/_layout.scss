@@ -62,6 +62,7 @@ body {
 }
 
 .footer {
+    min-height: $footer-height;
     background-color: $color-brand-primary;
 
     &-branding-img {
