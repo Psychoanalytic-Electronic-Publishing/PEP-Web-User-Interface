@@ -1,10 +1,7 @@
 import DS from 'ember-data';
 import attr from 'ember-data/attr';
 import { isEmpty } from '@ember/utils';
-
-const HTML_BODY_REGEX = /^.*?<body[^>]*>(.*?)<\/body>.*?$/i;
-const INVALID_ABSTRACT_TAGS = /(<\!DOCTYPE html>|<\/?html>|<\/?body>|<head>.*<\/head>)/gim;
-const INVALID_ABSTRACT_PREVIEW_TAGS = /(<\!DOCTYPE html>|<\/?html>|<\/?body>|<head>.*<\/head>|<img[^>]*>)/gim;
+import { INVALID_ABSTRACT_TAGS, INVALID_ABSTRACT_PREVIEW_TAGS, HTML_BODY_REGEX } from 'pep/constants/regex';
 
 export default class Document extends DS.Model {
     // attributes

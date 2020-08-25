@@ -12,11 +12,11 @@
                 <div class="card mb-4 flex-xl-grow-1">
                     <div class="card-body">
                         <h5 class="card-title">
-                            {{html-safe this.configuration.content.home.intro.left.heading}}
+                            {{html-safe this.intro.left.heading}}
                         </h5>
-                        {{#if this.configuration.content.home.intro.left.subheading}}
+                        {{#if this.intro.left.subheading}}
                             <h6 class="card-subtitle mb-2 text-muted">
-                                {{html-safe this.configuration.content.home.intro.left.subheading}}
+                                {{html-safe this.intro.left.subheading}}
                             </h6>
                         {{/if}}
                         <p class="d-lg-none">
@@ -29,7 +29,7 @@
                                 @action={{this.showSearch}}
                             />
                         </p>
-                        {{html-safe this.configuration.content.home.intro.left.body}}
+                        {{html-safe this.intro.left.body}}
                     </div>
                 </div>
             </div>
@@ -37,14 +37,14 @@
                 <div class="card mb-4 flex-xl-grow-1">
                     <div class="card-body">
                         <h5 class="card-title">
-                            {{html-safe this.configuration.content.home.intro.right.heading}}
+                            {{html-safe this.intro.right.heading}}
                         </h5>
-                        {{#if this.configuration.content.home.intro.right.subheading}}
+                        {{#if this.intro.right.subheading}}
                             <h6 class="card-subtitle mb-2 text-muted">
-                                {{html-safe this.configuration.content.home.intro.right.subheading}}
+                                {{html-safe this.intro.right.subheading}}
                             </h6>
                         {{/if}}
-                        {{html-safe this.configuration.content.home.intro.right.body}}
+                        {{html-safe this.intro.right.body}}
                     </div>
                 </div>
             </div>
@@ -65,16 +65,17 @@
                         <ContentWithPlaceholder @placeholderInFastboot={{true}}>
                             <div class="float-xl-right mw-xl-50 ml-xl-2 mb-xl-2">
                                 <Document::Image
-                                    @id={{this.configuration.base.home.expertPick.imageId}}
+                                    @id={{this.expertPick.imageId}}
                                     class="rounded img-fluid"
                                 />
                             </div>
-                            <div class="card-text mb-3">
+                            <div class="card-text mb-3 pep-abstract-preview">
                                 {{html-safe this.model.abstractPreview}}
                             </div>
                             <div class="card-text mb-3">
                                 <Button
                                     @type="primary"
+                                    @wide={{true}}
                                     @action={{this.readExpertPick}}
                                     @label={{t (if this.session.isAuthenticated "home.expertPick.read" "home.expertPick.loginAndRead")}}
                                 />
