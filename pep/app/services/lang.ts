@@ -3,9 +3,11 @@ import { tracked } from '@glimmer/tracking';
 import IntlService from 'ember-intl/services/intl';
 
 import { LanguageCode } from 'pep/constants/lang';
+import ConfigurationService from 'pep/services/configuration';
 
 export default class LangService extends Service {
     @service intl!: IntlService;
+    @service configuration!: ConfigurationService;
 
     @tracked currentLanguage: LanguageCode = LanguageCode.enUS;
 
@@ -21,11 +23,13 @@ export default class LangService extends Service {
     /**
      * Updates the user's current language
      * @param {string} lang
+     * @returns {Promise<void>}
      */
     changeLanguage(lang: LanguageCode) {
-        //TODO update cookie/user, update intl's language, fetch new content configs, etc
+        //TODO update local cookie/user record (if there is one/user is logged in)
         this.currentLanguage = lang;
         this.intl.setLocale(lang);
+        return this.configuration.setup();
     }
 }
 

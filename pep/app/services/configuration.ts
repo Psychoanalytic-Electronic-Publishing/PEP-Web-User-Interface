@@ -23,15 +23,24 @@ export default class ConfigurationService extends Service {
     @tracked content: ContentConfiguration = DEFAULT_CONTENT_CONFIGURATION;
 
     /**
+     * The `configname` of the config record to fetch for language-dependent
+     * configuration data, e.g. "pep-content-en-us" for English
+     * @readonly
+     * @returns {string}
+     */
+    get contentConfigName() {
+        return `${CONTENT_CONFIG_NAME}-${this.lang.currentLanguage}`;
+    }
+
+    /**
      * Initialize the app by loading the applicable base and
      * language-specific configurations
      */
     async setup() {
         try {
-            const contentConfigName = `${CONTENT_CONFIG_NAME}-${this.lang.currentLanguage}`;
             // TODO re-enable this once the configuration endpoints/data are live/populated
             // const base = this.store.queryRecord('configuration', { configname: BASE_CONFIG_NAME });
-            // const content = this.store.queryRecord('configuration', { configname: contentConfigName });
+            // const content = this.store.queryRecord('configuration', { configname: this.contentConfigName });
 
             // TODO remove this once the configuration endpoints/data are live/populated
             this.store.pushPayload('user', {
@@ -42,14 +51,14 @@ export default class ConfigurationService extends Service {
                         configSettings: DEFAULT_BASE_CONFIGURATION
                     },
                     {
-                        configName: contentConfigName,
+                        configName: this.contentConfigName,
                         clientID: ENV.clientId,
                         configSettings: DEFAULT_CONTENT_CONFIGURATION
                     }
                 ]
             });
             const base = this.store.peekRecord('configuration', BASE_CONFIG_NAME)!;
-            const content = this.store.peekRecord('configuration', contentConfigName)!;
+            const content = this.store.peekRecord('configuration', this.contentConfigName)!;
 
             const configs = await hash({ base, content });
             const contentCfg = configs.content.configSettings;
