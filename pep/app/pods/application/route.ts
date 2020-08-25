@@ -37,6 +37,18 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
     @service sidebar!: SidebarService;
 
     /**
+     * App setup and configuration tasks
+     * Runs on initial app boot, and also after the user logs in
+     * So that any user session-specific preferences are applied
+     * @returns {Promise<void>}
+     */
+    appSetup() {
+        this.theme.setup();
+        this.lang.setup();
+        return this.configuration.setup();
+    }
+
+    /**
      * App bootup initialization tasks, set locale/theme, etc
      * If the user is already authenticated, load their data here
      * @param {Transition} transition
@@ -51,9 +63,7 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
         } catch (err) {
             this.replaceWith('five-hundred');
         } finally {
-            this.theme.setup();
-            this.lang.setup();
-            return this.configuration.setup();
+            return this.appSetup();
         }
     }
 
@@ -71,9 +81,7 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
         }
 
         //update configurations based on the newly logged in user session
-        this.theme.setup();
-        this.lang.setup();
-        await this.configuration.setup();
+        await this.appSetup();
 
         //dont redirect the user on login if the behavior is suppressed
         if (this.auth.dontRedirectOnLogin) {
