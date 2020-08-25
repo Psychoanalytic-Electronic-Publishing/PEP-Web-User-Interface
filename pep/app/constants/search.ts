@@ -56,75 +56,75 @@ export const SEARCH_DEFAULT_FACETS: SearchFacetValue[] = [];
 export const SEARCH_TYPE_EVERYWHERE: SearchTermType = {
     id: 'everywhere',
     param: 'fulltext1',
-    label: 'Everywhere'
+    label: 'search.terms.everywhere.label'
 };
 
 export const SEARCH_TYPE_AUTHOR: SearchTermType = {
     id: 'author',
     param: 'author',
-    label: 'Author'
+    label: 'search.terms.author.label'
 };
 
 export const SEARCH_TYPE_TITLE: SearchTermType = {
     id: 'title',
     param: 'title',
-    label: 'Title'
+    label: 'search.terms.title.label'
 };
 
 // export const SEARCH_TYPE_FREUD: SearchTermType = {
 //     id: 'freud',
-//     label: "Freud's Work"
+//     label: "search.terms.freud.label"
 // };
 
 // export const SEARCH_TYPE_GLOSSARY: SearchTermType = {
 //     id: 'glossary',
-//     label: 'PEP Glossary'
+//     label: 'search.terms.glossary.label'
 // };
 
 // export const SEARCH_TYPE_DIALOG: SearchTermType = {
 //     id: 'dialog',
-//     label: 'Dialogs'
+//     label: 'search.terms.dialog.label'
 // };
 
 // export const SEARCH_TYPE_QUOTE: SearchTermType = {
 //     id: 'quote',
-//     label: 'Quotes'
+//     label: 'search.terms.quote.label'
 // };
 
 export const SEARCH_TYPE_START_YEAR: SearchTermType = {
     id: 'start-year',
     param: 'startyear',
-    label: 'Start Year'
+    label: 'search.terms.start-year.label'
 };
 
 export const SEARCH_TYPE_END_YEAR: SearchTermType = {
     id: 'end-year',
     param: 'endyear',
-    label: 'End Year'
+    label: 'search.terms.end-year.label'
 };
 
 // export const SEARCH_TYPE_BIBLIO: SearchTermType = {
 //     id: 'bibliography',
-//     label: 'Bilbiographies'
+//     label: 'search.terms.bibliography.label'
 // };
 
 export const SEARCH_TYPE_CITED: SearchTermType = {
     id: 'cited',
     param: 'citecount',
-    label: 'Cited this many times',
-    shortLabel: 'Cited #'
+    label: 'search.terms.cited.label',
+    shortLabel: 'search.terms.cited.shortLabel'
 };
 
 export const SEARCH_TYPE_VIEWED: SearchTermType = {
     id: 'viewed',
     param: 'viewcount',
-    label: 'Viewed this many times',
-    shortLabel: 'Viewed #'
+    label: 'search.terms.viewed.label',
+    shortLabel: 'search.terms.viewed.shortLabel'
 };
 
 // export const SEARCH_TYPE_SCHOLAR: SearchTermType = {
 //     id: 'scholar',
-//     label: 'Google Scholar'
+//     label: 'search.terms.scholar.label'
 // };
 
 export const SEARCH_TYPES: SearchTermType[] = [
@@ -157,24 +157,24 @@ export const SEARCH_FACET_SOURCETYPE: SearchFacetType = {
     id: 'art_sourcetype',
     param: 'sourcetype',
     paramSeparator: ' OR ',
-    label: 'Source Type',
+    label: 'search.facets.art_sourcetype.label',
     dynamicValues: false,
     values: [
         {
             id: 'book',
-            label: 'Book'
+            label: 'search.facets.art_sourcetype.values.book'
         },
         {
             id: 'journal',
-            label: 'Journal'
+            label: 'search.facets.art_sourcetype.values.journal'
         },
         {
             id: 'videostream',
-            label: 'Video'
+            label: 'search.facets.art_sourcetype.values.videostream'
         },
         {
             id: 'special',
-            label: 'Special'
+            label: 'search.facets.art_sourcetype.values.special'
         }
     ]
 };
@@ -183,52 +183,52 @@ export const SEARCH_FACET_TYPE: SearchFacetType = {
     id: 'art_type',
     param: 'articletype',
     paramSeparator: ' OR ',
-    label: 'Article Type',
+    label: 'search.facets.art_type.label',
     dynamicValues: false,
     values: [
         {
             id: 'ABS',
-            label: 'Abstract'
+            label: 'search.facets.art_type.values.ABS'
         },
         {
             id: 'ANN',
-            label: 'Announcement'
+            label: 'search.facets.art_type.values.ANN'
         },
         {
             id: 'ART',
-            label: 'Article'
+            label: 'search.facets.art_type.values.ART'
         },
         {
             id: 'COM',
-            label: 'Commentary'
+            label: 'search.facets.art_type.values.COM'
         },
         {
             id: 'ERA',
-            label: 'Errata'
+            label: 'search.facets.art_type.values.ERA'
         },
         {
             id: 'PRO',
-            label: 'Profile'
+            label: 'search.facets.art_type.values.PRO'
         },
         {
             id: 'REP',
-            label: 'Report'
+            label: 'search.facets.art_type.values.REP'
         },
         {
             id: 'REV',
-            label: 'Review'
+            label: 'search.facets.art_type.values.REV'
         },
         {
             id: 'SUP',
-            label: 'SUP'
+            label: 'search.facets.art_type.values.SUP'
         },
         {
             id: 'TOC',
-            label: 'TOC'
+            label: 'search.facets.art_type.values.TOC'
         },
         {
             id: 'VID',
-            label: 'Video'
+            label: 'search.facets.art_type.values.VID'
         }
     ]
 };
@@ -237,56 +237,56 @@ export const SEARCH_FACET_LANG: SearchFacetType = {
     id: 'art_lang',
     param: 'sourcelangcode',
     paramSeparator: ',',
-    label: 'Language',
+    label: 'search.facets.art_lang.label',
     dynamicValues: false,
     values: [
         {
             id: 'cs',
-            label: 'Czech'
+            label: 'search.facets.art_lang.values.cs'
         },
         {
             id: 'de',
-            label: 'German'
+            label: 'search.facets.art_lang.values.de'
         },
         {
             id: 'el',
-            label: 'Greek'
+            label: 'search.facets.art_lang.values.el'
         },
         {
             id: 'en',
-            label: 'English'
+            label: 'search.facets.art_lang.values.en'
         },
         {
             id: 'es',
-            label: 'Spanish'
+            label: 'search.facets.art_lang.values.es'
         },
         {
             id: 'fr',
-            label: 'French'
+            label: 'search.facets.art_lang.values.fr'
         },
         {
             id: 'he',
-            label: 'Hebrew'
+            label: 'search.facets.art_lang.values.he'
         },
         {
             id: 'it',
-            label: 'Italian'
+            label: 'search.facets.art_lang.values.it'
         },
         {
             id: 'ko',
-            label: 'Korean'
+            label: 'search.facets.art_lang.values.ko'
         },
         {
             id: 'nl',
-            label: 'Dutch'
+            label: 'search.facets.art_lang.values.nl'
         },
         {
             id: 'tr',
-            label: 'Turkish'
+            label: 'search.facets.art_lang.values.tr'
         },
         {
             id: 'zh',
-            label: 'Chinese'
+            label: 'search.facets.art_lang.values.zh'
         }
     ]
 };
@@ -295,7 +295,7 @@ export const SEARCH_FACET_KEYWORDS: SearchFacetType = {
     id: 'art_kwds',
     param: 'fulltext1', //TODO is this the right query param to put these values in?
     paramSeparator: ' OR ',
-    label: 'Keywords',
+    label: 'search.facets.art_kwds.label',
     dynamicValues: true,
     values: []
 };

@@ -132,6 +132,96 @@
             "download": {
                 "label": "Download docs"
             }
+        },
+        "terms": {
+            "everywhere": {
+                "label": "Everywhere"
+            },
+            "author": {
+                "label": "Author"
+            },
+            "title": {
+                "label": "Title"
+            },
+            "freud": {
+                "label": "Freud's Work"
+            },
+            "glossary": {
+                "label": "PEP Glossary"
+            },
+            "dialog": {
+                "label": "Dialogs"
+            },
+            "quote": {
+                "label": "Quotes"
+            },
+            "start-year": {
+                "label": "Start Year"
+            },
+            "end-year": {
+                "label": "End Year"
+            },
+            "bibliography": {
+                "label": "Bilbiographies"
+            },
+            "cited": {
+                "label": "Cited this many times",
+                "shortLabel": "Cited #"
+            },
+            "viewed": {
+                "label": "Viewed this many times",
+                "shortLabel": "Viewed #"
+            },
+            "scholar": {
+                "label": "Google Scholar"
+            }
+        },
+        "facets": {
+            "art_sourcetype": {
+                "label": "Source Type",
+                "values": {
+                    "book": "Book",
+                    "journal": "Journal",
+                    "videostream": "Video",
+                    "special": "Special"
+                }
+            },
+            "art_type": {
+                "label": "Article Type",
+                "values": {
+                    "ABS": "Abstract",
+                    "ANN": "Announcement",
+                    "ART": "Article",
+                    "COM": "Commentary",
+                    "ERA": "Errata",
+                    "PRO": "Profile",
+                    "REP": "Report",
+                    "REV": "Review",
+                    "SUP": "SUP",
+                    "TOC": "TOC",
+                    "VID": "Video"
+                }
+            },
+            "art_lang": {
+                "label": "Language",
+                "values": {
+                    "cs": "Czech",
+                    "de": "German",
+                    "el": "Greek",
+                    "en": "English",
+                    "es": "Spanish",
+                    "fr": "French",
+                    "he": "Hebrew",
+                    "it": "Italian",
+                    "ko": "Korean",
+                    "nl": "Dutch",
+                    "tr": "Turkish",
+                    "zh": "Chinese"
+                }
+            },
+            "art_kwds": {
+                "label": "Keywords"
+            }
         }
     },
     "browse": {
@@ -209,6 +299,12 @@
         "codes": {
             "enUS": "English",
             "esES": "Spanish"
+        }
+    },
+    "theme": {
+        "themes": {
+            "default": "Navy (default)",
+            "tomato": "Tomato"
         }
     },
     "fourOhFour": {
