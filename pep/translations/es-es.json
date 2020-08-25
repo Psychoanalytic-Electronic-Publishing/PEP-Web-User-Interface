@@ -309,17 +309,17 @@
     },
     "fourOhFour": {
         "title": "404",
-        "subtitle": "Page not found",
-        "message": "Sorry, the requested page could not be found.  :'-("
+        "subtitle": "Page not found.",
+        "message": "The page you are looking for might have been removed, or is temporarily unavailable. ☹ Please try again later, or contact an administrator if the problem persists."
     },
     "fourOhThree": {
         "title": "403",
-        "subtitle": "Forbidden",
-        "message": "Sorry, you do not have permission to access this page.  :'-("
+        "subtitle": "Access forbidden.",
+        "message": "Sorry, you do not have permission to access this page. ☹ Please contact an administrator if you think this is an error."
     },
     "fiveHundred": {
         "title": "500",
-        "subtitle": "Internal server error",
-        "message": "Sorry, an unexpected error has occurred. :'-("
+        "subtitle": "Something went wrong.",
+        "message": "It seems an unexpected error has occurred... we're really sorry about that! ☹ Please try again later, or contact an administrator if the problem persists."
     }
 }

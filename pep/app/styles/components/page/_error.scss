@@ -1,0 +1,35 @@
+.error-page {
+    position: relative;
+    overflow: hidden;
+    min-height: 100%;
+
+    &-content {
+        position: relative;
+        z-index: 2;
+    }
+
+    &-heading {
+        font-size: 4rem;
+        color: rgba($body-color, 0.8);
+    }
+
+    &-subheading {
+        font-size: 1.5rem;
+    }
+
+    &-graphic {
+        position: absolute;
+        z-index: 1;
+        top: -2rem;
+        right: -2rem;
+        opacity: 0.2;
+    }
+
+    &-icon {
+        font-size: 15rem;
+
+        @include media-breakpoint-up(sm) {
+            font-size: 25rem;
+        }
+    }
+}
