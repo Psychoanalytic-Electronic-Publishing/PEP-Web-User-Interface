@@ -22,6 +22,7 @@ export interface BaseConfiguration {
  */
 export interface ContentConfiguration {
     global: {
+        // [Rel.2] for future release
         tips: {
             isEnabled: boolean;
             list: Array<{
@@ -70,20 +71,10 @@ export const DEFAULT_BASE_CONFIGURATION: BaseConfiguration = {
 
 export const DEFAULT_CONTENT_CONFIGURATION: ContentConfiguration = {
     global: {
+        // [Rel.2] for future release
         tips: {
             isEnabled: true,
-            list: [
-                {
-                    shortDescription: 'Protip! You can save your most often used searches.',
-                    longDescription:
-                        'This is some optional extended text to give more information on how to actually save searches.'
-                },
-                {
-                    shortDescription:
-                        'This is yet another with a short description that is really kinda long. beep. bop. boop.',
-                    longDescription: 'This is the long description, that is kinda short.'
-                }
-            ]
+            list: []
         }
     },
     home: {
