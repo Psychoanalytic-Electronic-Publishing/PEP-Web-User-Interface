@@ -1,8 +1,10 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
+import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { isEmpty } from '@ember/utils';
 import { capitalize } from '@ember/string';
+import IntlService from 'ember-intl/services/intl';
 
 import { SEARCH_FACETS, SearchFacetValue } from 'pep/constants/search';
 
@@ -36,6 +38,8 @@ interface SearchRefineArgs {
 }
 
 export default class SearchRefine extends Component<SearchRefineArgs> {
+    @service intl!: IntlService;
+
     @tracked expandedGroups: string[] = [];
 
     get groups() {
@@ -52,7 +56,9 @@ export default class SearchRefine extends Component<SearchRefineArgs> {
                     id: optId,
                     label: facetType.dynamicValues
                         ? capitalize(optId)
-                        : facetType.values.findBy('id', optId)?.label ?? optId,
+                        : facetType.values.findBy('id', optId)?.label
+                        ? this.intl.t(facetType.values.findBy('id', optId)!.label)
+                        : optId,
                     numResults: fieldCountsMap[optId] ?? 0
                 }));
 
@@ -64,7 +70,7 @@ export default class SearchRefine extends Component<SearchRefineArgs> {
                 if (!isEmpty(allOptions)) {
                     groups.push({
                         id: facetType.id,
-                        label: facetType.label,
+                        label: this.intl.t(facetType.label),
                         optionsWithResults,
                         optionsWithoutResults
                     });

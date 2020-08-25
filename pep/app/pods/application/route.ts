@@ -3,10 +3,11 @@ import Transition from '@ember/routing/-private/transition';
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
-import IntlService from 'ember-intl/services/intl';
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 import SessionService from 'ember-simple-auth/services/session';
 import MediaService from 'ember-responsive/services/media';
+import NotificationService from 'ember-cli-notifications/services/notifications';
+import IntlService from 'ember-intl/services/intl';
 
 import PageLayout from 'pep/mixins/page-layout';
 import CurrentUserService from 'pep/services/current-user';
@@ -14,19 +15,38 @@ import LoadingBarService from 'pep/services/loading-bar';
 import SidebarService from 'pep/services/sidebar';
 import ThemeService from 'pep/services/theme';
 import AuthService from 'pep/services/auth';
+import LangService from 'pep/services/lang';
+import ConfigurationService from 'pep/services/configuration';
 import { ApiServerErrorResponse } from 'pep/pods/application/adapter';
 
 export default class Application extends PageLayout(Route.extend(ApplicationRouteMixin)) {
     routeAfterAuthentication = 'index';
-    @service currentUser!: CurrentUserService;
+
     @service session!: SessionService;
-    @service intl!: IntlService;
     @service fastboot!: FastbootService;
+    @service media!: MediaService;
+    @service notifications!: NotificationService;
+    @service intl!: IntlService;
+
+    @service auth!: AuthService;
+    @service currentUser!: CurrentUserService;
+    @service configuration!: ConfigurationService;
+    @service theme!: ThemeService;
+    @service lang!: LangService;
     @service loadingBar!: LoadingBarService;
     @service sidebar!: SidebarService;
-    @service theme!: ThemeService;
-    @service auth!: AuthService;
-    @service media!: MediaService;
+
+    /**
+     * App setup and configuration tasks
+     * Runs on initial app boot, and also after the user logs in
+     * So that any user session-specific preferences are applied
+     * @returns {Promise<void>}
+     */
+    appSetup() {
+        this.theme.setup();
+        this.lang.setup();
+        return this.configuration.setup();
+    }
 
     /**
      * App bootup initialization tasks, set locale/theme, etc
@@ -35,33 +55,33 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
      */
     async beforeModel(transition: Transition) {
         super.beforeModel(transition);
-        this.intl.setLocale('en-us');
-        this.theme.setup();
-        // if (this.session.isAuthenticated) {
-        //     try {
-        //         await this.currentUser.load();
-        //     } catch (err) {
-        //         this.replaceWith('five-hundred');
-        //     }
-        // }
+
+        try {
+            if (this.session.isAuthenticated) {
+                await this.currentUser.load();
+            }
+        } catch (err) {
+            this.replaceWith('five-hundred');
+        } finally {
+            return this.appSetup();
+        }
     }
 
     /**
      * Handler called by ember-simple-auth upon successful login
      */
     async sessionAuthenticated() {
-        //TODO hook up getting current user data from /v2/Session/WhoAmI/
+        try {
+            //get the current user's model before transitioning from the login page
+            await this.currentUser.load();
+        } catch (err) {
+            this.notifications.error(this.intl.t('login.error'));
+            this.session.invalidate();
+            throw err;
+        }
 
-        // try {
-        //     //get the current user's model before transitioning from the login page
-        //     const currentUser = await this.currentUser.load();
-        //     return currentUser;
-        // } catch (err) {
-        //     //handle failures of fetching the current user here (e.g. display error notification toast, etc)
-        //     //since current user fetch failed, the user should probably not stay logged in
-        //     this.session.invalidate();
-        //     throw err;
-        // }
+        //update configurations based on the newly logged in user session
+        await this.appSetup();
 
         //dont redirect the user on login if the behavior is suppressed
         if (this.auth.dontRedirectOnLogin) {

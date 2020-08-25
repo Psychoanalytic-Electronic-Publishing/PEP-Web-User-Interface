@@ -17,6 +17,8 @@ declare const config: {
     apiBaseUrl: string;
     apiNamespace: string;
     apiDataNamespace: string;
+    apiAdminNamespace: string;
+    clientId: number;
     fastboot: {
         hostWhitelist: Array<string | RegExp>;
     };

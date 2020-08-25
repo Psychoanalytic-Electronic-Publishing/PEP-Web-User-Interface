@@ -1,17 +1,21 @@
 <div class="p-2" ...attributes>
     <div class="p-3 mb-3 sidebar-widget-accolades-section sidebar-widget-accolades-journals">
         <div class="sidebar-widget-accolades-section-inner">
-            <h5>{{t "relatedInfo.widgets.accolades.journals.title"}}</h5>
+            {{#if this.configuration.content.home.newsAndInfo.boxOne.heading}}
+                <h5>{{html-safe this.configuration.content.home.newsAndInfo.boxOne.heading}}</h5>
+            {{/if}}
             <p class="font-size-secondary mb-0">
-                {{t "relatedInfo.widgets.accolades.journals.content"}}
+                {{html-safe this.configuration.content.home.newsAndInfo.boxOne.body}}
             </p>
         </div>
     </div>
     <div class="p-3 mb-3 sidebar-widget-accolades-section sidebar-widget-accolades-books">
         <div class="sidebar-widget-accolades-section-inner">
-            <h5>{{t "relatedInfo.widgets.accolades.books.title"}}</h5>
+            {{#if this.configuration.content.home.newsAndInfo.boxTwo.heading}}
+                <h5>{{html-safe this.configuration.content.home.newsAndInfo.boxTwo.heading}}</h5>
+            {{/if}}
             <p class="font-size-secondary mb-0">
-                {{t "relatedInfo.widgets.accolades.books.content"}}
+                {{html-safe this.configuration.content.home.newsAndInfo.boxTwo.body}}
             </p>
         </div>
     </div>

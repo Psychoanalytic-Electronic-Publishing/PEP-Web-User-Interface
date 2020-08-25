@@ -7,6 +7,7 @@ import FastbootService from 'ember-cli-fastboot/services/fastboot';
 
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import { getElementOffset, ElementOffset, getEventOffset } from 'pep/utils/dom';
+import { NAV_BAR_HEIGHT, FOOT_BAR_HEIGHT } from 'pep/constants/dimensions';
 
 interface DragBarArgs {
     orientation?: 'vertical' | 'horizontal';
@@ -46,7 +47,7 @@ export default class DragBar extends Component<DragBarArgs> {
      * @returns {number}
      */
     get minClientY() {
-        return this.args.minClientY ?? 58;
+        return this.args.minClientY ?? NAV_BAR_HEIGHT;
     }
 
     /**
@@ -56,7 +57,7 @@ export default class DragBar extends Component<DragBarArgs> {
      * @returns {number}
      */
     get maxClientY() {
-        return this.args.maxClientY ?? 32;
+        return this.args.maxClientY ?? FOOT_BAR_HEIGHT;
     }
 
     /**

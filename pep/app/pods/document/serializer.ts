@@ -18,12 +18,11 @@ export default class Document extends ApplicationSerializerMixin(DS.RESTSerializ
      */
     normalizeArrayResponse(
         store: DS.Store,
-        primaryModelClass: DS.Model,
+        primaryModelClass: ModelWithName,
         payload: any,
         id: string | number,
         requestType: string
     ) {
-        //@ts-ignore modelName does exist on the model class instance
         const modelKey = pluralize(camelize(primaryModelClass.modelName));
         if (payload?.documentList) {
             payload.meta = payload.documentList.responseInfo;
@@ -44,12 +43,11 @@ export default class Document extends ApplicationSerializerMixin(DS.RESTSerializ
      */
     normalizeFindRecordResponse(
         store: DS.Store,
-        primaryModelClass: DS.Model,
+        primaryModelClass: ModelWithName,
         payload: any,
         id: string | number,
         requestType: string
     ) {
-        //@ts-ignore modelName does exist on the model class instance
         const modelKey = camelize(primaryModelClass.modelName);
         if (payload?.documents) {
             payload.meta = payload.documents.responseInfo;

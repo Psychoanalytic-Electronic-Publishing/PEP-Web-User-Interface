@@ -1,9 +1,7 @@
 <Page::Content>
-    <div class="py-3 px-4">
-        <h4 class="mb-3">
-            {{t "fourOhFour.title"}}
-            <span class="text-muted">{{t "fourOhFour.subtitle"}}</span>
-        </h4>
-        <p>{{t "fourOhFour.message"}}</p>
-    </div>
+    <Page::Error
+        @heading={{t "fourOhFour.title"}}
+        @subheading={{t "fourOhFour.subtitle"}}
+        @message={{t "fourOhFour.message"}}
+    />
 </Page::Content>

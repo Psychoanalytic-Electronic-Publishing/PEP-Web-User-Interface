@@ -1,4 +1,4 @@
-import { get, set } from '@ember/object';
+import { set } from '@ember/object';
 import Service, { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import DS from 'ember-data';
@@ -38,8 +38,24 @@ export default class CurrentUserService extends Service {
      * @returns Promise<User>
      */
     async fetchUser(): Promise<User> {
-        const result = await this.store.query('user', { me: true });
-        const user = get(result, 'firstObject') as User;
+        // TODO reenable when we have a real endpoint to hit
+        // const result = await this.store.query('user', { me: true });
+        // const user = result[0];
+
+        //TODO remove this when we have a real endpoint to hit
+        this.store.pushPayload('user', {
+            user: {
+                id: 1,
+                firstName: 'Joe',
+                lastName: 'User',
+                username: 'joe.user',
+                institutionBrandLogoUrl:
+                    'https://www.jhu.edu/assets/themes/machado/assets/images/logos/university-logo-small-vertical-white-no-clear-space-29e2bdee83.png'
+            }
+        });
+
+        const user = this.store.peekRecord('user', 1)!;
+
         // TODO can we improve this at all so we dont need to ts-ignore it?
         // @ts-ignore allow setting a non-standard property `user` on the session service instance
         set(this.session, 'user', user);

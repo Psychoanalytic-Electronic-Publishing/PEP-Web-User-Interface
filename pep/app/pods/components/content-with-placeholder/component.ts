@@ -1,7 +1,7 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
-import Intl from 'ember-intl/services/intl';
+import IntlService from 'ember-intl/services/intl';
 
 interface ContentWithPlaceholderArgs {
     isLoading: boolean;
@@ -12,7 +12,7 @@ interface ContentWithPlaceholderArgs {
 
 export default class ContentWithPlaceholder extends Component<ContentWithPlaceholderArgs> {
     @service fastboot!: FastbootService;
-    @service intl!: Intl;
+    @service intl!: IntlService;
 
     get placeholderInFastboot() {
         return this.args.placeholderInFastboot ?? true;
