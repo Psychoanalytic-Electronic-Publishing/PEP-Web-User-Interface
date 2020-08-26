@@ -36,7 +36,8 @@ export default class PowerSelectJournal extends Component<PowerSelectInfinityWit
         try {
             const params: JournalParams = {
                 limit: this.pageSize,
-                offset: offset || 0
+                offset: offset || 0,
+                sourcecode: keyword
             };
             const result = yield this.store.query('journal', params);
             let results = result.toArray();

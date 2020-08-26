@@ -6,8 +6,12 @@ import { PageNav } from 'pep/mixins/page-layout';
 import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
 export default class MostCited extends PageNav(Route) {
     navController = 'most-cited';
+
     /**
-     * Load the widget results data
+     * Load the table data
+     *
+     * @returns {Promise<Document[]>}
+     * @memberof MostCited
      */
     async model() {
         const queryParams = buildQueryParams({
@@ -20,7 +24,7 @@ export default class MostCited extends PageNav(Route) {
     }
 
     /**
-     * Set the search results data on the controller
+     * Set up the pagination on the controller
      * @param {MostCitedController} controller
      * @param {object} model
      */

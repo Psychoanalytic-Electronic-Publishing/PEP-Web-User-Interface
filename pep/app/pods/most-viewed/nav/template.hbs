@@ -1,113 +1,74 @@
 <Page::Sidebar @side="left" as |Sidebar|>
     <Sidebar.content @scrollableNamespace="sidebar-left">
-        {{#if (or this.paginator.metadata.fullCount this.paginator.isLoadingRoute)}}
-            <div class="bg-white border-divider-b p-3">
-                {{#if this.paginator.isLoadingRoute}}
-                    <Loading::Read::Results />
-                {{else}}
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <h4 class="mb-0">
-                            {{t "mostViewed.title"}}
-                        </h4>
+        <div class="bg-white border-divider-b p-3">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="mb-0">
+                    {{t "mostViewed.pageTitle"}}
+                </h4>
+            </div>
+            <div class="bg-white search-form">
+                <form>
+                    <div class="form-group">
+                        <FlSelect
+                            @options={{this.periods}}
+                            @value={{this.period}}
+                            @valuePath="value"
+                            @labelPath="label"
+                            @placeholder={{t "mostCited.period"}}
+                            @emptyOptionText={{t "mostCited.periodSelect"}}
+                            @allowClear={{false}}
+                            @onChange={{this.updatePeriod}}
+                        />
                     </div>
-                    <div class="bg-white search-form">
-                        <form>
-                            <div class="form-group d-flex justify-content-between align-items-center">
-                                <span>{{t "mostViewed.period"}}</span>
-                                <select class="custom-select ml-5" {{on "change" (fn this.updatePeriod)}}>
-                                    {{#each this.periods as |period|}}
-                                        <option value={{period.value}} selected={{eq period.value this.period}}>
-                                            {{period.label}}
-                                        </option>
-                                    {{/each}}
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <FlInput
-                                    @placeholder="Author"
-                                    @value={{this.author}}
-                                    maxlength="255"
-                                    autocomplete="off"
-                                />
-                            </div>
-                            <div class="form-group">
-                                <FlInput
-                                    @placeholder="Title"
-                                    @value={{this.title}}
-                                    maxlength="255"
-                                    autocomplete="off"
-                                />
-                            </div>
-                            <div class="form-group">
-                                <FlInput
-                                    @placeholder="Journal"
-                                    @value={{this.sourcename}}
-                                    maxlength="255"
-                                    autocomplete="off"
-                                />
-                            </div>
-
-                            <div class="d-flex justify-content-end">
-                                <Button @type="link" @label="Clear" @action={{this.resetForm}} class="mr-1" />
-                                <ButtonSpinner
-                                    @type="primary"
-                                    @blockLayout={{false}}
-                                    @wide={{true}}
-                                    @showSuccess={{true}}
-                                    @label={{t "common.filter"}}
-                                    @action={{this.filterTableResults}}
-                                />
-                            </div>
-                        </form>
-                        <Alert
-                            @isShown={{this.hasTooManyResults}}
-                            @type="warning"
-                            @scrollableNamespace="sidebar-left"
-                            class="mb-0 border-left-0 rounded-0 small"
+                    <div class="form-group">
+                        <FlInput
+                            @placeholder={{t "mostCited.author"}}
+                            @value={{this.author}}
+                            maxlength="255"
+                            autocomplete="off"
+                        />
+                    </div>
+                    <div class="form-group">
+                        <FlInput
+                            @placeholder={{t "mostCited.title"}}
+                            @value={{this.title}}
+                            maxlength="255"
+                            autocomplete="off"
+                        />
+                    </div>
+                    <div class="form-group">
+                        <FlInput
+                            @value={{this.journal}}
+                            @placeholder={{t "mostCited.journal"}}
                         >
-                            <p class="mb-1 d-flex">
-                                <span class="mr-1">
-                                    <FaIcon @icon="info-circle" @size="lg" />
-                                </span>
-                                <strong>
-                                    {{t "search.form.tooManyResults.heading"}}
-                                </strong>
-                            </p>
-                            <p class="mb-1">
-                                {{t
-                                    "search.form.tooManyResults.numResults"
-                                    count=(format-number @resultsCount)
-                                    htmlSafe=true
-                                }}
-                            </p>
-                            <p class="mb-0">
-                                {{t "search.form.tooManyResults.instructions"}}
-                            </p>
-                        </Alert>
+                            <PowerSelect::Journal
+                                @selected={{this.journal}}
+                                @onChange={{this.updateJournal}}
+                            />
+                        </FlInput>
+                        {{!-- <FlInput
+                            @placeholder={{t "mostCited.journal"}}
+                            @value={{this.sourcename}}
+                            maxlength="255"
+                            autocomplete="off"
+                        /> --}}
                     </div>
-                {{/if}}
+
+                    <div class="d-flex justify-content-end">
+                        <Button @type="link" @label="Clear" @action={{this.resetForm}} class="mr-1" />
+                        <ButtonSpinner
+                            @type="primary"
+                            @blockLayout={{false}}
+                            @wide={{true}}
+                            @showSuccess={{true}}
+                            @label={{t "common.filter"}}
+                            @action={{this.filterTableResults}}
+                        />
+                    </div>
+                </form>
             </div>
-        {{else}}
-            <div class="bg-white border-divider-b px-3 py-4 mb-2">
-                <p class="text-muted">
-                    {{t "read.document.findMore"}}
-                </p>
-                <p>
-                    <LinkTo
-                        @route="search"
-                        @query={{hash
-                            q=""
-                            matchSynonyms=false
-                            searchTerms=this.defaultSearchTerms
-                            facets=this.defaultSearchFacets
-                        }}
-                        class="btn btn-outline-primary btn-block"
-                    >
-                        {{t "read.document.newSearch"}}
-                    </LinkTo>
-                </p>
-            </div>
-            <Page::Sidebar::Widgets::Accolades />
-        {{/if}}
+        </div>
+        <Page::Sidebar::Widgets::Accolades />
     </Sidebar.content>
 </Page::Sidebar>
+

@@ -3,7 +3,6 @@ import { ColumnValue } from '@gavant/ember-table';
 import IntlService from 'ember-intl/services/intl';
 import { inject as service } from '@ember/service';
 import FastbootMediaService from 'pep/services/fastboot-media';
-import { tracked } from '@glimmer/tracking';
 import { computed } from '@ember/object';
 interface TablesMostCitedArgs {
     rows: Document[];
@@ -23,7 +22,7 @@ export default class TablesMostCited extends Component<TablesMostCitedArgs> {
      * @type {ColumnValue[]}
      * @memberof TablesMostCited
      */
-    @computed
+    @computed()
     get columns(): ColumnValue[] {
         return this.fastbootMedia.isSmallDevice
             ? [
@@ -34,7 +33,7 @@ export default class TablesMostCited extends Component<TablesMostCitedArgs> {
                       isFixedLeft: false,
                       width: 200,
                       staticWidth: 200,
-                      cellComponent: 'tables/cell/html',
+                      cellComponent: 'tables/cell/most-viewed-publication',
                       isSortable: true
                   },
 
@@ -77,7 +76,7 @@ export default class TablesMostCited extends Component<TablesMostCitedArgs> {
                       staticWidth: 200,
                       maxWidth: 200,
                       minWidth: 200,
-                      cellComponent: 'tables/cell/html',
+                      cellComponent: 'tables/cell/most-viewed-publication',
                       isSortable: true
                   },
 

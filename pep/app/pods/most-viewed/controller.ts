@@ -7,31 +7,38 @@ import { inject as service } from '@ember/service';
 import LoadingBarService from 'pep/services/loading-bar';
 import FastbootMediaService from 'pep/services/fastboot-media';
 import SidebarService from 'pep/services/sidebar';
-
-type PossiblePeriodValues = '5' | '10' | '20' | 'all';
-type period = { label: string; value: PossiblePeriodValues };
+import IntlService from 'ember-intl/services/intl';
+import Journal from 'pep/pods/journal/model';
+import { PERIODS, PossiblePeriodValues } from 'pep/constants/sidebar';
 
 export default class MostViewed extends Controller {
     @service loadingBar!: LoadingBarService;
     @service fastbootMedia!: FastbootMediaService;
     @service sidebar!: SidebarService;
+    @service intl!: IntlService;
 
     queryParams = ['author', 'title', 'sourcename', 'period'];
 
     @tracked paginator!: Pagination<Document>;
     @tracked author = '';
     @tracked title = '';
-    @tracked sourcename = '';
+    @tracked journal?: Journal;
     @tracked period: PossiblePeriodValues = 'all';
-    queryType = 'MostCited';
+    queryType = 'MostViewed';
 
-    periods: period[] = [
-        { label: '5 years', value: '5' },
-        { label: '10 years', value: '10' },
-        { label: '20 years', value: '20' },
-        { label: 'All years', value: 'all' }
-    ];
+    get sourcename() {
+        return this.journal?.title ?? '';
+    }
+    set sourcename(value) {}
 
+    get periods() {
+        return PERIODS.map((item) => {
+            return {
+                label: this.intl.t(item.translationKey),
+                value: item.value
+            };
+        });
+    }
     /**
      * Filter table results based on query params
      *
@@ -63,19 +70,23 @@ export default class MostViewed extends Controller {
     resetForm() {
         this.author = '';
         this.title = '';
-        this.sourcename = '';
+        this.journal = undefined;
     }
 
     /**
      * Sets the period value after its changed
      *
-     * @param {HTMLElementEvent<HTMLSelectElement>} event
+     * @param {PossiblePeriodValues} period
      * @memberof MostCited
      */
     @action
-    updatePeriod(event: HTMLElementEvent<HTMLSelectElement>) {
-        const value = event.target?.value;
-        this.period = value as PossiblePeriodValues;
+    updatePeriod(period: PossiblePeriodValues) {
+        this.period = period;
+    }
+
+    @action
+    updateJournal(journal: Journal) {
+        this.journal = journal;
     }
 }
 // DO NOT DELETE: this is how TypeScript knows how to look up your controllers.

@@ -7,16 +7,23 @@ import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import Document from 'pep/pods/document/model';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import Router from 'pep/router';
+import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
+import { WIDGET } from 'pep/constants/sidebar';
 
-interface PageSidebarWidgetsMostViewedArgs {}
+interface PageSidebarWidgetsMostViewedArgs extends PageSidebarWidgetArgs {}
 
 export default class PageSidebarWidgetsMostViewed extends Component<PageSidebarWidgetsMostViewedArgs> {
     @service store!: DS.Store;
     @service router!: Router;
     @service fastboot!: FastbootService;
-    @tracked isOpen = true;
     @tracked isLoading = false;
     @tracked results: Document[] = [];
+
+    get isOpen() {
+        return this.args.openWidgets.includes(this.widget);
+    }
+
+    widget = WIDGET.MOST_VIEWED;
 
     /**
      * Load the widget results data
@@ -30,7 +37,7 @@ export default class PageSidebarWidgetsMostViewed extends Component<PageSidebarW
             this.isLoading = true;
             const results = await this.store.query('document', {
                 queryType: 'MostViewed',
-                viewperiod: 0,
+                viewperiod: 2,
                 morethan: 10,
                 limit: 10
             });
@@ -60,6 +67,6 @@ export default class PageSidebarWidgetsMostViewed extends Component<PageSidebarW
     viewTable(event: Event) {
         event.preventDefault();
         event.stopPropagation();
-        this.router.transitionTo('most-cited');
+        this.router.transitionTo('most-viewed');
     }
 }

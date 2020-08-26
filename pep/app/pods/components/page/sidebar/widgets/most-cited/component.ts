@@ -8,17 +8,23 @@ import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import Document from 'pep/pods/document/model';
 import Router from 'pep/router';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
+import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
+import { WIDGET } from 'pep/constants/sidebar';
 
-interface PageSidebarWidgetsMostCitedArgs {}
+interface PageSidebarWidgetsMostCitedArgs extends PageSidebarWidgetArgs {}
 
 export default class PageSidebarWidgetsMostCited extends Component<PageSidebarWidgetsMostCitedArgs> {
     @service store!: DS.Store;
     @service router!: Router;
     @service fastboot!: FastbootService;
-    @tracked isOpen = true;
     @tracked isLoading = false;
     @tracked results: Document[] = [];
 
+    get isOpen() {
+        return this.args.openWidgets.includes(this.widget);
+    }
+
+    widget = WIDGET.MOST_CITED;
     /**
      * Load the widget results data
      */
@@ -32,7 +38,6 @@ export default class PageSidebarWidgetsMostCited extends Component<PageSidebarWi
             const results = await this.store.query('document', {
                 queryType: 'MostCited',
                 period: 'all',
-                sourcecode: 'AOP',
                 morethan: 10,
                 limit: 10
             });

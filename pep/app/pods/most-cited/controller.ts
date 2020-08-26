@@ -2,16 +2,14 @@ import Controller from '@ember/controller';
 import { tracked } from '@glimmer/tracking';
 import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
 import Document from 'pep/pods/document/model';
-import { action, computed } from '@ember/object';
+import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import LoadingBarService from 'pep/services/loading-bar';
 import FastbootMediaService from 'pep/services/fastboot-media';
 import SidebarService from 'pep/services/sidebar';
 import IntlService from 'ember-intl/services/intl';
 import Journal from 'pep/pods/journal/model';
-
-type PossiblePeriodValues = '5' | '10' | '20' | 'all';
-type period = { label: string; value: PossiblePeriodValues };
+import { PERIODS, PossiblePeriodValues } from 'pep/constants/sidebar';
 
 export default class MostCited extends Controller {
     @service loadingBar!: LoadingBarService;
@@ -27,18 +25,21 @@ export default class MostCited extends Controller {
     @tracked journal?: Journal;
     @tracked period: PossiblePeriodValues = 'all';
 
-    @computed('journal')
     get sourcename() {
-        return this.journal?.title;
+        return this.journal?.title ?? '';
     }
+    set sourcename(value) {}
+
     queryType = 'MostCited';
 
-    periods: period[] = [
-        { label: this.intl.t('mostCited.fiveYears'), value: '5' },
-        { label: this.intl.t('mostCited.tenYears'), value: '10' },
-        { label: this.intl.t('mostCited.twentyYears'), value: '20' },
-        { label: this.intl.t('mostCited.allYears'), value: 'all' }
-    ];
+    get periods() {
+        return PERIODS.map((item) => {
+            return {
+                label: this.intl.t(item.translationKey),
+                value: item.value
+            };
+        });
+    }
 
     /**
      * Filter table results based on query params
@@ -75,7 +76,7 @@ export default class MostCited extends Controller {
     /**
      * Sets the period value after its changed
      *
-     * @param {HTMLElementEvent<HTMLSelectElement>} event
+     * @param {PossiblePeriodValues} period
      * @memberof MostCited
      */
     @action
@@ -83,6 +84,12 @@ export default class MostCited extends Controller {
         this.period = period;
     }
 
+    /**
+     * Updates journal
+     *
+     * @param {Journal} journal
+     * @memberof MostCited
+     */
     @action
     updateJournal(journal: Journal) {
         this.journal = journal;

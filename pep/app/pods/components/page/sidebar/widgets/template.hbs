@@ -1,0 +1,15 @@
+<div class="p-3 d-flex">
+    <a href="" {{on "click" this.toggleAll}}>
+        {{t (if this.showCloseAll 'relatedInfo.batchClose' 'relatedInfo.batchOpen')}}
+    </a>
+</div>
+<Page::Sidebar::Widgets::WhatsNew @toggleIsOpen={{this.toggleIsOpen}} @openWidgets={{this.openWidgets}} />
+<Page::Sidebar::Widgets::MostViewed @toggleIsOpen={{this.toggleIsOpen}} @openWidgets={{this.openWidgets}} />
+<Page::Sidebar::Widgets::MostCited @toggleIsOpen={{this.toggleIsOpen}} @openWidgets={{this.openWidgets}} />
+<Page::Sidebar::Widgets::PastSearches @toggleIsOpen={{this.toggleIsOpen}} @openWidgets={{this.openWidgets}} />
+<Page::Sidebar::Widgets::YourInterests @toggleIsOpen={{this.toggleIsOpen}} @openWidgets={{this.openWidgets}} />
+<Page::Sidebar::Widgets::GlossaryTerms @toggleIsOpen={{this.toggleIsOpen}} @openWidgets={{this.openWidgets}} />
+<Page::Sidebar::Widgets::MoreLikeThese @toggleIsOpen={{this.toggleIsOpen}} @openWidgets={{this.openWidgets}} />
+<Page::Sidebar::Widgets::SeminalPapers @toggleIsOpen={{this.toggleIsOpen}} @openWidgets={{this.openWidgets}} />
+<Page::Sidebar::Widgets::ExpertPicks @toggleIsOpen={{this.toggleIsOpen}} @openWidgets={{this.openWidgets}} />
+<Page::Sidebar::Widgets::RevelantSearches @toggleIsOpen={{this.toggleIsOpen}} @openWidgets={{this.openWidgets}} />

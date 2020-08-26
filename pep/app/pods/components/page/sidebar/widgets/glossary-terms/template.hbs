@@ -1,7 +1,7 @@
 <CollapsiblePanel
     @scrollableNamespace="sidebar-right"
     @isOpen={{this.isOpen}}
-    @toggle={{fn (mut this.isOpen)}}
+    @toggle={{fn @toggleIsOpen this.widget}}
     class="mb-2"
     ...attributes
 as |Panel|>

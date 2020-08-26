@@ -173,6 +173,8 @@
     },
     "relatedInfo": {
         "title": "Related Info",
+        "batchClose": "Close All",
+        "batchOpen": "Show All",
         "widgets": {
             "accolades": {
                 "journals": {
@@ -239,7 +241,7 @@
         }
     },
     "mostViewed": {
-        "title": "Most viewed journal articles",
+        "pageTitle": "Most viewed journal articles",
         "period": "Period",
         "table": {
             "publication": "Publication",

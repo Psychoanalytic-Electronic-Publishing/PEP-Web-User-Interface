@@ -1,6 +1,5 @@
 import DS from 'ember-data';
 import attr from 'ember-data/attr';
-import { isEmpty } from '@ember/utils';
 
 export default class Journal extends DS.Model {
     // attributes

@@ -6,15 +6,21 @@ import DS from 'ember-data';
 
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import WhatsNew from 'pep/pods/whats-new/model';
+import { WIDGET } from 'pep/constants/sidebar';
+import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
 
-interface PageSidebarWidgetsWhatsNewArgs {}
+interface PageSidebarWidgetsWhatsNewArgs extends PageSidebarWidgetArgs {}
 
 export default class PageSidebarWidgetsWhatsNew extends Component<PageSidebarWidgetsWhatsNewArgs> {
     @service store!: DS.Store;
-
-    @tracked isOpen = true;
     @tracked isLoading = false;
     @tracked results: WhatsNew[] = [];
+
+    get isOpen() {
+        return this.args.openWidgets.includes(this.widget);
+    }
+
+    widget = WIDGET.WHATS_NEW;
 
     /**
      * Load the widget results data

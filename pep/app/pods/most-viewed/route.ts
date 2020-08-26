@@ -1,28 +1,31 @@
 import Route from '@ember/routing/route';
 import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hooks/pagination';
 import Document from 'pep/pods/document/model';
-import MostCitedController from 'pep/pods/most-cited/controller';
+import MostViewedController from 'pep/pods/most-viewed/controller';
 import { PageNav } from 'pep/mixins/page-layout';
+import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
 
 export default class MostViewed extends PageNav(Route) {
-    navController = 'most-cited';
+    navController = 'most-viewed';
     /**
      * Load the widget results data
      */
     async model() {
-        return this.store.query('document', {
-            queryType: 'MostCited',
-            period: 'all',
-            limit: 40
+        const queryParams = buildQueryParams({
+            context: this.controllerFor('most-viewed'),
+            pagingRootKey: null,
+            filterRootKey: null,
+            filterList: ['author', 'title', 'sourcename', 'period', 'queryType']
         });
+        return this.store.query('document', queryParams);
     }
 
     /**
-     * Set the search results data on the controller
-     * @param {ReadDocumentController} controller
+     * Set up pagination on the controller
+     * @param {MostViewedController} controller
      * @param {object} model
      */
-    setupController(controller: MostCitedController, model: RecordArrayWithMeta<Document>) {
+    setupController(controller: MostViewedController, model: RecordArrayWithMeta<Document>) {
         super.setupController(controller, model);
         controller.paginator = usePagination<Document>({
             context: controller,

@@ -1,0 +1,23 @@
+.table,
+.ember-table {
+    thead {
+        th {
+            border-top: 1px solid #fff;
+        }
+        tr:nth-child(2) > th {
+            border-top: 1px solid #e9e9e9;
+            &:first-child {
+                padding-left: 0.75rem !important;
+            }
+        }
+        tr:first-child th:first-child {
+            border-radius: 0 !important;
+        }
+    }
+    th:last-child,
+    td:last-child,
+    th:first-child,
+    td:first-child {
+        padding-left: 0;
+    }
+}
