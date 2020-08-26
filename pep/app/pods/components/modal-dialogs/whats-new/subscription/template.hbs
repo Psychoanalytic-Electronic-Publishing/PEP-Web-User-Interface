@@ -1,0 +1,58 @@
+<ModalDialog @onClose={{@onClose}} @size="md" as |Modal|>
+    <Modal.header @title={{t "login.title"}} />
+    <FormValidator
+        @changeset={{@options.changeset}}
+        @submit={{this.login}}
+        as |changeset validator|
+    >
+        <Modal.body>
+            <p class="text-muted">
+                {{t "login.info"}}
+            </p>
+            <Alert
+                @isShown={{bool this.loginError}}
+                @message={{t "login.error"}}
+                @type="danger"
+                @icon="exclamation-circle"
+            />
+            <div class="form-row">
+                <div class="col-sm-8">
+                    <validator.input @errors={{changeset.error.username.validation}} class="input-validator-compact">
+                        <FlInput
+                            @value={{changeset.emailAddress}}
+                            @placeholder={{t "whatsNew.emailAddress"}}
+                            maxlength="128"
+                        />
+                    </validator.input>
+                    <validator.input @errors={{changeset.error.password.validation}} class="input-validator-compact">
+                        <FlInput
+                            @value={{changeset.password}}
+                            @placeholder={{t "login.password"}}
+                            maxlength="128"
+                            type="password"
+                        />
+                    </validator.input>
+                    <p class="mb-0 text-muted">
+                        {{t "login.notAMember"}}
+                        <a href="" {{on "click" this.transitionToSubscribe}}>
+                            {{t "login.clickToSubscribe"}}
+                        </a>.
+                    </p>
+                </div>
+            </div>
+        </Modal.body>
+        <Modal.footer>
+            <Button
+                @type="link"
+                @label={{t "common.cancel"}}
+                @action={{@onClose}}
+            />
+            <ButtonSpinner
+                @type="primary"
+                @label={{t "login.title"}}
+                @wide={{true}}
+                @action={{validator.submit}}
+            />
+        </Modal.footer>
+    </FormValidator>
+</ModalDialog>
