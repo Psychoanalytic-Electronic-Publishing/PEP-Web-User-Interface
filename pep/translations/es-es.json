@@ -1,0 +1,325 @@
+{
+    "brand": {
+        "name": "PEP",
+        "nameFull": {
+            "psychoanalytic": "Psychoanalytic",
+            "electronic": "Electronic",
+            "publishing": "Publishing"
+        },
+        "copywrite": "&copy; Psychoanalytic Electronic Publishing (PEP)",
+        "slogan": "A Psychoanalytic Library at your fingertips"
+    },
+    "common": {
+        "save": "Save",
+        "submit": "Submit",
+        "search": "Search",
+        "cancel": "Cancel",
+        "close": "Close",
+        "remove": "Remove",
+        "goBack": "Go back",
+        "done": "Done",
+        "export": "Export",
+        "print": "Print",
+        "numResults": "{count} {count, plural, =1 {'<span class=\"text-muted\">'result'</span>'} other {'<span class=\"text-muted\">'results'</span>'}}",
+        "noResults": "No results found",
+        "loadingResults": "Loading results...",
+        "loading": "Loading..."
+    },
+    "serverErrors": {
+        "heading": "The following {count, plural, =1 {error} other {errors}} occurred while attempting to process your request.",
+        "undefined": "Sorry, an unexpected error has occurred.",
+        "unknown": {
+            "unexpected": "Sorry, an unexpected error has occurred."
+        }
+    },
+    "nav": {
+        "toggle": "Toggle navigation",
+        "home": "Home",
+        "search": "Search",
+        "browse": "Browse",
+        "read": "Read",
+        "user": {
+            "account": "My account",
+            "preferences": "Preferences",
+            "help": "Help",
+            "reportProblem": "Report a problem",
+            "login": "Login",
+            "logout": "Logout"
+        }
+    },
+    "home": {
+        "title": "Psychoanalytic Electronic Publishing",
+        "heading": "PEP - Psychoanalytic Electronic Publishing",
+        "searchForDocs": "Search for documents",
+        "expertPick": {
+            "heading": "Expert Pick of the Day",
+            "read": "Read",
+            "loginAndRead": "Login and read"
+        }
+    },
+    "search": {
+        "title": "Search",
+        "new": "Start a new search",
+        "sort": {
+            "label": "Sort:",
+            "year": "Year"
+        },
+        "view": {
+            "label": "View:",
+            "biblio": "Bibliographic"
+        },
+        "empty": {
+            "heading": "Your search starts here",
+            "instructions": "Use the form on the left to enter terms or phrases and search our publication database.",
+            "tips": {
+                "heading": "Search tips",
+                "instructions": "Smart Search taskes all kinds of search inputs:",
+                "tip1": "Find terms or keywords - to get the best search results, '<strong>'enter at least two terms at a time.'</strong>''<br>'This will make the search more precise, returning only the most relevant results.",
+                "tip2": "Paste a reference from an article",
+                "tip3": "Use a Journal name or part of a journal name",
+                "tip4": "Search on author name (or multiple authors)",
+                "tip5": "Use part of a title (two or more words)",
+                "tip6": "Search by Year / Vol / Page #"
+            }
+        },
+        "results": {
+            "none": "No results found. Try using different search terms or phrases to find what you're looking for.",
+            "sidebar": {
+                "title": "{title} ({year})"
+            }
+        },
+        "form": {
+            "heading": "Search for Documents",
+            "smartSearch": "What are you looking for?",
+            "savedSearch": {
+                "label": "Saved searches",
+                "mine": "My saved searches",
+                "save": "Save this search"
+            },
+            "terms": {
+                "heading": "Find terms or phrases",
+                "label": "Terms or phrase",
+                "remove": "Remove term",
+                "add": "Add term",
+                "synonyms": "Match Synonyms"
+            },
+            "tooManyResults": {
+                "heading": "Try refining your search",
+                "numResults": "There are '<strong>'{count}'</strong>' {count, plural, =1 {result} other {results}} that match your criteria.",
+                "instructions": "Enter at least two terms, additional criteria, and/or use the 'Refine' form below to increase search precision."
+            }
+        },
+        "refine": {
+            "heading": "Refine",
+            "instructions": "Check to limit results to only matching articles.",
+            "showLess": "Show less",
+            "showAll": "show all",
+            "none": "No refine options available",
+            "apply": {
+                "label": "Refine search"
+            },
+            "option": {
+                "numResults": "({count})"
+            }
+        },
+        "preview": {
+            "fit": "Expand to fit",
+            "maximize": "Maximize",
+            "minimize": "Minimize",
+            "read": "Read",
+            "mustBeLoggedIn": "You must be logged in to read or download this document.",
+            "login": "Click here to login",
+            "download": {
+                "label": "Download docs"
+            }
+        },
+        "terms": {
+            "everywhere": {
+                "label": "Everywhere"
+            },
+            "author": {
+                "label": "Author"
+            },
+            "title": {
+                "label": "Title"
+            },
+            "freud": {
+                "label": "Freud's Work"
+            },
+            "glossary": {
+                "label": "PEP Glossary"
+            },
+            "dialog": {
+                "label": "Dialogs"
+            },
+            "quote": {
+                "label": "Quotes"
+            },
+            "start-year": {
+                "label": "Start Year"
+            },
+            "end-year": {
+                "label": "End Year"
+            },
+            "bibliography": {
+                "label": "Bilbiographies"
+            },
+            "cited": {
+                "label": "Cited this many times",
+                "shortLabel": "Cited #"
+            },
+            "viewed": {
+                "label": "Viewed this many times",
+                "shortLabel": "Viewed #"
+            },
+            "scholar": {
+                "label": "Google Scholar"
+            }
+        },
+        "facets": {
+            "art_sourcetype": {
+                "label": "Source Type",
+                "values": {
+                    "book": "Book",
+                    "journal": "Journal",
+                    "videostream": "Video",
+                    "special": "Special"
+                }
+            },
+            "art_type": {
+                "label": "Article Type",
+                "values": {
+                    "ABS": "Abstract",
+                    "ANN": "Announcement",
+                    "ART": "Article",
+                    "COM": "Commentary",
+                    "ERA": "Errata",
+                    "PRO": "Profile",
+                    "REP": "Report",
+                    "REV": "Review",
+                    "SUP": "SUP",
+                    "TOC": "TOC",
+                    "VID": "Video"
+                }
+            },
+            "art_lang": {
+                "label": "Language",
+                "values": {
+                    "cs": "Czech",
+                    "de": "German",
+                    "el": "Greek",
+                    "en": "English",
+                    "es": "Spanish",
+                    "fr": "French",
+                    "he": "Hebrew",
+                    "it": "Italian",
+                    "ko": "Korean",
+                    "nl": "Dutch",
+                    "tr": "Turkish",
+                    "zh": "Chinese"
+                }
+            },
+            "art_kwds": {
+                "label": "Keywords"
+            }
+        }
+    },
+    "browse": {
+        "title": "Browse"
+    },
+    "read": {
+        "title": "Read",
+        "document": {
+            "page": "Page",
+            "findMore": "Want to find more articles and resources?",
+            "newSearch": "Start a new search",
+            "backToSearch": "Back to search",
+            "limitedAccess": "You must be logged in to read the full document.",
+            "login": "Click here to login",
+            "image": {
+                "alt": "Article image {id}"
+            }
+        }
+    },
+    "relatedInfo": {
+        "widgets": {
+            "expertPicks": {
+                "title": "Expert picks"
+            },
+            "glossaryTerms": {
+                "title": "Glossary terms",
+                "view": "View complete glossary"
+            },
+            "moreLikeThese": {
+                "title": "More like these"
+            },
+            "mostCited": {
+                "title": "Most cited"
+            },
+            "mostViewed": {
+                "title": "Most viewed"
+            },
+            "pastSearches": {
+                "title": "Your past searches"
+            },
+            "relevantSearches": {
+                "title": "Revelant searches"
+            },
+            "seminalPapers": {
+                "title": "Seminal papers"
+            },
+            "whatsNew": {
+                "title": "What's new?",
+                "issue": "Issue #{issueNum}, Vol {volNum} &bull; {updatedDate}"
+            },
+            "yourInterests": {
+                "title": "Your interests"
+            }
+        }
+    },
+    "login": {
+        "title": "Login",
+        "info": "This is the Psychoanalytic Electronic Publishing Archive full text database. It is freely available for everyone to search, view tables of contents, and view summaries. However you will need a subscription in order to view the full text of articles and books and follow links within the database.",
+        "error": "Unable to login with the provided credentials.",
+        "username": "Username",
+        "password": "Password",
+        "notAMember": "Not a member?",
+        "clickToSubscribe": "Click here to subscribe",
+        "success": "You are now logged in."
+    },
+    "preferences": {
+        "title": "Preferences",
+        "info": "Customize and personalize your PEP experience using the settings below.",
+        "theme": {
+            "label": "Color theme",
+            "select": "Select a theme"
+        }
+    },
+    "language": {
+        "codes": {
+            "enUS": "English",
+            "esES": "Spanish"
+        }
+    },
+    "theme": {
+        "themes": {
+            "default": "Navy (default)",
+            "tomato": "Tomato"
+        }
+    },
+    "fourOhFour": {
+        "title": "404",
+        "subtitle": "Page not found.",
+        "message": "The page you are looking for might have been removed, or is temporarily unavailable. ☹ Please try again later, or contact an administrator if the problem persists."
+    },
+    "fourOhThree": {
+        "title": "403",
+        "subtitle": "Access forbidden.",
+        "message": "Sorry, you do not have permission to access this page. ☹ Please contact an administrator if you think this is an error."
+    },
+    "fiveHundred": {
+        "title": "500",
+        "subtitle": "Something went wrong.",
+        "message": "It seems an unexpected error has occurred... we're really sorry about that! ☹ Please try again later, or contact an administrator if the problem persists."
+    }
+}

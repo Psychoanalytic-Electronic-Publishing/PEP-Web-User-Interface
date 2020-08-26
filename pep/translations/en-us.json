@@ -6,7 +6,7 @@
             "electronic": "Electronic",
             "publishing": "Publishing"
         },
-        "copywrite": "Copyright &copy; Psychoanalytic Electronic Publishing (PEP)",
+        "copywrite": "&copy; Psychoanalytic Electronic Publishing (PEP)",
         "slogan": "A Psychoanalytic Library at your fingertips"
     },
     "common": {
@@ -51,34 +51,11 @@
     "home": {
         "title": "Psychoanalytic Electronic Publishing",
         "heading": "PEP - Psychoanalytic Electronic Publishing",
-        "search": {
-            "heading": "Your search starts here",
-            "subheading": "Search all of the literature in PEP-WEB in seconds.",
-            "searchForDocs": "Search for documents",
-            "tips": {
-                "instructions": "'<strong>'Smart Search'</strong>' taskes all kinds of search inputs:",
-                "tip1": "Find terms or keywords - to get the best search results, '<strong>'enter at least two terms at a time.'</strong>' '<br>'This will make the search more precise, returning only the most relevant results.",
-                "tip2": "Paste a reference from an article",
-                "tip3": "Journal name or part of a journal name",
-                "tip4": "Author name",
-                "tip5": "Part of a title (two or more words)",
-                "tip6": "Year / Vol / Page #"
-            }
-        },
-        "guide": {
-            "heading": "Let PEP be your guide",
-            "subheading": "PEP-WEB helps to guide you to important source material in your research, and provides numerous tools.",
-            "tips": {
-                "instructions": "While you '<strong>'research and explore'</strong>', PEP:",
-                "tip1": "Helps find related publications",
-                "tip2": "Expert guidance selects the most important related Psychoanalytic works",
-                "tip3": "Find what's new and exciting in the field, what others are reading",
-                "tip4": "What work is most cited by new publications",
-                "tip5": "Links content to an integrated Psychoanalytic Glossary incluing Laplanche and Pontails"
-            }
-        },
-        "pickOfTheDay": {
-            "heading": "Expert Pick of the Day"
+        "searchForDocs": "Search for documents",
+        "expertPick": {
+            "heading": "Expert Pick of the Day",
+            "read": "Read",
+            "loginAndRead": "Login and read"
         }
     },
     "search": {
@@ -116,6 +93,7 @@
             "heading": "Search for Documents",
             "smartSearch": "What are you looking for?",
             "savedSearch": {
+                "label": "Saved searches",
                 "mine": "My saved searches",
                 "save": "Save this search"
             },
@@ -147,13 +125,103 @@
         },
         "preview": {
             "fit": "Expand to fit",
-            "maximize": "Minimize",
+            "maximize": "Maximize",
             "minimize": "Minimize",
             "read": "Read",
             "mustBeLoggedIn": "You must be logged in to read or download this document.",
             "login": "Click here to login",
             "download": {
                 "label": "Download docs"
+            }
+        },
+        "terms": {
+            "everywhere": {
+                "label": "Everywhere"
+            },
+            "author": {
+                "label": "Author"
+            },
+            "title": {
+                "label": "Title"
+            },
+            "freud": {
+                "label": "Freud's Work"
+            },
+            "glossary": {
+                "label": "PEP Glossary"
+            },
+            "dialog": {
+                "label": "Dialogs"
+            },
+            "quote": {
+                "label": "Quotes"
+            },
+            "start-year": {
+                "label": "Start Year"
+            },
+            "end-year": {
+                "label": "End Year"
+            },
+            "bibliography": {
+                "label": "Bilbiographies"
+            },
+            "cited": {
+                "label": "Cited this many times",
+                "shortLabel": "Cited #"
+            },
+            "viewed": {
+                "label": "Viewed this many times",
+                "shortLabel": "Viewed #"
+            },
+            "scholar": {
+                "label": "Google Scholar"
+            }
+        },
+        "facets": {
+            "art_sourcetype": {
+                "label": "Source Type",
+                "values": {
+                    "book": "Book",
+                    "journal": "Journal",
+                    "videostream": "Video",
+                    "special": "Special"
+                }
+            },
+            "art_type": {
+                "label": "Article Type",
+                "values": {
+                    "ABS": "Abstract",
+                    "ANN": "Announcement",
+                    "ART": "Article",
+                    "COM": "Commentary",
+                    "ERA": "Errata",
+                    "PRO": "Profile",
+                    "REP": "Report",
+                    "REV": "Review",
+                    "SUP": "SUP",
+                    "TOC": "TOC",
+                    "VID": "Video"
+                }
+            },
+            "art_lang": {
+                "label": "Language",
+                "values": {
+                    "cs": "Czech",
+                    "de": "German",
+                    "el": "Greek",
+                    "en": "English",
+                    "es": "Spanish",
+                    "fr": "French",
+                    "he": "Hebrew",
+                    "it": "Italian",
+                    "ko": "Korean",
+                    "nl": "Dutch",
+                    "tr": "Turkish",
+                    "zh": "Chinese"
+                }
+            },
+            "art_kwds": {
+                "label": "Keywords"
             }
         }
     },
@@ -168,7 +236,10 @@
             "newSearch": "Start a new search",
             "backToSearch": "Back to search",
             "limitedAccess": "You must be logged in to read the full document.",
-            "login": "Click here to login"
+            "login": "Click here to login",
+            "image": {
+                "alt": "Article image {id}"
+            }
         }
     },
     "relatedInfo": {
@@ -176,16 +247,6 @@
         "batchClose": "Close All",
         "batchOpen": "Show All",
         "widgets": {
-            "accolades": {
-                "journals": {
-                    "title": "59 Premier Psychoanalytic Journals",
-                    "content": "The PEP-Web Archive is the quintessential website for psychoanalytic scholarship, with the full text of 59 journals dating back to 1918, cross-linked to each other and full bibliographic references to external sources, and where a multi-source psychoanalytic glossary is a click away for any technical term."
-                },
-                "books": {
-                    "title": "96 Classic Psychoanalytic Books",
-                    "content": "The complete content of Sigmund Freud’s Standard Edition where each paragraph is cross-linked to the corresponding text in the German Freud Gesammelte Werke.  Including 96 books from classic authors such as Bion, Bowlby, Klein, Meltzer, Winnicott, and many more."
-                }
-            },
             "expertPicks": {
                 "title": "Expert picks"
             },
@@ -271,19 +332,31 @@
             "select": "Select a theme"
         }
     },
+    "language": {
+        "codes": {
+            "enUS": "English",
+            "esES": "Spanish"
+        }
+    },
+    "theme": {
+        "themes": {
+            "default": "Navy (default)",
+            "tomato": "Tomato"
+        }
+    },
     "fourOhFour": {
         "title": "404",
-        "subtitle": "Page not found",
-        "message": "Sorry, the requested page could not be found.  :'-("
+        "subtitle": "Page not found.",
+        "message": "The page you are looking for might have been removed, or is temporarily unavailable. ☹ Please try again later, or contact an administrator if the problem persists."
     },
     "fourOhThree": {
         "title": "403",
-        "subtitle": "Forbidden",
-        "message": "Sorry, you do not have permission to access this page.  :'-("
+        "subtitle": "Access forbidden.",
+        "message": "Sorry, you do not have permission to access this page. ☹ Please contact an administrator if you think this is an error."
     },
     "fiveHundred": {
         "title": "500",
-        "subtitle": "Internal server error",
-        "message": "Sorry, an unexpected error has occurred. :'-("
+        "subtitle": "Something went wrong.",
+        "message": "It seems an unexpected error has occurred... we're really sorry about that! ☹ Please try again later, or contact an administrator if the problem persists."
     }
 }

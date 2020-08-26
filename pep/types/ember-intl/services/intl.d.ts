@@ -7,7 +7,7 @@ interface Data {
     };
 }
 declare module 'ember-intl/services/intl' {
-    export default class intl extends Service.extend(Evented) {
+    export default class IntlService extends Service.extend(Evented) {
         locale: any;
         primaryLocale: any;
 

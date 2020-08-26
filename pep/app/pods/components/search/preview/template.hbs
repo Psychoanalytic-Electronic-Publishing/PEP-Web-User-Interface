@@ -1,11 +1,21 @@
 {{#if @result}}
     <div
-        class="search-preview search-preview-{{this.mode}}"
+        class="search-preview search-preview-{{this.mode}} {{~if this.isDragResizing " is-drag-resizing"}}"
         style={{this.styles}}
         {{did-update this.onResultUpdate @result}}
         ...attributes
     >
-        <Scrollable @namespace="search-preview" class="page-content-inner">
+        <DragBar
+            @orientation="horizontal"
+            @maxClientY={{84}}
+            @onDragStart={{this.onDragStart}}
+            @onDragEnd={{this.onDragEnd}}
+        />
+        <Scrollable
+            @namespace="search-preview"
+            @onInsert={{this.onScrollableInsert}}
+            class="page-content-inner"
+        >
             <div
                 class="search-preview-inner"
                 {{did-insert this.onElementInsert}}
@@ -13,26 +23,28 @@
                 <div class="d-flex justify-content-between align-items-start px-4 py-2">
                     <div class="small text-muted mr-2">{{@result.documentRef}}</div>
                     <div class="d-flex flex-nowrap">
-                        <Button
+                        <Button::WithTooltip
+                            @type="link"
                             @icon="expand-alt"
-                            @type="link"
-                            @action={{fn @setMode "fit"}}
-                            class="mr-2 p-0"
-                            title={{t "search.preview.fit"}}
+                            @action={{fn this.setMode "fit"}}
+                            @tooltip={{t "search.preview.fit"}}
+                            @containerClass="mr-2"
+                            class="p-0"
                         />
-                        <Button
-                            @icon={{if (eq @mode "maximized") "window-minimize" "window-maximize"}}
-                            @action={{fn @setMode (if (eq @mode "maximized") "minimized" "maximized")}}
-                            title={{t (if (eq @mode "maximized") "search.preview.minimize" "search.preview.maximize")}}
+                        <Button::WithTooltip
                             @type="link"
-                            class="mr-2 p-0"
+                            @icon={{if this.showMaximize "window-maximize" "window-minimize"}}
+                            @action={{fn this.setMode (if this.showMaximize "maximized" "minimized")}}
+                            @tooltip={{t (if this.showMaximize "search.preview.maximize" "search.preview.minimize")}}
+                            @containerClass="mr-2"
+                            class="p-0"
                         />
-                        <Button
+                        <Button::WithTooltip
                             @icon="times"
                             @type="link"
                             @action={{this.close}}
+                            @tooltip={{t "common.close"}}
                             class="p-0"
-                            title={{t "common.close"}}
                         />
                     </div>
                 </div>
@@ -45,7 +57,7 @@
                             </div>
                         {{/if}}
                     </h5>
-                    <div class="mb-2">
+                    <div class="pep-abstract-preview mb-2">
                         {{html-safe @result.abstract}}
                     </div>
                     <div>

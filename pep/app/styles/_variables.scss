@@ -3,7 +3,7 @@
 // ---------------------------
 //DIMENSIONS
 $navbar-height: 58px;
-$footer-height: 32px;
+$footer-height: 48px;
 $sidebar-width: 305px;
 $sidebar-handle-width: 16px;
 $drawer-width: 305px;
@@ -13,6 +13,7 @@ $progress-spinner-loading-border-width: 2px;
 $progress-spinner-loading-size: 15px;
 $progress-spinner-loading-border-width-lg: 4px;
 $progress-spinner-loading-size-lg: 50px;
+$drag-bar-thickness: 5px;
 
 //Z-INDICES / LAYERING
 $z-page-content: 2;
@@ -21,6 +22,7 @@ $z-sidebar-overlay: 10;
 $z-sidebar-handle: 10;
 $z-drawer-mask: 1035;
 $z-drawer-content: 1036;
+$z-drag-bar-mask: 2000;
 
 //TIMING
 $duration-sidebar-toggle: 0.3s;

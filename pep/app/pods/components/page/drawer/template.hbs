@@ -2,7 +2,7 @@
     class="page-drawer d-block d-md-none {{~if this.drawer.isOpen " is-open"}}"
     ...attributes
 >
-    <Scrollable @namespace="page-drawer" class="page-drawer-scrollable">
+    <Scrollable @namespace="page-drawer" class="page-drawer-scrollable d-flex flex-column">
         <div class="p-4 d-flex align-items-center page-drawer-header">
             <button type="button" class="page-drawer-close" {{on "click" this.closeDrawer}}>
                 <FaIcon @icon="times-circle" @prefix="fas" @size="lg" />
@@ -95,6 +95,9 @@
                     {{/if}}
                 </Page::Drawer::NavMenu>
             </div>
+        </div>
+        <div class="page-drawer-footer mt-auto p-3 small text-center text-white-50">
+            {{t "brand.copywrite" htmlSafe=true}}
         </div>
     </Scrollable>
 </div>

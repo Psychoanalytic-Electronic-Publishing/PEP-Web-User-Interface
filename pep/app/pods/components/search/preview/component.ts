@@ -2,7 +2,7 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { htmlSafe } from '@ember/template';
-import { scheduleOnce } from '@ember/runloop';
+import { scheduleOnce, next } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 import SessionService from 'ember-simple-auth/services/session';
 
@@ -10,10 +10,13 @@ import AuthService from 'pep/services/auth';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import Document from 'pep/pods/document/model';
 
+type SearchPreviewMode = 'minimized' | 'maximized' | 'fit';
+
 interface SearchPreviewArgs {
-    mode: 'minimized' | 'maximized' | 'fit';
-    containerSelector: string;
+    mode: SearchPreviewMode;
+    maxHeight?: number;
     result?: Document;
+    setMode: (mode: SearchPreviewMode) => void;
     close: () => void;
 }
 
@@ -21,15 +24,29 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
     @service session!: SessionService;
     @service auth!: AuthService;
 
-    @tracked fitHeight?: number;
+    @tracked fitHeight: number = 0;
+    @tracked isDragResizing: boolean = false;
+
     innerElement: HTMLElement | null = null;
+    scrollableElement: HTMLElement | null = null;
+    minFitHeight: number = 40;
 
     get mode() {
         return this.args.mode || 'fit';
     }
 
+    get showMaximize() {
+        return this.mode === 'minimized' || this.mode === 'fit';
+    }
+
     get styles() {
-        return this.mode === 'fit' && this.fitHeight ? htmlSafe(`height: ${this.fitHeight}px;`) : null;
+        return this.mode === 'fit' && this.adjustedFitHeight && this.args.result
+            ? htmlSafe(`height: ${this.adjustedFitHeight}px;`)
+            : null;
+    }
+
+    get adjustedFitHeight() {
+        return Math.min(this.fitHeight, this.args.maxHeight || this.fitHeight);
     }
 
     /**
@@ -37,15 +54,8 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
      * constrained to a maximum height that is the parent container's height
      */
     @dontRunInFastboot
-    calculateFitHeight() {
-        if (this.innerElement) {
-            //dont allow the fit height to be taller than the container height
-            const contentHeight = this.innerElement.offsetHeight;
-            const containerEl = document.querySelector(this.args.containerSelector) as HTMLDivElement;
-            const containerHeight = containerEl?.offsetHeight;
-            const fitHeight = Math.min(contentHeight, containerHeight || contentHeight);
-            this.fitHeight = fitHeight;
-        }
+    updateFitHeight() {
+        this.fitHeight = this.innerElement?.offsetHeight ?? 0;
     }
 
     /**
@@ -55,7 +65,16 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
     @action
     onElementInsert(element: HTMLElement) {
         this.innerElement = element;
-        scheduleOnce('afterRender', this, this.calculateFitHeight);
+        scheduleOnce('afterRender', this, this.updateFitHeight);
+    }
+
+    /**
+     * Saves a reference to the <Scrollable>'s element
+     * @param {HTMLElement} element
+     */
+    @action
+    onScrollableInsert(element: HTMLElement) {
+        this.scrollableElement = element;
     }
 
     /**
@@ -63,7 +82,21 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
      */
     @action
     onResultUpdate() {
-        scheduleOnce('afterRender', this, this.calculateFitHeight);
+        scheduleOnce('afterRender', this, this.updateFitHeight);
+    }
+
+    /**
+     * Sets the preview pane's sizing mode
+     * @param {SearchPreviewMode} mode
+     */
+    @action
+    setMode(mode: SearchPreviewMode) {
+        // reset the calculated fit size in case it was resized
+        if (mode === 'fit') {
+            this.updateFitHeight();
+        }
+
+        this.args.setMode(mode);
     }
 
     /**
@@ -83,5 +116,32 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
     login(event: Event) {
         event.preventDefault();
         return this.auth.openLoginModal(true);
+    }
+
+    /**
+     * When drag resizing starts, set the pane to not animate height changes
+     */
+    @action
+    onDragStart() {
+        this.isDragResizing = true;
+
+        if (this.mode !== 'fit' && this.scrollableElement) {
+            this.fitHeight = this.scrollableElement.offsetHeight;
+            this.args.setMode('fit');
+        }
+    }
+
+    /**
+     * When drag resizing ends, update the pane with the new height
+     * @param {number} position
+     */
+    @action
+    onDragEnd(position: number) {
+        if (this.mode !== 'fit') {
+            this.args.setMode('fit');
+        }
+
+        this.fitHeight = Math.max(this.minFitHeight, this.fitHeight - position);
+        next(this, () => (this.isDragResizing = false));
     }
 }

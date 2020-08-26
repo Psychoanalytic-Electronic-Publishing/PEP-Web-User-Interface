@@ -7,13 +7,13 @@ export interface Theme {
 export const THEME_DEFAULT: Theme = {
     id: 'default',
     cssPath: '/assets/pep.css',
-    label: 'Navy (default)'
+    label: 'theme.themes.default'
 };
 
 export const THEME_TOMATO: Theme = {
     id: 'tomato',
     cssPath: '/assets/themes/tomato.css',
-    label: 'Tomato'
+    label: 'theme.themes.tomato'
 };
 
 export default [THEME_DEFAULT, THEME_TOMATO];

@@ -8,6 +8,14 @@
                 <DropdownMenu @horizontalPosition="right" as |DD|>
                     <DD.Trigger @htmlTag="button" class="btn btn-link">
                         <FaIcon @icon="bookmark" @size="lg" />
+                        <EmberTooltip
+                            @text={{t "search.form.savedSearch.label"}}
+                            @popperContainer="body"
+                            @side="bottom"
+                            @spacing={{5}}
+                            @effect="slide"
+                            @innerClass=""
+                        />
                     </DD.Trigger>
                     <DD.Content class="dropdown-menu">
                         <h6 class="dropdown-header">
@@ -64,7 +72,7 @@
                             <select class="custom-select search-form-term-control-type" {{on "change" (fn this.updateTermType searchTerm)}}>
                                 {{#each this.searchTypes as |searchType|}}
                                     <option value={{searchType.id}} selected={{eq searchType.id searchTerm.type}}>
-                                        {{searchType.label}}
+                                        {{t searchType.label}}
                                     </option>
                                 {{/each}}
                             </select>

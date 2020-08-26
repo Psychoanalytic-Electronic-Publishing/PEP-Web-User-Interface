@@ -1,9 +1,20 @@
 import Route from '@ember/routing/route';
+import { inject as service } from '@ember/service';
 
 import Application from 'pep/pods/application/controller';
 import IndexController from 'pep/pods/index/controller';
+import ConfigurationService from 'pep/services/configuration';
 
 export default class Index extends Route {
+    @service configuration!: ConfigurationService;
+
+    /**
+     * Returns the expert pick of the day abstract
+     */
+    model() {
+        return this.store.findRecord('abstract', this.configuration.base.home.expertPick.articleId);
+    }
+
     /**
      *
      * @param {IndexController} controller

@@ -23,3 +23,16 @@
         background-color: transparent;
     }
 }
+
+// used in places like "expert pick of the day"
+// hides some known elements of the abstract HTML
+// so only the main body content is displayed
+.pep-abstract-preview {
+    p.title,
+    p.title_author,
+    p.figure,
+    p.pagenumber,
+    p:empty {
+        display: none;
+    }
+}

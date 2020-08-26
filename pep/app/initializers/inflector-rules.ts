@@ -7,6 +7,7 @@ export function initialize() {
     //define all custom/irregular inflection rules (for model names, etc) here
     inflector.uncountable('whats-new');
     inflector.uncountable('whatsNew');
+    inflector.uncountable('configuration');
 }
 
 export default {
