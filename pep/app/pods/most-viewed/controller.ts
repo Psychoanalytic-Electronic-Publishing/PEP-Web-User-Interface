@@ -26,10 +26,19 @@ export default class MostViewed extends Controller {
     @tracked period: PossiblePeriodValues = 'all';
     queryType = 'MostViewed';
 
+    /**
+     * GET/SET for sourcename. Ember requires the set if we are using it as a query param.
+     * Eventually we should use journal IDS to search on instead of the title so that way we can
+     * reload them if coming from a pasted link
+     *
+     * @memberof MostViewed
+     */
     get sourcename() {
         return this.journal?.title ?? '';
     }
-    set sourcename(value) {}
+    set sourcename(value: string) {
+        console.log(value);
+    }
 
     get periods() {
         return PERIODS.map((item) => {

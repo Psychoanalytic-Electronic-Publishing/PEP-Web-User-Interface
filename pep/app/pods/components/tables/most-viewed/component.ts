@@ -4,6 +4,7 @@ import IntlService from 'ember-intl/services/intl';
 import { inject as service } from '@ember/service';
 import FastbootMediaService from 'pep/services/fastboot-media';
 import { computed } from '@ember/object';
+
 interface TablesMostViewedArgs {
     rows: Document[];
     hasMoreRows: boolean;

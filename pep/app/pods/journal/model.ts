@@ -3,7 +3,6 @@ import attr from 'ember-data/attr';
 
 export default class Journal extends DS.Model {
     // attributes
-
     @attr('string') abbrev!: string;
     @attr('string') bannerURL!: string;
     @attr('string') displayTitle!: string;

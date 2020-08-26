@@ -18,12 +18,11 @@ export default class Journal extends ApplicationSerializerMixin(DS.RESTSerialize
      */
     normalizeArrayResponse(
         store: DS.Store,
-        primaryModelClass: DS.Model,
+        primaryModelClass: ModelWithName,
         payload: any,
         id: string | number,
         requestType: string
     ) {
-        //@ts-ignore modelName does exist on the model class instance
         const modelKey = pluralize(camelize(primaryModelClass.modelName));
         if (payload?.sourceInfo) {
             payload.meta = payload.sourceInfo.responseInfo;
@@ -44,12 +43,11 @@ export default class Journal extends ApplicationSerializerMixin(DS.RESTSerialize
      */
     normalizeFindRecordResponse(
         store: DS.Store,
-        primaryModelClass: DS.Model,
+        primaryModelClass: ModelWithName,
         payload: any,
         id: string | number,
         requestType: string
     ) {
-        //@ts-ignore modelName does exist on the model class instance
         const modelKey = camelize(primaryModelClass.modelName);
         if (payload?.sourceInfo) {
             payload.meta = payload.sourceInfo.responseInfo;

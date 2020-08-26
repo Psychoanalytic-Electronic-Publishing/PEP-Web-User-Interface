@@ -8,6 +8,7 @@ import { inject as service } from '@ember/service';
 import { didCancel } from 'ember-concurrency';
 import { restartableTask } from 'ember-concurrency-decorators';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
+
 interface JournalParams {
     limit: number | null;
     offset: number | null;
@@ -23,13 +24,12 @@ export default class PowerSelectJournal extends Component<PowerSelectInfinityWit
     @tracked pageSize: number = 20;
 
     /**
-     * Queries the server for `tanks` using the passed in
+     * Queries the server for `journals` using the passed in
      * keyword.
      *
-     * @param {PowerSelectTankWithLocation} this
      * @param {string} keyword
      * @param {number} offset
-     * @returns Tank[]
+     * @returns Journal[]
      */
     @restartableTask
     *load(keyword: string, offset: number) {
@@ -66,7 +66,7 @@ export default class PowerSelectJournal extends Component<PowerSelectInfinityWit
     }
 
     /**
-     * Searches for `Tank` records matching the given keyword
+     * Searches for `Journal` records matching the given keyword
      * @param {String} keyword
      */
     @action
@@ -78,7 +78,7 @@ export default class PowerSelectJournal extends Component<PowerSelectInfinityWit
     }
 
     /**
-     * Loads the next page of `Tank` records matching the given keyword
+     * Loads the next page of `Journal` records matching the given keyword
      * @param {String} keyword
      * @return {Promise}
      */

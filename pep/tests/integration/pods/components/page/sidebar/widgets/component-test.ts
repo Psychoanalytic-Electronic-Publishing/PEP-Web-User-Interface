@@ -4,23 +4,23 @@ import { render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
 module('Integration | Component | page/sidebar/widgets', function(hooks) {
-  setupRenderingTest(hooks);
+    setupRenderingTest(hooks);
 
-  test('it renders', async function(assert) {
-    // Set any properties with this.set('myProperty', 'value');
-    // Handle any actions with this.set('myAction', function(val) { ... });
+    test('it renders', async function(assert) {
+        // Set any properties with this.set('myProperty', 'value');
+        // Handle any actions with this.set('myAction', function(val) { ... });
 
-    await render(hbs`{{page/sidebar/widgets}}`);
+        await render(hbs`{{page/sidebar/widgets}}`);
 
-    assert.equal(this.element.textContent.trim(), '');
+        assert.equal(this.element.textContent?.trim(), '');
 
-    // Template block usage:
-    await render(hbs`
+        // Template block usage:
+        await render(hbs`
       {{#page/sidebar/widgets}}
         template block text
       {{/page/sidebar/widgets}}
     `);
 
-    assert.equal(this.element.textContent.trim(), 'template block text');
-  });
+        assert.equal(this.element.textContent?.trim(), 'template block text');
+    });
 });

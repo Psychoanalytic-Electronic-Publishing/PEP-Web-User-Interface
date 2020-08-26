@@ -25,10 +25,19 @@ export default class MostCited extends Controller {
     @tracked journal?: Journal;
     @tracked period: PossiblePeriodValues = 'all';
 
+    /**
+     * GET/SET for sourcename. Ember requires the set if we are using it as a query param.
+     * Eventually we should use journal IDS to search on instead of the title so that way we can
+     * reload them if coming from a pasted link
+     *
+     * @memberof MostCited
+     */
     get sourcename() {
         return this.journal?.title ?? '';
     }
-    set sourcename(value) {}
+    set sourcename(value: string) {
+        console.log(value);
+    }
 
     queryType = 'MostCited';
 
