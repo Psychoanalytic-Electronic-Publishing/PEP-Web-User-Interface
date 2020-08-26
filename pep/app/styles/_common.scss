@@ -1,6 +1,8 @@
 // ---------------------------
 // Vendor / Template
 // ---------------------------
+@import 'variables';
+@import 'variables-theme';
 @import 'node_modules/bootstrap/scss/bootstrap';
 @import 'vendor/perfect-scrollbar';
 @import 'ember-basic-dropdown';

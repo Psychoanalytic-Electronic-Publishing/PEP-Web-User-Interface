@@ -7,7 +7,7 @@ import { DS } from 'ember-data';
 import { inject as service } from '@ember/service';
 import { didCancel } from 'ember-concurrency';
 import { restartableTask } from 'ember-concurrency-decorators';
-import FastbootService from 'ember-cli-fastboot/services/fastboot';
+import { dontRunInFastboot } from 'pep/decorators/fastboot';
 
 interface JournalParams {
     limit: number | null;
@@ -17,7 +17,6 @@ interface JournalParams {
 
 export default class PowerSelectJournal extends Component<PowerSelectInfinityWithSearch<Journal>> {
     @service store!: DS.Store;
-    @service fastboot!: FastbootService;
 
     @tracked options!: Journal[];
     @tracked canLoadMore: boolean = true;
@@ -56,13 +55,12 @@ export default class PowerSelectJournal extends Component<PowerSelectInfinityWit
      * @return {Array}
      */
     @action
+    @dontRunInFastboot
     async loadInitialPage() {
-        if (!this.fastboot.isFastBoot) {
-            //@ts-ignore TODO: Remove this when we have a type solution to this
-            const results = await this.load.perform();
-            this.options = results;
-            return results;
-        }
+        //@ts-ignore TODO: Remove this when we have a type solution to this
+        const results = await this.load.perform();
+        this.options = results;
+        return results;
     }
 
     /**

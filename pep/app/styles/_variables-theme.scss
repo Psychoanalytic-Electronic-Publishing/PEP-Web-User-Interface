@@ -2,6 +2,7 @@
 // Application variables
 // ---------------------------
 $logo-path: '/assets/images/logo.jpg';
+$white: #fff;
 $color-brand-primary: #313b46;
 $color-backdrop: #e9eef1;
 $color-backdrop-well: darken($color-backdrop, 2.5%);
@@ -30,3 +31,4 @@ $headings-font-family: Muli, -apple-system, BlinkMacSystemFont, 'Segoe UI', Robo
 $hr-border-color: rgba(#000, 0.06);
 $dropdown-border-color: #dbdbdb;
 $dropdown-border-radius: 0.21rem;
+$table-border: #e9e9e9;

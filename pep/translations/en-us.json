@@ -244,8 +244,8 @@
     },
     "relatedInfo": {
         "title": "Related Info",
-        "batchClose": "Close All",
-        "batchOpen": "Show All",
+        "batchClose": "Close all",
+        "batchOpen": "Show all",
         "widgets": {
             "expertPicks": {
                 "title": "Expert picks"
@@ -284,7 +284,7 @@
     "mostCited": {
         "pageTitle": "Most cited journal articles",
         "period": "Period",
-        "periodSelect": "Seelct a period",
+        "periodSelect": "Select a period",
         "fiveYears": "5 years",
         "tenYears": "10 years",
         "twentyYears": "20 years",
