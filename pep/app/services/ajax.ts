@@ -7,6 +7,7 @@ import { reject } from 'rsvp';
 
 import ENV from 'pep/config/environment';
 import { appendTrailingSlash } from 'pep/utils/url';
+import { guard } from 'pep/utils/types';
 
 export default class AjaxService extends Service {
     @service session!: SessionService;
@@ -53,7 +54,7 @@ export default class AjaxService extends Service {
      * @param  {RequestInit}  [options={}]
      * @returns {Promise}
      */
-    async request(url: string, options: RequestInit = {}) {
+    async request<T>(url: string, options: RequestInit = {}): Promise<T> {
         setProperties(options, {
             credentials: 'include', //NOTE: only needed if cookies must be sent in API requests (which are needed for auth right now)
             headers: { ...this.headers, ...(options.headers || {}) }
@@ -64,12 +65,12 @@ export default class AjaxService extends Service {
         const response = await fetch(requestUrl, options);
         const responseHeaders = this.parseHeaders(response.headers);
         const result = await this.handleResponse(response.status, responseHeaders, response);
-        if (this.isSuccess(response.status)) {
+        if (this.isSuccess(response.status) && guard(result, 'status')) {
             const isNoContent = this.normalizeStatus(response.status) === 204;
             if (isNoContent) {
-                return result;
+                return result as any;
             } else {
-                return await result.json();
+                return (await result.json()) as T;
             }
         } else {
             return reject(result);
@@ -83,7 +84,7 @@ export default class AjaxService extends Service {
      * @param  {Object} response
      * @returns {Promise}
      */
-    async handleResponse(status: number, _headers: {}, response: Response) {
+    async handleResponse(status: number, _headers: {}, response: Response): Promise<Response | Error> {
         // uncomment when using the @gavant/ember-app-version-update addon
         // this.versionUpdate.checkResponseHeaders(headers);
 
@@ -100,7 +101,7 @@ export default class AjaxService extends Service {
             return reject();
         }
 
-        return error;
+        return error as Error;
     }
 
     /**

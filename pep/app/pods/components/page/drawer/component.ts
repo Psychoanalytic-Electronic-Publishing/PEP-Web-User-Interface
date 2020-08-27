@@ -7,13 +7,16 @@ import ModalService from '@gavant/ember-modals/services/modal';
 
 import DrawerService from 'pep/services/drawer';
 import AuthService from 'pep/services/auth';
-
+import AjaxService from 'pep/services/ajax';
+import ENV from 'pep/config/environment';
+import { ServerStatus } from 'pep/pods/components/page/nav/component';
 interface PageDrawerArgs {}
 
 export default class PageDrawer extends Component<PageDrawerArgs> {
     @service drawer!: DrawerService;
     @service session!: SessionService;
     @service auth!: AuthService;
+    @service ajax!: AjaxService;
     @service modal!: ModalService;
 
     @tracked isUserMenuOpen = false;
@@ -32,6 +35,21 @@ export default class PageDrawer extends Component<PageDrawerArgs> {
     @action
     openPreferencesModal() {
         return this.modal.open('user/preferences', {});
+    }
+
+    /**
+     * Open the about modal dialog
+     *
+     * @returns Void
+     * @memberof PageDrawer
+     */
+    @action
+    openAboutModal() {
+        const promise = this.ajax.request<ServerStatus>('Session/Status');
+        return this.modal.open('user/about', {
+            serverInformation: promise,
+            clientBuildVersion: ENV.buildVersion
+        });
     }
 
     /**

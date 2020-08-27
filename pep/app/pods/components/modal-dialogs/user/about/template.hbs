@@ -1,0 +1,24 @@
+<ModalDialog @onClose={{@onClose}} @size="md" as |Modal|>
+    <Modal.header @title={{t "about.title"}} />
+    <Modal.body>
+        <div class="mb-2">
+            <div>{{t "about.client"}}</div>
+            <div class="text-muted small">{{@options.clientBuildVersion}}</div>
+        </div>
+        <div class="mb-2">
+            <div>{{t "about.server"}}</div>
+            <div class="text-muted small">{{@options.serverInformation.text_server_version}}</div>
+            <div class="text-muted small">{{@options.serverInformation.dataSource}}</div>
+        </div>
+    </Modal.body>
+    <Modal.footer>
+        <div class="d-flex justify-content-between w-100 align-items-center">
+            {{t "brand.copywrite" htmlSafe=true}}
+            <Button
+                @type="primary"
+                @label={{t "common.close"}}
+                @action={{@onClose}}
+            />
+        </div>
+    </Modal.footer>
+</ModalDialog>

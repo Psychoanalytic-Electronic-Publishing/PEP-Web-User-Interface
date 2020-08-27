@@ -67,6 +67,10 @@
                         <FaIcon @icon="comment-exclamation" @fixedWidth={{true}} class="text-muted" />
                         {{t "nav.user.reportProblem"}}
                     </DropdownAction>
+                    <DropdownAction @dd={{DD}} @action={{this.openAboutModal}}>
+                        <FaIcon @icon="info-square" @fixedWidth={{true}} class="text-muted" />
+                        {{t "nav.user.about"}}
+                    </DropdownAction>
                     <div class="dropdown-divider"></div>
                     {{#if this.session.isAuthenticated}}
                         <DropdownAction @dd={{DD}} @action={{this.logout}}>
