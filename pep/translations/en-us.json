@@ -275,7 +275,15 @@
             },
             "whatsNew": {
                 "title": "What's new?",
-                "issue": "Issue #{issueNum}, Vol {volNum} &bull; {updatedDate}"
+                "issue": "Issue #{issueNum}, Vol {volNum} &bull; {updatedDate}",
+                "signUp": "You can now sign up to be notified when new content is added by entering your email below. When new content is added we will automatically send you an email with a list of what was added, with links to it on PEP-Web!",
+                "emailAddress": "Email Address",
+                "update": "Update subscriptions",
+                "alerts": {
+                    "journals": "PEP-Web Journals (does not include IJP Open)",
+                    "videos": "PEP-Web Videos",
+                    "ijp": "IJP Open"
+                }
             },
             "yourInterests": {
                 "title": "Your interests"
@@ -296,10 +304,10 @@
         "table": {
             "title": "Title",
             "citations": "Publication citations",
-            "fiveYears": "Last 5 years",
-            "tenYears": "Last 10 years",
-            "twentyYears": "Last 20 years",
-            "allTime": "All time"
+            "fiveYears": "Cit. last 5 years",
+            "tenYears": "Cit. last 10 years",
+            "twentyYears": "Cit. last 20 years",
+            "allTime": "Cit. all time"
         }
     },
     "mostViewed": {
@@ -308,10 +316,10 @@
         "table": {
             "publication": "Publication",
             "popularity": "Popularity by requests",
-            "week": "Last week",
-            "month": "Last month",
-            "sixMonths": "Last 6 months",
-            "calendarYear": "Last calendar year"
+            "week": "Req. last week",
+            "month": "Req. last month",
+            "sixMonths": "Req. last 6 months",
+            "calendarYear": "Req. last calendar year"
         }
     },
 

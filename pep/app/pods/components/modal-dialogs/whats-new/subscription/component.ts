@@ -16,7 +16,7 @@ interface ModalDialogsWhatsNewSubscriptionArgs {
     onClose: () => void;
     options: {
         changeset: any;
-        onAuthenticated: (response: any) => void;
+        onUpdate: (response: any) => void;
     };
 }
 
@@ -27,42 +27,25 @@ export default class ModalDialogsWhatsNewSubscription extends Component<ModalDia
     @service notifications!: NotificationService;
     @service intl!: IntlService;
 
-    @tracked loginError = null;
-
     /**
-     * Submits the login dialog form and logs the user in
+     * Submits the update dialog form
+     * TODO this is just a placeholder, will eventually be filled in
      * @param {ModelChangeset<LoginForm>} changeset
      */
     @action
-    async login(changeset: ModelChangeset<LoginForm>) {
+    async update(changeset: ModelChangeset<LoginForm>) {
         try {
-            const username = changeset.username;
-            const password = changeset.password;
             this.loadingBar.show();
-            const response = await this.session.authenticate('authenticator:pep', username, password);
-            this.loginError = null;
-            this.loadingBar.hide();
-            this.args.onClose();
-            this.notifications.success(this.intl.t('login.success'));
-            await this.args.options.onAuthenticated?.(response);
+            const response = await this.store.query('document', {
+                queryType: 'MostCited',
+                period: 'all',
+                morethan: 10,
+                limit: 10
+            });
             return response;
         } catch (err) {
-            this.loginError = err;
             this.loadingBar.hide();
             return reject(err);
         }
-    }
-
-    /**
-     * Transitions to a subscribe/register page
-     * TODO this is just a placeholder, will eventually change or be removed completely
-     * @param {Event} event
-     */
-    @action
-    async transitionToSubscribe(event: Event) {
-        event.preventDefault();
-        await this.args.onClose();
-        //TODO go to real subscribe page
-        return this.router.transitionTo('index');
     }
 }
