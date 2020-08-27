@@ -14,6 +14,7 @@ declare const config: {
     locationType: string;
     rootURL: string;
     routerRootURL: string;
+    buildVersion: string;
     apiBaseUrl: string;
     apiNamespace: string;
     apiDataNamespace: string;

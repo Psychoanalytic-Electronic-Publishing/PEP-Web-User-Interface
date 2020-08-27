@@ -65,6 +65,7 @@ module.exports = function(environment) {
         },
 
         //deployment environment-specific variables
+        buildVersion: process.env.BUILD_VERSION,
         apiBaseUrl: process.env.API_BASE_URL,
         apiNamespace: process.env.API_NAMESPACE,
         apiDataNamespace: process.env.API_DATA_NAMESPACE,

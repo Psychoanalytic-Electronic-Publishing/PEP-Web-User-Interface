@@ -7,6 +7,7 @@ const path = require('path');
 module.exports = function(env) {
     return {
         clientAllowedKeys: [
+            'BUILD_VERSION',
             'ROOT_URL',
             'API_BASE_URL',
             'API_NAMESPACE',
@@ -19,6 +20,7 @@ module.exports = function(env) {
             'CLIENT_ID'
         ],
         fastbootAllowedKeys: [
+            'BUILD_VERSION',
             'ROOT_URL',
             'API_BASE_URL',
             'API_NAMESPACE',
