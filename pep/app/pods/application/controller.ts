@@ -12,6 +12,7 @@ import NotificationService from 'ember-cli-notifications/services/notifications'
 
 import Modal from '@gavant/ember-modals/services/modal';
 import ENV from 'pep/config/environment';
+import IntlService from 'ember-intl/services/intl';
 export interface ServerStatus {
     db_server_ok: boolean;
     text_server_ok: boolean;
@@ -28,6 +29,7 @@ export default class Application extends Controller {
     @service ajax!: AjaxService;
     @service notifications!: NotificationService;
     @service modal!: Modal;
+    @service intl!: IntlService;
 
     @tracked smartSearchTerm: string = '';
     @tracked matchSynonyms: boolean = false;
@@ -130,7 +132,7 @@ export default class Application extends Controller {
                 clientBuildVersion: ENV.buildVersion
             });
         } catch (error) {
-            this.notifications.error(error);
+            this.notifications.error(this.intl.t('serverErrors.unknown.unexpected'));
             throw error;
         } finally {
             this.loadingBar.hide();

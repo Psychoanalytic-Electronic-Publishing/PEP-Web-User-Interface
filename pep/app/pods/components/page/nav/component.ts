@@ -17,11 +17,8 @@ interface PageNavArgs {
 export default class PageNav extends Component<PageNavArgs> {
     @service modal!: ModalService;
     @service session!: SessionService;
-    @service ajax!: AjaxService;
     @service auth!: AuthService;
     @service drawer!: DrawerService;
-    @service notifications!: NotificationService;
-    @service loadingBar!: LoadingBarService;
 
     //json stringify is workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
