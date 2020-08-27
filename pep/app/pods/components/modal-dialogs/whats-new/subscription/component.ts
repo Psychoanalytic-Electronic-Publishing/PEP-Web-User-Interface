@@ -1,16 +1,14 @@
 import Component from '@glimmer/component';
-import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { reject } from 'rsvp';
 import RouterService from '@ember/routing/router-service';
 import SessionService from 'ember-simple-auth/services/session';
 import NotificationService from 'ember-cli-notifications/services/notifications';
-import { ModelChangeset } from '@gavant/ember-validations/utilities/create-changeset';
 import IntlService from 'ember-intl/services/intl';
 
 import LoadingBar from 'pep/services/loading-bar';
-import { LoginForm } from 'pep/services/auth';
+import DS from 'ember-data';
 
 interface ModalDialogsWhatsNewSubscriptionArgs {
     onClose: () => void;
@@ -26,6 +24,7 @@ export default class ModalDialogsWhatsNewSubscription extends Component<ModalDia
     @service loadingBar!: LoadingBar;
     @service notifications!: NotificationService;
     @service intl!: IntlService;
+    @service store!: DS.Store;
 
     /**
      * Submits the update dialog form
@@ -33,7 +32,7 @@ export default class ModalDialogsWhatsNewSubscription extends Component<ModalDia
      * @param {ModelChangeset<LoginForm>} changeset
      */
     @action
-    async update(changeset: ModelChangeset<LoginForm>) {
+    async update() {
         try {
             this.loadingBar.show();
             const response = await this.store.query('document', {

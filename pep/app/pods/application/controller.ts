@@ -7,10 +7,29 @@ import SessionService from 'ember-simple-auth/services/session';
 
 import LoadingBarService from 'pep/services/loading-bar';
 import { SEARCH_TYPE_EVERYWHERE, SearchTermValue } from 'pep/constants/search';
+import AjaxService from 'pep/services/ajax';
+import NotificationService from 'ember-cli-notifications/services/notifications';
+
+import Modal from '@gavant/ember-modals/services/modal';
+import ENV from 'pep/config/environment';
+import IntlService from 'ember-intl/services/intl';
+export interface ServerStatus {
+    db_server_ok: boolean;
+    text_server_ok: boolean;
+    text_server_version: string;
+    opas_version: string;
+    dataSource: string;
+    timeStamp: string;
+    user_ip: string;
+}
 
 export default class Application extends Controller {
     @service loadingBar!: LoadingBarService;
     @service session!: SessionService;
+    @service ajax!: AjaxService;
+    @service notifications!: NotificationService;
+    @service modal!: Modal;
+    @service intl!: IntlService;
 
     @tracked smartSearchTerm: string = '';
     @tracked matchSynonyms: boolean = false;
@@ -95,6 +114,29 @@ export default class Application extends Controller {
     @action
     updateMatchSynonyms(isChecked: boolean) {
         this.matchSynonyms = isChecked;
+    }
+
+    /**
+     * Open the about modal dialog
+     *
+     * @returns Promise<Void>
+     * @memberof PageDrawer
+     */
+    @action
+    async openAboutModal() {
+        try {
+            this.loadingBar.show();
+            const status = await this.ajax.request<ServerStatus>('Session/Status');
+            return this.modal.open('user/about', {
+                serverInformation: status,
+                clientBuildVersion: ENV.buildVersion
+            });
+        } catch (error) {
+            this.notifications.error(this.intl.t('serverErrors.unknown.unexpected'));
+            throw error;
+        } finally {
+            this.loadingBar.hide();
+        }
     }
 }
 

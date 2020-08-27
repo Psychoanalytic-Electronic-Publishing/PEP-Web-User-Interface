@@ -41,6 +41,7 @@
         "browse": "Browse",
         "read": "Read",
         "user": {
+            "about": "About",
             "account": "My account",
             "preferences": "Preferences",
             "help": "Help",
@@ -340,6 +341,11 @@
             "label": "Color theme",
             "select": "Select a theme"
         }
+    },
+    "about": {
+        "title": "About",
+        "client": "Client version",
+        "server": "Server version"
     },
     "language": {
         "codes": {
