@@ -1,13 +1,13 @@
 <ModalDialog @onClose={{@onClose}} @size="md" as |Modal|>
-    <Modal.header @title={{t "login.title"}} />
+    <Modal.header @title={{t "relatedInfo.widgets.whatsNew.title"}} />
     <FormValidator
         @changeset={{@options.changeset}}
-        @submit={{this.login}}
+        @submit={{this.update}}
         as |changeset validator|
     >
         <Modal.body>
             <p class="text-muted">
-                {{t "login.info"}}
+                {{t "relatedInfo.widgets.whatsNew.signUp"}}
             </p>
             <Alert
                 @isShown={{bool this.loginError}}
@@ -20,24 +20,25 @@
                     <validator.input @errors={{changeset.error.username.validation}} class="input-validator-compact">
                         <FlInput
                             @value={{changeset.emailAddress}}
-                            @placeholder={{t "whatsNew.emailAddress"}}
+                            @placeholder={{t "relatedInfo.widgets.whatsNew.emailAddress"}}
                             maxlength="128"
                         />
                     </validator.input>
-                    <validator.input @errors={{changeset.error.password.validation}} class="input-validator-compact">
-                        <FlInput
-                            @value={{changeset.password}}
-                            @placeholder={{t "login.password"}}
-                            maxlength="128"
-                            type="password"
-                        />
-                    </validator.input>
-                    <p class="mb-0 text-muted">
-                        {{t "login.notAMember"}}
-                        <a href="" {{on "click" this.transitionToSubscribe}}>
-                            {{t "login.clickToSubscribe"}}
-                        </a>.
-                    </p>
+                    <CheckboxInput
+                        @checked={{@matchSynonyms}}
+                        @onChange={{@matchSynonymsChange}}
+                        @label={{t "relatedInfo.widgets.whatsNew.alerts.journals"}}
+                    />
+                    <CheckboxInput
+                        @checked={{@matchSynonyms}}
+                        @onChange={{@matchSynonymsChange}}
+                        @label={{t "relatedInfo.widgets.whatsNew.alerts.videos"}}
+                    />
+                    <CheckboxInput
+                        @checked={{@matchSynonyms}}
+                        @onChange={{@matchSynonymsChange}}
+                        @label={{t "relatedInfo.widgets.whatsNew.alerts.ijp"}}
+                    />
                 </div>
             </div>
         </Modal.body>
@@ -49,7 +50,7 @@
             />
             <ButtonSpinner
                 @type="primary"
-                @label={{t "login.title"}}
+                @label={{t "relatedInfo.widgets.whatsNew.update"}}
                 @wide={{true}}
                 @action={{validator.submit}}
             />

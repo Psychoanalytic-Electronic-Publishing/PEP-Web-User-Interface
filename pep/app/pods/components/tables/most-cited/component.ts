@@ -25,100 +25,46 @@ export default class TablesMostCited extends Component<TablesMostCitedArgs> {
      */
     @computed()
     get columns(): ColumnValue[] {
-        return this.fastbootMedia.isSmallDevice
-            ? [
-                  {
-                      id: '0',
-                      valuePath: 'title',
-                      name: this.intl.t('mostCited.table.title'),
-                      isFixedLeft: false,
-                      width: 200,
-                      staticWidth: 200,
-                      cellComponent: 'tables/cell/most-viewed-publication',
-                      isSortable: true
-                  },
+        return [
+            {
+                id: '0',
+                valuePath: 'title',
+                name: this.intl.t('mostCited.table.title'),
+                isFixedLeft: false,
+                width: 200,
+                staticWidth: 200,
+                cellComponent: 'tables/cell/most-viewed-publication',
+                isSortable: true
+            },
 
-                  {
-                      name: this.intl.t('mostCited.table.fiveYears'),
-                      valuePath: 'stat.art_cited_5',
-                      width: 100,
-                      staticWidth: 100,
-                      isSortable: true
-                  },
-                  {
-                      name: this.intl.t('mostCited.table.tenYears'),
-                      valuePath: 'stat.art_cited_10',
-                      width: 100,
-                      staticWidth: 100,
-                      isSortable: true
-                  },
-                  {
-                      name: this.intl.t('mostCited.table.twentyYears'),
-                      valuePath: 'stat.art_cited_20',
-                      width: 100,
-                      staticWidth: 100,
-                      isSortable: true
-                  },
-                  {
-                      name: this.intl.t('mostCited.table.allTime'),
-                      valuePath: 'stat.art_cited_all',
-                      width: 100,
-                      staticWidth: 100,
-                      isSortable: true
-                  }
-              ]
-            : [
-                  {
-                      id: '0',
-                      valuePath: 'title',
-                      name: this.intl.t('mostCited.table.title'),
-                      isFixedLeft: false,
-                      width: 200,
-                      staticWidth: 200,
-                      maxWidth: 200,
-                      minWidth: 200,
-                      cellComponent: 'tables/cell/most-viewed-publication',
-                      isSortable: true
-                  },
-
-                  {
-                      id: '1',
-                      name: this.intl.t('mostCited.table.citations'),
-                      width: 400,
-                      staticWidth: 400,
-                      maxWidth: 400,
-                      minWidth: 400,
-                      subcolumns: [
-                          {
-                              name: this.intl.t('mostCited.table.fiveYears'),
-                              valuePath: 'stat.art_cited_5',
-                              width: 100,
-                              staticWidth: 100,
-                              isSortable: true
-                          },
-                          {
-                              name: this.intl.t('mostCited.table.tenYears'),
-                              valuePath: 'stat.art_cited_10',
-                              width: 100,
-                              staticWidth: 100,
-                              isSortable: true
-                          },
-                          {
-                              name: this.intl.t('mostCited.table.twentyYears'),
-                              valuePath: 'stat.art_cited_20',
-                              width: 100,
-                              staticWidth: 100,
-                              isSortable: true
-                          },
-                          {
-                              name: this.intl.t('mostCited.table.allTime'),
-                              valuePath: 'stat.art_cited_all',
-                              width: 100,
-                              staticWidth: 100,
-                              isSortable: true
-                          }
-                      ]
-                  }
-              ];
+            {
+                name: this.intl.t('mostCited.table.fiveYears'),
+                valuePath: 'stat.art_cited_5',
+                width: 100,
+                staticWidth: 100,
+                isSortable: true
+            },
+            {
+                name: this.intl.t('mostCited.table.tenYears'),
+                valuePath: 'stat.art_cited_10',
+                width: 100,
+                staticWidth: 100,
+                isSortable: true
+            },
+            {
+                name: this.intl.t('mostCited.table.twentyYears'),
+                valuePath: 'stat.art_cited_20',
+                width: 100,
+                staticWidth: 100,
+                isSortable: true
+            },
+            {
+                name: this.intl.t('mostCited.table.allTime'),
+                valuePath: 'stat.art_cited_all',
+                width: 100,
+                staticWidth: 100,
+                isSortable: true
+            }
+        ];
     }
 }
