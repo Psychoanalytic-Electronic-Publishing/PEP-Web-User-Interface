@@ -8,17 +8,10 @@ import AuthService from 'pep/services/auth';
 import DrawerService from 'pep/services/drawer';
 import { SEARCH_DEFAULT_TERMS, SEARCH_DEFAULT_FACETS } from 'pep/constants/search';
 import AjaxService from 'pep/services/ajax';
-import ENV from 'pep/config/environment';
-interface PageNavArgs {}
-
-export interface ServerStatus {
-    db_server_ok: boolean;
-    text_server_ok: boolean;
-    text_server_version: string;
-    opas_version: string;
-    dataSource: string;
-    timeStamp: string;
-    user_ip: string;
+import NotificationService from 'ember-cli-notifications/services/notifications';
+import LoadingBarService from 'pep/services/loading-bar';
+interface PageNavArgs {
+    openAboutModal: () => Promise<void>;
 }
 
 export default class PageNav extends Component<PageNavArgs> {
@@ -27,6 +20,8 @@ export default class PageNav extends Component<PageNavArgs> {
     @service ajax!: AjaxService;
     @service auth!: AuthService;
     @service drawer!: DrawerService;
+    @service notifications!: NotificationService;
+    @service loadingBar!: LoadingBarService;
 
     //json stringify is workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
@@ -47,25 +42,6 @@ export default class PageNav extends Component<PageNavArgs> {
     @action
     openLoginModal() {
         return this.auth.openLoginModal(true);
-    }
-
-    /**
-     * Open the about modal dialog
-     *
-     * @returns Promise<Void>
-     * @memberof PageDrawer
-     */
-    @action
-    async openAboutModal() {
-        try {
-            const result = await this.ajax.request<ServerStatus>('Session/Status');
-            return this.modal.open('user/about', {
-                serverInformation: result,
-                clientBuildVersion: ENV.buildVersion
-            });
-        } catch (error) {
-            return error;
-        }
     }
 
     /**

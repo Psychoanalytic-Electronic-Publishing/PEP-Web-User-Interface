@@ -13,15 +13,4 @@ interface ModalDialogsUserAboutArgs {
     };
 }
 
-export default class ModalDialogsUserAbout extends Component<ModalDialogsUserAboutArgs> {
-    @service theme!: ThemeService;
-
-    /**
-     * Update the current theme
-     * @param {String} newThemeId
-     */
-    @action
-    updateTheme(newThemeId: string) {
-        this.theme.updateTheme(newThemeId);
-    }
-}
+export default class ModalDialogsUserAbout extends Component<ModalDialogsUserAboutArgs> {}

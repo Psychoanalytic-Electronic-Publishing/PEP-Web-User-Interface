@@ -12,15 +12,6 @@ module('Integration | Component | modal-dialogs/user/about', function(hooks) {
 
         await render(hbs`{{modal-dialogs/user/about}}`);
 
-        assert.equal(this.element.textContent?.trim(), '');
-
-        // Template block usage:
-        await render(hbs`
-      {{#modal-dialogs/user/about}}
-        template block text
-      {{/modal-dialogs/user/about}}
-    `);
-
-        assert.equal(this.element.textContent?.trim(), 'template block text');
+        assert.ok(this.element.textContent);
     });
 });
