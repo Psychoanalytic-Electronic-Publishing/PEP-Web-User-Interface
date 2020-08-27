@@ -54,16 +54,10 @@ export default class PageSidebarWidgetsWhatsNew extends Component<PageSidebarWid
     /**
      * Open modal for subscribing to emails
      *
-     * @param {Event} event
      * @memberof PageSidebarWidgetsWhatsNew
      */
     @action
-    openModal(event: Event) {
-        event.preventDefault();
-        event.stopPropagation();
-        // const model: LoginForm = { username: null, password: null };
-        // const changeset = createChangeset<LoginForm>(model, LoginValidations);
-        // this.dontRedirectOnLogin = dontRedirectOnLogin;
+    openModal() {
         this.modal.open('whats-new/subscription', {});
     }
 }

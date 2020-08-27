@@ -60,13 +60,10 @@ export default class PageSidebarWidgetsMostViewed extends Component<PageSidebarW
      * Transition to the table on click. Stop anything else from happening so we dont close/open the
      * widget
      *
-     * @param {Event} event
      * @memberof PageSidebarWidgetsMostViewed
      */
     @action
-    viewTable(event: Event) {
-        event.preventDefault();
-        event.stopPropagation();
+    viewTable() {
         this.router.transitionTo('most-viewed');
     }
 }
