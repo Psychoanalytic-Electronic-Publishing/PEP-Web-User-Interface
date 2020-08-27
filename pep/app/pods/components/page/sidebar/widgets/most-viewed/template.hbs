@@ -6,12 +6,14 @@
     {{did-insert this.onElementInsert}}
     ...attributes
 as |Panel|>
-    <Panel.header>
-        {{t "relatedInfo.widgets.mostViewed.title"}}
-        <span class="chart widget-icon" {{on "click" this.viewTable}}>
-            <FaIcon @icon="table" @prefix="fal"/>
-        </span>
-    </Panel.header>
+    <Panel.header
+        @title={{t "relatedInfo.widgets.mostViewed.title"}}
+        @secondaryAction={{hash
+            action=this.viewTable
+            label=(t "common.viewAll")
+            icon="file-search"
+        }}
+    />
     <Panel.body>
         <ContentWithPlaceholder
             @placeholderComponent="loading/widget"

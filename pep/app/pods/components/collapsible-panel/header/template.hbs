@@ -1,14 +1,40 @@
-<a class="collapsible-panel-header d-block p-3" href="" {{on "click" @toggle}}>
-    <h5 class="mb-0 text-dark">
+<div class="collapsible-panel-header d-block d-flex align-items-center">
+    <button
+        type="button"
+        class="d-flex align-items-center flex-grow-1 p-3 collapsible-panel-toggle"
+        {{on "click" @toggle}}
+    >
         <FaIcon
             @icon={{if @isOpen "caret-down" "caret-right"}}
             @fixedWidth={{true}}
             class="text-primary mr-1 d-inline-block"
         />
-        {{#if hasBlock}}
-            {{yield}}
-        {{else}}
-            {{@title}}
+        {{#if @title}}
+            <h5 class="mb-0 text-dark">{{@title}}</h5>
         {{/if}}
-    </h5>
-</a>
+        {{yield}}
+    </button>
+    {{#if @secondaryAction}}
+        <button
+            type="button"
+            class="p-3 collapsible-panel-action"
+            aria-label={{@secondaryAction.label}}
+            {{on "click" @secondaryAction.action}}
+        >
+            <FaIcon
+                @icon={{@secondaryAction.icon}}
+                @fixedWidth={{true}}
+                class="collapsible-panel-action-icon"
+                @size="lg"
+            />
+            <EmberTooltip
+                @text={{@secondaryAction.label}}
+                @popperContainer="body"
+                @side="left"
+                @spacing={{5}}
+                @effect="slide"
+                @innerClass=""
+            />
+        </button>
+    {{/if}}
+</div>

@@ -1,0 +1,23 @@
+.collapsible-panel {
+    &-toggle,
+    &-action {
+        border: 0;
+        background-color: transparent;
+    }
+
+    &-action {
+        border-left: 1px solid $color-divider;
+
+        &-icon {
+            color: $link-color;
+        }
+
+        &:hover,
+        &:focus,
+        &:active {
+            .collapsible-panel-action-icon {
+                color: $link-hover-color;
+            }
+        }
+    }
+}
