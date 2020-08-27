@@ -1,4 +1,5 @@
-# pep
+# PEP-Web User Interface (Client)
+Single Page App Graphical User Interface for PEP-Web
 
 This README outlines the details of collaborating on this Ember application.
 A short introduction of this app could easily go here.
