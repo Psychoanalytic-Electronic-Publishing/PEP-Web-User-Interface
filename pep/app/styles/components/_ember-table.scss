@@ -5,7 +5,7 @@
             border-top: 1px solid $white;
         }
         tr:nth-child(2) > th {
-            border-top: 1px solid $table-border;
+            border-top: 1px solid $table-border-color;
             &:first-child {
                 padding-left: 0.75rem !important;
             }

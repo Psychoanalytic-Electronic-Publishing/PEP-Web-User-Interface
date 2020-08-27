@@ -35,6 +35,10 @@ as |Panel|>
                     </li>
                 {{/each}}
             </ul>
+            <LinkTo @route="most-viewed">
+                {{t "common.viewAll"}}
+                <FaIcon @icon="arrow-right" @prefix="fal"/>
+            </LinkTo>
         </ContentWithPlaceholder>
     </Panel.body>
 </CollapsiblePanel>

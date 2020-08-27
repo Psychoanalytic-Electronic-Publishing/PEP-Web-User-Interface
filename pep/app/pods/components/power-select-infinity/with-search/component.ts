@@ -3,7 +3,6 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { isBlank } from '@ember/utils';
 import { timeout, didCancel } from 'ember-concurrency';
-import { task } from 'ember-concurrency-decorators';
 
 interface PowerSelectInfinityWithSearchArgs<T> {
     options: any[];
@@ -54,7 +53,6 @@ export default class PowerSelectInfinityWithSearch<T> extends Component<PowerSel
      * @param {(string | null)} term
      * @return any[]
      */
-    @task
     *searchTask(term: string | null) {
         yield timeout(this.searchDebounceDelay);
         try {

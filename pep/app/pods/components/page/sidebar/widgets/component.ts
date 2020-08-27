@@ -19,7 +19,7 @@ export default class PageSidebarWidgets extends Component<PageSidebarWidgetsArgs
      * @memberof PageSidebarWidgets
      */
     get showCloseAll() {
-        return this.openWidgets.length > 2;
+        return this.openWidgets.length >= 2;
     }
 
     /**
