@@ -6,12 +6,14 @@
     {{did-insert this.onElementInsert}}
     ...attributes
 as |Panel|>
-    <Panel.header>
-        {{t "relatedInfo.widgets.whatsNew.title"}}
-        <span class="widget-icon" {{on "click" this.openModal}}>
-            <FaIcon @icon="envelope" @prefix="fal"/>
-        </span>
-    </Panel.header>
+    <Panel.header
+        @title={{t "relatedInfo.widgets.whatsNew.title"}}
+        @secondaryAction={{hash
+            action=this.openModal
+            label=(t "relatedInfo.widgets.whatsNew.update")
+            icon="envelope"
+        }}
+    />
     <Panel.body>
         <ContentWithPlaceholder
             @placeholderComponent="loading/widget"
@@ -39,6 +41,14 @@ as |Panel|>
                     </li>
                 {{/each}}
             </ul>
+            <Button
+                @action={{this.openModal}}
+                @type="link"
+                class="p-0"
+            >
+                {{t "relatedInfo.widgets.whatsNew.update"}}
+                <FaIcon @icon="arrow-right" @prefix="fal"/>
+            </Button>
         </ContentWithPlaceholder>
     </Panel.body>
 </CollapsiblePanel>

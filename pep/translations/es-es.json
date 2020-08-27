@@ -23,7 +23,9 @@
         "numResults": "{count} {count, plural, =1 {'<span class=\"text-muted\">'result'</span>'} other {'<span class=\"text-muted\">'results'</span>'}}",
         "noResults": "No results found",
         "loadingResults": "Loading results...",
-        "loading": "Loading..."
+        "loading": "Loading...",
+        "filter": "Filter",
+        "viewAll": "View all"
     },
     "serverErrors": {
         "heading": "The following {count, plural, =1 {error} other {errors}} occurred while attempting to process your request.",
@@ -242,6 +244,9 @@
         }
     },
     "relatedInfo": {
+        "title": "Related Info",
+        "batchClose": "Close all",
+        "batchOpen": "Show all",
         "widgets": {
             "expertPicks": {
                 "title": "Expert picks"
@@ -270,13 +275,54 @@
             },
             "whatsNew": {
                 "title": "What's new?",
-                "issue": "Issue #{issueNum}, Vol {volNum} &bull; {updatedDate}"
+                "issue": "Issue #{issueNum}, Vol {volNum} &bull; {updatedDate}",
+                "signUp": "You can now sign up to be notified when new content is added by entering your email below. When new content is added we will automatically send you an email with a list of what was added, with links to it on PEP-Web!",
+                "emailAddress": "Email Address",
+                "update": "Update subscriptions",
+                "alerts": {
+                    "journals": "PEP-Web Journals (does not include IJP Open)",
+                    "videos": "PEP-Web Videos",
+                    "ijp": "IJP Open"
+                }
             },
             "yourInterests": {
                 "title": "Your interests"
             }
         }
     },
+    "mostCited": {
+        "pageTitle": "Most cited journal articles",
+        "period": "Period",
+        "periodSelect": "Select a period",
+        "fiveYears": "5 years",
+        "tenYears": "10 years",
+        "twentyYears": "20 years",
+        "allYears": "All years",
+        "author": "Author",
+        "journal": "Journal",
+        "title": "Title",
+        "table": {
+            "title": "Title",
+            "citations": "Publication citations",
+            "fiveYears": "Cit. last 5 years",
+            "tenYears": "Cit. last 10 years",
+            "twentyYears": "Cit. last 20 years",
+            "allTime": "Cit. all time"
+        }
+    },
+    "mostViewed": {
+        "pageTitle": "Most viewed journal articles",
+        "period": "Period",
+        "table": {
+            "publication": "Publication",
+            "popularity": "Popularity by requests",
+            "week": "Req. last week",
+            "month": "Req. last month",
+            "sixMonths": "Req. last 6 months",
+            "calendarYear": "Req. last calendar year"
+        }
+    },
+
     "login": {
         "title": "Login",
         "info": "This is the Psychoanalytic Electronic Publishing Archive full text database. It is freely available for everyone to search, view tables of contents, and view summaries. However you will need a subscription in order to view the full text of articles and books and follow links within the database.",
