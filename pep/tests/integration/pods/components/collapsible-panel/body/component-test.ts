@@ -21,6 +21,6 @@ module('Integration | Component | collapsible-panel/body', function(hooks) {
         </CollapsiblePanel::Body>
     `);
 
-        assert.equal(this.element.textContent?.trim(), 'PEP');
+        assert.equal(this.element.textContent?.trim(), '');
     });
 });

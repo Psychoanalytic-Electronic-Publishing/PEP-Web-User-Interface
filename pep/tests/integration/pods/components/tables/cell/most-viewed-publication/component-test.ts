@@ -12,15 +12,6 @@ module('Integration | Component | tables/cell/most-viewed-publication', function
 
         await render(hbs`{{tables/cell/most-viewed-publication}}`);
 
-        assert.equal(this.element.textContent?.trim(), '');
-
-        // Template block usage:
-        await render(hbs`
-      {{#tables/cell/most-viewed-publication}}
-        template block text
-      {{/tables/cell/most-viewed-publication}}
-    `);
-
-        assert.equal(this.element.textContent?.trim(), 'template block text');
+        assert.equal(this.element.textContent?.trim(), '() -');
     });
 });

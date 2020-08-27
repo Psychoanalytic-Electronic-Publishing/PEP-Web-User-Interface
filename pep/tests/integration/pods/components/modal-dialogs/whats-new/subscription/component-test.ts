@@ -12,15 +12,6 @@ module('Integration | Component | modal-dialogs/whats-new/subscription', functio
 
         await render(hbs`{{modal-dialogs/whats-new/subscription}}`);
 
-        assert.equal(this.element.textContent?.trim(), '');
-
-        // Template block usage:
-        await render(hbs`
-      {{#modal-dialogs/whats-new/subscription}}
-        template block text
-      {{/modal-dialogs/whats-new/subscription}}
-    `);
-
-        assert.equal(this.element.textContent?.trim(), 'template block text');
+        assert.ok(this.element.textContent);
     });
 });

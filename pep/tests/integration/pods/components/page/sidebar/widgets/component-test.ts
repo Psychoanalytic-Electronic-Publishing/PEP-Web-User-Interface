@@ -12,15 +12,6 @@ module('Integration | Component | page/sidebar/widgets', function(hooks) {
 
         await render(hbs`{{page/sidebar/widgets}}`);
 
-        assert.equal(this.element.textContent?.trim(), '');
-
-        // Template block usage:
-        await render(hbs`
-      {{#page/sidebar/widgets}}
-        template block text
-      {{/page/sidebar/widgets}}
-    `);
-
-        assert.equal(this.element.textContent?.trim(), 'template block text');
+        assert.ok(this.element.textContent);
     });
 });

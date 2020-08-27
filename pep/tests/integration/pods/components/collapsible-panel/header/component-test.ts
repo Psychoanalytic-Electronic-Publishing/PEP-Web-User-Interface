@@ -9,14 +9,14 @@ module('Integration | Component | collapsible-panel/header', function(hooks) {
     test('it renders', async function(assert) {
         // Set any properties with this.set('myProperty', 'value');
         // Handle any actions with this.set('myAction', function(val) { ... });
-
-        await render(hbs`<CollapsiblePanel::Header/>`);
+        this.set('toggle', () => {});
+        await render(hbs`<CollapsiblePanel::Header @toggle={{this.toggle}} />`);
 
         assert.equal(this.element.textContent?.trim(), '');
 
         // Template block usage:
         await render(hbs`
-        <CollapsiblePanel::Header>
+        <CollapsiblePanel::Header @toggle={{this.toggle}}>
             {{t "brand.name"}}
         </CollapsiblePanel::Header>
     `);

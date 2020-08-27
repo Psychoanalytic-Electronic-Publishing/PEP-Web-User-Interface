@@ -9,18 +9,9 @@ module('Integration | Component | tables/most-cited', function(hooks) {
     test('it renders', async function(assert) {
         // Set any properties with this.set('myProperty', 'value');
         // Handle any actions with this.set('myAction', function(val) { ... });
+        this.set('rows', []);
+        await render(hbs`<div class="page-content-inner">{{tables/most-cited rows=rows}}</div>`);
 
-        await render(hbs`{{tables/most-cited}}`);
-
-        assert.equal(this.element.textContent?.trim(), '');
-
-        // Template block usage:
-        await render(hbs`
-      {{#tables/most-cited}}
-        template block text
-      {{/tables/most-cited}}
-    `);
-
-        assert.equal(this.element.textContent?.trim(), 'template block text');
+        assert.ok(this.element.textContent);
     });
 });

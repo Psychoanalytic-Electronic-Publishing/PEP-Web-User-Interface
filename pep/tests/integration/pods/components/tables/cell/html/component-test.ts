@@ -13,14 +13,5 @@ module('Integration | Component | tables/cell/html', function(hooks) {
         await render(hbs`{{tables/cell/html}}`);
 
         assert.equal(this.element.textContent?.trim(), '');
-
-        // Template block usage:
-        await render(hbs`
-      {{#tables/cell/html}}
-        template block text
-      {{/tables/cell/html}}
-    `);
-
-        assert.equal(this.element.textContent?.trim(), 'template block text');
     });
 });
