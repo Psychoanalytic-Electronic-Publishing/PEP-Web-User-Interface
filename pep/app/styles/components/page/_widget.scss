@@ -1,0 +1,11 @@
+.page-widget {
+    .collapsible-panel-header {
+        position: relative;
+        .widget-icon {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            margin-top: -10px;
+        }
+    }
+}

@@ -16,6 +16,9 @@ Router.map(function() {
         this.route('document', { path: '/:document_id' });
     });
 
+    this.route('most-cited');
+    this.route('most-viewed');
+
     //make sure these routes are always defined last!
     this.route('five-hundred', { path: '/500' });
     this.route('four-oh-three', { path: '/403' });

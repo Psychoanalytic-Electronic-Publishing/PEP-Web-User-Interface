@@ -1,17 +1,19 @@
 <CollapsiblePanel
     @scrollableNamespace="sidebar-right"
-    @title={{t "relatedInfo.widgets.pastSearches.title"}}
     @isOpen={{this.isOpen}}
-    @toggle={{fn (mut this.isOpen)}}
+    @toggle={{fn @toggleIsOpen this.widget}}
     class="mb-2"
     ...attributes
->
-    <ol>
-        {{!-- template-lint-disable no-bare-strings --}}
-        <li><a href="#">Freud and Lacan</a></li>
-        <li><a href="#">emotional distress</a></li>
-        <li><a href="#">family discord</a></li>
-        <li><a href="#">separation and anxiety</a></li>
-        <li><a href="#">fear and loathing</a></li>
-    </ol>
+as |Panel|>
+    <Panel.header @title={{t "relatedInfo.widgets.pastSearches.title"}} />
+    <Panel.body>
+        <ol>
+            {{!-- template-lint-disable no-bare-strings --}}
+            <li><a href="#">Freud and Lacan</a></li>
+            <li><a href="#">emotional distress</a></li>
+            <li><a href="#">family discord</a></li>
+            <li><a href="#">separation and anxiety</a></li>
+            <li><a href="#">fear and loathing</a></li>
+        </ol>
+    </Panel.body>
 </CollapsiblePanel>
