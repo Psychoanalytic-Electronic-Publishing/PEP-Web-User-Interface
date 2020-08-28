@@ -7,7 +7,6 @@ import ModalService from '@gavant/ember-modals/services/modal';
 
 import DrawerService from 'pep/services/drawer';
 import AuthService from 'pep/services/auth';
-import AjaxService from 'pep/services/ajax';
 interface PageDrawerArgs {
     openAboutModal: () => Promise<void>;
 }

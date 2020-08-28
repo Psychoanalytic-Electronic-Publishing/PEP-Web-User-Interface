@@ -10,6 +10,7 @@ import SidebarService from 'pep/services/sidebar';
 import IntlService from 'ember-intl/services/intl';
 import Journal from 'pep/pods/journal/model';
 import { PERIODS, PossiblePeriodValues } from 'pep/constants/sidebar';
+import { QueryParams } from 'pep/hooks/useQueryParams';
 
 export default class MostCited extends Controller {
     @service loadingBar!: LoadingBarService;
@@ -17,8 +18,8 @@ export default class MostCited extends Controller {
     @service sidebar!: SidebarService;
     @service intl!: IntlService;
 
-    queryParams = ['author', 'title', 'sourcename', 'period'];
-
+    queryParams = ['author', 'title', 'period', 'sourcename'];
+    @tracked searchQueryParams!: QueryParams;
     @tracked paginator!: Pagination<Document>;
     @tracked author = '';
     @tracked title = '';
@@ -59,6 +60,7 @@ export default class MostCited extends Controller {
     @action
     async filterTableResults() {
         try {
+            this.searchQueryParams.update();
             //close overlay sidebar on submit in mobile/tablet
             if (this.fastbootMedia.isSmallDevice) {
                 this.sidebar.toggleLeftSidebar();
@@ -90,7 +92,7 @@ export default class MostCited extends Controller {
      */
     @action
     updatePeriod(period: PossiblePeriodValues) {
-        this.period = period;
+        this.searchQueryParams.period = period;
     }
 
     /**
@@ -101,7 +103,7 @@ export default class MostCited extends Controller {
      */
     @action
     updateJournal(journal: Journal) {
-        this.journal = journal;
+        this.searchQueryParams.journal = journal;
     }
 }
 
