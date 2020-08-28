@@ -41,6 +41,7 @@
         "browse": "Browse",
         "read": "Read",
         "user": {
+            "about": "About",
             "account": "My account",
             "preferences": "Preferences",
             "help": "Help",
@@ -105,6 +106,25 @@
                 "add": "Add term",
                 "synonyms": "Match Synonyms"
             },
+            "additional": {
+                "more": "More",
+                "less": "Less",
+                "limitTo": "Limit to",
+                "cited": {
+                    "atLeast": "Cited at least",
+                    "times": "times in the past 5 years"
+                },
+                "viewed": {
+                    "atLeast": "Viewed at least",
+                    "times": "times in the last",
+                    "range": {
+                        "week": "week",
+                        "month": "month",
+                        "sixMonths": "six months",
+                        "year": "year"
+                    }
+                }
+            },
             "tooManyResults": {
                 "heading": "Try refining your search",
                 "numResults": "There are '<strong>'{count}'</strong>' {count, plural, =1 {result} other {results}} that match your criteria.",
@@ -145,17 +165,20 @@
             "title": {
                 "label": "Title"
             },
-            "freud": {
-                "label": "Freud's Work"
+            "dream": {
+                "label": "Dreams"
             },
-            "glossary": {
-                "label": "PEP Glossary"
+            "quote": {
+                "label": "Quotes"
+            },
+            "reference": {
+                "label": "References"
             },
             "dialog": {
                 "label": "Dialogs"
             },
-            "quote": {
-                "label": "Quotes"
+            "article": {
+                "label": "Article"
             },
             "start-year": {
                 "label": "Start Year"
@@ -173,9 +196,6 @@
             "viewed": {
                 "label": "Viewed this many times",
                 "shortLabel": "Viewed #"
-            },
-            "scholar": {
-                "label": "Google Scholar"
             }
         },
         "facets": {
@@ -223,6 +243,24 @@
             },
             "art_kwds": {
                 "label": "Keywords"
+            },
+            "art_sourcetitleabbr": {
+                "label": "Source"
+            },
+            "glossary_terms": {
+                "label": "Glossary Terms"
+            },
+            "glossary_group_terms": {
+                "label": "Glossary Groups"
+            },
+            "art_year_int": {
+                "label": "Decade"
+            },
+            "art_cited_all": {
+                "label": "Citation Periods"
+            },
+            "art_views_last12mos": {
+                "label": "View Periods"
             }
         }
     },
@@ -340,6 +378,11 @@
             "label": "Color theme",
             "select": "Select a theme"
         }
+    },
+    "about": {
+        "title": "About",
+        "client": "Client version",
+        "server": "Server version"
     },
     "language": {
         "codes": {

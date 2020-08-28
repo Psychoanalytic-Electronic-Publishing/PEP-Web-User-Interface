@@ -30,6 +30,10 @@ export default class SearchForm extends Component<SearchFormArgs> {
     animateTransition = fadeTransition;
     animateDuration = 300;
 
+    get searchTypeOptions() {
+        return this.searchTypes.filter((t) => t.isTypeOption);
+    }
+
     @computed('args.{smartSearchTerm,searchTerms.@each.term}')
     get hasEnteredSearch() {
         return (

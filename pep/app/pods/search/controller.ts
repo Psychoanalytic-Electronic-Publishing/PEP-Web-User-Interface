@@ -120,11 +120,7 @@ export default class Search extends Controller {
     async submitSearch() {
         try {
             //update query params
-            const searchTerms = this.currentSearchTerms.filter((t: SearchTermValue) => !!t.term);
-
-            this.q = this.currentSmartSearchTerm;
-            this.searchTerms = !isEmpty(searchTerms) ? searchTerms : null;
-            this.matchSynonyms = this.currentMatchSynonyms;
+            this.updateSearchQueryParams();
 
             //clear any open document preview
             this.closeResultPreview();
@@ -158,6 +154,7 @@ export default class Search extends Controller {
     async resubmitSearchWithFacets() {
         try {
             this.facets = this.currentFacets;
+            this.updateSearchQueryParams();
             this.closeResultPreview();
 
             //close overlay sidebar on submit in mobile/tablet
@@ -176,6 +173,17 @@ export default class Search extends Controller {
             this.loadingBar.hide();
             throw err;
         }
+    }
+
+    /**
+     * Updates the query params with the current search form values
+     */
+    @action
+    updateSearchQueryParams() {
+        const searchTerms = this.currentSearchTerms.filter((t: SearchTermValue) => !!t.term);
+        this.q = this.currentSmartSearchTerm;
+        this.searchTerms = !isEmpty(searchTerms) ? searchTerms : null;
+        this.matchSynonyms = this.currentMatchSynonyms;
     }
 
     /**
@@ -227,7 +235,6 @@ export default class Search extends Controller {
         //a brand new one like we normally would, so that it doesnt trigger an insert animation
         setProperties(oldTerm, newTerm);
         this.currentSearchTerms = searchTerms;
-        console.log('update term!', newTerm);
         taskFor(this.updateRefineMetadata).perform();
     }
 

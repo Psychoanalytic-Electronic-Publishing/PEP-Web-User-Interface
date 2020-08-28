@@ -13,8 +13,10 @@ export interface SearchFacetValue {
 export interface SearchTermType {
     id: string;
     param: string;
+    scope?: string;
     label: string;
     shortLabel?: string;
+    isTypeOption: boolean;
 }
 
 export interface SearchFacetType {
@@ -31,7 +33,11 @@ export interface SearchFacetType {
 
 export type SearchTermParam =
     | 'fulltext1'
+    | 'paratext'
+    | 'parascope'
     | 'sourcetype'
+    | 'sourcename'
+    | 'sourcecode'
     | 'articletype'
     | 'sourcelangcode'
     | 'author'
@@ -39,7 +45,8 @@ export type SearchTermParam =
     | 'startyear'
     | 'endyear'
     | 'citecount'
-    | 'viewcount';
+    | 'viewcount'
+    | 'viewperiod';
 
 export const SEARCH_DEFAULT_TERMS: SearchTermValue[] = [
     { type: 'everywhere', term: '' },
@@ -56,91 +63,107 @@ export const SEARCH_DEFAULT_FACETS: SearchFacetValue[] = [];
 export const SEARCH_TYPE_EVERYWHERE: SearchTermType = {
     id: 'everywhere',
     param: 'fulltext1',
-    label: 'search.terms.everywhere.label'
+    label: 'search.terms.everywhere.label',
+    isTypeOption: true
 };
 
 export const SEARCH_TYPE_AUTHOR: SearchTermType = {
     id: 'author',
     param: 'author',
-    label: 'search.terms.author.label'
+    label: 'search.terms.author.label',
+    isTypeOption: true
 };
 
 export const SEARCH_TYPE_TITLE: SearchTermType = {
     id: 'title',
     param: 'title',
-    label: 'search.terms.title.label'
+    label: 'search.terms.title.label',
+    isTypeOption: true
 };
 
-// export const SEARCH_TYPE_FREUD: SearchTermType = {
-//     id: 'freud',
-//     label: "search.terms.freud.label"
-// };
+export const SEARCH_TYPE_DREAM: SearchTermType = {
+    id: 'dream',
+    param: 'paratext',
+    scope: 'dreams',
+    label: 'search.terms.dream.label',
+    isTypeOption: true
+};
 
-// export const SEARCH_TYPE_GLOSSARY: SearchTermType = {
-//     id: 'glossary',
-//     label: 'search.terms.glossary.label'
-// };
+export const SEARCH_TYPE_QUOTE: SearchTermType = {
+    id: 'quote',
+    param: 'paratext',
+    scope: 'TODO',
+    label: 'search.terms.quote.label',
+    isTypeOption: true
+};
 
-// export const SEARCH_TYPE_DIALOG: SearchTermType = {
-//     id: 'dialog',
-//     label: 'search.terms.dialog.label'
-// };
+export const SEARCH_TYPE_REFERENCE: SearchTermType = {
+    id: 'reference',
+    param: 'paratext',
+    scope: 'biblios',
+    label: 'search.terms.reference.label',
+    isTypeOption: true
+};
 
-// export const SEARCH_TYPE_QUOTE: SearchTermType = {
-//     id: 'quote',
-//     label: 'search.terms.quote.label'
-// };
+export const SEARCH_TYPE_DIALOG: SearchTermType = {
+    id: 'dialog',
+    param: 'paratext',
+    scope: 'dialogs',
+    label: 'search.terms.dialog.label',
+    isTypeOption: true
+};
+
+export const SEARCH_TYPE_ARTICLE: SearchTermType = {
+    id: 'article',
+    param: 'paratext',
+    scope: 'doc',
+    label: 'search.terms.article.label',
+    isTypeOption: true
+};
 
 export const SEARCH_TYPE_START_YEAR: SearchTermType = {
     id: 'start-year',
     param: 'startyear',
-    label: 'search.terms.start-year.label'
+    label: 'search.terms.start-year.label',
+    isTypeOption: true
 };
 
 export const SEARCH_TYPE_END_YEAR: SearchTermType = {
     id: 'end-year',
     param: 'endyear',
-    label: 'search.terms.end-year.label'
+    label: 'search.terms.end-year.label',
+    isTypeOption: true
 };
-
-// export const SEARCH_TYPE_BIBLIO: SearchTermType = {
-//     id: 'bibliography',
-//     label: 'search.terms.bibliography.label'
-// };
 
 export const SEARCH_TYPE_CITED: SearchTermType = {
     id: 'cited',
     param: 'citecount',
     label: 'search.terms.cited.label',
-    shortLabel: 'search.terms.cited.shortLabel'
+    shortLabel: 'search.terms.cited.shortLabel',
+    isTypeOption: false
 };
 
 export const SEARCH_TYPE_VIEWED: SearchTermType = {
     id: 'viewed',
     param: 'viewcount',
     label: 'search.terms.viewed.label',
-    shortLabel: 'search.terms.viewed.shortLabel'
+    shortLabel: 'search.terms.viewed.shortLabel',
+    isTypeOption: false
 };
-
-// export const SEARCH_TYPE_SCHOLAR: SearchTermType = {
-//     id: 'scholar',
-//     label: 'search.terms.scholar.label'
-// };
 
 export const SEARCH_TYPES: SearchTermType[] = [
     SEARCH_TYPE_EVERYWHERE,
     SEARCH_TYPE_AUTHOR,
     SEARCH_TYPE_TITLE,
-    // SEARCH_TYPE_FREUD,
-    // SEARCH_TYPE_GLOSSARY,
-    // SEARCH_TYPE_DIALOG,
-    // SEARCH_TYPE_QUOTE,
+    SEARCH_TYPE_DREAM,
+    SEARCH_TYPE_QUOTE,
+    SEARCH_TYPE_REFERENCE,
+    SEARCH_TYPE_DIALOG,
+    SEARCH_TYPE_ARTICLE,
     SEARCH_TYPE_START_YEAR,
     SEARCH_TYPE_END_YEAR,
-    // SEARCH_TYPE_BIBLIO,
     SEARCH_TYPE_CITED,
     SEARCH_TYPE_VIEWED
-    // SEARCH_TYPE_SCHOLAR
 ];
 
 /**
@@ -152,6 +175,18 @@ export const SEARCH_TYPES: SearchTermType[] = [
  * art_newsecnm, art_pgrg, art_lang, art_doi, art_issn, art_origrx, art_qual, art_kwds, art_type, art_cited_all, art_cited_5,
  * art_cited_10, art_cited_20, reference_count, file_classification, file_last_modified, timestamp, score
  */
+export const DEFAULT_SEARCH_FACETS: string[] = [
+    'art_lang',
+    'art_year_int',
+    'art_sourcetype',
+    'art_type',
+    'art_sourcetitleabbr',
+    'glossary_terms',
+    'glossary_group_terms',
+    'art_kwds',
+    'art_cited_all',
+    'art_views_last12mos'
+];
 
 export const SEARCH_FACET_SOURCETYPE: SearchFacetType = {
     id: 'art_sourcetype',
@@ -177,6 +212,15 @@ export const SEARCH_FACET_SOURCETYPE: SearchFacetType = {
             label: 'search.facets.art_sourcetype.values.special'
         }
     ]
+};
+
+export const SEARCH_FACET_SOURCE: SearchFacetType = {
+    id: 'art_sourcetitleabbr',
+    param: 'sourcename',
+    paramSeparator: ' OR ',
+    label: 'search.facets.art_sourcetitleabbr.label',
+    dynamicValues: true,
+    values: []
 };
 
 export const SEARCH_FACET_TYPE: SearchFacetType = {
@@ -291,6 +335,24 @@ export const SEARCH_FACET_LANG: SearchFacetType = {
     ]
 };
 
+export const SEARCH_FACET_GLOSSARY: SearchFacetType = {
+    id: 'glossary_terms',
+    param: 'fulltext1', //TODO is this the right query param to put these values in?
+    paramSeparator: ' OR ',
+    label: 'search.facets.glossary_terms.label',
+    dynamicValues: true,
+    values: []
+};
+
+export const SEARCH_FACET_GLOSSARY_GROUPS: SearchFacetType = {
+    id: 'glossary_group_terms',
+    param: 'fulltext1', //TODO is this the right query param to put these values in?
+    paramSeparator: ' OR ',
+    label: 'search.facets.glossary_group_terms.label',
+    dynamicValues: true,
+    values: []
+};
+
 export const SEARCH_FACET_KEYWORDS: SearchFacetType = {
     id: 'art_kwds',
     param: 'fulltext1', //TODO is this the right query param to put these values in?
@@ -300,4 +362,42 @@ export const SEARCH_FACET_KEYWORDS: SearchFacetType = {
     values: []
 };
 
-export const SEARCH_FACETS = [SEARCH_FACET_SOURCETYPE, SEARCH_FACET_TYPE, SEARCH_FACET_LANG, SEARCH_FACET_KEYWORDS];
+export const SEARCH_FACET_DECADE: SearchFacetType = {
+    id: 'art_year_int',
+    param: 'startyear',
+    paramSeparator: ' OR ',
+    label: 'search.facets.art_year_int.label',
+    dynamicValues: true,
+    values: []
+};
+
+export const SEARCH_FACET_CITATION: SearchFacetType = {
+    id: 'art_cited_all',
+    param: 'citecount',
+    paramSeparator: ' OR ',
+    label: 'search.facets.art_cited_all.label',
+    dynamicValues: true,
+    values: []
+};
+
+export const SEARCH_FACET_VIEW: SearchFacetType = {
+    id: 'art_views_last12mos',
+    param: 'viewperiod',
+    paramSeparator: ' OR ',
+    label: 'search.facets.art_views_last12mos.label',
+    dynamicValues: true,
+    values: []
+};
+
+export const SEARCH_FACETS = [
+    SEARCH_FACET_LANG,
+    SEARCH_FACET_DECADE,
+    SEARCH_FACET_SOURCETYPE,
+    SEARCH_FACET_TYPE,
+    SEARCH_FACET_SOURCE,
+    SEARCH_FACET_GLOSSARY,
+    SEARCH_FACET_GLOSSARY_GROUPS,
+    SEARCH_FACET_KEYWORDS,
+    SEARCH_FACET_CITATION,
+    SEARCH_FACET_VIEW
+];

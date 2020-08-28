@@ -72,7 +72,7 @@
                                 {{on "input" (fn this.onTermTextChange searchTerm)}}
                             />
                             <select class="custom-select search-form-term-control-type" {{on "change" (fn this.updateTermType searchTerm)}}>
-                                {{#each this.searchTypes as |searchType|}}
+                                {{#each this.searchTypeOptions as |searchType|}}
                                     <option value={{searchType.id}} selected={{eq searchType.id searchTerm.type}}>
                                         {{t searchType.label}}
                                     </option>

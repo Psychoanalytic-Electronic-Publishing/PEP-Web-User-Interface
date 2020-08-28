@@ -43,7 +43,8 @@ export default class Application extends Controller {
             matchSynonyms: this.matchSynonyms,
             //json stringify is workaround for bug w/array-based query param values
             //@see https://github.com/emberjs/ember.js/issues/18981
-            searchTerms: !isEmpty(searchTerms) ? JSON.stringify(searchTerms) : null
+            searchTerms: !isEmpty(searchTerms) ? JSON.stringify(searchTerms) : null,
+            facets: []
         };
 
         return this.transitionToRoute('search', { queryParams });
