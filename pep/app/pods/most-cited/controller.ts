@@ -80,9 +80,9 @@ export default class MostCited extends Controller {
      */
     @action
     resetForm() {
-        this.author = '';
-        this.title = '';
-        this.journal = undefined;
+        this.searchQueryParams.author = '';
+        this.searchQueryParams.title = '';
+        this.searchQueryParams.journal = undefined;
     }
 
     /**

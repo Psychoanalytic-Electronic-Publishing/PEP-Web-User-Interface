@@ -3,7 +3,7 @@ import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hoo
 import Document from 'pep/pods/document/model';
 import MostViewedController from 'pep/pods/most-viewed/controller';
 import { PageNav } from 'pep/mixins/page-layout';
-import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
+import { buildQueryParams, removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
 import { useQueryParams } from 'pep/hooks/useQueryParams';
 
 export default class MostViewed extends PageNav(Route) {
@@ -19,7 +19,7 @@ export default class MostViewed extends PageNav(Route) {
             filterList: ['author', 'title', 'sourcename', 'period', 'queryType'],
             processQueryParams: (params) => ({ ...params, ...queryParams })
         });
-        return this.store.query('document', apiQueryParams);
+        return this.store.query('document', removeEmptyQueryParams(apiQueryParams));
     }
 
     /**

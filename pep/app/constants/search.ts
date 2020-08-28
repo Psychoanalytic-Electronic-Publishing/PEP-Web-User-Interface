@@ -23,10 +23,7 @@ export interface SearchFacetType {
     paramSeparator: string;
     label: string;
     dynamicValues: boolean;
-    values: Array<{
-        id: string;
-        label: string;
-    }>;
+    values: { id: string; label: string }[];
 }
 
 export type SearchTermParam =
