@@ -9,7 +9,9 @@
 // ---------------------------
 // Theme variables
 // ---------------------------
+
 // Application variables
+// ---------------------------
 $logo-path: '/assets/images/logo-tomato.jpg';
 $color-brand-primary: #bf3c30;
 $color-backdrop: #fbf5f2;
@@ -19,10 +21,8 @@ $color-progress-spinner-loading1: rgba(0, 0, 0, 0.25);
 $color-progress-spinner-loading2: saturate(lighten($color-brand-primary, 35%), 45%);
 $color-mask-background: rgba(#000, 0.4);
 $color-focus-shadow: rgba(#bf3c30, 0.25);
-// Addon overrides
-$button-spinner-loading-color1: rgba(#fff, 0.75);
-$button-spinner-loading-color2: saturate(lighten($color-brand-primary, 35%), 45%);
 // Bootstrap overrides
+// ---------------------------
 $enable-shadows: false;
 $primary: #bf3c30;
 $link-color: saturate(lighten($primary, 10%), 20%);
@@ -34,6 +34,15 @@ $headings-font-family: Muli, -apple-system, BlinkMacSystemFont, 'Segoe UI', Robo
 $hr-border-color: rgba(#000, 0.06);
 $dropdown-border-color: #dbdbdb;
 $dropdown-border-radius: 0.21rem;
+// Addon overrides
+// ---------------------------
+$button-spinner-loading-color1: rgba(#fff, 0.75);
+$button-spinner-loading-color2: saturate(lighten($color-brand-primary, 35%), 45%);
+$ember-power-select-border-color: #ced4da;
+$ember-power-select-focus-border-color: lighten($primary, 25%);
+$ember-power-select-focus-box-shadow: 0 0 0 0.2rem rgba($primary, 0.25);
+$ember-power-select-trigger-icon-color: #afafaf;
+$ember-power-select-line-height: 1.5;
 
 // ---------------------------
 // Common app styles

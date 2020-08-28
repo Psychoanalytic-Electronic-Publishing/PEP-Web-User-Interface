@@ -1,13 +1,15 @@
 import Component from '@glimmer/component';
-import PowerSelectInfinityWithSearch from 'pep/pods/components/power-select-infinity/with-search/component';
-import Journal from 'pep/pods/journal/model';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
-import { DS } from 'ember-data';
 import { inject as service } from '@ember/service';
+import DS from 'ember-data';
 import { didCancel } from 'ember-concurrency';
 import { restartableTask } from 'ember-concurrency-decorators';
+import { removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
+
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
+import PowerSelectInfinityWithSearch from 'pep/pods/components/power-select-infinity/with-search/component';
+import Journal from 'pep/pods/journal/model';
 
 interface JournalParams {
     limit: number | null;
@@ -38,13 +40,12 @@ export default class PowerSelectJournal extends Component<PowerSelectInfinityWit
                 offset: offset || 0,
                 sourcecode: keyword
             };
-            const result = yield this.store.query('journal', params);
+            const result = yield this.store.query('journal', removeEmptyQueryParams(params));
             let results = result.toArray();
             this.canLoadMore = results.length >= this.pageSize;
             return results;
         } catch (errors) {
             if (!didCancel(errors)) {
-                // this.notifications.groupErrors(errors);
                 throw errors;
             }
         }
