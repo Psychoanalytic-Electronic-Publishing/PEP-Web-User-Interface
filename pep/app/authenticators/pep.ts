@@ -21,10 +21,10 @@ export default class PepAuthenticator extends BaseAuthenticator {
     async authenticate(username: string, password: string) {
         const params = serializeQueryParams({
             grant_type: 'password',
-            username,
-            password
+            UserName: username,
+            Password: password
         });
-        const result = await this.ajax.request(`Session/Login?${params}`);
+        const result = await this.ajax.request(`https://padstest.zedra.net/PEPSecure/api/v1/Authenticate?${params}`);
         return result;
     }
 
