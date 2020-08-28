@@ -4,24 +4,15 @@ import { isEmpty } from '@ember/utils';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import SessionService from 'ember-simple-auth/services/session';
+import NotificationService from 'ember-cli-notifications/services/notifications';
+import IntlService from 'ember-intl/services/intl';
 
-import LoadingBarService from 'pep/services/loading-bar';
 import { SEARCH_TYPE_EVERYWHERE, SearchTermValue } from 'pep/constants/search';
 import AjaxService from 'pep/services/ajax';
-import NotificationService from 'ember-cli-notifications/services/notifications';
-
+import LoadingBarService from 'pep/services/loading-bar';
 import Modal from '@gavant/ember-modals/services/modal';
 import ENV from 'pep/config/environment';
-import IntlService from 'ember-intl/services/intl';
-export interface ServerStatus {
-    db_server_ok: boolean;
-    text_server_ok: boolean;
-    text_server_version: string;
-    opas_version: string;
-    dataSource: string;
-    timeStamp: string;
-    user_ip: string;
-}
+import { ServerStatus } from 'pep/api';
 
 export default class Application extends Controller {
     @service loadingBar!: LoadingBarService;

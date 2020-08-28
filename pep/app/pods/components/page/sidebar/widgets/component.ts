@@ -2,6 +2,7 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { WIDGET } from 'pep/constants/sidebar';
 import { action } from '@ember/object';
+
 interface PageSidebarWidgetsArgs {}
 
 export interface PageSidebarWidgetArgs {
