@@ -5,6 +5,7 @@ import { inject as service } from '@ember/service';
 import DS from 'ember-data';
 import { didCancel } from 'ember-concurrency';
 import { restartableTask } from 'ember-concurrency-decorators';
+import { taskFor } from 'ember-concurrency-ts';
 import { removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
 
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
@@ -58,8 +59,7 @@ export default class PowerSelectJournal extends Component<PowerSelectInfinityWit
     @action
     @dontRunInFastboot
     async loadInitialPage() {
-        //@ts-ignore TODO: Remove this when we have a type solution to this
-        const results = await this.load.perform();
+        const results = await taskFor(this.load).perform();
         this.options = results;
         return results;
     }
@@ -85,8 +85,7 @@ export default class PowerSelectJournal extends Component<PowerSelectInfinityWit
     async loadMore(keyword: string | null) {
         const results = this.options.toArray();
         const offset = results.length;
-        //@ts-ignore TODO: Remove this when we have a type solution to this
-        const nextPage = await this.load.perform(keyword, offset);
+        const nextPage = await taskFor(this.load).perform(keyword, offset);
         results.pushObjects(nextPage);
         this.options = results;
         return results;

@@ -12,6 +12,7 @@ import { buildSearchQueryParams } from 'pep/utils/search';
 import SidebarService from 'pep/services/sidebar';
 import SearchController from 'pep/pods/search/controller';
 import Document from 'pep/pods/document/model';
+import { SearchMetadata } from 'pep/api';
 
 export interface SearchParams {
     q: string;
@@ -25,6 +26,7 @@ export default class Search extends PageNav(Route) {
     @service fastboot!: FastbootService;
 
     navController = 'search';
+    resultsMeta: SearchMetadata | null = null;
 
     queryParams = {
         q: {
@@ -46,11 +48,7 @@ export default class Search extends PageNav(Route) {
      * @param {SearchParams} params
      */
     model(params: SearchParams) {
-        //workaround for https://github.com/emberjs/ember.js/issues/18981
-        const searchTerms = params._searchTerms ? JSON.parse(params._searchTerms) : [];
-        const facets = params._facets ? JSON.parse(params._facets) : [];
-
-        const searchParams = buildSearchQueryParams(params.q, searchTerms, params.matchSynonyms, facets);
+        const searchParams = this.buildQueryParams(params);
         //if no search was submitted, don't fetch any results (will have at least 2 params for synonyms and facetfields)
         if (Object.keys(searchParams).length > 2) {
             const controller = this.controllerFor(this.routeName);
@@ -71,7 +69,18 @@ export default class Search extends PageNav(Route) {
      * @param {object} model
      * @param {Transition} transition
      */
-    afterModel(model: object, transition: Transition) {
+    async afterModel(model: object, transition: Transition) {
+        const params = this.paramsFor(this.routeName) as SearchParams;
+        const searchParams = this.buildQueryParams(params, false);
+
+        //if a search was submitted, do a 2nd query to get the metadata/facet counts w/o any facet values applied
+        if (Object.keys(searchParams).length > 2) {
+            const result = await this.store.query('document', { ...searchParams, offset: 0, limit: 1 });
+            this.resultsMeta = result.meta as SearchMetadata;
+        } else {
+            this.resultsMeta = null;
+        }
+
         if (isEmpty(model) && !this.fastboot.isFastBoot) {
             next(this, () => this.sidebar.toggleLeftSidebar(true));
         }
@@ -95,6 +104,9 @@ export default class Search extends PageNav(Route) {
             ? [{ type: 'everywhere', term: '' }]
             : controller.searchTerms;
         controller.currentFacets = controller.facets;
+
+        //pass the search result meta data into the controller
+        controller.resultsMeta = this.resultsMeta;
 
         controller.paginator = usePagination<Document>({
             context: controller,
@@ -127,5 +139,20 @@ export default class Search extends PageNav(Route) {
         super.resetController(controller, isExiting, transition);
         controller.previewedResult = null;
         controller.previewMode = 'fit';
+        //clear current results meta data
+        controller.resultsMeta = null;
+    }
+
+    /**
+     * Creates the query params object for document search requests
+     * @param {SearchParams} params
+     * @param {boolean} [includeFacets=true]
+     * @returns {QueryParamsObj}
+     */
+    buildQueryParams(params: SearchParams, includeFacets: boolean = true) {
+        //workaround for https://github.com/emberjs/ember.js/issues/18981
+        const searchTerms = params._searchTerms ? JSON.parse(params._searchTerms) : [];
+        const facets = params._facets && includeFacets ? JSON.parse(params._facets) : [];
+        return buildSearchQueryParams(params.q, searchTerms, params.matchSynonyms, facets);
     }
 }

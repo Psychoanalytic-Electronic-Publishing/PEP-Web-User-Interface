@@ -9,13 +9,15 @@
             @addSearchTerm={{this.addSearchTerm}}
             @removeSearchTerm={{this.removeSearchTerm}}
             @updateSearchTerm={{this.updateSearchTerm}}
+            @onSearchTermTextChange={{this.onSearchTextChange}}
+            @onSmartSearchTextChange={{this.onSearchTextChange}}
             @matchSynonymsChange={{this.updateMatchSynonyms}}
             @resultsCount={{this.paginator.metadata.fullCount}}
             class="mb-2"
         />
-        {{#if this.hasSubmittedSearch}}
+        {{#if this.resultsMeta}}
             <Search::Refine
-                @metadata={{this.paginator.metadata}}
+                @metadata={{this.resultsMeta}}
                 @selection={{this.currentFacets}}
                 @updateSelection={{this.updateSelectedFacets}}
                 @submitSearch={{this.resubmitSearchWithFacets}}

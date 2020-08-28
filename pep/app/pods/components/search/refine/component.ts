@@ -7,6 +7,7 @@ import { capitalize } from '@ember/string';
 import IntlService from 'ember-intl/services/intl';
 
 import { SEARCH_FACETS, SearchFacetValue } from 'pep/constants/search';
+import { SearchMetadata } from 'pep/api';
 
 export interface RefineOption {
     id: string;
@@ -19,16 +20,6 @@ export interface RefineGroup {
     label: string;
     optionsWithResults: RefineOption[];
     optionsWithoutResults: RefineOption[];
-}
-
-export interface SearchMetadata {
-    facetCounts: {
-        facet_fields: {
-            [x: string]: {
-                [x: string]: number;
-            };
-        };
-    };
 }
 
 interface SearchRefineArgs {

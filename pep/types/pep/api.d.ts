@@ -8,4 +8,14 @@ declare module 'pep/api' {
         timeStamp: string;
         user_ip: string;
     }
+
+    export interface SearchMetadata {
+        facetCounts: {
+            facet_fields: {
+                [x: string]: {
+                    [x: string]: number;
+                };
+            };
+        };
+    }
 }

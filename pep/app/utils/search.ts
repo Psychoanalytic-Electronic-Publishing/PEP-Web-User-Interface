@@ -6,7 +6,8 @@ import { SEARCH_TYPES, SEARCH_FACETS, SearchTermValue, SearchFacetValue } from '
 const defaultFacetFields = SEARCH_FACETS.mapBy('id');
 
 interface SearchQueryStrParams {
-    fulltext1: string;
+    smarttext: string;
+    fulltext1?: string;
     author?: string;
     sourcetype?: string;
     articletype?: string;
@@ -33,7 +34,7 @@ export function buildSearchQueryParams(
 ) {
     const queryParams: SearchQueryParams = {
         facetfields: !isEmpty(facetFields) ? facetFields.join(',') : null,
-        fulltext1: smartSearchTerm,
+        smarttext: smartSearchTerm,
         synonyms
     };
 

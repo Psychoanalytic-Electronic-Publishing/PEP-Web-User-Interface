@@ -54,6 +54,7 @@
                     @value={{@smartSearchTerm}}
                     maxlength="255"
                     autocomplete="off"
+                    {{on "input" this.onSmartSearchTextChange}}
                 />
             </div>
             <p class="text-muted mb-2">{{t "search.form.terms.heading"}}</p>
@@ -68,6 +69,7 @@
                                 class="search-form-term-control-text"
                                 maxlength="255"
                                 autocomplete="off"
+                                {{on "input" (fn this.onTermTextChange searchTerm)}}
                             />
                             <select class="custom-select search-form-term-control-type" {{on "change" (fn this.updateTermType searchTerm)}}>
                                 {{#each this.searchTypes as |searchType|}}

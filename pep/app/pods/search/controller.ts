@@ -4,8 +4,12 @@ import { isEmpty } from '@ember/utils';
 import { tracked } from '@glimmer/tracking';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import { inject as service } from '@ember/service';
+import { hash } from 'rsvp';
 import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
+import { didCancel, timeout } from 'ember-concurrency';
+import { restartableTask } from 'ember-concurrency-decorators';
+import { taskFor } from 'ember-concurrency-ts';
 
 import AjaxService from 'pep/services/ajax';
 import { SEARCH_TYPE_EVERYWHERE, SearchTermValue, SearchFacetValue } from 'pep/constants/search';
@@ -15,6 +19,7 @@ import FastbootMediaService from 'pep/services/fastboot-media';
 import Document from 'pep/pods/document/model';
 import ScrollableService from 'pep/services/scrollable';
 import { buildSearchQueryParams } from 'pep/utils/search';
+import { SearchMetadata } from 'pep/api';
 
 export default class Search extends Controller {
     @service ajax!: AjaxService;
@@ -36,6 +41,7 @@ export default class Search extends Controller {
     @tracked currentSearchTerms: SearchTermValue[] = [];
     @tracked currentMatchSynonyms: boolean = false;
     @tracked currentFacets: SearchFacetValue[] = [];
+    @tracked resultsMeta: SearchMetadata | null = null;
 
     @tracked previewedResult: Document | null = null;
     @tracked previewMode = 'fit';
@@ -108,6 +114,7 @@ export default class Search extends Controller {
 
     /**
      * Submits the search/nav template's search form
+     * @returns Document[]
      */
     @action
     async submitSearch() {
@@ -130,10 +137,13 @@ export default class Search extends Controller {
             //perform search
             this.loadingBar.show();
             this.scrollable.scrollToTop('search-results');
-            const results = await this.paginator.filterModels();
+            const results = await hash({
+                documents: this.paginator.filterModels(),
+                meta: taskFor(this.updateRefineMetadata).perform(false, 0)
+            });
             this.loadingBar.hide();
             this.scrollable.recalculate('sidebar-left');
-            return results;
+            return results.documents;
         } catch (err) {
             this.loadingBar.hide();
             throw err;
@@ -142,6 +152,7 @@ export default class Search extends Controller {
 
     /**
      * Resubmits the search form with the currently selected facet values
+     * @returns Document[]
      */
     @action
     async resubmitSearchWithFacets() {
@@ -155,9 +166,12 @@ export default class Search extends Controller {
             }
 
             this.loadingBar.show();
-            const results = await this.paginator.filterModels();
+            const results = await hash({
+                documents: this.paginator.filterModels(),
+                meta: taskFor(this.updateRefineMetadata).perform(false, 0)
+            });
             this.loadingBar.hide();
-            return results;
+            return results.documents;
         } catch (err) {
             this.loadingBar.hide();
             throw err;
@@ -172,6 +186,7 @@ export default class Search extends Controller {
         this.currentSmartSearchTerm = '';
         this.currentMatchSynonyms = false;
         this.currentSearchTerms = [{ type: 'everywhere', term: '' }];
+        taskFor(this.updateRefineMetadata).perform(true, 0);
     }
 
     /**
@@ -197,6 +212,7 @@ export default class Search extends Controller {
         }
 
         this.currentSearchTerms = searchTerms;
+        taskFor(this.updateRefineMetadata).perform();
     }
 
     /**
@@ -211,6 +227,8 @@ export default class Search extends Controller {
         //a brand new one like we normally would, so that it doesnt trigger an insert animation
         setProperties(oldTerm, newTerm);
         this.currentSearchTerms = searchTerms;
+        console.log('update term!', newTerm);
+        taskFor(this.updateRefineMetadata).perform();
     }
 
     /**
@@ -220,6 +238,7 @@ export default class Search extends Controller {
     @action
     updateMatchSynonyms(isChecked: boolean) {
         this.currentMatchSynonyms = isChecked;
+        taskFor(this.updateRefineMetadata).perform();
     }
 
     /**
@@ -229,6 +248,59 @@ export default class Search extends Controller {
     @action
     updateSelectedFacets(newSelection: SearchFacetValue[]) {
         this.currentFacets = newSelection;
+    }
+
+    /**
+     * Updates the Refine facets metadata when any search text input values change
+     */
+    @action
+    onSearchTextChange() {
+        return taskFor(this.updateRefineMetadata).perform();
+    }
+
+    /**
+     * Using the current (not submitted) search form values
+     * make a metadata query to update the refine options/counts
+     * @param {boolean} showLoading
+     * @param {number} debounceTimeout
+     * @returns {SearchMetadata | null}
+     */
+    @restartableTask
+    *updateRefineMetadata(showLoading: boolean = true, debounceTimeout = 250) {
+        try {
+            yield timeout(debounceTimeout);
+
+            const searchTerms = this.currentSearchTerms.filter((t: SearchTermValue) => !!t.term);
+            const searchParams = buildSearchQueryParams(
+                this.currentSmartSearchTerm,
+                searchTerms,
+                this.currentMatchSynonyms,
+                []
+            );
+            if (Object.keys(searchParams).length > 2) {
+                if (showLoading) {
+                    this.loadingBar.show();
+                }
+                const result = yield this.store.query('document', { ...searchParams, offset: 0, limit: 1 });
+                this.resultsMeta = result.meta as SearchMetadata;
+            } else {
+                //if there is no search fields populated, clear the Refine section
+                this.resultsMeta = null;
+            }
+
+            return this.resultsMeta;
+        } catch (errors) {
+            if (!didCancel(errors)) {
+                this.resultsMeta = null;
+                throw errors;
+            }
+
+            return;
+        } finally {
+            if (showLoading) {
+                this.loadingBar.hide();
+            }
+        }
     }
 
     /**

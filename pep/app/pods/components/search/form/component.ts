@@ -1,10 +1,7 @@
 import Component from '@glimmer/component';
 import { action, computed } from '@ember/object';
-import { later } from '@ember/runloop';
+import { later, next } from '@ember/runloop';
 import { inject as service } from '@ember/service';
-import move from 'ember-animated/motions/move';
-import { fadeIn, fadeOut } from 'ember-animated/motions/opacity';
-import { TransitionArgs } from 'ember-animated';
 
 import {
     SEARCH_TYPES,
@@ -13,6 +10,7 @@ import {
     SearchTermValue
 } from 'pep/constants/search';
 import ScrollableService from 'pep/services/scrollable';
+import { fadeTransition } from 'pep/utils/animation';
 
 interface SearchFormArgs {
     resultsCount?: number;
@@ -21,12 +19,15 @@ interface SearchFormArgs {
     addSearchTerm: (term: SearchTermValue) => void;
     removeSearchTerm: (term: SearchTermValue) => void;
     updateSearchTerm: (oldTerm: SearchTermValue, newTerm: SearchTermValue) => void;
+    onSearchTermTextChange?: (term: SearchTermValue, event: HTMLInputElement) => void;
+    onSmartSearchTextChange?: (value: string | undefined, event: HTMLInputElement) => void;
 }
 
 export default class SearchForm extends Component<SearchFormArgs> {
     @service scrollable!: ScrollableService;
 
     searchTypes = SEARCH_TYPES;
+    animateTransition = fadeTransition;
     animateDuration = 300;
 
     @computed('args.{smartSearchTerm,searchTerms.@each.term}')
@@ -39,24 +40,6 @@ export default class SearchForm extends Component<SearchFormArgs> {
 
     get hasTooManyResults() {
         return this.args.resultsCount && this.args.resultsCount > SEARCH_RESULTS_WARNING_COUNT;
-    }
-
-    /**
-     * ember-animated transition to show/hide alert
-     * @param {TransitionArgs}
-     */
-    *animateTransition({ keptSprites, removedSprites, insertedSprites }: TransitionArgs) {
-        for (let sprite of keptSprites) {
-            move(sprite);
-        }
-
-        for (let sprite of removedSprites) {
-            fadeOut(sprite);
-        }
-
-        for (let sprite of insertedSprites) {
-            fadeIn(sprite);
-        }
     }
 
     /**
@@ -90,5 +73,26 @@ export default class SearchForm extends Component<SearchFormArgs> {
         const type = event.target.value;
         const newTerm = { ...oldTerm, type };
         this.args.updateSearchTerm(oldTerm, newTerm);
+    }
+
+    /**
+     * Run an action when search term text values change
+     * @param {SearchTermValue} searchTerm
+     * @param {HTMLInputElement} event
+     */
+    @action
+    onTermTextChange(searchTerm: SearchTermValue, event: HTMLInputElement) {
+        // execute action in the next runloop, so it has the new value
+        next(this, () => this.args.onSearchTermTextChange?.(searchTerm, event));
+    }
+
+    /**
+     * Run an action when the smart search text value changes
+     * @param {HTMLInputElement} event
+     */
+    @action
+    onSmartSearchTextChange(event: HTMLInputElement) {
+        // execute action in the next runloop, so it has the new value
+        next(this, () => this.args.onSmartSearchTextChange?.(this.args.smartSearchTerm, event));
     }
 }
