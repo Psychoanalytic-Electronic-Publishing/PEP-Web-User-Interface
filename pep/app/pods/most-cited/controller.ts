@@ -2,7 +2,7 @@ import Controller from '@ember/controller';
 import { tracked } from '@glimmer/tracking';
 import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
 import Document from 'pep/pods/document/model';
-import { action } from '@ember/object';
+import { action, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import LoadingBarService from 'pep/services/loading-bar';
 import FastbootMediaService from 'pep/services/fastboot-media';
@@ -33,6 +33,7 @@ export default class MostCited extends Controller {
      *
      * @memberof MostCited
      */
+    @computed('journal.title')
     get sourcename() {
         return this.journal?.title ?? '';
     }

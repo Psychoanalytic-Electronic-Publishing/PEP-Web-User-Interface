@@ -11,7 +11,7 @@
                     <div class="form-group">
                         <FlSelect
                             @options={{this.periods}}
-                            @value={{this.period}}
+                            @value={{this.searchQueryParams.period}}
                             @valuePath="value"
                             @labelPath="label"
                             @placeholder={{t "mostCited.period"}}
@@ -23,7 +23,7 @@
                     <div class="form-group">
                         <FlInput
                             @placeholder={{t "mostCited.author"}}
-                            @value={{this.author}}
+                            @value={{this.searchQueryParams.author}}
                             maxlength="255"
                             autocomplete="off"
                         />
@@ -31,18 +31,18 @@
                     <div class="form-group">
                         <FlInput
                             @placeholder={{t "mostCited.title"}}
-                            @value={{this.title}}
+                            @value={{this.searchQueryParams.title}}
                             maxlength="255"
                             autocomplete="off"
                         />
                     </div>
                     <div class="form-group">
                         <FlInput
-                            @value={{this.journal}}
+                            @value={{this.searchQueryParams.journal}}
                             @placeholder={{t "mostCited.journal"}}
                         >
                             <PowerSelect::Journal
-                                @selected={{this.journal}}
+                                @selected={{this.searchQueryParams.journal}}
                                 @onChange={{this.updateJournal}}
                             />
                         </FlInput>
