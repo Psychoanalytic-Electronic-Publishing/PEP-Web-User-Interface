@@ -35,6 +35,10 @@ interface SearchQueryParams extends SearchQueryStrParams {
     synonyms: boolean;
 }
 
+export interface SearchFacetCounts {
+    [x: string]: number;
+}
+
 export function buildSearchQueryParams(
     smartSearchTerm: string,
     searchTerms: SearchTermValue[],
@@ -108,4 +112,16 @@ export function buildSearchQueryParams(
     });
 
     return removeEmptyQueryParams(queryParams);
+}
+
+export function groupCountsByRange(counts: SearchFacetCounts, range: number = 10) {
+    const values = Object.keys(counts).map((id) => Number(id));
+    const countsByRanges: SearchFacetCounts = {};
+    values.forEach((v) => {
+        const start = Math.floor(v / range) * range;
+        const end = start + 9;
+        const key = `${start} - ${end}`;
+        countsByRanges[key] = counts[`${v}`] + (countsByRanges[key] ? countsByRanges[key] : 0);
+    });
+    return countsByRanges;
 }

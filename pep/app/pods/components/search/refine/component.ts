@@ -40,7 +40,9 @@ export default class SearchRefine extends Component<SearchRefineArgs> {
 
         SEARCH_FACETS.forEach((facetType) => {
             if (incFields.includes(facetType.id)) {
-                let fieldCountsMap = fieldsMap[facetType.id];
+                let fieldCountsMap = facetType.formatCounts
+                    ? facetType.formatCounts(fieldsMap[facetType.id])
+                    : fieldsMap[facetType.id];
                 let fieldCountIds = Object.keys(fieldCountsMap);
                 let allOptIds = facetType.dynamicValues ? fieldCountIds : facetType.values.mapBy('id');
                 let allOptions: RefineOption[] = allOptIds.map((optId) => ({

@@ -181,7 +181,7 @@
                 "label": "Article"
             },
             "start-year": {
-                "label": "Start Year"
+                "label": "Year"
             },
             "end-year": {
                 "label": "End Year"

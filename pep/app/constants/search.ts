@@ -1,3 +1,5 @@
+import { SearchFacetCounts, groupCountsByRange } from 'pep/utils/search';
+
 export const SEARCH_RESULTS_WARNING_COUNT = 200;
 
 export interface SearchTermValue {
@@ -29,6 +31,7 @@ export interface SearchFacetType {
         id: string;
         label: string;
     }>;
+    formatCounts?: (counts: SearchFacetCounts) => SearchFacetCounts;
 }
 
 export type SearchTermParam =
@@ -128,12 +131,12 @@ export const SEARCH_TYPE_START_YEAR: SearchTermType = {
     isTypeOption: true
 };
 
-export const SEARCH_TYPE_END_YEAR: SearchTermType = {
-    id: 'end-year',
-    param: 'endyear',
-    label: 'search.terms.end-year.label',
-    isTypeOption: true
-};
+// export const SEARCH_TYPE_END_YEAR: SearchTermType = {
+//     id: 'end-year',
+//     param: 'endyear',
+//     label: 'search.terms.end-year.label',
+//     isTypeOption: true
+// };
 
 export const SEARCH_TYPE_CITED: SearchTermType = {
     id: 'cited',
@@ -161,7 +164,6 @@ export const SEARCH_TYPES: SearchTermType[] = [
     SEARCH_TYPE_DIALOG,
     SEARCH_TYPE_ARTICLE,
     SEARCH_TYPE_START_YEAR,
-    SEARCH_TYPE_END_YEAR,
     SEARCH_TYPE_CITED,
     SEARCH_TYPE_VIEWED
 ];
@@ -368,7 +370,8 @@ export const SEARCH_FACET_DECADE: SearchFacetType = {
     paramSeparator: ' OR ',
     label: 'search.facets.art_year_int.label',
     dynamicValues: true,
-    values: []
+    values: [],
+    formatCounts: (counts: SearchFacetCounts) => groupCountsByRange(counts, 10)
 };
 
 export const SEARCH_FACET_CITATION: SearchFacetType = {
@@ -377,7 +380,8 @@ export const SEARCH_FACET_CITATION: SearchFacetType = {
     paramSeparator: ' OR ',
     label: 'search.facets.art_cited_all.label',
     dynamicValues: true,
-    values: []
+    values: [],
+    formatCounts: (counts: SearchFacetCounts) => groupCountsByRange(counts, 10)
 };
 
 export const SEARCH_FACET_VIEW: SearchFacetType = {
@@ -386,7 +390,8 @@ export const SEARCH_FACET_VIEW: SearchFacetType = {
     paramSeparator: ' OR ',
     label: 'search.facets.art_views_last12mos.label',
     dynamicValues: true,
-    values: []
+    values: [],
+    formatCounts: (counts: SearchFacetCounts) => groupCountsByRange(counts, 10)
 };
 
 export const SEARCH_FACETS = [
