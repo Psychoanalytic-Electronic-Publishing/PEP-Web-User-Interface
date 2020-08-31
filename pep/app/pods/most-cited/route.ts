@@ -3,7 +3,16 @@ import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hoo
 import Document from 'pep/pods/document/model';
 import MostCitedController from 'pep/pods/most-cited/controller';
 import { PageNav } from 'pep/mixins/page-layout';
-import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
+import { buildQueryParams, removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
+import { useQueryParams } from 'pep/hooks/useQueryParams';
+
+interface RouteQueryParams {
+    author: string;
+    title: string;
+    sourcename: string;
+    period: string;
+}
+
 export default class MostCited extends PageNav(Route) {
     navController = 'most-cited';
 
@@ -13,14 +22,15 @@ export default class MostCited extends PageNav(Route) {
      * @returns {Promise<Document[]>}
      * @memberof MostCited
      */
-    async model() {
-        const queryParams = buildQueryParams({
+    async model(queryParams: RouteQueryParams) {
+        const apiQueryParams = buildQueryParams({
             context: this.controllerFor('most-cited'),
             pagingRootKey: null,
             filterRootKey: null,
-            filterList: ['author', 'title', 'sourcename', 'period', 'queryType']
+            filterList: ['author', 'title', 'sourcename', 'period', 'queryType'],
+            processQueryParams: (params) => ({ ...params, ...queryParams })
         });
-        return this.store.query('document', queryParams);
+        return this.store.query('document', removeEmptyQueryParams(apiQueryParams));
     }
 
     /**
@@ -38,6 +48,10 @@ export default class MostCited extends PageNav(Route) {
             filterList: ['author', 'title', 'sourcename', 'period', 'queryType'],
             pagingRootKey: null,
             filterRootKey: null
+        });
+        controller.searchQueryParams = useQueryParams({
+            context: controller,
+            params: ['author', 'title', 'journal', 'period']
         });
     }
 }
