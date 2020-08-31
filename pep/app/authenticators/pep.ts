@@ -6,6 +6,7 @@ import { SessionAuthenticatedData } from 'ember-simple-auth/services/session';
 
 import AjaxService from 'pep/services/ajax';
 import { serializeQueryParams } from 'pep/utils/url';
+import ENV from 'pep/config/environment';
 
 // TODO: this is all likely to change a bit to account for authentication flow changes
 // i.e. using headers/instead of automatic cookie sending, session refreshing, etc
@@ -24,7 +25,7 @@ export default class PepAuthenticator extends BaseAuthenticator {
             UserName: username,
             Password: password
         });
-        const result = await this.ajax.request(`https://padstest.zedra.net/PEPSecure/api/v1/Authenticate?${params}`);
+        const result = await this.ajax.request(`${ENV.authBaseUrl}/Authenticate?${params}`);
         return result;
     }
 
