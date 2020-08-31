@@ -2,7 +2,7 @@ import Controller from '@ember/controller';
 import { tracked } from '@glimmer/tracking';
 import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
 import Document from 'pep/pods/document/model';
-import { action } from '@ember/object';
+import { action, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import LoadingBarService from 'pep/services/loading-bar';
 import FastbootMediaService from 'pep/services/fastboot-media';
@@ -10,6 +10,7 @@ import SidebarService from 'pep/services/sidebar';
 import IntlService from 'ember-intl/services/intl';
 import Journal from 'pep/pods/journal/model';
 import { PERIODS, PossiblePeriodValues } from 'pep/constants/sidebar';
+import { QueryParams } from 'pep/hooks/useQueryParams';
 
 export default class MostCited extends Controller {
     @service loadingBar!: LoadingBarService;
@@ -17,8 +18,8 @@ export default class MostCited extends Controller {
     @service sidebar!: SidebarService;
     @service intl!: IntlService;
 
-    queryParams = ['author', 'title', 'sourcename', 'period'];
-
+    queryParams = ['author', 'title', 'period', 'sourcename'];
+    @tracked searchQueryParams!: QueryParams;
     @tracked paginator!: Pagination<Document>;
     @tracked author = '';
     @tracked title = '';
@@ -32,6 +33,7 @@ export default class MostCited extends Controller {
      *
      * @memberof MostCited
      */
+    @computed('journal.title')
     get sourcename() {
         return this.journal?.title ?? '';
     }
@@ -59,6 +61,7 @@ export default class MostCited extends Controller {
     @action
     async filterTableResults() {
         try {
+            this.searchQueryParams.update();
             //close overlay sidebar on submit in mobile/tablet
             if (this.fastbootMedia.isSmallDevice) {
                 this.sidebar.toggleLeftSidebar();
@@ -77,9 +80,9 @@ export default class MostCited extends Controller {
      */
     @action
     resetForm() {
-        this.author = '';
-        this.title = '';
-        this.journal = undefined;
+        this.searchQueryParams.author = '';
+        this.searchQueryParams.title = '';
+        this.searchQueryParams.journal = undefined;
     }
 
     /**
@@ -90,7 +93,7 @@ export default class MostCited extends Controller {
      */
     @action
     updatePeriod(period: PossiblePeriodValues) {
-        this.period = period;
+        this.searchQueryParams.period = period;
     }
 
     /**
@@ -101,7 +104,7 @@ export default class MostCited extends Controller {
      */
     @action
     updateJournal(journal: Journal) {
-        this.journal = journal;
+        this.searchQueryParams.journal = journal;
     }
 }
 
