@@ -1,12 +1,13 @@
 import { isEmpty } from '@ember/utils';
-import { removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
+import { removeEmptyQueryParams, QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 
 import {
     SEARCH_TYPES,
     SEARCH_FACETS,
     SearchTermValue,
     SearchFacetValue,
-    DEFAULT_SEARCH_FACETS
+    DEFAULT_SEARCH_FACETS,
+    ViewPeriod
 } from 'pep/constants/search';
 
 interface SearchQueryStrParams {
@@ -33,23 +34,42 @@ interface SearchQueryStrParams {
 interface SearchQueryParams extends SearchQueryStrParams {
     facetfields: string | null;
     synonyms: boolean;
+    abstract: boolean;
 }
 
 export interface SearchFacetCounts {
     [x: string]: number;
 }
 
+/**
+ * Builds the query params object for document searches
+ * @export
+ * @param {string} smartSearchTerm
+ * @param {SearchTermValue[]} searchTerms
+ * @param {boolean} synonyms
+ * @param {SearchFacetValue[]} [facetValues=[]]
+ * @param {string[]} [facetFields=DEFAULT_SEARCH_FACETS]
+ * @param {('AND' | 'OR')} [logicalOperator='OR']
+ * @returns {QueryParamsObj}
+ */
 export function buildSearchQueryParams(
     smartSearchTerm: string,
     searchTerms: SearchTermValue[],
     synonyms: boolean,
     facetValues: SearchFacetValue[] = [],
+    citedCount: string = '',
+    viewedCount: string = '',
+    viewedPeriod: ViewPeriod | null = null,
     facetFields: string[] = DEFAULT_SEARCH_FACETS,
     logicalOperator: 'AND' | 'OR' = 'OR'
-) {
+): QueryParamsObj {
     const queryParams: SearchQueryParams = {
         facetfields: !isEmpty(facetFields) ? facetFields.join(',') : null,
         smarttext: smartSearchTerm,
+        citecount: citedCount,
+        viewcount: viewedCount,
+        viewperiod: `${viewedPeriod ?? ''}`,
+        abstract: true,
         synonyms
     };
 
@@ -114,6 +134,32 @@ export function buildSearchQueryParams(
     return removeEmptyQueryParams(queryParams);
 }
 
+/**
+ * A "blank" search request could have the following params:
+ * synonyms, facetfields, and abstract, citecount, viewcount, viewperiod
+ * If there are params besides that, it is a valid search form submission
+ * @export
+ * @param {QueryParamsObj} params
+ * @returns
+ */
+export function hasSearchQuery(params: QueryParamsObj) {
+    const strippedParams = { ...params };
+    delete strippedParams.synonyms;
+    delete strippedParams.facetfields;
+    delete strippedParams.abstract;
+    delete strippedParams.citecount;
+    delete strippedParams.viewcount;
+    delete strippedParams.viewperiod;
+    return Object.keys(strippedParams).length > 0;
+}
+
+/**
+ * Groups numerical facet count values (e.g. years) by a range
+ * @export
+ * @param {SearchFacetCounts} counts
+ * @param {number} [range=10]
+ * @returns
+ */
 export function groupCountsByRange(counts: SearchFacetCounts, range: number = 10) {
     const values = Object.keys(counts).map((id) => Number(id));
     const countsByRanges: SearchFacetCounts = {};

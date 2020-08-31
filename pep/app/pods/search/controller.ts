@@ -12,13 +12,19 @@ import { restartableTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
 
 import AjaxService from 'pep/services/ajax';
-import { SEARCH_TYPE_EVERYWHERE, SearchTermValue, SearchFacetValue } from 'pep/constants/search';
+import {
+    SEARCH_TYPE_EVERYWHERE,
+    SearchTermValue,
+    SearchFacetValue,
+    ViewPeriod,
+    SEARCH_DEFAULT_VIEW_PERIOD
+} from 'pep/constants/search';
 import SidebarService from 'pep/services/sidebar';
 import LoadingBarService from 'pep/services/loading-bar';
 import FastbootMediaService from 'pep/services/fastboot-media';
 import Document from 'pep/pods/document/model';
 import ScrollableService from 'pep/services/scrollable';
-import { buildSearchQueryParams } from 'pep/utils/search';
+import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
 import { SearchMetadata } from 'pep/api';
 
 export default class Search extends Controller {
@@ -32,14 +38,30 @@ export default class Search extends Controller {
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
     //@ts-ignore
-    queryParams = ['q', { _searchTerms: 'searchTerms' }, 'matchSynonyms', { _facets: 'facets' }];
+    queryParams = [
+        'q',
+        { _searchTerms: 'searchTerms' },
+        'matchSynonyms',
+        'citedCount',
+        'viewedCount',
+        'viewedPeriod',
+        { _facets: 'facets' }
+    ];
+
+    @tracked isLimitOpen: boolean = false;
     @tracked q: string = '';
     @tracked matchSynonyms: boolean = false;
+    @tracked citedCount: string = '';
+    @tracked viewedCount: string = '';
+    @tracked viewedPeriod: ViewPeriod = SEARCH_DEFAULT_VIEW_PERIOD;
     @tracked paginator!: Pagination<Document>;
 
     @tracked currentSmartSearchTerm: string = '';
     @tracked currentSearchTerms: SearchTermValue[] = [];
     @tracked currentMatchSynonyms: boolean = false;
+    @tracked currentCitedCount: string = '';
+    @tracked currentViewedCount: string = '';
+    @tracked currentViewedPeriod: ViewPeriod = SEARCH_DEFAULT_VIEW_PERIOD;
     @tracked currentFacets: SearchFacetValue[] = [];
     @tracked resultsMeta: SearchMetadata | null = null;
 
@@ -108,7 +130,15 @@ export default class Search extends Controller {
      */
     @action
     processQueryParams(params: QueryParamsObj) {
-        const searchParams = buildSearchQueryParams(this.q, this.searchTerms, this.matchSynonyms, this.facets);
+        const searchParams = buildSearchQueryParams(
+            this.q,
+            this.searchTerms,
+            this.matchSynonyms,
+            this.facets,
+            this.citedCount,
+            this.viewedCount,
+            this.viewedPeriod
+        );
         return { ...params, ...searchParams };
     }
 
@@ -184,6 +214,9 @@ export default class Search extends Controller {
         this.q = this.currentSmartSearchTerm;
         this.searchTerms = !isEmpty(searchTerms) ? searchTerms : null;
         this.matchSynonyms = this.currentMatchSynonyms;
+        this.citedCount = this.currentCitedCount;
+        this.viewedCount = this.currentViewedCount;
+        this.viewedPeriod = this.currentViewedPeriod;
     }
 
     /**
@@ -193,6 +226,10 @@ export default class Search extends Controller {
     clearSearch() {
         this.currentSmartSearchTerm = '';
         this.currentMatchSynonyms = false;
+        this.currentCitedCount = '';
+        this.currentViewedCount = '';
+        this.currentViewedPeriod = ViewPeriod.PAST_WEEK;
+        this.isLimitOpen = false;
         this.currentSearchTerms = [{ type: 'everywhere', term: '' }];
         taskFor(this.updateRefineMetadata).perform(true, 0);
     }
@@ -249,6 +286,31 @@ export default class Search extends Controller {
     }
 
     /**
+     * Update the search view period
+     * @param {ViewPeriod} value
+     */
+    @action
+    updateViewedPeriod(value: ViewPeriod) {
+        this.currentViewedPeriod = value;
+        taskFor(this.updateRefineMetadata).perform();
+    }
+
+    /**
+     * Clears the cited/viewed fields when the limit section is collapsed
+     * @param {boolean} isOpen
+     */
+    @action
+    toggleLimitFields(isOpen: boolean) {
+        this.isLimitOpen = isOpen;
+        if (!this.isLimitOpen) {
+            this.currentCitedCount = '';
+            this.currentViewedCount = '';
+            this.currentViewedPeriod = SEARCH_DEFAULT_VIEW_PERIOD;
+            taskFor(this.updateRefineMetadata).perform();
+        }
+    }
+
+    /**
      * Updates the currently selected search facet options
      * @param {SearchFacetValue[]} newSelection
      */
@@ -282,9 +344,12 @@ export default class Search extends Controller {
                 this.currentSmartSearchTerm,
                 searchTerms,
                 this.currentMatchSynonyms,
-                []
+                [],
+                this.currentCitedCount,
+                this.currentViewedCount,
+                this.currentViewedPeriod
             );
-            if (Object.keys(searchParams).length > 2) {
+            if (hasSearchQuery(searchParams)) {
                 if (showLoading) {
                     this.loadingBar.show();
                 }

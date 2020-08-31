@@ -4,6 +4,31 @@ import { SearchFacetCounts, groupCountsByRange } from 'pep/utils/search';
 
 export const SEARCH_RESULTS_WARNING_COUNT = 200;
 
+export type SearchTermParam =
+    | 'fulltext1'
+    | 'paratext'
+    | 'parascope'
+    | 'sourcetype'
+    | 'sourcename'
+    | 'sourcecode'
+    | 'articletype'
+    | 'sourcelangcode'
+    | 'author'
+    | 'title'
+    | 'startyear'
+    | 'endyear'
+    | 'citecount'
+    | 'viewcount'
+    | 'viewperiod';
+
+export enum ViewPeriod {
+    PAST_CAL_YEAR = 0,
+    PAST_WEEK = 1,
+    PAST_MONTH = 2,
+    PAST_6_MONTHS = 3,
+    PAST_12_MONTHS = 4
+}
+
 export interface SearchTermValue {
     type: string;
     term: string;
@@ -34,22 +59,10 @@ export interface SearchFacetType {
     formatOption?: (opt: string, intl: IntlService) => string;
 }
 
-export type SearchTermParam =
-    | 'fulltext1'
-    | 'paratext'
-    | 'parascope'
-    | 'sourcetype'
-    | 'sourcename'
-    | 'sourcecode'
-    | 'articletype'
-    | 'sourcelangcode'
-    | 'author'
-    | 'title'
-    | 'startyear'
-    | 'endyear'
-    | 'citecount'
-    | 'viewcount'
-    | 'viewperiod';
+export interface ViewPeriodOption {
+    id: ViewPeriod;
+    label: string;
+}
 
 export const SEARCH_DEFAULT_TERMS: SearchTermValue[] = [
     { type: 'everywhere', term: '' },
@@ -58,6 +71,20 @@ export const SEARCH_DEFAULT_TERMS: SearchTermValue[] = [
 ];
 
 export const SEARCH_DEFAULT_FACETS: SearchFacetValue[] = [];
+
+export const SEARCH_DEFAULT_VIEW_PERIOD: ViewPeriod = ViewPeriod.PAST_WEEK;
+
+export const SEARCH_DEFAULT_PARAMS = {
+    q: '',
+    matchSynonyms: false,
+    citedCount: '',
+    viewedCount: '',
+    viewedPeriod: SEARCH_DEFAULT_VIEW_PERIOD,
+    //json stringify is workaround for bug w/array-based query param values
+    //@see https://github.com/emberjs/ember.js/issues/18981
+    searchTerms: JSON.stringify(SEARCH_DEFAULT_TERMS),
+    facets: JSON.stringify(SEARCH_DEFAULT_FACETS)
+};
 
 /**
  * Search term types
@@ -408,4 +435,37 @@ export const SEARCH_FACETS = [
     SEARCH_FACET_KEYWORDS,
     SEARCH_FACET_CITATION,
     SEARCH_FACET_VIEW
+];
+
+export const VIEW_PERIOD_WEEK: ViewPeriodOption = {
+    id: ViewPeriod.PAST_WEEK,
+    label: 'search.viewPeriod.week'
+};
+
+export const VIEW_PERIOD_CAL_MONTH: ViewPeriodOption = {
+    id: ViewPeriod.PAST_MONTH,
+    label: 'search.viewPeriod.month'
+};
+
+export const VIEW_PERIOD_6_MONTHS: ViewPeriodOption = {
+    id: ViewPeriod.PAST_6_MONTHS,
+    label: 'search.viewPeriod.6months'
+};
+
+export const VIEW_PERIOD_12_MONTHS: ViewPeriodOption = {
+    id: ViewPeriod.PAST_12_MONTHS,
+    label: 'search.viewPeriod.12months'
+};
+
+export const VIEW_PERIOD_CAL_YEAR: ViewPeriodOption = {
+    id: ViewPeriod.PAST_CAL_YEAR,
+    label: 'search.viewPeriod.calYear'
+};
+
+export const VIEW_PERIODS = [
+    VIEW_PERIOD_WEEK,
+    VIEW_PERIOD_CAL_MONTH,
+    VIEW_PERIOD_6_MONTHS,
+    VIEW_PERIOD_12_MONTHS,
+    VIEW_PERIOD_CAL_YEAR
 ];

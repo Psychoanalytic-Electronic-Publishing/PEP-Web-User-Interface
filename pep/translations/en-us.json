@@ -107,22 +107,14 @@
                 "synonyms": "Match Synonyms"
             },
             "additional": {
-                "more": "More",
-                "less": "Less",
-                "limitTo": "Limit to",
+                "limitTo": "Limit to...",
                 "cited": {
                     "atLeast": "Cited at least",
                     "times": "times in the past 5 years"
                 },
                 "viewed": {
                     "atLeast": "Viewed at least",
-                    "times": "times in the last",
-                    "range": {
-                        "week": "week",
-                        "month": "month",
-                        "sixMonths": "six months",
-                        "year": "year"
-                    }
+                    "times": "times"
                 }
             },
             "tooManyResults": {
@@ -263,6 +255,13 @@
             "art_views_last12mos": {
                 "label": "View Periods"
             }
+        },
+        "viewPeriod": {
+            "week": "in the last week",
+            "month": "in the last month",
+            "6months": " in the last 6 months",
+            "12months": "in the last 12 months",
+            "calYear": "in the last calendar year"
         }
     },
     "browse": {

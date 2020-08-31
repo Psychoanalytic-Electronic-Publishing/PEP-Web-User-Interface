@@ -25,7 +25,11 @@
                     </LinkTo>
                 </Page::Drawer::NavItem>
                 <Page::Drawer::NavItem class="mt-1">
-                    <LinkTo @route="search" class="list-group-item list-group-item-action">
+                    <LinkTo
+                        @route="search"
+                        @query={{this.defaultSearchParams}}
+                        class="list-group-item list-group-item-action"
+                    >
                         <FaIcon @icon="search" @fixedWidth={{true}} class="mr-2" />
                         {{t "nav.search"}}
                     </LinkTo>

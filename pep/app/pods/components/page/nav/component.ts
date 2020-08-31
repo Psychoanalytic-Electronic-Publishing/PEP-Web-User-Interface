@@ -6,7 +6,7 @@ import ModalService from '@gavant/ember-modals/services/modal';
 
 import AuthService from 'pep/services/auth';
 import DrawerService from 'pep/services/drawer';
-import { SEARCH_DEFAULT_TERMS, SEARCH_DEFAULT_FACETS } from 'pep/constants/search';
+import { SEARCH_DEFAULT_PARAMS } from 'pep/constants/search';
 
 interface PageNavArgs {
     openAboutModal: () => Promise<void>;
@@ -18,10 +18,7 @@ export default class PageNav extends Component<PageNavArgs> {
     @service auth!: AuthService;
     @service drawer!: DrawerService;
 
-    //json stringify is workaround for bug w/array-based query param values
-    //@see https://github.com/emberjs/ember.js/issues/18981
-    defaultSearchTerms = JSON.stringify(SEARCH_DEFAULT_TERMS);
-    defaultSearchFacets = JSON.stringify(SEARCH_DEFAULT_FACETS);
+    defaultSearchParams = SEARCH_DEFAULT_PARAMS;
 
     /**
      * Opens the user preferences modal dialog

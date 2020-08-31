@@ -8,7 +8,7 @@ import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hoo
 import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
 
 import { PageNav } from 'pep/mixins/page-layout';
-import { buildSearchQueryParams } from 'pep/utils/search';
+import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
 import SidebarService from 'pep/services/sidebar';
 import SearchController from 'pep/pods/search/controller';
 import Document from 'pep/pods/document/model';
@@ -17,6 +17,9 @@ import { SearchMetadata } from 'pep/api';
 export interface SearchParams {
     q: string;
     matchSynonyms: boolean;
+    citedCount?: string;
+    viewedCount?: string;
+    viewedPeriod?: number;
     _searchTerms?: string;
     _facets?: string;
 }
@@ -38,6 +41,15 @@ export default class Search extends PageNav(Route) {
         matchSynonyms: {
             replace: true
         },
+        citedCount: {
+            replace: true
+        },
+        viewedCount: {
+            replace: true
+        },
+        viewedPeriod: {
+            replace: true
+        },
         _facets: {
             replace: true
         }
@@ -49,8 +61,8 @@ export default class Search extends PageNav(Route) {
      */
     model(params: SearchParams) {
         const searchParams = this.buildQueryParams(params);
-        //if no search was submitted, don't fetch any results (will have at least 2 params for synonyms and facetfields)
-        if (Object.keys(searchParams).length > 2) {
+        //if no search was submitted, don't fetch any results
+        if (hasSearchQuery(searchParams)) {
             const controller = this.controllerFor(this.routeName);
             const queryParams = buildQueryParams({
                 context: controller,
@@ -74,7 +86,7 @@ export default class Search extends PageNav(Route) {
         const searchParams = this.buildQueryParams(params, false);
 
         //if a search was submitted, do a 2nd query to get the metadata/facet counts w/o any facet values applied
-        if (Object.keys(searchParams).length > 2) {
+        if (hasSearchQuery(searchParams)) {
             const result = await this.store.query('document', { ...searchParams, offset: 0, limit: 1 });
             this.resultsMeta = result.meta as SearchMetadata;
         } else {
@@ -100,6 +112,9 @@ export default class Search extends PageNav(Route) {
         //map the query params to current search values to populate the form
         controller.currentSmartSearchTerm = controller.q;
         controller.currentMatchSynonyms = controller.matchSynonyms;
+        controller.currentCitedCount = controller.citedCount;
+        controller.currentViewedCount = controller.viewedCount;
+        controller.currentViewedPeriod = controller.viewedPeriod;
         controller.currentSearchTerms = isEmpty(controller.searchTerms)
             ? [{ type: 'everywhere', term: '' }]
             : controller.searchTerms;
@@ -107,6 +122,11 @@ export default class Search extends PageNav(Route) {
 
         //pass the search result meta data into the controller
         controller.resultsMeta = this.resultsMeta;
+
+        //open the search form's limit fields section if it has values
+        if (controller.currentCitedCount || controller.currentViewedCount) {
+            controller.isLimitOpen = true;
+        }
 
         controller.paginator = usePagination<Document>({
             context: controller,
@@ -141,6 +161,8 @@ export default class Search extends PageNav(Route) {
         controller.previewMode = 'fit';
         //clear current results meta data
         controller.resultsMeta = null;
+        //reset the search form limit fields section
+        controller.isLimitOpen = false;
     }
 
     /**
@@ -153,6 +175,14 @@ export default class Search extends PageNav(Route) {
         //workaround for https://github.com/emberjs/ember.js/issues/18981
         const searchTerms = params._searchTerms ? JSON.parse(params._searchTerms) : [];
         const facets = params._facets && includeFacets ? JSON.parse(params._facets) : [];
-        return buildSearchQueryParams(params.q, searchTerms, params.matchSynonyms, facets);
+        return buildSearchQueryParams(
+            params.q,
+            searchTerms,
+            params.matchSynonyms,
+            facets,
+            params.citedCount,
+            params.viewedCount,
+            params.viewedPeriod
+        );
     }
 }

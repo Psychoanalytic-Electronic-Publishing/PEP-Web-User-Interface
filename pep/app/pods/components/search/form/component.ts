@@ -2,12 +2,15 @@ import Component from '@glimmer/component';
 import { action, computed } from '@ember/object';
 import { later, next } from '@ember/runloop';
 import { inject as service } from '@ember/service';
+import IntlService from 'ember-intl/services/intl';
 
 import {
     SEARCH_TYPES,
     SEARCH_TYPE_EVERYWHERE,
     SEARCH_RESULTS_WARNING_COUNT,
-    SearchTermValue
+    SearchTermValue,
+    VIEW_PERIODS,
+    ViewPeriod
 } from 'pep/constants/search';
 import ScrollableService from 'pep/services/scrollable';
 import { fadeTransition } from 'pep/utils/animation';
@@ -16,15 +19,23 @@ interface SearchFormArgs {
     resultsCount?: number;
     smartSearchTerm?: string;
     searchTerms?: SearchTermValue[];
+    citedCount?: string;
+    viewedCount?: string;
+    viewedPeriod?: number;
+    isLimitOpen?: boolean;
     addSearchTerm: (term: SearchTermValue) => void;
     removeSearchTerm: (term: SearchTermValue) => void;
     updateSearchTerm: (oldTerm: SearchTermValue, newTerm: SearchTermValue) => void;
-    onSearchTermTextChange?: (term: SearchTermValue, event: HTMLInputElement) => void;
-    onSmartSearchTextChange?: (value: string | undefined, event: HTMLInputElement) => void;
+    updateViewedPeriod: (value: ViewPeriod) => void;
+    onSearchTermTextChange?: (term: SearchTermValue, event: HTMLElementEvent<HTMLInputElement>) => void;
+    onSmartSearchTextChange?: (value: string | undefined, event: HTMLElementEvent<HTMLInputElement>) => void;
+    onLimitTextChange?: (value: string | undefined, event: HTMLElementEvent<HTMLInputElement>) => void;
+    toggleLimitFields?: (isOpen: boolean) => void;
 }
 
 export default class SearchForm extends Component<SearchFormArgs> {
     @service scrollable!: ScrollableService;
+    @service intl!: IntlService;
 
     searchTypes = SEARCH_TYPES;
     animateTransition = fadeTransition;
@@ -32,6 +43,13 @@ export default class SearchForm extends Component<SearchFormArgs> {
 
     get searchTypeOptions() {
         return this.searchTypes.filter((t) => t.isTypeOption);
+    }
+
+    get viewPeriodOptions() {
+        return VIEW_PERIODS.map((period) => ({
+            ...period,
+            label: this.intl.t(period.label)
+        }));
     }
 
     @computed('args.{smartSearchTerm,searchTerms.@each.term}')
@@ -85,7 +103,7 @@ export default class SearchForm extends Component<SearchFormArgs> {
      * @param {HTMLInputElement} event
      */
     @action
-    onTermTextChange(searchTerm: SearchTermValue, event: HTMLInputElement) {
+    onTermTextChange(searchTerm: SearchTermValue, event: HTMLElementEvent<HTMLInputElement>) {
         // execute action in the next runloop, so it has the new value
         next(this, () => this.args.onSearchTermTextChange?.(searchTerm, event));
     }
@@ -95,8 +113,36 @@ export default class SearchForm extends Component<SearchFormArgs> {
      * @param {HTMLInputElement} event
      */
     @action
-    onSmartSearchTextChange(event: HTMLInputElement) {
+    onSmartSearchTextChange(event: HTMLElementEvent<HTMLInputElement>) {
         // execute action in the next runloop, so it has the new value
         next(this, () => this.args.onSmartSearchTextChange?.(this.args.smartSearchTerm, event));
+    }
+
+    /**
+     * Run an action when the smart search text value changes
+     * @param {HTMLInputElement} event
+     */
+    @action
+    onLimitTextChange(event: HTMLElementEvent<HTMLInputElement>) {
+        // execute action in the next runloop, so it has the new value
+        next(this, () => this.args.onLimitTextChange?.(event.target.value, event));
+    }
+
+    /**
+     * Update the view period
+     * @param {HTMLElementEvent<HTMLSelectElement>} event
+     */
+    @action
+    onViewedPeriodChange(event: HTMLElementEvent<HTMLSelectElement>) {
+        const period = Number(event.target.value) as ViewPeriod;
+        this.args.updateViewedPeriod(period);
+    }
+
+    /**
+     * Toggles the display of the limit fields
+     */
+    @action
+    toggleLimitFields() {
+        this.args.toggleLimitFields?.(!this.args.isLimitOpen);
     }
 }
