@@ -5,9 +5,9 @@
             <h5 class="mb-0">
                 {{t "about.status.title"}}
                 {{#if this.isStatusOk}}
-                    <FaIcon @icon="check-circle" @prefix="fal" class="text-success"  />
+                    <FaIcon @icon="check-circle"  class="text-success"  />
                 {{else}}
-                    <FaIcon @icon="exclamation-circle" @prefix="fal" class="text-danger" />
+                    <FaIcon @icon="exclamation-circle" class="text-danger" />
                 {{/if}}
             </h5>
             <p class="text-muted small">
@@ -42,12 +42,3 @@
         />
     </Modal.footer>
 </ModalDialog>
-
-
-{{!-- dataSource: "OPAS.AWSProd.2020-08-27"
-db_server_ok: true
-opas_version: "2020.0826.1.Alpha"
-text_server_ok: true
-text_server_version: "8.4.1"
-timeStamp: "2020-08-31T14:23:13Z"
-user_ip: "172.17.0.1" --}}

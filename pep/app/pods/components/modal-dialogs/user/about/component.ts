@@ -14,6 +14,13 @@ interface ModalDialogsUserAboutArgs {
 export default class ModalDialogsUserAbout extends Component<ModalDialogsUserAboutArgs> {
     @service intl!: IntlService;
 
+    /**
+     * @remarks
+     * This method is part of the {@link ModalDialogsUserAbout}.
+     *
+     * @readonly
+     * @memberof ModalDialogsUserAbout
+     */
     get isStatusOk() {
         return this.args.options.serverInformation.db_server_ok && this.args.options.serverInformation.text_server_ok;
     }
