@@ -1,3 +1,5 @@
+import IntlService from 'ember-intl/services/intl';
+
 import { SearchFacetCounts, groupCountsByRange } from 'pep/utils/search';
 
 export const SEARCH_RESULTS_WARNING_COUNT = 200;
@@ -27,11 +29,9 @@ export interface SearchFacetType {
     paramSeparator: string;
     label: string;
     dynamicValues: boolean;
-    values: Array<{
-        id: string;
-        label: string;
-    }>;
+    values: { id: string; label: string }[];
     formatCounts?: (counts: SearchFacetCounts) => SearchFacetCounts;
+    formatOption?: (opt: string, intl: IntlService) => string;
 }
 
 export type SearchTermParam =
@@ -131,6 +131,7 @@ export const SEARCH_TYPE_START_YEAR: SearchTermType = {
     isTypeOption: true
 };
 
+// Note: not being used, only using startyear for now
 // export const SEARCH_TYPE_END_YEAR: SearchTermType = {
 //     id: 'end-year',
 //     param: 'endyear',
@@ -371,7 +372,9 @@ export const SEARCH_FACET_DECADE: SearchFacetType = {
     label: 'search.facets.art_year_int.label',
     dynamicValues: true,
     values: [],
-    formatCounts: (counts: SearchFacetCounts) => groupCountsByRange(counts, 10)
+    formatCounts: (counts: SearchFacetCounts) => groupCountsByRange(counts, 10),
+    formatOption: (opt: string, intl: IntlService) =>
+        intl.t('search.facets.art_year_int.option', { year: opt.split('-')?.[0]?.trim() })
 };
 
 export const SEARCH_FACET_CITATION: SearchFacetType = {

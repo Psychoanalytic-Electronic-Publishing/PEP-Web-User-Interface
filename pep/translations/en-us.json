@@ -254,7 +254,8 @@
                 "label": "Glossary Groups"
             },
             "art_year_int": {
-                "label": "Decade"
+                "label": "Decade",
+                "option": "{year}'s"
             },
             "art_cited_all": {
                 "label": "Citation Periods"
