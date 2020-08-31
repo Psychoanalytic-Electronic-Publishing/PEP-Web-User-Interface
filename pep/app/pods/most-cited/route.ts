@@ -5,7 +5,13 @@ import MostCitedController from 'pep/pods/most-cited/controller';
 import { PageNav } from 'pep/mixins/page-layout';
 import { buildQueryParams, removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
 import { useQueryParams } from 'pep/hooks/useQueryParams';
-import { SearchParams } from 'pep/pods/search/route';
+
+interface RouteQueryParams {
+    author: string;
+    title: string;
+    sourcename: string;
+    period: string;
+}
 
 export default class MostCited extends PageNav(Route) {
     navController = 'most-cited';
@@ -16,7 +22,7 @@ export default class MostCited extends PageNav(Route) {
      * @returns {Promise<Document[]>}
      * @memberof MostCited
      */
-    async model(queryParams: SearchParams) {
+    async model(queryParams: RouteQueryParams) {
         const apiQueryParams = buildQueryParams({
             context: this.controllerFor('most-cited'),
             pagingRootKey: null,

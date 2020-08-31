@@ -50,7 +50,7 @@ export class QueryParams {
  *
  * If using an object as a query param (eg. Model, POJO), be sure to add a computed to the getter
  * that grabs the value you need from the object
- * @param {PaginationArgs} args
+ * @param {QueryParamArgs} args
  */
 export const useQueryParams = (args: QueryParamArgs) => {
     const owner = getOwner(args.context);

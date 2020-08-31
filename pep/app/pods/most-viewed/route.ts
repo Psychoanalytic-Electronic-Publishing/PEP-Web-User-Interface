@@ -6,12 +6,19 @@ import { PageNav } from 'pep/mixins/page-layout';
 import { buildQueryParams, removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
 import { useQueryParams } from 'pep/hooks/useQueryParams';
 
+interface RouteQueryParams {
+    author: string;
+    title: string;
+    sourcename: string;
+    period: string;
+}
+
 export default class MostViewed extends PageNav(Route) {
     navController = 'most-viewed';
     /**
      * Load the widget results data
      */
-    async model(queryParams: any[]) {
+    async model(queryParams: RouteQueryParams) {
         const apiQueryParams = buildQueryParams({
             context: this.controllerFor('most-viewed'),
             pagingRootKey: null,
