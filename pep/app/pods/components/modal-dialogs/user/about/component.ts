@@ -21,15 +21,12 @@ export default class ModalDialogsUserAbout extends Component<ModalDialogsUserAbo
      * @readonly
      * @memberof ModalDialogsUserAbout
      */
-    get isStatusOk() {
-        return this.args.options.serverInformation.db_server_ok && this.args.options.serverInformation.text_server_ok;
+    get isStatusOk(): boolean {
+        const serverInformation = this.args.options.serverInformation;
+        return serverInformation.db_server_ok && serverInformation.text_server_ok;
     }
 
-    get status() {
-        if (this.isStatusOk) {
-            return this.intl.t('about.status.ok');
-        } else {
-            return this.intl.t('about.status.down');
-        }
+    get status(): string {
+        return this.intl.t(this.isStatusOk ? 'about.status.ok' : 'about.status.down');
     }
 }
