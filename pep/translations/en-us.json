@@ -344,8 +344,25 @@
     },
     "about": {
         "title": "About",
-        "client": "Client version",
-        "server": "Server version"
+        "version": {
+            "title": "Version",
+            "client": "Client: {versionNumber}",
+            "server": "Server: {versionNumber}",
+            "data": "DataSource: {versionNumber}"
+        },
+        "status": {
+            "title": "Status",
+            "ok": "All systems operational",
+            "down": "Database maintenance is in progress"
+        },
+        "web": {
+            "title": "PEP Web",
+            "description": " This new PEP Web user interface has been designed to make it easier to search the PEP Archive more efficiently and effectively with maximum accessibility in mind, and to take advantage of the latest technology to personalize your user experience. This is just the first phase of an ongoing re-envisioning of the PEP Web system.. In the near future, we will use advanced AI techniques to help find information in the archive and take your research to new levels.."
+        },
+        "archive": {
+            "title": "PEP Archive",
+            "description": "PEP Web has been designed to provide a powerful rapid search of the entire psychoanalytic literature in English, French, German, Greek, Italian, Romanian, Spanish and Turkish. It is the result of an innovative, high quality series of technical developments and a considerable financial and scholarly investment. You can '<a href=\"http://support.pep-web.org/about-the-pep-archive/digitization-and-quality-control/\" target=\"_blank\">'read about the innovative developments required to produce and keep updating the PEP archive'</a>' and read '<a href=\"http://support.pep-web.org/about-pep/history-of-pep/\" target=\"_blank\">'about the history of the PEP archive'</a>'. You can even '<a href=\"http://support.pep-web.org/about-the-pep-archive/suggest-new-content/\" target=\"_blank\">'suggest new content'</a>' that you would like to see added to the PEP Archive. '<br>' For more information, see the '<a href=\"http://support.pep-web.org\" target=\"_blank\">'PEP Web support pages'</a>'"
+        }
     },
     "language": {
         "codes": {
