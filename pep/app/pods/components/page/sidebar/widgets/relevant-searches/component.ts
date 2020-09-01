@@ -5,9 +5,9 @@ import AjaxService from 'pep/services/ajax';
 import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
 import { WIDGET } from 'pep/constants/sidebar';
 
-interface PageSidebarWidgetsRevelantSearchesArgs extends PageSidebarWidgetArgs {}
+interface PageSidebarWidgetsRelevantSearchesArgs extends PageSidebarWidgetArgs {}
 
-export default class PageSidebarWidgetsRevelantSearches extends Component<PageSidebarWidgetsRevelantSearchesArgs> {
+export default class PageSidebarWidgetsRelevantSearches extends Component<PageSidebarWidgetsRelevantSearchesArgs> {
     @service ajax!: AjaxService;
 
     get isOpen() {

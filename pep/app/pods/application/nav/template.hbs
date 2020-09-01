@@ -1,17 +1,15 @@
-<Page::Sidebar @side="left" as |Sidebar|>
-    <Sidebar.content @scrollableNamespace="sidebar-left">
-        <Search::Form
-            @smartSearchTerm={{this.smartSearchTerm}}
-            @searchTerms={{this.searchTerms}}
-            @matchSynonyms={{this.matchSynonyms}}
-            @submit={{this.submitSearch}}
-            @resetForm={{this.clearSearch}}
-            @addSearchTerm={{this.addSearchTerm}}
-            @removeSearchTerm={{this.removeSearchTerm}}
-            @updateSearchTerm={{this.updateSearchTerm}}
-            @matchSynonymsChange={{this.updateMatchSynonyms}}
-            class="mb-2"
-        />
-        <Page::Sidebar::Widgets::Accolades />
-    </Sidebar.content>
-</Page::Sidebar>
+<Page::Sidebar::Left>
+    <Search::Form
+        @smartSearchTerm={{this.smartSearchTerm}}
+        @searchTerms={{this.searchTerms}}
+        @matchSynonyms={{this.matchSynonyms}}
+        @submit={{this.submitSearch}}
+        @resetForm={{this.clearSearch}}
+        @addSearchTerm={{this.addSearchTerm}}
+        @removeSearchTerm={{this.removeSearchTerm}}
+        @updateSearchTerm={{this.updateSearchTerm}}
+        @matchSynonymsChange={{this.updateMatchSynonyms}}
+        class="mb-2"
+    />
+    <Page::Sidebar::Widgets::Accolades />
+</Page::Sidebar::Left>

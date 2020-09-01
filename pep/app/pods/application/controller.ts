@@ -13,6 +13,7 @@ import NotificationService from 'ember-cli-notifications/services/notifications'
 import Modal from '@gavant/ember-modals/services/modal';
 import ENV from 'pep/config/environment';
 import IntlService from 'ember-intl/services/intl';
+import ConfigurationService from 'pep/services/configuration';
 export interface ServerStatus {
     db_server_ok: boolean;
     text_server_ok: boolean;
@@ -30,6 +31,7 @@ export default class Application extends Controller {
     @service notifications!: NotificationService;
     @service modal!: Modal;
     @service intl!: IntlService;
+    @service configuration!: ConfigurationService;
 
     @tracked smartSearchTerm: string = '';
     @tracked matchSynonyms: boolean = false;
@@ -38,6 +40,9 @@ export default class Application extends Controller {
         { type: 'title', term: '' },
         { type: 'author', term: '' }
     ];
+
+    @tracked rightSidebarWidgets = this.configuration.base.global.cards.right;
+    @tracked leftSidebarWidgets = this.configuration.base.global.cards.left;
 
     /**
      * Submits the application/nav sidebar's search form and transitions the

@@ -1,5 +1,5 @@
-<Page::Sidebar @side="left" as |Sidebar|>
-    <Sidebar.content @scrollableNamespace="sidebar-left">
+<Page::Sidebar::Left as |Sidebar|>
+    <Sidebar.content>
         <Search::Form
             @smartSearchTerm={{this.currentSmartSearchTerm}}
             @searchTerms={{this.currentSearchTerms}}
@@ -29,4 +29,4 @@
         @hasChanges={{this.hasRefineChanges}}
         @apply={{this.resubmitSearchWithFacets}}
     />
-</Page::Sidebar>
+</Page::Sidebar::Left>

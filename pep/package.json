@@ -18,7 +18,8 @@
         "start": "ember serve",
         "start-fastboot-server": "node ./node/lambda.js",
         "test": "npm-run-all lint:* test:*",
-        "test:ember": "ember test"
+        "test:ember": "ember test",
+        "document": "npx typedoc --ignoreCompilerErrors --out ./documentation ./app ./types"
     },
     "dependencies": {
         "abortcontroller-polyfill": "^1.4.0",
@@ -120,7 +121,8 @@
         "prettier": "^1.19.1",
         "qunit-dom": "^1.2.0",
         "sass": "^1.26.2",
-        "typescript": "3.7.5"
+        "typedoc": "0.18.0",
+        "typescript": "3.9.7"
     },
     "engines": {
         "node": "10.* || >= 12"

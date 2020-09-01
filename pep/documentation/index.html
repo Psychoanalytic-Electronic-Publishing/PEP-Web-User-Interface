@@ -1,0 +1,626 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>pep</title>
+	<meta name="description" content="Documentation for pep">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.json" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">pep</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+							<input type="checkbox" id="tsd-filter-only-exported" />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="globals.html">Globals</a>
+				</li>
+			</ul>
+			<h1>pep</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<a href="#pep-web-user-interface-client" id="pep-web-user-interface-client" style="color: inherit; text-decoration: none;">
+					<h1>PEP-Web User Interface (Client)</h1>
+				</a>
+				<p>Single Page App Graphical User Interface for PEP-Web</p>
+				<p>This README outlines the details of collaborating on this Ember application.
+				A short introduction of this app could easily go here.</p>
+				<a href="#prerequisites" id="prerequisites" style="color: inherit; text-decoration: none;">
+					<h2>Prerequisites</h2>
+				</a>
+				<p>You will need the following things properly installed on your computer.</p>
+				<ul>
+					<li><a href="https://git-scm.com/">Git</a></li>
+					<li><a href="https://nodejs.org/">Node.js</a></li>
+					<li><a href="https://yarnpkg.com/">Yarn</a></li>
+					<li><a href="https://ember-cli.com/">Ember CLI</a></li>
+					<li><a href="https://google.com/chrome/">Google Chrome</a></li>
+				</ul>
+				<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
+					<h2>Installation</h2>
+				</a>
+				<ul>
+					<li><code>git clone &lt;repository-url&gt;</code> this repository</li>
+					<li><code>cd pep</code></li>
+					<li><code>yarn install</code></li>
+				</ul>
+				<a href="#running--development" id="running--development" style="color: inherit; text-decoration: none;">
+					<h2>Running / Development</h2>
+				</a>
+				<ul>
+					<li><code>ember serve</code></li>
+					<li>Visit your app at <a href="http://localhost:4200">http://localhost:4200</a>.</li>
+					<li>Visit your tests at <a href="http://localhost:4200/tests">http://localhost:4200/tests</a>.</li>
+				</ul>
+				<a href="#code-generators" id="code-generators" style="color: inherit; text-decoration: none;">
+					<h3>Code Generators</h3>
+				</a>
+				<p>Make use of the many generators for code, try <code>ember help generate</code> for more details</p>
+				<a href="#running-tests" id="running-tests" style="color: inherit; text-decoration: none;">
+					<h3>Running Tests</h3>
+				</a>
+				<ul>
+					<li><code>ember test</code></li>
+					<li><code>ember test --server</code></li>
+				</ul>
+				<a href="#linting" id="linting" style="color: inherit; text-decoration: none;">
+					<h3>Linting</h3>
+				</a>
+				<ul>
+					<li><code>yarn lint:hbs</code></li>
+					<li><code>yarn lint:js</code></li>
+					<li><code>yarn lint:js --fix</code></li>
+				</ul>
+				<a href="#building" id="building" style="color: inherit; text-decoration: none;">
+					<h3>Building</h3>
+				</a>
+				<ul>
+					<li><code>ember build</code> (development)</li>
+					<li><code>ember build --environment production</code> (production)</li>
+				</ul>
+				<a href="#deploying" id="deploying" style="color: inherit; text-decoration: none;">
+					<h3>Deploying</h3>
+				</a>
+				<p>@TODO add some relevant info here about gavant&#39;s CI/deploy processes</p>
+				<a href="#further-reading--useful-links" id="further-reading--useful-links" style="color: inherit; text-decoration: none;">
+					<h2>Further Reading / Useful Links</h2>
+				</a>
+				<ul>
+					<li><a href="https://emberjs.com/">ember.js</a></li>
+					<li><a href="https://ember-cli.com/">ember-cli</a></li>
+					<li>Development Browser Extensions<ul>
+							<li><a href="https://chrome.google.com/webstore/detail/ember-inspector/bmdblncegkenkacieihfhpjfppoconhi">ember inspector for chrome</a></li>
+							<li><a href="https://addons.mozilla.org/en-US/firefox/addon/ember-inspector/">ember inspector for firefox</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="globals.html"><em>Globals</em></a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_app_.html">&quot;app/app&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_authenticators_pep_.html">&quot;app/authenticators/pep&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_breakpoints_.html">&quot;app/breakpoints&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_constants_configuration_.html">&quot;app/constants/configuration&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_constants_dimensions_.html">&quot;app/constants/dimensions&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_constants_documents_.html">&quot;app/constants/documents&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_constants_lang_.html">&quot;app/constants/lang&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_constants_regex_.html">&quot;app/constants/regex&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_constants_search_.html">&quot;app/constants/search&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_constants_sidebar_.html">&quot;app/constants/sidebar&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_constants_themes_.html">&quot;app/constants/themes&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_decorators_fastboot_.html">&quot;app/decorators/fastboot&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_decorators_models_.html">&quot;app/decorators/models&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_formats_.html">&quot;app/formats&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_helpers_bool_.html">&quot;app/helpers/bool&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_helpers_html_safe_.html">&quot;app/helpers/html-<wbr>safe&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_helpers_times_.html">&quot;app/helpers/times&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_hooks_usequeryparams_.html">&quot;app/hooks/use<wbr>Query<wbr>Params&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_initializers_ignored_deprecations_.html">&quot;app/initializers/ignored-<wbr>deprecations&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_initializers_inflector_rules_.html">&quot;app/initializers/inflector-<wbr>rules&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_initializers_user_agent_.html">&quot;app/initializers/user-<wbr>agent&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_mixins_application_serializer_.html">&quot;app/mixins/application-<wbr>serializer&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_mixins_authorized_route_.html">&quot;app/mixins/authorized-<wbr>route&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_mixins_page_layout_.html">&quot;app/mixins/page-<wbr>layout&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_abstract_adapter_.html">&quot;app/pods/abstract/adapter&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_abstract_model_.html">&quot;app/pods/abstract/model&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_abstract_serializer_.html">&quot;app/pods/abstract/serializer&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_application_adapter_.html">&quot;app/pods/application/adapter&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_application_controller_.html">&quot;app/pods/application/controller&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_application_route_.html">&quot;app/pods/application/route&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_application_serializer_.html">&quot;app/pods/application/serializer&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_browse_route_.html">&quot;app/pods/browse/route&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_alert_component_.html">&quot;app/pods/components/alert/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_button_with_tooltip_component_.html">&quot;app/pods/components/button/with-<wbr>tooltip/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_checkbox_input_component_.html">&quot;app/pods/components/checkbox-<wbr>input/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_collapsible_panel_body_component_.html">&quot;app/pods/components/collapsible-<wbr>panel/body/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_collapsible_panel_component_.html">&quot;app/pods/components/collapsible-<wbr>panel/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_collapsible_panel_header_component_.html">&quot;app/pods/components/collapsible-<wbr>panel/header/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_content_with_placeholder_component_.html">&quot;app/pods/components/content-<wbr>with-<wbr>placeholder/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_document_image_component_.html">&quot;app/pods/components/document/image/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_drag_bar_component_.html">&quot;app/pods/components/drag-<wbr>bar/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_loading_read_document_component_.html">&quot;app/pods/components/loading/read/document/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_loading_read_results_component_.html">&quot;app/pods/components/loading/read/results/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_loading_search_results_component_.html">&quot;app/pods/components/loading/search/results/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_loading_spinner_component_.html">&quot;app/pods/components/loading/spinner/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_loading_widget_component_.html">&quot;app/pods/components/loading/widget/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_modal_dialogs_user_about_component_.html">&quot;app/pods/components/modal-<wbr>dialogs/user/about/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_modal_dialogs_user_login_component_.html">&quot;app/pods/components/modal-<wbr>dialogs/user/login/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_modal_dialogs_user_preferences_component_.html">&quot;app/pods/components/modal-<wbr>dialogs/user/preferences/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_modal_dialogs_whats_new_subscription_component_.html">&quot;app/pods/components/modal-<wbr>dialogs/whats-<wbr>new/subscription/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_page_content_component_.html">&quot;app/pods/components/page/content/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_page_drawer_component_.html">&quot;app/pods/components/page/drawer/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_page_drawer_nav_item_component_.html">&quot;app/pods/components/page/drawer/nav-<wbr>item/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_page_drawer_nav_menu_component_.html">&quot;app/pods/components/page/drawer/nav-<wbr>menu/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_page_error_component_.html">&quot;app/pods/components/page/error/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_page_nav_component_.html">&quot;app/pods/components/page/nav/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_page_sidebar_component_.html">&quot;app/pods/components/page/sidebar/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_page_sidebar_content_component_.html">&quot;app/pods/components/page/sidebar/content/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_page_sidebar_left_component_.html">&quot;app/pods/components/page/sidebar/left/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_page_sidebar_left_content_component_.html">&quot;app/pods/components/page/sidebar/left/content/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_page_sidebar_mask_component_.html">&quot;app/pods/components/page/sidebar/mask/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_page_sidebar_right_component_.html">&quot;app/pods/components/page/sidebar/right/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_page_sidebar_widgets_accolades_component_.html">&quot;app/pods/components/page/sidebar/widgets/accolades/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_page_sidebar_widgets_component_.html">&quot;app/pods/components/page/sidebar/widgets/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_page_sidebar_widgets_expert_picks_component_.html">&quot;app/pods/components/page/sidebar/widgets/expert-<wbr>picks/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_page_sidebar_widgets_glossary_terms_component_.html">&quot;app/pods/components/page/sidebar/widgets/glossary-<wbr>terms/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_page_sidebar_widgets_more_like_these_component_.html">&quot;app/pods/components/page/sidebar/widgets/more-<wbr>like-<wbr>these/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_page_sidebar_widgets_most_cited_component_.html">&quot;app/pods/components/page/sidebar/widgets/most-<wbr>cited/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_page_sidebar_widgets_most_viewed_component_.html">&quot;app/pods/components/page/sidebar/widgets/most-<wbr>viewed/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_page_sidebar_widgets_past_searches_component_.html">&quot;app/pods/components/page/sidebar/widgets/past-<wbr>searches/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_page_sidebar_widgets_relevant_searches_component_.html">&quot;app/pods/components/page/sidebar/widgets/relevant-<wbr>searches/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_page_sidebar_widgets_seminal_papers_component_.html">&quot;app/pods/components/page/sidebar/widgets/seminal-<wbr>papers/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_page_sidebar_widgets_video_preview_component_.html">&quot;app/pods/components/page/sidebar/widgets/video-<wbr>preview/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_page_sidebar_widgets_whats_new_component_.html">&quot;app/pods/components/page/sidebar/widgets/whats-<wbr>new/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_page_sidebar_widgets_your_interests_component_.html">&quot;app/pods/components/page/sidebar/widgets/your-<wbr>interests/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_power_select_infinity_options_component_.html">&quot;app/pods/components/power-<wbr>select-<wbr>infinity/options/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_power_select_infinity_with_search_component_.html">&quot;app/pods/components/power-<wbr>select-<wbr>infinity/with-<wbr>search/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_power_select_journal_component_.html">&quot;app/pods/components/power-<wbr>select/journal/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_progress_bar_component_.html">&quot;app/pods/components/progress/bar/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_progress_spinner_component_.html">&quot;app/pods/components/progress/spinner/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_scrollable_component_.html">&quot;app/pods/components/scrollable/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_search_form_component_.html">&quot;app/pods/components/search/form/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_search_preview_component_.html">&quot;app/pods/components/search/preview/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_search_refine_apply_component_.html">&quot;app/pods/components/search/refine/apply/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_search_refine_component_.html">&quot;app/pods/components/search/refine/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_search_refine_option_component_.html">&quot;app/pods/components/search/refine/option/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_tables_cell_html_component_.html">&quot;app/pods/components/tables/cell/html/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_tables_cell_most_viewed_publication_component_.html">&quot;app/pods/components/tables/cell/most-<wbr>viewed-<wbr>publication/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_tables_most_cited_component_.html">&quot;app/pods/components/tables/most-<wbr>cited/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_components_tables_most_viewed_component_.html">&quot;app/pods/components/tables/most-<wbr>viewed/component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_configuration_adapter_.html">&quot;app/pods/configuration/adapter&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_configuration_model_.html">&quot;app/pods/configuration/model&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_configuration_serializer_.html">&quot;app/pods/configuration/serializer&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_document_adapter_.html">&quot;app/pods/document/adapter&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_document_model_.html">&quot;app/pods/document/model&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_document_serializer_.html">&quot;app/pods/document/serializer&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_five_hundred_route_.html">&quot;app/pods/five-<wbr>hundred/route&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_four_oh_four_route_.html">&quot;app/pods/four-<wbr>oh-<wbr>four/route&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_four_oh_three_route_.html">&quot;app/pods/four-<wbr>oh-<wbr>three/route&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_index_controller_.html">&quot;app/pods/index/controller&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_index_route_.html">&quot;app/pods/index/route&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_journal_adapter_.html">&quot;app/pods/journal/adapter&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_journal_model_.html">&quot;app/pods/journal/model&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_journal_serializer_.html">&quot;app/pods/journal/serializer&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_login_route_.html">&quot;app/pods/login/route&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_most_cited_loading_route_.html">&quot;app/pods/most-<wbr>cited-<wbr>loading/route&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_most_cited_controller_.html">&quot;app/pods/most-<wbr>cited/controller&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_most_cited_route_.html">&quot;app/pods/most-<wbr>cited/route&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_most_viewed_loading_route_.html">&quot;app/pods/most-<wbr>viewed-<wbr>loading/route&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_most_viewed_controller_.html">&quot;app/pods/most-<wbr>viewed/controller&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_most_viewed_route_.html">&quot;app/pods/most-<wbr>viewed/route&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_read_loading_route_.html">&quot;app/pods/read-<wbr>loading/route&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_read_document_loading_route_.html">&quot;app/pods/read/document-<wbr>loading/route&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_read_document_controller_.html">&quot;app/pods/read/document/controller&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_read_document_route_.html">&quot;app/pods/read/document/route&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_read_index_route_.html">&quot;app/pods/read/index/route&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_read_route_.html">&quot;app/pods/read/route&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_search_controller_.html">&quot;app/pods/search/controller&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_search_route_.html">&quot;app/pods/search/route&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_user_model_.html">&quot;app/pods/user/model&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_whats_new_adapter_.html">&quot;app/pods/whats-<wbr>new/adapter&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_whats_new_model_.html">&quot;app/pods/whats-<wbr>new/model&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_pods_whats_new_serializer_.html">&quot;app/pods/whats-<wbr>new/serializer&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_router_.html">&quot;app/router&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_services_ajax_.html">&quot;app/services/ajax&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_services_auth_.html">&quot;app/services/auth&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_services_can_.html">&quot;app/services/can&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_services_configuration_.html">&quot;app/services/configuration&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_services_current_user_.html">&quot;app/services/current-<wbr>user&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_services_drawer_.html">&quot;app/services/drawer&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_services_fastboot_media_.html">&quot;app/services/fastboot-<wbr>media&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_services_lang_.html">&quot;app/services/lang&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_services_loading_bar_.html">&quot;app/services/loading-<wbr>bar&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_services_notifications_.html">&quot;app/services/notifications&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_services_scrollable_.html">&quot;app/services/scrollable&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_services_sidebar_.html">&quot;app/services/sidebar&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_services_theme_.html">&quot;app/services/theme&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_session_stores_application_.html">&quot;app/session-<wbr>stores/application&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_utils_dom_.html">&quot;app/utils/dom&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_utils_search_.html">&quot;app/utils/search&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_utils_types_.html">&quot;app/utils/types&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_utils_url_.html">&quot;app/utils/url&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_app_validations_user_login_.html">&quot;app/validations/user/login&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_types_ember_changeset_validations_utils_validations_errors_.html">&quot;types/ember-<wbr>changeset-<wbr>validations/utils/validations-<wbr>errors&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_types_ember_useragent_services_user_agent_.html">&quot;types/ember-<wbr>useragent/services/user-<wbr>agent&quot;</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

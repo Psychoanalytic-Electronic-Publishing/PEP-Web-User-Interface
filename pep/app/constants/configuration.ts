@@ -1,3 +1,15 @@
+import { WIDGET } from 'pep/constants/sidebar';
+
+/**
+ * Widget configuration - tells us which widget and whether its open
+ *
+ * @export
+ * @interface WidgetConfiguration
+ */
+export interface WidgetConfiguration {
+    widget: WIDGET;
+    open: boolean;
+}
 /**
  * Base admin configuration fields for the application
  * MUST NOT contain any configuration data/content that is language-dependent
@@ -6,6 +18,12 @@
  * @interface BaseConfiguration
  */
 export interface BaseConfiguration {
+    global: {
+        cards: {
+            left: WidgetConfiguration[];
+            right: WidgetConfiguration[];
+        };
+    };
     home: {
         expertPick: {
             articleId: string;
@@ -25,10 +43,10 @@ export interface ContentConfiguration {
         // [Rel.2] for future release
         tips: {
             isEnabled: boolean;
-            list: Array<{
+            list: {
                 shortDescription: string;
                 longDescription?: string;
-            }>;
+            }[];
         };
     };
     home: {
@@ -61,6 +79,23 @@ export const BASE_CONFIG_NAME = 'pep-base';
 export const CONTENT_CONFIG_NAME = 'pep-content';
 
 export const DEFAULT_BASE_CONFIGURATION: BaseConfiguration = {
+    global: {
+        cards: {
+            left: [{ widget: WIDGET.VIDEO_PREVIEW, open: true }],
+            right: [
+                { widget: WIDGET.WHATS_NEW, open: true },
+                { widget: WIDGET.MOST_CITED, open: true },
+                { widget: WIDGET.MOST_VIEWED, open: true },
+                { widget: WIDGET.EXPERT_PICKS, open: false },
+                { widget: WIDGET.GLOSSARY_TERMS, open: false },
+                { widget: WIDGET.MORE_LIKE_THESE, open: false },
+                { widget: WIDGET.PAST_SEARCHES, open: false },
+                { widget: WIDGET.RELEVANT_SEARCHES, open: false },
+                { widget: WIDGET.SEMINAL_PAPERS, open: false },
+                { widget: WIDGET.YOUR_INTERESTS, open: false }
+            ]
+        }
+    },
     home: {
         expertPick: {
             articleId: 'CJP.024A.0233A',

@@ -1,116 +1,114 @@
-<Page::Sidebar @side="left" as |Sidebar|>
-    <Sidebar.content @scrollableNamespace="sidebar-left">
-        {{#if (or this.paginator.metadata.fullCount this.isLoadingRoute)}}
-            <div class="bg-white border-divider-b p-3">
-                {{#if this.isLoadingRoute}}
-                    <Loading::Read::Results />
-                {{else}}
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <h4 class="mb-0">
-                            {{t
-                                "common.numResults"
-                                count=(format-number (or this.paginator.metadata.fullCount 0))
-                                htmlSafe=true
-                            }}
-                        </h4>
-                        <div class="d-flex align-items-center">
-                            <Button::WithTooltip
-                                @type="link"
-                                @icon="download"
-                                @iconSize="lg"
-                                @tooltip={{t "common.export"}}
-                                class="p-1"
-                            />
-                            <Button::WithTooltip
-                                @type="link"
-                                @icon="print"
-                                @iconSize="lg"
-                                @tooltip={{t "common.print"}}
-                                class="p-1"
-                            />
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <Button
-                            @type="link"
-                            class="text-decoration-none p-1 mr-1"
-                        >
-                            <span class="text-muted">{{t "search.sort.label"}}</span>
-                            <span class="text-dark mr-1">{{t "search.sort.year"}}</span>
-                            <FaIcon @icon="angle-down" class="text-muted" />
-                        </Button>
-                        <Button
-                            @type="link"
-                            class="text-decoration-none p-1 mr-2"
-                        >
-                            <span class="text-muted">{{t "search.view.label"}}</span>
-                            <span class="text-dark mr-1">{{t "search.view.biblio"}}</span>
-                            <FaIcon @icon="angle-down" class="text-muted" />
-                        </Button>
-                    </div>
-                    <VerticalCollection
-                        @items={{this.paginator.models}}
-                        @tagName="ul"
-                        @containerSelector=".sidebar-content"
-                        @class="list-unstyled"
-                        @estimateHeight={{100}}
-                        @renderAll={{this.fastboot.isFastBoot}}
-                        @lastReached={{this.paginator.loadMoreModels}}
-                        as |result|
-                    >
-                        <li class="mb-2">
-                            <LinkTo
-                                @route="read.document"
-                                @model={{result.id}}
-                                @query={{hash
-                                    q=this.q
-                                    matchSynonyms=this.matchSynonyms
-                                    searchTerms=this._searchTerms
-                                }}
-                                class="{{if (eq result.id this.model.id) "font-weight-bold"}}"
-                            >
-                                {{#if (eq result.id this.model.id)}}
-                                    <FaIcon @icon="caret-right" />
-                                {{/if}}
-                                {{#if result.authorMast}}
-                                    {{result.authorMast}}.
-                                {{/if}}
-                                {{html-safe result.title}}
-                            </LinkTo>
-                            <ul class="list-unstyled small ml-3">
-                                <li>{{t "search.results.sidebar.title" title=result.sourceTitle year=result.year}}</li>
-                            </ul>
-                        </li>
-                    </VerticalCollection>
-                    {{#if this.paginator.isLoadingModels}}
-                        <Loading::Spinner
-                            @options={{hash text=(t "common.loadingResults")}}
-                            class="pt-2"
-                        />
-                    {{/if}}
-                {{/if}}
-            </div>
-        {{else}}
-            <div class="bg-white border-divider-b px-3 py-4 mb-2">
-                <p class="text-muted">
-                    {{t "read.document.findMore"}}
-                </p>
-                <p>
-                    <LinkTo
-                        @route="search"
-                        @query={{hash
-                            q=""
-                            matchSynonyms=false
-                            searchTerms=this.defaultSearchTerms
-                            facets=this.defaultSearchFacets
+<Page::Sidebar::Left>
+    {{#if (or this.paginator.metadata.fullCount this.isLoadingRoute)}}
+        <div class="bg-white border-divider-b p-3">
+            {{#if this.isLoadingRoute}}
+                <Loading::Read::Results />
+            {{else}}
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h4 class="mb-0">
+                        {{t
+                            "common.numResults"
+                            count=(format-number (or this.paginator.metadata.fullCount 0))
+                            htmlSafe=true
                         }}
-                        class="btn btn-outline-primary btn-block"
+                    </h4>
+                    <div class="d-flex align-items-center">
+                        <Button::WithTooltip
+                            @type="link"
+                            @icon="download"
+                            @iconSize="lg"
+                            @tooltip={{t "common.export"}}
+                            class="p-1"
+                        />
+                        <Button::WithTooltip
+                            @type="link"
+                            @icon="print"
+                            @iconSize="lg"
+                            @tooltip={{t "common.print"}}
+                            class="p-1"
+                        />
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <Button
+                        @type="link"
+                        class="text-decoration-none p-1 mr-1"
                     >
-                        {{t "read.document.newSearch"}}
-                    </LinkTo>
-                </p>
-            </div>
-            <Page::Sidebar::Widgets::Accolades />
-        {{/if}}
-    </Sidebar.content>
-</Page::Sidebar>
+                        <span class="text-muted">{{t "search.sort.label"}}</span>
+                        <span class="text-dark mr-1">{{t "search.sort.year"}}</span>
+                        <FaIcon @icon="angle-down" class="text-muted" />
+                    </Button>
+                    <Button
+                        @type="link"
+                        class="text-decoration-none p-1 mr-2"
+                    >
+                        <span class="text-muted">{{t "search.view.label"}}</span>
+                        <span class="text-dark mr-1">{{t "search.view.biblio"}}</span>
+                        <FaIcon @icon="angle-down" class="text-muted" />
+                    </Button>
+                </div>
+                <VerticalCollection
+                    @items={{this.paginator.models}}
+                    @tagName="ul"
+                    @containerSelector=".sidebar-content"
+                    @class="list-unstyled"
+                    @estimateHeight={{100}}
+                    @renderAll={{this.fastboot.isFastBoot}}
+                    @lastReached={{this.paginator.loadMoreModels}}
+                    as |result|
+                >
+                    <li class="mb-2">
+                        <LinkTo
+                            @route="read.document"
+                            @model={{result.id}}
+                            @query={{hash
+                                q=this.q
+                                matchSynonyms=this.matchSynonyms
+                                searchTerms=this._searchTerms
+                            }}
+                            class="{{if (eq result.id this.model.id) "font-weight-bold"}}"
+                        >
+                            {{#if (eq result.id this.model.id)}}
+                                <FaIcon @icon="caret-right" />
+                            {{/if}}
+                            {{#if result.authorMast}}
+                                {{result.authorMast}}.
+                            {{/if}}
+                            {{html-safe result.title}}
+                        </LinkTo>
+                        <ul class="list-unstyled small ml-3">
+                            <li>{{t "search.results.sidebar.title" title=result.sourceTitle year=result.year}}</li>
+                        </ul>
+                    </li>
+                </VerticalCollection>
+                {{#if this.paginator.isLoadingModels}}
+                    <Loading::Spinner
+                        @options={{hash text=(t "common.loadingResults")}}
+                        class="pt-2"
+                    />
+                {{/if}}
+            {{/if}}
+        </div>
+    {{else}}
+        <div class="bg-white border-divider-b px-3 py-4 mb-2">
+            <p class="text-muted">
+                {{t "read.document.findMore"}}
+            </p>
+            <p>
+                <LinkTo
+                    @route="search"
+                    @query={{hash
+                        q=""
+                        matchSynonyms=false
+                        searchTerms=this.defaultSearchTerms
+                        facets=this.defaultSearchFacets
+                    }}
+                    class="btn btn-outline-primary btn-block"
+                >
+                    {{t "read.document.newSearch"}}
+                </LinkTo>
+            </p>
+        </div>
+        <Page::Sidebar::Widgets::Accolades />
+    {{/if}}
+</Page::Sidebar::Left>

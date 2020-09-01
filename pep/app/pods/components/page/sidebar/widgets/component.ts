@@ -2,16 +2,19 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { WIDGET } from 'pep/constants/sidebar';
 import { action } from '@ember/object';
-interface PageSidebarWidgetsArgs {}
+import { WidgetConfiguration } from 'pep/constants/configuration';
 
-export interface PageSidebarWidgetArgs {
+export interface PageSidebarWidgetsArgs {
+    widgets: WidgetConfiguration[];
+}
+export interface PageSidebarWidgetArgs extends PageSidebarWidgetsArgs {
     toggleIsOpen: (widget: WIDGET) => void;
     openWidgets: WIDGET[];
 }
 
 export default class PageSidebarWidgets extends Component<PageSidebarWidgetsArgs> {
-    @tracked openWidgets: WIDGET[] = [WIDGET.WHATS_NEW, WIDGET.MOST_CITED, WIDGET.MOST_VIEWED];
-
+    @tracked openWidgets: WIDGET[] =
+        this.args.widgets?.filter((widget) => widget.open).map((widget) => widget.widget) ?? [];
     /**
      * Getter that decides when we show close all
      *
@@ -47,7 +50,7 @@ export default class PageSidebarWidgets extends Component<PageSidebarWidgetsArgs
         if (this.showCloseAll) {
             this.openWidgets = [];
         } else {
-            this.openWidgets = [...Object.values(WIDGET).filter((k) => typeof k === 'number')] as WIDGET[];
+            this.openWidgets = [...Object.values(WIDGET).filter((k) => typeof k === 'string')] as WIDGET[];
         }
     }
 }
