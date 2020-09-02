@@ -4,6 +4,8 @@
             <h5 class="mb-0">
                 {{t "search.form.heading"}}
             </h5>
+            {{!-- TODO hiding saved searches for now until a future release --}}
+            {{!--
             <div>
                 <DropdownMenu @horizontalPosition="right" as |DD|>
                     <DD.Trigger @htmlTag="button" class="btn btn-link">
@@ -22,18 +24,14 @@
                             <FaIcon @icon="bookmark" class="mr-1" />
                             {{t "search.form.savedSearch.mine"}}
                         </h6>
-                        {{!-- TODO static content TBD -this will be backend driven --}}
-                        {{!-- template-lint-disable no-bare-strings --}}
                         <DropdownAction @dd={{DD}}>
                             disjunction feminine
                             <small class="text-muted">(all, 132 matches)</small>
                         </DropdownAction>
-                        {{!-- template-lint-disable no-bare-strings --}}
                         <DropdownAction @dd={{DD}}>
                             family discord
                             <small class="text-muted">(books, 3 matches)</small>
                         </DropdownAction>
-                        {{!-- template-lint-disable no-bare-strings --}}
                         <DropdownAction @dd={{DD}}>
                             depression anxiety
                             <small class="text-muted">(videos, 5 matches)</small>
@@ -46,6 +44,7 @@
                     </DD.Content>
                 </DropdownMenu>
             </div>
+             --}}
         </div>
         <form>
             <div class="form-group">
