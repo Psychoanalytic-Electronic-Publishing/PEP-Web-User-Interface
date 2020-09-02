@@ -109,12 +109,10 @@
             "additional": {
                 "limitTo": "Limit to...",
                 "cited": {
-                    "atLeast": "Cited at least",
-                    "times": "times in the past 5 years"
+                    "times": "citations in the past 5 years"
                 },
                 "viewed": {
-                    "atLeast": "Viewed at least",
-                    "times": "times"
+                    "times": "views in the last"
                 }
             },
             "tooManyResults": {
@@ -257,11 +255,11 @@
             }
         },
         "viewPeriod": {
-            "week": "in the last week",
-            "month": "in the last month",
-            "6months": " in the last 6 months",
-            "12months": "in the last 12 months",
-            "calYear": "in the last calendar year"
+            "week": "week",
+            "month": "month",
+            "6months": " 6 months",
+            "12months": "12 months",
+            "calYear": "calendar year"
         }
     },
     "browse": {

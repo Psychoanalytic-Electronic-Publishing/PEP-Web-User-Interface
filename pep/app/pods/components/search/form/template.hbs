@@ -71,13 +71,10 @@
                 {{#animated-if @isLimitOpen use=this.animateTransition duration=this.animateDuration}}
                     <div class="mb-2 p-2 bg-light rounded">
                         <div class="mb-2 d-flex align-items-center">
-                            <span class="font-size-secondary text-nowrap">
-                                {{t "search.form.additional.cited.atLeast"}}
-                            </span>
                             <Input
                                 @value={{@citedCount}}
                                 type="number"
-                                class="form-control form-control-sm form-control-inline-xs form-control-number-no-spin mx-1"
+                                class="form-control form-control-sm form-control-inline-xs form-control-number-no-spin mr-1"
                                 maxlength="255"
                                 autocomplete="off"
                                 {{on "input" this.onLimitTextChange}}
@@ -87,13 +84,10 @@
                             </span>
                         </div>
                         <div class="mb-2 d-flex align-items-center">
-                            <span class="font-size-secondary text-nowrap">
-                                {{t "search.form.additional.viewed.atLeast"}}
-                            </span>
                             <Input
                                 @value={{@viewedCount}}
                                 type="number"
-                                class="form-control form-control-sm form-control-inline-xs form-control-number-no-spin mx-1"
+                                class="form-control form-control-sm form-control-inline-xs form-control-number-no-spin mr-1"
                                 maxlength="255"
                                 autocomplete="off"
                                 {{on "input" this.onLimitTextChange}}
@@ -102,7 +96,7 @@
                                 {{t "search.form.additional.viewed.times"}}
                             </span>
                             <select
-                                class="custom-select custom-select-sm text-truncate ml-1"
+                                class="custom-select custom-select-sm text-truncate ml-1 mr-2"
                                 {{on "change" this.onViewedPeriodChange}}
                             >
                                 {{#each this.viewPeriodOptions as |period|}}
