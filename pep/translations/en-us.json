@@ -320,6 +320,7 @@
             "week": "Req. last week",
             "month": "Req. last month",
             "sixMonths": "Req. last 6 months",
+            "twelveMonths": "Req. last 12 months",
             "calendarYear": "Req. last calendar year"
         }
     },

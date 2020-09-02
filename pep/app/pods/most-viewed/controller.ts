@@ -11,6 +11,10 @@ import IntlService from 'ember-intl/services/intl';
 import Journal from 'pep/pods/journal/model';
 import { PERIODS, PossiblePeriodValues } from 'pep/constants/sidebar';
 import { QueryParams } from 'pep/hooks/useQueryParams';
+import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
+import { urlForDocumentQuery } from 'pep/pods/document/adapter';
+import { serializeQueryParams } from 'pep/utils/url';
+import { csvUrl } from 'pep/utils/csv';
 
 export default class MostViewed extends Controller {
     @service loadingBar!: LoadingBarService;
@@ -50,6 +54,7 @@ export default class MostViewed extends Controller {
             };
         });
     }
+
     /**
      * Filter table results based on query params
      *
@@ -99,6 +104,17 @@ export default class MostViewed extends Controller {
     @action
     updateJournal(journal: Journal) {
         this.searchQueryParams.journal = journal;
+    }
+
+    @action
+    downloadCSV() {
+        const queryParams = buildQueryParams({
+            context: this,
+            pagingRootKey: null,
+            filterRootKey: null,
+            filterList: ['author', 'title', 'sourcename', 'period', 'queryType']
+        });
+        window.location.href = csvUrl(this.store, queryParams);
     }
 }
 // DO NOT DELETE: this is how TypeScript knows how to look up your controllers.

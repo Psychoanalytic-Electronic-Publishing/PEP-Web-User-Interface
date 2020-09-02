@@ -45,6 +45,11 @@ export default class Document extends ApplicationAdapter {
     }
 }
 
+export const urlForDocumentQuery = (store: DS.Store, query: { queryType: string }): string => {
+    const adapter = store.adapterFor('document');
+    return adapter.urlForQuery(query, 'document');
+};
+
 // DO NOT DELETE: this is how TypeScript knows how to look up your adapters.
 declare module 'ember-data/types/registries/adapter' {
     export default interface AdapterRegistry {
