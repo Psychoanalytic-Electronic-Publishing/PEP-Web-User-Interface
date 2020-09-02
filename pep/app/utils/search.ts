@@ -1,4 +1,4 @@
-import { isEmpty } from '@ember/utils';
+import { isEmpty, isNone } from '@ember/utils';
 import { removeEmptyQueryParams, QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 
 import {
@@ -9,6 +9,7 @@ import {
     DEFAULT_SEARCH_FACETS,
     ViewPeriod
 } from 'pep/constants/search';
+import { QUOTED_VALUE_REGEX } from 'pep/constants/regex';
 
 interface SearchQueryStrParams {
     smarttext: string;
@@ -61,14 +62,14 @@ export function buildSearchQueryParams(
     viewedCount: string = '',
     viewedPeriod: ViewPeriod | null = null,
     facetFields: string[] = DEFAULT_SEARCH_FACETS,
-    logicalOperator: 'AND' | 'OR' = 'OR'
+    joinOp: 'AND' | 'OR' = 'AND'
 ): QueryParamsObj {
     const queryParams: SearchQueryParams = {
         facetfields: !isEmpty(facetFields) ? facetFields.join(',') : null,
         smarttext: smartSearchTerm,
         citecount: citedCount,
         viewcount: viewedCount,
-        viewperiod: `${viewedPeriod ?? ''}`,
+        viewperiod: `${!isNone(viewedPeriod) && !isEmpty(viewedCount) ? viewedPeriod : ''}`,
         abstract: true,
         synonyms
     };
@@ -79,14 +80,19 @@ export function buildSearchQueryParams(
     nonEmptyTerms.forEach((term) => {
         let searchType = SEARCH_TYPES.findBy('id', term.type);
         if (searchType && searchType.param) {
-            //if a term of this type already exists, join it to the existing one
+            let value = term.term.trim();
             const p = searchType.param as keyof SearchQueryStrParams;
-            if (queryParams[p]) {
-                //TODO do multiple paratext param values get joined in the same way?
-                queryParams[p] = `${queryParams[p]} ${logicalOperator} ${term.term}`;
-            } else {
-                queryParams[p] = term.term;
+            const qp = queryParams[p];
+
+            if (searchType.solrField) {
+                const isQuoted = QUOTED_VALUE_REGEX.test(value);
+                const hasMultipleWords = value.indexOf(' ') !== -1;
+                const formatted = hasMultipleWords && !isQuoted ? `"${value}"~25` : value;
+                value = `${searchType.solrField}:(${formatted})`;
             }
+
+            //if a term of this type already exists, join it to the existing one
+            queryParams[p] = `${qp ? `${qp} ${joinOp} ` : ''}${value}`;
 
             //add any parascope-based params to query
             if (searchType.scope) {
@@ -120,14 +126,16 @@ export function buildSearchQueryParams(
         let facetType = SEARCH_FACETS.findBy('id', id);
         let facets = groupedFacets[id];
         if (facetType && facetType.param) {
+            const qp = queryParams[facetType.param];
             //join all the selected facet values together
             let facetValues = facets.mapBy('value').join(facetType.paramSeparator);
-            //if the query param already exists, join it to the existing one
-            if (queryParams[facetType.param]) {
-                queryParams[facetType.param] = `${queryParams[facetType.param]} AND ${facetValues}`;
-            } else {
-                queryParams[facetType.param] = facetValues;
+
+            if (facetType.prefixValues) {
+                facetValues = `${facetType.id}:(${facetValues})`;
             }
+
+            //if the query param already exists, join it to the existing one
+            queryParams[facetType.param] = `${qp ? `${qp} ${joinOp} ` : ''}${facetValues}`;
         }
     });
 
@@ -143,14 +151,8 @@ export function buildSearchQueryParams(
  * @returns
  */
 export function hasSearchQuery(params: QueryParamsObj) {
-    const strippedParams = { ...params };
-    delete strippedParams.synonyms;
-    delete strippedParams.facetfields;
-    delete strippedParams.abstract;
-    delete strippedParams.citecount;
-    delete strippedParams.viewcount;
-    delete strippedParams.viewperiod;
-    return Object.keys(strippedParams).length > 0;
+    const exclude = ['synonyms', 'facetfields', 'abstract', 'citecount', 'viewcount', 'viewperiod'];
+    return Object.keys(params).filter((p) => !exclude.includes(p)).length > 0;
 }
 
 /**

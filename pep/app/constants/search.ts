@@ -42,6 +42,7 @@ export interface SearchFacetValue {
 export interface SearchTermType {
     id: string;
     param: string;
+    solrField?: string;
     scope?: string;
     label: string;
     shortLabel?: string;
@@ -54,6 +55,7 @@ export interface SearchFacetType {
     paramSeparator: string;
     label: string;
     dynamicValues: boolean;
+    prefixValues?: boolean;
     values: { id: string; label: string }[];
     formatCounts?: (counts: SearchFacetCounts) => SearchFacetCounts;
     formatOption?: (opt: string, intl: IntlService) => string;
@@ -93,6 +95,7 @@ export const SEARCH_DEFAULT_PARAMS = {
 export const SEARCH_TYPE_EVERYWHERE: SearchTermType = {
     id: 'everywhere',
     param: 'fulltext1',
+    solrField: 'text',
     label: 'search.terms.everywhere.label',
     isTypeOption: true
 };
@@ -113,7 +116,8 @@ export const SEARCH_TYPE_TITLE: SearchTermType = {
 
 export const SEARCH_TYPE_DREAM: SearchTermType = {
     id: 'dream',
-    param: 'paratext',
+    param: 'fulltext1',
+    solrField: 'dreams_xml',
     scope: 'dreams',
     label: 'search.terms.dream.label',
     isTypeOption: true
@@ -121,7 +125,8 @@ export const SEARCH_TYPE_DREAM: SearchTermType = {
 
 export const SEARCH_TYPE_QUOTE: SearchTermType = {
     id: 'quote',
-    param: 'paratext',
+    param: 'fulltext1',
+    solrField: 'quotes_xml',
     scope: 'TODO',
     label: 'search.terms.quote.label',
     isTypeOption: true
@@ -129,7 +134,8 @@ export const SEARCH_TYPE_QUOTE: SearchTermType = {
 
 export const SEARCH_TYPE_REFERENCE: SearchTermType = {
     id: 'reference',
-    param: 'paratext',
+    param: 'fulltext1',
+    solrField: 'references_xml',
     scope: 'biblios',
     label: 'search.terms.reference.label',
     isTypeOption: true
@@ -137,7 +143,8 @@ export const SEARCH_TYPE_REFERENCE: SearchTermType = {
 
 export const SEARCH_TYPE_DIALOG: SearchTermType = {
     id: 'dialog',
-    param: 'paratext',
+    param: 'fulltext1',
+    solrField: 'dialogs_xml',
     scope: 'dialogs',
     label: 'search.terms.dialog.label',
     isTypeOption: true
@@ -145,7 +152,8 @@ export const SEARCH_TYPE_DIALOG: SearchTermType = {
 
 export const SEARCH_TYPE_ARTICLE: SearchTermType = {
     id: 'article',
-    param: 'paratext',
+    param: 'fulltext1',
+    solrField: 'body_xml',
     scope: 'doc',
     label: 'search.terms.article.label',
     isTypeOption: true
@@ -367,28 +375,31 @@ export const SEARCH_FACET_LANG: SearchFacetType = {
 
 export const SEARCH_FACET_GLOSSARY: SearchFacetType = {
     id: 'glossary_terms',
-    param: 'fulltext1', //TODO is this the right query param to put these values in?
+    param: 'fulltext1',
     paramSeparator: ' OR ',
     label: 'search.facets.glossary_terms.label',
     dynamicValues: true,
+    prefixValues: true,
     values: []
 };
 
 export const SEARCH_FACET_GLOSSARY_GROUPS: SearchFacetType = {
     id: 'glossary_group_terms',
-    param: 'fulltext1', //TODO is this the right query param to put these values in?
+    param: 'fulltext1',
     paramSeparator: ' OR ',
     label: 'search.facets.glossary_group_terms.label',
     dynamicValues: true,
+    prefixValues: true,
     values: []
 };
 
 export const SEARCH_FACET_KEYWORDS: SearchFacetType = {
     id: 'art_kwds',
-    param: 'fulltext1', //TODO is this the right query param to put these values in?
+    param: 'fulltext1',
     paramSeparator: ' OR ',
     label: 'search.facets.art_kwds.label',
     dynamicValues: true,
+    prefixValues: true,
     values: []
 };
 
@@ -416,7 +427,7 @@ export const SEARCH_FACET_CITATION: SearchFacetType = {
 
 export const SEARCH_FACET_VIEW: SearchFacetType = {
     id: 'art_views_last12mos',
-    param: 'viewperiod',
+    param: 'viewcount',
     paramSeparator: ' OR ',
     label: 'search.facets.art_views_last12mos.label',
     dynamicValues: true,
