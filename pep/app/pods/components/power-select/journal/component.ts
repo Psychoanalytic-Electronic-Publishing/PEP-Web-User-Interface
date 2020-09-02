@@ -34,7 +34,7 @@ export default class PowerSelectJournal extends Component<PowerSelectInfinityWit
      * @returns Journal[]
      */
     @restartableTask
-    *load(keyword: string | null = null, offset: number = 0) {
+    *load(keyword?: string, offset: number = 0) {
         try {
             const params: JournalParams = {
                 limit: this.pageSize,
@@ -82,7 +82,7 @@ export default class PowerSelectJournal extends Component<PowerSelectInfinityWit
      * @return {Promise}
      */
     @action
-    async loadMore(keyword: string | null) {
+    async loadMore(keyword?: string) {
         const results = this.options.toArray();
         const offset = results.length;
         const nextPage = await taskFor(this.load).perform(keyword, offset);

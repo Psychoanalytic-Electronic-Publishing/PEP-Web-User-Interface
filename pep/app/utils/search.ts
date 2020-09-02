@@ -82,7 +82,6 @@ export function buildSearchQueryParams(
         if (searchType && searchType.param) {
             let value = term.term.trim();
             const p = searchType.param as keyof SearchQueryStrParams;
-            const qp = queryParams[p];
 
             if (searchType.solrField) {
                 const isQuoted = QUOTED_VALUE_REGEX.test(value);
@@ -91,8 +90,7 @@ export function buildSearchQueryParams(
                 value = `${searchType.solrField}:(${formatted})`;
             }
 
-            //if a term of this type already exists, join it to the existing one
-            queryParams[p] = `${qp ? `${qp} ${joinOp} ` : ''}${value}`;
+            queryParams[p] = joinParamValues(queryParams[p], value, joinOp);
 
             //add any parascope-based params to query
             if (searchType.scope) {
@@ -126,7 +124,6 @@ export function buildSearchQueryParams(
         let facetType = SEARCH_FACETS.findBy('id', id);
         let facets = groupedFacets[id];
         if (facetType && facetType.param) {
-            const qp = queryParams[facetType.param];
             //join all the selected facet values together
             let facetValues = facets.mapBy('value').join(facetType.paramSeparator);
 
@@ -134,12 +131,27 @@ export function buildSearchQueryParams(
                 facetValues = `${facetType.id}:(${facetValues})`;
             }
 
-            //if the query param already exists, join it to the existing one
-            queryParams[facetType.param] = `${qp ? `${qp} ${joinOp} ` : ''}${facetValues}`;
+            queryParams[facetType.param] = joinParamValues(queryParams[facetType.param], facetValues, joinOp);
         }
     });
 
     return removeEmptyQueryParams(queryParams);
+}
+
+/**
+ * If the query param value already exists, join it to the existing one
+ * @export
+ * @param {(string | undefined)} currentParam
+ * @param {string} newParam
+ * @param {('AND' | 'OR')} [joinOperator='AND']
+ * @returns {string}
+ */
+export function joinParamValues(
+    currentParam: string | undefined,
+    newParam: string,
+    joinOperator: 'AND' | 'OR' = 'AND'
+) {
+    return `${currentParam ? `${currentParam} ${joinOperator} ` : ''}${newParam}`;
 }
 
 /**
@@ -148,10 +160,13 @@ export function buildSearchQueryParams(
  * If there are params besides that, it is a valid search form submission
  * @export
  * @param {QueryParamsObj} params
+ * @param {string[]} exclude
  * @returns
  */
-export function hasSearchQuery(params: QueryParamsObj) {
-    const exclude = ['synonyms', 'facetfields', 'abstract', 'citecount', 'viewcount', 'viewperiod'];
+export function hasSearchQuery(
+    params: QueryParamsObj,
+    exclude = ['synonyms', 'facetfields', 'abstract', 'citecount', 'viewcount', 'viewperiod']
+) {
     return Object.keys(params).filter((p) => !exclude.includes(p)).length > 0;
 }
 

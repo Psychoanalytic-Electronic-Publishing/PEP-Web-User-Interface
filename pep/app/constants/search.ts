@@ -29,6 +29,50 @@ export enum ViewPeriod {
     PAST_12_MONTHS = 4
 }
 
+export enum FacetId {
+    art_id = 'art_id',
+    art_title = 'art_title',
+    art_title_xml = 'art_title_xml',
+    art_subtitle_xml = 'art_subtitle_xml',
+    art_author_id = 'art_author_id',
+    art_authors = 'art_authors',
+    art_citeas_xml = 'art_citeas_xml',
+    art_sourcecode = 'art_sourcecode',
+    art_sourcetitleabbr = 'art_sourcetitleabbr',
+    art_sourcetitlefull = 'art_sourcetitlefull',
+    art_sourcetype = 'art_sourcetype',
+    art_level = 'art_level',
+    parent_tag = 'parent_tag',
+    para = 'para',
+    art_vol = 'art_vol',
+    art_type = 'art_type',
+    art_vol_title = 'art_vol_title',
+    art_year = 'art_year',
+    art_year_int = 'art_year_int',
+    art_iss = 'art_iss',
+    art_iss_title = 'art_iss_title',
+    art_newsecnm = 'art_newsecnm',
+    art_pgrg = 'art_pgrg',
+    art_lang = 'art_lang',
+    art_doi = 'art_doi',
+    art_issn = 'art_issn',
+    art_origrx = 'art_origrx',
+    art_qual = 'art_qual',
+    art_kwds = 'art_kwds',
+    art_cited_all = 'art_cited_all',
+    art_cited_5 = 'art_cited_5',
+    art_cited_10 = 'art_cited_10',
+    art_cited_20 = 'art_cited_20',
+    art_views_last12mos = 'art_views_last12mos',
+    reference_count = 'reference_count',
+    file_classification = 'file_classification',
+    file_last_modified = 'file_last_modified',
+    timestamp = 'timestamp',
+    score = 'score',
+    glossary_terms = 'glossary_terms',
+    glossary_group_terms = 'glossary_group_terms'
+}
+
 export interface SearchTermValue {
     type: string;
     term: string;
@@ -50,7 +94,7 @@ export interface SearchTermType {
 }
 
 export interface SearchFacetType {
-    id: string;
+    id: FacetId;
     param: SearchTermParam;
     paramSeparator: string;
     label: string;
@@ -206,28 +250,23 @@ export const SEARCH_TYPES: SearchTermType[] = [
 
 /**
  * Search facets
- *
- * possible facets:
- * art_id, art_title, art_title_xml, art_subtitle_xml, art_author_id, art_authors, art_citeas_xml, art_sourcecode, art_sourcetitleabbr,
- * art_sourcetitlefull, art_sourcetype, art_level, parent_tag, para, art_vol, art_type, art_vol_title, art_year, art_iss, art_iss_title,
- * art_newsecnm, art_pgrg, art_lang, art_doi, art_issn, art_origrx, art_qual, art_kwds, art_type, art_cited_all, art_cited_5,
- * art_cited_10, art_cited_20, reference_count, file_classification, file_last_modified, timestamp, score
  */
-export const DEFAULT_SEARCH_FACETS: string[] = [
-    'art_lang',
-    'art_year_int',
-    'art_sourcetype',
-    'art_type',
-    'art_sourcetitleabbr',
-    'glossary_terms',
-    'glossary_group_terms',
-    'art_kwds',
-    'art_cited_all',
-    'art_views_last12mos'
+
+export const DEFAULT_SEARCH_FACETS: FacetId[] = [
+    FacetId.art_lang,
+    FacetId.art_year_int,
+    FacetId.art_sourcetype,
+    FacetId.art_type,
+    FacetId.art_sourcetitleabbr,
+    FacetId.glossary_terms,
+    FacetId.glossary_group_terms,
+    FacetId.art_kwds,
+    FacetId.art_cited_all,
+    FacetId.art_views_last12mos
 ];
 
 export const SEARCH_FACET_SOURCETYPE: SearchFacetType = {
-    id: 'art_sourcetype',
+    id: FacetId.art_sourcetype,
     param: 'sourcetype',
     paramSeparator: ' OR ',
     label: 'search.facets.art_sourcetype.label',
@@ -253,7 +292,7 @@ export const SEARCH_FACET_SOURCETYPE: SearchFacetType = {
 };
 
 export const SEARCH_FACET_SOURCE: SearchFacetType = {
-    id: 'art_sourcetitleabbr',
+    id: FacetId.art_sourcetitleabbr,
     param: 'sourcename',
     paramSeparator: ' OR ',
     label: 'search.facets.art_sourcetitleabbr.label',
@@ -262,7 +301,7 @@ export const SEARCH_FACET_SOURCE: SearchFacetType = {
 };
 
 export const SEARCH_FACET_TYPE: SearchFacetType = {
-    id: 'art_type',
+    id: FacetId.art_type,
     param: 'articletype',
     paramSeparator: ' OR ',
     label: 'search.facets.art_type.label',
@@ -316,7 +355,7 @@ export const SEARCH_FACET_TYPE: SearchFacetType = {
 };
 
 export const SEARCH_FACET_LANG: SearchFacetType = {
-    id: 'art_lang',
+    id: FacetId.art_lang,
     param: 'sourcelangcode',
     paramSeparator: ',',
     label: 'search.facets.art_lang.label',
@@ -374,7 +413,7 @@ export const SEARCH_FACET_LANG: SearchFacetType = {
 };
 
 export const SEARCH_FACET_GLOSSARY: SearchFacetType = {
-    id: 'glossary_terms',
+    id: FacetId.glossary_terms,
     param: 'fulltext1',
     paramSeparator: ' OR ',
     label: 'search.facets.glossary_terms.label',
@@ -384,7 +423,7 @@ export const SEARCH_FACET_GLOSSARY: SearchFacetType = {
 };
 
 export const SEARCH_FACET_GLOSSARY_GROUPS: SearchFacetType = {
-    id: 'glossary_group_terms',
+    id: FacetId.glossary_group_terms,
     param: 'fulltext1',
     paramSeparator: ' OR ',
     label: 'search.facets.glossary_group_terms.label',
@@ -394,7 +433,7 @@ export const SEARCH_FACET_GLOSSARY_GROUPS: SearchFacetType = {
 };
 
 export const SEARCH_FACET_KEYWORDS: SearchFacetType = {
-    id: 'art_kwds',
+    id: FacetId.art_kwds,
     param: 'fulltext1',
     paramSeparator: ' OR ',
     label: 'search.facets.art_kwds.label',
@@ -404,7 +443,7 @@ export const SEARCH_FACET_KEYWORDS: SearchFacetType = {
 };
 
 export const SEARCH_FACET_DECADE: SearchFacetType = {
-    id: 'art_year_int',
+    id: FacetId.art_year_int,
     param: 'startyear',
     paramSeparator: ' OR ',
     label: 'search.facets.art_year_int.label',
@@ -416,7 +455,7 @@ export const SEARCH_FACET_DECADE: SearchFacetType = {
 };
 
 export const SEARCH_FACET_CITATION: SearchFacetType = {
-    id: 'art_cited_all',
+    id: FacetId.art_cited_all,
     param: 'citecount',
     paramSeparator: ' OR ',
     label: 'search.facets.art_cited_all.label',
@@ -426,7 +465,7 @@ export const SEARCH_FACET_CITATION: SearchFacetType = {
 };
 
 export const SEARCH_FACET_VIEW: SearchFacetType = {
-    id: 'art_views_last12mos',
+    id: FacetId.art_views_last12mos,
     param: 'viewcount',
     paramSeparator: ' OR ',
     label: 'search.facets.art_views_last12mos.label',
