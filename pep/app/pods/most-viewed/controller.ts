@@ -12,9 +12,7 @@ import Journal from 'pep/pods/journal/model';
 import { PERIODS, PossiblePeriodValues } from 'pep/constants/sidebar';
 import { QueryParams } from 'pep/hooks/useQueryParams';
 import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
-import { urlForDocumentQuery } from 'pep/pods/document/adapter';
-import { serializeQueryParams } from 'pep/utils/url';
-import { csvUrl } from 'pep/utils/csv';
+import { documentCSVUrl } from 'pep/utils/url';
 
 export default class MostViewed extends Controller {
     @service loadingBar!: LoadingBarService;
@@ -101,11 +99,22 @@ export default class MostViewed extends Controller {
         this.searchQueryParams.period = period;
     }
 
+    /**
+     * Update the journal
+     *
+     * @param {Journal} journal
+     * @memberof MostViewed
+     */
     @action
     updateJournal(journal: Journal) {
         this.searchQueryParams.journal = journal;
     }
 
+    /**
+     * Download CSV
+     *
+     * @memberof MostViewed
+     */
     @action
     downloadCSV() {
         const queryParams = buildQueryParams({
@@ -114,7 +123,7 @@ export default class MostViewed extends Controller {
             filterRootKey: null,
             filterList: ['author', 'title', 'sourcename', 'period', 'queryType']
         });
-        window.location.href = csvUrl(this.store, queryParams);
+        window.location.href = documentCSVUrl(this.store, queryParams);
     }
 }
 // DO NOT DELETE: this is how TypeScript knows how to look up your controllers.

@@ -1,3 +1,8 @@
+import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
+import { urlForDocumentQuery } from 'pep/pods/document/adapter';
+
+import DS from 'ember-data';
+
 const RBRACKET = /\[\]$/;
 
 /**
@@ -82,3 +87,17 @@ export function appendTrailingSlash(url: string) {
     const hasQueryStr = url.indexOf('?') !== -1;
     return hasQueryStr ? url.replace('?', '/?') : `${url}/`;
 }
+
+/**
+ * Generate a CSV url for documents
+ *
+ * @param {DS.Store} store
+ * @param {QueryParamsObj} queryParams
+ * @returns
+ */
+export const documentCSVUrl = (store: DS.Store, queryParams: QueryParamsObj) => {
+    delete queryParams.limit;
+    queryParams.download = true;
+    const url = urlForDocumentQuery(store, { queryType: queryParams.queryType });
+    return `${url}?${serializeQueryParams(queryParams)}`;
+};
