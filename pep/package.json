@@ -12,14 +12,14 @@
     },
     "scripts": {
         "build": "ember build --environment=production --output-path=../build/",
+        "build:docs": "npx typedoc --ignoreCompilerErrors --out ./documentation ./app ./types",
         "lint": "npm-run-all --aggregate-output --continue-on-error --parallel lint:*",
         "lint:hbs": "ember-template-lint .",
         "lint:js": "eslint .",
         "start": "ember serve",
         "start-fastboot-server": "node ./node/lambda.js",
         "test": "npm-run-all lint:* test:*",
-        "test:ember": "ember test",
-        "document": "npx typedoc --ignoreCompilerErrors --out ./documentation ./app ./types"
+        "test:ember": "ember test"
     },
     "dependencies": {
         "abortcontroller-polyfill": "^1.4.0",
