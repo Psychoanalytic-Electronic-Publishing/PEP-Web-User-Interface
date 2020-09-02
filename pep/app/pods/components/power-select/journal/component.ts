@@ -34,7 +34,7 @@ export default class PowerSelectJournal extends Component<PowerSelectInfinityWit
      * @returns Journal[]
      */
     @restartableTask
-    *load(keyword: string, offset: number) {
+    *load(keyword: string | null = null, offset: number = 0) {
         try {
             const params: JournalParams = {
                 limit: this.pageSize,
