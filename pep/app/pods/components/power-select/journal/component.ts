@@ -1,13 +1,16 @@
 import Component from '@glimmer/component';
-import PowerSelectInfinityWithSearch from 'pep/pods/components/power-select-infinity/with-search/component';
-import Journal from 'pep/pods/journal/model';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
-import { DS } from 'ember-data';
 import { inject as service } from '@ember/service';
+import DS from 'ember-data';
 import { didCancel } from 'ember-concurrency';
 import { restartableTask } from 'ember-concurrency-decorators';
+import { taskFor } from 'ember-concurrency-ts';
+import { removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
+
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
+import PowerSelectInfinityWithSearch from 'pep/pods/components/power-select-infinity/with-search/component';
+import Journal from 'pep/pods/journal/model';
 
 interface JournalParams {
     limit: number | null;
@@ -31,20 +34,19 @@ export default class PowerSelectJournal extends Component<PowerSelectInfinityWit
      * @returns Journal[]
      */
     @restartableTask
-    *load(keyword: string, offset: number) {
+    *load(keyword?: string, offset: number = 0) {
         try {
             const params: JournalParams = {
                 limit: this.pageSize,
                 offset: offset || 0,
                 sourcecode: keyword
             };
-            const result = yield this.store.query('journal', params);
+            const result = yield this.store.query('journal', removeEmptyQueryParams(params));
             let results = result.toArray();
             this.canLoadMore = results.length >= this.pageSize;
             return results;
         } catch (errors) {
             if (!didCancel(errors)) {
-                // this.notifications.groupErrors(errors);
                 throw errors;
             }
         }
@@ -57,8 +59,7 @@ export default class PowerSelectJournal extends Component<PowerSelectInfinityWit
     @action
     @dontRunInFastboot
     async loadInitialPage() {
-        //@ts-ignore TODO: Remove this when we have a type solution to this
-        const results = await this.load.perform();
+        const results = await taskFor(this.load).perform();
         this.options = results;
         return results;
     }
@@ -81,11 +82,10 @@ export default class PowerSelectJournal extends Component<PowerSelectInfinityWit
      * @return {Promise}
      */
     @action
-    async loadMore(keyword: string | null) {
+    async loadMore(keyword?: string) {
         const results = this.options.toArray();
         const offset = results.length;
-        //@ts-ignore TODO: Remove this when we have a type solution to this
-        const nextPage = await this.load.perform(keyword, offset);
+        const nextPage = await taskFor(this.load).perform(keyword, offset);
         results.pushObjects(nextPage);
         this.options = results;
         return results;

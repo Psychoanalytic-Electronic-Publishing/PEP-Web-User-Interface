@@ -66,8 +66,8 @@ body {
     background-color: $color-brand-primary;
 
     &-branding-img {
-        height: 38px;
-        margin-top: -11px;
-        margin-bottom: -11px;
+        height: $footer-brand-img-height;
+        margin-top: ($footer-height - $footer-brand-img-height) * -1;
+        margin-bottom: ($footer-height - $footer-brand-img-height) * -1;
     }
 }

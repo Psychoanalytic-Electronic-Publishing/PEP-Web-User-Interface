@@ -2,13 +2,13 @@ import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { reject } from 'rsvp';
+import DS from 'ember-data';
 import RouterService from '@ember/routing/router-service';
 import SessionService from 'ember-simple-auth/services/session';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import IntlService from 'ember-intl/services/intl';
 
 import LoadingBar from 'pep/services/loading-bar';
-import DS from 'ember-data';
 
 interface ModalDialogsWhatsNewSubscriptionArgs {
     onClose: () => void;

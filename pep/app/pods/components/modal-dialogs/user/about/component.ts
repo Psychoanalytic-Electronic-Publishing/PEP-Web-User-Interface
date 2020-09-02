@@ -1,7 +1,8 @@
 import Component from '@glimmer/component';
-import { ServerStatus } from 'pep/pods/application/controller';
-import IntlService from 'ember-intl/services/intl';
 import { inject as service } from '@ember/service';
+import IntlService from 'ember-intl/services/intl';
+
+import { ServerStatus } from 'pep/api';
 
 interface ModalDialogsUserAboutArgs {
     onClose: () => void;

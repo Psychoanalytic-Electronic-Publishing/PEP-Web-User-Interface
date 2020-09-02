@@ -10,7 +10,7 @@ module.exports = function(emberDistPath) {
         res.sendFile(`${emberDistPath}${process.env.ROBOTS_DIST_PATH || '/robots-development.txt'}`);
     });
     server.all('/favicon.ico', (req, res) => {
-        res.sendFile(`${emberDistPath}/favicon.ico`);
+        res.sendFile(`${emberDistPath}/assets/images/favicons/favicon.ico`);
     });
 
     server.all(

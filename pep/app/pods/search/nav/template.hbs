@@ -4,18 +4,27 @@
             @smartSearchTerm={{this.currentSmartSearchTerm}}
             @searchTerms={{this.currentSearchTerms}}
             @matchSynonyms={{this.currentMatchSynonyms}}
+            @isLimitOpen={{this.isLimitOpen}}
+            @citedCount={{this.currentCitedCount}}
+            @viewedCount={{this.currentViewedCount}}
+            @viewedPeriod={{this.currentViewedPeriod}}
             @submit={{this.submitSearch}}
             @resetForm={{this.clearSearch}}
             @addSearchTerm={{this.addSearchTerm}}
             @removeSearchTerm={{this.removeSearchTerm}}
             @updateSearchTerm={{this.updateSearchTerm}}
+            @updateViewedPeriod={{this.updateViewedPeriod}}
+            @onSearchTermTextChange={{this.onSearchTextChange}}
+            @onSmartSearchTextChange={{this.onSearchTextChange}}
+            @onLimitTextChange={{this.onSearchTextChange}}
             @matchSynonymsChange={{this.updateMatchSynonyms}}
+            @toggleLimitFields={{this.toggleLimitFields}}
             @resultsCount={{this.paginator.metadata.fullCount}}
             class="mb-2"
         />
-        {{#if this.hasSubmittedSearch}}
+        {{#if this.resultsMeta}}
             <Search::Refine
-                @metadata={{this.paginator.metadata}}
+                @metadata={{this.resultsMeta}}
                 @selection={{this.currentFacets}}
                 @updateSelection={{this.updateSelectedFacets}}
                 @submitSearch={{this.resubmitSearchWithFacets}}

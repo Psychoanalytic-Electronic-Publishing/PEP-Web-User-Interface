@@ -4,24 +4,15 @@ import { isEmpty } from '@ember/utils';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import SessionService from 'ember-simple-auth/services/session';
-
-import LoadingBarService from 'pep/services/loading-bar';
-import { SEARCH_TYPE_EVERYWHERE, SearchTermValue } from 'pep/constants/search';
-import AjaxService from 'pep/services/ajax';
 import NotificationService from 'ember-cli-notifications/services/notifications';
+import IntlService from 'ember-intl/services/intl';
 
+import { SEARCH_TYPE_EVERYWHERE, SearchTermValue, ViewPeriod, SEARCH_DEFAULT_VIEW_PERIOD } from 'pep/constants/search';
+import AjaxService from 'pep/services/ajax';
+import LoadingBarService from 'pep/services/loading-bar';
 import Modal from '@gavant/ember-modals/services/modal';
 import ENV from 'pep/config/environment';
-import IntlService from 'ember-intl/services/intl';
-export interface ServerStatus {
-    db_server_ok: boolean;
-    text_server_ok: boolean;
-    text_server_version: string;
-    opas_version: string;
-    dataSource: string;
-    timeStamp: string;
-    user_ip: string;
-}
+import { ServerStatus } from 'pep/api';
 
 export default class Application extends Controller {
     @service loadingBar!: LoadingBarService;
@@ -31,8 +22,12 @@ export default class Application extends Controller {
     @service modal!: Modal;
     @service intl!: IntlService;
 
+    @tracked isLimitOpen: boolean = false;
     @tracked smartSearchTerm: string = '';
     @tracked matchSynonyms: boolean = false;
+    @tracked citedCount: string = '';
+    @tracked viewedCount: string = '';
+    @tracked viewedPeriod: ViewPeriod = ViewPeriod.PAST_WEEK;
     @tracked searchTerms: SearchTermValue[] = [
         { type: 'everywhere', term: '' },
         { type: 'title', term: '' },
@@ -50,9 +45,13 @@ export default class Application extends Controller {
         const queryParams = {
             q: this.smartSearchTerm,
             matchSynonyms: this.matchSynonyms,
+            citedCount: this.citedCount,
+            viewedCount: this.viewedCount,
+            viewedPeriod: this.viewedPeriod,
             //json stringify is workaround for bug w/array-based query param values
             //@see https://github.com/emberjs/ember.js/issues/18981
-            searchTerms: !isEmpty(searchTerms) ? JSON.stringify(searchTerms) : null
+            searchTerms: !isEmpty(searchTerms) ? JSON.stringify(searchTerms) : null,
+            facets: []
         };
 
         return this.transitionToRoute('search', { queryParams });
@@ -65,6 +64,10 @@ export default class Application extends Controller {
     clearSearch() {
         this.smartSearchTerm = '';
         this.matchSynonyms = false;
+        this.citedCount = '';
+        this.viewedCount = '';
+        this.viewedPeriod = ViewPeriod.PAST_WEEK;
+        this.isLimitOpen = false;
         this.searchTerms = [{ type: 'everywhere', term: '' }];
     }
 
@@ -108,12 +111,35 @@ export default class Application extends Controller {
     }
 
     /**
-     * Update match synonyms checkbox
+     * Update search match synonyms checkbox
      * @param {Boolean} isChecked
      */
     @action
     updateMatchSynonyms(isChecked: boolean) {
         this.matchSynonyms = isChecked;
+    }
+
+    /**
+     * Update the search view period
+     * @param {ViewPeriod} value
+     */
+    @action
+    updateViewedPeriod(value: ViewPeriod) {
+        this.viewedPeriod = value;
+    }
+
+    /**
+     * Clears the cited/viewed fields when the limit section is collapsed
+     * @param {boolean} isOpen
+     */
+    @action
+    toggleLimitFields(isOpen: boolean) {
+        this.isLimitOpen = isOpen;
+        if (!this.isLimitOpen) {
+            this.citedCount = '';
+            this.viewedCount = '';
+            this.viewedPeriod = SEARCH_DEFAULT_VIEW_PERIOD;
+        }
     }
 
     /**
