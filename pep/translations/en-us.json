@@ -288,6 +288,9 @@
             },
             "yourInterests": {
                 "title": "Your interests"
+            },
+            "videoPreview": {
+                "title": "Latest Video"
             }
         }
     },

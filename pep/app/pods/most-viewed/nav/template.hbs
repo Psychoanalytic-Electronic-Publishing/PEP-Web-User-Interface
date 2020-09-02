@@ -1,65 +1,67 @@
-<Page::Sidebar::Left>
-    <div class="bg-white border-divider-b p-3">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h4 class="mb-0">
-                {{t "mostViewed.pageTitle"}}
-            </h4>
-        </div>
-        <div class="bg-white search-form">
-            <form>
-                <div class="form-group">
-                    <FlSelect
-                        @options={{this.periods}}
-                        @value={{this.searchQueryParams.period}}
-                        @valuePath="value"
-                        @labelPath="label"
-                        @placeholder={{t "mostCited.period"}}
-                        @emptyOptionText={{t "mostCited.periodSelect"}}
-                        @allowClear={{false}}
-                        @onChange={{this.updatePeriod}}
-                    />
-                </div>
-                <div class="form-group">
-                    <FlInput
-                        @placeholder={{t "mostCited.author"}}
-                        @value={{this.searchQueryParams.author}}
-                        maxlength="255"
-                        autocomplete="off"
-                    />
-                </div>
-                <div class="form-group">
-                    <FlInput
-                        @placeholder={{t "mostCited.title"}}
-                        @value={{this.searchQueryParams.title}}
-                        maxlength="255"
-                        autocomplete="off"
-                    />
-                </div>
-                <div class="form-group">
-                    <FlInput
-                        @value={{this.searchQueryParams.journal}}
-                        @placeholder={{t "mostCited.journal"}}
-                    >
-                        <PowerSelect::Journal
-                            @selected={{this.searchQueryParams.journal}}
-                            @onChange={{this.updateJournal}}
+<Page::Sidebar::Left as |Sidebar|>
+    <Sidebar.content>
+        <div class="bg-white border-divider-b p-3">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="mb-0">
+                    {{t "mostViewed.pageTitle"}}
+                </h4>
+            </div>
+            <div class="bg-white search-form">
+                <form>
+                    <div class="form-group">
+                        <FlSelect
+                            @options={{this.periods}}
+                            @value={{this.searchQueryParams.period}}
+                            @valuePath="value"
+                            @labelPath="label"
+                            @placeholder={{t "mostCited.period"}}
+                            @emptyOptionText={{t "mostCited.periodSelect"}}
+                            @allowClear={{false}}
+                            @onChange={{this.updatePeriod}}
                         />
-                    </FlInput>
-                </div>
+                    </div>
+                    <div class="form-group">
+                        <FlInput
+                            @placeholder={{t "mostCited.author"}}
+                            @value={{this.searchQueryParams.author}}
+                            maxlength="255"
+                            autocomplete="off"
+                        />
+                    </div>
+                    <div class="form-group">
+                        <FlInput
+                            @placeholder={{t "mostCited.title"}}
+                            @value={{this.searchQueryParams.title}}
+                            maxlength="255"
+                            autocomplete="off"
+                        />
+                    </div>
+                    <div class="form-group">
+                        <FlInput
+                            @value={{this.searchQueryParams.journal}}
+                            @placeholder={{t "mostCited.journal"}}
+                        >
+                            <PowerSelect::Journal
+                                @selected={{this.searchQueryParams.journal}}
+                                @onChange={{this.updateJournal}}
+                            />
+                        </FlInput>
+                    </div>
 
-                <div class="d-flex justify-content-end">
-                    <Button @type="link" @label="Clear" @action={{this.resetForm}} class="mr-1" />
-                    <ButtonSpinner
-                        @type="primary"
-                        @blockLayout={{false}}
-                        @wide={{true}}
-                        @showSuccess={{true}}
-                        @label={{t "common.filter"}}
-                        @action={{this.filterTableResults}}
-                    />
-                </div>
-            </form>
+                    <div class="d-flex justify-content-end">
+                        <Button @type="link" @label="Clear" @action={{this.resetForm}} class="mr-1" />
+                        <ButtonSpinner
+                            @type="primary"
+                            @blockLayout={{false}}
+                            @wide={{true}}
+                            @showSuccess={{true}}
+                            @label={{t "common.filter"}}
+                            @action={{this.filterTableResults}}
+                        />
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
-    <Page::Sidebar::Widgets::Accolades />
+        <Page::Sidebar::Widgets::Accolades />
+    </Sidebar.content>
 </Page::Sidebar::Left>

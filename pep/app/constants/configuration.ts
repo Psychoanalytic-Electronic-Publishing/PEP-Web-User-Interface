@@ -10,6 +10,12 @@ export interface WidgetConfiguration {
     widget: WIDGET;
     open: boolean;
 }
+
+export enum AspectRatio {
+    TWENTY_ONE_BY_NINE = '21by9',
+    SIXTEEN_BY_NINE = '16by9',
+    FOUR_BY_THREE = '4by3'
+}
 /**
  * Base admin configuration fields for the application
  * MUST NOT contain any configuration data/content that is language-dependent
@@ -22,6 +28,10 @@ export interface BaseConfiguration {
         cards: {
             left: WidgetConfiguration[];
             right: WidgetConfiguration[];
+        };
+        video: {
+            code: string;
+            aspectRatio: AspectRatio;
         };
     };
     home: {
@@ -94,6 +104,11 @@ export const DEFAULT_BASE_CONFIGURATION: BaseConfiguration = {
                 { widget: WIDGET.SEMINAL_PAPERS, open: false },
                 { widget: WIDGET.YOUR_INTERESTS, open: false }
             ]
+        },
+        video: {
+            aspectRatio: AspectRatio.SIXTEEN_BY_NINE,
+            code:
+                '<iframe src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2Fpepweb%2Fvideos%2F1085606578152566%2F&show_text=0" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allowFullScreen="true"></iframe>'
         }
     },
     home: {
