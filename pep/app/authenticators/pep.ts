@@ -25,7 +25,7 @@ export default class PepAuthenticator extends BaseAuthenticator {
             UserName: username,
             Password: password
         });
-        const result = await this.ajax.request(`${ENV.authBaseUrl}/Authenticate?${params}`);
+        const result = await this.ajax.request(`${ENV.authBaseUrl}/Authenticate?${params}`, {});
         return result;
     }
 

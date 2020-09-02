@@ -56,7 +56,6 @@ export default class AjaxService extends Service {
      */
     async request<T>(url: string, options: RequestInit = {}): Promise<T> {
         setProperties(options, {
-            credentials: 'include', //NOTE: only needed if cookies must be sent in API requests (which are needed for auth right now)
             headers: { ...this.headers, ...(options.headers || {}) }
         });
 
