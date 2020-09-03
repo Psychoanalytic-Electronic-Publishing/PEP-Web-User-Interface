@@ -12,9 +12,7 @@ import Journal from 'pep/pods/journal/model';
 import { PERIODS, PossiblePeriodValues } from 'pep/constants/sidebar';
 import { QueryParams } from 'pep/hooks/useQueryParams';
 import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
-import { urlForDocumentQuery } from 'pep/pods/document/adapter';
-import { serializeQueryParams } from 'pep/utils/url';
-import { csvUrl } from 'pep/utils/csv';
+import { documentCSVUrl } from 'pep/utils/url';
 
 export default class MostCited extends Controller {
     @service loadingBar!: LoadingBarService;
@@ -111,6 +109,11 @@ export default class MostCited extends Controller {
         this.searchQueryParams.journal = journal;
     }
 
+    /**
+     * Download CSV
+     *
+     * @memberof MostCited
+     */
     @action
     downloadCSV() {
         const queryParams = buildQueryParams({
@@ -119,7 +122,7 @@ export default class MostCited extends Controller {
             filterRootKey: null,
             filterList: ['author', 'title', 'sourcename', 'period', 'queryType']
         });
-        window.location.href = csvUrl(this.store, queryParams);
+        window.location.href = documentCSVUrl(this.store, queryParams);
     }
 }
 
