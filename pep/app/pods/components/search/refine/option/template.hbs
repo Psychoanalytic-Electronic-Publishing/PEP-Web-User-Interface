@@ -3,7 +3,7 @@
         @checked={{this.isChecked}}
         @onChange={{fn @onFacetChange @facetId @option.id}}
     >
-        {{@option.label}}
+        <span class="text-break">{{@option.label}}</span>
         <span class="text-muted small">
             {{t "search.refine.option.numResults" count=(format-number @option.numResults)}}
         </span>

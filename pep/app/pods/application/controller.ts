@@ -6,7 +6,7 @@ import { tracked } from '@glimmer/tracking';
 import SessionService from 'ember-simple-auth/services/session';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import IntlService from 'ember-intl/services/intl';
-import cloneDeep from 'lodash.clonedeep';
+import copy from 'lodash.clonedeep';
 
 import {
     SEARCH_TYPE_EVERYWHERE,
@@ -35,7 +35,8 @@ export default class Application extends Controller {
     @tracked citedCount: string = '';
     @tracked viewedCount: string = '';
     @tracked viewedPeriod: ViewPeriod = ViewPeriod.PAST_WEEK;
-    @tracked searchTerms: SearchTermValue[] = cloneDeep(SEARCH_DEFAULT_TERMS);
+    // create a copy of the default search terms objects so they can be mutated
+    @tracked searchTerms: SearchTermValue[] = copy(SEARCH_DEFAULT_TERMS);
 
     /**
      * Submits the application/nav sidebar's search form and transitions the
@@ -71,7 +72,8 @@ export default class Application extends Controller {
         this.viewedCount = '';
         this.viewedPeriod = ViewPeriod.PAST_WEEK;
         this.isLimitOpen = false;
-        this.searchTerms = cloneDeep(SEARCH_DEFAULT_TERMS);
+        // create a copy of the default search terms objects so they can be mutated
+        this.searchTerms = copy(SEARCH_DEFAULT_TERMS);
     }
 
     /**

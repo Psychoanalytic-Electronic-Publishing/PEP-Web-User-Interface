@@ -231,7 +231,7 @@
                     "zh": "Chinese"
                 }
             },
-            "art_kwds": {
+            "art_kwds_str": {
                 "label": "Keywords"
             },
             "art_sourcetitleabbr": {

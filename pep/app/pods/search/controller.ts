@@ -10,7 +10,7 @@ import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
 import { didCancel, timeout } from 'ember-concurrency';
 import { restartableTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
-import cloneDeep from 'lodash.clonedeep';
+import copy from 'lodash.clonedeep';
 
 import AjaxService from 'pep/services/ajax';
 import {
@@ -219,6 +219,7 @@ export default class Search extends Controller {
         this.citedCount = this.currentCitedCount;
         this.viewedCount = this.currentViewedCount;
         this.viewedPeriod = this.currentViewedPeriod;
+        this.facets = this.currentFacets;
     }
 
     /**
@@ -232,7 +233,8 @@ export default class Search extends Controller {
         this.currentViewedCount = '';
         this.currentViewedPeriod = ViewPeriod.PAST_WEEK;
         this.isLimitOpen = false;
-        this.currentSearchTerms = cloneDeep(SEARCH_DEFAULT_TERMS);
+        // create a copy of the default search terms objects so they can be mutated
+        this.currentSearchTerms = copy(SEARCH_DEFAULT_TERMS);
         this.currentFacets = [];
         taskFor(this.updateRefineMetadata).perform(true, 0);
     }

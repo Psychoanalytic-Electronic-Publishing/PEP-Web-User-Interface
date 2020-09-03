@@ -6,7 +6,7 @@ import Transition from '@ember/routing/-private/transition';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hooks/pagination';
 import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
-import cloneDeep from 'lodash.clonedeep';
+import copy from 'lodash.clonedeep';
 
 import { PageNav } from 'pep/mixins/page-layout';
 import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
@@ -117,8 +117,9 @@ export default class Search extends PageNav(Route) {
         controller.currentCitedCount = controller.citedCount;
         controller.currentViewedCount = controller.viewedCount;
         controller.currentViewedPeriod = controller.viewedPeriod;
+        // create a copy of the default search terms objects so they can be mutated
         controller.currentSearchTerms = isEmpty(controller.searchTerms)
-            ? cloneDeep(SEARCH_DEFAULT_TERMS)
+            ? copy(SEARCH_DEFAULT_TERMS)
             : controller.searchTerms;
         controller.currentFacets = controller.facets;
 

@@ -58,7 +58,7 @@ export enum FacetId {
     ART_ISSN = 'art_issn',
     ART_ORIGRX = 'art_origrx',
     ART_QUAL = 'art_qual',
-    ART_KWDS = 'art_kwds',
+    ART_KWDS_STR = 'art_kwds_str',
     ART_CITED_ALL = 'art_cited_all',
     ART_CITED_5 = 'art_cited_5',
     ART_CITED_10 = 'art_cited_10',
@@ -256,14 +256,14 @@ export const SEARCH_TYPES: SearchTermType[] = [
 export const DEFAULT_SEARCH_FACETS: FacetId[] = [
     FacetId.ART_LANG,
     FacetId.ART_YEAR_INT,
-    FacetId.ART_SOURCETYPE,
+    FacetId.ART_VIEWS_LAST12MOS,
+    FacetId.ART_CITED_ALL,
     FacetId.ART_TYPE,
+    FacetId.ART_SOURCETYPE,
     FacetId.ART_SOURCETITLEABBR,
     // FacetId.GLOSSARY_TERMS,
     FacetId.GLOSSARY_GROUP_TERMS,
-    FacetId.ART_KWDS,
-    FacetId.ART_CITED_ALL,
-    FacetId.ART_VIEWS_LAST12MOS
+    FacetId.ART_KWDS_STR
 ];
 
 export const SEARCH_FACET_SOURCETYPE: SearchFacetType = {
@@ -437,12 +437,13 @@ export const SEARCH_FACET_GLOSSARY_GROUPS: SearchFacetType = {
 };
 
 export const SEARCH_FACET_KEYWORDS: SearchFacetType = {
-    id: FacetId.ART_KWDS,
+    id: FacetId.ART_KWDS_STR,
     param: 'fulltext1',
     paramSeparator: ' OR ',
-    label: 'search.facets.art_kwds.label',
+    label: 'search.facets.art_kwds_str.label',
     dynamicValues: true,
     prefixValues: true,
+    quoteValues: true,
     values: []
 };
 
@@ -481,14 +482,14 @@ export const SEARCH_FACET_VIEW: SearchFacetType = {
 export const SEARCH_FACETS = [
     SEARCH_FACET_LANG,
     SEARCH_FACET_DECADE,
-    SEARCH_FACET_SOURCETYPE,
+    SEARCH_FACET_VIEW,
+    SEARCH_FACET_CITATION,
     SEARCH_FACET_TYPE,
+    SEARCH_FACET_SOURCETYPE,
     SEARCH_FACET_SOURCE,
     // SEARCH_FACET_GLOSSARY,
     SEARCH_FACET_GLOSSARY_GROUPS,
-    SEARCH_FACET_KEYWORDS,
-    SEARCH_FACET_CITATION,
-    SEARCH_FACET_VIEW
+    SEARCH_FACET_KEYWORDS
 ];
 
 export const VIEW_PERIOD_WEEK: ViewPeriodOption = {

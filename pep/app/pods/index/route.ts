@@ -1,6 +1,6 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import cloneDeep from 'lodash.clonedeep';
+import copy from 'lodash.clonedeep';
 
 import Application from 'pep/pods/application/controller';
 import IndexController from 'pep/pods/index/controller';
@@ -31,6 +31,7 @@ export default class Index extends Route {
         appController.viewedCount = '';
         appController.viewedPeriod = SEARCH_DEFAULT_VIEW_PERIOD;
         appController.isLimitOpen = false;
-        appController.searchTerms = cloneDeep(SEARCH_DEFAULT_TERMS);
+        // create a copy of the default search terms objects so they can be mutated
+        appController.searchTerms = copy(SEARCH_DEFAULT_TERMS);
     }
 }
