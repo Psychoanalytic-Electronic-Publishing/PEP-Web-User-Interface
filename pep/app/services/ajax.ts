@@ -56,6 +56,7 @@ export default class AjaxService extends Service {
      */
     async request<T>(url: string, options: RequestInit = {}): Promise<T> {
         setProperties(options, {
+            credentials: 'include',
             headers: { ...this.headers, ...(options.headers || {}) }
         });
 
