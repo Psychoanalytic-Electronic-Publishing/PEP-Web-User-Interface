@@ -254,10 +254,10 @@ export const SEARCH_TYPES: SearchTermType[] = [
  */
 
 export const DEFAULT_SEARCH_FACETS: FacetId[] = [
-    FacetId.ART_LANG,
     FacetId.ART_YEAR_INT,
     FacetId.ART_VIEWS_LAST12MOS,
     FacetId.ART_CITED_ALL,
+    FacetId.ART_LANG,
     FacetId.ART_TYPE,
     FacetId.ART_SOURCETYPE,
     FacetId.ART_SOURCETITLEABBR,
@@ -480,10 +480,10 @@ export const SEARCH_FACET_VIEW: SearchFacetType = {
 };
 
 export const SEARCH_FACETS = [
-    SEARCH_FACET_LANG,
     SEARCH_FACET_DECADE,
     SEARCH_FACET_VIEW,
     SEARCH_FACET_CITATION,
+    SEARCH_FACET_LANG,
     SEARCH_FACET_TYPE,
     SEARCH_FACET_SOURCETYPE,
     SEARCH_FACET_SOURCE,
