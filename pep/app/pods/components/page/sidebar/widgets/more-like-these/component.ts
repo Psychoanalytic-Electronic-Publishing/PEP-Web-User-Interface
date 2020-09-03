@@ -10,6 +10,10 @@ interface PageSidebarWidgetsMoreLikeTheseArgs extends PageSidebarWidgetArgs {}
 export default class PageSidebarWidgetsMoreLikeThese extends Component<PageSidebarWidgetsMoreLikeTheseArgs> {
     @service ajax!: AjaxService;
 
+    get data() {
+        return this.args.data[this.widget];
+    }
+
     get isOpen() {
         return this.args.openWidgets.includes(this.widget);
     }

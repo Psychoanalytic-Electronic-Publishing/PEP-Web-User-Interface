@@ -268,8 +268,11 @@
             "pastSearches": {
                 "title": "Your past searches"
             },
+            "relatedDocuments": {
+                "title": "Related Documents"
+            },
             "relevantSearches": {
-                "title": "Revelant searches"
+                "title": "Relevant searches"
             },
             "seminalPapers": {
                 "title": "Seminal papers"

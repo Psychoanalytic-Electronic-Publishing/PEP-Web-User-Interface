@@ -18,6 +18,7 @@ export interface ReadDocumentParams {
 
 export default class ReadDocument extends PageNav(Route) {
     navController = 'read/document';
+    sidebarController = 'read/document';
     searchResults?: RecordArrayWithMeta<Document>;
 
     /**

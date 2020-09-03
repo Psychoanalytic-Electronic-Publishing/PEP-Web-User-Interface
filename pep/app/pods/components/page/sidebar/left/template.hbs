@@ -1,7 +1,7 @@
 <Page::Sidebar @side="left">
     {{yield
         (hash
-            content=(component 'page/sidebar/left/content')
+            content=(component 'page/sidebar/left/content' data=this.data)
         )
     }}
 </Page::Sidebar>

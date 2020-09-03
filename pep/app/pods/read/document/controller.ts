@@ -14,6 +14,7 @@ import LoadingBarService from 'pep/services/loading-bar';
 import { buildSearchQueryParams } from 'pep/utils/search';
 import { SEARCH_DEFAULT_TERMS, SEARCH_DEFAULT_FACETS } from 'pep/constants/search';
 import Document from 'pep/pods/document/model';
+import { WidgetData } from 'pep/constants/sidebar';
 
 export default class ReadDocument extends Controller {
     @service session!: SessionService;
@@ -39,6 +40,8 @@ export default class ReadDocument extends Controller {
         { type: 'author', term: '' }
     ]);
     @tracked paginator!: Pagination<Document>;
+
+    @tracked sidebarData: WidgetData = {};
 
     get isLoadingRoute(): boolean {
         return /loading$/.test(this.router.currentRouteName);

@@ -96,6 +96,7 @@ export const DEFAULT_BASE_CONFIGURATION: BaseConfiguration = {
                 { widget: WIDGET.WHATS_NEW, open: true },
                 { widget: WIDGET.MOST_CITED, open: true },
                 { widget: WIDGET.MOST_VIEWED, open: true },
+                { widget: WIDGET.RELATED_DOCUMENTS, open: false },
                 { widget: WIDGET.EXPERT_PICKS, open: false },
                 { widget: WIDGET.GLOSSARY_TERMS, open: false },
                 { widget: WIDGET.MORE_LIKE_THESE, open: false },

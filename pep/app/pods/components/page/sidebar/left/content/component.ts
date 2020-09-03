@@ -2,7 +2,10 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import ConfigurationService from 'pep/services/configuration';
 import { inject } from '@ember/service';
-interface PageSidebarLeftContentArgs {}
+import { WidgetData } from 'pep/constants/sidebar';
+interface PageSidebarLeftContentArgs {
+    data: WidgetData;
+}
 
 export default class PageSidebarLeftContent extends Component<PageSidebarLeftContentArgs> {
     @inject configuration!: ConfigurationService;

@@ -6,6 +6,11 @@
 </div>
 <div class="p-2">
     {{#each @widgets as |widget|}}
-        {{component (concat "page/sidebar/widgets/" widget.widget) toggleIsOpen=this.toggleIsOpen openWidgets=this.openWidgets}}
+        {{component
+            (concat "page/sidebar/widgets/" widget.widget)
+            toggleIsOpen=this.toggleIsOpen
+            openWidgets=this.openWidgets
+            data=this.data
+        }}
     {{/each}}
 </div>

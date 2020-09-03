@@ -14,9 +14,12 @@ export enum WIDGET {
     MOST_CITED = 'most-cited',
     MOST_VIEWED = 'most-viewed',
     PAST_SEARCHES = 'past-searches',
+    RELATED_DOCUMENTS = 'related-documents',
     RELEVANT_SEARCHES = 'relevant-searches',
     SEMINAL_PAPERS = 'seminal-papers',
     VIDEO_PREVIEW = 'video-preview',
     WHATS_NEW = 'whats-new',
     YOUR_INTERESTS = 'your-interests'
 }
+
+export type WidgetData = Partial<Record<WIDGET, any>>;

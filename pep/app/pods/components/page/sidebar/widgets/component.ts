@@ -1,11 +1,12 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import { WIDGET } from 'pep/constants/sidebar';
+import { WIDGET, WidgetData } from 'pep/constants/sidebar';
 import { action } from '@ember/object';
 import { WidgetConfiguration } from 'pep/constants/configuration';
 
 export interface PageSidebarWidgetsArgs {
     widgets: WidgetConfiguration[];
+    data: WidgetData;
 }
 export interface PageSidebarWidgetArgs extends PageSidebarWidgetsArgs {
     toggleIsOpen: (widget: WIDGET) => void;
