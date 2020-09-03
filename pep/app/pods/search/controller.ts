@@ -137,6 +137,7 @@ export default class Search extends Controller {
             this.viewedCount,
             this.viewedPeriod
         );
+        searchParams.similarcount = 2;
         return { ...params, ...searchParams };
     }
 

@@ -4,6 +4,21 @@ import { pluralize } from 'ember-inflector';
 
 import ApplicationSerializerMixin from 'pep/mixins/application-serializer';
 
+const getSimilarityMatch = (item: any) => {
+    const document = item;
+    const similarDocumentItems = new Map(Object.entries(document?.similarityMatch?.similarDocs ?? {}));
+    const similarDocuments = similarDocumentItems.get(document.documentID) as [];
+
+    return {
+        ...document,
+        similarityMatch: {
+            id: document.documentID,
+            type: 'similarity-match',
+            similarDocuments
+        }
+    };
+};
+
 export default class Document extends ApplicationSerializerMixin(DS.RESTSerializer) {
     primaryKey = 'documentID';
 
@@ -25,6 +40,9 @@ export default class Document extends ApplicationSerializerMixin(DS.RESTSerializ
     ) {
         const modelKey = pluralize(camelize(primaryModelClass.modelName));
         if (payload?.documentList) {
+            payload.documentList.responseSet = payload.documentList.responseSet.map((item: any) =>
+                getSimilarityMatch(item)
+            );
             payload.meta = payload.documentList.responseInfo;
             payload[modelKey] = payload.documentList.responseSet;
             delete payload.documentList;
@@ -41,7 +59,7 @@ export default class Document extends ApplicationSerializerMixin(DS.RESTSerializ
      * @param {string} id
      * @param {string} requestType
      */
-    normalizeFindRecordResponse(
+    normalizeSingleResponse(
         store: DS.Store,
         primaryModelClass: ModelWithName,
         payload: any,
@@ -50,12 +68,15 @@ export default class Document extends ApplicationSerializerMixin(DS.RESTSerializ
     ) {
         const modelKey = camelize(primaryModelClass.modelName);
         if (payload?.documents) {
+            payload.documentList.responseSet = payload.documentList.responseSet.map((item: any) =>
+                getSimilarityMatch(item)
+            );
             payload.meta = payload.documents.responseInfo;
             payload[modelKey] = payload.documents.responseSet?.[0];
             delete payload.documents;
         }
 
-        return super.normalizeFindRecordResponse(store, primaryModelClass, payload, id, requestType);
+        return super.normalizeSingleResponse(store, primaryModelClass, payload, id, requestType);
     }
 }
 

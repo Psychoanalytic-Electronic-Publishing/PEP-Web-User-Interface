@@ -8,7 +8,7 @@ import FastbootAdapter from 'ember-data-storefront/mixins/fastboot-adapter';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 
 import ENV from 'pep/config/environment';
-import { appendTrailingSlash } from 'pep/utils/url';
+import { appendTrailingSlash, serializeQueryParams } from 'pep/utils/url';
 
 export interface ApiServerError {
     code: string;
@@ -22,6 +22,8 @@ export interface ApiServerError {
 export interface ApiServerErrorResponse {
     errors: ApiServerError[];
 }
+
+export type SnapshotWithQuery = DS.Snapshot & { adapterOptions: { query: any } };
 
 //@ts-ignore TODO we need to figure out how to allow DS.RESTAdapter with custom properties correctly
 export default class Application extends DS.RESTAdapter.extend(DataAdapterMixin, FastbootAdapter) {
@@ -114,6 +116,37 @@ export default class Application extends DS.RESTAdapter.extend(DataAdapterMixin,
         } else {
             window.location.href = url;
         }
+    }
+
+    /**
+     * Append query params to a url
+     *
+     * @param {string} url
+     * @param {SnapshotWithQuery} snapshot
+     * @returns {string}
+     * @memberof Application
+     */
+    appendQueryParams(url: string, snapshot: SnapshotWithQuery) {
+        let query = snapshot?.adapterOptions?.query;
+        if (query) {
+            url += `?${serializeQueryParams(query)}`;
+        }
+        return url;
+    }
+    /**
+     * Overrides the urlForFindRecord to allow for a find request with a query param
+     * @see https://github.com/emberjs/data/issues/3596#issuecomment-126604014
+     *
+     * @template K
+     * @param {string} id
+     * @param {K} modelName
+     * @param {DS.Snapshot<K>} snapshot
+     * @returns {string}
+     * @memberof Application
+     */
+    urlForFindRecord<K extends string | number>(id: string, modelName: K, snapshot: DS.Snapshot<K>) {
+        const url = super.urlForFindRecord(id, modelName, snapshot);
+        return this.appendQueryParams(url, (snapshot as unknown) as SnapshotWithQuery);
     }
 }
 
