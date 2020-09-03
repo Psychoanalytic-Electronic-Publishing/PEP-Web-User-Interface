@@ -6,6 +6,7 @@ import Transition from '@ember/routing/-private/transition';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hooks/pagination';
 import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
+import cloneDeep from 'lodash.clonedeep';
 
 import { PageNav } from 'pep/mixins/page-layout';
 import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
@@ -13,6 +14,7 @@ import SidebarService from 'pep/services/sidebar';
 import SearchController from 'pep/pods/search/controller';
 import Document from 'pep/pods/document/model';
 import { SearchMetadata } from 'pep/api';
+import { SEARCH_DEFAULT_TERMS } from 'pep/constants/search';
 
 export interface SearchParams {
     q: string;
@@ -116,7 +118,7 @@ export default class Search extends PageNav(Route) {
         controller.currentViewedCount = controller.viewedCount;
         controller.currentViewedPeriod = controller.viewedPeriod;
         controller.currentSearchTerms = isEmpty(controller.searchTerms)
-            ? [{ type: 'everywhere', term: '' }]
+            ? cloneDeep(SEARCH_DEFAULT_TERMS)
             : controller.searchTerms;
         controller.currentFacets = controller.facets;
 

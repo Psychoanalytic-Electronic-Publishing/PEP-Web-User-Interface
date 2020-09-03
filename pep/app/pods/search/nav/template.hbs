@@ -27,15 +27,10 @@
                 @metadata={{this.resultsMeta}}
                 @selection={{this.currentFacets}}
                 @updateSelection={{this.updateSelectedFacets}}
-                @submitSearch={{this.resubmitSearchWithFacets}}
                 class={{concat "mb-2" (if this.hasRefineChanges " search-refine-has-changes" "")}}
             />
         {{else}}
             <Page::Sidebar::Widgets::Accolades />
         {{/if}}
     </Sidebar.content>
-    <Search::Refine::Apply
-        @hasChanges={{this.hasRefineChanges}}
-        @apply={{this.resubmitSearchWithFacets}}
-    />
 </Page::Sidebar>

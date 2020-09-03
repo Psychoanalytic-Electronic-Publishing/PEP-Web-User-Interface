@@ -6,8 +6,15 @@ import { tracked } from '@glimmer/tracking';
 import SessionService from 'ember-simple-auth/services/session';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import IntlService from 'ember-intl/services/intl';
+import cloneDeep from 'lodash.clonedeep';
 
-import { SEARCH_TYPE_EVERYWHERE, SearchTermValue, ViewPeriod, SEARCH_DEFAULT_VIEW_PERIOD } from 'pep/constants/search';
+import {
+    SEARCH_TYPE_EVERYWHERE,
+    SearchTermValue,
+    ViewPeriod,
+    SEARCH_DEFAULT_VIEW_PERIOD,
+    SEARCH_DEFAULT_TERMS
+} from 'pep/constants/search';
 import AjaxService from 'pep/services/ajax';
 import LoadingBarService from 'pep/services/loading-bar';
 import Modal from '@gavant/ember-modals/services/modal';
@@ -28,11 +35,7 @@ export default class Application extends Controller {
     @tracked citedCount: string = '';
     @tracked viewedCount: string = '';
     @tracked viewedPeriod: ViewPeriod = ViewPeriod.PAST_WEEK;
-    @tracked searchTerms: SearchTermValue[] = [
-        { type: 'everywhere', term: '' },
-        { type: 'title', term: '' },
-        { type: 'author', term: '' }
-    ];
+    @tracked searchTerms: SearchTermValue[] = cloneDeep(SEARCH_DEFAULT_TERMS);
 
     /**
      * Submits the application/nav sidebar's search form and transitions the
@@ -68,7 +71,7 @@ export default class Application extends Controller {
         this.viewedCount = '';
         this.viewedPeriod = ViewPeriod.PAST_WEEK;
         this.isLimitOpen = false;
-        this.searchTerms = [{ type: 'everywhere', term: '' }];
+        this.searchTerms = cloneDeep(SEARCH_DEFAULT_TERMS);
     }
 
     /**

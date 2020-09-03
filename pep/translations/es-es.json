@@ -248,10 +248,10 @@
                 "option": "{year}'s"
             },
             "art_cited_all": {
-                "label": "Citation Periods"
+                "label": "# Times Cited"
             },
             "art_views_last12mos": {
-                "label": "View Periods"
+                "label": "# Times Viewed"
             }
         },
         "viewPeriod": {
@@ -355,6 +355,7 @@
             "week": "Req. last week",
             "month": "Req. last month",
             "sixMonths": "Req. last 6 months",
+            "twelveMonths": "Req. last 12 months",
             "calendarYear": "Req. last calendar year"
         }
     },

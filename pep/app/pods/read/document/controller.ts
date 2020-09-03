@@ -12,7 +12,12 @@ import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 import AuthService from 'pep/services/auth';
 import LoadingBarService from 'pep/services/loading-bar';
 import { buildSearchQueryParams } from 'pep/utils/search';
-import { ViewPeriod, SEARCH_DEFAULT_VIEW_PERIOD, SEARCH_DEFAULT_PARAMS } from 'pep/constants/search';
+import {
+    ViewPeriod,
+    SEARCH_DEFAULT_VIEW_PERIOD,
+    SEARCH_DEFAULT_PARAMS,
+    SEARCH_DEFAULT_TERMS
+} from 'pep/constants/search';
 import Document from 'pep/pods/document/model';
 
 export default class ReadDocument extends Controller {
@@ -44,11 +49,7 @@ export default class ReadDocument extends Controller {
     @tracked viewedPeriod: ViewPeriod = SEARCH_DEFAULT_VIEW_PERIOD;
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
-    @tracked _searchTerms: string | null = JSON.stringify([
-        { type: 'everywhere', term: '' },
-        { type: 'title', term: '' },
-        { type: 'author', term: '' }
-    ]);
+    @tracked _searchTerms: string | null = JSON.stringify(SEARCH_DEFAULT_TERMS);
     @tracked paginator!: Pagination<Document>;
 
     get isLoadingRoute(): boolean {

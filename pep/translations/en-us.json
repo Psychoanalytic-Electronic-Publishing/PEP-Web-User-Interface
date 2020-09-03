@@ -248,10 +248,10 @@
                 "option": "{year}'s"
             },
             "art_cited_all": {
-                "label": "Citation Periods"
+                "label": "# Times Cited"
             },
             "art_views_last12mos": {
-                "label": "View Periods"
+                "label": "# Times Viewed"
             }
         },
         "viewPeriod": {
