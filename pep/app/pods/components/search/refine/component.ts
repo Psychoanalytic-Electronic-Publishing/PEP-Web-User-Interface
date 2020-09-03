@@ -7,6 +7,7 @@ import { capitalize } from '@ember/string';
 import IntlService from 'ember-intl/services/intl';
 
 import { SEARCH_FACETS, SearchFacetValue } from 'pep/constants/search';
+import { SearchMetadata } from 'pep/api';
 
 export interface RefineOption {
     id: string;
@@ -19,16 +20,6 @@ export interface RefineGroup {
     label: string;
     optionsWithResults: RefineOption[];
     optionsWithoutResults: RefineOption[];
-}
-
-export interface SearchMetadata {
-    facetCounts: {
-        facet_fields: {
-            [x: string]: {
-                [x: string]: number;
-            };
-        };
-    };
 }
 
 interface SearchRefineArgs {
@@ -49,18 +40,26 @@ export default class SearchRefine extends Component<SearchRefineArgs> {
 
         SEARCH_FACETS.forEach((facetType) => {
             if (incFields.includes(facetType.id)) {
-                let fieldCountsMap = fieldsMap[facetType.id];
+                let fieldCountsMap = facetType.formatCounts
+                    ? facetType.formatCounts(fieldsMap[facetType.id])
+                    : fieldsMap[facetType.id];
                 let fieldCountIds = Object.keys(fieldCountsMap);
-                let allOptIds = facetType.dynamicValues ? fieldCountIds : facetType.values.mapBy('id');
-                let allOptions: RefineOption[] = allOptIds.map((optId) => ({
-                    id: optId,
-                    label: facetType.dynamicValues
-                        ? capitalize(optId)
-                        : facetType.values.findBy('id', optId)?.label
-                        ? this.intl.t(facetType.values.findBy('id', optId)!.label)
-                        : optId,
-                    numResults: fieldCountsMap[optId] ?? 0
-                }));
+                let allOptIds = facetType.dynamicValues ? fieldCountIds : facetType.values.map((v) => v.id);
+                let allOptions: RefineOption[] = allOptIds.map((optId) => {
+                    let label;
+                    if (facetType.dynamicValues) {
+                        label = facetType.formatOption ? facetType.formatOption(optId, this.intl) : capitalize(optId);
+                    } else {
+                        const valLabel = facetType.values.findBy('id', optId)?.label;
+                        label = valLabel ? this.intl.t(facetType.values.findBy('id', optId)!.label) : optId;
+                    }
+
+                    return {
+                        id: optId,
+                        label,
+                        numResults: fieldCountsMap[optId] ?? 0
+                    };
+                });
 
                 //sort options w/no results at the bottom
                 let optionsWithResults = allOptions.filter((opt) => opt.numResults > 0);

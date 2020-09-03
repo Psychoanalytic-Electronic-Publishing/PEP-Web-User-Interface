@@ -43,7 +43,7 @@ export default class ConfigurationService extends Service {
             // const content = this.store.queryRecord('configuration', { configname: this.contentConfigName });
 
             // TODO remove this once the configuration endpoints/data are live/populated
-            this.store.pushPayload('user', {
+            this.store.pushPayload('configuration', {
                 configuration: [
                     {
                         configName: BASE_CONFIG_NAME,

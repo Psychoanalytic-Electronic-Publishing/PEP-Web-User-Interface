@@ -41,6 +41,7 @@
         "browse": "Browse",
         "read": "Read",
         "user": {
+            "about": "About",
             "account": "My account",
             "preferences": "Preferences",
             "help": "Help",
@@ -105,6 +106,15 @@
                 "add": "Add term",
                 "synonyms": "Match Synonyms"
             },
+            "additional": {
+                "limitTo": "Limit to...",
+                "cited": {
+                    "times": "citations in the past 5 years"
+                },
+                "viewed": {
+                    "times": "views in the last"
+                }
+            },
             "tooManyResults": {
                 "heading": "Try refining your search",
                 "numResults": "There are '<strong>'{count}'</strong>' {count, plural, =1 {result} other {results}} that match your criteria.",
@@ -145,20 +155,23 @@
             "title": {
                 "label": "Title"
             },
-            "freud": {
-                "label": "Freud's Work"
-            },
-            "glossary": {
-                "label": "PEP Glossary"
-            },
-            "dialog": {
-                "label": "Dialogs"
+            "dream": {
+                "label": "Dreams"
             },
             "quote": {
                 "label": "Quotes"
             },
+            "reference": {
+                "label": "References"
+            },
+            "dialog": {
+                "label": "Dialogs"
+            },
+            "article": {
+                "label": "Article"
+            },
             "start-year": {
-                "label": "Start Year"
+                "label": "Year"
             },
             "end-year": {
                 "label": "End Year"
@@ -173,9 +186,6 @@
             "viewed": {
                 "label": "Viewed this many times",
                 "shortLabel": "Viewed #"
-            },
-            "scholar": {
-                "label": "Google Scholar"
             }
         },
         "facets": {
@@ -221,9 +231,35 @@
                     "zh": "Chinese"
                 }
             },
-            "art_kwds": {
+            "art_kwds_str": {
                 "label": "Keywords"
+            },
+            "art_sourcetitleabbr": {
+                "label": "Source"
+            },
+            "glossary_terms": {
+                "label": "Glossary Terms"
+            },
+            "glossary_group_terms": {
+                "label": "Glossary Groups"
+            },
+            "art_year_int": {
+                "label": "Decade",
+                "option": "{year}'s"
+            },
+            "art_cited_all": {
+                "label": "# Times Cited"
+            },
+            "art_views_last12mos": {
+                "label": "# Times Viewed"
             }
+        },
+        "viewPeriod": {
+            "week": "week",
+            "month": "month",
+            "6months": " 6 months",
+            "12months": "12 months",
+            "calYear": "calendar year"
         }
     },
     "browse": {
@@ -319,6 +355,7 @@
             "week": "Req. last week",
             "month": "Req. last month",
             "sixMonths": "Req. last 6 months",
+            "twelveMonths": "Req. last 12 months",
             "calendarYear": "Req. last calendar year"
         }
     },
@@ -339,6 +376,28 @@
         "theme": {
             "label": "Color theme",
             "select": "Select a theme"
+        }
+    },
+    "about": {
+        "title": "About",
+        "version": {
+            "title": "Version",
+            "client": "Client: {versionNumber}",
+            "server": "Server: {versionNumber}",
+            "data": "DataSource: {versionNumber}"
+        },
+        "status": {
+            "title": "Status",
+            "ok": "All systems operational",
+            "down": "Database maintenance is in progress"
+        },
+        "web": {
+            "title": "PEP Web",
+            "description": " This new PEP Web user interface has been designed to make it easier to search the PEP Archive more efficiently and effectively with maximum accessibility in mind, and to take advantage of the latest technology to personalize your user experience. This is just the first phase of an ongoing re-envisioning of the PEP Web system.. In the near future, we will use advanced AI techniques to help find information in the archive and take your research to new levels.."
+        },
+        "archive": {
+            "title": "PEP Archive",
+            "description": "PEP Web has been designed to provide a powerful rapid search of the entire psychoanalytic literature in English, French, German, Greek, Italian, Romanian, Spanish and Turkish. It is the result of an innovative, high quality series of technical developments and a considerable financial and scholarly investment. You can '<a href=\"http://support.pep-web.org/about-the-pep-archive/digitization-and-quality-control/\" target=\"_blank\">'read about the innovative developments required to produce and keep updating the PEP archive'</a>' and read '<a href=\"http://support.pep-web.org/about-pep/history-of-pep/\" target=\"_blank\">'about the history of the PEP archive'</a>'. You can even '<a href=\"http://support.pep-web.org/about-the-pep-archive/suggest-new-content/\" target=\"_blank\">'suggest new content'</a>' that you would like to see added to the PEP Archive. '<br>' For more information, see the '<a href=\"http://support.pep-web.org\" target=\"_blank\">'PEP Web support pages'</a>'"
         }
     },
     "language": {

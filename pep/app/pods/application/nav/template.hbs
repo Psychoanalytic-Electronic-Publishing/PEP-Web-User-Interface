@@ -4,12 +4,18 @@
             @smartSearchTerm={{this.smartSearchTerm}}
             @searchTerms={{this.searchTerms}}
             @matchSynonyms={{this.matchSynonyms}}
+            @isLimitOpen={{this.isLimitOpen}}
+            @citedCount={{this.citedCount}}
+            @viewedCount={{this.viewedCount}}
+            @viewedPeriod={{this.viewedPeriod}}
             @submit={{this.submitSearch}}
             @resetForm={{this.clearSearch}}
             @addSearchTerm={{this.addSearchTerm}}
             @removeSearchTerm={{this.removeSearchTerm}}
             @updateSearchTerm={{this.updateSearchTerm}}
+            @updateViewedPeriod={{this.updateViewedPeriod}}
             @matchSynonymsChange={{this.updateMatchSynonyms}}
+            @toggleLimitFields={{this.toggleLimitFields}}
             class="mb-2"
         />
         <Page::Sidebar::Widgets::Accolades />
