@@ -93,7 +93,7 @@ export function appendTrailingSlash(url: string) {
  *
  * @param {DS.Store} store
  * @param {QueryParamsObj} queryParams
- * @returns
+ * @returns {string}
  */
 export const documentCSVUrl = (store: DS.Store, queryParams: QueryParamsObj) => {
     delete queryParams.limit;
