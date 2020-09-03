@@ -10,6 +10,7 @@ import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
 import { didCancel, timeout } from 'ember-concurrency';
 import { restartableTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
+import copy from 'lodash.clonedeep';
 
 import AjaxService from 'pep/services/ajax';
 import {
@@ -17,7 +18,8 @@ import {
     SearchTermValue,
     SearchFacetValue,
     ViewPeriod,
-    SEARCH_DEFAULT_VIEW_PERIOD
+    SEARCH_DEFAULT_VIEW_PERIOD,
+    SEARCH_DEFAULT_TERMS
 } from 'pep/constants/search';
 import SidebarService from 'pep/services/sidebar';
 import LoadingBarService from 'pep/services/loading-bar';
@@ -71,11 +73,7 @@ export default class Search extends Controller {
 
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
-    @tracked _searchTerms: string | null = JSON.stringify([
-        { type: 'everywhere', term: '' },
-        { type: 'title', term: '' },
-        { type: 'author', term: '' }
-    ]);
+    @tracked _searchTerms: string | null = JSON.stringify(SEARCH_DEFAULT_TERMS);
     get searchTerms() {
         if (!this._searchTerms) {
             return [];
@@ -178,20 +176,14 @@ export default class Search extends Controller {
 
     /**
      * Resubmits the search form with the currently selected facet values
-     * @returns Document[]
+     * @returns {Promise<Document[]>}
      */
     @action
-    async resubmitSearchWithFacets() {
+    async resubmitSearchWithFacets(): Promise<Document[]> {
         try {
             this.facets = this.currentFacets;
             this.updateSearchQueryParams();
             this.closeResultPreview();
-
-            //close overlay sidebar on submit in mobile/tablet
-            if (this.fastbootMedia.isSmallDevice) {
-                this.sidebar.toggleLeftSidebar();
-            }
-
             this.loadingBar.show();
             const results = await hash({
                 documents: this.paginator.filterModels(),
@@ -206,6 +198,16 @@ export default class Search extends Controller {
     }
 
     /**
+     * When facet option selections change, resubmits the search
+     * after a short debounce timeout
+     */
+    @restartableTask
+    *resubmitSearchOnFacetsChange() {
+        yield timeout(500);
+        yield this.resubmitSearchWithFacets();
+    }
+
+    /**
      * Updates the query params with the current search form values
      */
     @action
@@ -217,6 +219,7 @@ export default class Search extends Controller {
         this.citedCount = this.currentCitedCount;
         this.viewedCount = this.currentViewedCount;
         this.viewedPeriod = this.currentViewedPeriod;
+        this.facets = this.currentFacets;
     }
 
     /**
@@ -230,7 +233,9 @@ export default class Search extends Controller {
         this.currentViewedCount = '';
         this.currentViewedPeriod = ViewPeriod.PAST_WEEK;
         this.isLimitOpen = false;
-        this.currentSearchTerms = [{ type: 'everywhere', term: '' }];
+        // create a copy of the default search terms objects so they can be mutated
+        this.currentSearchTerms = copy(SEARCH_DEFAULT_TERMS);
+        this.currentFacets = [];
         taskFor(this.updateRefineMetadata).perform(true, 0);
     }
 
@@ -257,7 +262,7 @@ export default class Search extends Controller {
         }
 
         this.currentSearchTerms = searchTerms;
-        taskFor(this.updateRefineMetadata).perform();
+        this.onSearchCriteriaChange();
     }
 
     /**
@@ -272,7 +277,7 @@ export default class Search extends Controller {
         //a brand new one like we normally would, so that it doesnt trigger an insert animation
         setProperties(oldTerm, newTerm);
         this.currentSearchTerms = searchTerms;
-        taskFor(this.updateRefineMetadata).perform();
+        this.onSearchCriteriaChange();
     }
 
     /**
@@ -282,7 +287,7 @@ export default class Search extends Controller {
     @action
     updateMatchSynonyms(isChecked: boolean) {
         this.currentMatchSynonyms = isChecked;
-        taskFor(this.updateRefineMetadata).perform();
+        this.onSearchCriteriaChange();
     }
 
     /**
@@ -292,7 +297,7 @@ export default class Search extends Controller {
     @action
     updateViewedPeriod(value: ViewPeriod) {
         this.currentViewedPeriod = value;
-        taskFor(this.updateRefineMetadata).perform();
+        this.onSearchCriteriaChange();
     }
 
     /**
@@ -306,17 +311,20 @@ export default class Search extends Controller {
             this.currentCitedCount = '';
             this.currentViewedCount = '';
             this.currentViewedPeriod = SEARCH_DEFAULT_VIEW_PERIOD;
-            taskFor(this.updateRefineMetadata).perform();
+            this.onSearchCriteriaChange();
         }
     }
 
     /**
      * Updates the currently selected search facet options
+     * and resubmits the search w/the new options after a
+     * short delay
      * @param {SearchFacetValue[]} newSelection
      */
     @action
     updateSelectedFacets(newSelection: SearchFacetValue[]) {
         this.currentFacets = newSelection;
+        return taskFor(this.resubmitSearchOnFacetsChange).perform();
     }
 
     /**
@@ -324,6 +332,16 @@ export default class Search extends Controller {
      */
     @action
     onSearchTextChange() {
+        return this.onSearchCriteriaChange();
+    }
+
+    /**
+     * Whenever the main search form criteria changes (smart search, terms, limits, synomyms)
+     * Clear any existing Refine facet settings and update the Refine options/counts
+     */
+    @action
+    onSearchCriteriaChange() {
+        this.currentFacets = [];
         return taskFor(this.updateRefineMetadata).perform();
     }
 

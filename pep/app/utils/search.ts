@@ -125,13 +125,14 @@ export function buildSearchQueryParams(
         let facets = groupedFacets[id];
         if (facetType && facetType.param) {
             //join all the selected facet values together
-            let facetValues = facets.mapBy('value').join(facetType.paramSeparator);
+            let facetValues = facets.map((f) => (facetType?.quoteValues ? `"${f.value}"` : f.value));
+            let values = facetValues.join(facetType.paramSeparator);
 
             if (facetType.prefixValues) {
-                facetValues = `${facetType.id}:(${facetValues})`;
+                values = `${facetType.id}:(${values})`;
             }
 
-            queryParams[facetType.param] = joinParamValues(queryParams[facetType.param], facetValues, joinOp);
+            queryParams[facetType.param] = joinParamValues(queryParams[facetType.param], values, joinOp);
         }
     });
 

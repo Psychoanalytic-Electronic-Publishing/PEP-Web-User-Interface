@@ -1,10 +1,11 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import copy from 'lodash.clonedeep';
 
 import Application from 'pep/pods/application/controller';
 import IndexController from 'pep/pods/index/controller';
 import ConfigurationService from 'pep/services/configuration';
-import { SEARCH_DEFAULT_VIEW_PERIOD } from 'pep/constants/search';
+import { SEARCH_DEFAULT_VIEW_PERIOD, SEARCH_DEFAULT_TERMS } from 'pep/constants/search';
 
 export default class Index extends Route {
     @service configuration!: ConfigurationService;
@@ -30,10 +31,7 @@ export default class Index extends Route {
         appController.viewedCount = '';
         appController.viewedPeriod = SEARCH_DEFAULT_VIEW_PERIOD;
         appController.isLimitOpen = false;
-        appController.searchTerms = [
-            { type: 'everywhere', term: '' },
-            { type: 'title', term: '' },
-            { type: 'author', term: '' }
-        ];
+        // create a copy of the default search terms objects so they can be mutated
+        appController.searchTerms = copy(SEARCH_DEFAULT_TERMS);
     }
 }

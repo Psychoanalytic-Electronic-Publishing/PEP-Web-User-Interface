@@ -231,7 +231,7 @@
                     "zh": "Chinese"
                 }
             },
-            "art_kwds": {
+            "art_kwds_str": {
                 "label": "Keywords"
             },
             "art_sourcetitleabbr": {
@@ -248,10 +248,10 @@
                 "option": "{year}'s"
             },
             "art_cited_all": {
-                "label": "Citation Periods"
+                "label": "# Times Cited"
             },
             "art_views_last12mos": {
-                "label": "View Periods"
+                "label": "# Times Viewed"
             }
         },
         "viewPeriod": {
