@@ -161,7 +161,6 @@ export default class Search extends PageNav(Route) {
         //@ts-ignore
         super.resetController(controller, isExiting, transition);
         controller.previewedResult = null;
-        controller.previewMode = 'fit';
         //clear current results meta data
         controller.resultsMeta = null;
         //reset the search form limit fields section

@@ -10,7 +10,7 @@ import AuthService from 'pep/services/auth';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import Document from 'pep/pods/document/model';
 
-type SearchPreviewMode = 'minimized' | 'maximized' | 'fit';
+export type SearchPreviewMode = 'minimized' | 'maximized' | 'fit' | 'custom';
 
 interface SearchPreviewArgs {
     mode: SearchPreviewMode;
@@ -40,7 +40,7 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
     }
 
     get styles() {
-        return this.mode === 'fit' && this.adjustedFitHeight && this.args.result
+        return (this.mode === 'fit' || this.mode === 'custom') && this.adjustedFitHeight && this.args.result
             ? htmlSafe(`height: ${this.adjustedFitHeight}px;`)
             : null;
     }
@@ -82,7 +82,9 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
      */
     @action
     onResultUpdate() {
-        scheduleOnce('afterRender', this, this.updateFitHeight);
+        if (this.mode === 'fit') {
+            scheduleOnce('afterRender', this, this.updateFitHeight);
+        }
     }
 
     /**
@@ -125,9 +127,9 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
     onDragStart() {
         this.isDragResizing = true;
 
-        if (this.mode !== 'fit' && this.scrollableElement) {
+        if (this.mode !== 'custom' && this.scrollableElement) {
             this.fitHeight = this.scrollableElement.offsetHeight;
-            this.args.setMode('fit');
+            this.args.setMode('custom');
         }
     }
 
@@ -137,8 +139,8 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
      */
     @action
     onDragEnd(position: number) {
-        if (this.mode !== 'fit') {
-            this.args.setMode('fit');
+        if (this.mode !== 'custom') {
+            this.args.setMode('custom');
         }
 
         this.fitHeight = Math.max(this.minFitHeight, this.fitHeight - position);
