@@ -9,18 +9,17 @@ module('Integration | Component | page/sidebar/widgets/video-preview', function(
     test('it renders', async function(assert) {
         // Set any properties with this.set('myProperty', 'value');
         // Handle any actions with this.set('myAction', function(val) { ... });
+        this.set('openWidgets', []);
+        await render(hbs`<Page::Sidebar::Widgets::VideoPreview @openWidgets{{this.openWidgets}} />`);
 
-        await render(hbs`{{page/sidebar/widgets/video-preview}}`);
-
-        assert.equal(this.element.textContent?.trim(), '');
+        assert.equal(this.element.textContent?.trim(), 'Latest Video');
 
         // Template block usage:
         await render(hbs`
-      {{#page/sidebar/widgets/video-preview}}
-        template block text
-      {{/page/sidebar/widgets/video-preview}}
+        <Page::Sidebar::Widgets::VideoPreview @openWidgets{{this.openWidgets}}>
+        </Page::Sidebar::Widgets::VideoPreview>
     `);
 
-        assert.equal(this.element.textContent?.trim(), 'template block text');
+        assert.equal(this.element.textContent?.trim(), 'Latest Video');
     });
 });

@@ -9,18 +9,18 @@ module('Integration | Component | page/sidebar/widgets/relevant-searches', funct
     test('it renders', async function(assert) {
         // Set any properties with this.set('myProperty', 'value');
         // Handle any actions with this.set('myAction', function(val) { ... });
+        this.set('openWidgets', []);
+        await render(hbs`<Page::Sidebar::Widgets::RelevantSearches @openWidgets{{this.openWidgets}} />`);
 
-        await render(hbs`{{page/sidebar/widgets/relevant-searches}}`);
-
-        assert.equal(this.element.textContent?.trim(), '');
+        assert.equal(this.element.textContent?.trim(), 'Relevant searches');
 
         // Template block usage:
         await render(hbs`
-      {{#page/sidebar/widgets/relevant-searches}}
+        <Page::Sidebar::Widgets::RelevantSearches @openWidgets{{this.openWidgets}} >
         template block text
-      {{/page/sidebar/widgets/relevant-searches}}
+        </Page::Sidebar::Widgets::RelevantSearches>
     `);
 
-        assert.equal(this.element.textContent?.trim(), 'template block text');
+        assert.equal(this.element.textContent?.trim(), 'Relevant searches');
     });
 });

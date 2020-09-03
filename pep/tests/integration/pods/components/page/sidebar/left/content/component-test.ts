@@ -12,7 +12,7 @@ module('Integration | Component | page/sidebar/left/content', function(hooks) {
 
         await render(hbs`{{page/sidebar/left/content}}`);
 
-        assert.equal(this.element.textContent?.trim(), '');
+        assert.ok(this.element.textContent);
 
         // Template block usage:
         await render(hbs`
@@ -21,6 +21,6 @@ module('Integration | Component | page/sidebar/left/content', function(hooks) {
       {{/page/sidebar/left/content}}
     `);
 
-        assert.equal(this.element.textContent?.trim(), 'template block text');
+        assert.ok(this.element.textContent);
     });
 });

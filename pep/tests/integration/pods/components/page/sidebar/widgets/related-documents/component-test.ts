@@ -9,18 +9,19 @@ module('Integration | Component | page/sidebar/widgets/related-documents', funct
     test('it renders', async function(assert) {
         // Set any properties with this.set('myProperty', 'value');
         // Handle any actions with this.set('myAction', function(val) { ... });
+        this.set('openWidgets', []);
 
-        await render(hbs`{{page/sidebar/widgets/related-documents}}`);
+        await render(hbs`<Page::Sidebar::Widgets::RelatedDocuments @openWidgets{{this.openWidgets}} />`);
 
-        assert.equal(this.element.textContent?.trim(), '');
+        assert.equal(this.element.textContent?.trim(), 'Related Documents');
 
         // Template block usage:
         await render(hbs`
-      {{#page/sidebar/widgets/related-documents}}
+        <Page::Sidebar::Widgets::RelatedDocuments @openWidgets{{this.openWidgets}}>
         template block text
-      {{/page/sidebar/widgets/related-documents}}
+        </Page::Sidebar::Widgets::RelatedDocuments>
     `);
 
-        assert.equal(this.element.textContent?.trim(), 'template block text');
+        assert.equal(this.element.textContent?.trim(), 'Related Documents');
     });
 });
