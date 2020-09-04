@@ -83,7 +83,7 @@ export const DEFAULT_CONTENT_CONFIGURATION: ContentConfiguration = {
                 heading: 'Your search starts here',
                 subheading: 'Search all of the literature in PEP-WEB in seconds.',
                 body:
-                    '<p class="card-text"><strong>Smart Search</strong> taskes all kinds of search inputs:</p><ul><li>Find terms or keywords - to get the best search results, <strong>enter at least two terms at a time.</strong> <br>This will make the search more precise, returning only the most relevant results.</li><li>Paste a reference from an article</li><li>Journal name or part of a journal name</li><li>Author name</li><li>Part of a title (two or more words)</li><li>Year / Vol / Page #</li></ul>'
+                    '<p class="card-text"><strong>Smart Search</strong> takes all kinds of search inputs:</p><ul><li>Find terms or keywords - to get the best search results, <strong>enter at least two terms at a time.</strong> <br>This will make the search more precise, returning only the most relevant results.</li><li>Paste a reference from an article</li><li>Journal name or part of a journal name</li><li>Author name</li><li>Part of a title (two or more words)</li><li>Year / Vol / Page #</li></ul>'
             },
             right: {
                 heading: 'Let PEP be your guide',
