@@ -173,10 +173,10 @@
             "article": {
                 "label": "Article"
             },
-            "start-year": {
+            "startYear": {
                 "label": "Year"
             },
-            "end-year": {
+            "endYear": {
                 "label": "End Year"
             },
             "bibliography": {

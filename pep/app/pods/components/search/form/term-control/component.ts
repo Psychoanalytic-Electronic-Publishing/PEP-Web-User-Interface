@@ -1,16 +1,8 @@
 import Component from '@glimmer/component';
-// import { action, computed } from '@ember/object';
-// import { later, next } from '@ember/runloop';
-// import { inject as service } from '@ember/service';
-// import IntlService from 'ember-intl/services/intl';
+import { inject as service } from '@ember/service';
 
-import {
-    SEARCH_TYPES,
-    SearchTermValue
-    // SearchTermId
-} from 'pep/constants/search';
-// import ScrollableService from 'pep/services/scrollable';
-// import { fadeTransition } from 'pep/utils/animation';
+import { SEARCH_TYPES, SearchTermValue } from 'pep/constants/search';
+import ConfigurationService from 'pep/services/configuration';
 
 interface SearchFormTermControlArgs {
     searchTerm: SearchTermValue;
@@ -20,7 +12,17 @@ interface SearchFormTermControlArgs {
 }
 
 export default class SearchFormTermControl extends Component<SearchFormTermControlArgs> {
+    @service configuration!: ConfigurationService;
+
     get searchTypeOptions() {
         return SEARCH_TYPES.filter((t) => t.isTypeOption);
+    }
+
+    get selectedSearchType() {
+        return SEARCH_TYPES.find((t) => t.id === this.args.searchTerm?.type);
+    }
+
+    get termContentConfig() {
+        return this.args.searchTerm ? this.configuration.content.search.terms.types[this.args.searchTerm.type] : null;
     }
 }

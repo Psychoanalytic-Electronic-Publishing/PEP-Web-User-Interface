@@ -29,6 +29,21 @@ export enum ViewPeriod {
     PAST_12_MONTHS = 4
 }
 
+export enum SearchTermId {
+    EVERYWHERE = 'everywhere',
+    AUTHOR = 'author',
+    TITLE = 'title',
+    DREAM = 'dream',
+    QUOTE = 'quote',
+    REFERENCE = 'reference',
+    DIALOG = 'dialog',
+    ARTICLE = 'article',
+    START_YEAR = 'startYear',
+    END_YEAR = 'endYear',
+    CITED = 'cited',
+    VIEWED = 'viewed'
+}
+
 export enum FacetId {
     ART_ID = 'art_id',
     ART_TITLE = 'art_title',
@@ -74,7 +89,7 @@ export enum FacetId {
 }
 
 export interface SearchTermValue {
-    type: string;
+    type: SearchTermId;
     term: string;
 }
 
@@ -84,7 +99,7 @@ export interface SearchFacetValue {
 }
 
 export interface SearchTermType {
-    id: string;
+    id: SearchTermId;
     param: string;
     solrField?: string;
     scope?: string;
@@ -112,9 +127,9 @@ export interface ViewPeriodOption {
 }
 
 export const SEARCH_DEFAULT_TERMS: SearchTermValue[] = [
-    { type: 'everywhere', term: '' },
-    { type: 'title', term: '' },
-    { type: 'author', term: '' }
+    { type: SearchTermId.EVERYWHERE, term: '' },
+    { type: SearchTermId.TITLE, term: '' },
+    { type: SearchTermId.AUTHOR, term: '' }
 ];
 
 export const SEARCH_DEFAULT_FACETS: SearchFacetValue[] = [];
@@ -138,7 +153,7 @@ export const SEARCH_DEFAULT_PARAMS = {
  */
 
 export const SEARCH_TYPE_EVERYWHERE: SearchTermType = {
-    id: 'everywhere',
+    id: SearchTermId.EVERYWHERE,
     param: 'fulltext1',
     solrField: 'text',
     label: 'search.terms.everywhere.label',
@@ -146,21 +161,21 @@ export const SEARCH_TYPE_EVERYWHERE: SearchTermType = {
 };
 
 export const SEARCH_TYPE_AUTHOR: SearchTermType = {
-    id: 'author',
+    id: SearchTermId.AUTHOR,
     param: 'author',
     label: 'search.terms.author.label',
     isTypeOption: true
 };
 
 export const SEARCH_TYPE_TITLE: SearchTermType = {
-    id: 'title',
+    id: SearchTermId.TITLE,
     param: 'title',
     label: 'search.terms.title.label',
     isTypeOption: true
 };
 
 export const SEARCH_TYPE_DREAM: SearchTermType = {
-    id: 'dream',
+    id: SearchTermId.DREAM,
     param: 'fulltext1',
     solrField: 'dreams_xml',
     scope: 'dreams',
@@ -169,7 +184,7 @@ export const SEARCH_TYPE_DREAM: SearchTermType = {
 };
 
 export const SEARCH_TYPE_QUOTE: SearchTermType = {
-    id: 'quote',
+    id: SearchTermId.QUOTE,
     param: 'fulltext1',
     solrField: 'quotes_xml',
     scope: 'TODO',
@@ -178,7 +193,7 @@ export const SEARCH_TYPE_QUOTE: SearchTermType = {
 };
 
 export const SEARCH_TYPE_REFERENCE: SearchTermType = {
-    id: 'reference',
+    id: SearchTermId.REFERENCE,
     param: 'fulltext1',
     solrField: 'references_xml',
     scope: 'biblios',
@@ -187,7 +202,7 @@ export const SEARCH_TYPE_REFERENCE: SearchTermType = {
 };
 
 export const SEARCH_TYPE_DIALOG: SearchTermType = {
-    id: 'dialog',
+    id: SearchTermId.DIALOG,
     param: 'fulltext1',
     solrField: 'dialogs_xml',
     scope: 'dialogs',
@@ -196,7 +211,7 @@ export const SEARCH_TYPE_DIALOG: SearchTermType = {
 };
 
 export const SEARCH_TYPE_ARTICLE: SearchTermType = {
-    id: 'article',
+    id: SearchTermId.ARTICLE,
     param: 'fulltext1',
     solrField: 'body_xml',
     scope: 'doc',
@@ -205,22 +220,22 @@ export const SEARCH_TYPE_ARTICLE: SearchTermType = {
 };
 
 export const SEARCH_TYPE_START_YEAR: SearchTermType = {
-    id: 'start-year',
+    id: SearchTermId.START_YEAR,
     param: 'startyear',
-    label: 'search.terms.start-year.label',
+    label: 'search.terms.startYear.label',
     isTypeOption: true
 };
 
 // Note: not being used, only using startyear for now
 // export const SEARCH_TYPE_END_YEAR: SearchTermType = {
-//     id: 'end-year',
+//     id: SearchTermId.END_YEAR,
 //     param: 'endyear',
-//     label: 'search.terms.end-year.label',
+//     label: 'search.terms.endYear.label',
 //     isTypeOption: true
 // };
 
 export const SEARCH_TYPE_CITED: SearchTermType = {
-    id: 'cited',
+    id: SearchTermId.CITED,
     param: 'citecount',
     label: 'search.terms.cited.label',
     shortLabel: 'search.terms.cited.shortLabel',
@@ -228,7 +243,7 @@ export const SEARCH_TYPE_CITED: SearchTermType = {
 };
 
 export const SEARCH_TYPE_VIEWED: SearchTermType = {
-    id: 'viewed',
+    id: SearchTermId.VIEWED,
     param: 'viewcount',
     label: 'search.terms.viewed.label',
     shortLabel: 'search.terms.viewed.shortLabel',

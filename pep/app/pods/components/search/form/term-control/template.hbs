@@ -1,7 +1,7 @@
 <div class="search-form-term-control d-flex mb-2" ...attributes>
     <div class="search-form-term-control flex-fill">
         <FlInput
-            @placeholder={{t "search.form.terms.label"}}
+            @placeholder={{or this.termContentConfig.prompt (t "search.form.terms.label")}}
             @value={{@searchTerm.term}}
             class="search-form-term-control-text"
             maxlength="255"

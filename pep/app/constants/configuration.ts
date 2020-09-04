@@ -1,3 +1,5 @@
+import { SearchTermId } from './search';
+
 /**
  * Base admin configuration fields for the application
  * MUST NOT contain any configuration data/content that is language-dependent
@@ -55,6 +57,15 @@ export interface ContentConfiguration {
             };
         };
     };
+    search: {
+        terms: {
+            types: {
+                [K in SearchTermId]?: {
+                    prompt?: string;
+                };
+            };
+        };
+    };
 }
 
 export const BASE_CONFIG_NAME = 'pep-base';
@@ -103,6 +114,42 @@ export const DEFAULT_CONTENT_CONFIGURATION: ContentConfiguration = {
                 heading: '96 Classic Psychoanalytic Books',
                 body:
                     'The complete content of Sigmund Freud’s Standard Edition where each paragraph is cross-linked to the corresponding text in the German Freud Gesammelte Werke. Including 96 books from classic authors such as Bion, Bowlby, Klein, Meltzer, Winnicott, and many more.'
+            }
+        }
+    },
+    search: {
+        terms: {
+            types: {
+                everywhere: {
+                    prompt: 'Terms or phrase'
+                },
+                author: {
+                    prompt: "Author's name"
+                },
+                title: {
+                    prompt: 'Document title'
+                },
+                dream: {
+                    prompt: 'Terms or phrase'
+                },
+                quote: {
+                    prompt: 'Terms or phrase'
+                },
+                reference: {
+                    prompt: 'Terms or phrase'
+                },
+                dialog: {
+                    prompt: 'Terms or phrase'
+                },
+                article: {
+                    prompt: 'Terms or phrase'
+                },
+                startYear: {
+                    prompt: 'Publication year'
+                },
+                endYear: {
+                    prompt: 'Publication year'
+                }
             }
         }
     }
