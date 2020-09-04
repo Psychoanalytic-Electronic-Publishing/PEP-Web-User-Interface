@@ -5,12 +5,12 @@ import { inject as service } from '@ember/service';
 import IntlService from 'ember-intl/services/intl';
 
 import {
-    SEARCH_TYPES,
     SEARCH_TYPE_EVERYWHERE,
     SEARCH_RESULTS_WARNING_COUNT,
     SearchTermValue,
     VIEW_PERIODS,
-    ViewPeriod
+    ViewPeriod,
+    SearchTermId
 } from 'pep/constants/search';
 import ScrollableService from 'pep/services/scrollable';
 import { fadeTransition } from 'pep/utils/animation';
@@ -37,13 +37,8 @@ export default class SearchForm extends Component<SearchFormArgs> {
     @service scrollable!: ScrollableService;
     @service intl!: IntlService;
 
-    searchTypes = SEARCH_TYPES;
     animateTransition = fadeTransition;
     animateDuration = 300;
-
-    get searchTypeOptions() {
-        return this.searchTypes.filter((t) => t.isTypeOption);
-    }
 
     get viewPeriodOptions() {
         return VIEW_PERIODS.map((period) => ({
@@ -92,7 +87,7 @@ export default class SearchForm extends Component<SearchFormArgs> {
      */
     @action
     updateTermType(oldTerm: SearchTermValue, event: HTMLElementEvent<HTMLSelectElement>) {
-        const type = event.target.value;
+        const type = event.target.value as SearchTermId;
         const newTerm = { ...oldTerm, type };
         this.args.updateSearchTerm(oldTerm, newTerm);
     }
