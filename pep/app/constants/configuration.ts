@@ -157,12 +157,12 @@ export const DEFAULT_CONTENT_CONFIGURATION: ContentConfiguration = {
                 startYear: {
                     prompt: 'Publication year',
                     help:
-                        'Find documents published on or after a year, or in this range of years (e.g, "1999", "1999-2010", ">1999", "<1999")'
+                        'Find documents published on or before/after a year, or within a range of years (e.g, "1999", "1999-2010", ">1999", "<1999")'
                 },
                 endYear: {
                     prompt: 'Publication year',
                     help:
-                        'Find documents published on or after a year, or in this range of years (e.g, "1999", "1999-2010", ">1999", "<1999")'
+                        'Find documents published on or before/after a year, or within a range of years (e.g, "1999", "1999-2010", ">1999", "<1999")'
                 }
             }
         }
