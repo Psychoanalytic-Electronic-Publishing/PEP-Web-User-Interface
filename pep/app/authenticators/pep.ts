@@ -7,6 +7,7 @@ import { SessionAuthenticatedData } from 'ember-simple-auth/services/session';
 import AjaxService from 'pep/services/ajax';
 import { serializeQueryParams } from 'pep/utils/url';
 import ENV from 'pep/config/environment';
+import { PepSecureAuthenticatedData } from 'pep/pods/application/adapter';
 
 // TODO: this is all likely to change a bit to account for authentication flow changes
 // i.e. using headers/instead of automatic cookie sending, session refreshing, etc
@@ -51,8 +52,8 @@ export default class PepAuthenticator extends BaseAuthenticator {
      * Restores the local session from cookies, if one exists
      * @param {SessionAuthenticatedData} data
      */
-    restore(data: SessionAuthenticatedData) {
-        if (!isEmpty(data.access_token)) {
+    restore(data: PepSecureAuthenticatedData) {
+        if (!isEmpty(data.SessionId)) {
             return resolve(data);
         } else {
             return reject();

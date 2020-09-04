@@ -23,6 +23,16 @@ export interface ApiServerErrorResponse {
     errors: ApiServerError[];
 }
 
+export interface PepSecureAuthenticatedData {
+    HasSubscription: boolean;
+    IsValidLogon: boolean;
+    IsValidUserName: boolean;
+    ReasonId: number;
+    ReasonStr: string;
+    SessionId: string;
+    authenticator: string;
+}
+
 //@ts-ignore TODO we need to figure out how to allow DS.RESTAdapter with custom properties correctly
 export default class Application extends DS.RESTAdapter.extend(DataAdapterMixin, FastbootAdapter) {
     @service session!: SessionService;
@@ -68,8 +78,9 @@ export default class Application extends DS.RESTAdapter.extend(DataAdapterMixin,
     get headers() {
         const headers = { client_id: ENV.clientId } as any;
         if (this.session.isAuthenticated) {
-            const { access_token } = this.session.data!.authenticated;
-            headers['Authorization'] = `Bearer ${access_token}`;
+            const { SessionId } = (this.session.data!.authenticated as unknown) as PepSecureAuthenticatedData;
+            headers['client_session'] = SessionId;
+            // headers['Authorization'] = `Bearer ${access_token}`;
         }
 
         return headers;
