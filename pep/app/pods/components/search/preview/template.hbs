@@ -9,6 +9,7 @@
             @orientation="horizontal"
             @maxClientY={{84}}
             @onDragStart={{this.onDragStart}}
+            @onDragMove={{this.onDragMove}}
             @onDragEnd={{this.onDragEnd}}
         />
         <Scrollable
@@ -24,27 +25,27 @@
                     <div class="small text-muted mr-2">{{@result.documentRef}}</div>
                     <div class="d-flex flex-nowrap">
                         <Button::WithTooltip
-                            @type="link"
+                            @type={{if this.isFitMode "primary" "link"}}
                             @icon="expand-alt"
-                            @action={{fn this.setMode "fit"}}
-                            @tooltip={{t "search.preview.fit"}}
+                            @action={{fn this.setMode (if this.isFitMode "custom" "fit")}}
+                            @tooltip={{t (if this.isFitMode "search.preview.fit.off" "search.preview.fit.on")}}
                             @containerClass="mr-2"
-                            class="p-0"
+                            class="py-0 px-1"
                         />
                         <Button::WithTooltip
                             @type="link"
-                            @icon={{if this.showMaximize "window-maximize" "window-minimize"}}
-                            @action={{fn this.setMode (if this.showMaximize "maximized" "minimized")}}
-                            @tooltip={{t (if this.showMaximize "search.preview.maximize" "search.preview.minimize")}}
+                            @icon={{if this.isMinimizedMode "window-maximize" "window-minimize"}}
+                            @action={{fn this.setMode (if this.isMinimizedMode "maximized" "minimized")}}
+                            @tooltip={{t (if this.isMinimizedMode "search.preview.maximize" "search.preview.minimize")}}
                             @containerClass="mr-2"
-                            class="p-0"
+                            class="py-0 px-1"
                         />
                         <Button::WithTooltip
                             @icon="times"
                             @type="link"
                             @action={{this.close}}
                             @tooltip={{t "common.close"}}
-                            class="p-0"
+                            class="py-0 px-1"
                         />
                     </div>
                 </div>

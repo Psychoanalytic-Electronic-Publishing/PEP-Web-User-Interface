@@ -10,7 +10,7 @@ import AuthService from 'pep/services/auth';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import Document from 'pep/pods/document/model';
 
-type SearchPreviewMode = 'minimized' | 'maximized' | 'fit';
+export type SearchPreviewMode = 'minimized' | 'maximized' | 'fit' | 'custom';
 
 interface SearchPreviewArgs {
     mode: SearchPreviewMode;
@@ -30,17 +30,26 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
     innerElement: HTMLElement | null = null;
     scrollableElement: HTMLElement | null = null;
     minFitHeight: number = 40;
+    startingDragHeight: number = 0;
 
     get mode() {
         return this.args.mode || 'fit';
     }
 
-    get showMaximize() {
-        return this.mode === 'minimized' || this.mode === 'fit';
+    get isFitMode() {
+        return this.mode === 'fit';
+    }
+
+    get isCustomMode() {
+        return this.mode === 'custom';
+    }
+
+    get isMinimizedMode() {
+        return this.mode === 'minimized';
     }
 
     get styles() {
-        return this.mode === 'fit' && this.adjustedFitHeight && this.args.result
+        return (this.isFitMode || this.isCustomMode) && this.adjustedFitHeight && this.args.result
             ? htmlSafe(`height: ${this.adjustedFitHeight}px;`)
             : null;
     }
@@ -82,7 +91,9 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
      */
     @action
     onResultUpdate() {
-        scheduleOnce('afterRender', this, this.updateFitHeight);
+        if (this.isFitMode) {
+            scheduleOnce('afterRender', this, this.updateFitHeight);
+        }
     }
 
     /**
@@ -123,12 +134,21 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
      */
     @action
     onDragStart() {
-        this.isDragResizing = true;
-
-        if (this.mode !== 'fit' && this.scrollableElement) {
+        if (!this.isCustomMode && this.scrollableElement) {
             this.fitHeight = this.scrollableElement.offsetHeight;
-            this.args.setMode('fit');
+            this.args.setMode('custom');
         }
+
+        this.startingDragHeight = this.fitHeight;
+        this.isDragResizing = true;
+    }
+
+    /**
+     * While drag resizing, resizes the pane to match the current size
+     */
+    @action
+    onDragMove(position: number) {
+        this.fitHeight = Math.max(this.minFitHeight, this.startingDragHeight - position);
     }
 
     /**
@@ -137,11 +157,12 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
      */
     @action
     onDragEnd(position: number) {
-        if (this.mode !== 'fit') {
-            this.args.setMode('fit');
+        if (!this.isCustomMode) {
+            this.args.setMode('custom');
         }
 
-        this.fitHeight = Math.max(this.minFitHeight, this.fitHeight - position);
+        this.fitHeight = Math.max(this.minFitHeight, this.startingDragHeight - position);
+        this.startingDragHeight = 0;
         next(this, () => (this.isDragResizing = false));
     }
 }

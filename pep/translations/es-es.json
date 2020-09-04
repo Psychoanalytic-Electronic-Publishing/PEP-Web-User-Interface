@@ -135,9 +135,12 @@
             }
         },
         "preview": {
-            "fit": "Expand to fit",
             "maximize": "Maximize",
             "minimize": "Minimize",
+            "fit": {
+                "on": "Enable resize to fit",
+                "off": "Disable resize to fit"
+            },
             "read": "Read",
             "mustBeLoggedIn": "You must be logged in to read or download this document.",
             "login": "Click here to login",

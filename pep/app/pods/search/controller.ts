@@ -28,6 +28,7 @@ import Document from 'pep/pods/document/model';
 import ScrollableService from 'pep/services/scrollable';
 import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
 import { SearchMetadata } from 'pep/api';
+import { SearchPreviewMode } from 'pep/pods/components/search/preview/component';
 
 export default class Search extends Controller {
     @service ajax!: AjaxService;
@@ -68,7 +69,7 @@ export default class Search extends Controller {
     @tracked resultsMeta: SearchMetadata | null = null;
 
     @tracked previewedResult: Document | null = null;
-    @tracked previewMode = 'fit';
+    @tracked previewMode: SearchPreviewMode = 'minimized';
     @tracked containerMaxHeight = 0;
 
     //workaround for bug w/array-based query param values
@@ -410,7 +411,6 @@ export default class Search extends Controller {
     @action
     closeResultPreview() {
         this.previewedResult = null;
-        this.previewMode = 'fit';
     }
 
     /**
@@ -418,7 +418,7 @@ export default class Search extends Controller {
      * @param {String} mode
      */
     @action
-    setPreviewMode(mode: string) {
+    setPreviewMode(mode: SearchPreviewMode) {
         this.previewMode = mode;
     }
 
