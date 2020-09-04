@@ -68,9 +68,7 @@ export default class Document extends ApplicationSerializerMixin(DS.RESTSerializ
     ) {
         const modelKey = camelize(primaryModelClass.modelName);
         if (payload?.documents) {
-            payload.documentList.responseSet = payload.documentList.responseSet.map((item: any) =>
-                getSimilarityMatch(item)
-            );
+            payload.documents.responseSet = payload.documents.responseSet.map((item: any) => getSimilarityMatch(item));
             payload.meta = payload.documents.responseInfo;
             payload[modelKey] = payload.documents.responseSet?.[0];
             delete payload.documents;

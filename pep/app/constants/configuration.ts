@@ -35,10 +35,10 @@ export interface BaseConfiguration {
         };
     };
     home: {
-        expertPick: {
+        expertPicks: {
             articleId: string;
             imageId: string;
-        };
+        }[];
     };
 }
 
@@ -113,10 +113,16 @@ export const DEFAULT_BASE_CONFIGURATION: BaseConfiguration = {
         }
     },
     home: {
-        expertPick: {
-            articleId: 'CJP.024A.0233A',
-            imageId: 'CJP.024-025.0233A.FIG001'
-        }
+        expertPicks: [
+            {
+                articleId: 'CJP.024A.0233A',
+                imageId: 'CJP.024-025.0233A.FIG001'
+            },
+            {
+                articleId: 'IJP.027.0099A',
+                imageId: 'CJP.024-025.0233A.FIG001'
+            }
+        ]
     }
 };
 

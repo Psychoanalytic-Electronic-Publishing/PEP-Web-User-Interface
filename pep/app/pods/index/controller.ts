@@ -20,7 +20,7 @@ export default class Index extends Controller {
     }
 
     get expertPick() {
-        return this.configuration.base.home.expertPick;
+        return this.configuration.base.home.expertPicks[0];
     }
 
     /**
