@@ -62,6 +62,7 @@ export interface ContentConfiguration {
             types: {
                 [K in SearchTermId]?: {
                     prompt?: string;
+                    help?: string;
                 };
             };
         };
@@ -121,34 +122,47 @@ export const DEFAULT_CONTENT_CONFIGURATION: ContentConfiguration = {
         terms: {
             types: {
                 everywhere: {
-                    prompt: 'Terms or phrase'
+                    prompt: 'Terms or phrase',
+                    help:
+                        'Searches the entire document. Use quotes to match exact phrases (e.g. "loving memory") (TODO final content)'
                 },
                 author: {
-                    prompt: "Author's name"
+                    prompt: "Author's name",
+                    help: 'Search by an author\'s name. You can use a * wildcard for partial entries (e.g. "Johan*")'
                 },
                 title: {
-                    prompt: 'Document title'
+                    prompt: 'Document title',
+                    help: 'The title of the document. (TODO final content)'
                 },
                 dream: {
-                    prompt: 'Terms or phrase'
+                    prompt: 'Terms or phrase',
+                    help: 'Find documents by dream (TODO final content)'
                 },
                 quote: {
-                    prompt: 'Terms or phrase'
+                    prompt: 'Terms or phrase',
+                    help: 'Find documents by quotes (TODO final content)'
                 },
                 reference: {
-                    prompt: 'Terms or phrase'
+                    prompt: 'Terms or phrase',
+                    help: 'Find documents by reference (TODO final content)'
                 },
                 dialog: {
-                    prompt: 'Terms or phrase'
+                    prompt: 'Terms or phrase',
+                    help: 'Find documents by dialog (TODO final content)'
                 },
                 article: {
-                    prompt: 'Terms or phrase'
+                    prompt: 'Terms or phrase',
+                    help: 'Find document by article (TODO final content)'
                 },
                 startYear: {
-                    prompt: 'Publication year'
+                    prompt: 'Publication year',
+                    help:
+                        'Find documents published on or after a year, or in this range of years (e.g, "1999", "1999-2010", ">1999", "<1999")'
                 },
                 endYear: {
-                    prompt: 'Publication year'
+                    prompt: 'Publication year',
+                    help:
+                        'Find documents published on or after a year, or in this range of years (e.g, "1999", "1999-2010", ">1999", "<1999")'
                 }
             }
         }

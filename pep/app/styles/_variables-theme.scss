@@ -10,6 +10,8 @@ $color-progress-spinner-loading1: rgba(0, 0, 0, 0.25) !default;
 $color-progress-spinner-loading2: saturate(lighten($color-brand-primary, 35%), 45%) !default;
 $color-mask-background: rgba(#000, 0.4) !default;
 $color-focus-shadow: rgba(#426082, 0.25) !default;
+$color-muted-select-background: #f5f5f5;
+$color-muted-select-text: #666666;
 // ---------------------------
 // Bootstrap overrides
 // ---------------------------

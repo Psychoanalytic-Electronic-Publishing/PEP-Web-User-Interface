@@ -2,24 +2,42 @@
     &-term-control {
         position: relative;
 
-        &-text {
-            padding-right: 6.75rem;
+        &-help {
+            position: absolute;
+            z-index: 2;
+            top: -0.4rem;
+            left: -0.4rem;
+            height: 1.1rem;
+            width: 1.1rem;
+            line-height: 1rem;
+            padding: 0.05rem;
+            background: $white;
+            color: darken($input-border-color, 10%);
+            border-radius: 50%;
         }
 
-        &-type {
-            position: absolute;
-            top: 4px;
-            right: 4px;
-            height: auto;
-            width: 6.5rem;
-            padding-left: 0.5rem;
-            line-height: 1.25;
-            font-size: 0.75rem;
-            border: 0;
-            background-color: #f5f5f5;
-            color: #666;
-            overflow: hidden;
-            text-overflow: ellipsis;
+        &-field {
+            position: relative;
+
+            &-text {
+                padding-right: 6.75rem;
+            }
+
+            &-type {
+                position: absolute;
+                top: 4px;
+                right: 4px;
+                height: auto;
+                width: 6.5rem;
+                padding-left: 0.5rem;
+                line-height: 1.25;
+                font-size: 0.75rem;
+                border: 0;
+                background-color: $color-muted-select-background;
+                color: $color-muted-select-text;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
         }
     }
 }
