@@ -40,12 +40,16 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
         return this.mode === 'fit';
     }
 
+    get isCustomMode() {
+        return this.mode === 'custom';
+    }
+
     get isMinimizedMode() {
         return this.mode === 'minimized';
     }
 
     get styles() {
-        return (this.mode === 'fit' || this.mode === 'custom') && this.adjustedFitHeight && this.args.result
+        return (this.isFitMode || this.isCustomMode) && this.adjustedFitHeight && this.args.result
             ? htmlSafe(`height: ${this.adjustedFitHeight}px;`)
             : null;
     }
@@ -87,7 +91,7 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
      */
     @action
     onResultUpdate() {
-        if (this.mode === 'fit') {
+        if (this.isFitMode) {
             scheduleOnce('afterRender', this, this.updateFitHeight);
         }
     }
@@ -130,7 +134,7 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
      */
     @action
     onDragStart() {
-        if (this.mode !== 'custom' && this.scrollableElement) {
+        if (!this.isCustomMode && this.scrollableElement) {
             this.fitHeight = this.scrollableElement.offsetHeight;
             this.args.setMode('custom');
         }
@@ -153,7 +157,7 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
      */
     @action
     onDragEnd(position: number) {
-        if (this.mode !== 'custom') {
+        if (!this.isCustomMode) {
             this.args.setMode('custom');
         }
 
