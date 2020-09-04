@@ -176,15 +176,22 @@ export function hasSearchQuery(
  * @export
  * @param {SearchFacetCounts} counts
  * @param {number} [range=10]
+ * @param {string} [separator='-']
+ * @param {string} [postfix='']
  * @returns
  */
-export function groupCountsByRange(counts: SearchFacetCounts, range: number = 10) {
+export function groupCountsByRange(
+    counts: SearchFacetCounts,
+    range: number = 10,
+    separator: string = '-',
+    postfix: string = ''
+) {
     const values = Object.keys(counts).map((id) => Number(id));
     const countsByRanges: SearchFacetCounts = {};
     values.forEach((v) => {
         const start = Math.floor(v / range) * range;
         const end = start + 9;
-        const key = `${start} - ${end}`;
+        const key = `${start}${separator}${end}${postfix}`;
         countsByRanges[key] = counts[`${v}`] + (countsByRanges[key] ? countsByRanges[key] : 0);
     });
     return countsByRanges;

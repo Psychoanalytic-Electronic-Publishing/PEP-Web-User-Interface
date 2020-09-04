@@ -256,7 +256,7 @@ export const SEARCH_TYPES: SearchTermType[] = [
 export const DEFAULT_SEARCH_FACETS: FacetId[] = [
     FacetId.ART_YEAR_INT,
     FacetId.ART_VIEWS_LAST12MOS,
-    FacetId.ART_CITED_ALL,
+    FacetId.ART_CITED_5,
     FacetId.ART_LANG,
     FacetId.ART_TYPE,
     FacetId.ART_SOURCETYPE,
@@ -460,13 +460,20 @@ export const SEARCH_FACET_DECADE: SearchFacetType = {
 };
 
 export const SEARCH_FACET_CITATION: SearchFacetType = {
-    id: FacetId.ART_CITED_ALL,
+    id: FacetId.ART_CITED_5,
     param: 'citecount',
     paramSeparator: ' OR ',
-    label: 'search.facets.art_cited_all.label',
+    label: 'search.facets.art_cited_5.label',
     dynamicValues: true,
     values: [],
-    formatCounts: (counts: SearchFacetCounts) => groupCountsByRange(counts, 10)
+    formatCounts: (counts: SearchFacetCounts) => groupCountsByRange(counts, 10, ' TO ', ' IN 5'),
+    formatOption: (opt: string, intl: IntlService) =>
+        intl.t('search.facets.art_cited_5.option', {
+            range: opt
+                .replace('TO', '-')
+                .replace('IN 5', '')
+                .trim()
+        })
 };
 
 export const SEARCH_FACET_VIEW: SearchFacetType = {
@@ -476,7 +483,9 @@ export const SEARCH_FACET_VIEW: SearchFacetType = {
     label: 'search.facets.art_views_last12mos.label',
     dynamicValues: true,
     values: [],
-    formatCounts: (counts: SearchFacetCounts) => groupCountsByRange(counts, 10)
+    formatCounts: (counts: SearchFacetCounts) => groupCountsByRange(counts, 10, ' TO '),
+    formatOption: (opt: string, intl: IntlService) =>
+        intl.t('search.facets.art_views_last12mos.option', { range: opt.replace('TO', '-').trim() })
 };
 
 export const SEARCH_FACETS = [

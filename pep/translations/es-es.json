@@ -250,11 +250,13 @@
                 "label": "Decade",
                 "option": "{year}'s"
             },
-            "art_cited_all": {
-                "label": "Citation Count"
+            "art_cited_5": {
+                "label": "Citation Count",
+                "option": "{range} citations"
             },
             "art_views_last12mos": {
-                "label": "View Count"
+                "label": "View Count",
+                "option": "{range} views"
             }
         },
         "viewPeriod": {
