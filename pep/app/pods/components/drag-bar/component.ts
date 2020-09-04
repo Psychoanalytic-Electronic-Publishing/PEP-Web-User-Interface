@@ -44,7 +44,7 @@ export default class DragBar extends Component<DragBarArgs> {
 
     /**
      * When true, the drag bar repositions itself independently while dragging
-     * and assumes the parent element is attached to is remaining stationary
+     * and assumes the parent element it is attached to is remaining stationary
      * @readonly
      * @returns {boolean}
      */
