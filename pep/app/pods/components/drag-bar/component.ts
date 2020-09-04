@@ -11,6 +11,7 @@ import { NAV_BAR_HEIGHT, FOOT_BAR_HEIGHT } from 'pep/constants/dimensions';
 
 interface DragBarArgs {
     orientation?: 'vertical' | 'horizontal';
+    detachedDrag?: boolean;
     minClientY?: number;
     maxClientY?: number;
     minClientX?: number;
@@ -19,6 +20,7 @@ interface DragBarArgs {
         offset: ElementOffset,
         event: HTMLElementMouseEvent<HTMLDivElement> | HTMLElementTouchEvent<HTMLDivElement>
     ) => void;
+    onDragMove?: (currentPosition: number, event: MouseEvent | TouchEvent) => void;
     onDragEnd?: (endPosition: number, event: MouseEvent | TouchEvent) => void;
 }
 
@@ -38,6 +40,16 @@ export default class DragBar extends Component<DragBarArgs> {
      */
     get orientation() {
         return this.args.orientation ?? 'horizontal';
+    }
+
+    /**
+     * When true, the drag bar repositions itself independently while dragging
+     * and assumes the parent element is attached to is remaining stationary
+     * @readonly
+     * @returns {boolean}
+     */
+    get detachedDrag() {
+        return this.args.detachedDrag ?? false;
     }
 
     /**
@@ -95,7 +107,9 @@ export default class DragBar extends Component<DragBarArgs> {
      */
     get dragBarStyles() {
         const prop = this.orientation === 'horizontal' ? 'top' : 'left';
-        return this.dragBarPosition !== null ? htmlSafe(`${prop}: ${this.dragBarPosition}px;`) : null;
+        return this.args.detachedDrag && this.dragBarPosition !== null
+            ? htmlSafe(`${prop}: ${this.dragBarPosition}px;`)
+            : null;
     }
 
     /**
@@ -144,6 +158,8 @@ export default class DragBar extends Component<DragBarArgs> {
             const xOffset = Math.max(minX, Math.min(maxX, eventOffset.left));
             this.dragBarPosition = xOffset - (this.dragBarOffset?.left ?? 0);
         }
+
+        this.args.onDragMove?.(this.dragBarPosition, event);
     }
 
     /**
@@ -158,14 +174,22 @@ export default class DragBar extends Component<DragBarArgs> {
         document.removeEventListener('touchend', this.onDragStop);
         const eventOffset = getEventOffset(event);
         const lastDragPos = this.dragBarPosition ?? 0;
-        const endPosition =
-            this.orientation === 'horizontal'
-                ? eventOffset.top
-                    ? eventOffset.top - (this.dragBarOffset?.top ?? 0)
-                    : lastDragPos
-                : eventOffset.top
-                ? eventOffset.left - (this.dragBarOffset?.left ?? 0)
+        let endPosition;
+
+        if (this.orientation === 'horizontal') {
+            const minY = this.minClientY;
+            const maxY = document.body.offsetHeight - this.barThickness - this.maxClientY;
+            endPosition = eventOffset.top
+                ? Math.max(minY, Math.min(maxY, eventOffset.top)) - (this.dragBarOffset?.top ?? 0)
                 : lastDragPos;
+        } else {
+            const minX = this.minClientX;
+            const maxX = document.body.offsetWidth - this.barThickness - this.maxClientX;
+            endPosition = eventOffset.left
+                ? Math.max(minX, Math.min(maxX, eventOffset.left)) - (this.dragBarOffset?.left ?? 0)
+                : lastDragPos;
+        }
+
         this.isDragging = false;
         this.dragBarPosition = null;
         this.dragBarOffset = null;

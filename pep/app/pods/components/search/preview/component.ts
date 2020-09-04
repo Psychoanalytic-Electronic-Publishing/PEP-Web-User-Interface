@@ -30,13 +30,18 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
     innerElement: HTMLElement | null = null;
     scrollableElement: HTMLElement | null = null;
     minFitHeight: number = 40;
+    startingDragHeight: number = 0;
 
     get mode() {
         return this.args.mode || 'fit';
     }
 
-    get showMaximize() {
-        return this.mode === 'minimized' || this.mode === 'fit';
+    get isFitMode() {
+        return this.mode === 'fit';
+    }
+
+    get isMinimizedMode() {
+        return this.mode === 'minimized';
     }
 
     get styles() {
@@ -125,12 +130,21 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
      */
     @action
     onDragStart() {
-        this.isDragResizing = true;
-
         if (this.mode !== 'custom' && this.scrollableElement) {
             this.fitHeight = this.scrollableElement.offsetHeight;
             this.args.setMode('custom');
         }
+
+        this.startingDragHeight = this.fitHeight;
+        this.isDragResizing = true;
+    }
+
+    /**
+     * While drag resizing, resizes the pane to match the current size
+     */
+    @action
+    onDragMove(position: number) {
+        this.fitHeight = Math.max(this.minFitHeight, this.startingDragHeight - position);
     }
 
     /**
@@ -143,7 +157,8 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
             this.args.setMode('custom');
         }
 
-        this.fitHeight = Math.max(this.minFitHeight, this.fitHeight - position);
+        this.fitHeight = Math.max(this.minFitHeight, this.startingDragHeight - position);
+        this.startingDragHeight = 0;
         next(this, () => (this.isDragResizing = false));
     }
 }
