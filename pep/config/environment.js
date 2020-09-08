@@ -66,11 +66,15 @@ module.exports = function(environment) {
 
         //deployment environment-specific variables
         buildVersion: process.env.BUILD_VERSION,
+        userPreferencesVersion: process.env.USER_PREFERENCES_VERSION,
         apiBaseUrl: process.env.API_BASE_URL,
         apiNamespace: process.env.API_NAMESPACE,
         apiDataNamespace: process.env.API_DATA_NAMESPACE,
         apiAdminNamespace: process.env.API_ADMIN_NAMESPACE,
-        clientId: process.env.CLIENT_ID
+        clientId: process.env.CLIENT_ID,
+        cookieDomain: process.env.COOKIE_DOMAIN,
+        cookieSecure: process.env.COOKIE_SECURE,
+        cookieSameSite: process.env.COOKIE_SAME_SITE
     };
 
     if (environment === 'development') {

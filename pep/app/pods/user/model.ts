@@ -1,10 +1,12 @@
 import DS from 'ember-data';
 import attr from 'ember-data/attr';
+import { UserPreferences } from 'pep/constants/preferences';
 
 export default class User extends DS.Model {
     @attr('string') firstName!: string;
     @attr('string') lastName!: string;
     @attr('string') institutionBrandLogoUrl!: string;
+    @attr() preferences!: UserPreferences;
     @attr('string') username!: string;
 
     get fullName() {

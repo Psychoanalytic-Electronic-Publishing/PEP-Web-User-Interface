@@ -2,12 +2,15 @@ import Service, { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import IntlService from 'ember-intl/services/intl';
 
-import { LanguageCode } from 'pep/constants/lang';
 import ConfigurationService from 'pep/services/configuration';
+import CurrentUserService from 'pep/services/current-user';
+import { LanguageCode, LANG_EN_US } from 'pep/constants/lang';
+import { PreferenceKey } from 'pep/constants/preferences';
 
 export default class LangService extends Service {
     @service intl!: IntlService;
     @service configuration!: ConfigurationService;
+    @service currentUser!: CurrentUserService;
 
     @tracked currentLanguage: LanguageCode = LanguageCode.enUS;
 
@@ -15,8 +18,8 @@ export default class LangService extends Service {
      * Initialize the app with the user's current language
      */
     setup() {
-        //TODO pull and set currentLanguage from unauthed cookies and/or user session
-        //(and possibly allow setting via ?lang={code} app-level query param
+        // TODO eventually possibly allow setting via ?lang={code} app-level query param
+        this.currentLanguage = this.currentUser.preferences?.lang ?? LANG_EN_US.code;
         this.intl.setLocale(this.currentLanguage);
     }
 
@@ -26,9 +29,9 @@ export default class LangService extends Service {
      * @returns {Promise<void>}
      */
     changeLanguage(lang: LanguageCode) {
-        //TODO update local cookie/user record (if there is one/user is logged in)
         this.currentLanguage = lang;
         this.intl.setLocale(lang);
+        this.currentUser.updatePrefs({ [PreferenceKey.LANG]: lang });
         return this.configuration.setup();
     }
 }

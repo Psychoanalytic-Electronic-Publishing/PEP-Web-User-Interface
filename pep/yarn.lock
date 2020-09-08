@@ -7663,7 +7663,7 @@ ember-content-placeholders@^1.0.0:
     ember-cli-babel "^6.6.0"
     ember-cli-htmlbars "^2.0.1"
 
-ember-cookies@^0.5.0:
+ember-cookies@0.5.2, ember-cookies@^0.5.0:
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/ember-cookies/-/ember-cookies-0.5.2.tgz#06e33463f2f83254fefaf224cc944dec3fb9d3ba"
   integrity sha512-nZ7oG97kBcO9UHjO95ryABpnVx62Bhxo7lIsBJNmWvFXleILm9DGueiAynzXxuYWWPuKIeeSbYakrS1869tNTw==

@@ -44,6 +44,7 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
      * @returns {Promise<void>}
      */
     appSetup() {
+        this.currentUser.setup();
         this.theme.setup();
         this.lang.setup();
         return this.configuration.setup();
