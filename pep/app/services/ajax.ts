@@ -8,6 +8,7 @@ import { reject } from 'rsvp';
 import ENV from 'pep/config/environment';
 import { appendTrailingSlash } from 'pep/utils/url';
 import { guard } from 'pep/utils/types';
+import { PepSecureAuthenticatedData } from 'pep/pods/application/adapter';
 
 export default class AjaxService extends Service {
     @service session!: SessionService;
@@ -19,14 +20,14 @@ export default class AjaxService extends Service {
      * Add the oauth token authorization header to all requests
      * @returns {Object}
      */
-    @computed('session.{isAuthenticated,data.authenticated.access_token}')
+    @computed('session.{isAuthenticated,data.authenticated.SessionId}')
     get authorizationHeaders() {
         const headers = {} as any;
         // api auth token is sent in cookies
-        // if (this.session.isAuthenticated) {
-        //     const { access_token } = this.session.data!.authenticated;
-        //     headers['Authorization'] = `Bearer ${access_token}`;
-        // }
+        if (this.session.isAuthenticated) {
+            const { SessionId } = (this.session.data!.authenticated as unknown) as PepSecureAuthenticatedData;
+            headers['client-session'] = SessionId;
+        }
         return headers;
     }
 
@@ -38,7 +39,7 @@ export default class AjaxService extends Service {
     get headers() {
         const baseHeaders = {
             'Content-Type': 'application/vnd.api+json',
-            client_id: ENV.clientId
+            'client-id': ENV.clientId
         };
         const headers = assign(baseHeaders, this.authorizationHeaders);
         return headers;

@@ -76,11 +76,10 @@ export default class Application extends DS.RESTAdapter.extend(DataAdapterMixin,
      * @returns Object
      */
     get headers() {
-        const headers = { client_id: ENV.clientId } as any;
+        const headers = { 'client-id': ENV.clientId } as any;
         if (this.session.isAuthenticated) {
             const { SessionId } = (this.session.data!.authenticated as unknown) as PepSecureAuthenticatedData;
-            headers['client_session'] = SessionId;
-            // headers['Authorization'] = `Bearer ${access_token}`;
+            headers['client-session'] = SessionId;
         }
 
         return headers;
