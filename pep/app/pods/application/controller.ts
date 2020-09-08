@@ -43,6 +43,8 @@ export default class Application extends Controller {
     @tracked rightSidebarWidgets = this.configuration.base.global.cards.right;
     @tracked leftSidebarWidgets = this.configuration.base.global.cards.left;
 
+    @tracked sidebarData = {};
+
     /**
      * Submits the application/nav sidebar's search form and transitions the
      * user to the search results page to fetch and display the results

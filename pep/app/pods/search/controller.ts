@@ -1,5 +1,5 @@
 import Controller from '@ember/controller';
-import { action, setProperties } from '@ember/object';
+import { action, setProperties, computed } from '@ember/object';
 import { isEmpty } from '@ember/utils';
 import { tracked } from '@glimmer/tracking';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
@@ -28,6 +28,7 @@ import Document from 'pep/pods/document/model';
 import ScrollableService from 'pep/services/scrollable';
 import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
 import { SearchMetadata } from 'pep/api';
+import { WIDGET } from 'pep/constants/sidebar';
 
 export default class Search extends Controller {
     @service ajax!: AjaxService;
@@ -68,8 +69,15 @@ export default class Search extends Controller {
     @tracked resultsMeta: SearchMetadata | null = null;
 
     @tracked previewedResult: Document | null = null;
+    @tracked documentWithSimilar?: Document;
     @tracked previewMode = 'fit';
     @tracked containerMaxHeight = 0;
+
+    get sidebarData() {
+        return {
+            [WIDGET.MORE_LIKE_THESE]: this.previewedResult
+        };
+    }
 
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
@@ -137,7 +145,6 @@ export default class Search extends Controller {
             this.viewedCount,
             this.viewedPeriod
         );
-        searchParams.similarcount = 2;
         return { ...params, ...searchParams };
     }
 
@@ -400,7 +407,7 @@ export default class Search extends Controller {
      * @param {Event} event
      */
     @action
-    openResultPreview(result: Document, event: Event) {
+    async openResultPreview(result: Document, event: Event) {
         event.preventDefault();
         this.previewedResult = result;
     }

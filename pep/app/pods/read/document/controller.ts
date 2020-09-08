@@ -19,7 +19,7 @@ import {
     SEARCH_DEFAULT_TERMS
 } from 'pep/constants/search';
 import Document from 'pep/pods/document/model';
-import { WidgetData } from 'pep/constants/sidebar';
+import { WidgetData, WIDGET } from 'pep/constants/sidebar';
 
 export default class ReadDocument extends Controller {
     @service session!: SessionService;
@@ -53,7 +53,12 @@ export default class ReadDocument extends Controller {
     @tracked _searchTerms: string | null = JSON.stringify(SEARCH_DEFAULT_TERMS);
     @tracked paginator!: Pagination<Document>;
 
-    @tracked sidebarData: WidgetData = {};
+    get sidebarData() {
+        return {
+            [WIDGET.RELATED_DOCUMENTS]: this.model,
+            [WIDGET.MORE_LIKE_THESE]: this.model
+        };
+    }
 
     get isLoadingRoute(): boolean {
         return /loading$/.test(this.router.currentRouteName);

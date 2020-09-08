@@ -3,7 +3,7 @@ import Transition from '@ember/routing/-private/transition';
 import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hooks/pagination';
 import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
 
-import { PageNav } from 'pep/mixins/page-layout';
+import { PageNav, PageSidebar } from 'pep/mixins/page-layout';
 import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
 import Document from 'pep/pods/document/model';
 import ReadDocumentController from 'pep/pods/read/document/controller';
@@ -19,7 +19,7 @@ export interface ReadDocumentParams {
     _facets?: string;
 }
 
-export default class ReadDocument extends PageNav(Route) {
+export default class ReadDocument extends PageNav(PageSidebar(Route)) {
     navController = 'read/document';
     sidebarController = 'read/document';
     searchResults?: RecordArrayWithMeta<Document>;

@@ -119,6 +119,9 @@
                                     <li class="mb-4">
                                         <a href="" {{on "click" (fn this.openResultPreview result)}}>
                                             {{result.documentRef}}
+                                            {{#if result.relatedrx}}
+                                                <FaIcon @icon="books"/>
+                                            {{/if}}
                                         </a>
                                         {{#if result.kwicList}}
                                             <ul class="small">

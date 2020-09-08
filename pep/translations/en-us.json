@@ -292,7 +292,8 @@
                 "view": "View complete glossary"
             },
             "moreLikeThese": {
-                "title": "More like these"
+                "title": "More like these",
+                "confidence": "Similarity Confidence: {number}"
             },
             "mostCited": {
                 "title": "Most cited"

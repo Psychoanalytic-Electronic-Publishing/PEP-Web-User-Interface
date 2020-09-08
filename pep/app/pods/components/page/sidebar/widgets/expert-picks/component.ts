@@ -60,5 +60,3 @@ export default class PageSidebarWidgetsExpertPicks extends Component<PageSidebar
         this.loadResults();
     }
 }
-
-// art_id:(IJP.076.0315A or AIM.062.0193A or PSC.055.0145A or REVAPA.002.0274A)

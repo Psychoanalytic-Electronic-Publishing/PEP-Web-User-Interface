@@ -8,7 +8,7 @@ import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hoo
 import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
 import copy from 'lodash.clonedeep';
 
-import { PageNav } from 'pep/mixins/page-layout';
+import { PageNav, PageSidebar } from 'pep/mixins/page-layout';
 import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
 import SidebarService from 'pep/services/sidebar';
 import SearchController from 'pep/pods/search/controller';
@@ -26,11 +26,12 @@ export interface SearchParams {
     _facets?: string;
 }
 
-export default class Search extends PageNav(Route) {
+export default class Search extends PageNav(PageSidebar(Route)) {
     @service sidebar!: SidebarService;
     @service fastboot!: FastbootService;
 
     navController = 'search';
+    sidebarController = 'search';
     resultsMeta: SearchMetadata | null = null;
 
     queryParams = {

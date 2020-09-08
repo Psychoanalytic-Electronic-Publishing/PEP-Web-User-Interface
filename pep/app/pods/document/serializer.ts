@@ -7,20 +7,30 @@ import ApplicationSerializerMixin from 'pep/mixins/application-serializer';
 const getSimilarityMatch = (item: any) => {
     const document = item;
     const similarDocumentItems = new Map(Object.entries(document?.similarityMatch?.similarDocs ?? {}));
-    const similarDocuments = similarDocumentItems.get(document.documentID) as [];
+    const similarDocuments = (similarDocumentItems.get(document.documentID) as []) ?? [];
 
-    return {
-        ...document,
-        similarityMatch: {
+    const documentToReturn = { ...document };
+    if (similarDocuments.length) {
+        documentToReturn.similarityMatch = {
             id: document.documentID,
             type: 'similarity-match',
+            similarMaxScore: document?.similarityMatch?.similarMaxScore,
+            similarNumFound: document?.similarityMatch?.similarNumFound,
             similarDocuments
-        }
-    };
+        };
+    } else {
+        documentToReturn.similarityMatch = null;
+    }
+
+    return documentToReturn;
 };
 
-export default class Document extends ApplicationSerializerMixin(DS.RESTSerializer) {
+export default class Document extends ApplicationSerializerMixin(DS.RESTSerializer.extend(DS.EmbeddedRecordsMixin)) {
     primaryKey = 'documentID';
+
+    attrs = {
+        similarityMatch: { embedded: 'always' }
+    };
 
     /**
      * The API returns result sets in the JSON under documentList.responseSet
@@ -43,6 +53,11 @@ export default class Document extends ApplicationSerializerMixin(DS.RESTSerializ
             payload.documentList.responseSet = payload.documentList.responseSet.map((item: any) =>
                 getSimilarityMatch(item)
             );
+            payload.similarityMatch =
+                payload.documentList.responseSet
+                    .filter((item: any) => item?.similarityMatch)
+                    .map((item: any) => item.similarityMatch) ?? [];
+
             payload.meta = payload.documentList.responseInfo;
             payload[modelKey] = payload.documentList.responseSet;
             delete payload.documentList;
@@ -69,6 +84,14 @@ export default class Document extends ApplicationSerializerMixin(DS.RESTSerializ
         const modelKey = camelize(primaryModelClass.modelName);
         if (payload?.documents) {
             payload.documents.responseSet = payload.documents.responseSet.map((item: any) => getSimilarityMatch(item));
+            payload.similarityMatch =
+                payload.documents.responseSet
+                    .filter((item: any) => item?.similarityMatch)
+                    .map((item: any) => item.similarityMatch) ?? [];
+            payload[`_${modelKey}`] = [].concat.apply(
+                [],
+                payload.similarityMatch.map((item: any) => item.similarDocuments)
+            );
             payload.meta = payload.documents.responseInfo;
             payload[modelKey] = payload.documents.responseSet?.[0];
             delete payload.documents;
