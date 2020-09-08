@@ -1,11 +1,10 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import copy from 'lodash.clonedeep';
 
 import Application from 'pep/pods/application/controller';
 import IndexController from 'pep/pods/index/controller';
 import ConfigurationService from 'pep/services/configuration';
-import { SEARCH_DEFAULT_VIEW_PERIOD, SEARCH_DEFAULT_TERMS } from 'pep/constants/search';
+import { SEARCH_DEFAULT_VIEW_PERIOD } from 'pep/constants/search';
 
 export default class Index extends Route {
     @service configuration!: ConfigurationService;
@@ -24,14 +23,16 @@ export default class Index extends Route {
      */
     setupController(controller: IndexController, model: object) {
         super.setupController(controller, model);
+        const cfg = this.configuration.base.search;
         const appController = this.controllerFor('application') as Application;
         appController.smartSearchTerm = '';
         appController.matchSynonyms = false;
         appController.citedCount = '';
         appController.viewedCount = '';
         appController.viewedPeriod = SEARCH_DEFAULT_VIEW_PERIOD;
-        appController.isLimitOpen = false;
-        // create a copy of the default search terms objects so they can be mutated
-        appController.searchTerms = copy(SEARCH_DEFAULT_TERMS);
+        // TODO use user's pref value for toggle state instead of default config, if one exists
+        appController.isLimitOpen = cfg.limitFields.isShown;
+        // TODO use user's pref value for default search terms instead of default config, if one exists
+        appController.searchTerms = cfg.terms.defaultFields.map((f) => ({ type: f, term: '' }));
     }
 }

@@ -6,18 +6,12 @@ import { tracked } from '@glimmer/tracking';
 import SessionService from 'ember-simple-auth/services/session';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import IntlService from 'ember-intl/services/intl';
-import copy from 'lodash.clonedeep';
+import Modal from '@gavant/ember-modals/services/modal';
 
-import {
-    SEARCH_TYPE_EVERYWHERE,
-    SearchTermValue,
-    ViewPeriod,
-    SEARCH_DEFAULT_VIEW_PERIOD,
-    SEARCH_DEFAULT_TERMS
-} from 'pep/constants/search';
+import { SEARCH_TYPE_EVERYWHERE, SearchTermValue, ViewPeriod, SEARCH_DEFAULT_VIEW_PERIOD } from 'pep/constants/search';
 import AjaxService from 'pep/services/ajax';
 import LoadingBarService from 'pep/services/loading-bar';
-import Modal from '@gavant/ember-modals/services/modal';
+import ConfigurationService from 'pep/services/configuration';
 import ENV from 'pep/config/environment';
 import { ServerStatus } from 'pep/api';
 
@@ -28,6 +22,7 @@ export default class Application extends Controller {
     @service notifications!: NotificationService;
     @service modal!: Modal;
     @service intl!: IntlService;
+    @service configuration!: ConfigurationService;
 
     @tracked isLimitOpen: boolean = false;
     @tracked smartSearchTerm: string = '';
@@ -35,8 +30,7 @@ export default class Application extends Controller {
     @tracked citedCount: string = '';
     @tracked viewedCount: string = '';
     @tracked viewedPeriod: ViewPeriod = ViewPeriod.PAST_WEEK;
-    // create a copy of the default search terms objects so they can be mutated
-    @tracked searchTerms: SearchTermValue[] = copy(SEARCH_DEFAULT_TERMS);
+    @tracked searchTerms: SearchTermValue[] = [];
 
     /**
      * Submits the application/nav sidebar's search form and transitions the
@@ -66,14 +60,16 @@ export default class Application extends Controller {
      */
     @action
     clearSearch() {
+        const cfg = this.configuration.base.search;
         this.smartSearchTerm = '';
         this.matchSynonyms = false;
         this.citedCount = '';
         this.viewedCount = '';
         this.viewedPeriod = ViewPeriod.PAST_WEEK;
-        this.isLimitOpen = false;
-        // create a copy of the default search terms objects so they can be mutated
-        this.searchTerms = copy(SEARCH_DEFAULT_TERMS);
+        // TODO use user's pref value for toggle state instead of default config, if one exists
+        this.isLimitOpen = cfg.limitFields.isShown;
+        // TODO use user's pref value for default search terms instead of default config, if one exists
+        this.searchTerms = cfg.terms.defaultFields.map((f) => ({ type: f, term: '' }));
     }
 
     /**

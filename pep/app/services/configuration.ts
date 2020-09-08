@@ -14,6 +14,7 @@ import {
     BASE_CONFIG_NAME,
     CONTENT_CONFIG_NAME
 } from 'pep/constants/configuration';
+import { SEARCH_DEFAULT_VIEW_PERIOD, SEARCH_DEFAULT_FACETS } from 'pep/constants/search';
 
 export default class ConfigurationService extends Service {
     @service store!: DS.Store;
@@ -30,6 +31,28 @@ export default class ConfigurationService extends Service {
      */
     get contentConfigName() {
         return `${CONTENT_CONFIG_NAME}-${this.lang.currentLanguage}`;
+    }
+
+    /**
+     * The default query param values for a "blank" search page, based on the
+     * current user prefs/admin configs. Can be used for <LinkTo>'s `@query` arg
+     * @readonly
+     * @returns {object}
+     */
+    get defaultSearchParams() {
+        // TODO use user's pref value for default search terms instead of default config, if one exists
+        const terms = this.base.search.terms.defaultFields.map((f) => ({ type: f, term: '' }));
+        return {
+            q: '',
+            matchSynonyms: false,
+            citedCount: '',
+            viewedCount: '',
+            viewedPeriod: SEARCH_DEFAULT_VIEW_PERIOD,
+            //json stringify is workaround for bug w/array-based query param values
+            //@see https://github.com/emberjs/ember.js/issues/18981
+            searchTerms: JSON.stringify(terms),
+            facets: JSON.stringify(SEARCH_DEFAULT_FACETS)
+        };
     }
 
     /**

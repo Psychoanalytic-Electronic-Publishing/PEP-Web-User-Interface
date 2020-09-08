@@ -18,6 +18,7 @@ import AuthService from 'pep/services/auth';
 import LangService from 'pep/services/lang';
 import ConfigurationService from 'pep/services/configuration';
 import { ApiServerErrorResponse } from 'pep/pods/application/adapter';
+import ApplicationController from 'pep/pods/application/controller';
 
 export default class Application extends PageLayout(Route.extend(ApplicationRouteMixin)) {
     routeAfterAuthentication = 'index';
@@ -65,6 +66,15 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
         } finally {
             return this.appSetup();
         }
+    }
+
+    setupController(controller: ApplicationController, model: any) {
+        super.setupController(controller, model);
+        const cfg = this.configuration.base.search;
+        // TODO use user's pref value for toggle state instead of default config, if one exists
+        controller.isLimitOpen = cfg.limitFields.isShown;
+        // TODO use user's pref value for default search terms instead of default config, if one exists
+        controller.searchTerms = cfg.terms.defaultFields.map((f) => ({ type: f, term: '' }));
     }
 
     /**

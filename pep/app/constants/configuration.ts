@@ -14,6 +14,17 @@ export interface BaseConfiguration {
             imageId: string;
         };
     };
+    search: {
+        tooManyResults: {
+            threshold: number;
+        };
+        limitFields: {
+            isShown: boolean;
+        };
+        terms: {
+            defaultFields: SearchTermId[];
+        };
+    };
 }
 
 /**
@@ -58,6 +69,9 @@ export interface ContentConfiguration {
         };
     };
     search: {
+        tooManyResults: {
+            instructions: string;
+        };
         terms: {
             types: {
                 [K in SearchTermId]?: {
@@ -77,6 +91,17 @@ export const DEFAULT_BASE_CONFIGURATION: BaseConfiguration = {
         expertPick: {
             articleId: 'CJP.024A.0233A',
             imageId: 'CJP.024-025.0233A.FIG001'
+        }
+    },
+    search: {
+        tooManyResults: {
+            threshold: 200
+        },
+        limitFields: {
+            isShown: false
+        },
+        terms: {
+            defaultFields: [SearchTermId.EVERYWHERE, SearchTermId.TITLE, SearchTermId.AUTHOR]
         }
     }
 };
@@ -119,6 +144,10 @@ export const DEFAULT_CONTENT_CONFIGURATION: ContentConfiguration = {
         }
     },
     search: {
+        tooManyResults: {
+            instructions:
+                "Enter at least two terms, additional criteria, and/or use the 'Refine' form below to increase search precision."
+        },
         terms: {
             types: {
                 everywhere: {
@@ -157,12 +186,12 @@ export const DEFAULT_CONTENT_CONFIGURATION: ContentConfiguration = {
                 startYear: {
                     prompt: 'Publication year',
                     help:
-                        'Find documents published on or before/after a year, or within a range of years (e.g, "1999", "1999-2010", ">1999", "<1999")'
+                        'Find documents published on or before/after a year, or within a range of years (e.g, "1999", "<1999", ">1999", "1999-2010")'
                 },
                 endYear: {
                     prompt: 'Publication year',
                     help:
-                        'Find documents published on or before/after a year, or within a range of years (e.g, "1999", "1999-2010", ">1999", "<1999")'
+                        'Find documents published on or before/after a year, or within a range of years (e.g, "1999", "<1999", ">1999", "1999-2010")'
                 }
             }
         }

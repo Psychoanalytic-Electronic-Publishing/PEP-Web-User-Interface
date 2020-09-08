@@ -21,7 +21,8 @@ export interface ReadDocumentParams {
 
 export default class ReadDocument extends PageNav(Route) {
     navController = 'read/document';
-    searchResults?: RecordArrayWithMeta<Document>;
+    searchResults?: Document[];
+    searchResultsMeta?: any;
 
     /**
      * Fetch the requested document
@@ -38,33 +39,53 @@ export default class ReadDocument extends PageNav(Route) {
      */
     async afterModel(model: object, transition: Transition) {
         super.afterModel(model, transition);
+        let results;
+        let resultsMeta;
 
-        const params = this.paramsFor('read.document') as ReadDocumentParams;
-        //workaround for https://github.com/emberjs/ember.js/issues/18981
-        const searchTerms = params._searchTerms ? JSON.parse(params._searchTerms) : [];
-        const facets = params._facets ? JSON.parse(params._facets) : [];
+        // if we are transitioning from either the search results page, or another read document page
+        // attempt to pull in the existing documents models for the results list, instead of making
+        // another search query request for the same data
+        if (transition.from?.name === 'read.document' || transition.from?.name === 'search') {
+            const controller = this.controllerFor(transition.from?.name) as ReadDocumentController;
+            results = controller?.paginator?.models;
+            resultsMeta = controller?.paginator?.metadata;
+        }
 
-        const searchParams = buildSearchQueryParams(
-            params.q,
-            searchTerms,
-            params.matchSynonyms,
-            facets,
-            params.citedCount,
-            params.viewedCount,
-            params.viewedPeriod
-        );
-        //if no search was submitted, don't fetch any results
-        if (hasSearchQuery(searchParams)) {
-            const controller = this.controllerFor(this.routeName);
-            const queryParams = buildQueryParams({
-                context: controller,
-                pagingRootKey: null,
-                filterRootKey: null,
-                processQueryParams: (params) => ({ ...params, ...searchParams })
-            });
+        if (!results) {
+            const params = this.paramsFor('read.document') as ReadDocumentParams;
+            //workaround for https://github.com/emberjs/ember.js/issues/18981
+            const searchTerms = params._searchTerms ? JSON.parse(params._searchTerms) : [];
+            const facets = params._facets ? JSON.parse(params._facets) : [];
 
-            const results = (await this.store.query('document', queryParams)) as RecordArrayWithMeta<Document>;
+            const searchParams = buildSearchQueryParams(
+                params.q,
+                searchTerms,
+                params.matchSynonyms,
+                facets,
+                params.citedCount,
+                params.viewedCount,
+                params.viewedPeriod
+            );
+
+            //if no search was submitted, don't fetch any results
+            if (hasSearchQuery(searchParams)) {
+                const controller = this.controllerFor(this.routeName);
+                const queryParams = buildQueryParams({
+                    context: controller,
+                    pagingRootKey: null,
+                    filterRootKey: null,
+                    processQueryParams: (params) => ({ ...params, ...searchParams })
+                });
+
+                const res = (await this.store.query('document', queryParams)) as RecordArrayWithMeta<Document>;
+                results = res.toArray();
+                resultsMeta = res.meta;
+            }
+        }
+
+        if (results && resultsMeta) {
             this.searchResults = results;
+            this.searchResultsMeta = resultsMeta;
         }
     }
 
@@ -84,8 +105,8 @@ export default class ReadDocument extends PageNav(Route) {
         controller.paginator = usePagination<Document>({
             context: controller,
             modelName: 'document',
-            models: this.searchResults?.toArray() ?? [],
-            metadata: this.searchResults?.meta,
+            models: this.searchResults ?? [],
+            metadata: this.searchResultsMeta,
             pagingRootKey: null,
             filterRootKey: null,
             processQueryParams: controller.processQueryParams

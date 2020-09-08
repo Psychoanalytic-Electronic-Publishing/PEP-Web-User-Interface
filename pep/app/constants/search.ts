@@ -2,8 +2,6 @@ import IntlService from 'ember-intl/services/intl';
 
 import { SearchFacetCounts, groupCountsByRange } from 'pep/utils/search';
 
-export const SEARCH_RESULTS_WARNING_COUNT = 200;
-
 export type SearchTermParam =
     | 'fulltext1'
     | 'paratext'
@@ -126,27 +124,9 @@ export interface ViewPeriodOption {
     label: string;
 }
 
-export const SEARCH_DEFAULT_TERMS: SearchTermValue[] = [
-    { type: SearchTermId.EVERYWHERE, term: '' },
-    { type: SearchTermId.TITLE, term: '' },
-    { type: SearchTermId.AUTHOR, term: '' }
-];
-
 export const SEARCH_DEFAULT_FACETS: SearchFacetValue[] = [];
 
 export const SEARCH_DEFAULT_VIEW_PERIOD: ViewPeriod = ViewPeriod.PAST_WEEK;
-
-export const SEARCH_DEFAULT_PARAMS = {
-    q: '',
-    matchSynonyms: false,
-    citedCount: '',
-    viewedCount: '',
-    viewedPeriod: SEARCH_DEFAULT_VIEW_PERIOD,
-    //json stringify is workaround for bug w/array-based query param values
-    //@see https://github.com/emberjs/ember.js/issues/18981
-    searchTerms: JSON.stringify(SEARCH_DEFAULT_TERMS),
-    facets: JSON.stringify(SEARCH_DEFAULT_FACETS)
-};
 
 /**
  * Search term types

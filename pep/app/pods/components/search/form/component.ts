@@ -4,15 +4,9 @@ import { later, next } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 import IntlService from 'ember-intl/services/intl';
 
-import {
-    SEARCH_TYPE_EVERYWHERE,
-    SEARCH_RESULTS_WARNING_COUNT,
-    SearchTermValue,
-    VIEW_PERIODS,
-    ViewPeriod,
-    SearchTermId
-} from 'pep/constants/search';
+import { SEARCH_TYPE_EVERYWHERE, SearchTermValue, VIEW_PERIODS, ViewPeriod, SearchTermId } from 'pep/constants/search';
 import ScrollableService from 'pep/services/scrollable';
+import ConfigurationService from 'pep/services/configuration';
 import { fadeTransition } from 'pep/utils/animation';
 
 interface SearchFormArgs {
@@ -36,6 +30,7 @@ interface SearchFormArgs {
 export default class SearchForm extends Component<SearchFormArgs> {
     @service scrollable!: ScrollableService;
     @service intl!: IntlService;
+    @service configuration!: ConfigurationService;
 
     animateTransition = fadeTransition;
     animateDuration = 300;
@@ -56,7 +51,9 @@ export default class SearchForm extends Component<SearchFormArgs> {
     }
 
     get hasTooManyResults() {
-        return this.args.resultsCount && this.args.resultsCount > SEARCH_RESULTS_WARNING_COUNT;
+        return (
+            this.args.resultsCount && this.args.resultsCount > this.configuration.base.search.tooManyResults.threshold
+        );
     }
 
     /**

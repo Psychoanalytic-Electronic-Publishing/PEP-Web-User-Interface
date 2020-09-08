@@ -117,8 +117,7 @@
             },
             "tooManyResults": {
                 "heading": "Try refining your search",
-                "numResults": "There are '<strong>'{count}'</strong>' {count, plural, =1 {result} other {results}} that match your criteria.",
-                "instructions": "Enter at least two terms, additional criteria, and/or use the 'Refine' form below to increase search precision."
+                "numResults": "There are '<strong>'{count}'</strong>' {count, plural, =1 {result} other {results}} that match your criteria."
             }
         },
         "refine": {

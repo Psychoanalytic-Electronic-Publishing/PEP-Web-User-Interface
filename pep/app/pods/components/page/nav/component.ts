@@ -6,7 +6,7 @@ import ModalService from '@gavant/ember-modals/services/modal';
 
 import AuthService from 'pep/services/auth';
 import DrawerService from 'pep/services/drawer';
-import { SEARCH_DEFAULT_PARAMS } from 'pep/constants/search';
+import ConfigurationService from 'pep/services/configuration';
 
 interface PageNavArgs {
     openAboutModal: () => Promise<void>;
@@ -17,8 +17,11 @@ export default class PageNav extends Component<PageNavArgs> {
     @service session!: SessionService;
     @service auth!: AuthService;
     @service drawer!: DrawerService;
+    @service configuration!: ConfigurationService;
 
-    defaultSearchParams = SEARCH_DEFAULT_PARAMS;
+    get defaultSearchParams() {
+        return this.configuration.defaultSearchParams;
+    }
 
     /**
      * Opens the user preferences modal dialog
