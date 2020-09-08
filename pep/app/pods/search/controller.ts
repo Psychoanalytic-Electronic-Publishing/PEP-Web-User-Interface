@@ -20,11 +20,13 @@ import {
     ViewPeriod,
     SEARCH_DEFAULT_VIEW_PERIOD
 } from 'pep/constants/search';
+import { PreferenceKey } from 'pep/constants/preferences';
 import SidebarService from 'pep/services/sidebar';
 import LoadingBarService from 'pep/services/loading-bar';
 import FastbootMediaService from 'pep/services/fastboot-media';
 import ScrollableService from 'pep/services/scrollable';
 import ConfigurationService from 'pep/services/configuration';
+import CurrentUserService from 'pep/services/current-user';
 import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
 import { SearchMetadata } from 'pep/api';
 import { SearchPreviewMode } from 'pep/pods/components/search/preview/component';
@@ -37,6 +39,7 @@ export default class Search extends Controller {
     @service fastbootMedia!: FastbootMediaService;
     @service scrollable!: ScrollableService;
     @service configuration!: ConfigurationService;
+    @service currentUser!: CurrentUserService;
 
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
@@ -255,6 +258,7 @@ export default class Search extends Controller {
     @action
     addSearchTerm(newSearchTerm: SearchTermValue) {
         this.currentSearchTerms = this.currentSearchTerms.concat([newSearchTerm]);
+        taskFor(this.updateSearchFormPrefs).perform();
     }
 
     /**
@@ -272,6 +276,7 @@ export default class Search extends Controller {
 
         this.currentSearchTerms = searchTerms;
         this.onSearchCriteriaChange();
+        taskFor(this.updateSearchFormPrefs).perform();
     }
 
     /**
@@ -287,6 +292,7 @@ export default class Search extends Controller {
         setProperties(oldTerm, newTerm);
         this.currentSearchTerms = searchTerms;
         this.onSearchCriteriaChange();
+        taskFor(this.updateSearchFormPrefs).perform();
     }
 
     /**
@@ -322,6 +328,8 @@ export default class Search extends Controller {
             this.currentViewedPeriod = SEARCH_DEFAULT_VIEW_PERIOD;
             this.onSearchCriteriaChange();
         }
+
+        taskFor(this.updateSearchFormPrefs).perform();
     }
 
     /**
@@ -405,6 +413,18 @@ export default class Search extends Controller {
                 this.loadingBar.hide();
             }
         }
+    }
+
+    /**
+     * Updates the user's search form preferences after a short delay
+     */
+    @restartableTask
+    *updateSearchFormPrefs() {
+        yield timeout(500);
+        yield this.currentUser.updatePrefs({
+            [PreferenceKey.SEARCH_LIMIT_IS_SHOWN]: this.isLimitOpen,
+            [PreferenceKey.SEARCH_TERM_FIELDS]: this.currentSearchTerms.map((t) => t.type)
+        });
     }
 
     /**
