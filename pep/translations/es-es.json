@@ -257,6 +257,9 @@
             "art_views_last12mos": {
                 "label": "View Count",
                 "option": "{range} views"
+            },
+            "art_authors": {
+                "label": "Author"
             }
         },
         "viewPeriod": {

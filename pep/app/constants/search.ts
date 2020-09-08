@@ -272,6 +272,7 @@ export const DEFAULT_SEARCH_FACETS: FacetId[] = [
     FacetId.ART_YEAR_INT,
     FacetId.ART_VIEWS_LAST12MOS,
     FacetId.ART_CITED_5,
+    FacetId.ART_AUTHORS,
     FacetId.ART_LANG,
     FacetId.ART_TYPE,
     FacetId.ART_SOURCETYPE,
@@ -503,10 +504,20 @@ export const SEARCH_FACET_VIEW: SearchFacetType = {
         intl.t('search.facets.art_views_last12mos.option', { range: opt.replace('TO', '-').trim() })
 };
 
+export const SEARCH_FACET_AUTHOR: SearchFacetType = {
+    id: FacetId.ART_AUTHORS,
+    param: 'author',
+    paramSeparator: ' OR ',
+    label: 'search.facets.art_authors.label',
+    dynamicValues: true,
+    values: []
+};
+
 export const SEARCH_FACETS = [
     SEARCH_FACET_DECADE,
     SEARCH_FACET_VIEW,
     SEARCH_FACET_CITATION,
+    SEARCH_FACET_AUTHOR,
     SEARCH_FACET_LANG,
     SEARCH_FACET_TYPE,
     SEARCH_FACET_SOURCETYPE,

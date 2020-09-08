@@ -1,9 +1,10 @@
 import Route from '@ember/routing/route';
 import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hooks/pagination';
+import { buildQueryParams, removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
+
 import Document from 'pep/pods/document/model';
 import MostCitedController from 'pep/pods/most-cited/controller';
 import { PageNav } from 'pep/mixins/page-layout';
-import { buildQueryParams, removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
 import { useQueryParams } from 'pep/hooks/useQueryParams';
 
 interface RouteQueryParams {
