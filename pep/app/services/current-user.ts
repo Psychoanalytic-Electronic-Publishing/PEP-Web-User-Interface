@@ -7,7 +7,6 @@ import SessionService from 'ember-simple-auth/services/session';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import CookiesService from 'ember-cookies/services/cookies';
 import merge from 'lodash.merge';
-import copy from 'lodash.clonedeep';
 
 import ENV from 'pep/config/environment';
 import User from 'pep/pods/user/model';
@@ -18,7 +17,8 @@ import {
     LOCALSTORAGE_PREFERENCES,
     USER_PREFERENCES_LS_PREFIX,
     COOKIE_PREFERENCES,
-    USER_PREFERENCES_COOKIE_NAME
+    USER_PREFERENCES_COOKIE_NAME,
+    PreferenceKey
 } from 'pep/constants/preferences';
 
 export default class CurrentUserService extends Service {
@@ -63,7 +63,7 @@ export default class CurrentUserService extends Service {
         this.store.pushPayload('user', {
             user: {
                 id: 1,
-                preferences: copy(DEFAULT_USER_PREFERENCES),
+                preferences: {},
                 firstName: 'Joe',
                 lastName: 'User',
                 username: 'joe.user',
@@ -86,6 +86,7 @@ export default class CurrentUserService extends Service {
      *  1. user db record preferences (if logged in/has unique session)
      *  2. cookie preferences
      *  3. localStorage preferences
+     * @returns {UserPreferences}
      */
     setup() {
         const userPrefs = this.user?.preferences ?? {};
@@ -93,6 +94,7 @@ export default class CurrentUserService extends Service {
         const lsPrefs = this.loadLocalStoragePrefs();
         const prefs = merge({}, DEFAULT_USER_PREFERENCES, lsPrefs, cookiePrefs, userPrefs) as UserPreferences;
         this.preferences = prefs;
+        return this.preferences;
     }
 
     /**
@@ -143,7 +145,6 @@ export default class CurrentUserService extends Service {
                     prefs[key] = cookieValues[key];
                 }
             });
-
             return prefs;
         } catch (err) {
             return prefs;
@@ -154,17 +155,53 @@ export default class CurrentUserService extends Service {
      * Updates the specified preference fields with the given values in the
      * user's browser cookie, localstorage, and session user db record (if uniquely logged in)
      * @param {PreferenceChangeset} prefValues
-     * @returns Promise<User | void>
+     * @returns Promise<UserPreferences>
      */
-    updatePrefs(prefValues: PreferenceChangeset) {
-        //@ts-ignore
-        console.log(prefValues);
-        //TODO iterate over keys in object and set value in correct storage (localStorage vs cookie, or neither)
+    async updatePrefs(prefValues: PreferenceChangeset) {
+        const keys = Object.keys(prefValues) as PreferenceKey[];
 
-        //TODO if the user is logged in:
+        const cookie = this.cookies.read(USER_PREFERENCES_COOKIE_NAME, {
+            secure: Number(ENV.cookieSecure) === 1,
+            sameSite: ENV.cookieSameSite
+        });
+
+        const cookieValues = cookie ? JSON.parse(cookie) : {};
+        let updatedCookie = false;
+
+        keys.forEach((key) => {
+            if (COOKIE_PREFERENCES.includes(key)) {
+                updatedCookie = true;
+                cookieValues[key] = prefValues[key];
+            } else if (LOCALSTORAGE_PREFERENCES.includes(key)) {
+                const value = JSON.stringify(prefValues[key]);
+                if (!this.fastboot.isFastBoot) {
+                    localStorage.setItem(`${USER_PREFERENCES_LS_PREFIX}_${key}`, value);
+                }
+            }
+        });
+
+        if (updatedCookie) {
+            const newCookie = JSON.stringify(cookieValues);
+            this.cookies.write(USER_PREFERENCES_COOKIE_NAME, newCookie, {
+                domain: ENV.cookieDomain,
+                secure: Number(ENV.cookieSecure) === 1,
+                sameSite: ENV.cookieSameSite,
+                expires: new Date('2525-01-01') // never!!!
+            });
+        }
+
+        // if the user is logged in, apply the new prefs locally, then save the user
         if (this.session.isAuthenticated && this.user) {
-            //update the user record locally, and .save() it
-            //if the user had no existing preferences, (no version field), make sure to set it
+            const oldUserPrefs = this.user?.preferences ?? {};
+            const newUserPrefs = merge({}, DEFAULT_USER_PREFERENCES, oldUserPrefs, prefValues);
+            this.user.preferences = newUserPrefs;
+            this.setup();
+            await this.user.save();
+            return this.preferences;
+            // otherwise, just apply the prefs locally (cookies/localstorage)
+        } else {
+            this.setup();
+            return this.preferences;
         }
     }
 }
