@@ -42,7 +42,7 @@ export enum SearchTermId {
     VIEWED = 'viewed'
 }
 
-export enum FacetId {
+export enum SearchFacetId {
     ART_ID = 'art_id',
     ART_TITLE = 'art_title',
     ART_TITLE_XML = 'art_title_xml',
@@ -107,7 +107,7 @@ export interface SearchTermType {
 }
 
 export interface SearchFacetType {
-    id: FacetId;
+    id: SearchFacetId;
     param: SearchTermParam;
     paramSeparator: string;
     label: string;
@@ -248,22 +248,8 @@ export const SEARCH_TYPES: SearchTermType[] = [
  * Search facets
  */
 
-export const DEFAULT_SEARCH_FACETS: FacetId[] = [
-    FacetId.ART_YEAR_INT,
-    FacetId.ART_VIEWS_LAST12MOS,
-    FacetId.ART_CITED_5,
-    FacetId.ART_AUTHORS,
-    FacetId.ART_LANG,
-    FacetId.ART_TYPE,
-    FacetId.ART_SOURCETYPE,
-    FacetId.ART_SOURCETITLEABBR,
-    // FacetId.GLOSSARY_TERMS,
-    FacetId.GLOSSARY_GROUP_TERMS,
-    FacetId.ART_KWDS_STR
-];
-
 export const SEARCH_FACET_SOURCETYPE: SearchFacetType = {
-    id: FacetId.ART_SOURCETYPE,
+    id: SearchFacetId.ART_SOURCETYPE,
     param: 'sourcetype',
     paramSeparator: ' OR ',
     label: 'search.facets.art_sourcetype.label',
@@ -289,7 +275,7 @@ export const SEARCH_FACET_SOURCETYPE: SearchFacetType = {
 };
 
 export const SEARCH_FACET_SOURCE: SearchFacetType = {
-    id: FacetId.ART_SOURCETITLEABBR,
+    id: SearchFacetId.ART_SOURCETITLEABBR,
     param: 'fulltext1',
     paramSeparator: ' OR ',
     label: 'search.facets.art_sourcetitleabbr.label',
@@ -300,7 +286,7 @@ export const SEARCH_FACET_SOURCE: SearchFacetType = {
 };
 
 export const SEARCH_FACET_TYPE: SearchFacetType = {
-    id: FacetId.ART_TYPE,
+    id: SearchFacetId.ART_TYPE,
     param: 'articletype',
     paramSeparator: ' OR ',
     label: 'search.facets.art_type.label',
@@ -354,7 +340,7 @@ export const SEARCH_FACET_TYPE: SearchFacetType = {
 };
 
 export const SEARCH_FACET_LANG: SearchFacetType = {
-    id: FacetId.ART_LANG,
+    id: SearchFacetId.ART_LANG,
     param: 'sourcelangcode',
     paramSeparator: ',',
     label: 'search.facets.art_lang.label',
@@ -413,7 +399,7 @@ export const SEARCH_FACET_LANG: SearchFacetType = {
 
 // Note: not being used, only using GLOSSARY_GROUP_TERMS for now
 // export const SEARCH_FACET_GLOSSARY: SearchFacetType = {
-//     id: FacetId.GLOSSARY_TERMS,
+//     id: SearchFacetId.GLOSSARY_TERMS,
 //     param: 'fulltext1',
 //     paramSeparator: ' OR ',
 //     label: 'search.facets.glossary_terms.label',
@@ -423,7 +409,7 @@ export const SEARCH_FACET_LANG: SearchFacetType = {
 // };
 
 export const SEARCH_FACET_GLOSSARY_GROUPS: SearchFacetType = {
-    id: FacetId.GLOSSARY_GROUP_TERMS,
+    id: SearchFacetId.GLOSSARY_GROUP_TERMS,
     param: 'fulltext1',
     paramSeparator: ' OR ',
     label: 'search.facets.glossary_group_terms.label',
@@ -433,7 +419,7 @@ export const SEARCH_FACET_GLOSSARY_GROUPS: SearchFacetType = {
 };
 
 export const SEARCH_FACET_KEYWORDS: SearchFacetType = {
-    id: FacetId.ART_KWDS_STR,
+    id: SearchFacetId.ART_KWDS_STR,
     param: 'fulltext1',
     paramSeparator: ' OR ',
     label: 'search.facets.art_kwds_str.label',
@@ -444,7 +430,7 @@ export const SEARCH_FACET_KEYWORDS: SearchFacetType = {
 };
 
 export const SEARCH_FACET_DECADE: SearchFacetType = {
-    id: FacetId.ART_YEAR_INT,
+    id: SearchFacetId.ART_YEAR_INT,
     param: 'startyear',
     paramSeparator: ' OR ',
     label: 'search.facets.art_year_int.label',
@@ -456,7 +442,7 @@ export const SEARCH_FACET_DECADE: SearchFacetType = {
 };
 
 export const SEARCH_FACET_CITATION: SearchFacetType = {
-    id: FacetId.ART_CITED_5,
+    id: SearchFacetId.ART_CITED_5,
     param: 'citecount',
     paramSeparator: ' OR ',
     label: 'search.facets.art_cited_5.label',
@@ -473,7 +459,7 @@ export const SEARCH_FACET_CITATION: SearchFacetType = {
 };
 
 export const SEARCH_FACET_VIEW: SearchFacetType = {
-    id: FacetId.ART_VIEWS_LAST12MOS,
+    id: SearchFacetId.ART_VIEWS_LAST12MOS,
     param: 'viewcount',
     paramSeparator: ' OR ',
     label: 'search.facets.art_views_last12mos.label',
@@ -485,7 +471,7 @@ export const SEARCH_FACET_VIEW: SearchFacetType = {
 };
 
 export const SEARCH_FACET_AUTHOR: SearchFacetType = {
-    id: FacetId.ART_AUTHORS,
+    id: SearchFacetId.ART_AUTHORS,
     param: 'author',
     paramSeparator: ' OR ',
     label: 'search.facets.art_authors.label',

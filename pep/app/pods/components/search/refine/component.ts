@@ -6,6 +6,7 @@ import { isEmpty } from '@ember/utils';
 import { capitalize } from '@ember/string';
 import IntlService from 'ember-intl/services/intl';
 
+import ConfigurationService from 'pep/services/configuration';
 import { SEARCH_FACETS, SearchFacetValue } from 'pep/constants/search';
 import { SearchMetadata } from 'pep/api';
 
@@ -30,15 +31,18 @@ interface SearchRefineArgs {
 
 export default class SearchRefine extends Component<SearchRefineArgs> {
     @service intl!: IntlService;
+    @service configuration!: ConfigurationService;
 
     @tracked expandedGroups: string[] = [];
 
     get groups() {
+        const cfg = this.configuration.base.search;
         const groups: RefineGroup[] = [];
         const fieldsMap = this.args.metadata?.facetCounts?.facet_fields ?? {};
         const incFields = Object.keys(fieldsMap);
+        const displayedFacets = cfg.facets.defaultFields.map((id) => SEARCH_FACETS.findBy('id', id)!);
 
-        SEARCH_FACETS.forEach((facetType) => {
+        displayedFacets.forEach((facetType) => {
             if (incFields.includes(facetType.id)) {
                 let fieldCountsMap = facetType.formatCounts
                     ? facetType.formatCounts(fieldsMap[facetType.id])

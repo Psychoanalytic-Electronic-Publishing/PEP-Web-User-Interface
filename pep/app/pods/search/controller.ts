@@ -129,6 +129,7 @@ export default class Search extends Controller {
      */
     @action
     processQueryParams(params: QueryParamsObj) {
+        const cfg = this.configuration.base.search;
         const searchParams = buildSearchQueryParams(
             this.q,
             this.searchTerms,
@@ -136,7 +137,11 @@ export default class Search extends Controller {
             this.facets,
             this.citedCount,
             this.viewedCount,
-            this.viewedPeriod
+            this.viewedPeriod,
+            cfg.facets.defaultFields,
+            'AND',
+            cfg.facets.valueLimit,
+            cfg.facets.valueMinCount
         );
         return { ...params, ...searchParams };
     }
@@ -361,6 +366,7 @@ export default class Search extends Controller {
         try {
             yield timeout(debounceTimeout);
 
+            const cfg = this.configuration.base.search;
             const searchTerms = this.currentSearchTerms.filter((t: SearchTermValue) => !!t.term);
             const searchParams = buildSearchQueryParams(
                 this.currentSmartSearchTerm,
@@ -369,7 +375,11 @@ export default class Search extends Controller {
                 [],
                 this.currentCitedCount,
                 this.currentViewedCount,
-                this.currentViewedPeriod
+                this.currentViewedPeriod,
+                cfg.facets.defaultFields,
+                'AND',
+                cfg.facets.valueLimit,
+                cfg.facets.valueMinCount
             );
             if (hasSearchQuery(searchParams)) {
                 if (showLoading) {

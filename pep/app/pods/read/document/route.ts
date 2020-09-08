@@ -1,8 +1,10 @@
 import Route from '@ember/routing/route';
+import { inject as service } from '@ember/service';
 import Transition from '@ember/routing/-private/transition';
 import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hooks/pagination';
 import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
 
+import ConfigurationService from 'pep/services/configuration';
 import { PageNav } from 'pep/mixins/page-layout';
 import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
 import Document from 'pep/pods/document/model';
@@ -20,6 +22,8 @@ export interface ReadDocumentParams {
 }
 
 export default class ReadDocument extends PageNav(Route) {
+    @service configuration!: ConfigurationService;
+
     navController = 'read/document';
     searchResults?: Document[];
     searchResultsMeta?: any;
@@ -56,7 +60,7 @@ export default class ReadDocument extends PageNav(Route) {
             //workaround for https://github.com/emberjs/ember.js/issues/18981
             const searchTerms = params._searchTerms ? JSON.parse(params._searchTerms) : [];
             const facets = params._facets ? JSON.parse(params._facets) : [];
-
+            const cfg = this.configuration.base.search;
             const searchParams = buildSearchQueryParams(
                 params.q,
                 searchTerms,
@@ -64,7 +68,11 @@ export default class ReadDocument extends PageNav(Route) {
                 facets,
                 params.citedCount,
                 params.viewedCount,
-                params.viewedPeriod
+                params.viewedPeriod,
+                cfg.facets.defaultFields,
+                'AND',
+                cfg.facets.valueLimit,
+                cfg.facets.valueMinCount
             );
 
             //if no search was submitted, don't fetch any results

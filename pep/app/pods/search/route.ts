@@ -182,6 +182,7 @@ export default class Search extends PageNav(Route) {
      * @returns {QueryParamsObj}
      */
     buildQueryParams(params: SearchParams, includeFacets: boolean = true) {
+        const cfg = this.configuration.base.search;
         //workaround for https://github.com/emberjs/ember.js/issues/18981
         const searchTerms = params._searchTerms ? JSON.parse(params._searchTerms) : [];
         const facets = params._facets && includeFacets ? JSON.parse(params._facets) : [];
@@ -192,7 +193,11 @@ export default class Search extends PageNav(Route) {
             facets,
             params.citedCount,
             params.viewedCount,
-            params.viewedPeriod
+            params.viewedPeriod,
+            cfg.facets.defaultFields,
+            'AND',
+            cfg.facets.valueLimit,
+            cfg.facets.valueMinCount
         );
     }
 }

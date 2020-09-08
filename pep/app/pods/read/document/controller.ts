@@ -102,6 +102,7 @@ export default class ReadDocument extends Controller {
      */
     @action
     processQueryParams(params: QueryParamsObj) {
+        const cfg = this.configuration.base.search;
         const searchParams = buildSearchQueryParams(
             this.q,
             this.searchTerms,
@@ -109,7 +110,11 @@ export default class ReadDocument extends Controller {
             this.facets,
             this.citedCount,
             this.viewedCount,
-            this.viewedPeriod
+            this.viewedPeriod,
+            cfg.facets.defaultFields,
+            'AND',
+            cfg.facets.valueLimit,
+            cfg.facets.valueMinCount
         );
         return { ...params, ...searchParams };
     }

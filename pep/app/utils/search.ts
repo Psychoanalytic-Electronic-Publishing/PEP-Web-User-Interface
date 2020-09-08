@@ -6,8 +6,8 @@ import {
     SEARCH_FACETS,
     SearchTermValue,
     SearchFacetValue,
-    DEFAULT_SEARCH_FACETS,
-    ViewPeriod
+    ViewPeriod,
+    SearchFacetId
 } from 'pep/constants/search';
 import { QUOTED_VALUE_REGEX } from 'pep/constants/regex';
 
@@ -34,6 +34,8 @@ interface SearchQueryStrParams {
 
 interface SearchQueryParams extends SearchQueryStrParams {
     facetfields: string | null;
+    facetlimit?: number | null;
+    facetmincount?: number | null;
     synonyms: boolean;
     abstract: boolean;
 }
@@ -49,7 +51,7 @@ export interface SearchFacetCounts {
  * @param {SearchTermValue[]} searchTerms
  * @param {boolean} synonyms
  * @param {SearchFacetValue[]} [facetValues=[]]
- * @param {string[]} [facetFields=DEFAULT_SEARCH_FACETS]
+ * @param {string[]} [facetFields=[]]
  * @param {('AND' | 'OR')} [logicalOperator='OR']
  * @returns {QueryParamsObj}
  */
@@ -61,11 +63,15 @@ export function buildSearchQueryParams(
     citedCount: string = '',
     viewedCount: string = '',
     viewedPeriod: ViewPeriod | null = null,
-    facetFields: string[] = DEFAULT_SEARCH_FACETS,
-    joinOp: 'AND' | 'OR' = 'AND'
+    facetFields: SearchFacetId[] = [],
+    joinOp: 'AND' | 'OR' = 'AND',
+    facetLimit: number | null = null,
+    facetMinCount: number | null = null
 ): QueryParamsObj {
     const queryParams: SearchQueryParams = {
         facetfields: !isEmpty(facetFields) ? facetFields.join(',') : null,
+        facetlimit: facetLimit,
+        facetmincount: facetMinCount,
         smarttext: smartSearchTerm,
         citecount: citedCount,
         viewcount: viewedCount,

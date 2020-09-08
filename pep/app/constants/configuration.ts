@@ -1,4 +1,4 @@
-import { SearchTermId } from './search';
+import { SearchTermId, SearchFacetId } from './search';
 
 /**
  * Base admin configuration fields for the application
@@ -23,6 +23,11 @@ export interface BaseConfiguration {
         };
         terms: {
             defaultFields: SearchTermId[];
+        };
+        facets: {
+            valueLimit: number;
+            valueMinCount: number;
+            defaultFields: SearchFacetId[];
         };
     };
 }
@@ -102,6 +107,22 @@ export const DEFAULT_BASE_CONFIGURATION: BaseConfiguration = {
         },
         terms: {
             defaultFields: [SearchTermId.EVERYWHERE, SearchTermId.TITLE, SearchTermId.AUTHOR]
+        },
+        facets: {
+            valueLimit: 15,
+            valueMinCount: 1,
+            defaultFields: [
+                SearchFacetId.ART_YEAR_INT,
+                SearchFacetId.ART_VIEWS_LAST12MOS,
+                SearchFacetId.ART_CITED_5,
+                SearchFacetId.ART_AUTHORS,
+                SearchFacetId.ART_LANG,
+                SearchFacetId.ART_TYPE,
+                SearchFacetId.ART_SOURCETYPE,
+                SearchFacetId.ART_SOURCETITLEABBR,
+                SearchFacetId.GLOSSARY_GROUP_TERMS,
+                SearchFacetId.ART_KWDS_STR
+            ]
         }
     }
 };
