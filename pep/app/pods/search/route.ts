@@ -65,7 +65,7 @@ export default class Search extends PageNav(Route) {
      */
     model(params: SearchParams) {
         const searchParams = this.buildQueryParams(params);
-        //if no search was submitted, don't fetch any results
+        // if no search was submitted, don't fetch any results
         if (hasSearchQuery(searchParams)) {
             const controller = this.controllerFor(this.routeName);
             const queryParams = buildQueryParams({
@@ -89,7 +89,7 @@ export default class Search extends PageNav(Route) {
         const params = this.paramsFor(this.routeName) as SearchParams;
         const searchParams = this.buildQueryParams(params, false);
 
-        //if a search was submitted, do a 2nd query to get the metadata/facet counts w/o any facet values applied
+        // if a search was submitted, do a 2nd query to get the metadata/facet counts w/o any facet values applied
         if (hasSearchQuery(searchParams)) {
             const result = await this.store.query('document', { ...searchParams, offset: 0, limit: 1 });
             this.resultsMeta = result.meta as SearchMetadata;
@@ -109,9 +109,9 @@ export default class Search extends PageNav(Route) {
      * @param {SearchController} controller
      * @param {Document} model
      */
-    //workaround for bug w/array-based query param values
-    //@see https://github.com/emberjs/ember.js/issues/18981
-    //@ts-ignore
+    // workaround for bug w/array-based query param values
+    // @see https://github.com/emberjs/ember.js/issues/18981
+    // @ts-ignore
     setupController(controller: SearchController, model: RecordArrayWithMeta<Document>) {
         const cfg = this.configuration.base.search;
         const prefs = this.currentUser.preferences;
@@ -132,7 +132,7 @@ export default class Search extends PageNav(Route) {
         controller.resultsMeta = this.resultsMeta;
 
         // open the search form's limit fields section if it has values
-        // or the admin configs default it to open
+        // or the admin configs or user's prefs default it to open
         if (controller.currentCitedCount || controller.currentViewedCount || isLimitOpen) {
             controller.isLimitOpen = true;
         }
@@ -146,9 +146,9 @@ export default class Search extends PageNav(Route) {
             filterRootKey: null,
             processQueryParams: controller.processQueryParams
         });
-        //workaround for bug w/array-based query param values
-        //@see https://github.com/emberjs/ember.js/issues/18981
-        //@ts-ignore
+        // workaround for bug w/array-based query param values
+        // @see https://github.com/emberjs/ember.js/issues/18981
+        // @ts-ignore
         super.setupController(controller, model);
     }
 
@@ -162,14 +162,14 @@ export default class Search extends PageNav(Route) {
     //@see https://github.com/emberjs/ember.js/issues/18981
     //@ts-ignore
     resetController(controller: SearchController, isExiting: boolean, transition: Transition) {
-        //workaround for bug w/array-based query param values
-        //@see https://github.com/emberjs/ember.js/issues/18981
-        //@ts-ignore
+        // workaround for bug w/array-based query param values
+        // @see https://github.com/emberjs/ember.js/issues/18981
+        // @ts-ignore
         super.resetController(controller, isExiting, transition);
         controller.previewedResult = null;
-        //clear current results meta data
+        // clear current results meta data
         controller.resultsMeta = null;
-        //reset the search form limit fields section
+        // reset the search form limit fields section
         const cfg = this.configuration.base.search;
         const prefs = this.currentUser.preferences;
         controller.isLimitOpen = prefs?.searchLimitIsShown ?? cfg.limitFields.isShown;
@@ -183,7 +183,7 @@ export default class Search extends PageNav(Route) {
      */
     buildQueryParams(params: SearchParams, includeFacets: boolean = true) {
         const cfg = this.configuration.base.search;
-        //workaround for https://github.com/emberjs/ember.js/issues/18981
+        // workaround for https://github.com/emberjs/ember.js/issues/18981
         const searchTerms = params._searchTerms ? JSON.parse(params._searchTerms) : [];
         const facets = params._facets && includeFacets ? JSON.parse(params._facets) : [];
         return buildSearchQueryParams(

@@ -86,6 +86,7 @@ export default class CurrentUserService extends Service {
      *  1. user db record preferences (if logged in/has unique session)
      *  2. cookie preferences
      *  3. localStorage preferences
+     *  4. default preference values
      * @returns {UserPreferences}
      */
     setup() {
