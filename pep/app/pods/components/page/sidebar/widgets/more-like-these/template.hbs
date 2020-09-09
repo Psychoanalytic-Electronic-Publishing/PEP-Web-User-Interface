@@ -2,8 +2,8 @@
     @scrollableNamespace="sidebar-right"
     @isOpen={{this.isOpen}}
     @toggle={{fn @toggleIsOpen this.widget}}
-    {{did-insert this.onElementInsert}}
-    {{did-update this.loadSimilarFromDocument @data}}
+    {{did-insert this.onElementChange}}
+    {{did-update this.onElementChange this.data}}
     class="mb-2"
 as |Panel|>
     <Panel.header @title={{t "relatedInfo.widgets.moreLikeThese.title"}} />

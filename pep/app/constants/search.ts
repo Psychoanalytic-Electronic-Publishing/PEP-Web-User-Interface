@@ -323,7 +323,7 @@ export const SEARCH_FACET_SOURCETYPE: SearchFacetType = {
 };
 
 export const SEARCH_FACET_ART_ID: SearchFacetType = {
-    id: FacetId.ART_ID,
+    id: SearchFacetId.ART_ID,
     param: 'fulltext1',
     paramSeparator: ' OR ',
     label: '',

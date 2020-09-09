@@ -8,7 +8,7 @@ import DS from 'ember-data';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
-import { FacetId } from 'pep/constants/search';
+import { SearchFacetId } from 'pep/constants/search';
 import { buildSearchQueryParams } from 'pep/utils/search';
 import Document from 'pep/pods/document/model';
 
@@ -42,7 +42,7 @@ export default class PageSidebarWidgetsRelatedDocuments extends Component<PageSi
 
         const params = buildSearchQueryParams('', [], false, [
             {
-                id: FacetId.ART_QUAL,
+                id: SearchFacetId.ART_QUAL,
                 value: this.data?.relatedrx!
             }
         ]);

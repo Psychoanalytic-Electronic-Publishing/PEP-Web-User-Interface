@@ -10,7 +10,7 @@ import DS from 'ember-data';
 import Document from 'pep/pods/document/model';
 import ConfigurationService from 'pep/services/configuration';
 import { buildSearchQueryParams } from 'pep/utils/search';
-import { FacetId } from 'pep/constants/search';
+import { SearchFacetId } from 'pep/constants/search';
 
 interface PageSidebarWidgetsExpertPicksArgs extends PageSidebarWidgetArgs {}
 
@@ -37,7 +37,7 @@ export default class PageSidebarWidgetsExpertPicks extends Component<PageSidebar
         // @see https://jamescdavis.com/using-ember-concurrency-with-typescript/
         const queryItems = this.configuration.base.home.expertPicks.map((item) => {
             return {
-                id: FacetId.ART_ID,
+                id: SearchFacetId.ART_ID,
                 value: item.articleId
             };
         });

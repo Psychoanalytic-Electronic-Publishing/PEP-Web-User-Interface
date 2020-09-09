@@ -34,8 +34,7 @@ export default class ReadDocument extends PageNav(PageSidebar(Route)) {
      */
     model(params: ReadDocumentParams) {
         return this.store.findRecord('document', params.document_id, {
-            reload: true,
-            adapterOptions: { query: { similarcount: 2 } }
+            reload: true
         });
     }
 

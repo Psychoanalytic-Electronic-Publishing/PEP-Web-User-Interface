@@ -7,7 +7,7 @@ export default class SimilarityMatch extends DS.Model {
     @attr('number') similarMaxScore!: number;
     @attr('number') similarNumFound!: number;
 
-    @hasMany('document', { async: false }) similarDocuments!: Document;
+    @hasMany('document', { async: false }) similarDocuments!: Document[];
 }
 
 // DO NOT DELETE: this is how TypeScript knows how to look up your models.

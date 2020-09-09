@@ -15,6 +15,7 @@ interface PageSidebarWidgetsMoreLikeTheseArgs extends PageSidebarWidgetArgs {}
 export default class PageSidebarWidgetsMoreLikeThese extends Component<PageSidebarWidgetsMoreLikeTheseArgs> {
     @service store!: DS.Store;
     @tracked results?: SimilarityMatch;
+    similarCount = 5;
 
     get data(): Document {
         return this.args.data[this.widget];
@@ -35,9 +36,15 @@ export default class PageSidebarWidgetsMoreLikeThese extends Component<PageSideb
         if (this.data?.id) {
             const results = await this.store.findRecord('document', this.data.id, {
                 reload: true,
-                adapterOptions: { query: { similarcount: 2 } }
+                adapterOptions: { query: { similarcount: this.similarCount } }
             });
-            this.results = results.similarityMatch;
+            const matches = results.similarityMatch.similarDocuments.filter((item) => item.id !== this.data.id);
+
+            // TODO Right now the document that the find was called for is somehow being added into
+            // the array. We should figure out why and fix it
+            const similarityMatch = results.similarityMatch;
+            similarityMatch.similarDocuments = matches;
+            this.results = similarityMatch;
         }
     }
 
@@ -45,7 +52,7 @@ export default class PageSidebarWidgetsMoreLikeThese extends Component<PageSideb
      * Load the widget results on render
      */
     @action
-    onElementInsert() {
+    onElementChange() {
         this.loadSimilarFromDocument();
     }
 }
