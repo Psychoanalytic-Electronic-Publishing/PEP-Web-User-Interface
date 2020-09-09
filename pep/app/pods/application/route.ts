@@ -22,7 +22,7 @@ import Session from 'pep/services/pep-session';
 export default class Application extends PageLayout(Route.extend(ApplicationRouteMixin)) {
     routeAfterAuthentication = 'index';
 
-    @service session!: Session;
+    @service('pep-session') session!: Session;
     @service fastboot!: FastbootService;
     @service media!: MediaService;
     @service notifications!: NotificationService;

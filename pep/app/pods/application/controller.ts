@@ -23,7 +23,7 @@ import Session from 'pep/services/pep-session';
 
 export default class Application extends Controller {
     @service loadingBar!: LoadingBarService;
-    @service session!: Session;
+    @service('pep-session') session!: Session;
     @service ajax!: AjaxService;
     @service notifications!: NotificationService;
     @service modal!: Modal;

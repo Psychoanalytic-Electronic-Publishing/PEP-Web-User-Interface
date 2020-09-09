@@ -22,6 +22,6 @@ export default class Session extends session.extend({
 // DO NOT DELETE: this is how TypeScript knows how to look up your services.
 declare module '@ember/service' {
     interface Registry {
-        session: Session;
+        'pep-session': Session;
     }
 }

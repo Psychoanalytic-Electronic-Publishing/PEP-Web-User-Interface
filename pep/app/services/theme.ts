@@ -8,7 +8,7 @@ import Session from 'pep/services/pep-session';
 
 export default class ThemeService extends Service {
     @service headData!: HeadDataService;
-    @service session!: Session;
+    @service('pep-session') session!: Session;
     @service intl!: IntlService;
 
     allThemes = THEMES;

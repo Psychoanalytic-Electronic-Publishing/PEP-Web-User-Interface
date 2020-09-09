@@ -14,7 +14,7 @@ interface PageNavArgs {
 
 export default class PageNav extends Component<PageNavArgs> {
     @service modal!: ModalService;
-    @service session!: Session;
+    @service('pep-session') session!: Session;
     @service auth!: AuthService;
     @service drawer!: DrawerService;
 

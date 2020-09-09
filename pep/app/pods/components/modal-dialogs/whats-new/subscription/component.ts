@@ -19,7 +19,7 @@ interface ModalDialogsWhatsNewSubscriptionArgs {
 }
 
 export default class ModalDialogsWhatsNewSubscription extends Component<ModalDialogsWhatsNewSubscriptionArgs> {
-    @service session!: Session;
+    @service('pep-session') session!: Session;
     @service router!: RouterService;
     @service loadingBar!: LoadingBar;
     @service notifications!: NotificationService;

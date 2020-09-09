@@ -10,7 +10,7 @@ import { guard } from 'pep/utils/types';
 import Session from 'pep/services/pep-session';
 
 export default class AjaxService extends Service {
-    @service session!: Session;
+    @service('pep-session') session!: Session;
 
     host: string = ENV.apiBaseUrl;
     namespace: string = ENV.apiNamespace;

@@ -9,7 +9,7 @@ import Session from 'pep/services/pep-session';
 
 export default class CurrentUserService extends Service {
     @service store!: DS.Store;
-    @service session!: Session;
+    @service('pep-session') session!: Session;
 
     @tracked user: User | null = null;
 

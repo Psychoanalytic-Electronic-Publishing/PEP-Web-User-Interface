@@ -21,7 +21,7 @@ interface ModalDialogsUserLoginArgs {
 }
 
 export default class ModalDialogsUserLogin extends Component<ModalDialogsUserLoginArgs> {
-    @service session!: Session;
+    @service('pep-session') session!: Session;
     @service router!: RouterService;
     @service loadingBar!: LoadingBar;
     @service notifications!: NotificationService;

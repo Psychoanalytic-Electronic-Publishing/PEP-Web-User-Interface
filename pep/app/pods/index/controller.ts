@@ -13,7 +13,7 @@ export default class Index extends Controller {
     @service fastbootMedia!: FastbootMediaService;
     @service configuration!: ConfigurationService;
     @service auth!: AuthService;
-    @service session!: Session;
+    @service('pep-session') session!: Session;
 
     get intro() {
         return this.configuration.content.home.intro;

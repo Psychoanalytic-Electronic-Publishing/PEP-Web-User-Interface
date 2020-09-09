@@ -15,7 +15,7 @@ interface PageDrawerArgs {
 
 export default class PageDrawer extends Component<PageDrawerArgs> {
     @service drawer!: DrawerService;
-    @service session!: Session;
+    @service('pep-session') session!: Session;
     @service auth!: AuthService;
     @service modal!: ModalService;
 

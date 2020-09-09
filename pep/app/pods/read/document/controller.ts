@@ -21,7 +21,7 @@ import Document from 'pep/pods/document/model';
 import Session from 'pep/services/pep-session';
 
 export default class ReadDocument extends Controller {
-    @service session!: Session;
+    @service('pep-session') session!: Session;
     @service auth!: AuthService;
     @service fastboot!: FastbootService;
     @service loadingBar!: LoadingBarService;

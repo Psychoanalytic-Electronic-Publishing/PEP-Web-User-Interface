@@ -12,7 +12,7 @@ export interface LoginForm {
 }
 
 export default class AuthService extends Service {
-    @service session!: Session;
+    @service('pep-session') session!: Session;
     @service modal!: ModalService;
 
     dontRedirectOnLogin = false;

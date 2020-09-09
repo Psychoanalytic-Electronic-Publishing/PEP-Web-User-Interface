@@ -1,7 +1,6 @@
 import { inject as service } from '@ember/service';
 import { classify } from '@ember/string';
 import DS from 'ember-data';
-import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
 import { reject } from 'rsvp';
 import FastbootAdapter from 'ember-data-storefront/mixins/fastboot-adapter';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
@@ -24,8 +23,8 @@ export interface ApiServerErrorResponse {
 }
 
 //@ts-ignore TODO we need to figure out how to allow DS.RESTAdapter with custom properties correctly
-export default class Application extends DS.RESTAdapter.extend(DataAdapterMixin, FastbootAdapter) {
-    @service session!: Session;
+export default class Application extends DS.RESTAdapter.extend(FastbootAdapter) {
+    @service('pep-session') session!: Session;
     @service fastboot!: FastbootService;
 
     host = ENV.apiBaseUrl;

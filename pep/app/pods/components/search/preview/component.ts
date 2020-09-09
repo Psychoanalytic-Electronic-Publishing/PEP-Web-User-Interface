@@ -21,7 +21,7 @@ interface SearchPreviewArgs {
 }
 
 export default class SearchPreview extends Component<SearchPreviewArgs> {
-    @service session!: Session;
+    @service('pep-session') session!: Session;
     @service auth!: AuthService;
 
     @tracked fitHeight: number = 0;
