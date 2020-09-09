@@ -15,7 +15,6 @@ declare module 'ember-simple-auth/services/session' {
 
     interface SessionData {
         authenticated: SessionAuthenticatedData;
-        themeId: string;
     }
 
     export default class session extends Service.extend(Evented) {
