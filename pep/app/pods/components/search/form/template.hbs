@@ -84,6 +84,7 @@
                     @icon="plus"
                     @type="link"
                     @action={{this.addSearchTerm}}
+                    @disabled={{not this.canAddSearchTerm}}
                     class="p-0"
                 />
                 <CheckboxInput

@@ -4,7 +4,14 @@ import { later, next } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 import IntlService from 'ember-intl/services/intl';
 
-import { SEARCH_TYPE_EVERYWHERE, SearchTermValue, VIEW_PERIODS, ViewPeriod, SearchTermId } from 'pep/constants/search';
+import {
+    SEARCH_TYPE_EVERYWHERE,
+    SearchTermValue,
+    VIEW_PERIODS,
+    ViewPeriod,
+    SearchTermId,
+    SEARCH_TYPES
+} from 'pep/constants/search';
 import ScrollableService from 'pep/services/scrollable';
 import ConfigurationService from 'pep/services/configuration';
 import { fadeTransition } from 'pep/utils/animation';
@@ -50,6 +57,14 @@ export default class SearchForm extends Component<SearchFormArgs> {
         );
     }
 
+    get searchTypeOptions() {
+        return SEARCH_TYPES.filter((t) => t.isTypeOption);
+    }
+
+    get canAddSearchTerm() {
+        return (this.args.searchTerms?.length ?? 0) < this.searchTypeOptions.length;
+    }
+
     get hasTooManyResults() {
         return (
             this.args.resultsCount && this.args.resultsCount > this.configuration.base.search.tooManyResults.threshold
@@ -61,11 +76,13 @@ export default class SearchForm extends Component<SearchFormArgs> {
      */
     @action
     addSearchTerm() {
-        this.args.addSearchTerm({
-            type: SEARCH_TYPE_EVERYWHERE.id,
-            term: ''
-        });
-        later(() => this.scrollable.recalculate('sidebar-left'), this.animateDuration);
+        if (this.canAddSearchTerm) {
+            this.args.addSearchTerm({
+                type: SEARCH_TYPE_EVERYWHERE.id,
+                term: ''
+            });
+            later(() => this.scrollable.recalculate('sidebar-left'), this.animateDuration);
+        }
     }
 
     /**
