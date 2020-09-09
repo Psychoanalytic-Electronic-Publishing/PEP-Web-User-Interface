@@ -40,10 +40,10 @@ export default class SearchRefine extends Component<SearchRefineArgs> {
         const groups: RefineGroup[] = [];
         const fieldsMap = this.args.metadata?.facetCounts?.facet_fields ?? {};
         const incFields = Object.keys(fieldsMap);
-        const displayedFacets = cfg.facets.defaultFields.map((id) => SEARCH_FACETS.findBy('id', id)!);
+        const displayedFacets = cfg.facets.defaultFields.map((id) => SEARCH_FACETS.find((f) => f.id === id));
 
         displayedFacets.forEach((facetType) => {
-            if (incFields.includes(facetType.id)) {
+            if (facetType && incFields.includes(facetType.id)) {
                 let fieldCountsMap = facetType.formatCounts
                     ? facetType.formatCounts(fieldsMap[facetType.id])
                     : fieldsMap[facetType.id];

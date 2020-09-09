@@ -46,8 +46,6 @@ export default class ReadDocument extends Controller {
     @tracked citedCount: string = '';
     @tracked viewedCount: string = '';
     @tracked viewedPeriod: ViewPeriod = SEARCH_DEFAULT_VIEW_PERIOD;
-    //workaround for bug w/array-based query param values
-    //@see https://github.com/emberjs/ember.js/issues/18981
     @tracked _searchTerms: string | null = null;
     @tracked paginator!: Pagination<Document>;
 

@@ -19,7 +19,7 @@ export default class SearchFormTermControl extends Component<SearchFormTermContr
     }
 
     get selectedSearchType() {
-        return SEARCH_TYPES.find((t) => t.id === this.args.searchTerm?.type);
+        return SEARCH_TYPES.find((t) => t.id === this.args.searchTerm.type);
     }
 
     get termContentConfig() {

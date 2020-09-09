@@ -2,6 +2,11 @@ import IntlService from 'ember-intl/services/intl';
 
 import { SearchFacetCounts, groupCountsByRange } from 'pep/utils/search';
 
+/**
+ * Accepted query param fields for the /v2/Database/Search endpoint
+ * @export
+ * @type SearchTermParam
+ */
 export type SearchTermParam =
     | 'fulltext1'
     | 'paratext'
@@ -19,6 +24,11 @@ export type SearchTermParam =
     | 'viewcount'
     | 'viewperiod';
 
+/**
+ * Valid values for the viewperiod /v2/Database/Search endpoint (and misc other endpoints)
+ * @export
+ * @enum {number}
+ */
 export enum ViewPeriod {
     PAST_CAL_YEAR = 0,
     PAST_WEEK = 1,
@@ -27,6 +37,11 @@ export enum ViewPeriod {
     PAST_12_MONTHS = 4
 }
 
+/**
+ * Search term fields for the "fielded search" search form inputs
+ * @export
+ * @enum {string}
+ */
 export enum SearchTermId {
     EVERYWHERE = 'everywhere',
     AUTHOR = 'author',
@@ -42,6 +57,12 @@ export enum SearchTermId {
     VIEWED = 'viewed'
 }
 
+/**
+ * Search facets passed to and returned by the /v2/Database/Search endpoint
+ * that allows search results to be further filtered via the "Refine" form
+ * @export
+ * @enum {string}
+ */
 export enum SearchFacetId {
     ART_ID = 'art_id',
     ART_TITLE = 'art_title',
@@ -86,16 +107,32 @@ export enum SearchFacetId {
     GLOSSARY_GROUP_TERMS = 'glossary_group_terms'
 }
 
+/**
+ * Represents a "fielded search" input's current type and entered text
+ * @export
+ * @interface SearchTermValue
+ */
 export interface SearchTermValue {
     type: SearchTermId;
     term: string;
 }
 
+/**
+ * Represents a selected facet value from the search "Refine" form
+ * @export
+ * @interface SearchFacetValue
+ */
 export interface SearchFacetValue {
     id: string;
     value: string;
 }
 
+/**
+ * Configuration for search term fields used for its display in the UI
+ * and when building search queries for it
+ * @export
+ * @interface SearchTermType
+ */
 export interface SearchTermType {
     id: SearchTermId;
     param: string;
@@ -106,6 +143,12 @@ export interface SearchTermType {
     isTypeOption: boolean;
 }
 
+/**
+ * Configuration for search facets  used for its display in the UI
+ * and when building search queries for it
+ * @export
+ * @interface SearchFacetType
+ */
 export interface SearchFacetType {
     id: SearchFacetId;
     param: SearchTermParam;
@@ -119,6 +162,11 @@ export interface SearchFacetType {
     formatOption?: (opt: string, intl: IntlService) => string;
 }
 
+/**
+ * Option for selecting a view period in the search form
+ * @export
+ * @interface ViewPeriodOption
+ */
 export interface ViewPeriodOption {
     id: ViewPeriod;
     label: string;
