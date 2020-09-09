@@ -1,17 +1,16 @@
 import { computed, setProperties } from '@ember/object';
 import { assign } from '@ember/polyfills';
 import Service, { inject as service } from '@ember/service';
-import SessionService from 'ember-simple-auth/services/session';
 import fetch from 'fetch';
 import { reject } from 'rsvp';
 
 import ENV from 'pep/config/environment';
 import { appendTrailingSlash } from 'pep/utils/url';
 import { guard } from 'pep/utils/types';
-import { PepSecureAuthenticatedData } from 'pep/api';
+import Session from 'pep/services/pep-session';
 
 export default class AjaxService extends Service {
-    @service session!: SessionService;
+    @service session!: Session;
 
     host: string = ENV.apiBaseUrl;
     namespace: string = ENV.apiNamespace;
@@ -27,7 +26,7 @@ export default class AjaxService extends Service {
         if (this.session.isAuthenticated) {
             // We are converting to unknown because session data is specified as something
             // completely different by the addon
-            const { SessionId } = (this.session.data!.authenticated as unknown) as PepSecureAuthenticatedData;
+            const { SessionId } = this.session.data.authenticated;
             headers['client-session'] = SessionId;
         }
         return headers;

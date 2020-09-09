@@ -2,14 +2,13 @@ import { inject as service } from '@ember/service';
 import { classify } from '@ember/string';
 import DS from 'ember-data';
 import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
-import SessionService from 'ember-simple-auth/services/session';
 import { reject } from 'rsvp';
 import FastbootAdapter from 'ember-data-storefront/mixins/fastboot-adapter';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 
 import ENV from 'pep/config/environment';
 import { appendTrailingSlash } from 'pep/utils/url';
-import { PepSecureAuthenticatedData } from 'pep/api';
+import Session from 'pep/services/pep-session';
 
 export interface ApiServerError {
     code: string;
@@ -26,7 +25,7 @@ export interface ApiServerErrorResponse {
 
 //@ts-ignore TODO we need to figure out how to allow DS.RESTAdapter with custom properties correctly
 export default class Application extends DS.RESTAdapter.extend(DataAdapterMixin, FastbootAdapter) {
-    @service session!: SessionService;
+    @service session!: Session;
     @service fastboot!: FastbootService;
 
     host = ENV.apiBaseUrl;
@@ -71,7 +70,7 @@ export default class Application extends DS.RESTAdapter.extend(DataAdapterMixin,
         if (this.session.isAuthenticated) {
             // We are converting to unknown because session data is specified as something
             // completely different by the addon
-            const { SessionId } = (this.session.data!.authenticated as unknown) as PepSecureAuthenticatedData;
+            const { SessionId } = this.session.data.authenticated;
             headers['client-session'] = SessionId;
         }
 

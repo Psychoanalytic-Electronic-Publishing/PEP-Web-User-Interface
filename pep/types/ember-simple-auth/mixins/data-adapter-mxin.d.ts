@@ -1,9 +1,9 @@
 declare module 'ember-simple-auth/mixins/data-adapter-mixin' {
     import EmberObject from '@ember/object';
-    import SessionService from 'ember-simple-auth/services/session';
+    import Session from 'pep/services/pep-session';
 
     export default class DataAdapterMixin extends EmberObject {
-        session: SessionService;
+        session: Session;
         authorizer: null;
 
         ajaxOptions(url: string, type: string, options?: object | undefined): {};

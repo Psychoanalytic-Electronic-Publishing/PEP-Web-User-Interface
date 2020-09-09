@@ -6,14 +6,14 @@ import SidebarService from 'pep/services/sidebar';
 import FastbootMediaService from 'pep/services/fastboot-media';
 import ConfigurationService from 'pep/services/configuration';
 import AuthService from 'pep/services/auth';
-import SessionService from 'ember-simple-auth/services/session';
+import Session from 'pep/services/pep-session';
 
 export default class Index extends Controller {
     @service sidebar!: SidebarService;
     @service fastbootMedia!: FastbootMediaService;
     @service configuration!: ConfigurationService;
     @service auth!: AuthService;
-    @service session!: SessionService;
+    @service session!: Session;
 
     get intro() {
         return this.configuration.content.home.intro;

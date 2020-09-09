@@ -3,7 +3,6 @@ import { action, setProperties } from '@ember/object';
 import { isEmpty } from '@ember/utils';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import SessionService from 'ember-simple-auth/services/session';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import IntlService from 'ember-intl/services/intl';
 import copy from 'lodash.clonedeep';
@@ -20,10 +19,11 @@ import LoadingBarService from 'pep/services/loading-bar';
 import Modal from '@gavant/ember-modals/services/modal';
 import ENV from 'pep/config/environment';
 import { ServerStatus } from 'pep/api';
+import Session from 'pep/services/pep-session';
 
 export default class Application extends Controller {
     @service loadingBar!: LoadingBarService;
-    @service session!: SessionService;
+    @service session!: Session;
     @service ajax!: AjaxService;
     @service notifications!: NotificationService;
     @service modal!: Modal;
