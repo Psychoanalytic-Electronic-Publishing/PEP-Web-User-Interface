@@ -1,4 +1,4 @@
-import { SearchTermId, SearchFacetId } from './search';
+import { SearchTermId, SearchFacetId } from 'pep/constants/search';
 
 /**
  * Base admin configuration fields for the application
