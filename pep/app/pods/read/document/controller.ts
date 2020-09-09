@@ -4,31 +4,30 @@ import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import RouterService from '@ember/routing/router-service';
 import { reject } from 'rsvp';
-import SessionService from 'ember-simple-auth/services/session';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
 import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 
 import AuthService from 'pep/services/auth';
 import LoadingBarService from 'pep/services/loading-bar';
+import ConfigurationService from 'pep/services/configuration';
+import PepSessionService from 'pep/services/pep-session';
 import { buildSearchQueryParams } from 'pep/utils/search';
-import {
-    ViewPeriod,
-    SEARCH_DEFAULT_VIEW_PERIOD,
-    SEARCH_DEFAULT_PARAMS,
-    SEARCH_DEFAULT_TERMS
-} from 'pep/constants/search';
+import { ViewPeriod, SEARCH_DEFAULT_VIEW_PERIOD } from 'pep/constants/search';
 import Document from 'pep/pods/document/model';
 import { WIDGET } from 'pep/constants/sidebar';
 
 export default class ReadDocument extends Controller {
-    @service session!: SessionService;
+    @service('pep-session') session!: PepSessionService;
     @service auth!: AuthService;
     @service fastboot!: FastbootService;
     @service loadingBar!: LoadingBarService;
     @service router!: RouterService;
+    @service configuration!: ConfigurationService;
 
-    defaultSearchParams = SEARCH_DEFAULT_PARAMS;
+    get defaultSearchParams() {
+        return this.configuration.defaultSearchParams;
+    }
 
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
@@ -48,9 +47,7 @@ export default class ReadDocument extends Controller {
     @tracked citedCount: string = '';
     @tracked viewedCount: string = '';
     @tracked viewedPeriod: ViewPeriod = SEARCH_DEFAULT_VIEW_PERIOD;
-    //workaround for bug w/array-based query param values
-    //@see https://github.com/emberjs/ember.js/issues/18981
-    @tracked _searchTerms: string | null = JSON.stringify(SEARCH_DEFAULT_TERMS);
+    @tracked _searchTerms: string | null = null;
     @tracked paginator!: Pagination<Document>;
 
     get sidebarData() {
@@ -111,6 +108,7 @@ export default class ReadDocument extends Controller {
      */
     @action
     processQueryParams(params: QueryParamsObj) {
+        const cfg = this.configuration.base.search;
         const searchParams = buildSearchQueryParams(
             this.q,
             this.searchTerms,
@@ -118,7 +116,11 @@ export default class ReadDocument extends Controller {
             this.facets,
             this.citedCount,
             this.viewedCount,
-            this.viewedPeriod
+            this.viewedPeriod,
+            cfg.facets.defaultFields,
+            'AND',
+            cfg.facets.valueLimit,
+            cfg.facets.valueMinCount
         );
         return { ...params, ...searchParams };
     }

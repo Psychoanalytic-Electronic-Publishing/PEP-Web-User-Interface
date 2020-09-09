@@ -9,12 +9,12 @@
                 }}
             </h4>
             <div class="d-flex align-items-center">
-                <Button
+                <Button::WithTooltip
                     @type="link"
                     @icon="download"
                     @iconSize="lg"
                     @action={{this.downloadCSV}}
-                    title={{t "common.export"}}
+                    @tooltip={{t "common.export"}}
                     class="p-1"
                 />
             </div>

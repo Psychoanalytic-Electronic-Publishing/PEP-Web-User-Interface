@@ -4,7 +4,6 @@ import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
-import SessionService from 'ember-simple-auth/services/session';
 import MediaService from 'ember-responsive/services/media';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import IntlService from 'ember-intl/services/intl';
@@ -18,11 +17,12 @@ import AuthService from 'pep/services/auth';
 import LangService from 'pep/services/lang';
 import ConfigurationService from 'pep/services/configuration';
 import { ApiServerErrorResponse } from 'pep/pods/application/adapter';
+import PepSessionService from 'pep/services/pep-session';
 
 export default class Application extends PageLayout(Route.extend(ApplicationRouteMixin)) {
     routeAfterAuthentication = 'index';
 
-    @service session!: SessionService;
+    @service('pep-session') session!: PepSessionService;
     @service fastboot!: FastbootService;
     @service media!: MediaService;
     @service notifications!: NotificationService;
@@ -43,6 +43,7 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
      * @returns {Promise<void>}
      */
     appSetup() {
+        this.currentUser.setup();
         this.theme.setup();
         this.lang.setup();
         return this.configuration.setup();

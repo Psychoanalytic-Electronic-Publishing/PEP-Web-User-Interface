@@ -76,7 +76,7 @@
             "instructions": "Use the form on the left to enter terms or phrases and search our publication database.",
             "tips": {
                 "heading": "Search tips",
-                "instructions": "Smart Search taskes all kinds of search inputs:",
+                "instructions": "Smart Search takes all kinds of search inputs:",
                 "tip1": "Find terms or keywords - to get the best search results, '<strong>'enter at least two terms at a time.'</strong>''<br>'This will make the search more precise, returning only the most relevant results.",
                 "tip2": "Paste a reference from an article",
                 "tip3": "Use a Journal name or part of a journal name",
@@ -117,8 +117,7 @@
             },
             "tooManyResults": {
                 "heading": "Try refining your search",
-                "numResults": "There are '<strong>'{count}'</strong>' {count, plural, =1 {result} other {results}} that match your criteria.",
-                "instructions": "Enter at least two terms, additional criteria, and/or use the 'Refine' form below to increase search precision."
+                "numResults": "There are '<strong>'{count}'</strong>' {count, plural, =1 {result} other {results}} that match your criteria."
             }
         },
         "refine": {
@@ -135,9 +134,12 @@
             }
         },
         "preview": {
-            "fit": "Expand to fit",
             "maximize": "Maximize",
             "minimize": "Minimize",
+            "fit": {
+                "on": "Enable resize to fit",
+                "off": "Disable resize to fit"
+            },
             "read": "Read",
             "mustBeLoggedIn": "You must be logged in to read or download this document.",
             "login": "Click here to login",
@@ -170,10 +172,10 @@
             "article": {
                 "label": "Article"
             },
-            "start-year": {
+            "startYear": {
                 "label": "Year"
             },
-            "end-year": {
+            "endYear": {
                 "label": "End Year"
             },
             "bibliography": {
@@ -247,11 +249,16 @@
                 "label": "Decade",
                 "option": "{year}'s"
             },
-            "art_cited_all": {
-                "label": "# Times Cited"
+            "art_cited_5": {
+                "label": "Citation Count",
+                "option": "{range} citations"
             },
             "art_views_last12mos": {
-                "label": "# Times Viewed"
+                "label": "View Count",
+                "option": "{range} views"
+            },
+            "art_authors": {
+                "label": "Author"
             }
         },
         "viewPeriod": {
@@ -404,7 +411,7 @@
         },
         "archive": {
             "title": "PEP Archive",
-            "description": "PEP Web has been designed to provide a powerful rapid search of the entire psychoanalytic literature in English, French, German, Greek, Italian, Romanian, Spanish and Turkish. It is the result of an innovative, high quality series of technical developments and a considerable financial and scholarly investment. You can '<a href=\"http://support.pep-web.org/about-the-pep-archive/digitization-and-quality-control/\" target=\"_blank\">'read about the innovative developments required to produce and keep updating the PEP archive'</a>' and read '<a href=\"http://support.pep-web.org/about-pep/history-of-pep/\" target=\"_blank\">'about the history of the PEP archive'</a>'. You can even '<a href=\"http://support.pep-web.org/about-the-pep-archive/suggest-new-content/\" target=\"_blank\">'suggest new content'</a>' that you would like to see added to the PEP Archive. '<br>' For more information, see the '<a href=\"http://support.pep-web.org\" target=\"_blank\">'PEP Web support pages'</a>'"
+            "description": "PEP Web has been designed to provide a powerful rapid search of the entire psychoanalytic literature in English, French, German, Greek, Italian, Romanian, Spanish and Turkish. It is the result of an innovative, high quality series of technical developments and a considerable financial and scholarly investment. You can '<a href=\"http://support.pep-web.org/about-the-pep-archive/digitization-and-quality-control/\" target=\"_blank\">'read about the innovative developments required to produce and keep updating the PEP archive'</a>' and read '<a href=\"http://support.pep-web.org/about-pep/history-of-pep/\" target=\"_blank\">'about the history of the PEP archive'</a>'. You can even '<a href=\"http://support.pep-web.org/about-the-pep-archive/suggest-new-content/\" target=\"_blank\">'suggest new content'</a>' that you would like to see added to the PEP Archive. '<br><br>' For more information, see the '<a href=\"http://support.pep-web.org\" target=\"_blank\">'PEP Web support pages'</a>'"
         }
     },
     "language": {

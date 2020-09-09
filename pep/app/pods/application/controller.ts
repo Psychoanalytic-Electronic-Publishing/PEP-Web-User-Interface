@@ -3,33 +3,32 @@ import { action, setProperties } from '@ember/object';
 import { isEmpty } from '@ember/utils';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import SessionService from 'ember-simple-auth/services/session';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import IntlService from 'ember-intl/services/intl';
-import copy from 'lodash.clonedeep';
+import Modal from '@gavant/ember-modals/services/modal';
+import { timeout } from 'ember-concurrency';
+import { restartableTask } from 'ember-concurrency-decorators';
+import { taskFor } from 'ember-concurrency-ts';
 
-import {
-    SEARCH_TYPE_EVERYWHERE,
-    SearchTermValue,
-    ViewPeriod,
-    SEARCH_DEFAULT_VIEW_PERIOD,
-    SEARCH_DEFAULT_TERMS
-} from 'pep/constants/search';
+import { SEARCH_TYPE_EVERYWHERE, SearchTermValue, ViewPeriod, SEARCH_DEFAULT_VIEW_PERIOD } from 'pep/constants/search';
 import AjaxService from 'pep/services/ajax';
 import LoadingBarService from 'pep/services/loading-bar';
-import Modal from '@gavant/ember-modals/services/modal';
+import PepSessionService from 'pep/services/pep-session';
 import ENV from 'pep/config/environment';
 import { ServerStatus } from 'pep/api';
 import ConfigurationService from 'pep/services/configuration';
+import { PreferenceKey } from 'pep/constants/preferences';
+import CurrentUserService from 'pep/services/current-user';
 
 export default class Application extends Controller {
     @service loadingBar!: LoadingBarService;
-    @service session!: SessionService;
+    @service('pep-session') session!: PepSessionService;
     @service ajax!: AjaxService;
     @service notifications!: NotificationService;
     @service modal!: Modal;
     @service intl!: IntlService;
     @service configuration!: ConfigurationService;
+    @service currentUser!: CurrentUserService;
 
     @tracked isLimitOpen: boolean = false;
     @tracked smartSearchTerm: string = '';
@@ -37,8 +36,7 @@ export default class Application extends Controller {
     @tracked citedCount: string = '';
     @tracked viewedCount: string = '';
     @tracked viewedPeriod: ViewPeriod = ViewPeriod.PAST_WEEK;
-    // create a copy of the default search terms objects so they can be mutated
-    @tracked searchTerms: SearchTermValue[] = copy(SEARCH_DEFAULT_TERMS);
+    @tracked searchTerms: SearchTermValue[] = [];
 
     @tracked rightSidebarWidgets = this.configuration.base.global.cards.right;
     @tracked leftSidebarWidgets = this.configuration.base.global.cards.left;
@@ -73,14 +71,18 @@ export default class Application extends Controller {
      */
     @action
     clearSearch() {
+        const cfg = this.configuration.base.search;
+        const prefs = this.currentUser.preferences;
+        const terms = prefs?.searchTermFields ?? cfg.terms.defaultFields;
+        const isLimitOpen = prefs?.searchLimitIsShown ?? cfg.limitFields.isShown;
+
         this.smartSearchTerm = '';
         this.matchSynonyms = false;
         this.citedCount = '';
         this.viewedCount = '';
         this.viewedPeriod = ViewPeriod.PAST_WEEK;
-        this.isLimitOpen = false;
-        // create a copy of the default search terms objects so they can be mutated
-        this.searchTerms = copy(SEARCH_DEFAULT_TERMS);
+        this.isLimitOpen = isLimitOpen;
+        this.searchTerms = terms.map((f) => ({ type: f, term: '' }));
     }
 
     /**
@@ -90,6 +92,7 @@ export default class Application extends Controller {
     @action
     addSearchTerm(newSearchTerm: SearchTermValue) {
         this.searchTerms = this.searchTerms.concat([newSearchTerm]);
+        taskFor(this.updateSearchFormPrefs).perform();
     }
 
     /**
@@ -106,6 +109,7 @@ export default class Application extends Controller {
         }
 
         this.searchTerms = searchTerms;
+        taskFor(this.updateSearchFormPrefs).perform();
     }
 
     /**
@@ -120,6 +124,7 @@ export default class Application extends Controller {
         //a brand new one like we normally would, so that it doesnt trigger an insert animation
         setProperties(oldTerm, newTerm);
         this.searchTerms = searchTerms;
+        taskFor(this.updateSearchFormPrefs).perform();
     }
 
     /**
@@ -152,6 +157,20 @@ export default class Application extends Controller {
             this.viewedCount = '';
             this.viewedPeriod = SEARCH_DEFAULT_VIEW_PERIOD;
         }
+
+        taskFor(this.updateSearchFormPrefs).perform();
+    }
+
+    /**
+     * Updates the user's search form preferences after a short delay
+     */
+    @restartableTask
+    *updateSearchFormPrefs() {
+        yield timeout(500);
+        yield this.currentUser.updatePrefs({
+            [PreferenceKey.SEARCH_LIMIT_IS_SHOWN]: this.isLimitOpen,
+            [PreferenceKey.SEARCH_TERM_FIELDS]: this.searchTerms.map((t) => t.type)
+        });
     }
 
     /**

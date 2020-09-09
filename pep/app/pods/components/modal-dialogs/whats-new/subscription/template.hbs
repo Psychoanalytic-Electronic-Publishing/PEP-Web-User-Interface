@@ -24,23 +24,23 @@
                             maxlength="128"
                         />
                     </validator.input>
-                    <CheckboxInput
-                        @checked={{@matchSynonyms}}
-                        @onChange={{@matchSynonymsChange}}
-                        @label={{t "relatedInfo.widgets.whatsNew.alerts.journals"}}
-                    />
-                    <CheckboxInput
-                        @checked={{@matchSynonyms}}
-                        @onChange={{@matchSynonymsChange}}
-                        @label={{t "relatedInfo.widgets.whatsNew.alerts.videos"}}
-                    />
-                    <CheckboxInput
-                        @checked={{@matchSynonyms}}
-                        @onChange={{@matchSynonymsChange}}
-                        @label={{t "relatedInfo.widgets.whatsNew.alerts.ijp"}}
-                    />
                 </div>
             </div>
+            <CheckboxInput
+                @checked={{@matchSynonyms}}
+                @onChange={{@matchSynonymsChange}}
+                @label={{t "relatedInfo.widgets.whatsNew.alerts.journals"}}
+            />
+            <CheckboxInput
+                @checked={{@matchSynonyms}}
+                @onChange={{@matchSynonymsChange}}
+                @label={{t "relatedInfo.widgets.whatsNew.alerts.videos"}}
+            />
+            <CheckboxInput
+                @checked={{@matchSynonyms}}
+                @onChange={{@matchSynonymsChange}}
+                @label={{t "relatedInfo.widgets.whatsNew.alerts.ijp"}}
+            />
         </Modal.body>
         <Modal.footer>
             <Button

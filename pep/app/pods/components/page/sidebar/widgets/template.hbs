@@ -1,8 +1,12 @@
 <div class="px-2 pt-3 pb-1 d-flex justify-content-between align-items-center">
     <h5 class="m-0">{{t "relatedInfo.title"}}</h5>
-    <Button @type="link" class="p-0" @action={{this.toggleAll}}>
-        {{t (if this.showCloseAll 'relatedInfo.batchClose' 'relatedInfo.batchOpen')}}
-    </Button>
+    <Button
+        @type="link"
+        @action={{this.toggleAll}}
+        @label={{t (if this.showCloseAll "relatedInfo.batchClose" "relatedInfo.batchOpen")}}
+        @icon={{if this.showCloseAll "chevron-up" "chevron-down"}}
+        class="p-0 font-size-secondary"
+    />
 </div>
 <div class="p-2">
     {{#each @widgets as |widget|}}

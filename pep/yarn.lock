@@ -2497,10 +2497,10 @@
     ember-modal-dialog "^3.0.0-beta.4"
     ember-spread "^7.0.1"
 
-"@gavant/ember-pagination@3.0.0-beta.1":
-  version "3.0.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@gavant/ember-pagination/-/ember-pagination-3.0.0-beta.1.tgz#d11c4e29d9916740fc1d21969fb7675ce36389de"
-  integrity sha512-Vl/i6dPtc4gs3aIgzEQ8ZsyQfcmoBcm8zl2Vfo0Xl0D/u47URSkk2K0hxZL4izlxTihIn8xIsCOKPRSaNDBTKA==
+"@gavant/ember-pagination@3.0.0-beta.2":
+  version "3.0.0-beta.2"
+  resolved "https://registry.yarnpkg.com/@gavant/ember-pagination/-/ember-pagination-3.0.0-beta.2.tgz#07e1db8dc66127271f4576e490fc4e543ab07c2f"
+  integrity sha512-c9zRHHEY1QC+OdJnczDDYxEn5F2oLPDasz3hUCu86ZvY/zPVUti3FGsQUxvh2V07aBWESOPVwyMJaPhhc5Xurw==
   dependencies:
     ember-cli-babel "^7.17.2"
     ember-cli-htmlbars "^4.2.2"
@@ -7663,7 +7663,7 @@ ember-content-placeholders@^1.0.0:
     ember-cli-babel "^6.6.0"
     ember-cli-htmlbars "^2.0.1"
 
-ember-cookies@^0.5.0:
+ember-cookies@0.5.2, ember-cookies@^0.5.0:
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/ember-cookies/-/ember-cookies-0.5.2.tgz#06e33463f2f83254fefaf224cc944dec3fb9d3ba"
   integrity sha512-nZ7oG97kBcO9UHjO95ryABpnVx62Bhxo7lIsBJNmWvFXleILm9DGueiAynzXxuYWWPuKIeeSbYakrS1869tNTw==
@@ -8046,16 +8046,16 @@ ember-router-generator@^2.0.0:
     "@babel/traverse" "^7.4.5"
     recast "^0.18.1"
 
-ember-simple-auth@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/ember-simple-auth/-/ember-simple-auth-3.0.0.tgz#d994f512cda1a8a5a6ef5a853fac60c0c0d6acd6"
-  integrity sha512-JaEw5W/Z9+HIH9I2BmE/JD4KofH4rp79Y51zJpt3UQI1OwWFOzFa+ulN0rK/DVLpGOz7uL7hBIE/rtEcEN1eqA==
+ember-simple-auth@3.1.0-beta.0:
+  version "3.1.0-beta.0"
+  resolved "https://registry.yarnpkg.com/ember-simple-auth/-/ember-simple-auth-3.1.0-beta.0.tgz#283dde8f8ab68aa83360e650ddae39bc652eab4d"
+  integrity sha512-QKhuFD32a0eWUGySp/3oR9aWOwsvmqR+Q1CfMHn3xRR8H0xintE2CjwUEZLMjrC0ixEXzpCu60Gjrltdrbhqzw==
   dependencies:
     base-64 "^0.1.0"
     broccoli-file-creator "^2.0.0"
     broccoli-funnel "^1.2.0 || ^2.0.0"
     broccoli-merge-trees "^2.0.0 || ^3.0.0"
-    ember-cli-babel "^7.12.0"
+    ember-cli-babel "^7.20.5"
     ember-cli-is-package-missing "^1.0.0"
     ember-cookies "^0.5.0"
     silent-error "^1.0.0"

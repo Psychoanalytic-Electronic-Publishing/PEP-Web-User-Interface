@@ -6,15 +6,15 @@ import Transition from '@ember/routing/-private/transition';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hooks/pagination';
 import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
-import copy from 'lodash.clonedeep';
 
 import { PageNav, PageSidebar } from 'pep/mixins/page-layout';
 import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
 import SidebarService from 'pep/services/sidebar';
+import ConfigurationService from 'pep/services/configuration';
+import CurrentUserService from 'pep/services/current-user';
 import SearchController from 'pep/pods/search/controller';
 import Document from 'pep/pods/document/model';
 import { SearchMetadata } from 'pep/api';
-import { SEARCH_DEFAULT_TERMS } from 'pep/constants/search';
 
 export interface SearchParams {
     q: string;
@@ -29,6 +29,8 @@ export interface SearchParams {
 export default class Search extends PageNav(PageSidebar(Route)) {
     @service sidebar!: SidebarService;
     @service fastboot!: FastbootService;
+    @service configuration!: ConfigurationService;
+    @service currentUser!: CurrentUserService;
 
     navController = 'search';
     sidebarController = 'search';
@@ -64,7 +66,7 @@ export default class Search extends PageNav(PageSidebar(Route)) {
      */
     model(params: SearchParams) {
         const searchParams = this.buildQueryParams(params);
-        //if no search was submitted, don't fetch any results
+        // if no search was submitted, don't fetch any results
         if (hasSearchQuery(searchParams)) {
             const controller = this.controllerFor(this.routeName);
             const queryParams = buildQueryParams({
@@ -88,7 +90,7 @@ export default class Search extends PageNav(PageSidebar(Route)) {
         const params = this.paramsFor(this.routeName) as SearchParams;
         const searchParams = this.buildQueryParams(params, false);
 
-        //if a search was submitted, do a 2nd query to get the metadata/facet counts w/o any facet values applied
+        // if a search was submitted, do a 2nd query to get the metadata/facet counts w/o any facet values applied
         if (hasSearchQuery(searchParams)) {
             const result = await this.store.query('document', { ...searchParams, offset: 0, limit: 1 });
             this.resultsMeta = result.meta as SearchMetadata;
@@ -108,27 +110,31 @@ export default class Search extends PageNav(PageSidebar(Route)) {
      * @param {SearchController} controller
      * @param {Document} model
      */
-    //workaround for bug w/array-based query param values
-    //@see https://github.com/emberjs/ember.js/issues/18981
-    //@ts-ignore
+    // workaround for bug w/array-based query param values
+    // @see https://github.com/emberjs/ember.js/issues/18981
+    // @ts-ignore
     setupController(controller: SearchController, model: RecordArrayWithMeta<Document>) {
+        const cfg = this.configuration.base.search;
+        const prefs = this.currentUser.preferences;
+        const terms = prefs?.searchTermFields ?? cfg.terms.defaultFields;
+        const isLimitOpen = prefs?.searchLimitIsShown ?? cfg.limitFields.isShown;
         //map the query params to current search values to populate the form
         controller.currentSmartSearchTerm = controller.q;
         controller.currentMatchSynonyms = controller.matchSynonyms;
         controller.currentCitedCount = controller.citedCount;
         controller.currentViewedCount = controller.viewedCount;
         controller.currentViewedPeriod = controller.viewedPeriod;
-        // create a copy of the default search terms objects so they can be mutated
         controller.currentSearchTerms = isEmpty(controller.searchTerms)
-            ? copy(SEARCH_DEFAULT_TERMS)
+            ? terms.map((f) => ({ type: f, term: '' }))
             : controller.searchTerms;
         controller.currentFacets = controller.facets;
 
-        //pass the search result meta data into the controller
+        // pass the search result meta data into the controller
         controller.resultsMeta = this.resultsMeta;
 
-        //open the search form's limit fields section if it has values
-        if (controller.currentCitedCount || controller.currentViewedCount) {
+        // open the search form's limit fields section if it has values
+        // or the admin configs or user's prefs default it to open
+        if (controller.currentCitedCount || controller.currentViewedCount || isLimitOpen) {
             controller.isLimitOpen = true;
         }
 
@@ -141,9 +147,9 @@ export default class Search extends PageNav(PageSidebar(Route)) {
             filterRootKey: null,
             processQueryParams: controller.processQueryParams
         });
-        //workaround for bug w/array-based query param values
-        //@see https://github.com/emberjs/ember.js/issues/18981
-        //@ts-ignore
+        // workaround for bug w/array-based query param values
+        // @see https://github.com/emberjs/ember.js/issues/18981
+        // @ts-ignore
         super.setupController(controller, model);
     }
 
@@ -157,16 +163,17 @@ export default class Search extends PageNav(PageSidebar(Route)) {
     //@see https://github.com/emberjs/ember.js/issues/18981
     //@ts-ignore
     resetController(controller: SearchController, isExiting: boolean, transition: Transition) {
-        //workaround for bug w/array-based query param values
-        //@see https://github.com/emberjs/ember.js/issues/18981
-        //@ts-ignore
+        // workaround for bug w/array-based query param values
+        // @see https://github.com/emberjs/ember.js/issues/18981
+        // @ts-ignore
         super.resetController(controller, isExiting, transition);
         controller.previewedResult = null;
-        controller.previewMode = 'fit';
-        //clear current results meta data
+        // clear current results meta data
         controller.resultsMeta = null;
-        //reset the search form limit fields section
-        controller.isLimitOpen = false;
+        // reset the search form limit fields section
+        const cfg = this.configuration.base.search;
+        const prefs = this.currentUser.preferences;
+        controller.isLimitOpen = prefs?.searchLimitIsShown ?? cfg.limitFields.isShown;
     }
 
     /**
@@ -176,7 +183,8 @@ export default class Search extends PageNav(PageSidebar(Route)) {
      * @returns {QueryParamsObj}
      */
     buildQueryParams(params: SearchParams, includeFacets: boolean = true) {
-        //workaround for https://github.com/emberjs/ember.js/issues/18981
+        const cfg = this.configuration.base.search;
+        // workaround for https://github.com/emberjs/ember.js/issues/18981
         const searchTerms = params._searchTerms ? JSON.parse(params._searchTerms) : [];
         const facets = params._facets && includeFacets ? JSON.parse(params._facets) : [];
         return buildSearchQueryParams(
@@ -186,7 +194,11 @@ export default class Search extends PageNav(PageSidebar(Route)) {
             facets,
             params.citedCount,
             params.viewedCount,
-            params.viewedPeriod
+            params.viewedPeriod,
+            cfg.facets.defaultFields,
+            'AND',
+            cfg.facets.valueLimit,
+            cfg.facets.valueMinCount
         );
     }
 }

@@ -1,4 +1,5 @@
 import Route from '@ember/routing/route';
+import { inject as service } from '@ember/service';
 import Transition from '@ember/routing/-private/transition';
 import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hooks/pagination';
 import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
@@ -7,6 +8,7 @@ import { PageNav, PageSidebar } from 'pep/mixins/page-layout';
 import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
 import Document from 'pep/pods/document/model';
 import ReadDocumentController from 'pep/pods/read/document/controller';
+import ConfigurationService from 'pep/services/configuration';
 
 export interface ReadDocumentParams {
     document_id: string;
@@ -20,9 +22,11 @@ export interface ReadDocumentParams {
 }
 
 export default class ReadDocument extends PageNav(PageSidebar(Route)) {
+    @service configuration!: ConfigurationService;
     navController = 'read/document';
     sidebarController = 'read/document';
-    searchResults?: RecordArrayWithMeta<Document>;
+    searchResults?: Document[];
+    searchResultsMeta?: any;
 
     /**
      * Fetch the requested document
@@ -42,33 +46,57 @@ export default class ReadDocument extends PageNav(PageSidebar(Route)) {
      */
     async afterModel(model: object, transition: Transition) {
         super.afterModel(model, transition);
+        let results;
+        let resultsMeta;
 
-        const params = this.paramsFor('read.document') as ReadDocumentParams;
-        //workaround for https://github.com/emberjs/ember.js/issues/18981
-        const searchTerms = params._searchTerms ? JSON.parse(params._searchTerms) : [];
-        const facets = params._facets ? JSON.parse(params._facets) : [];
+        // if we are transitioning from either the search results page, or another read document page
+        // attempt to pull in the existing documents models for the results list, instead of making
+        // another search query request for the same data
+        if (transition.from?.name === 'read.document' || transition.from?.name === 'search') {
+            const controller = this.controllerFor(transition.from?.name) as ReadDocumentController;
+            results = controller?.paginator?.models;
+            resultsMeta = controller?.paginator?.metadata;
+        }
 
-        const searchParams = buildSearchQueryParams(
-            params.q,
-            searchTerms,
-            params.matchSynonyms,
-            facets,
-            params.citedCount,
-            params.viewedCount,
-            params.viewedPeriod
-        );
-        //if no search was submitted, don't fetch any results
-        if (hasSearchQuery(searchParams)) {
-            const controller = this.controllerFor(this.routeName);
-            const queryParams = buildQueryParams({
-                context: controller,
-                pagingRootKey: null,
-                filterRootKey: null,
-                processQueryParams: (params) => ({ ...params, ...searchParams })
-            });
+        if (!results) {
+            const params = this.paramsFor('read.document') as ReadDocumentParams;
+            //workaround for https://github.com/emberjs/ember.js/issues/18981
+            const searchTerms = params._searchTerms ? JSON.parse(params._searchTerms) : [];
+            const facets = params._facets ? JSON.parse(params._facets) : [];
+            const cfg = this.configuration.base.search;
+            const searchParams = buildSearchQueryParams(
+                params.q,
+                searchTerms,
+                params.matchSynonyms,
+                facets,
+                params.citedCount,
+                params.viewedCount,
+                params.viewedPeriod,
+                cfg.facets.defaultFields,
+                'AND',
+                cfg.facets.valueLimit,
+                cfg.facets.valueMinCount
+            );
 
-            const results = (await this.store.query('document', queryParams)) as RecordArrayWithMeta<Document>;
+            //if no search was submitted, don't fetch any results
+            if (hasSearchQuery(searchParams)) {
+                const controller = this.controllerFor(this.routeName);
+                const queryParams = buildQueryParams({
+                    context: controller,
+                    pagingRootKey: null,
+                    filterRootKey: null,
+                    processQueryParams: (params) => ({ ...params, ...searchParams })
+                });
+
+                const res = (await this.store.query('document', queryParams)) as RecordArrayWithMeta<Document>;
+                results = res.toArray();
+                resultsMeta = res.meta;
+            }
+        }
+
+        if (results && resultsMeta) {
             this.searchResults = results;
+            this.searchResultsMeta = resultsMeta;
         }
     }
 
@@ -88,8 +116,8 @@ export default class ReadDocument extends PageNav(PageSidebar(Route)) {
         controller.paginator = usePagination<Document>({
             context: controller,
             modelName: 'document',
-            models: this.searchResults?.toArray() ?? [],
-            metadata: this.searchResults?.meta,
+            models: this.searchResults ?? [],
+            metadata: this.searchResultsMeta,
             pagingRootKey: null,
             filterRootKey: null,
             processQueryParams: controller.processQueryParams

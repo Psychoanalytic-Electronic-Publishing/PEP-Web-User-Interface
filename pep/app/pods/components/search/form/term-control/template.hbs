@@ -1,0 +1,44 @@
+<div class="search-form-term-control mb-2" ...attributes>
+    <div class="d-flex">
+        <div class="search-form-term-control-field flex-fill">
+            <FlInput
+                @placeholder={{or this.termContentConfig.prompt (t "search.form.terms.label")}}
+                @value={{@searchTerm.term}}
+                class="search-form-term-control-field-text"
+                maxlength="255"
+                autocomplete="off"
+                {{on "input" (fn @onTermTextChange @searchTerm)}}
+            />
+            <select
+                class="custom-select search-form-term-control-field-type"
+                {{on "change" (fn @updateTermType @searchTerm)}}
+            >
+                {{#each this.searchTypeOptions as |searchType|}}
+                    <option value={{searchType.id}} selected={{eq searchType.id @searchTerm.type}}>
+                        {{t searchType.label}}
+                    </option>
+                {{/each}}
+            </select>
+        </div>
+        <Button
+            @icon="trash-alt"
+            @type="link"
+            @action={{fn @removeSearchTerm @searchTerm}}
+            class="ml-1 p-0"
+            title={{t "search.form.terms.remove"}}
+        />
+    </div>
+    {{#if this.termContentConfig.help}}
+        <abbr class="search-form-term-control-help">
+            <FaIcon @icon="question-circle" />
+            <EmberTooltip
+                @text={{this.termContentConfig.help}}
+                @popperContainer="body"
+                @side="right"
+                @spacing={{5}}
+                @effect="slide"
+                @innerClass=""
+            />
+        </abbr>
+    {{/if}}
+</div>

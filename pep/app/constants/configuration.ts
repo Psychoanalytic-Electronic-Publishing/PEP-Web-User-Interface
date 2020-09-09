@@ -1,4 +1,5 @@
 import { WIDGET } from 'pep/constants/sidebar';
+import { SearchTermId, SearchFacetId } from 'pep/constants/search';
 
 /**
  * Widget configuration - tells us which widget and whether its open
@@ -16,6 +17,7 @@ export enum AspectRatio {
     SIXTEEN_BY_NINE = '16by9',
     FOUR_BY_THREE = '4by3'
 }
+
 /**
  * Base admin configuration fields for the application
  * MUST NOT contain any configuration data/content that is language-dependent
@@ -39,6 +41,22 @@ export interface BaseConfiguration {
             articleId: string;
             imageId: string;
         }[];
+    };
+    search: {
+        tooManyResults: {
+            threshold: number;
+        };
+        limitFields: {
+            isShown: boolean;
+        };
+        terms: {
+            defaultFields: SearchTermId[];
+        };
+        facets: {
+            valueLimit: number;
+            valueMinCount: number;
+            defaultFields: SearchFacetId[];
+        };
     };
 }
 
@@ -83,6 +101,19 @@ export interface ContentConfiguration {
             };
         };
     };
+    search: {
+        tooManyResults: {
+            instructions: string;
+        };
+        terms: {
+            types: {
+                [K in SearchTermId]?: {
+                    prompt?: string;
+                    help?: string;
+                };
+            };
+        };
+    };
 }
 
 export const BASE_CONFIG_NAME = 'pep-base';
@@ -123,6 +154,33 @@ export const DEFAULT_BASE_CONFIGURATION: BaseConfiguration = {
                 imageId: 'CJP.024-025.0233A.FIG001'
             }
         ]
+    },
+    search: {
+        tooManyResults: {
+            threshold: 200
+        },
+        limitFields: {
+            isShown: false
+        },
+        terms: {
+            defaultFields: [SearchTermId.EVERYWHERE, SearchTermId.TITLE, SearchTermId.AUTHOR]
+        },
+        facets: {
+            valueLimit: 15,
+            valueMinCount: 1,
+            defaultFields: [
+                SearchFacetId.ART_YEAR_INT,
+                SearchFacetId.ART_VIEWS_LAST12MOS,
+                SearchFacetId.ART_CITED_5,
+                SearchFacetId.ART_AUTHORS,
+                SearchFacetId.ART_LANG,
+                SearchFacetId.ART_TYPE,
+                SearchFacetId.ART_SOURCETYPE,
+                SearchFacetId.ART_SOURCETITLEABBR,
+                SearchFacetId.GLOSSARY_GROUP_TERMS,
+                SearchFacetId.ART_KWDS_STR
+            ]
+        }
     }
 };
 
@@ -140,7 +198,7 @@ export const DEFAULT_CONTENT_CONFIGURATION: ContentConfiguration = {
                 heading: 'Your search starts here',
                 subheading: 'Search all of the literature in PEP-WEB in seconds.',
                 body:
-                    '<p class="card-text"><strong>Smart Search</strong> taskes all kinds of search inputs:</p><ul><li>Find terms or keywords - to get the best search results, <strong>enter at least two terms at a time.</strong> <br>This will make the search more precise, returning only the most relevant results.</li><li>Paste a reference from an article</li><li>Journal name or part of a journal name</li><li>Author name</li><li>Part of a title (two or more words)</li><li>Year / Vol / Page #</li></ul>'
+                    '<p class="card-text"><strong>Smart Search</strong> takes all kinds of search inputs:</p><ul><li>Find terms or keywords - to get the best search results, <strong>enter at least two terms at a time.</strong> <br>This will make the search more precise, returning only the most relevant results.</li><li>Paste a reference from an article</li><li>Journal name or part of a journal name</li><li>Author name</li><li>Part of a title (two or more words)</li><li>Year / Vol / Page #</li></ul>'
             },
             right: {
                 heading: 'Let PEP be your guide',
@@ -160,6 +218,59 @@ export const DEFAULT_CONTENT_CONFIGURATION: ContentConfiguration = {
                 heading: '96 Classic Psychoanalytic Books',
                 body:
                     'The complete content of Sigmund Freud’s Standard Edition where each paragraph is cross-linked to the corresponding text in the German Freud Gesammelte Werke. Including 96 books from classic authors such as Bion, Bowlby, Klein, Meltzer, Winnicott, and many more.'
+            }
+        }
+    },
+    search: {
+        tooManyResults: {
+            instructions:
+                "Enter at least two terms, additional criteria, and/or use the 'Refine' form below to increase search precision."
+        },
+        terms: {
+            types: {
+                everywhere: {
+                    prompt: 'Terms or phrase',
+                    help:
+                        'Searches the entire document. Use quotes to match exact phrases (e.g. "loving memory") (TODO final content)'
+                },
+                author: {
+                    prompt: "Author's name",
+                    help: 'Search by an author\'s name. You can use a * wildcard for partial entries (e.g. "Johan*")'
+                },
+                title: {
+                    prompt: 'Document title',
+                    help: 'The title of the document. (TODO final content)'
+                },
+                dream: {
+                    prompt: 'Terms or phrase',
+                    help: 'Find documents by dream (TODO final content)'
+                },
+                quote: {
+                    prompt: 'Terms or phrase',
+                    help: 'Find documents by quotes (TODO final content)'
+                },
+                reference: {
+                    prompt: 'Terms or phrase',
+                    help: 'Find documents by reference (TODO final content)'
+                },
+                dialog: {
+                    prompt: 'Terms or phrase',
+                    help: 'Find documents by dialog (TODO final content)'
+                },
+                article: {
+                    prompt: 'Terms or phrase',
+                    help: 'Find document by article (TODO final content)'
+                },
+                startYear: {
+                    prompt: 'Publication year',
+                    help:
+                        'Find documents published on or before/after a year, or within a range of years (e.g, "1999", "<1999", ">1999", "1999-2010")'
+                },
+                endYear: {
+                    prompt: 'Publication year',
+                    help:
+                        'Find documents published on or before/after a year, or within a range of years (e.g, "1999", "<1999", ">1999", "1999-2010")'
+                }
             }
         }
     }
