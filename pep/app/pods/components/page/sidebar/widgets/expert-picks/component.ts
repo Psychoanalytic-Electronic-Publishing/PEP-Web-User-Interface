@@ -9,8 +9,8 @@ import { tracked } from '@glimmer/tracking';
 import DS from 'ember-data';
 import Document from 'pep/pods/document/model';
 import ConfigurationService from 'pep/services/configuration';
-import { joinParamValues, buildSearchQueryParams } from 'pep/utils/search';
-import { SEARCH_FACET_ART_ID, FacetId } from 'pep/constants/search';
+import { buildSearchQueryParams } from 'pep/utils/search';
+import { FacetId } from 'pep/constants/search';
 
 interface PageSidebarWidgetsExpertPicksArgs extends PageSidebarWidgetArgs {}
 

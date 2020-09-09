@@ -1,5 +1,5 @@
 import Controller from '@ember/controller';
-import { action, setProperties, computed } from '@ember/object';
+import { action, setProperties } from '@ember/object';
 import { isEmpty } from '@ember/utils';
 import { tracked } from '@glimmer/tracking';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';

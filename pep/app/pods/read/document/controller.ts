@@ -19,7 +19,7 @@ import {
     SEARCH_DEFAULT_TERMS
 } from 'pep/constants/search';
 import Document from 'pep/pods/document/model';
-import { WidgetData, WIDGET } from 'pep/constants/sidebar';
+import { WIDGET } from 'pep/constants/sidebar';
 
 export default class ReadDocument extends Controller {
     @service session!: SessionService;
