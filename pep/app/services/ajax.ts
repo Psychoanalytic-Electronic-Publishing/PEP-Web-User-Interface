@@ -8,7 +8,7 @@ import { reject } from 'rsvp';
 import ENV from 'pep/config/environment';
 import { appendTrailingSlash } from 'pep/utils/url';
 import { guard } from 'pep/utils/types';
-import { PepSecureAuthenticatedData } from 'pep/pods/application/adapter';
+import { PepSecureAuthenticatedData } from 'pep/api';
 
 export default class AjaxService extends Service {
     @service session!: SessionService;

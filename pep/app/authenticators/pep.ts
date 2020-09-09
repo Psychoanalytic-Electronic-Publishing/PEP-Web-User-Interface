@@ -6,7 +6,7 @@ import BaseAuthenticator from 'ember-simple-auth/authenticators/base';
 import AjaxService from 'pep/services/ajax';
 import { serializeQueryParams } from 'pep/utils/url';
 import ENV from 'pep/config/environment';
-import { PepSecureAuthenticatedData } from 'pep/pods/application/adapter';
+import { PepSecureAuthenticatedData } from 'pep/api';
 
 // TODO: this is all likely to change a bit to account for authentication flow changes
 // i.e. using headers/instead of automatic cookie sending, session refreshing, etc

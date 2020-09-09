@@ -9,6 +9,7 @@ import FastbootService from 'ember-cli-fastboot/services/fastboot';
 
 import ENV from 'pep/config/environment';
 import { appendTrailingSlash } from 'pep/utils/url';
+import { PepSecureAuthenticatedData } from 'pep/api';
 
 export interface ApiServerError {
     code: string;
@@ -21,16 +22,6 @@ export interface ApiServerError {
 
 export interface ApiServerErrorResponse {
     errors: ApiServerError[];
-}
-
-export interface PepSecureAuthenticatedData {
-    HasSubscription: boolean;
-    IsValidLogon: boolean;
-    IsValidUserName: boolean;
-    ReasonId: number;
-    ReasonStr: string;
-    SessionId: string;
-    authenticator: string;
 }
 
 //@ts-ignore TODO we need to figure out how to allow DS.RESTAdapter with custom properties correctly
