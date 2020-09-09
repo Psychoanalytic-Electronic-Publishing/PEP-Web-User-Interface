@@ -20,6 +20,7 @@ import {
     USER_PREFERENCES_COOKIE_NAME,
     PreferenceKey
 } from 'pep/constants/preferences';
+import Document from 'pep/pods/document/model';
 
 export default class CurrentUserService extends Service {
     @service store!: DS.Store;
@@ -204,5 +205,28 @@ export default class CurrentUserService extends Service {
             this.setup();
             return this.preferences;
         }
+    }
+
+    addReadLaterDocument(document: Document) {
+        const prefs = this.loadLocalStoragePrefs();
+        const currentDocs = prefs.readLater;
+        if (!currentDocs?.includes(document)) {
+            currentDocs?.push(document);
+        }
+        this.updatePrefs({
+            [PreferenceKey.READ_LATER]: currentDocs
+        });
+    }
+
+    removeReadLaterDocument(document: Document) {
+        const prefs = this.loadLocalStoragePrefs();
+        const currentDocs = prefs.readLater;
+        const index = currentDocs?.findIndex((documentToFind) => documentToFind.id === document.id);
+        if (index) {
+            currentDocs?.removeAt(index);
+        }
+        this.updatePrefs({
+            [PreferenceKey.READ_LATER]: currentDocs
+        });
     }
 }

@@ -2,12 +2,14 @@ import ENV from 'pep/config/environment';
 import { ThemeId } from 'pep/constants/themes';
 import { LanguageCode } from 'pep/constants/lang';
 import { SearchTermId } from 'pep/constants/search';
+import Document from 'pep/pods/document/model';
 
 export enum PreferenceKey {
     THEME = 'theme',
     LANG = 'lang',
     SEARCH_LIMIT_IS_SHOWN = 'searchLimitIsShown',
-    SEARCH_TERM_FIELDS = 'searchTermFields'
+    SEARCH_TERM_FIELDS = 'searchTermFields',
+    READ_LATER = 'readLater'
 }
 
 export interface UserPreferences {
@@ -16,6 +18,7 @@ export interface UserPreferences {
     lang: LanguageCode;
     searchLimitIsShown?: boolean;
     searchTermFields?: SearchTermId[];
+    readLater?: Document[];
 }
 
 export type PreferenceChangeset = {
@@ -24,6 +27,7 @@ export type PreferenceChangeset = {
     lang?: LanguageCode;
     searchLimitIsShown?: boolean;
     searchTermFields?: SearchTermId[];
+    readLater?: Document[];
 };
 
 export const USER_PREFERENCES_COOKIE_NAME = 'pepweb_user_prefs';
@@ -48,7 +52,7 @@ export const COOKIE_PREFERENCES: PreferenceKey[] = [
  * Note that as LocalStorage is clientside-only, the user-set values for these prefs will not be
  * accessible in FastBoot (the default preference value will be returned if access is attempted)
  */
-export const LOCALSTORAGE_PREFERENCES: PreferenceKey[] = [];
+export const LOCALSTORAGE_PREFERENCES: PreferenceKey[] = [PreferenceKey.READ_LATER];
 
 export const DEFAULT_USER_PREFERENCES: UserPreferences = {
     preferencesVersion: ENV.userPreferencesVersion,

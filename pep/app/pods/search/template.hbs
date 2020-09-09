@@ -116,20 +116,32 @@
                                     @lastReached={{this.paginator.loadMoreModels}}
                                     as |result|
                                 >
-                                    <li class="mb-4">
-                                        <a href="" {{on "click" (fn this.openResultPreview result)}}>
-                                            {{result.documentRef}}
+                                    <li class="mb-4 d-flex justify-content-between">
+                                        <div>
+                                            <a href="" {{on "click" (fn this.openResultPreview result)}}>
+                                                {{result.documentRef}}
+
+                                            </a>
+                                            {{#if result.kwicList}}
+                                                <ul class="font-size-secondary">
+                                                    {{#each result.kwicList as |searchHit|}}
+                                                        <li>{{html-safe searchHit}}</li>
+                                                    {{/each}}
+                                                </ul>
+                                            {{/if}}
+                                        </div>
+                                        <div class="pl-2">
                                             {{#if result.relatedrx}}
                                                 <FaIcon @icon="books"/>
                                             {{/if}}
-                                        </a>
-                                        {{#if result.kwicList}}
-                                            <ul class="font-size-secondary">
-                                                {{#each result.kwicList as |searchHit|}}
-                                                    <li>{{html-safe searchHit}}</li>
-                                                {{/each}}
-                                            </ul>
-                                        {{/if}}
+                                            <Button
+                                                @action={{this.saveForLater}}
+                                                @iconOnly={{true}}
+                                                @icon="bookmark"
+                                                @type="link"
+                                                class="p-0"
+                                            />
+                                        </div>
                                     </li>
                                 </VerticalCollection>
                                 {{#if this.paginator.isLoadingModels}}

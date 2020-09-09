@@ -481,6 +481,11 @@ export default class Search extends Controller {
     updateContainerMaxHeight(element: HTMLElement) {
         this.containerMaxHeight = element.offsetHeight;
     }
+
+    @action
+    saveForLater(document: Document) {
+        this.currentUser.addReadLaterDocument(document);
+    }
 }
 
 // DO NOT DELETE: this is how TypeScript knows how to look up your controllers.
