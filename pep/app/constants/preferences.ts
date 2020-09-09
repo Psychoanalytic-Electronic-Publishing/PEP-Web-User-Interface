@@ -36,17 +36,19 @@ export const USER_PREFERENCES_LS_PREFIX = 'pepweb_user_prefs';
  * Only preferences the are ABSOLUTELY CRITICAL for FastBoot renders (or are extremely small values)
  * should be placed in here. Everything else should go in LOCALSTORAGE_PREFERENCES
  */
-export const COOKIE_PREFERENCES: PreferenceKey[] = [PreferenceKey.THEME, PreferenceKey.LANG];
+export const COOKIE_PREFERENCES: PreferenceKey[] = [
+    PreferenceKey.THEME,
+    PreferenceKey.LANG,
+    PreferenceKey.SEARCH_LIMIT_IS_SHOWN,
+    PreferenceKey.SEARCH_TERM_FIELDS
+];
 
 /**
  * All user preferences that are not stored in COOKIE_PREFERENCES must be stored in LocalStorage
  * Note that as LocalStorage is clientside-only, the user-set values for these prefs will not be
  * accessible in FastBoot (the default preference value will be returned if access is attempted)
  */
-export const LOCALSTORAGE_PREFERENCES: PreferenceKey[] = [
-    PreferenceKey.SEARCH_LIMIT_IS_SHOWN,
-    PreferenceKey.SEARCH_TERM_FIELDS
-];
+export const LOCALSTORAGE_PREFERENCES: PreferenceKey[] = [];
 
 export const DEFAULT_USER_PREFERENCES: UserPreferences = {
     preferencesVersion: ENV.userPreferencesVersion,

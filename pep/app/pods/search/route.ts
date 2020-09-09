@@ -10,10 +10,11 @@ import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
 import { PageNav } from 'pep/mixins/page-layout';
 import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
 import SidebarService from 'pep/services/sidebar';
+import ConfigurationService from 'pep/services/configuration';
+import CurrentUserService from 'pep/services/current-user';
 import SearchController from 'pep/pods/search/controller';
 import Document from 'pep/pods/document/model';
 import { SearchMetadata } from 'pep/api';
-import ConfigurationService from 'pep/services/configuration';
 
 export interface SearchParams {
     q: string;
@@ -29,6 +30,7 @@ export default class Search extends PageNav(Route) {
     @service sidebar!: SidebarService;
     @service fastboot!: FastbootService;
     @service configuration!: ConfigurationService;
+    @service currentUser!: CurrentUserService;
 
     navController = 'search';
     resultsMeta: SearchMetadata | null = null;
@@ -112,15 +114,17 @@ export default class Search extends PageNav(Route) {
     //@ts-ignore
     setupController(controller: SearchController, model: RecordArrayWithMeta<Document>) {
         const cfg = this.configuration.base.search;
+        const prefs = this.currentUser.preferences;
+        const terms = prefs?.searchTermFields ?? cfg.terms.defaultFields;
+        const isLimitOpen = prefs?.searchLimitIsShown ?? cfg.limitFields.isShown;
         //map the query params to current search values to populate the form
         controller.currentSmartSearchTerm = controller.q;
         controller.currentMatchSynonyms = controller.matchSynonyms;
         controller.currentCitedCount = controller.citedCount;
         controller.currentViewedCount = controller.viewedCount;
         controller.currentViewedPeriod = controller.viewedPeriod;
-        // TODO use user's pref value for default search terms instead of default config, if one exists
         controller.currentSearchTerms = isEmpty(controller.searchTerms)
-            ? cfg.terms.defaultFields.map((f) => ({ type: f, term: '' }))
+            ? terms.map((f) => ({ type: f, term: '' }))
             : controller.searchTerms;
         controller.currentFacets = controller.facets;
 
@@ -129,12 +133,7 @@ export default class Search extends PageNav(Route) {
 
         // open the search form's limit fields section if it has values
         // or the admin configs default it to open
-        // TODO use user's pref value for toggle state instead of default config, if one exists
-        if (
-            controller.currentCitedCount ||
-            controller.currentViewedCount ||
-            this.configuration.base.search.limitFields.isShown
-        ) {
+        if (controller.currentCitedCount || controller.currentViewedCount || isLimitOpen) {
             controller.isLimitOpen = true;
         }
 
@@ -171,8 +170,9 @@ export default class Search extends PageNav(Route) {
         //clear current results meta data
         controller.resultsMeta = null;
         //reset the search form limit fields section
-        // TODO use user's pref value for toggle state instead of default config, if one exists
-        controller.isLimitOpen = this.configuration.base.search.limitFields.isShown;
+        const cfg = this.configuration.base.search;
+        const prefs = this.currentUser.preferences;
+        controller.isLimitOpen = prefs?.searchLimitIsShown ?? cfg.limitFields.isShown;
     }
 
     /**

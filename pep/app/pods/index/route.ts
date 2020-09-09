@@ -4,10 +4,12 @@ import { inject as service } from '@ember/service';
 import Application from 'pep/pods/application/controller';
 import IndexController from 'pep/pods/index/controller';
 import ConfigurationService from 'pep/services/configuration';
+import CurrentUserService from 'pep/services/current-user';
 import { SEARCH_DEFAULT_VIEW_PERIOD } from 'pep/constants/search';
 
 export default class Index extends Route {
     @service configuration!: ConfigurationService;
+    @service currentUser!: CurrentUserService;
 
     /**
      * Returns the expert pick of the day abstract
@@ -23,16 +25,18 @@ export default class Index extends Route {
      */
     setupController(controller: IndexController, model: object) {
         super.setupController(controller, model);
-        const cfg = this.configuration.base.search;
         const appController = this.controllerFor('application') as Application;
+        const cfg = this.configuration.base.search;
+        const prefs = this.currentUser.preferences;
+        const terms = prefs?.searchTermFields ?? cfg.terms.defaultFields;
+        const isLimitOpen = prefs?.searchLimitIsShown ?? cfg.limitFields.isShown;
+
         appController.smartSearchTerm = '';
         appController.matchSynonyms = false;
         appController.citedCount = '';
         appController.viewedCount = '';
         appController.viewedPeriod = SEARCH_DEFAULT_VIEW_PERIOD;
-        // TODO use user's pref value for toggle state instead of default config, if one exists
-        appController.isLimitOpen = cfg.limitFields.isShown;
-        // TODO use user's pref value for default search terms instead of default config, if one exists
-        appController.searchTerms = cfg.terms.defaultFields.map((f) => ({ type: f, term: '' }));
+        appController.isLimitOpen = isLimitOpen;
+        appController.searchTerms = terms.map((f) => ({ type: f, term: '' }));
     }
 }

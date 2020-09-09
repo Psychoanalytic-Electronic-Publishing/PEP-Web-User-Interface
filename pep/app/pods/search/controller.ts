@@ -238,15 +238,17 @@ export default class Search extends Controller {
     @action
     clearSearch() {
         const cfg = this.configuration.base.search;
+        const prefs = this.currentUser.preferences;
+        const terms = prefs?.searchTermFields ?? cfg.terms.defaultFields;
+        const isLimitOpen = prefs?.searchLimitIsShown ?? cfg.limitFields.isShown;
+
         this.currentSmartSearchTerm = '';
         this.currentMatchSynonyms = false;
         this.currentCitedCount = '';
         this.currentViewedCount = '';
         this.currentViewedPeriod = ViewPeriod.PAST_WEEK;
-        // TODO use user's pref value for toggle state instead of default config, if one exists
-        this.isLimitOpen = this.configuration.base.search.limitFields.isShown;
-        // TODO use user's pref value for default search terms instead of default config, if one exists
-        this.currentSearchTerms = cfg.terms.defaultFields.map((f) => ({ type: f, term: '' }));
+        this.isLimitOpen = isLimitOpen;
+        this.currentSearchTerms = terms.map((f) => ({ type: f, term: '' }));
         this.currentFacets = [];
         taskFor(this.updateRefineMetadata).perform(true, 0);
     }

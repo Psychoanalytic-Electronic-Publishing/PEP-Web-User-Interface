@@ -102,7 +102,7 @@ export default class CurrentUserService extends Service {
      * @returns {PreferenceChangeset}
      */
     loadLocalStoragePrefs() {
-        const prefs = {} as any;
+        const prefs = {} as PreferenceChangeset;
 
         // localStorage is not available on the server/in fastboot
         if (this.fastboot.isFastBoot) {
@@ -128,7 +128,7 @@ export default class CurrentUserService extends Service {
      * @returns {PreferenceChangeset}
      */
     loadCookiePrefs() {
-        const prefs = {} as any;
+        const prefs = {} as PreferenceChangeset;
         const cookie = this.cookies.read(USER_PREFERENCES_COOKIE_NAME, {
             secure: Number(ENV.cookieSecure) === 1,
             sameSite: ENV.cookieSameSite
