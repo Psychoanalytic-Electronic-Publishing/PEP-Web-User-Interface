@@ -1,12 +1,11 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import UnauthenticatedRouteMixin from 'ember-simple-auth/mixins/unauthenticated-route-mixin';
-import SessionService from 'ember-simple-auth/services/session';
 
 import AuthService from 'pep/services/auth';
+import Session from 'pep/services/pep-session';
 
-export default class Login extends Route.extend(UnauthenticatedRouteMixin) {
-    @service session!: SessionService;
+export default class Login extends Route {
+    @service('pep-session') session!: Session;
     @service auth!: AuthService;
     classNames = ['login'];
     routeIfAlreadyAuthenticated = 'index';

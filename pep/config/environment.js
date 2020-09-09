@@ -70,6 +70,7 @@ module.exports = function(environment) {
         apiNamespace: process.env.API_NAMESPACE,
         apiDataNamespace: process.env.API_DATA_NAMESPACE,
         apiAdminNamespace: process.env.API_ADMIN_NAMESPACE,
+        authBaseUrl: process.env.AUTH_BASE_URL,
         clientId: process.env.CLIENT_ID
     };
 

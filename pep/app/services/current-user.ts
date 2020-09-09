@@ -3,13 +3,13 @@ import Service, { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import DS from 'ember-data';
 import { reject } from 'rsvp';
-import SessionService from 'ember-simple-auth/services/session';
 
 import User from 'pep/pods/user/model';
+import Session from 'pep/services/pep-session';
 
 export default class CurrentUserService extends Service {
     @service store!: DS.Store;
-    @service session!: SessionService;
+    @service('pep-session') session!: Session;
 
     @tracked user: User | null = null;
 

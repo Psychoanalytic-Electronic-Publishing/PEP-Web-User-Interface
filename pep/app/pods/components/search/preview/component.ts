@@ -4,11 +4,11 @@ import { action } from '@ember/object';
 import { htmlSafe } from '@ember/template';
 import { scheduleOnce, next } from '@ember/runloop';
 import { inject as service } from '@ember/service';
-import SessionService from 'ember-simple-auth/services/session';
 
 import AuthService from 'pep/services/auth';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import Document from 'pep/pods/document/model';
+import Session from 'pep/services/pep-session';
 
 export type SearchPreviewMode = 'minimized' | 'maximized' | 'fit' | 'custom';
 
@@ -21,7 +21,7 @@ interface SearchPreviewArgs {
 }
 
 export default class SearchPreview extends Component<SearchPreviewArgs> {
-    @service session!: SessionService;
+    @service('pep-session') session!: Session;
     @service auth!: AuthService;
 
     @tracked fitHeight: number = 0;

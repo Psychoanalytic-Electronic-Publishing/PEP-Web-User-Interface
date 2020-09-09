@@ -18,4 +18,14 @@ declare module 'pep/api' {
             };
         };
     }
+
+    export interface PepSecureAuthenticatedData {
+        HasSubscription: boolean;
+        IsValidLogon: boolean;
+        IsValidUserName: boolean;
+        ReasonId: number;
+        ReasonStr: string;
+        SessionId: string;
+        authenticator: string;
+    }
 }

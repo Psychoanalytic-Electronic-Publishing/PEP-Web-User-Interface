@@ -4,11 +4,11 @@ import { inject as service } from '@ember/service';
 import { reject } from 'rsvp';
 import DS from 'ember-data';
 import RouterService from '@ember/routing/router-service';
-import SessionService from 'ember-simple-auth/services/session';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import IntlService from 'ember-intl/services/intl';
 
 import LoadingBar from 'pep/services/loading-bar';
+import Session from 'pep/services/pep-session';
 
 interface ModalDialogsWhatsNewSubscriptionArgs {
     onClose: () => void;
@@ -19,7 +19,7 @@ interface ModalDialogsWhatsNewSubscriptionArgs {
 }
 
 export default class ModalDialogsWhatsNewSubscription extends Component<ModalDialogsWhatsNewSubscriptionArgs> {
-    @service session!: SessionService;
+    @service('pep-session') session!: Session;
     @service router!: RouterService;
     @service loadingBar!: LoadingBar;
     @service notifications!: NotificationService;

@@ -2,16 +2,20 @@ import { inject as service } from '@ember/service';
 import { isEmpty } from '@ember/utils';
 import { resolve, reject } from 'rsvp';
 import BaseAuthenticator from 'ember-simple-auth/authenticators/base';
-import { SessionAuthenticatedData } from 'ember-simple-auth/services/session';
 
 import AjaxService from 'pep/services/ajax';
 import { serializeQueryParams } from 'pep/utils/url';
+import ENV from 'pep/config/environment';
+import { PepSecureAuthenticatedData } from 'pep/api';
 
 // TODO: this is all likely to change a bit to account for authentication flow changes
 // i.e. using headers/instead of automatic cookie sending, session refreshing, etc
 
 export default class PepAuthenticator extends BaseAuthenticator {
     @service ajax!: AjaxService;
+    authenticationHeaders = {
+        'Content-Type': 'application/json'
+    };
 
     /**
      * Authenticates and logs the user in
@@ -21,10 +25,12 @@ export default class PepAuthenticator extends BaseAuthenticator {
     async authenticate(username: string, password: string) {
         const params = serializeQueryParams({
             grant_type: 'password',
-            username,
-            password
+            UserName: username,
+            Password: password
         });
-        const result = await this.ajax.request(`Session/Login?${params}`);
+        const result = await this.ajax.request(`${ENV.authBaseUrl}/Authenticate?${params}`, {
+            headers: this.authenticationHeaders
+        });
         return result;
     }
 
@@ -46,8 +52,8 @@ export default class PepAuthenticator extends BaseAuthenticator {
      * Restores the local session from cookies, if one exists
      * @param {SessionAuthenticatedData} data
      */
-    restore(data: SessionAuthenticatedData) {
-        if (!isEmpty(data.access_token)) {
+    restore(data: PepSecureAuthenticatedData) {
+        if (!isEmpty(data.SessionId)) {
             return resolve(data);
         } else {
             return reject();

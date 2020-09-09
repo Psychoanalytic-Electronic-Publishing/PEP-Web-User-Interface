@@ -4,7 +4,6 @@ import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import RouterService from '@ember/routing/router-service';
 import { reject } from 'rsvp';
-import SessionService from 'ember-simple-auth/services/session';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
 import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
@@ -19,9 +18,10 @@ import {
     SEARCH_DEFAULT_TERMS
 } from 'pep/constants/search';
 import Document from 'pep/pods/document/model';
+import Session from 'pep/services/pep-session';
 
 export default class ReadDocument extends Controller {
-    @service session!: SessionService;
+    @service('pep-session') session!: Session;
     @service auth!: AuthService;
     @service fastboot!: FastbootService;
     @service loadingBar!: LoadingBarService;

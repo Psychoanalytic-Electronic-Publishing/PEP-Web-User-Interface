@@ -1,14 +1,14 @@
 import Service from '@ember/service';
 import { inject as service } from '@ember/service';
-import SessionService from 'ember-simple-auth/services/session';
 import HeadDataService from 'ember-cli-head/services/head-data';
 
 import THEMES, { THEME_DEFAULT } from 'pep/constants/themes';
 import IntlService from 'ember-intl/services/intl';
+import Session from 'pep/services/pep-session';
 
 export default class ThemeService extends Service {
     @service headData!: HeadDataService;
-    @service session!: SessionService;
+    @service('pep-session') session!: Session;
     @service intl!: IntlService;
 
     allThemes = THEMES;
@@ -21,7 +21,7 @@ export default class ThemeService extends Service {
     }
 
     get currentTheme() {
-        return THEMES.findBy('id', this.session.data?.themeId) ?? THEME_DEFAULT;
+        return THEME_DEFAULT;
     }
 
     /**
