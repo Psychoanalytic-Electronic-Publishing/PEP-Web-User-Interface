@@ -4,7 +4,7 @@ import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hoo
 import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
 
 import { PageNav } from 'pep/mixins/page-layout';
-import { buildSearchQueryParams } from 'pep/utils/search';
+import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
 import Document from 'pep/pods/document/model';
 import ReadDocumentController from 'pep/pods/read/document/controller';
 
@@ -12,6 +12,9 @@ export interface ReadDocumentParams {
     document_id: string;
     q: string;
     matchSynonyms: boolean;
+    citedCount?: string;
+    viewedCount?: string;
+    viewedPeriod?: number;
     _searchTerms?: string;
     _facets?: string;
 }
@@ -41,9 +44,17 @@ export default class ReadDocument extends PageNav(Route) {
         const searchTerms = params._searchTerms ? JSON.parse(params._searchTerms) : [];
         const facets = params._facets ? JSON.parse(params._facets) : [];
 
-        const searchParams = buildSearchQueryParams(params.q, searchTerms, params.matchSynonyms, facets);
-        //if no search was submitted, don't fetch any results (will have at least 2 params for synonyms and facetfields)
-        if (Object.keys(searchParams).length > 2) {
+        const searchParams = buildSearchQueryParams(
+            params.q,
+            searchTerms,
+            params.matchSynonyms,
+            facets,
+            params.citedCount,
+            params.viewedCount,
+            params.viewedPeriod
+        );
+        //if no search was submitted, don't fetch any results
+        if (hasSearchQuery(searchParams)) {
             const controller = this.controllerFor(this.routeName);
             const queryParams = buildQueryParams({
                 context: controller,

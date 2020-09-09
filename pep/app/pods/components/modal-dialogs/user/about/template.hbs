@@ -2,14 +2,34 @@
     <Modal.header @title={{t "about.title"}} />
     <Modal.body>
         <div class="mb-2">
-            <h5 class="mb-0">{{t "about.client"}}</h5>
-            <p class="text-muted small">{{@options.clientBuildVersion}}</p>
+            <h5 class="mb-0">
+                {{t "about.status.title"}}
+                {{#if this.isStatusOk}}
+                    <FaIcon @icon="check-circle"  class="text-success"  />
+                {{else}}
+                    <FaIcon @icon="exclamation-circle" class="text-danger" />
+                {{/if}}
+            </h5>
+            <p class="text-muted small">
+                {{this.status}}
+            </p>
         </div>
         <div class="mb-2">
-            <h5 class="mb-0">{{t "about.server"}}</h5>
+            <h5 class="mb-0">{{t "about.version.title"}}</h5>
+            <p class="text-muted small mb-0">{{t "about.version.client" versionNumber=@options.clientBuildVersion}}</p>
+            <p class="text-muted small mb-0">{{t "about.version.server" versionNumber=@options.serverInformation.text_server_version}}</p>
+            <p class="text-muted small">{{t "about.version.data" versionNumber=@options.serverInformation.dataSource}}</p>
+        </div>
+        <div class="mb-2">
+            <h5 class="mb-0">{{t "about.web.title"}}</h5>
             <p class="text-muted small">
-                {{@options.serverInformation.text_server_version}}<br>
-                {{@options.serverInformation.dataSource}}
+                {{t "about.web.description"}}
+            </p>
+        </div>
+        <div class="mb-2">
+            <h5 class="mb-0">{{t "about.archive.title"}}</h5>
+            <p class="text-muted small">
+                {{t "about.archive.description" htmlSafe=true}}
             </p>
         </div>
     </Modal.body>

@@ -12,7 +12,12 @@ import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 import AuthService from 'pep/services/auth';
 import LoadingBarService from 'pep/services/loading-bar';
 import { buildSearchQueryParams } from 'pep/utils/search';
-import { SEARCH_DEFAULT_TERMS, SEARCH_DEFAULT_FACETS } from 'pep/constants/search';
+import {
+    ViewPeriod,
+    SEARCH_DEFAULT_VIEW_PERIOD,
+    SEARCH_DEFAULT_PARAMS,
+    SEARCH_DEFAULT_TERMS
+} from 'pep/constants/search';
 import Document from 'pep/pods/document/model';
 
 export default class ReadDocument extends Controller {
@@ -22,22 +27,29 @@ export default class ReadDocument extends Controller {
     @service loadingBar!: LoadingBarService;
     @service router!: RouterService;
 
-    defaultSearchTerms = JSON.stringify(SEARCH_DEFAULT_TERMS);
-    defaultSearchFacets = JSON.stringify(SEARCH_DEFAULT_FACETS);
+    defaultSearchParams = SEARCH_DEFAULT_PARAMS;
 
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
     //@ts-ignore
-    queryParams = ['q', { _searchTerms: 'searchTerms' }, 'matchSynonyms', { _facets: 'facets' }];
+    queryParams = [
+        'q',
+        { _searchTerms: 'searchTerms' },
+        'matchSynonyms',
+        'citedCount',
+        'viewedCount',
+        'viewedPeriod',
+        { _facets: 'facets' }
+    ];
+
     @tracked q: string = '';
     @tracked matchSynonyms: boolean = false;
+    @tracked citedCount: string = '';
+    @tracked viewedCount: string = '';
+    @tracked viewedPeriod: ViewPeriod = SEARCH_DEFAULT_VIEW_PERIOD;
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
-    @tracked _searchTerms: string | null = JSON.stringify([
-        { type: 'everywhere', term: '' },
-        { type: 'title', term: '' },
-        { type: 'author', term: '' }
-    ]);
+    @tracked _searchTerms: string | null = JSON.stringify(SEARCH_DEFAULT_TERMS);
     @tracked paginator!: Pagination<Document>;
 
     get isLoadingRoute(): boolean {
@@ -91,7 +103,15 @@ export default class ReadDocument extends Controller {
      */
     @action
     processQueryParams(params: QueryParamsObj) {
-        const searchParams = buildSearchQueryParams(this.q, this.searchTerms, this.matchSynonyms, this.facets);
+        const searchParams = buildSearchQueryParams(
+            this.q,
+            this.searchTerms,
+            this.matchSynonyms,
+            this.facets,
+            this.citedCount,
+            this.viewedCount,
+            this.viewedPeriod
+        );
         return { ...params, ...searchParams };
     }
 

@@ -59,6 +59,13 @@ export default class TablesMostViewed extends Component<TablesMostViewedArgs> {
                 isSortable: true
             },
             {
+                name: this.intl.t('mostViewed.table.twelveMonths'),
+                valuePath: 'stat.art_views_last12mos',
+                width: 100,
+                staticWidth: 100,
+                isSortable: true
+            },
+            {
                 name: this.intl.t('mostViewed.table.calendarYear'),
                 valuePath: 'stat.art_views_lastcalyear',
                 width: 100,
