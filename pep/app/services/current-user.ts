@@ -8,7 +8,7 @@ import CookiesService from 'ember-cookies/services/cookies';
 import merge from 'lodash.merge';
 
 import ENV from 'pep/config/environment';
-import Session from 'pep/services/pep-session';
+import PepSessionService from 'pep/services/pep-session';
 import User from 'pep/pods/user/model';
 import {
     DEFAULT_USER_PREFERENCES,
@@ -23,7 +23,7 @@ import {
 
 export default class CurrentUserService extends Service {
     @service store!: DS.Store;
-    @service('pep-session') session!: Session;
+    @service('pep-session') session!: PepSessionService;
     @service fastboot!: FastbootService;
     @service cookies!: CookiesService;
 

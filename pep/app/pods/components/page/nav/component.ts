@@ -6,7 +6,7 @@ import ModalService from '@gavant/ember-modals/services/modal';
 import AuthService from 'pep/services/auth';
 import DrawerService from 'pep/services/drawer';
 import ConfigurationService from 'pep/services/configuration';
-import Session from 'pep/services/pep-session';
+import PepSessionService from 'pep/services/pep-session';
 
 interface PageNavArgs {
     openAboutModal: () => Promise<void>;
@@ -14,7 +14,7 @@ interface PageNavArgs {
 
 export default class PageNav extends Component<PageNavArgs> {
     @service modal!: ModalService;
-    @service('pep-session') session!: Session;
+    @service('pep-session') session!: PepSessionService;
     @service auth!: AuthService;
     @service drawer!: DrawerService;
     @service configuration!: ConfigurationService;

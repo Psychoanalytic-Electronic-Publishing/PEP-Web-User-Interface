@@ -6,14 +6,14 @@ import SidebarService from 'pep/services/sidebar';
 import FastbootMediaService from 'pep/services/fastboot-media';
 import ConfigurationService from 'pep/services/configuration';
 import AuthService from 'pep/services/auth';
-import Session from 'pep/services/pep-session';
+import PepSessionService from 'pep/services/pep-session';
 
 export default class Index extends Controller {
     @service sidebar!: SidebarService;
     @service fastbootMedia!: FastbootMediaService;
     @service configuration!: ConfigurationService;
     @service auth!: AuthService;
-    @service('pep-session') session!: Session;
+    @service('pep-session') session!: PepSessionService;
 
     get intro() {
         return this.configuration.content.home.intro;

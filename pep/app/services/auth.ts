@@ -4,7 +4,7 @@ import ModalService from '@gavant/ember-modals/services/modal';
 import createChangeset from '@gavant/ember-validations/utilities/create-changeset';
 
 import LoginValidations from 'pep/validations/user/login';
-import Session from 'pep/services/pep-session';
+import PepSessionService from 'pep/services/pep-session';
 
 export interface LoginForm {
     username: string | null;
@@ -12,7 +12,7 @@ export interface LoginForm {
 }
 
 export default class AuthService extends Service {
-    @service('pep-session') session!: Session;
+    @service('pep-session') session!: PepSessionService;
     @service modal!: ModalService;
 
     dontRedirectOnLogin = false;

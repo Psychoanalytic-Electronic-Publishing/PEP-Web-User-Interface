@@ -15,14 +15,14 @@ import AjaxService from 'pep/services/ajax';
 import LoadingBarService from 'pep/services/loading-bar';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
-import Session from 'pep/services/pep-session';
+import PepSessionService from 'pep/services/pep-session';
 import ENV from 'pep/config/environment';
 import { ServerStatus } from 'pep/api';
 import { PreferenceKey } from 'pep/constants/preferences';
 
 export default class Application extends Controller {
     @service loadingBar!: LoadingBarService;
-    @service('pep-session') session!: Session;
+    @service('pep-session') session!: PepSessionService;
     @service ajax!: AjaxService;
     @service notifications!: NotificationService;
     @service modal!: Modal;

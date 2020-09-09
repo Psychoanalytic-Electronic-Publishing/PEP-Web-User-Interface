@@ -2,7 +2,7 @@ import Service from '@ember/service';
 import { inject as service } from '@ember/service';
 import HeadDataService from 'ember-cli-head/services/head-data';
 import IntlService from 'ember-intl/services/intl';
-import Session from 'pep/services/pep-session';
+import PepSessionService from 'pep/services/pep-session';
 
 import CurrentUserService from 'pep/services/current-user';
 import THEMES, { THEME_DEFAULT, ThemeId } from 'pep/constants/themes';
@@ -10,7 +10,7 @@ import { PreferenceKey } from 'pep/constants/preferences';
 
 export default class ThemeService extends Service {
     @service headData!: HeadDataService;
-    @service('pep-session') session!: Session;
+    @service('pep-session') session!: PepSessionService;
     @service intl!: IntlService;
     @service currentUser!: CurrentUserService;
 

@@ -12,12 +12,12 @@ import Document from 'pep/pods/document/model';
 import AuthService from 'pep/services/auth';
 import LoadingBarService from 'pep/services/loading-bar';
 import ConfigurationService from 'pep/services/configuration';
-import Session from 'pep/services/pep-session';
+import PepSessionService from 'pep/services/pep-session';
 import { buildSearchQueryParams } from 'pep/utils/search';
 import { ViewPeriod, SEARCH_DEFAULT_VIEW_PERIOD } from 'pep/constants/search';
 
 export default class ReadDocument extends Controller {
-    @service('pep-session') session!: Session;
+    @service('pep-session') session!: PepSessionService;
     @service auth!: AuthService;
     @service fastboot!: FastbootService;
     @service loadingBar!: LoadingBarService;

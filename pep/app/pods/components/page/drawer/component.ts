@@ -7,7 +7,7 @@ import ModalService from '@gavant/ember-modals/services/modal';
 import DrawerService from 'pep/services/drawer';
 import AuthService from 'pep/services/auth';
 import ConfigurationService from 'pep/services/configuration';
-import Session from 'pep/services/pep-session';
+import PepSessionService from 'pep/services/pep-session';
 
 interface PageDrawerArgs {
     openAboutModal: () => Promise<void>;
@@ -15,7 +15,7 @@ interface PageDrawerArgs {
 
 export default class PageDrawer extends Component<PageDrawerArgs> {
     @service drawer!: DrawerService;
-    @service('pep-session') session!: Session;
+    @service('pep-session') session!: PepSessionService;
     @service auth!: AuthService;
     @service modal!: ModalService;
     @service configuration!: ConfigurationService;

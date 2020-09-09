@@ -8,7 +8,7 @@ import NotificationService from 'ember-cli-notifications/services/notifications'
 import IntlService from 'ember-intl/services/intl';
 
 import LoadingBar from 'pep/services/loading-bar';
-import Session from 'pep/services/pep-session';
+import PepSessionService from 'pep/services/pep-session';
 
 interface ModalDialogsWhatsNewSubscriptionArgs {
     onClose: () => void;
@@ -19,7 +19,7 @@ interface ModalDialogsWhatsNewSubscriptionArgs {
 }
 
 export default class ModalDialogsWhatsNewSubscription extends Component<ModalDialogsWhatsNewSubscriptionArgs> {
-    @service('pep-session') session!: Session;
+    @service('pep-session') session!: PepSessionService;
     @service router!: RouterService;
     @service loadingBar!: LoadingBar;
     @service notifications!: NotificationService;

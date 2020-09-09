@@ -7,10 +7,10 @@ import { reject } from 'rsvp';
 import ENV from 'pep/config/environment';
 import { appendTrailingSlash } from 'pep/utils/url';
 import { guard } from 'pep/utils/types';
-import Session from 'pep/services/pep-session';
+import PepSessionService from 'pep/services/pep-session';
 
 export default class AjaxService extends Service {
-    @service('pep-session') session!: Session;
+    @service('pep-session') session!: PepSessionService;
 
     host: string = ENV.apiBaseUrl;
     namespace: string = ENV.apiNamespace;
