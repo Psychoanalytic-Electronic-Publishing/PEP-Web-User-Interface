@@ -3,12 +3,12 @@ import Service, { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import DS from 'ember-data';
 import { reject } from 'rsvp';
-import SessionService from 'ember-simple-auth/services/session';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import CookiesService from 'ember-cookies/services/cookies';
 import merge from 'lodash.merge';
 
 import ENV from 'pep/config/environment';
+import Session from 'pep/services/pep-session';
 import User from 'pep/pods/user/model';
 import {
     DEFAULT_USER_PREFERENCES,
@@ -23,7 +23,7 @@ import {
 
 export default class CurrentUserService extends Service {
     @service store!: DS.Store;
-    @service session!: SessionService;
+    @service('pep-session') session!: Session;
     @service fastboot!: FastbootService;
     @service cookies!: CookiesService;
 

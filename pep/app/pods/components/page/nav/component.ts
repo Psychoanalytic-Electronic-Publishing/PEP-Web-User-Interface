@@ -1,12 +1,12 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import SessionService from 'ember-simple-auth/services/session';
 import ModalService from '@gavant/ember-modals/services/modal';
 
 import AuthService from 'pep/services/auth';
 import DrawerService from 'pep/services/drawer';
 import ConfigurationService from 'pep/services/configuration';
+import Session from 'pep/services/pep-session';
 
 interface PageNavArgs {
     openAboutModal: () => Promise<void>;
@@ -14,7 +14,7 @@ interface PageNavArgs {
 
 export default class PageNav extends Component<PageNavArgs> {
     @service modal!: ModalService;
-    @service session!: SessionService;
+    @service('pep-session') session!: Session;
     @service auth!: AuthService;
     @service drawer!: DrawerService;
     @service configuration!: ConfigurationService;

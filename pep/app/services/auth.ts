@@ -1,10 +1,10 @@
 import Service from '@ember/service';
 import { inject as service } from '@ember/service';
-import SessionService from 'ember-simple-auth/services/session';
 import ModalService from '@gavant/ember-modals/services/modal';
 import createChangeset from '@gavant/ember-validations/utilities/create-changeset';
 
 import LoginValidations from 'pep/validations/user/login';
+import Session from 'pep/services/pep-session';
 
 export interface LoginForm {
     username: string | null;
@@ -12,7 +12,7 @@ export interface LoginForm {
 }
 
 export default class AuthService extends Service {
-    @service session!: SessionService;
+    @service('pep-session') session!: Session;
     @service modal!: ModalService;
 
     dontRedirectOnLogin = false;

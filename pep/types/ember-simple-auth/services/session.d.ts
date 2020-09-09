@@ -3,19 +3,7 @@ declare module 'ember-simple-auth/services/session' {
     import Evented from '@ember/object/evented';
     import RSVP from 'rsvp';
     import User from 'pep/pods/user/model';
-
-    interface SessionAuthenticatedData {
-        id: string;
-        id_token: string;
-        access_token: string;
-        refresh_token: string;
-        expires_in: number;
-        expires_at: number;
-    }
-
-    interface SessionData {
-        authenticated: SessionAuthenticatedData;
-    }
+    import Transition from '@ember/routing/-private/transition';
 
     export default class session extends Service.extend(Evented) {
         /**
@@ -50,7 +38,6 @@ declare module 'ember-simple-auth/services/session' {
 
         isAuthenticated: boolean;
         isAuthenticating: boolean;
-        data: SessionData | null;
         store: any;
         attemptedTransition: any;
         session: any;
@@ -60,5 +47,64 @@ declare module 'ember-simple-auth/services/session' {
         authenticate(...args: any[]): RSVP.Promise<{}>;
         invalidate(...args: any): RSVP.Promise<{}>;
         authorize(...args: any[]): RSVP.Promise<{}>;
+
+        /**
+            Checks whether the session is authenticated and if it is not, transitions
+            to the specified route or invokes the specified callback.
+            If a transition is in progress and is aborted, this method will save it in the
+            session service's
+            {{#crossLink "SessionService/attemptedTransition:property"}}{{/crossLink}}
+            property so that  it can be retried after the session is authenticated. If
+            the transition is aborted in Fastboot mode, the transition's target URL
+            will be saved in a `ember_simple_auth-redirectTarget` cookie for use by the
+            browser after authentication is complete.
+            @method requireAuthentication
+            @param {Transition} transition A transition that triggered the authentication requirement or null if the requirement originated independently of a transition
+            @param {String|Function} routeOrCallback The route to transition to in case that the session is not authenticated or a callback function to invoke in that case
+            @return {Boolean} true when the session is authenticated, false otherwise
+            @public
+        */
+        requireAuthentication(transition: Transition, routeOrCallback: string | Function): boolean;
+
+        /**
+            Checks whether the session is authenticated and if it is, transitions
+            to the specified route or invokes the specified callback.
+            @method prohibitAuthentication
+            @param {String|Function} routeOrCallback The route to transition to in case that the session is authenticated or a callback function to invoke in that case
+            @return {Boolean} true when the session is not authenticated, false otherwise
+            @public
+        */
+        prohibitAuthentication(routeOrCallback: string | Function): boolean;
+
+        /**
+            This method is called whenever the session goes from being unauthenticated
+            to being authenticated. If there is a transition that was previously
+            intercepted by the
+            {{#crossLink "SessionService/requireAuthentication:method"}}{{/crossLink}},
+            it will retry it. If there is no such transition, the
+            `ember_simple_auth-redirectTarget` cookie will be checked for a url that
+            represents an attemptedTransition that was aborted in Fastboot mode,
+            otherwise this action transitions to the specified
+            routeAfterAuthentication.
+            @method handleAuthentication
+            @param {String} routeAfterAuthentication The route to transition to
+            @public
+        */
+        handleAuthentication(routeAfterAuthentication: string): void;
+
+        /**
+            This method is called whenever the session goes from being authenticated to
+            not being authenticated. __It reloads the Ember.js application__ by
+            redirecting the browser to the specified route so that all in-memory data
+            (such as Ember Data stores etc.) gets cleared.
+            If the Ember.js application will be used in an environment where the users
+            don't have direct access to any data stored on the client (e.g.
+            [cordova](http://cordova.apache.org)) this action can be overridden to e.g.
+            simply transition to the index route.
+            @method handleInvalidation
+            @param {String} routeAfterInvalidation The route to transition to
+            @public
+        */
+        handleInvalidation(routeAfterInvalidation: string): void;
     }
 }

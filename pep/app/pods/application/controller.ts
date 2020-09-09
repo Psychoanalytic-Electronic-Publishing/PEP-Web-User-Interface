@@ -3,7 +3,6 @@ import { action, setProperties } from '@ember/object';
 import { isEmpty } from '@ember/utils';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import SessionService from 'ember-simple-auth/services/session';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import IntlService from 'ember-intl/services/intl';
 import Modal from '@gavant/ember-modals/services/modal';
@@ -16,13 +15,14 @@ import AjaxService from 'pep/services/ajax';
 import LoadingBarService from 'pep/services/loading-bar';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
+import Session from 'pep/services/pep-session';
 import ENV from 'pep/config/environment';
 import { ServerStatus } from 'pep/api';
 import { PreferenceKey } from 'pep/constants/preferences';
 
 export default class Application extends Controller {
     @service loadingBar!: LoadingBarService;
-    @service session!: SessionService;
+    @service('pep-session') session!: Session;
     @service ajax!: AjaxService;
     @service notifications!: NotificationService;
     @service modal!: Modal;

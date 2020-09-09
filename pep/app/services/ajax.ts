@@ -1,16 +1,16 @@
 import { computed, setProperties } from '@ember/object';
 import { assign } from '@ember/polyfills';
 import Service, { inject as service } from '@ember/service';
-import SessionService from 'ember-simple-auth/services/session';
 import fetch from 'fetch';
 import { reject } from 'rsvp';
 
 import ENV from 'pep/config/environment';
 import { appendTrailingSlash } from 'pep/utils/url';
 import { guard } from 'pep/utils/types';
+import Session from 'pep/services/pep-session';
 
 export default class AjaxService extends Service {
-    @service session!: SessionService;
+    @service('pep-session') session!: Session;
 
     host: string = ENV.apiBaseUrl;
     namespace: string = ENV.apiNamespace;
@@ -19,14 +19,16 @@ export default class AjaxService extends Service {
      * Add the oauth token authorization header to all requests
      * @returns {Object}
      */
-    @computed('session.{isAuthenticated,data.authenticated.access_token}')
+    @computed('session.{isAuthenticated,data.authenticated.SessionId}')
     get authorizationHeaders() {
         const headers = {} as any;
         // api auth token is sent in cookies
-        // if (this.session.isAuthenticated) {
-        //     const { access_token } = this.session.data!.authenticated;
-        //     headers['Authorization'] = `Bearer ${access_token}`;
-        // }
+        if (this.session.isAuthenticated) {
+            // We are converting to unknown because session data is specified as something
+            // completely different by the addon
+            const { SessionId } = this.session.data.authenticated;
+            headers['client-session'] = SessionId;
+        }
         return headers;
     }
 
@@ -38,7 +40,7 @@ export default class AjaxService extends Service {
     get headers() {
         const baseHeaders = {
             'Content-Type': 'application/vnd.api+json',
-            client_id: ENV.clientId
+            'client-id': ENV.clientId
         };
         const headers = assign(baseHeaders, this.authorizationHeaders);
         return headers;
@@ -56,7 +58,7 @@ export default class AjaxService extends Service {
      */
     async request<T>(url: string, options: RequestInit = {}): Promise<T> {
         setProperties(options, {
-            credentials: 'include', //NOTE: only needed if cookies must be sent in API requests (which are needed for auth right now)
+            credentials: 'include',
             headers: { ...this.headers, ...(options.headers || {}) }
         });
 
