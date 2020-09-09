@@ -8,7 +8,7 @@ import { inject as service } from '@ember/service';
 import AuthService from 'pep/services/auth';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import Document from 'pep/pods/document/model';
-import Session from 'pep/services/pep-session';
+import PepSessionService from 'pep/services/pep-session';
 
 export type SearchPreviewMode = 'minimized' | 'maximized' | 'fit' | 'custom';
 
@@ -21,7 +21,7 @@ interface SearchPreviewArgs {
 }
 
 export default class SearchPreview extends Component<SearchPreviewArgs> {
-    @service('pep-session') session!: Session;
+    @service('pep-session') session!: PepSessionService;
     @service auth!: AuthService;
 
     @tracked fitHeight: number = 0;

@@ -2,8 +2,11 @@ import IntlService from 'ember-intl/services/intl';
 
 import { SearchFacetCounts, groupCountsByRange } from 'pep/utils/search';
 
-export const SEARCH_RESULTS_WARNING_COUNT = 200;
-
+/**
+ * Accepted query param fields for the /v2/Database/Search endpoint
+ * @export
+ * @type SearchTermParam
+ */
 export type SearchTermParam =
     | 'fulltext1'
     | 'paratext'
@@ -21,6 +24,11 @@ export type SearchTermParam =
     | 'viewcount'
     | 'viewperiod';
 
+/**
+ * Valid values for the viewperiod /v2/Database/Search endpoint (and misc other endpoints)
+ * @export
+ * @enum {number}
+ */
 export enum ViewPeriod {
     PAST_CAL_YEAR = 0,
     PAST_WEEK = 1,
@@ -29,7 +37,33 @@ export enum ViewPeriod {
     PAST_12_MONTHS = 4
 }
 
-export enum FacetId {
+/**
+ * Search term fields for the "fielded search" search form inputs
+ * @export
+ * @enum {string}
+ */
+export enum SearchTermId {
+    EVERYWHERE = 'everywhere',
+    AUTHOR = 'author',
+    TITLE = 'title',
+    DREAM = 'dream',
+    QUOTE = 'quote',
+    REFERENCE = 'reference',
+    DIALOG = 'dialog',
+    ARTICLE = 'article',
+    START_YEAR = 'startYear',
+    END_YEAR = 'endYear',
+    CITED = 'cited',
+    VIEWED = 'viewed'
+}
+
+/**
+ * Search facets passed to and returned by the /v2/Database/Search endpoint
+ * that allows search results to be further filtered via the "Refine" form
+ * @export
+ * @enum {string}
+ */
+export enum SearchFacetId {
     ART_ID = 'art_id',
     ART_TITLE = 'art_title',
     ART_TITLE_XML = 'art_title_xml',
@@ -73,18 +107,34 @@ export enum FacetId {
     GLOSSARY_GROUP_TERMS = 'glossary_group_terms'
 }
 
+/**
+ * Represents a "fielded search" input's current type and entered text
+ * @export
+ * @interface SearchTermValue
+ */
 export interface SearchTermValue {
-    type: string;
+    type: SearchTermId;
     term: string;
 }
 
+/**
+ * Represents a selected facet value from the search "Refine" form
+ * @export
+ * @interface SearchFacetValue
+ */
 export interface SearchFacetValue {
     id: string;
     value: string;
 }
 
+/**
+ * Configuration for search term fields used for its display in the UI
+ * and when building search queries for it
+ * @export
+ * @interface SearchTermType
+ */
 export interface SearchTermType {
-    id: string;
+    id: SearchTermId;
     param: string;
     solrField?: string;
     scope?: string;
@@ -93,8 +143,14 @@ export interface SearchTermType {
     isTypeOption: boolean;
 }
 
+/**
+ * Configuration for search facets  used for its display in the UI
+ * and when building search queries for it
+ * @export
+ * @interface SearchFacetType
+ */
 export interface SearchFacetType {
-    id: FacetId;
+    id: SearchFacetId;
     param: SearchTermParam;
     paramSeparator: string;
     label: string;
@@ -106,39 +162,26 @@ export interface SearchFacetType {
     formatOption?: (opt: string, intl: IntlService) => string;
 }
 
+/**
+ * Option for selecting a view period in the search form
+ * @export
+ * @interface ViewPeriodOption
+ */
 export interface ViewPeriodOption {
     id: ViewPeriod;
     label: string;
 }
 
-export const SEARCH_DEFAULT_TERMS: SearchTermValue[] = [
-    { type: 'everywhere', term: '' },
-    { type: 'title', term: '' },
-    { type: 'author', term: '' }
-];
-
 export const SEARCH_DEFAULT_FACETS: SearchFacetValue[] = [];
 
 export const SEARCH_DEFAULT_VIEW_PERIOD: ViewPeriod = ViewPeriod.PAST_WEEK;
-
-export const SEARCH_DEFAULT_PARAMS = {
-    q: '',
-    matchSynonyms: false,
-    citedCount: '',
-    viewedCount: '',
-    viewedPeriod: SEARCH_DEFAULT_VIEW_PERIOD,
-    //json stringify is workaround for bug w/array-based query param values
-    //@see https://github.com/emberjs/ember.js/issues/18981
-    searchTerms: JSON.stringify(SEARCH_DEFAULT_TERMS),
-    facets: JSON.stringify(SEARCH_DEFAULT_FACETS)
-};
 
 /**
  * Search term types
  */
 
 export const SEARCH_TYPE_EVERYWHERE: SearchTermType = {
-    id: 'everywhere',
+    id: SearchTermId.EVERYWHERE,
     param: 'fulltext1',
     solrField: 'text',
     label: 'search.terms.everywhere.label',
@@ -146,21 +189,21 @@ export const SEARCH_TYPE_EVERYWHERE: SearchTermType = {
 };
 
 export const SEARCH_TYPE_AUTHOR: SearchTermType = {
-    id: 'author',
+    id: SearchTermId.AUTHOR,
     param: 'author',
     label: 'search.terms.author.label',
     isTypeOption: true
 };
 
 export const SEARCH_TYPE_TITLE: SearchTermType = {
-    id: 'title',
+    id: SearchTermId.TITLE,
     param: 'title',
     label: 'search.terms.title.label',
     isTypeOption: true
 };
 
 export const SEARCH_TYPE_DREAM: SearchTermType = {
-    id: 'dream',
+    id: SearchTermId.DREAM,
     param: 'fulltext1',
     solrField: 'dreams_xml',
     scope: 'dreams',
@@ -169,7 +212,7 @@ export const SEARCH_TYPE_DREAM: SearchTermType = {
 };
 
 export const SEARCH_TYPE_QUOTE: SearchTermType = {
-    id: 'quote',
+    id: SearchTermId.QUOTE,
     param: 'fulltext1',
     solrField: 'quotes_xml',
     scope: 'TODO',
@@ -178,7 +221,7 @@ export const SEARCH_TYPE_QUOTE: SearchTermType = {
 };
 
 export const SEARCH_TYPE_REFERENCE: SearchTermType = {
-    id: 'reference',
+    id: SearchTermId.REFERENCE,
     param: 'fulltext1',
     solrField: 'references_xml',
     scope: 'biblios',
@@ -187,7 +230,7 @@ export const SEARCH_TYPE_REFERENCE: SearchTermType = {
 };
 
 export const SEARCH_TYPE_DIALOG: SearchTermType = {
-    id: 'dialog',
+    id: SearchTermId.DIALOG,
     param: 'fulltext1',
     solrField: 'dialogs_xml',
     scope: 'dialogs',
@@ -196,7 +239,7 @@ export const SEARCH_TYPE_DIALOG: SearchTermType = {
 };
 
 export const SEARCH_TYPE_ARTICLE: SearchTermType = {
-    id: 'article',
+    id: SearchTermId.ARTICLE,
     param: 'fulltext1',
     solrField: 'body_xml',
     scope: 'doc',
@@ -205,22 +248,22 @@ export const SEARCH_TYPE_ARTICLE: SearchTermType = {
 };
 
 export const SEARCH_TYPE_START_YEAR: SearchTermType = {
-    id: 'start-year',
+    id: SearchTermId.START_YEAR,
     param: 'startyear',
-    label: 'search.terms.start-year.label',
+    label: 'search.terms.startYear.label',
     isTypeOption: true
 };
 
 // Note: not being used, only using startyear for now
 // export const SEARCH_TYPE_END_YEAR: SearchTermType = {
-//     id: 'end-year',
+//     id: SearchTermId.END_YEAR,
 //     param: 'endyear',
-//     label: 'search.terms.end-year.label',
+//     label: 'search.terms.endYear.label',
 //     isTypeOption: true
 // };
 
 export const SEARCH_TYPE_CITED: SearchTermType = {
-    id: 'cited',
+    id: SearchTermId.CITED,
     param: 'citecount',
     label: 'search.terms.cited.label',
     shortLabel: 'search.terms.cited.shortLabel',
@@ -228,7 +271,7 @@ export const SEARCH_TYPE_CITED: SearchTermType = {
 };
 
 export const SEARCH_TYPE_VIEWED: SearchTermType = {
-    id: 'viewed',
+    id: SearchTermId.VIEWED,
     param: 'viewcount',
     label: 'search.terms.viewed.label',
     shortLabel: 'search.terms.viewed.shortLabel',
@@ -253,21 +296,8 @@ export const SEARCH_TYPES: SearchTermType[] = [
  * Search facets
  */
 
-export const DEFAULT_SEARCH_FACETS: FacetId[] = [
-    FacetId.ART_YEAR_INT,
-    FacetId.ART_VIEWS_LAST12MOS,
-    FacetId.ART_CITED_ALL,
-    FacetId.ART_LANG,
-    FacetId.ART_TYPE,
-    FacetId.ART_SOURCETYPE,
-    FacetId.ART_SOURCETITLEABBR,
-    // FacetId.GLOSSARY_TERMS,
-    FacetId.GLOSSARY_GROUP_TERMS,
-    FacetId.ART_KWDS_STR
-];
-
 export const SEARCH_FACET_SOURCETYPE: SearchFacetType = {
-    id: FacetId.ART_SOURCETYPE,
+    id: SearchFacetId.ART_SOURCETYPE,
     param: 'sourcetype',
     paramSeparator: ' OR ',
     label: 'search.facets.art_sourcetype.label',
@@ -293,7 +323,7 @@ export const SEARCH_FACET_SOURCETYPE: SearchFacetType = {
 };
 
 export const SEARCH_FACET_SOURCE: SearchFacetType = {
-    id: FacetId.ART_SOURCETITLEABBR,
+    id: SearchFacetId.ART_SOURCETITLEABBR,
     param: 'fulltext1',
     paramSeparator: ' OR ',
     label: 'search.facets.art_sourcetitleabbr.label',
@@ -304,7 +334,7 @@ export const SEARCH_FACET_SOURCE: SearchFacetType = {
 };
 
 export const SEARCH_FACET_TYPE: SearchFacetType = {
-    id: FacetId.ART_TYPE,
+    id: SearchFacetId.ART_TYPE,
     param: 'articletype',
     paramSeparator: ' OR ',
     label: 'search.facets.art_type.label',
@@ -358,7 +388,7 @@ export const SEARCH_FACET_TYPE: SearchFacetType = {
 };
 
 export const SEARCH_FACET_LANG: SearchFacetType = {
-    id: FacetId.ART_LANG,
+    id: SearchFacetId.ART_LANG,
     param: 'sourcelangcode',
     paramSeparator: ',',
     label: 'search.facets.art_lang.label',
@@ -417,7 +447,7 @@ export const SEARCH_FACET_LANG: SearchFacetType = {
 
 // Note: not being used, only using GLOSSARY_GROUP_TERMS for now
 // export const SEARCH_FACET_GLOSSARY: SearchFacetType = {
-//     id: FacetId.GLOSSARY_TERMS,
+//     id: SearchFacetId.GLOSSARY_TERMS,
 //     param: 'fulltext1',
 //     paramSeparator: ' OR ',
 //     label: 'search.facets.glossary_terms.label',
@@ -427,7 +457,7 @@ export const SEARCH_FACET_LANG: SearchFacetType = {
 // };
 
 export const SEARCH_FACET_GLOSSARY_GROUPS: SearchFacetType = {
-    id: FacetId.GLOSSARY_GROUP_TERMS,
+    id: SearchFacetId.GLOSSARY_GROUP_TERMS,
     param: 'fulltext1',
     paramSeparator: ' OR ',
     label: 'search.facets.glossary_group_terms.label',
@@ -437,7 +467,7 @@ export const SEARCH_FACET_GLOSSARY_GROUPS: SearchFacetType = {
 };
 
 export const SEARCH_FACET_KEYWORDS: SearchFacetType = {
-    id: FacetId.ART_KWDS_STR,
+    id: SearchFacetId.ART_KWDS_STR,
     param: 'fulltext1',
     paramSeparator: ' OR ',
     label: 'search.facets.art_kwds_str.label',
@@ -448,7 +478,7 @@ export const SEARCH_FACET_KEYWORDS: SearchFacetType = {
 };
 
 export const SEARCH_FACET_DECADE: SearchFacetType = {
-    id: FacetId.ART_YEAR_INT,
+    id: SearchFacetId.ART_YEAR_INT,
     param: 'startyear',
     paramSeparator: ' OR ',
     label: 'search.facets.art_year_int.label',
@@ -460,29 +490,48 @@ export const SEARCH_FACET_DECADE: SearchFacetType = {
 };
 
 export const SEARCH_FACET_CITATION: SearchFacetType = {
-    id: FacetId.ART_CITED_ALL,
+    id: SearchFacetId.ART_CITED_5,
     param: 'citecount',
     paramSeparator: ' OR ',
-    label: 'search.facets.art_cited_all.label',
+    label: 'search.facets.art_cited_5.label',
     dynamicValues: true,
     values: [],
-    formatCounts: (counts: SearchFacetCounts) => groupCountsByRange(counts, 10)
+    formatCounts: (counts: SearchFacetCounts) => groupCountsByRange(counts, 10, ' TO ', ' IN 5'),
+    formatOption: (opt: string, intl: IntlService) =>
+        intl.t('search.facets.art_cited_5.option', {
+            range: opt
+                .replace('TO', '-')
+                .replace('IN 5', '')
+                .trim()
+        })
 };
 
 export const SEARCH_FACET_VIEW: SearchFacetType = {
-    id: FacetId.ART_VIEWS_LAST12MOS,
+    id: SearchFacetId.ART_VIEWS_LAST12MOS,
     param: 'viewcount',
     paramSeparator: ' OR ',
     label: 'search.facets.art_views_last12mos.label',
     dynamicValues: true,
     values: [],
-    formatCounts: (counts: SearchFacetCounts) => groupCountsByRange(counts, 10)
+    formatCounts: (counts: SearchFacetCounts) => groupCountsByRange(counts, 10, ' TO '),
+    formatOption: (opt: string, intl: IntlService) =>
+        intl.t('search.facets.art_views_last12mos.option', { range: opt.replace('TO', '-').trim() })
+};
+
+export const SEARCH_FACET_AUTHOR: SearchFacetType = {
+    id: SearchFacetId.ART_AUTHORS,
+    param: 'author',
+    paramSeparator: ' OR ',
+    label: 'search.facets.art_authors.label',
+    dynamicValues: true,
+    values: []
 };
 
 export const SEARCH_FACETS = [
     SEARCH_FACET_DECADE,
     SEARCH_FACET_VIEW,
     SEARCH_FACET_CITATION,
+    SEARCH_FACET_AUTHOR,
     SEARCH_FACET_LANG,
     SEARCH_FACET_TYPE,
     SEARCH_FACET_SOURCETYPE,

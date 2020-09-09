@@ -17,12 +17,12 @@ import AuthService from 'pep/services/auth';
 import LangService from 'pep/services/lang';
 import ConfigurationService from 'pep/services/configuration';
 import { ApiServerErrorResponse } from 'pep/pods/application/adapter';
-import Session from 'pep/services/pep-session';
+import PepSessionService from 'pep/services/pep-session';
 
 export default class Application extends PageLayout(Route.extend(ApplicationRouteMixin)) {
     routeAfterAuthentication = 'index';
 
-    @service('pep-session') session!: Session;
+    @service('pep-session') session!: PepSessionService;
     @service fastboot!: FastbootService;
     @service media!: MediaService;
     @service notifications!: NotificationService;
@@ -43,6 +43,7 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
      * @returns {Promise<void>}
      */
     appSetup() {
+        this.currentUser.setup();
         this.theme.setup();
         this.lang.setup();
         return this.configuration.setup();

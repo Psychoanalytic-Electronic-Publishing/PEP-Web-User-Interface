@@ -4,47 +4,7 @@
             <h5 class="mb-0">
                 {{t "search.form.heading"}}
             </h5>
-            {{!-- TODO hiding saved searches for now until a future release --}}
-            {{!--
-            <div>
-                <DropdownMenu @horizontalPosition="right" as |DD|>
-                    <DD.Trigger @htmlTag="button" class="btn btn-link">
-                        <FaIcon @icon="bookmark" @size="lg" />
-                        <EmberTooltip
-                            @text={{t "search.form.savedSearch.label"}}
-                            @popperContainer="body"
-                            @side="bottom"
-                            @spacing={{5}}
-                            @effect="slide"
-                            @innerClass=""
-                        />
-                    </DD.Trigger>
-                    <DD.Content class="dropdown-menu">
-                        <h6 class="dropdown-header">
-                            <FaIcon @icon="bookmark" class="mr-1" />
-                            {{t "search.form.savedSearch.mine"}}
-                        </h6>
-                        <DropdownAction @dd={{DD}}>
-                            disjunction feminine
-                            <small class="text-muted">(all, 132 matches)</small>
-                        </DropdownAction>
-                        <DropdownAction @dd={{DD}}>
-                            family discord
-                            <small class="text-muted">(books, 3 matches)</small>
-                        </DropdownAction>
-                        <DropdownAction @dd={{DD}}>
-                            depression anxiety
-                            <small class="text-muted">(videos, 5 matches)</small>
-                        </DropdownAction>
-                        <div class="dropdown-divider"></div>
-                        <DropdownAction @dd={{DD}} disabled={{not this.hasEnteredSearch}}>
-                            <FaIcon @icon="plus-circle" @fixedWidth={{true}} class="text-muted" />
-                            {{t "search.form.savedSearch.save"}}
-                        </DropdownAction>
-                    </DD.Content>
-                </DropdownMenu>
-            </div>
-             --}}
+            <Search::Form::SavedSearches />
         </div>
         <form>
             <div class="form-group">
@@ -63,7 +23,7 @@
                     @icon={{if @isLimitOpen "chevron-up" "chevron-down"}}
                     @type="link"
                     @action={{this.toggleLimitFields}}
-                    class="p-0"
+                    class="p-0 font-size-secondary"
                 />
             </div>
             <AnimatedContainer>
@@ -110,36 +70,12 @@
             </AnimatedContainer>
             <AnimatedContainer>
                 {{#animated-each @searchTerms use=this.animateTransition duration=this.animateDuration as |searchTerm|}}
-                    <div class="d-flex mb-2">
-                        {{!-- TODO extract term control into <Search::Form::TermControl /> --}}
-                        <div class="search-form-term-control flex-fill">
-                            <FlInput
-                                @placeholder={{t "search.form.terms.label"}}
-                                @value={{searchTerm.term}}
-                                class="search-form-term-control-text"
-                                maxlength="255"
-                                autocomplete="off"
-                                {{on "input" (fn this.onTermTextChange searchTerm)}}
-                            />
-                            <select
-                                class="custom-select search-form-term-control-type"
-                                {{on "change" (fn this.updateTermType searchTerm)}}
-                            >
-                                {{#each this.searchTypeOptions as |searchType|}}
-                                    <option value={{searchType.id}} selected={{eq searchType.id searchTerm.type}}>
-                                        {{t searchType.label}}
-                                    </option>
-                                {{/each}}
-                            </select>
-                        </div>
-                        <Button
-                            @icon="trash-alt"
-                            @type="link"
-                            @action={{fn this.removeSearchTerm searchTerm}}
-                            class="ml-1 p-0"
-                            title={{t "search.form.terms.remove"}}
-                        />
-                    </div>
+                    <Search::Form::TermControl
+                        @searchTerm={{searchTerm}}
+                        @onTermTextChange={{this.onTermTextChange}}
+                        @updateTermType={{this.updateTermType}}
+                        @removeSearchTerm={{this.removeSearchTerm}}
+                    />
                 {{/animated-each}}
             </AnimatedContainer>
             <div class="d-flex justify-content-between mb-3">
@@ -148,6 +84,7 @@
                     @icon="plus"
                     @type="link"
                     @action={{this.addSearchTerm}}
+                    @disabled={{not this.canAddSearchTerm}}
                     class="p-0"
                 />
                 <CheckboxInput
@@ -195,7 +132,7 @@
             }}
         </p>
         <p class="mb-0">
-            {{t "search.form.tooManyResults.instructions"}}
+            {{html-safe this.configuration.content.search.tooManyResults.instructions}}
         </p>
     </Alert>
 </div>

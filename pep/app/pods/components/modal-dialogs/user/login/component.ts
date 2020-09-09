@@ -10,7 +10,7 @@ import IntlService from 'ember-intl/services/intl';
 
 import LoadingBar from 'pep/services/loading-bar';
 import { LoginForm } from 'pep/services/auth';
-import Session from 'pep/services/pep-session';
+import PepSessionService from 'pep/services/pep-session';
 
 interface ModalDialogsUserLoginArgs {
     onClose: () => void;
@@ -21,7 +21,7 @@ interface ModalDialogsUserLoginArgs {
 }
 
 export default class ModalDialogsUserLogin extends Component<ModalDialogsUserLoginArgs> {
-    @service('pep-session') session!: Session;
+    @service('pep-session') session!: PepSessionService;
     @service router!: RouterService;
     @service loadingBar!: LoadingBar;
     @service notifications!: NotificationService;

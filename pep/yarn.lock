@@ -2497,10 +2497,10 @@
     ember-modal-dialog "^3.0.0-beta.4"
     ember-spread "^7.0.1"
 
-"@gavant/ember-pagination@3.0.0-beta.1":
-  version "3.0.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@gavant/ember-pagination/-/ember-pagination-3.0.0-beta.1.tgz#d11c4e29d9916740fc1d21969fb7675ce36389de"
-  integrity sha512-Vl/i6dPtc4gs3aIgzEQ8ZsyQfcmoBcm8zl2Vfo0Xl0D/u47URSkk2K0hxZL4izlxTihIn8xIsCOKPRSaNDBTKA==
+"@gavant/ember-pagination@3.0.0-beta.2":
+  version "3.0.0-beta.2"
+  resolved "https://registry.yarnpkg.com/@gavant/ember-pagination/-/ember-pagination-3.0.0-beta.2.tgz#07e1db8dc66127271f4576e490fc4e543ab07c2f"
+  integrity sha512-c9zRHHEY1QC+OdJnczDDYxEn5F2oLPDasz3hUCu86ZvY/zPVUti3FGsQUxvh2V07aBWESOPVwyMJaPhhc5Xurw==
   dependencies:
     ember-cli-babel "^7.17.2"
     ember-cli-htmlbars "^4.2.2"
@@ -7663,7 +7663,7 @@ ember-content-placeholders@^1.0.0:
     ember-cli-babel "^6.6.0"
     ember-cli-htmlbars "^2.0.1"
 
-ember-cookies@^0.5.0:
+ember-cookies@0.5.2, ember-cookies@^0.5.0:
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/ember-cookies/-/ember-cookies-0.5.2.tgz#06e33463f2f83254fefaf224cc944dec3fb9d3ba"
   integrity sha512-nZ7oG97kBcO9UHjO95ryABpnVx62Bhxo7lIsBJNmWvFXleILm9DGueiAynzXxuYWWPuKIeeSbYakrS1869tNTw==

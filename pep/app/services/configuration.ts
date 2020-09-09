@@ -6,6 +6,7 @@ import merge from 'lodash.merge';
 
 import ENV from 'pep/config/environment';
 import LangService from 'pep/services/lang';
+import { SEARCH_DEFAULT_VIEW_PERIOD, SEARCH_DEFAULT_FACETS } from 'pep/constants/search';
 import {
     BaseConfiguration,
     ContentConfiguration,
@@ -30,6 +31,24 @@ export default class ConfigurationService extends Service {
      */
     get contentConfigName() {
         return `${CONTENT_CONFIG_NAME}-${this.lang.currentLanguage}`;
+    }
+
+    /**
+     * The default query param values for a "blank" search page, based on the
+     * current user prefs/admin configs. Can be used for <LinkTo>'s `@query` arg
+     * @readonly
+     * @returns {object}
+     */
+    get defaultSearchParams() {
+        return {
+            q: '',
+            matchSynonyms: false,
+            citedCount: '',
+            viewedCount: '',
+            viewedPeriod: SEARCH_DEFAULT_VIEW_PERIOD,
+            searchTerms: null,
+            facets: JSON.stringify(SEARCH_DEFAULT_FACETS)
+        };
     }
 
     /**

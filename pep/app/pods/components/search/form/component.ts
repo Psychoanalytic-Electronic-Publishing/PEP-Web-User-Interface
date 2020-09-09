@@ -5,14 +5,15 @@ import { inject as service } from '@ember/service';
 import IntlService from 'ember-intl/services/intl';
 
 import {
-    SEARCH_TYPES,
     SEARCH_TYPE_EVERYWHERE,
-    SEARCH_RESULTS_WARNING_COUNT,
     SearchTermValue,
     VIEW_PERIODS,
-    ViewPeriod
+    ViewPeriod,
+    SearchTermId,
+    SEARCH_TYPES
 } from 'pep/constants/search';
 import ScrollableService from 'pep/services/scrollable';
+import ConfigurationService from 'pep/services/configuration';
 import { fadeTransition } from 'pep/utils/animation';
 
 interface SearchFormArgs {
@@ -36,14 +37,10 @@ interface SearchFormArgs {
 export default class SearchForm extends Component<SearchFormArgs> {
     @service scrollable!: ScrollableService;
     @service intl!: IntlService;
+    @service configuration!: ConfigurationService;
 
-    searchTypes = SEARCH_TYPES;
     animateTransition = fadeTransition;
     animateDuration = 300;
-
-    get searchTypeOptions() {
-        return this.searchTypes.filter((t) => t.isTypeOption);
-    }
 
     get viewPeriodOptions() {
         return VIEW_PERIODS.map((period) => ({
@@ -60,8 +57,18 @@ export default class SearchForm extends Component<SearchFormArgs> {
         );
     }
 
+    get searchTypeOptions() {
+        return SEARCH_TYPES.filter((t) => t.isTypeOption);
+    }
+
+    get canAddSearchTerm() {
+        return (this.args.searchTerms?.length ?? 0) < this.searchTypeOptions.length;
+    }
+
     get hasTooManyResults() {
-        return this.args.resultsCount && this.args.resultsCount > SEARCH_RESULTS_WARNING_COUNT;
+        return (
+            this.args.resultsCount && this.args.resultsCount > this.configuration.base.search.tooManyResults.threshold
+        );
     }
 
     /**
@@ -69,11 +76,13 @@ export default class SearchForm extends Component<SearchFormArgs> {
      */
     @action
     addSearchTerm() {
-        this.args.addSearchTerm({
-            type: SEARCH_TYPE_EVERYWHERE.id,
-            term: ''
-        });
-        later(() => this.scrollable.recalculate('sidebar-left'), this.animateDuration);
+        if (this.canAddSearchTerm) {
+            this.args.addSearchTerm({
+                type: SEARCH_TYPE_EVERYWHERE.id,
+                term: ''
+            });
+            later(() => this.scrollable.recalculate('sidebar-left'), this.animateDuration);
+        }
     }
 
     /**
@@ -92,7 +101,7 @@ export default class SearchForm extends Component<SearchFormArgs> {
      */
     @action
     updateTermType(oldTerm: SearchTermValue, event: HTMLElementEvent<HTMLSelectElement>) {
-        const type = event.target.value;
+        const type = event.target.value as SearchTermId;
         const newTerm = { ...oldTerm, type };
         this.args.updateSearchTerm(oldTerm, newTerm);
     }

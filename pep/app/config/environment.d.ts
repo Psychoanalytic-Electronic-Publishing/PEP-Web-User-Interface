@@ -14,6 +14,7 @@ declare const config: {
     locationType: string;
     rootURL: string;
     routerRootURL: string;
+    userPreferencesVersion: string;
     buildVersion: string;
     apiBaseUrl: string;
     apiNamespace: string;
@@ -21,6 +22,9 @@ declare const config: {
     apiAdminNamespace: string;
     authBaseUrl: string;
     clientId: number;
+    cookieDomain: string;
+    cookieSecure: string;
+    cookieSameSite: string;
     fastboot: {
         hostWhitelist: Array<string | RegExp>;
     };

@@ -1,4 +1,4 @@
-import session from 'ember-simple-auth/services/session';
+import SessionService from 'ember-simple-auth/services/session';
 import { oneWay } from '@ember/object/computed';
 import { PepSecureAuthenticatedData } from 'pep/api';
 
@@ -13,7 +13,7 @@ export interface AuthenticatedData {
  * @class Session
  * @extends 'ember-simple-auth/services/session
  */
-export default class Session extends session.extend({
+export default class PepSessionService extends SessionService.extend({
     data: (oneWay('session.content') as unknown) as AuthenticatedData
 }) {
     // normal class body definition here
@@ -22,6 +22,6 @@ export default class Session extends session.extend({
 // DO NOT DELETE: this is how TypeScript knows how to look up your services.
 declare module '@ember/service' {
     interface Registry {
-        'pep-session': Session;
+        'pep-session': PepSessionService;
     }
 }

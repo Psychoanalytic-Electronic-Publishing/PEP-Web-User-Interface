@@ -10,22 +10,23 @@ import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
 import { didCancel, timeout } from 'ember-concurrency';
 import { restartableTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
-import copy from 'lodash.clonedeep';
 
+import Document from 'pep/pods/document/model';
 import AjaxService from 'pep/services/ajax';
 import {
     SEARCH_TYPE_EVERYWHERE,
     SearchTermValue,
     SearchFacetValue,
     ViewPeriod,
-    SEARCH_DEFAULT_VIEW_PERIOD,
-    SEARCH_DEFAULT_TERMS
+    SEARCH_DEFAULT_VIEW_PERIOD
 } from 'pep/constants/search';
+import { PreferenceKey } from 'pep/constants/preferences';
 import SidebarService from 'pep/services/sidebar';
 import LoadingBarService from 'pep/services/loading-bar';
 import FastbootMediaService from 'pep/services/fastboot-media';
-import Document from 'pep/pods/document/model';
 import ScrollableService from 'pep/services/scrollable';
+import ConfigurationService from 'pep/services/configuration';
+import CurrentUserService from 'pep/services/current-user';
 import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
 import { SearchMetadata } from 'pep/api';
 import { SearchPreviewMode } from 'pep/pods/components/search/preview/component';
@@ -37,6 +38,8 @@ export default class Search extends Controller {
     @service fastboot!: FastbootService;
     @service fastbootMedia!: FastbootMediaService;
     @service scrollable!: ScrollableService;
+    @service configuration!: ConfigurationService;
+    @service currentUser!: CurrentUserService;
 
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
@@ -74,7 +77,7 @@ export default class Search extends Controller {
 
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
-    @tracked _searchTerms: string | null = JSON.stringify(SEARCH_DEFAULT_TERMS);
+    @tracked _searchTerms: string | null = null;
     get searchTerms() {
         if (!this._searchTerms) {
             return [];
@@ -129,6 +132,7 @@ export default class Search extends Controller {
      */
     @action
     processQueryParams(params: QueryParamsObj) {
+        const cfg = this.configuration.base.search;
         const searchParams = buildSearchQueryParams(
             this.q,
             this.searchTerms,
@@ -136,7 +140,11 @@ export default class Search extends Controller {
             this.facets,
             this.citedCount,
             this.viewedCount,
-            this.viewedPeriod
+            this.viewedPeriod,
+            cfg.facets.defaultFields,
+            'AND',
+            cfg.facets.valueLimit,
+            cfg.facets.valueMinCount
         );
         return { ...params, ...searchParams };
     }
@@ -163,7 +171,7 @@ export default class Search extends Controller {
             this.loadingBar.show();
             this.scrollable.scrollToTop('search-results');
             const results = await hash({
-                documents: this.paginator.filterModels(),
+                documents: this.paginator.filterModels(true),
                 meta: taskFor(this.updateRefineMetadata).perform(false, 0)
             });
             this.loadingBar.hide();
@@ -186,8 +194,9 @@ export default class Search extends Controller {
             this.updateSearchQueryParams();
             this.closeResultPreview();
             this.loadingBar.show();
+            this.scrollable.scrollToTop('search-results');
             const results = await hash({
-                documents: this.paginator.filterModels(),
+                documents: this.paginator.filterModels(true),
                 meta: taskFor(this.updateRefineMetadata).perform(false, 0)
             });
             this.loadingBar.hide();
@@ -228,14 +237,18 @@ export default class Search extends Controller {
      */
     @action
     clearSearch() {
+        const cfg = this.configuration.base.search;
+        const prefs = this.currentUser.preferences;
+        const terms = prefs?.searchTermFields ?? cfg.terms.defaultFields;
+        const isLimitOpen = prefs?.searchLimitIsShown ?? cfg.limitFields.isShown;
+
         this.currentSmartSearchTerm = '';
         this.currentMatchSynonyms = false;
         this.currentCitedCount = '';
         this.currentViewedCount = '';
         this.currentViewedPeriod = ViewPeriod.PAST_WEEK;
-        this.isLimitOpen = false;
-        // create a copy of the default search terms objects so they can be mutated
-        this.currentSearchTerms = copy(SEARCH_DEFAULT_TERMS);
+        this.isLimitOpen = isLimitOpen;
+        this.currentSearchTerms = terms.map((f) => ({ type: f, term: '' }));
         this.currentFacets = [];
         taskFor(this.updateRefineMetadata).perform(true, 0);
     }
@@ -247,6 +260,7 @@ export default class Search extends Controller {
     @action
     addSearchTerm(newSearchTerm: SearchTermValue) {
         this.currentSearchTerms = this.currentSearchTerms.concat([newSearchTerm]);
+        taskFor(this.updateSearchFormPrefs).perform();
     }
 
     /**
@@ -264,6 +278,7 @@ export default class Search extends Controller {
 
         this.currentSearchTerms = searchTerms;
         this.onSearchCriteriaChange();
+        taskFor(this.updateSearchFormPrefs).perform();
     }
 
     /**
@@ -279,6 +294,7 @@ export default class Search extends Controller {
         setProperties(oldTerm, newTerm);
         this.currentSearchTerms = searchTerms;
         this.onSearchCriteriaChange();
+        taskFor(this.updateSearchFormPrefs).perform();
     }
 
     /**
@@ -314,6 +330,8 @@ export default class Search extends Controller {
             this.currentViewedPeriod = SEARCH_DEFAULT_VIEW_PERIOD;
             this.onSearchCriteriaChange();
         }
+
+        taskFor(this.updateSearchFormPrefs).perform();
     }
 
     /**
@@ -358,6 +376,7 @@ export default class Search extends Controller {
         try {
             yield timeout(debounceTimeout);
 
+            const cfg = this.configuration.base.search;
             const searchTerms = this.currentSearchTerms.filter((t: SearchTermValue) => !!t.term);
             const searchParams = buildSearchQueryParams(
                 this.currentSmartSearchTerm,
@@ -366,7 +385,11 @@ export default class Search extends Controller {
                 [],
                 this.currentCitedCount,
                 this.currentViewedCount,
-                this.currentViewedPeriod
+                this.currentViewedPeriod,
+                cfg.facets.defaultFields,
+                'AND',
+                cfg.facets.valueLimit,
+                cfg.facets.valueMinCount
             );
             if (hasSearchQuery(searchParams)) {
                 if (showLoading) {
@@ -392,6 +415,18 @@ export default class Search extends Controller {
                 this.loadingBar.hide();
             }
         }
+    }
+
+    /**
+     * Updates the user's search form preferences after a short delay
+     */
+    @restartableTask
+    *updateSearchFormPrefs() {
+        yield timeout(500);
+        yield this.currentUser.updatePrefs({
+            [PreferenceKey.SEARCH_LIMIT_IS_SHOWN]: this.isLimitOpen,
+            [PreferenceKey.SEARCH_TERM_FIELDS]: this.currentSearchTerms.map((t) => t.type)
+        });
     }
 
     /**

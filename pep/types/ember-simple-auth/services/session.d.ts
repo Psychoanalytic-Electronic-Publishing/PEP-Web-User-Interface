@@ -4,6 +4,7 @@ declare module 'ember-simple-auth/services/session' {
     import RSVP from 'rsvp';
     import User from 'pep/pods/user/model';
     import Transition from '@ember/routing/-private/transition';
+
     export default class session extends Service.extend(Evented) {
         /**
          * Triggered whenever the session is successfully authenticated. This happens

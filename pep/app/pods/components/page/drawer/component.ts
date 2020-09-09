@@ -6,8 +6,8 @@ import ModalService from '@gavant/ember-modals/services/modal';
 
 import DrawerService from 'pep/services/drawer';
 import AuthService from 'pep/services/auth';
-import { SEARCH_DEFAULT_PARAMS } from 'pep/constants/search';
-import Session from 'pep/services/pep-session';
+import ConfigurationService from 'pep/services/configuration';
+import PepSessionService from 'pep/services/pep-session';
 
 interface PageDrawerArgs {
     openAboutModal: () => Promise<void>;
@@ -15,13 +15,16 @@ interface PageDrawerArgs {
 
 export default class PageDrawer extends Component<PageDrawerArgs> {
     @service drawer!: DrawerService;
-    @service('pep-session') session!: Session;
+    @service('pep-session') session!: PepSessionService;
     @service auth!: AuthService;
     @service modal!: ModalService;
+    @service configuration!: ConfigurationService;
 
     @tracked isUserMenuOpen = false;
 
-    defaultSearchParams = SEARCH_DEFAULT_PARAMS;
+    get defaultSearchParams() {
+        return this.configuration.defaultSearchParams;
+    }
 
     /**
      * Closes the page drawer nav
