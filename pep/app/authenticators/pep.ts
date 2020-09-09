@@ -2,7 +2,6 @@ import { inject as service } from '@ember/service';
 import { isEmpty } from '@ember/utils';
 import { resolve, reject } from 'rsvp';
 import BaseAuthenticator from 'ember-simple-auth/authenticators/base';
-import { SessionAuthenticatedData } from 'ember-simple-auth/services/session';
 
 import AjaxService from 'pep/services/ajax';
 import { serializeQueryParams } from 'pep/utils/url';
@@ -14,6 +13,9 @@ import { PepSecureAuthenticatedData } from 'pep/pods/application/adapter';
 
 export default class PepAuthenticator extends BaseAuthenticator {
     @service ajax!: AjaxService;
+    authenticationHeaders = {
+        'Content-Type': 'application/json'
+    };
 
     /**
      * Authenticates and logs the user in
@@ -27,9 +29,7 @@ export default class PepAuthenticator extends BaseAuthenticator {
             Password: password
         });
         const result = await this.ajax.request(`${ENV.authBaseUrl}/Authenticate?${params}`, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
+            headers: this.authenticationHeaders
         });
         return result;
     }

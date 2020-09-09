@@ -78,6 +78,8 @@ export default class Application extends DS.RESTAdapter.extend(DataAdapterMixin,
     get headers() {
         const headers = { 'client-id': ENV.clientId } as any;
         if (this.session.isAuthenticated) {
+            // We are converting to unknown because session data is specified as something
+            // completely different by the addon
             const { SessionId } = (this.session.data!.authenticated as unknown) as PepSecureAuthenticatedData;
             headers['client-session'] = SessionId;
         }
