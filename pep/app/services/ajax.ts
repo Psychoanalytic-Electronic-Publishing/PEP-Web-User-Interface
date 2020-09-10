@@ -24,8 +24,6 @@ export default class AjaxService extends Service {
         const headers = {} as any;
         // api auth token is sent in cookies
         if (this.session.isAuthenticated) {
-            // We are converting to unknown because session data is specified as something
-            // completely different by the addon
             const { SessionId } = this.session.data.authenticated;
             headers['client-session'] = SessionId;
         }
