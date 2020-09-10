@@ -8,9 +8,9 @@ import Document from 'pep/pods/document/model';
 import { tracked } from '@glimmer/tracking';
 import { PreferenceKey } from 'pep/constants/preferences';
 
-interface PageSidebarWidgetsReadLaterArgs extends PageSidebarWidgetArgs {}
+interface PageSidebarWidgetsFavoritesArgs extends PageSidebarWidgetArgs {}
 
-export default class PageSidebarWidgetsReadLater extends Component<PageSidebarWidgetsReadLaterArgs> {
+export default class PageSidebarWidgetsFavorites extends Component<PageSidebarWidgetsFavoritesArgs> {
     @service currentUser!: CurrentUserService;
     @tracked results?: Document[];
 
@@ -18,22 +18,35 @@ export default class PageSidebarWidgetsReadLater extends Component<PageSidebarWi
         return this.args.openWidgets.includes(this.widget);
     }
 
-    widget = WIDGET.READ_LATER;
+    widget = WIDGET.FAVORITES;
 
     /**
-     * Load the documents that have been marked to read later by the user from local storage
+     * Load the documents that have been favorited by the user from local storage
      *
-     * @memberof PageSidebarWidgetsReadLater
+     * @memberof PageSidebarWidgetsFavorites
      */
     loadFromUserPreferences() {
-        this.results = this.currentUser.getDocuments(PreferenceKey.READ_LATER);
+        this.results = this.currentUser.getDocuments(PreferenceKey.FAVORITES);
     }
 
     /**
-     * Load the widget results on render
+     * Load the widget results on render or update
+     *
+     * @memberof PageSidebarWidgetsFavorites
      */
     @action
     onElementChange() {
         this.loadFromUserPreferences();
+    }
+
+    /**
+     * Add or remove favorites
+     *
+     * @param {Document} document
+     * @memberof SearchItem
+     */
+    @action
+    removeFavorite(document: Document) {
+        this.currentUser.removeDocument(PreferenceKey.FAVORITES, document);
     }
 }

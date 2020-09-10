@@ -8,7 +8,9 @@
 as |Panel|>
     <Panel.header @title={{t "relatedInfo.widgets.moreLikeThese.title"}} />
     <Panel.body>
-        <h5>{{t "relatedInfo.widgets.moreLikeThese.confidence" number=(round this.results.similarMaxScore)}}</h5>
+        {{#if this.results.similarMaxScore}}
+            <h5>{{t "relatedInfo.widgets.moreLikeThese.confidence" number=(round this.results.similarMaxScore)}}</h5>
+        {{/if}}
         <ul class="list-unstyled">
             {{#each this.results.similarDocuments as |result|}}
                 <li class="mb-2">

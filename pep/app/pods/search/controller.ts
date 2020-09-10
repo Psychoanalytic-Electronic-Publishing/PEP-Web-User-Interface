@@ -77,6 +77,9 @@ export default class Search extends Controller {
     @tracked previewMode: SearchPreviewMode = 'minimized';
     @tracked containerMaxHeight = 0;
 
+    readLaterKey = PreferenceKey.READ_LATER;
+    favoritesKey = PreferenceKey.FAVORITES;
+
     get sidebarData() {
         return {
             [WIDGET.MORE_LIKE_THESE]: this.previewedResult
@@ -480,11 +483,6 @@ export default class Search extends Controller {
     @action
     updateContainerMaxHeight(element: HTMLElement) {
         this.containerMaxHeight = element.offsetHeight;
-    }
-
-    @action
-    saveForLater(document: Document) {
-        this.currentUser.addReadLaterDocument(document);
     }
 }
 

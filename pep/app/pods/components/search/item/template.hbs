@@ -1,0 +1,36 @@
+<li class="mb-4 d-flex justify-content-between">
+    <div>
+        <a href="" {{on "click" (fn @openResultPreview @item)}}>
+            {{@item.documentRef}}
+
+        </a>
+        {{#if @item.kwicList}}
+            <ul class="font-size-secondary">
+                {{#each @item.kwicList as |searchHit|}}
+                    <li>{{html-safe searchHit}}</li>
+                {{/each}}
+            </ul>
+        {{/if}}
+    </div>
+    <div class="pl-2 d-flex justify-content-end align-items-start">
+        {{#if @item.relatedrx}}
+            <FaIcon @icon="books"/>
+        {{/if}}
+        <Button
+            @action={{fn this.toggleFavorite @item}}
+            @iconOnly={{true}}
+            @iconPrefix={{if this.favorited 'fas' 'fal'}}
+            @icon="heart"
+            @type="link"
+            class="p-0"
+        />
+        <Button
+            @action={{fn this.toggleReadLater @item}}
+            @iconOnly={{true}}
+            @iconPrefix={{if this.readLater 'fas' 'fal'}}
+            @icon="bookmark"
+            @type="link"
+            class="p-0 ml-2"
+        />
+    </div>
+</li>

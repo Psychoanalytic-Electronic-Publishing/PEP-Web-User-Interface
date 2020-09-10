@@ -8,7 +8,6 @@ import CookiesService from 'ember-cookies/services/cookies';
 import merge from 'lodash.merge';
 
 import ENV from 'pep/config/environment';
-import PepSessionService from 'pep/services/pep-session';
 import User from 'pep/pods/user/model';
 import {
     DEFAULT_USER_PREFERENCES,
@@ -18,9 +17,11 @@ import {
     USER_PREFERENCES_LS_PREFIX,
     COOKIE_PREFERENCES,
     USER_PREFERENCES_COOKIE_NAME,
-    PreferenceKey
+    PreferenceKey,
+    PreferenceDocumentsKey
 } from 'pep/constants/preferences';
 import Document from 'pep/pods/document/model';
+import PepSessionService from 'pep/services/pep-session';
 
 export default class CurrentUserService extends Service {
     @service store!: DS.Store;
@@ -207,26 +208,67 @@ export default class CurrentUserService extends Service {
         }
     }
 
-    addReadLaterDocument(document: Document) {
+    /**
+     * Add document to local storage based upon the preference key that can be passed in and the document.
+     * Does not add in duplicates
+     *
+     * @param {PreferenceDocumentsKey} key
+     * @param {Document} document
+     * @memberof CurrentUserService
+     */
+    addDocument(key: PreferenceDocumentsKey, document: Document) {
         const prefs = this.loadLocalStoragePrefs();
-        const currentDocs = prefs.readLater;
-        if (!currentDocs?.includes(document)) {
-            currentDocs?.push(document);
+        const currentDocs = prefs[key] ?? [];
+        if (!currentDocs?.find((documentToFind) => documentToFind.id === document.id)) {
+            currentDocs?.push(document.toJSON({ includeId: true }) as Document);
         }
         this.updatePrefs({
-            [PreferenceKey.READ_LATER]: currentDocs
+            [key]: currentDocs
         });
     }
 
-    removeReadLaterDocument(document: Document) {
+    /**
+     * Checks if the document for the specific key exists in the document array for that key
+     *
+     * @param {PreferenceDocumentsKey} key
+     * @param {Document} document
+     * @returns {boolean}
+     * @memberof CurrentUserService
+     */
+    hasDocument(key: PreferenceDocumentsKey, document: Document): boolean {
         const prefs = this.loadLocalStoragePrefs();
-        const currentDocs = prefs.readLater;
+        const currentDocs = prefs[key] ?? [];
+        return !!currentDocs?.find((documentToFind) => documentToFind.id === document.id);
+    }
+
+    /**
+     * Remove document from local storage based upon the preference key that can be passed in and the document.
+     *
+     * @param {PreferenceDocumentsKey} key
+     * @param {Document} document
+     * @memberof CurrentUserService
+     */
+    removeDocument(key: PreferenceDocumentsKey, document: Document) {
+        const prefs = this.loadLocalStoragePrefs();
+        const currentDocs = prefs[key];
         const index = currentDocs?.findIndex((documentToFind) => documentToFind.id === document.id);
         if (index) {
             currentDocs?.removeAt(index);
         }
         this.updatePrefs({
-            [PreferenceKey.READ_LATER]: currentDocs
+            [key]: currentDocs
         });
+    }
+
+    /**
+     * Retrieves all documents for a specific preference key
+     *
+     * @param {PreferenceDocumentsKey} key
+     * @returns {Document[]}
+     * @memberof CurrentUserService
+     */
+    getDocuments(key: PreferenceDocumentsKey): Document[] {
+        const prefs = this.loadLocalStoragePrefs();
+        return prefs[key] ?? [];
     }
 }

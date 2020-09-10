@@ -294,6 +294,9 @@
             "expertPicks": {
                 "title": "Expert picks"
             },
+            "favorites": {
+                "title": "Favorites"
+            },
             "glossaryTerms": {
                 "title": "Glossary terms",
                 "view": "View complete glossary"
@@ -310,6 +313,9 @@
             },
             "pastSearches": {
                 "title": "Your past searches"
+            },
+            "readLater": {
+                "title": "Read later"
             },
             "relatedDocuments": {
                 "title": "Related Documents"

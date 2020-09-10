@@ -134,7 +134,9 @@ export const DEFAULT_BASE_CONFIGURATION: BaseConfiguration = {
                 { widget: WIDGET.PAST_SEARCHES, open: false },
                 { widget: WIDGET.RELEVANT_SEARCHES, open: false },
                 { widget: WIDGET.SEMINAL_PAPERS, open: false },
-                { widget: WIDGET.YOUR_INTERESTS, open: false }
+                { widget: WIDGET.YOUR_INTERESTS, open: false },
+                { widget: WIDGET.READ_LATER, open: false },
+                { widget: WIDGET.FAVORITES, open: false }
             ]
         },
         video: {

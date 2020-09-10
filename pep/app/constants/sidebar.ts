@@ -9,11 +9,13 @@ export const PERIODS = [PERIOD_5_YEARS, PERIOD_10_YEARS, PERIOD_20_YEARS, PERIOD
 
 export enum WIDGET {
     EXPERT_PICKS = 'expert-picks',
+    FAVORITES = 'favorites',
     GLOSSARY_TERMS = 'glossary-terms',
     MORE_LIKE_THESE = 'more-like-these',
     MOST_CITED = 'most-cited',
     MOST_VIEWED = 'most-viewed',
     PAST_SEARCHES = 'past-searches',
+    READ_LATER = 'read-later',
     RELATED_DOCUMENTS = 'related-documents',
     RELEVANT_SEARCHES = 'relevant-searches',
     SEMINAL_PAPERS = 'seminal-papers',
