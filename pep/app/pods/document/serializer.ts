@@ -81,8 +81,8 @@ export default class Document extends ApplicationSerializerMixin(DS.RESTSerializ
         if (payload?.documents) {
             payload.documents.responseSet = payload.documents.responseSet.map((item: any) => getSimilarityMatch(item));
 
-            payload.meta = payload.documents.responseInfo;
             payload[modelKey] = payload.documents.responseSet?.[0];
+            payload[modelKey].meta = payload.documents.responseInfo;
             delete payload.documents;
         }
 

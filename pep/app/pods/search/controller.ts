@@ -80,12 +80,6 @@ export default class Search extends Controller {
     readLaterKey = PreferenceKey.READ_LATER;
     favoritesKey = PreferenceKey.FAVORITES;
 
-    get sidebarData() {
-        return {
-            [WIDGET.MORE_LIKE_THESE]: this.previewedResult
-        };
-    }
-
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
     @tracked _searchTerms: string | null = null;
@@ -413,6 +407,10 @@ export default class Search extends Controller {
                 this.resultsMeta = null;
             }
 
+            this.sidebar.update({
+                [WIDGET.GLOSSARY_TERMS]: this.resultsMeta?.facetCounts.facet_fields.glossary_group_terms
+            });
+
             return this.resultsMeta;
         } catch (errors) {
             if (!didCancel(errors)) {
@@ -449,6 +447,10 @@ export default class Search extends Controller {
     async openResultPreview(result: Document, event: Event) {
         event.preventDefault();
         this.previewedResult = result;
+
+        this.sidebar.update({
+            [WIDGET.MORE_LIKE_THESE]: result
+        });
     }
 
     /**

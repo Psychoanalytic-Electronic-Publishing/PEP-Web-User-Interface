@@ -28,6 +28,7 @@ export enum AspectRatio {
 export interface BaseConfiguration {
     global: {
         cards: {
+            whatsNewSize: number;
             left: WidgetConfiguration[];
             right: WidgetConfiguration[];
         };
@@ -122,6 +123,7 @@ export const CONTENT_CONFIG_NAME = 'pep-content';
 export const DEFAULT_BASE_CONFIGURATION: BaseConfiguration = {
     global: {
         cards: {
+            whatsNewSize: 10,
             left: [{ widget: WIDGET.VIDEO_PREVIEW, open: true }],
             right: [
                 { widget: WIDGET.WHATS_NEW, open: true },
@@ -131,10 +133,6 @@ export const DEFAULT_BASE_CONFIGURATION: BaseConfiguration = {
                 { widget: WIDGET.EXPERT_PICKS, open: false },
                 { widget: WIDGET.GLOSSARY_TERMS, open: false },
                 { widget: WIDGET.MORE_LIKE_THESE, open: false },
-                { widget: WIDGET.PAST_SEARCHES, open: false },
-                { widget: WIDGET.RELEVANT_SEARCHES, open: false },
-                { widget: WIDGET.SEMINAL_PAPERS, open: false },
-                { widget: WIDGET.YOUR_INTERESTS, open: false },
                 { widget: WIDGET.READ_LATER, open: false },
                 { widget: WIDGET.FAVORITES, open: false }
             ]

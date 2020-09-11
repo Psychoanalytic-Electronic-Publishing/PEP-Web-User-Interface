@@ -9,10 +9,12 @@ import WhatsNew from 'pep/pods/whats-new/model';
 import { WIDGET } from 'pep/constants/sidebar';
 import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
 import Modal from '@gavant/ember-modals/services/modal';
+import ConfigurationService from 'pep/services/configuration';
 
 interface PageSidebarWidgetsWhatsNewArgs extends PageSidebarWidgetArgs {}
 
 export default class PageSidebarWidgetsWhatsNew extends Component<PageSidebarWidgetsWhatsNewArgs> {
+    @service configuration!: ConfigurationService;
     @service store!: DS.Store;
     @service modal!: Modal;
 
@@ -35,7 +37,10 @@ export default class PageSidebarWidgetsWhatsNew extends Component<PageSidebarWid
         // @see https://jamescdavis.com/using-ember-concurrency-with-typescript/
         try {
             this.isLoading = true;
-            const results = await this.store.query('whats-new', { days_back: 30, limit: 10 });
+            const results = await this.store.query('whats-new', {
+                days_back: 30,
+                limit: this.configuration.base.global.cards.whatsNewSize
+            });
             this.results = results.toArray();
             this.isLoading = false;
         } catch (err) {

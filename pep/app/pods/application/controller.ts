@@ -19,6 +19,7 @@ import { ServerStatus } from 'pep/api';
 import ConfigurationService from 'pep/services/configuration';
 import { PreferenceKey } from 'pep/constants/preferences';
 import CurrentUserService from 'pep/services/current-user';
+import SidebarService from 'pep/services/sidebar';
 
 export default class Application extends Controller {
     @service loadingBar!: LoadingBarService;
@@ -29,6 +30,7 @@ export default class Application extends Controller {
     @service intl!: IntlService;
     @service configuration!: ConfigurationService;
     @service currentUser!: CurrentUserService;
+    @service sidebar!: SidebarService;
 
     @tracked isLimitOpen: boolean = false;
     @tracked smartSearchTerm: string = '';
@@ -40,8 +42,6 @@ export default class Application extends Controller {
 
     @tracked rightSidebarWidgets = this.configuration.base.global.cards.right;
     @tracked leftSidebarWidgets = this.configuration.base.global.cards.left;
-
-    @tracked sidebarData = {};
 
     /**
      * Submits the application/nav sidebar's search form and transitions the

@@ -50,13 +50,6 @@ export default class ReadDocument extends Controller {
     @tracked _searchTerms: string | null = null;
     @tracked paginator!: Pagination<Document>;
 
-    get sidebarData() {
-        return {
-            [WIDGET.RELATED_DOCUMENTS]: this.model,
-            [WIDGET.MORE_LIKE_THESE]: this.model
-        };
-    }
-
     get isLoadingRoute(): boolean {
         return /loading$/.test(this.router.currentRouteName);
     }

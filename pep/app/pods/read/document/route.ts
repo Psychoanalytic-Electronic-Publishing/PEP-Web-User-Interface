@@ -9,6 +9,8 @@ import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
 import Document from 'pep/pods/document/model';
 import ReadDocumentController from 'pep/pods/read/document/controller';
 import ConfigurationService from 'pep/services/configuration';
+import { WIDGET } from 'pep/constants/sidebar';
+import SidebarService from 'pep/services/sidebar';
 
 export interface ReadDocumentParams {
     document_id: string;
@@ -21,10 +23,11 @@ export interface ReadDocumentParams {
     _facets?: string;
 }
 
-export default class ReadDocument extends PageNav(PageSidebar(Route)) {
+export default class ReadDocument extends PageNav(Route) {
     @service configuration!: ConfigurationService;
+    @service sidebar!: SidebarService;
     navController = 'read/document';
-    sidebarController = 'read/document';
+
     searchResults?: Document[];
     searchResultsMeta?: any;
 
@@ -45,6 +48,12 @@ export default class ReadDocument extends PageNav(PageSidebar(Route)) {
      */
     async afterModel(model: object, transition: Transition) {
         super.afterModel(model, transition);
+
+        this.sidebar.update({
+            [WIDGET.RELATED_DOCUMENTS]: model,
+            [WIDGET.MORE_LIKE_THESE]: model
+        });
+
         let results;
         let resultsMeta;
 
@@ -121,6 +130,7 @@ export default class ReadDocument extends PageNav(PageSidebar(Route)) {
             filterRootKey: null,
             processQueryParams: controller.processQueryParams
         });
+        // controller.metaData = model.metaData
     }
 
     /**

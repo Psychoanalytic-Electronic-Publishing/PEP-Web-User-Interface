@@ -252,7 +252,7 @@ export default class CurrentUserService extends Service {
         const prefs = this.loadLocalStoragePrefs();
         const currentDocs = prefs[key];
         const index = currentDocs?.findIndex((documentToFind) => documentToFind.id === document.id);
-        if (index) {
+        if (index !== undefined) {
             currentDocs?.removeAt(index);
         }
         this.updatePrefs({

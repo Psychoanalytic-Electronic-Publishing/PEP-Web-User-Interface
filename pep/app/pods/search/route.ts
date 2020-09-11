@@ -15,6 +15,7 @@ import CurrentUserService from 'pep/services/current-user';
 import SearchController from 'pep/pods/search/controller';
 import Document from 'pep/pods/document/model';
 import { SearchMetadata } from 'pep/api';
+import { WIDGET } from 'pep/constants/sidebar';
 
 export interface SearchParams {
     q: string;
@@ -26,14 +27,13 @@ export interface SearchParams {
     _facets?: string;
 }
 
-export default class Search extends PageNav(PageSidebar(Route)) {
+export default class Search extends PageNav(Route) {
     @service sidebar!: SidebarService;
     @service fastboot!: FastbootService;
     @service configuration!: ConfigurationService;
     @service currentUser!: CurrentUserService;
 
     navController = 'search';
-    sidebarController = 'search';
     resultsMeta: SearchMetadata | null = null;
 
     queryParams = {
@@ -151,6 +151,9 @@ export default class Search extends PageNav(PageSidebar(Route)) {
         // @see https://github.com/emberjs/ember.js/issues/18981
         // @ts-ignore
         super.setupController(controller, model);
+        this.sidebar.update({
+            [WIDGET.GLOSSARY_TERMS]: this.resultsMeta?.facetCounts.facet_fields.glossary_group_terms
+        });
     }
 
     /**
