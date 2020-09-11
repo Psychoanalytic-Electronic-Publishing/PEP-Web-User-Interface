@@ -62,7 +62,7 @@
         "ember-animated": "^0.10.1",
         "ember-auto-import": "^1.6.0",
         "ember-awesome-macros": "6.0.0",
-        "ember-basic-dropdown": "^3.0.5",
+        "ember-basic-dropdown": "3.0.10",
         "ember-body-class2": "^2.1.1",
         "ember-can": "^3.0.0",
         "ember-cli": "~3.20.0",

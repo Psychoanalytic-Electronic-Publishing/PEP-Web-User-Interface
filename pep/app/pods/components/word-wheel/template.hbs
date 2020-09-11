@@ -1,0 +1,10 @@
+<FlTypeahead
+    @value={{@value}}
+    @placeholder={{@placeholder}}
+    @suggestions={{this.suggestions}}
+    @loadSuggestions={{this.loadSuggestions}}
+    {{!-- TODO need to make sure things like this.onSmartSearchTextChange still fire here on suggestion selections! --}}
+    @onSelectSuggestion={{fn (mut @value)}}
+    @onChange={{fn (mut @value)}}
+    ...attributes
+/>

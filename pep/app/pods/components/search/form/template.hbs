@@ -8,11 +8,9 @@
         </div>
         <form>
             <div class="form-group">
-                <FlInput
+                <WordWheel
                     @placeholder={{t "search.form.smartSearch"}}
                     @value={{@smartSearchTerm}}
-                    maxlength="255"
-                    autocomplete="off"
                     {{on "input" this.onSmartSearchTextChange}}
                 />
             </div>

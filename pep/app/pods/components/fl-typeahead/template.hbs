@@ -1,0 +1,15 @@
+<FlInput
+    @placeholder={{@placeholder}}
+    @value={{@value}}
+>
+    <input
+        type="text"
+        class="form-control"
+        maxlength="255"
+        autocomplete="off"
+        ...attributes
+        {{on "input" this.onTextChange}}
+        {{on "keydown" this.onInputKeyDown}}
+        {{did-insert this.onInputInsert}}
+    />
+</FlInput>
