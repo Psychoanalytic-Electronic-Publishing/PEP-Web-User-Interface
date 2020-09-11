@@ -11,6 +11,8 @@
                 <WordWheel
                     @placeholder={{t "search.form.smartSearch"}}
                     @value={{@smartSearchTerm}}
+                    {{!-- onChange might also need to trigger this.onSmartSearchTextChange --}}
+                    @onChange={{fn (mut @smartSearchTerm)}}
                     {{on "input" this.onSmartSearchTextChange}}
                 />
             </div>

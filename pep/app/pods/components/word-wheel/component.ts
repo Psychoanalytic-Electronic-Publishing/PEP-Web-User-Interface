@@ -3,6 +3,7 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import DS from 'ember-data';
+import { removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
 
 import { FlTypeaheadSuggestion } from 'pep/pods/components/fl-typeahead/component';
 
@@ -12,6 +13,7 @@ interface WordWheelArgs {
     limit?: number;
     apiField?: string;
     apiCore?: string;
+    onChange: (newText: string) => void;
 }
 
 export default class WordWheel extends Component<WordWheelArgs> {
@@ -38,11 +40,30 @@ export default class WordWheel extends Component<WordWheelArgs> {
      */
     constructor(owner: unknown, args: WordWheelArgs) {
         super(owner, args);
-        this.suggestions = [];
+        // this.suggestions = [];
+
+        // TODO TBD testing
+        this.suggestions = [
+            { id: '1', text: 'Suggestion #1' },
+            { id: '1', text: 'A slightly longer suggestion' },
+            { id: '1', text: 'Yet another suggestion' },
+            { id: '1', text: 'Suggestion #4' },
+            { id: '1', text: 'Suggestion #5' },
+            { id: '1', text: 'Suggestion #6' }
+        ];
     }
 
     @action
-    loadSuggestions(currentText: string, currentWord: string) {
-        console.log(currentText, currentWord);
+    async loadSuggestions(currentWord: string) {
+        const params = removeEmptyQueryParams({
+            word: currentWord,
+            field: this.apiField,
+            core: this.apiCore,
+            limit: this.limit,
+            offset: 0
+        });
+        const result = await this.store.query('word-wheel', params);
+        const models = result.toArray();
+        this.suggestions = models.map((model) => ({ id: model.id, text: model.term }));
     }
 }
