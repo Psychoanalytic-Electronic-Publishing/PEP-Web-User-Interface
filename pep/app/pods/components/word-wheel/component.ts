@@ -40,30 +40,26 @@ export default class WordWheel extends Component<WordWheelArgs> {
      */
     constructor(owner: unknown, args: WordWheelArgs) {
         super(owner, args);
-        // this.suggestions = [];
-
-        // TODO TBD testing
-        this.suggestions = [
-            { id: '1', text: 'Suggestion #1' },
-            { id: '1', text: 'A slightly longer suggestion' },
-            { id: '1', text: 'Yet another suggestion' },
-            { id: '1', text: 'Suggestion #4' },
-            { id: '1', text: 'Suggestion #5' },
-            { id: '1', text: 'Suggestion #6' }
-        ];
+        this.suggestions = [];
     }
 
     @action
-    async loadSuggestions(currentWord: string) {
-        const params = removeEmptyQueryParams({
-            word: currentWord,
-            field: this.apiField,
-            core: this.apiCore,
-            limit: this.limit,
-            offset: 0
-        });
-        const result = await this.store.query('word-wheel', params);
-        const models = result.toArray();
-        this.suggestions = models.map((model) => ({ id: model.id, text: model.term }));
+    async loadSuggestions(currentWord?: string) {
+        if (currentWord?.length) {
+            const params = removeEmptyQueryParams({
+                word: currentWord,
+                field: this.apiField,
+                core: this.apiCore,
+                limit: this.limit,
+                offset: 0
+            });
+            const result = await this.store.query('word-wheel', params);
+            const models = result.toArray();
+            this.suggestions = models.map((model) => ({ id: model.id, text: model.term }));
+        } else {
+            this.suggestions = [];
+        }
+
+        return this.suggestions;
     }
 }

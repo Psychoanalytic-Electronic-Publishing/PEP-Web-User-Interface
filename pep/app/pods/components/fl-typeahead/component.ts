@@ -2,6 +2,9 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { Dropdown } from 'ember-basic-dropdown/addon/components/basic-dropdown';
+import { timeout } from 'ember-concurrency';
+import { restartableTask } from 'ember-concurrency-decorators';
+import { taskFor } from 'ember-concurrency-ts';
 
 const KEYCODE_TAB = 9;
 const KEYCODE_ENTER = 13;
@@ -21,7 +24,7 @@ interface FlTypeaheadArgs {
     suggestions?: FlTypeaheadSuggestion[];
     onChange: (currentText: string, event: HTMLElementEvent<HTMLInputElement>) => void;
     onSelectSuggestion: (newText: string, suggestion: FlTypeaheadSuggestion) => void;
-    loadSuggestions: (currentWord: string, currentText: string) => void;
+    loadSuggestions: (currentWord: string, currentText: string) => Promise<FlTypeaheadSuggestion[]>;
 }
 
 export default class FlTypeahead extends Component<FlTypeaheadArgs> {
@@ -30,17 +33,17 @@ export default class FlTypeahead extends Component<FlTypeaheadArgs> {
 
     @tracked focusedSuggestion: FlTypeaheadSuggestion | null = null;
 
-    //TODO needs to be a restartable/cancellable concurrency task
-    loadSuggestions(currentWord: string, currentText: string) {
-        //TODO timeout() here
-        this.args.loadSuggestions(currentWord, currentText);
-    }
-
-    @action
-    onSuggestionsUpdate(dropdown: Dropdown) {
-        if (this.args.suggestions?.length && !dropdown.isOpen) {
-            console.log('suggestions update!');
+    /**
+     * Updates the user's search form preferences after a short delay
+     */
+    @restartableTask
+    *loadSuggestions(currentWord: string, currentText: string, dropdown: Dropdown) {
+        yield timeout(this.suggestDebounceDelay);
+        const suggestions: FlTypeaheadSuggestion[] = yield this.args.loadSuggestions(currentWord, currentText);
+        if (suggestions.length > 0) {
             dropdown.actions.open();
+        } else {
+            dropdown.actions.close();
         }
     }
 
@@ -85,11 +88,15 @@ export default class FlTypeahead extends Component<FlTypeaheadArgs> {
     }
 
     @action
-    //@ts-ignore
+    //@ts-ignore not using `dropdown` arg
     onTextChange(dropdown: Dropdown, event: HTMLElementEvent<HTMLInputElement>) {
+        const currentText = event.target.value;
         //TODO using the element's selection api, determine what the current "word" is
         //based on the currently selected text or cursor position
-        this.args.onChange(event.target.value, event);
+        const currentWord = currentText;
+
+        this.args.onChange(currentText, event);
+        taskFor(this.loadSuggestions).perform(currentWord, currentText, dropdown);
     }
 
     @action
