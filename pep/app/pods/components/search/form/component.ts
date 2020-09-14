@@ -30,7 +30,7 @@ interface SearchFormArgs {
     updateSearchTerm: (oldTerm: SearchTermValue, newTerm: SearchTermValue) => void;
     updateViewedPeriod: (value: ViewPeriod) => void;
     onSearchTermTextChange?: (term: SearchTermValue) => void;
-    onLimitTextChange?: (value: string | undefined) => void;
+    onLimitTextChange?: (value?: string) => void;
     toggleLimitFields?: (isOpen: boolean) => void;
 }
 

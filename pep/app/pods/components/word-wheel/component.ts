@@ -19,7 +19,7 @@ interface WordWheelArgs {
 export default class WordWheel extends Component<WordWheelArgs> {
     @service store!: DS.Store;
 
-    @tracked suggestions: FlTypeaheadSuggestion[];
+    @tracked suggestions: FlTypeaheadSuggestion[] = [];
 
     get limit() {
         return this.args.limit ?? 8;
@@ -31,16 +31,6 @@ export default class WordWheel extends Component<WordWheelArgs> {
 
     get apiCore() {
         return this.args.apiCore ?? 'docs';
-    }
-
-    /**
-     * Default the suggestions to an empty list on render
-     * @param {unknown} owner
-     * @param {WordWheelArgs} args
-     */
-    constructor(owner: unknown, args: WordWheelArgs) {
-        super(owner, args);
-        this.suggestions = [];
     }
 
     /**

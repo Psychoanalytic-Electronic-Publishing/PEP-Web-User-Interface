@@ -38,7 +38,7 @@ interface FlTypeaheadArgs {
 }
 
 export default class FlTypeahead extends Component<FlTypeaheadArgs> {
-    inputElement: HTMLInputElement | null = null;
+    inputElement?: HTMLInputElement;
     lastCaretPosition: number = 0;
     suggestDebounceDelay: number = 250;
 

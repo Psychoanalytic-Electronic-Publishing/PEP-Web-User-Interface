@@ -31,7 +31,10 @@ export default class WordWheelSerializer extends ApplicationSerializerMixin(DS.R
             payload[modelKey] = payload.termIndex.responseSet;
             delete payload.termIndex;
             if (payload[modelKey]?.length > 0) {
-                payload[modelKey] = payload[modelKey].map((o: any) => ({ ...o, id: `${o.field}-${o.term}` }));
+                payload[modelKey] = payload[modelKey].map((modelObj: any) => ({
+                    ...modelObj,
+                    id: `${modelObj.field}-${modelObj.term}`
+                }));
             }
         }
 
