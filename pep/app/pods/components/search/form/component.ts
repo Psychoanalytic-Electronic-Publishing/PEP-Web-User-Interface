@@ -24,12 +24,12 @@ interface SearchFormArgs {
     viewedCount?: string;
     viewedPeriod?: number;
     isLimitOpen?: boolean;
+    updateSmartSearchText: (text: string) => void;
     addSearchTerm: (term: SearchTermValue) => void;
     removeSearchTerm: (term: SearchTermValue) => void;
     updateSearchTerm: (oldTerm: SearchTermValue, newTerm: SearchTermValue) => void;
     updateViewedPeriod: (value: ViewPeriod) => void;
     onSearchTermTextChange?: (term: SearchTermValue, event: HTMLElementEvent<HTMLInputElement>) => void;
-    onSmartSearchTextChange?: (value: string | undefined, event: HTMLElementEvent<HTMLInputElement>) => void;
     onLimitTextChange?: (value: string | undefined, event: HTMLElementEvent<HTMLInputElement>) => void;
     toggleLimitFields?: (isOpen: boolean) => void;
 }
@@ -106,6 +106,7 @@ export default class SearchForm extends Component<SearchFormArgs> {
         this.args.updateSearchTerm(oldTerm, newTerm);
     }
 
+    //TODO TBD - logic will be moved into parent w/action to actually update the text itself
     /**
      * Run an action when search term text values change
      * @param {SearchTermValue} searchTerm
@@ -115,16 +116,6 @@ export default class SearchForm extends Component<SearchFormArgs> {
     onTermTextChange(searchTerm: SearchTermValue, event: HTMLElementEvent<HTMLInputElement>) {
         // execute action in the next runloop, so it has the new value
         next(this, () => this.args.onSearchTermTextChange?.(searchTerm, event));
-    }
-
-    /**
-     * Run an action when the smart search text value changes
-     * @param {HTMLInputElement} event
-     */
-    @action
-    onSmartSearchTextChange(event: HTMLElementEvent<HTMLInputElement>) {
-        // execute action in the next runloop, so it has the new value
-        next(this, () => this.args.onSmartSearchTextChange?.(this.args.smartSearchTerm, event));
     }
 
     /**

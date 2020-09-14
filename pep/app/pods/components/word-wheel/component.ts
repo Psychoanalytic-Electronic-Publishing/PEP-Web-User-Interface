@@ -43,6 +43,10 @@ export default class WordWheel extends Component<WordWheelArgs> {
         this.suggestions = [];
     }
 
+    /**
+     * Loads word wheel suggestions for the current word in the input value
+     * @param {string} currentWord
+     */
     @action
     async loadSuggestions(currentWord?: string) {
         if (currentWord?.length) {

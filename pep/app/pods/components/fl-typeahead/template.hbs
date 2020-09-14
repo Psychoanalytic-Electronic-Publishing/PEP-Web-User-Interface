@@ -7,6 +7,7 @@
         @value={{@value}}
     >
         <input
+            value={{@value}}
             type="text"
             class="form-control"
             maxlength="255"
@@ -19,7 +20,6 @@
             {{on "input" (fn this.onTextChange DD)}}
             {{on "keydown" (fn this.onInputKeyDown DD)}}
             {{on "focus" (fn this.onInputFocus DD)}}
-            {{on "blur" (fn this.onInputBlur DD)}}
             {{did-insert this.onInputInsert}}
         />
     </FlInput>
