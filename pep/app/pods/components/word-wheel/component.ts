@@ -36,9 +36,10 @@ export default class WordWheel extends Component<WordWheelArgs> {
     /**
      * Loads word wheel suggestions for the current word in the input value
      * @param {string} currentWord
+     * @returns {Promise<FlTypeaheadSuggestion[]>}
      */
     @action
-    async loadSuggestions(currentWord?: string) {
+    async loadSuggestions(currentWord?: string): Promise<FlTypeaheadSuggestion[]> {
         if (currentWord?.length) {
             const params = removeEmptyQueryParams({
                 word: currentWord,
