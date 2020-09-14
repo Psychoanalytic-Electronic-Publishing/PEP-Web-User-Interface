@@ -171,11 +171,17 @@ export default class FlTypeahead extends Component<FlTypeaheadArgs> {
      */
     refocusInput(newCaretPos?: number) {
         if (this.inputElement) {
-            this.inputElement.focus();
             if (newCaretPos) {
+                // blur() here is needed to reset the input's "panned" position
+                // so that the new selection position will be in-view if the value
+                // extends beyond the input's width
+                // TODO - this works in Chrome/Firefox, however seems to not be fully working in Safari
+                this.inputElement.blur();
                 this.inputElement.selectionStart = newCaretPos;
                 this.inputElement.selectionEnd = newCaretPos;
             }
+
+            this.inputElement.focus();
         }
     }
 

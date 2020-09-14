@@ -138,6 +138,8 @@ export interface SearchTermType {
     param: string;
     solrField?: string;
     scope?: string;
+    wordWheelField?: string;
+    wordWheelCore?: string;
     label: string;
     shortLabel?: string;
     isTypeOption: boolean;
@@ -184,6 +186,8 @@ export const SEARCH_TYPE_EVERYWHERE: SearchTermType = {
     id: SearchTermId.EVERYWHERE,
     param: 'fulltext1',
     solrField: 'text',
+    wordWheelField: 'text',
+    wordWheelCore: 'docs',
     label: 'search.terms.everywhere.label',
     isTypeOption: true
 };
@@ -191,6 +195,8 @@ export const SEARCH_TYPE_EVERYWHERE: SearchTermType = {
 export const SEARCH_TYPE_AUTHOR: SearchTermType = {
     id: SearchTermId.AUTHOR,
     param: 'author',
+    wordWheelField: 'text',
+    wordWheelCore: 'docs',
     label: 'search.terms.author.label',
     isTypeOption: true
 };
@@ -198,6 +204,8 @@ export const SEARCH_TYPE_AUTHOR: SearchTermType = {
 export const SEARCH_TYPE_TITLE: SearchTermType = {
     id: SearchTermId.TITLE,
     param: 'title',
+    wordWheelField: 'text',
+    wordWheelCore: 'docs',
     label: 'search.terms.title.label',
     isTypeOption: true
 };
@@ -207,6 +215,8 @@ export const SEARCH_TYPE_DREAM: SearchTermType = {
     param: 'fulltext1',
     solrField: 'dreams_xml',
     scope: 'dreams',
+    wordWheelField: 'dreams_xml',
+    wordWheelCore: 'docs',
     label: 'search.terms.dream.label',
     isTypeOption: true
 };
@@ -215,7 +225,8 @@ export const SEARCH_TYPE_QUOTE: SearchTermType = {
     id: SearchTermId.QUOTE,
     param: 'fulltext1',
     solrField: 'quotes_xml',
-    scope: 'TODO',
+    wordWheelField: 'quotes_xml',
+    wordWheelCore: 'docs',
     label: 'search.terms.quote.label',
     isTypeOption: true
 };
@@ -225,6 +236,8 @@ export const SEARCH_TYPE_REFERENCE: SearchTermType = {
     param: 'fulltext1',
     solrField: 'references_xml',
     scope: 'biblios',
+    wordWheelField: 'references_xml',
+    wordWheelCore: 'docs',
     label: 'search.terms.reference.label',
     isTypeOption: true
 };
@@ -234,6 +247,8 @@ export const SEARCH_TYPE_DIALOG: SearchTermType = {
     param: 'fulltext1',
     solrField: 'dialogs_xml',
     scope: 'dialogs',
+    wordWheelField: 'dialogs_xml',
+    wordWheelCore: 'docs',
     label: 'search.terms.dialog.label',
     isTypeOption: true
 };
@@ -243,6 +258,8 @@ export const SEARCH_TYPE_ARTICLE: SearchTermType = {
     param: 'fulltext1',
     solrField: 'body_xml',
     scope: 'doc',
+    wordWheelField: 'body_xml',
+    wordWheelCore: 'docs',
     label: 'search.terms.article.label',
     isTypeOption: true
 };

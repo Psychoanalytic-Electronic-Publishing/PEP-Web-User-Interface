@@ -30,7 +30,7 @@ export default class WordWheel extends Component<WordWheelArgs> {
     }
 
     get apiCore() {
-        return this.args.apiField ?? 'docs';
+        return this.args.apiCore ?? 'docs';
     }
 
     /**

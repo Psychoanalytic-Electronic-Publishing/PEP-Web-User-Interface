@@ -1,5 +1,5 @@
 import Component from '@glimmer/component';
-import { action, computed } from '@ember/object';
+import { action, computed, setProperties } from '@ember/object';
 import { later, next } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 import IntlService from 'ember-intl/services/intl';
@@ -29,8 +29,8 @@ interface SearchFormArgs {
     removeSearchTerm: (term: SearchTermValue) => void;
     updateSearchTerm: (oldTerm: SearchTermValue, newTerm: SearchTermValue) => void;
     updateViewedPeriod: (value: ViewPeriod) => void;
-    onSearchTermTextChange?: (term: SearchTermValue, event: HTMLElementEvent<HTMLInputElement>) => void;
-    onLimitTextChange?: (value: string | undefined, event: HTMLElementEvent<HTMLInputElement>) => void;
+    onSearchTermTextChange?: (term: SearchTermValue) => void;
+    onLimitTextChange?: (value: string | undefined) => void;
     toggleLimitFields?: (isOpen: boolean) => void;
 }
 
@@ -95,7 +95,7 @@ export default class SearchForm extends Component<SearchFormArgs> {
     }
 
     /**
-     * Update a search term value
+     * Update a search term's type
      * @param {SearchTermValue} oldTerm
      * @param {HTMLElementEvent<HTMLSelectElement>} event
      */
@@ -106,16 +106,26 @@ export default class SearchForm extends Component<SearchFormArgs> {
         this.args.updateSearchTerm(oldTerm, newTerm);
     }
 
-    //TODO TBD - logic will be moved into parent w/action to actually update the text itself
+    /**
+     * Update a search term's text
+     * @param {SearchTermValue} oldTerm
+     * @param {string} newText
+     */
+    @action
+    updateTermText(oldTerm: SearchTermValue, term: string) {
+        setProperties(oldTerm, { term });
+        this.onTermTextChange(oldTerm);
+    }
+
     /**
      * Run an action when search term text values change
      * @param {SearchTermValue} searchTerm
      * @param {HTMLInputElement} event
      */
     @action
-    onTermTextChange(searchTerm: SearchTermValue, event: HTMLElementEvent<HTMLInputElement>) {
+    onTermTextChange(searchTerm: SearchTermValue) {
         // execute action in the next runloop, so it has the new value
-        next(this, () => this.args.onSearchTermTextChange?.(searchTerm, event));
+        next(this, () => this.args.onSearchTermTextChange?.(searchTerm));
     }
 
     /**
@@ -125,7 +135,7 @@ export default class SearchForm extends Component<SearchFormArgs> {
     @action
     onLimitTextChange(event: HTMLElementEvent<HTMLInputElement>) {
         // execute action in the next runloop, so it has the new value
-        next(this, () => this.args.onLimitTextChange?.(event.target.value, event));
+        next(this, () => this.args.onLimitTextChange?.(event.target.value));
     }
 
     /**
