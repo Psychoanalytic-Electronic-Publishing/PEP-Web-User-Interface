@@ -7,15 +7,24 @@ import { timeout } from 'ember-concurrency';
 import { restartableTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
 
+import { getCaretPosition } from 'pep/utils/dom';
+
 const KEYCODE_TAB = 9;
 const KEYCODE_ENTER = 13;
 const KEYCODE_ESCAPE = 27;
 const KEYCODE_UP_ARROW = 38;
 const KEYCODE_DOWN_ARROW = 40;
+const NOT_WHITESPACE_RE = /[^\s]/;
 
 export interface FlTypeaheadSuggestion {
     id: string;
     text: string;
+}
+
+interface WordSelection {
+    word: string;
+    startIndex: number;
+    endIndex: number;
 }
 
 interface FlTypeaheadArgs {
@@ -30,17 +39,22 @@ interface FlTypeaheadArgs {
 
 export default class FlTypeahead extends Component<FlTypeaheadArgs> {
     inputElement: HTMLInputElement | null = null;
+    lastCaretPosition: number = 0;
     suggestDebounceDelay: number = 250;
 
     @tracked focusedSuggestion: FlTypeaheadSuggestion | null = null;
 
     /**
      * Updates the user's search form preferences after a short delay
+     * @param {string} currentText
+     * @param {Dropdown} dropdown
      */
     @restartableTask
-    *loadSuggestions(currentWord: string, currentText: string, dropdown: Dropdown) {
+    *loadSuggestions(currentText: string, dropdown: Dropdown) {
         yield timeout(this.suggestDebounceDelay);
-        const suggestions: FlTypeaheadSuggestion[] = yield this.args.loadSuggestions(currentWord, currentText);
+        const caretPos = this.inputElement ? getCaretPosition(this.inputElement) : null;
+        const currentWord = this.getCurrentWordFromCaret(currentText, caretPos);
+        const suggestions: FlTypeaheadSuggestion[] = yield this.args.loadSuggestions(currentWord.word, currentText);
         if (suggestions.length > 0) {
             dropdown.actions.open();
         } else {
@@ -75,6 +89,8 @@ export default class FlTypeahead extends Component<FlTypeaheadArgs> {
      */
     @action
     onInputKeyDown(dropdown: Dropdown, event: HTMLElementKeyboardEvent<HTMLInputElement>) {
+        this.lastCaretPosition = getCaretPosition(event.target);
+
         // close dropdown on ESC or tabbing away
         if ([KEYCODE_ESCAPE, KEYCODE_TAB].includes(event.keyCode)) {
             return dropdown.actions.close(event, true);
@@ -97,7 +113,7 @@ export default class FlTypeahead extends Component<FlTypeaheadArgs> {
             }
 
             this.focusedSuggestion = this.args.suggestions[newIndex];
-            event.preventDefault();
+            return event.preventDefault();
         }
     }
 
@@ -110,12 +126,8 @@ export default class FlTypeahead extends Component<FlTypeaheadArgs> {
     @action
     onTextChange(dropdown: Dropdown, event: HTMLElementEvent<HTMLInputElement>) {
         const currentText = event.target.value;
-        //TODO using the element's selection api, determine what the current "word" is
-        //based on the currently selected text or cursor position
-        const currentWord = currentText;
-
         this.args.onChange(currentText, event);
-        taskFor(this.loadSuggestions).perform(currentWord, currentText, dropdown);
+        taskFor(this.loadSuggestions).perform(currentText, dropdown);
     }
 
     /**
@@ -130,18 +142,89 @@ export default class FlTypeahead extends Component<FlTypeaheadArgs> {
         dropdown: Dropdown,
         event?: HTMLElementEvent<HTMLButtonElement>
     ) {
-        // TODO create a new string adding the suggestion text to the existing input text
-        // but in the correct position, and only the part of the current "word" that is not already entered
-        const newText = 'TODO';
-        this.focusedSuggestion = suggestion;
+        // insert only the missing portion of the selected suggestion
+        // and insert it only for the "current word" relative to the caret position
+        // in case their are multiple instances of the word and/or the caret is in
+        // the middle of the current text value
+        const currentText = this.args.value;
+        const currentWord = this.getCurrentWordFromCaret(currentText, this.lastCaretPosition);
+        const wordRegex = new RegExp(`^${currentWord.word}`, 'i');
+        const insertText = suggestion.text.replace(wordRegex, '');
+        const insertStart = currentWord.startIndex + currentWord.word.length;
+        const newText = currentText.substring(0, insertStart) + insertText + currentText.substring(insertStart);
+        // move the caret to right after the inserted suggestion
+        const newCaretPos = currentWord.endIndex + insertText.length;
+        this.focusedSuggestion = null;
         this.args.onSelectSuggestion(newText, suggestion);
         // clear the current suggestions and close the dropdown
         this.args.loadSuggestions('', this.args.value);
         dropdown.actions.close(event, true);
+        next(this, () => this.refocusInput(newCaretPos));
         if (event) {
-            // TODO maintain last cursor position on refocus
-            next(this, () => this.inputElement?.focus());
             event.preventDefault();
         }
+    }
+
+    /**
+     * Focuses the input and optionally sets the text caret position
+     * @param {number} newCaretPos
+     */
+    refocusInput(newCaretPos?: number) {
+        if (this.inputElement) {
+            this.inputElement.focus();
+            if (newCaretPos) {
+                this.inputElement.selectionStart = newCaretPos;
+                this.inputElement.selectionEnd = newCaretPos;
+            }
+        }
+    }
+
+    /**
+     * If the input has a current selection/caret position,
+     * returns the current word relative to that position.
+     * Otherwise, returns the entire input value
+     * @param {string} value
+     * @returns {string}
+     */
+    getCurrentWordFromCaret(value: string, caretPosition: number | null = null): WordSelection {
+        let word = value;
+        let startIndex = 0;
+        let endIndex = value.length - 1;
+        if (caretPosition !== null) {
+            word = '';
+            let prevCharPos = caretPosition - 1;
+            let nextCharPos = caretPosition;
+            startIndex = caretPosition;
+            endIndex = nextCharPos;
+            // starting at the caret position, traverses backward and forward through the string
+            // prepending and appending characters until a whitespace character or the beginning
+            // or end of the string is reached (but allows traversal in the other direction to
+            // continue until it also reaches whitespace or beginning/end of the string).
+            while (prevCharPos >= 0 || nextCharPos <= value.length - 1) {
+                if (prevCharPos >= 0) {
+                    let char = value.charAt(prevCharPos);
+                    if (NOT_WHITESPACE_RE.test(char)) {
+                        word = `${char}${word}`;
+                        startIndex = prevCharPos;
+                        prevCharPos--;
+                    } else {
+                        prevCharPos = -1;
+                    }
+                }
+
+                if (nextCharPos <= value.length - 1) {
+                    let char = value.charAt(nextCharPos);
+                    if (NOT_WHITESPACE_RE.test(char)) {
+                        word = `${word}${char}`;
+                        nextCharPos++;
+                        endIndex = nextCharPos;
+                    } else {
+                        nextCharPos = value.length;
+                    }
+                }
+            }
+        }
+
+        return { word, startIndex, endIndex };
     }
 }

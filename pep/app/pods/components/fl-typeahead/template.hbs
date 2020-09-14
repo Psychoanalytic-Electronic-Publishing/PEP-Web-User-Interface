@@ -30,7 +30,8 @@
         {{#each @suggestions as |suggestion|}}
             <button
                 type="button"
-                class="dropdown-item {{~if (eq suggestion this.focusedSuggestion) " active"}}"
+                class="dropdown-item text-truncate {{~if (eq suggestion this.focusedSuggestion) " active"}}"
+                title={{suggestion.text}}
                 {{on "click" (fn this.onSelectSuggestion suggestion DD)}}
             >
                 {{suggestion.text}}

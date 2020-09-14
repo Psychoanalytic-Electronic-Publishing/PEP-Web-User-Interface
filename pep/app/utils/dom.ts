@@ -1,3 +1,5 @@
+import { isNone } from '@ember/utils';
+
 export interface ElementOffset {
     top: number;
     left: number;
@@ -20,7 +22,6 @@ export function getElementOffset(el: HTMLElement): ElementOffset {
 
 /**
  * Returns the clientX/clientY offset values for a mouse or touch event
- *
  * @param {(MouseEvent | TouchEvent)} event
  * @returns {ElementOffset}
  */
@@ -30,4 +31,19 @@ export function getEventOffset(event: MouseEvent | TouchEvent): ElementOffset {
     return touchData
         ? { left: touchData.clientX, top: touchData.clientY }
         : { left: mouseData.clientX, top: mouseData.clientY };
+}
+
+/**
+ * Returns the current text cursor/caret position for the given element
+ * @param {HTMLInputElement | HTMLTextAreaElement} input
+ * @returns {number}
+ */
+export function getCaretPosition(input: HTMLInputElement | HTMLTextAreaElement) {
+    let pos = 0;
+
+    if (!isNone(input.selectionStart)) {
+        pos = (input.selectionDirection === 'backward' ? input.selectionStart : input.selectionEnd) ?? 0;
+    }
+
+    return pos;
 }
