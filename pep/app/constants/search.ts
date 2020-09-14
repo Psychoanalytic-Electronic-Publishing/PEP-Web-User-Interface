@@ -195,7 +195,7 @@ export const SEARCH_TYPE_EVERYWHERE: SearchTermType = {
 export const SEARCH_TYPE_AUTHOR: SearchTermType = {
     id: SearchTermId.AUTHOR,
     param: 'author',
-    wordWheelField: 'text',
+    wordWheelField: 'art_authors',
     wordWheelCore: 'docs',
     label: 'search.terms.author.label',
     isTypeOption: true
@@ -204,7 +204,7 @@ export const SEARCH_TYPE_AUTHOR: SearchTermType = {
 export const SEARCH_TYPE_TITLE: SearchTermType = {
     id: SearchTermId.TITLE,
     param: 'title',
-    wordWheelField: 'text',
+    wordWheelField: 'art_title',
     wordWheelCore: 'docs',
     label: 'search.terms.title.label',
     isTypeOption: true
