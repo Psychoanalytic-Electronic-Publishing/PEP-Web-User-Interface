@@ -10,13 +10,13 @@
             @viewedPeriod={{this.currentViewedPeriod}}
             @submit={{this.submitSearch}}
             @resetForm={{this.clearSearch}}
+            @updateSmartSearchText={{this.updateSmartSearchText}}
             @addSearchTerm={{this.addSearchTerm}}
             @removeSearchTerm={{this.removeSearchTerm}}
             @updateSearchTerm={{this.updateSearchTerm}}
             @updateViewedPeriod={{this.updateViewedPeriod}}
-            @onSearchTermTextChange={{this.onSearchTextChange}}
-            @onSmartSearchTextChange={{this.onSearchTextChange}}
-            @onLimitTextChange={{this.onSearchTextChange}}
+            @onSearchTermTextChange={{this.onSearchCriteriaChange}}
+            @onLimitTextChange={{this.onSearchCriteriaChange}}
             @matchSynonymsChange={{this.updateMatchSynonyms}}
             @toggleLimitFields={{this.toggleLimitFields}}
             @resultsCount={{this.paginator.metadata.fullCount}}
