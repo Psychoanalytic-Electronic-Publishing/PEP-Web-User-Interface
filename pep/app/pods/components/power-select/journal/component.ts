@@ -15,7 +15,7 @@ import Journal from 'pep/pods/journal/model';
 interface JournalParams {
     limit: number | null;
     offset: number | null;
-    sourcecode?: any;
+    sourcename?: any;
 }
 
 export default class PowerSelectJournal extends Component<PowerSelectInfinityWithSearch<Journal>> {
@@ -39,7 +39,7 @@ export default class PowerSelectJournal extends Component<PowerSelectInfinityWit
             const params: JournalParams = {
                 limit: this.pageSize,
                 offset: offset || 0,
-                sourcecode: keyword
+                sourcename: keyword
             };
             const result = yield this.store.query('journal', removeEmptyQueryParams(params));
             let results = result.toArray();

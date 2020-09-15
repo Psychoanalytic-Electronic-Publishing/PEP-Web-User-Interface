@@ -123,6 +123,7 @@ export default class MostViewed extends Controller {
             filterRootKey: null,
             filterList: ['author', 'title', 'sourcename', 'period', 'queryType']
         });
+        delete queryParams.limit;
         window.location.href = documentCSVUrl(this.store, queryParams);
     }
 }
