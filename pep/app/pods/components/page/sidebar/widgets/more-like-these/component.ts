@@ -9,6 +9,8 @@ import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import SimilarityMatch from 'pep/pods/similarity-match/model';
 import { DS } from 'ember-data';
+import { restartableTask } from 'ember-concurrency-decorators';
+import { taskFor } from 'ember-concurrency-ts';
 
 interface PageSidebarWidgetsMoreLikeTheseArgs extends PageSidebarWidgetArgs {}
 
@@ -28,17 +30,18 @@ export default class PageSidebarWidgetsMoreLikeThese extends Component<PageSideb
     widget = WIDGET.MORE_LIKE_THESE;
 
     /**
-     * Load the widget results data
+     * Load the similar from the document they are reading
      */
-
-    @dontRunInFastboot
-    async loadSimilarFromDocument() {
+    @restartableTask
+    *loadSimilarFromDocument() {
         if (this.data?.id) {
-            const results = await this.store.findRecord('document', this.data.id, {
+            const results = yield this.store.findRecord('document', this.data.id, {
                 reload: true,
                 adapterOptions: { query: { similarcount: this.similarCount } }
             });
-            const matches = results.similarityMatch.similarDocuments.filter((item) => item.id !== this.data.id);
+            const matches = results.similarityMatch.similarDocuments.filter(
+                (item: Document) => item.id !== this.data.id
+            );
 
             // TODO Right now the document that the find was called for is somehow being added into
             // the array. We should figure out why and fix it
@@ -52,7 +55,8 @@ export default class PageSidebarWidgetsMoreLikeThese extends Component<PageSideb
      * Load the widget results on render
      */
     @action
+    @dontRunInFastboot
     onElementChange() {
-        this.loadSimilarFromDocument();
+        taskFor(this.loadSimilarFromDocument).perform();
     }
 }

@@ -25,6 +25,12 @@ interface ModalDialogsGlossaryArgs {
 export default class ModalDialogsGlossary extends Component<ModalDialogsGlossaryArgs> {
     @service router!: RouterService;
 
+    /**
+     * Method to search for a specific term using the main search. Navigates the user out of the
+     * modal
+     *
+     * @memberof ModalDialogsGlossary
+     */
     @action
     searchForTerm() {
         this.router.transitionTo('search', {
@@ -38,5 +44,6 @@ export default class ModalDialogsGlossary extends Component<ModalDialogsGlossary
                 facets: JSON.stringify([{ id: 'glossary_group_terms', value: this.args.options.term }])
             }
         });
+        this.args.onClose();
     }
 }

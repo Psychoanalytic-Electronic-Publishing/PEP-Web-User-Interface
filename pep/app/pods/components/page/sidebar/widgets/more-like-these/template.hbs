@@ -8,26 +8,33 @@
 as |Panel|>
     <Panel.header @title={{t "relatedInfo.widgets.moreLikeThese.title"}} />
     <Panel.body>
-        {{#if this.results.similarMaxScore}}
-            <h5>{{t "relatedInfo.widgets.moreLikeThese.confidence" number=(round this.results.similarMaxScore)}}</h5>
-        {{/if}}
-        <ul class="list-unstyled">
-            {{#each this.results.similarDocuments as |result|}}
-                <li class="mb-2">
-                    <div>
-                        <LinkTo @route="read.document" @model={{result.id}}>
-                            {{html-safe result.title}}
-                        </LinkTo>
-                        <div class="text-muted small">
-                            {{html-safe result.sourceTitle}}
+        <ContentWithPlaceholder
+            @placeholderComponent="loading/widget"
+            @isLoading={{this.loadSimilarFromDocument.isRunning}}
+        >
+
+            {{#if this.results.similarMaxScore}}
+                <h5>{{t "relatedInfo.widgets.moreLikeThese.confidence" number=(round this.results.similarMaxScore)}}</h5>
+            {{/if}}
+            <ul class="list-unstyled">
+                {{#each this.results.similarDocuments as |result|}}
+                    <li class="mb-2">
+                        <div>
+                            <LinkTo @route="read.document" @model={{result.id}}>
+                                {{html-safe result.title}}
+                            </LinkTo>
+                            <div class="text-muted small">
+                                {{html-safe result.sourceTitle}}
+                            </div>
                         </div>
-                    </div>
-                </li>
-            {{else}}
-                <li class="py-3 mb-0 text-center text-muted">
-                    {{t "common.noResults"}}
-                </li>
-            {{/each}}
-        </ul>
+                    </li>
+                {{else}}
+                    <li class="py-3 mb-0 text-center text-muted">
+                        {{t "common.noResults"}}
+                    </li>
+                {{/each}}
+            </ul>
+        </ContentWithPlaceholder>
+
     </Panel.body>
 </CollapsiblePanel>

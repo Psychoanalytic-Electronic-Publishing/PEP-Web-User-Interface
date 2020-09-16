@@ -16,6 +16,7 @@ export interface PageSidebarWidgetArgs extends PageSidebarWidgetsArgs {
 export default class PageSidebarWidgets extends Component<PageSidebarWidgetsArgs> {
     @tracked openWidgets: WIDGET[] =
         this.args.widgets?.filter((widget) => widget.open).map((widget) => widget.widget) ?? [];
+
     /**
      * Getter that decides when we show close all
      *

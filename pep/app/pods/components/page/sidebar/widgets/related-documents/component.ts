@@ -11,6 +11,8 @@ import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import { SearchFacetId } from 'pep/constants/search';
 import { buildSearchQueryParams } from 'pep/utils/search';
 import Document from 'pep/pods/document/model';
+import { restartableTask } from 'ember-concurrency-decorators';
+import { taskFor } from 'ember-concurrency-ts';
 
 interface PageSidebarWidgetsRelatedDocumentsArgs extends PageSidebarWidgetArgs {}
 
@@ -34,8 +36,8 @@ export default class PageSidebarWidgetsRelatedDocuments extends Component<PageSi
     /**
      * Load the widget results data
      */
-    @dontRunInFastboot
-    async loadResults() {
+    @restartableTask
+    *loadResults() {
         // TODO switch to ember-concurrency task (with TS-friendly decorators, etc)
         // to remove manual `isLoading` state management etc
         // @see https://jamescdavis.com/using-ember-concurrency-with-typescript/
@@ -46,30 +48,25 @@ export default class PageSidebarWidgetsRelatedDocuments extends Component<PageSi
                 value: this.data?.relatedrx!
             }
         ]);
-        try {
-            this.isLoading = true;
-            const results = await this.store.query('document', params);
-            this.results = results.toArray();
-            this.isLoading = false;
-        } catch (err) {
-            this.isLoading = false;
-        }
+        const results = yield this.store.query('document', params);
+        this.results = results.toArray();
     }
 
     /**
      * Load the widget results on render
      */
     @action
+    @dontRunInFastboot
     onElementInsert() {
         if (this.data?.relatedrx) {
-            this.loadResults();
+            taskFor(this.loadResults).perform();
         }
     }
 
     @action
     onElementChange() {
         if (this.data?.relatedrx) {
-            this.loadResults();
+            taskFor(this.loadResults).perform();
         } else {
             this.results = [];
         }

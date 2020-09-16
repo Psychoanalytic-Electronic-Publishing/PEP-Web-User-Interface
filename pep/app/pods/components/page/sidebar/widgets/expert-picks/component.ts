@@ -11,14 +11,14 @@ import Document from 'pep/pods/document/model';
 import ConfigurationService from 'pep/services/configuration';
 import { buildSearchQueryParams } from 'pep/utils/search';
 import { SearchFacetId } from 'pep/constants/search';
+import { restartableTask } from 'ember-concurrency-decorators';
+import { taskFor } from 'ember-concurrency-ts';
 
 interface PageSidebarWidgetsExpertPicksArgs extends PageSidebarWidgetArgs {}
 
 export default class PageSidebarWidgetsExpertPicks extends Component<PageSidebarWidgetsExpertPicksArgs> {
     @service configuration!: ConfigurationService;
-    @service ajax!: AjaxService;
     @service store!: DS.Store;
-    @tracked isLoading = false;
     @tracked results: Document[] = [];
 
     get isOpen() {
@@ -30,11 +30,8 @@ export default class PageSidebarWidgetsExpertPicks extends Component<PageSidebar
     /**
      * Load the widget results data
      */
-    @dontRunInFastboot
-    async loadResults() {
-        // TODO switch to ember-concurrency task (with TS-friendly decorators, etc)
-        // to remove manual `isLoading` state management etc
-        // @see https://jamescdavis.com/using-ember-concurrency-with-typescript/
+    @restartableTask
+    *loadResults() {
         const queryItems = this.configuration.base.home.expertPicks.map((item) => {
             return {
                 id: SearchFacetId.ART_ID,
@@ -42,21 +39,16 @@ export default class PageSidebarWidgetsExpertPicks extends Component<PageSidebar
             };
         });
         const params = buildSearchQueryParams('', [], false, queryItems);
-        try {
-            this.isLoading = true;
-            const results = await this.store.query('document', params);
-            this.results = results.toArray();
-            this.isLoading = false;
-        } catch (err) {
-            this.isLoading = false;
-        }
+        const results = yield this.store.query('document', params);
+        this.results = results.toArray();
     }
 
     /**
      * Load the widget results on render
      */
     @action
+    @dontRunInFastboot
     onElementInsert() {
-        this.loadResults();
+        taskFor(this.loadResults).perform();
     }
 }
