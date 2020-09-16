@@ -15,7 +15,6 @@ import PepSessionService from 'pep/services/pep-session';
 import { buildSearchQueryParams } from 'pep/utils/search';
 import { ViewPeriod, SEARCH_DEFAULT_VIEW_PERIOD } from 'pep/constants/search';
 import Document from 'pep/pods/document/model';
-import { WIDGET } from 'pep/constants/sidebar';
 
 export default class ReadDocument extends Controller {
     @service('pep-session') session!: PepSessionService;

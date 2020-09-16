@@ -408,7 +408,8 @@ export default class Search extends Controller {
             }
 
             this.sidebar.update({
-                [WIDGET.GLOSSARY_TERMS]: this.resultsMeta?.facetCounts.facet_fields.glossary_group_terms
+                [WIDGET.GLOSSARY_TERMS]: this.resultsMeta?.facetCounts.facet_fields.glossary_group_terms,
+                [WIDGET.RELATED_DOCUMENTS]: undefined
             });
 
             return this.resultsMeta;
@@ -449,7 +450,8 @@ export default class Search extends Controller {
         this.previewedResult = result;
 
         this.sidebar.update({
-            [WIDGET.MORE_LIKE_THESE]: result
+            [WIDGET.MORE_LIKE_THESE]: result,
+            [WIDGET.RELATED_DOCUMENTS]: result
         });
     }
 

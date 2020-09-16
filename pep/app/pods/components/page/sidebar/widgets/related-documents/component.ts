@@ -65,4 +65,13 @@ export default class PageSidebarWidgetsRelatedDocuments extends Component<PageSi
             this.loadResults();
         }
     }
+
+    @action
+    onElementChange() {
+        if (this.data?.relatedrx) {
+            this.loadResults();
+        } else {
+            this.results = [];
+        }
+    }
 }

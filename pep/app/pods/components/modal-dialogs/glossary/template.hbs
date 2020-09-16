@@ -1,58 +1,25 @@
-<ModalDialog @onClose={{@onClose}} @size="md" as |Modal|>
-    <Modal.header @title={{t "login.title"}} />
-    <FormValidator
-        @changeset={{@options.changeset}}
-        @submit={{this.login}}
-        as |changeset validator|
-    >
-        <Modal.body>
+<ModalDialog @onClose={{@onClose}} @size="lg" as |Modal|>
+    <Modal.header @title={{t "glossary.title"}} />
+    <Modal.body>
+        {{!-- TODO when we do this for real - comment this out --}}
+        {{!-- {{#each @options.results as |glossary|}}
+            <p class="text-strong">{{glossary.term}}</p>
+            <p class="text-strong">{{glossary.termSource}}</p>
             <p class="text-muted">
-                {{t "login.info"}}
+                {{html-safe glossary.document}}
             </p>
-            <Alert
-                @isShown={{bool this.loginError}}
-                @message={{t "login.error"}}
-                @type="danger"
-                @icon="exclamation-circle"
-            />
-            <div class="form-row">
-                <div class="col-sm-8">
-                    <validator.input @errors={{changeset.error.username.validation}} class="input-validator-compact">
-                        <FlInput
-                            @value={{changeset.username}}
-                            @placeholder={{t "login.username"}}
-                            maxlength="128"
-                        />
-                    </validator.input>
-                    <validator.input @errors={{changeset.error.password.validation}} class="input-validator-compact">
-                        <FlInput
-                            @value={{changeset.password}}
-                            @placeholder={{t "login.password"}}
-                            maxlength="128"
-                            type="password"
-                        />
-                    </validator.input>
-                    <p class="mb-0 text-muted">
-                        {{t "login.notAMember"}}
-                        <a href="" {{on "click" this.transitionToSubscribe}}>
-                            {{t "login.clickToSubscribe"}}
-                        </a>.
-                    </p>
-                </div>
-            </div>
-        </Modal.body>
-        <Modal.footer>
-            <Button
-                @type="link"
-                @label={{t "common.cancel"}}
-                @action={{@onClose}}
-            />
-            <ButtonSpinner
-                @type="primary"
-                @label={{t "login.title"}}
-                @wide={{true}}
-                @action={{validator.submit}}
-            />
-        </Modal.footer>
-    </FormValidator>
+        {{/each}} --}}
+    </Modal.body>
+    <Modal.footer>
+        <Button
+            @type="link"
+            @label="Search for this term"
+            @action={{this.searchForTerm}}
+        />
+        <Button
+            @type="link"
+            @label={{t "common.cancel"}}
+            @action={{@onClose}}
+        />
+    </Modal.footer>
 </ModalDialog>

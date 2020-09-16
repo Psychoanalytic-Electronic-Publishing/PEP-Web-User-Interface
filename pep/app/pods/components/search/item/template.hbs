@@ -14,7 +14,7 @@
     </div>
     <div class="pl-2 d-flex justify-content-end align-items-start">
         {{#if @item.relatedrx}}
-            <FaIcon @icon="books"/>
+            <FaIcon @icon="books" class="p-0 mr-2 mt-1"/>
         {{/if}}
         <Button
             @action={{fn this.toggleFavorite @item}}

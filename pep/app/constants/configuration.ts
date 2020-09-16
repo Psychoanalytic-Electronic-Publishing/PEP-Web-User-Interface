@@ -77,6 +77,11 @@ export interface ContentConfiguration {
                 longDescription?: string;
             }[];
         };
+        publishers: {
+            sourceCode: string;
+            previewHTML: string;
+            fullHTML: string;
+        }[];
     };
     home: {
         intro: {
@@ -134,7 +139,8 @@ export const DEFAULT_BASE_CONFIGURATION: BaseConfiguration = {
                 { widget: WIDGET.GLOSSARY_TERMS, open: false },
                 { widget: WIDGET.MORE_LIKE_THESE, open: false },
                 { widget: WIDGET.READ_LATER, open: false },
-                { widget: WIDGET.FAVORITES, open: false }
+                { widget: WIDGET.FAVORITES, open: false },
+                { widget: WIDGET.PUBLISHER_INFO, open: false }
             ]
         },
         video: {
@@ -190,7 +196,14 @@ export const DEFAULT_CONTENT_CONFIGURATION: ContentConfiguration = {
         tips: {
             isEnabled: true,
             list: []
-        }
+        },
+        publishers: [
+            {
+                sourceCode: 'IJP',
+                previewHTML: 'Preview HTML',
+                fullHTML: 'Full HTML'
+            }
+        ]
     },
     home: {
         intro: {

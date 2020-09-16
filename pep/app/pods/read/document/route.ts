@@ -4,7 +4,7 @@ import Transition from '@ember/routing/-private/transition';
 import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hooks/pagination';
 import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
 
-import { PageNav, PageSidebar } from 'pep/mixins/page-layout';
+import { PageNav } from 'pep/mixins/page-layout';
 import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
 import Document from 'pep/pods/document/model';
 import ReadDocumentController from 'pep/pods/read/document/controller';
@@ -46,12 +46,14 @@ export default class ReadDocument extends PageNav(Route) {
      * @param {Object} model
      * @param {Transition} transition
      */
-    async afterModel(model: object, transition: Transition) {
+    async afterModel(model: Document, transition: Transition) {
         super.afterModel(model, transition);
 
         this.sidebar.update({
             [WIDGET.RELATED_DOCUMENTS]: model,
-            [WIDGET.MORE_LIKE_THESE]: model
+            [WIDGET.MORE_LIKE_THESE]: model,
+            [WIDGET.GLOSSARY_TERMS]: model?.meta?.facetCounts.facet_fields.glossary_group_terms,
+            [WIDGET.PUBLISHER_INFO]: model
         });
 
         let results;

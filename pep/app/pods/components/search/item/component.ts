@@ -4,6 +4,7 @@ import { inject as service } from '@ember/service';
 import { PreferenceKey } from 'pep/constants/preferences';
 import CurrentUserService from 'pep/services/current-user';
 import Document from 'pep/pods/document/model';
+import SidebarService from 'pep/services/sidebar';
 
 interface SearchItemArgs {
     item: Document;
@@ -12,6 +13,7 @@ interface SearchItemArgs {
 
 export default class SearchItem extends Component<SearchItemArgs> {
     @service currentUser!: CurrentUserService;
+    @service sidebar!: SidebarService;
 
     /**
      * Using a computed here so we A) dont dip into the local storage too often and B) so that this

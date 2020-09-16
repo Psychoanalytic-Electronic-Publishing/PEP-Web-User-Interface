@@ -1,0 +1,26 @@
+<CollapsiblePanel
+    @scrollableNamespace="sidebar-right"
+    @isOpen={{this.isOpen}}
+    @toggle={{fn @toggleIsOpen this.widget}}
+    class="mb-2"
+    ...attributes
+as |Panel|>
+    <Panel.header @title={{t "relatedInfo.widgets.publisherInfo.title"}} />
+    <Panel.body>
+        {{#if this.data.PEPCode}}
+            {{html-safe this.publisherInformation.previewHTML}}
+            <Button
+                @action={{this.openModal}}
+                @type="link"
+                class="p-0"
+            >
+                {{t "relatedInfo.widgets.publisherInfo.view" publisher=this.data.PEPCode}}
+                <FaIcon @icon="arrow-right" @prefix="fal"/>
+            </Button>
+        {{else}}
+            <div class="py-3 mb-0 text-center text-muted">
+                {{t "relatedInfo.widgets.publisherInfo.empty"}}
+            </div>
+        {{/if}}
+    </Panel.body>
+</CollapsiblePanel>

@@ -21,7 +21,8 @@ export enum WIDGET {
     SEMINAL_PAPERS = 'seminal-papers',
     VIDEO_PREVIEW = 'video-preview',
     WHATS_NEW = 'whats-new',
-    YOUR_INTERESTS = 'your-interests'
+    YOUR_INTERESTS = 'your-interests',
+    PUBLISHER_INFO = 'publisher-info'
 }
 
 export type WidgetData = Partial<Record<WIDGET, any>>;

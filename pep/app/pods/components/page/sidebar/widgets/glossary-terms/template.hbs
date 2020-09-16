@@ -7,33 +7,25 @@
 as |Panel|>
     <Panel.header @title={{t "relatedInfo.widgets.glossaryTerms.title"}} />
     <Panel.body>
-        <ul class="word-cloud text-muted mb-3">
-            {{#each this.data as |item|}}
-                {{!-- template-lint-disable no-bare-strings --}}
-                <li style="font-size: {{item.fontSize}}em;">
-                    {{item.label}}
-                    <EmberTooltip
-                        @popperContainer="body"
-                        @side="top"
-                        @spacing={{5}}
-                        @effect="slide"
-                        @innerClass=""
-                        @onShow={{fn this.onTooltipShow item.label}}
+        {{#if this.data.length}}
+            <ul class="word-cloud text-muted mb-3">
+                {{#each this.data as |item|}}
+                    <li
+                        style={{item.fontStyle}}
                     >
-                        {{#if this.tooltipData}}
-                            {{this.tooltipData}}
-                        {{else}}
-                            Loading...
-                        {{/if}}
-                    </EmberTooltip>
-                </li>
-            {{/each}}
-        </ul>
-        <p class="mb-0">
-            <a href="#">
-                {{t "relatedInfo.widgets.glossaryTerms.view"}}
-                <FaIcon @icon="arrow-right" />
-            </a>
-        </p>
+                        <Button
+                            @label={{item.label}}
+                            @action={{fn this.viewGlossaryTerm item.label}}
+                            @type="link"
+                            class="p-0"
+                        />
+                    </li>
+                {{/each}}
+            </ul>
+        {{else}}
+            <div class="py-3 mb-0 text-center text-muted">
+                {{t "relatedInfo.widgets.glossaryTerms.empty"}}
+            </div>
+        {{/if}}
     </Panel.body>
 </CollapsiblePanel>

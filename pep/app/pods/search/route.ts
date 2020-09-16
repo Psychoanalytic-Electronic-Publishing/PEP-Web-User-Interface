@@ -7,7 +7,7 @@ import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hooks/pagination';
 import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
 
-import { PageNav, PageSidebar } from 'pep/mixins/page-layout';
+import { PageNav } from 'pep/mixins/page-layout';
 import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
 import SidebarService from 'pep/services/sidebar';
 import ConfigurationService from 'pep/services/configuration';
