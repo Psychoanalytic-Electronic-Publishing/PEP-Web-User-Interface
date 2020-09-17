@@ -4,7 +4,6 @@ import { resolve, reject } from 'rsvp';
 import BaseAuthenticator from 'ember-simple-auth/authenticators/base';
 
 import AjaxService from 'pep/services/ajax';
-import { serializeQueryParams } from 'pep/utils/url';
 import ENV from 'pep/config/environment';
 import { PepSecureAuthenticatedData } from 'pep/api';
 
@@ -23,13 +22,14 @@ export default class PepAuthenticator extends BaseAuthenticator {
      * @param {String} password
      */
     async authenticate(username: string, password: string) {
-        const params = serializeQueryParams({
-            grant_type: 'password',
-            UserName: username,
-            Password: password
-        });
-        const result = await this.ajax.request(`${ENV.authBaseUrl}/Authenticate?${params}`, {
-            headers: this.authenticationHeaders
+        const result = await this.ajax.request(`${ENV.authBaseUrl}/Authenticate`, {
+            method: 'POST',
+            headers: this.authenticationHeaders,
+            body: this.ajax.stringifyData({
+                grant_type: 'password',
+                UserName: username,
+                Password: password
+            })
         });
         return result;
     }
@@ -37,9 +37,14 @@ export default class PepAuthenticator extends BaseAuthenticator {
     /**
      * Invalidates the local session and logs the user out
      */
-    async invalidate() {
-        // TODO this will eventually need to hit a logout endpoint on the PaDS system
-        return resolve();
+    invalidate(data: PepSecureAuthenticatedData) {
+        return this.ajax.request(`${ENV.authBaseUrl}/Users/Logout`, {
+            method: 'POST',
+            headers: this.authenticationHeaders,
+            body: this.ajax.stringifyData({
+                SessionId: data.SessionId
+            })
+        });
     }
 
     /**
