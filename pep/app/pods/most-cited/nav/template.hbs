@@ -21,20 +21,46 @@
                         />
                     </div>
                     <div class="form-group">
-                        <FlInput
-                            @placeholder={{t "mostCited.author"}}
-                            @value={{this.searchQueryParams.author}}
-                            maxlength="255"
-                            autocomplete="off"
-                        />
+                        <div class="search-form-term-control">
+                            <FlInput
+                                @placeholder={{t "mostCited.author"}}
+                                @value={{this.searchQueryParams.author}}
+                                maxlength="255"
+                                autocomplete="off"
+                            />
+                            <abbr class="search-form-term-control-help">
+                                <FaIcon @icon="question-circle" />
+                                <EmberTooltip
+                                    @text={{this.configuration.content.search.terms.types.author.help}}
+                                    @popperContainer="body"
+                                    @side="right"
+                                    @spacing={{5}}
+                                    @effect="slide"
+                                    @innerClass=""
+                                />
+                            </abbr>
+                        </div>
                     </div>
                     <div class="form-group">
-                        <FlInput
-                            @placeholder={{t "mostCited.title"}}
-                            @value={{this.searchQueryParams.title}}
-                            maxlength="255"
-                            autocomplete="off"
-                        />
+                        <div class="search-form-term-control">
+                            <FlInput
+                                @placeholder={{t "mostCited.title"}}
+                                @value={{this.searchQueryParams.title}}
+                                maxlength="255"
+                                autocomplete="off"
+                            />
+                            <abbr class="search-form-term-control-help">
+                                <FaIcon @icon="question-circle" />
+                                <EmberTooltip
+                                    @text={{this.configuration.content.search.terms.types.title.help}}
+                                    @popperContainer="body"
+                                    @side="right"
+                                    @spacing={{5}}
+                                    @effect="slide"
+                                    @innerClass=""
+                                />
+                            </abbr>
+                        </div>
                     </div>
                     <div class="form-group">
                         <FlInput
