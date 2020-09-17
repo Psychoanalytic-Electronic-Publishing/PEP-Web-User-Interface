@@ -4,7 +4,6 @@ import { resolve, reject } from 'rsvp';
 import BaseAuthenticator from 'ember-simple-auth/authenticators/base';
 
 import AjaxService from 'pep/services/ajax';
-// import { serializeQueryParams } from 'pep/utils/url';
 import ENV from 'pep/config/environment';
 import { PepSecureAuthenticatedData } from 'pep/api';
 
