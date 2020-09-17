@@ -166,6 +166,6 @@ export default class AjaxService extends Service {
      * @returns {String}
      */
     stringifyData(data: any) {
-        return JSON.stringify({ data });
+        return JSON.stringify(data);
     }
 }
