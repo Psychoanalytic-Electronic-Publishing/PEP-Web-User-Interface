@@ -347,11 +347,13 @@ export default class Search extends Controller {
     }
 
     /**
+     * Updates the smart search text
      * Updates the Refine facets metadata when any search text input values change
      */
     @action
-    onSearchTextChange() {
-        return this.onSearchCriteriaChange();
+    updateSmartSearchText(newText: string) {
+        this.currentSmartSearchTerm = newText;
+        this.onSearchCriteriaChange();
     }
 
     /**

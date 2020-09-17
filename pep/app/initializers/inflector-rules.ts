@@ -8,6 +8,8 @@ export function initialize() {
     inflector.uncountable('whats-new');
     inflector.uncountable('whatsNew');
     inflector.uncountable('configuration');
+    inflector.uncountable('word-wheel');
+    inflector.uncountable('wordWheel');
 }
 
 export default {
