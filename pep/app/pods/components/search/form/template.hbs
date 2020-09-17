@@ -8,11 +8,26 @@
         </div>
         <form>
             <div class="form-group">
-                <WordWheel
-                    @placeholder={{t "search.form.smartSearch"}}
-                    @value={{@smartSearchTerm}}
-                    @onChange={{@updateSmartSearchText}}
-                />
+                <div class="search-form-term-control">
+                    <WordWheel
+                        @placeholder={{t "search.form.smartSearch"}}
+                        @value={{@smartSearchTerm}}
+                        @onChange={{@updateSmartSearchText}}
+                    />
+                    {{#if this.configuration.content.search.smartSearch.help}}
+                        <abbr class="search-form-term-control-help">
+                            <FaIcon @icon="question-circle" />
+                            <EmberTooltip
+                                @text={{this.configuration.content.search.smartSearch.help}}
+                                @popperContainer="body"
+                                @side="right"
+                                @spacing={{5}}
+                                @effect="slide"
+                                @innerClass=""
+                            />
+                        </abbr>
+                    {{/if}}
+                </div>
             </div>
             <div class="d-flex justify-content-between align-items-center mb-2">
                 <p class="text-muted mb-0">{{t "search.form.terms.heading"}}</p>
