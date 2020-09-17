@@ -36,4 +36,15 @@ export default class PageSidebarWidgetsReadLater extends Component<PageSidebarWi
     onElementChange() {
         this.loadFromUserPreferences();
     }
+
+    /**
+     * Add or remove read later document
+     *
+     * @param {Document} document
+     * @memberof SearchItem
+     */
+    @action
+    removeReadLaterDocument(document: Document) {
+        this.currentUser.removeDocument(PreferenceKey.READ_LATER, document);
+    }
 }

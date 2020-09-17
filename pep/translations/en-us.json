@@ -67,6 +67,9 @@
             "label": "Sort:",
             "year": "Year"
         },
+        "item": {
+            "relatedDocuments": "This document has related documents"
+        },
         "view": {
             "label": "View:",
             "biblio": "Bibliographic"

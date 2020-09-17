@@ -13,7 +13,17 @@
     </div>
     <div class="pl-2 d-flex justify-content-end align-items-start">
         {{#if @item.relatedrx}}
-            <FaIcon @icon="books" class="p-0 mr-2 mt-1"/>
+            <span class="mr-2">
+                <FaIcon @icon="books" class="p-0 "/>
+                <EmberTooltip
+                    @text={{t "search.item.relatedDocuments"}}
+                    @popperContainer="body"
+                    @side="left"
+                    @spacing={{5}}
+                    @effect="slide"
+                    @innerClass=""
+                />
+            </span>
         {{/if}}
         <Button
             @action={{fn this.toggleFavorite @item}}

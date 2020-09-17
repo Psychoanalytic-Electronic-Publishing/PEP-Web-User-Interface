@@ -5,6 +5,7 @@ import { PreferenceDocumentsKey, PreferenceKey } from 'pep/constants/preferences
 import CurrentUserService from 'pep/services/current-user';
 import Document from 'pep/pods/document/model';
 import SidebarService from 'pep/services/sidebar';
+import FastbootService from 'ember-cli-fastboot/services/fastboot';
 
 interface SearchItemArgs {
     item: Document;
