@@ -132,7 +132,6 @@ export default class ReadDocument extends PageNav(Route) {
             filterRootKey: null,
             processQueryParams: controller.processQueryParams
         });
-        // controller.metaData = model.metaData
     }
 
     /**

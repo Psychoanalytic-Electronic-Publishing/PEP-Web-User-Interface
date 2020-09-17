@@ -1,8 +1,6 @@
 import ENV from 'pep/config/environment';
 import ApplicationAdapter from 'pep/pods/application/adapter';
-import { classify } from '@ember/string';
 
-import { pluralize } from 'ember-inflector';
 export default class GlossaryTerm extends ApplicationAdapter {
     namespace = `${ENV.apiNamespace}/Documents`;
 

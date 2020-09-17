@@ -18,6 +18,12 @@ export enum AspectRatio {
     FOUR_BY_THREE = '4by3'
 }
 
+export interface Publisher {
+    sourceCode: string;
+    previewHTML: string;
+    fullHTML: string;
+}
+
 /**
  * Base admin configuration fields for the application
  * MUST NOT contain any configuration data/content that is language-dependent
@@ -77,11 +83,7 @@ export interface ContentConfiguration {
                 longDescription?: string;
             }[];
         };
-        publishers: {
-            sourceCode: string;
-            previewHTML: string;
-            fullHTML: string;
-        }[];
+        publishers: Publisher[];
     };
     home: {
         intro: {

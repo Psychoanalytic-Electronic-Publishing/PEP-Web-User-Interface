@@ -8,29 +8,23 @@
 as |Panel|>
     <Panel.header @title={{t "relatedInfo.widgets.readLater.title"}} />
     <Panel.body>
-        <ContentWithPlaceholder
-            @placeholderComponent="loading/widget"
-            @isLoading={{this.isLoading}}
-        >
-
-            <ul class="list-unstyled">
-                {{#each this.results as |result|}}
-                    <li class="mb-2">
-                        <div>
-                            <LinkTo @route="read.document" @model={{result.id}}>
-                                {{html-safe result.title}}
-                            </LinkTo>
-                            <div class="text-muted small">
-                                {{html-safe result.sourceTitle}}
-                            </div>
+        <ul class="list-unstyled">
+            {{#each this.results as |result|}}
+                <li class="mb-2">
+                    <div>
+                        <LinkTo @route="read.document" @model={{result.id}}>
+                            {{html-safe result.title}}
+                        </LinkTo>
+                        <div class="text-muted small">
+                            {{html-safe result.sourceTitle}}
                         </div>
-                    </li>
-                {{else}}
-                    <li class="py-3 mb-0 text-center text-muted">
-                        {{t "common.noResults"}}
-                    </li>
-                {{/each}}
-            </ul>
-        </ContentWithPlaceholder>
+                    </div>
+                </li>
+            {{else}}
+                <li class="py-3 mb-0 text-center text-muted">
+                    {{t "common.noResults"}}
+                </li>
+            {{/each}}
+        </ul>
     </Panel.body>
 </CollapsiblePanel>

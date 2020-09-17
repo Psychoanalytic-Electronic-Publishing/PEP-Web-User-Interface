@@ -1,7 +1,7 @@
 import Component from '@glimmer/component';
 import { action, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
-import { PreferenceKey } from 'pep/constants/preferences';
+import { PreferenceDocumentsKey, PreferenceKey } from 'pep/constants/preferences';
 import CurrentUserService from 'pep/services/current-user';
 import Document from 'pep/pods/document/model';
 import SidebarService from 'pep/services/sidebar';
@@ -47,11 +47,8 @@ export default class SearchItem extends Component<SearchItemArgs> {
      */
     @action
     toggleReadLater(document: Document) {
-        if (this.currentUser.hasDocument(PreferenceKey.READ_LATER, document)) {
-            this.currentUser.removeDocument(PreferenceKey.READ_LATER, document);
-        } else {
-            this.currentUser.addDocument(PreferenceKey.READ_LATER, document);
-        }
+        const key = PreferenceKey.READ_LATER;
+        this.toggleDocument(key, document);
     }
 
     /**
@@ -62,10 +59,22 @@ export default class SearchItem extends Component<SearchItemArgs> {
      */
     @action
     toggleFavorite(document: Document) {
-        if (this.currentUser.hasDocument(PreferenceKey.FAVORITES, document)) {
-            this.currentUser.removeDocument(PreferenceKey.FAVORITES, document);
+        const key = PreferenceKey.FAVORITES;
+        this.toggleDocument(key, document);
+    }
+
+    /**
+     * Private method to add / remove a document from local storage preferences based on a key and the document
+     *
+     * @param {PreferenceDocumentsKey} key
+     * @param {Document} document
+     * @memberof SearchItem
+     */
+    toggleDocument(key: PreferenceDocumentsKey, document: Document) {
+        if (this.currentUser.hasDocument(key, document)) {
+            this.currentUser.removeDocument(key, document);
         } else {
-            this.currentUser.addDocument(PreferenceKey.FAVORITES, document);
+            this.currentUser.addDocument(key, document);
         }
     }
 }

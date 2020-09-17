@@ -4,6 +4,12 @@ import { pluralize } from 'ember-inflector';
 
 import ApplicationSerializerMixin from 'pep/mixins/application-serializer';
 
+/**
+ * Build correctly formatted similarity match items based on what the API sends
+ *
+ * @param {*} item
+ * @returns
+ */
 const getSimilarityMatch = (item: any) => {
     const document = item;
     const similarDocumentItems = new Map(Object.entries(document?.similarityMatch?.similarDocs ?? {}));

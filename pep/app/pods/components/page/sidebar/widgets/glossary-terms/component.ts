@@ -16,14 +16,6 @@ export default class PageSidebarWidgetsGlossaryTerms extends Component<PageSideb
     smallestFontSize = 0.5;
     fontMultiplier = 2;
 
-    shuffle(array: any[]) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-        return array;
-    }
-
     get data() {
         const data = this.args.data[this.widget] ?? {};
         const glossaryGroupTerms = Object.entries(data).map((entry) => ({
@@ -45,7 +37,6 @@ export default class PageSidebarWidgetsGlossaryTerms extends Component<PageSideb
         const mappedData = glossaryGroupTerms.map((item) => {
             return {
                 label: item.label,
-                // font-size: {{html-safe item.fontSize}}em;
                 fontStyle: htmlSafe(
                     `font-size: ${this.smallestFontSize +
                         this.fontMultiplier * inverseLinearInterpolation(min, max, item.count)};`
@@ -61,6 +52,27 @@ export default class PageSidebarWidgetsGlossaryTerms extends Component<PageSideb
 
     widget = WIDGET.GLOSSARY_TERMS;
 
+    /**
+     * Shuffle items in an array randomly
+     *
+     * @param {any[]} array
+     * @returns {array}
+     * @memberof PageSidebarWidgetsGlossaryTerms
+     */
+    shuffle(array: any[]) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    /**
+     * Open the glossary modal to view the term definition and information
+     *
+     * @param {string} term
+     * @memberof PageSidebarWidgetsGlossaryTerms
+     */
     @action
     async viewGlossaryTerm(term: string) {
         console.log('test');

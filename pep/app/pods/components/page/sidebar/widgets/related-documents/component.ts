@@ -38,10 +38,6 @@ export default class PageSidebarWidgetsRelatedDocuments extends Component<PageSi
      */
     @restartableTask
     *loadResults() {
-        // TODO switch to ember-concurrency task (with TS-friendly decorators, etc)
-        // to remove manual `isLoading` state management etc
-        // @see https://jamescdavis.com/using-ember-concurrency-with-typescript/
-
         const params = buildSearchQueryParams('', [], false, [
             {
                 id: SearchFacetId.ART_QUAL,

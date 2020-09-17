@@ -1,7 +1,6 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
-import AjaxService from 'pep/services/ajax';
 import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
 import { WIDGET } from 'pep/constants/sidebar';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';

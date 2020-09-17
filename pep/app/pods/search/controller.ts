@@ -445,7 +445,7 @@ export default class Search extends Controller {
      * @param {Event} event
      */
     @action
-    async openResultPreview(result: Document, event: Event) {
+    openResultPreview(result: Document, event: Event) {
         event.preventDefault();
         this.previewedResult = result;
 
