@@ -15,14 +15,24 @@
         right: 0;
         height: $drag-bar-thickness;
         cursor: ns-resize;
+
+        &.is-reversed {
+            top: auto;
+            bottom: 0;
+        }
     }
 
     &.vertical {
         top: 0;
-        left: 0;
+        right: 0;
         bottom: 0;
         width: $drag-bar-thickness;
         cursor: ew-resize;
+
+        &.is-reversed {
+            right: auto;
+            left: 0;
+        }
     }
 
     &-mask {

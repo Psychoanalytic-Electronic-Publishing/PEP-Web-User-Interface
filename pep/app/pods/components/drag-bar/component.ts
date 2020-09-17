@@ -16,6 +16,7 @@ interface DragBarArgs {
     maxClientY?: number;
     minClientX?: number;
     maxClientX?: number;
+    reversed?: boolean;
     onDragStart?: (
         offset: ElementOffset,
         event: HTMLElementMouseEvent<HTMLDivElement> | HTMLElementTouchEvent<HTMLDivElement>
@@ -40,6 +41,15 @@ export default class DragBar extends Component<DragBarArgs> {
      */
     get orientation() {
         return this.args.orientation ?? 'horizontal';
+    }
+
+    /**
+     * When reversed, min/max X/Y calculations start from the opposite side
+     * @readonly
+     * @returns {boolean}
+     */
+    get reversed() {
+        return this.args.reversed ?? false;
     }
 
     /**
@@ -147,6 +157,7 @@ export default class DragBar extends Component<DragBarArgs> {
     @action
     onDragMove(event: MouseEvent | TouchEvent) {
         const eventOffset = getEventOffset(event);
+        //TODO use reverse arg
         if (this.orientation === 'horizontal') {
             const minY = this.minClientY;
             const maxY = document.body.offsetHeight - this.barThickness - this.maxClientY;
@@ -176,6 +187,7 @@ export default class DragBar extends Component<DragBarArgs> {
         const lastDragPos = this.dragBarPosition ?? 0;
         let endPosition;
 
+        //TODO use reverse arg
         if (this.orientation === 'horizontal') {
             const minY = this.minClientY;
             const maxY = document.body.offsetHeight - this.barThickness - this.maxClientY;
