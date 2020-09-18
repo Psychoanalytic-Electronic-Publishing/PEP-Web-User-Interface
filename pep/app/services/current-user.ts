@@ -56,9 +56,7 @@ export default class CurrentUserService extends Service {
     async fetchUser(): Promise<User | void> {
         if (this.session.isAuthenticated) {
             const { SessionId } = this.session.data.authenticated;
-            const result = await this.store.query('user', { SessionId });
-            const users = result.toArray();
-            const user = users[0];
+            const user = await this.store.queryRecord('user', { SessionId });
             this.user = user;
             return user;
         }

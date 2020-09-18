@@ -1,11 +1,20 @@
 import DS from 'ember-data';
-import { camelize } from '@ember/string';
+import { camelize, classify } from '@ember/string';
 import { pluralize } from 'ember-inflector';
 
 import ApplicationSerializerMixin from 'pep/mixins/application-serializer';
 
 export default class UserSerializer extends ApplicationSerializerMixin(DS.RESTSerializer) {
     primaryKey = 'UserId';
+
+    /**
+     * The PaDS API returns attributes in PascalCase
+     * @param {string} attr
+     * @returns {string}
+     */
+    keyForAttribute(attr: string) {
+        return classify(attr);
+    }
 
     /**
      * The PaDS API returns user list results in a root-level array
