@@ -6,11 +6,7 @@ import BaseAuthenticator from 'ember-simple-auth/authenticators/base';
 import AjaxService from 'pep/services/ajax';
 import ENV from 'pep/config/environment';
 import { PepSecureAuthenticatedData } from 'pep/api';
-
-// TODO: this is all likely to change a bit to account for authentication flow changes
-// i.e. using headers/instead of automatic cookie sending, session refreshing, etc
-
-export default class PepAuthenticator extends BaseAuthenticator {
+export default class IpAuthenticator extends BaseAuthenticator {
     @service ajax!: AjaxService;
     authenticationHeaders = {
         'Content-Type': 'application/json'
@@ -18,23 +14,12 @@ export default class PepAuthenticator extends BaseAuthenticator {
 
     /**
      * Authenticates and logs the user in
-     * @param  {String} username
-     * @param {String} password
+     *
+     * @param {string} sessionId
+     * @returns
+     * @memberof IpAuthenticator
      */
-    async authenticate(username: string, password: string) {
-        const result = await this.ajax.request(`${ENV.authBaseUrl}/Authenticate`, {
-            method: 'POST',
-            headers: this.authenticationHeaders,
-            body: this.ajax.stringifyData({
-                grant_type: 'password',
-                UserName: username,
-                Password: password
-            })
-        });
-        return result;
-    }
-
-    async ipAuthenticate(sessionId: string) {
+    async authenticate(sessionId: string) {
         const result = await this.ajax.request(`${ENV.authBaseUrl}/Authenticate/ip?SessionId=${sessionId}`, {
             headers: this.authenticationHeaders
         });
