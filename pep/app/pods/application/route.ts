@@ -27,7 +27,6 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
     @service media!: MediaService;
     @service notifications!: NotificationService;
     @service intl!: IntlService;
-
     @service auth!: AuthService;
     @service currentUser!: CurrentUserService;
     @service configuration!: ConfigurationService;

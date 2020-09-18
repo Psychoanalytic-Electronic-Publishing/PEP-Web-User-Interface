@@ -55,6 +55,25 @@ export default class UserSerializer extends ApplicationSerializerMixin(DS.RESTSe
         payload = { [modelKey]: payload };
         return super.normalizeSingleResponse(store, primaryModelClass, payload, id, requestType);
     }
+
+    /**
+     * User payloads must be sent in the root JSON object
+     * @param {object} hash
+     * @param {ModelWithName} typeClass
+     * @param {DS.Snapshot<K>} snapshot
+     * @param {object} options
+     */
+    serializeIntoHash<K extends string | number>(
+        hash: any,
+        typeClass: ModelWithName,
+        snapshot: DS.Snapshot<K>,
+        options: object
+    ) {
+        super.serializeIntoHash(hash, typeClass, snapshot, options);
+        const root = this.payloadKeyFromModelName(typeClass.modelName);
+        Object.keys(hash[root]).forEach((key) => (hash[key] = hash[root][key]));
+        delete hash[root];
+    }
 }
 
 // DO NOT DELETE: this is how TypeScript knows how to look up your serializers.
