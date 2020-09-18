@@ -2,7 +2,6 @@ import ENV from 'pep/config/environment';
 import { ThemeId } from 'pep/constants/themes';
 import { LanguageCode } from 'pep/constants/lang';
 import { SearchTermId } from 'pep/constants/search';
-import Document from 'pep/pods/document/model';
 
 export enum PreferenceKey {
     FAVORITES = 'favorites',
@@ -14,23 +13,23 @@ export enum PreferenceKey {
 }
 
 export interface UserPreferences {
-    favorites?: Document[];
+    favorites?: string[];
     preferencesVersion: string;
     theme: ThemeId;
     lang: LanguageCode;
     searchLimitIsShown?: boolean;
     searchTermFields?: SearchTermId[];
-    readLater?: Document[];
+    readLater?: string[];
 }
 
 export type PreferenceChangeset = {
-    favorites?: Document[];
+    favorites?: string[];
     preferencesVersion?: string;
     theme?: ThemeId;
     lang?: LanguageCode;
     searchLimitIsShown?: boolean;
     searchTermFields?: SearchTermId[];
-    readLater?: Document[];
+    readLater?: string[];
 };
 
 export type PreferenceDocumentsKey = PreferenceKey.READ_LATER | PreferenceKey.FAVORITES;

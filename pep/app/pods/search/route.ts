@@ -147,15 +147,17 @@ export default class Search extends PageNav(Route) {
             filterRootKey: null,
             processQueryParams: controller.processQueryParams
         });
-        // workaround for bug w/array-based query param values
-        // @see https://github.com/emberjs/ember.js/issues/18981
-        // @ts-ignore
-        super.setupController(controller, model);
+
         this.sidebar.update({
             [WIDGET.RELATED_DOCUMENTS]: undefined,
             [WIDGET.MORE_LIKE_THESE]: undefined,
             [WIDGET.GLOSSARY_TERMS]: this.resultsMeta?.facetCounts.facet_fields.glossary_group_terms
         });
+
+        // workaround for bug w/array-based query param values
+        // @see https://github.com/emberjs/ember.js/issues/18981
+        // @ts-ignore
+        super.setupController(controller, model);
     }
 
     /**

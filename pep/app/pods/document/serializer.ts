@@ -1,6 +1,7 @@
 import DS from 'ember-data';
 import { camelize } from '@ember/string';
 import { pluralize } from 'ember-inflector';
+import DocumentModel from 'pep/pods/document/model';
 
 import ApplicationSerializerMixin from 'pep/mixins/application-serializer';
 
@@ -10,23 +11,28 @@ import ApplicationSerializerMixin from 'pep/mixins/application-serializer';
  * @param {*} item
  * @returns
  */
-const getSimilarityMatch = (item: any) => {
+const transformDocument = (item: any) => {
     const document = item;
     const similarDocumentItems = new Map(Object.entries(document?.similarityMatch?.similarDocs ?? {}));
     const similarDocuments = (similarDocumentItems.get(document.documentID) as []) ?? [];
 
-    const documentToReturn = { ...document };
-    if (similarDocuments.length) {
-        documentToReturn.similarityMatch = {
-            id: document.documentID,
-            type: 'similarity-match',
-            similarMaxScore: document?.similarityMatch?.similarMaxScore,
-            similarNumFound: document?.similarityMatch?.similarNumFound,
-            similarDocuments
-        };
-    } else {
-        documentToReturn.similarityMatch = null;
+    const documentToReturn = { ...document } as DocumentModel;
+    if (documentToReturn.kwicList.length === 0) {
+        delete documentToReturn.kwicList;
     }
+    if (documentToReturn)
+        if (similarDocuments.length) {
+            documentToReturn.similarityMatch = {
+                id: document.documentID,
+                // @ts-ignore Because we are building a model here - type does exist
+                type: 'similarity-match',
+                similarMaxScore: document?.similarityMatch?.similarMaxScore,
+                similarNumFound: document?.similarityMatch?.similarNumFound,
+                similarDocuments
+            };
+        } else {
+            documentToReturn.similarityMatch = null;
+        }
 
     return documentToReturn;
 };
@@ -57,7 +63,7 @@ export default class Document extends ApplicationSerializerMixin(DS.RESTSerializ
         const modelKey = pluralize(camelize(primaryModelClass.modelName));
         if (payload?.documentList) {
             payload.documentList.responseSet = payload.documentList.responseSet.map((item: any) =>
-                getSimilarityMatch(item)
+                transformDocument(item)
             );
 
             payload.meta = payload.documentList.responseInfo;
@@ -85,7 +91,7 @@ export default class Document extends ApplicationSerializerMixin(DS.RESTSerializ
     ) {
         const modelKey = camelize(primaryModelClass.modelName);
         if (payload?.documents) {
-            payload.documents.responseSet = payload.documents.responseSet.map((item: any) => getSimilarityMatch(item));
+            payload.documents.responseSet = payload.documents.responseSet.map((item: any) => transformDocument(item));
 
             payload[modelKey] = payload.documents.responseSet?.[0];
             payload[modelKey].meta = payload.documents.responseInfo;

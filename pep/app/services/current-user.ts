@@ -20,7 +20,6 @@ import {
     PreferenceKey,
     PreferenceDocumentsKey
 } from 'pep/constants/preferences';
-import Document from 'pep/pods/document/model';
 import PepSessionService from 'pep/services/pep-session';
 
 export default class CurrentUserService extends Service {
@@ -216,11 +215,11 @@ export default class CurrentUserService extends Service {
      * @param {Document} document
      * @memberof CurrentUserService
      */
-    addDocument(key: PreferenceDocumentsKey, document: Document) {
+    addDocument(key: PreferenceDocumentsKey, documentId: string) {
         const prefs = this.loadLocalStoragePrefs();
         const currentDocs = prefs[key] ?? [];
-        if (!currentDocs?.find((documentToFind) => documentToFind.id === document.id)) {
-            currentDocs?.push(document.toJSON({ includeId: true }) as Document);
+        if (!currentDocs?.includes(documentId)) {
+            currentDocs?.push(documentId);
         }
         this.updatePrefs({
             [key]: currentDocs
@@ -235,10 +234,10 @@ export default class CurrentUserService extends Service {
      * @returns {boolean}
      * @memberof CurrentUserService
      */
-    hasDocument(key: PreferenceDocumentsKey, document: Document): boolean {
+    hasDocument(key: PreferenceDocumentsKey, documentId: string): boolean {
         const prefs = this.loadLocalStoragePrefs();
         const currentDocs = prefs[key] ?? [];
-        return !!currentDocs?.find((documentToFind) => documentToFind.id === document.id);
+        return !!currentDocs?.includes(documentId);
     }
 
     /**
@@ -248,10 +247,10 @@ export default class CurrentUserService extends Service {
      * @param {Document} document
      * @memberof CurrentUserService
      */
-    removeDocument(key: PreferenceDocumentsKey, document: Document) {
+    removeDocument(key: PreferenceDocumentsKey, documentId: string) {
         const prefs = this.loadLocalStoragePrefs();
         const currentDocs = prefs[key];
-        const index = currentDocs?.findIndex((documentToFind) => documentToFind.id === document.id);
+        const index = currentDocs?.findIndex((idToFind) => idToFind === documentId);
         if (index !== undefined) {
             currentDocs?.removeAt(index);
         }
@@ -267,7 +266,7 @@ export default class CurrentUserService extends Service {
      * @returns {Document[]}
      * @memberof CurrentUserService
      */
-    getDocuments(key: PreferenceDocumentsKey): Document[] {
+    getDocuments(key: PreferenceDocumentsKey): string[] {
         const prefs = this.loadLocalStoragePrefs();
         return prefs[key] ?? [];
     }

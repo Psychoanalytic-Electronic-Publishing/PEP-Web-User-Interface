@@ -85,7 +85,7 @@ export default class Document extends DS.Model {
      * @type {SimilarityMatch}
      * @memberof Document
      */
-    @belongsTo('similarityMatch', { async: false }) similarityMatch!: SimilarityMatch;
+    @belongsTo('similarityMatch', { async: false }) similarityMatch!: SimilarityMatch | null;
 }
 
 declare module 'ember-data/types/registries/model' {

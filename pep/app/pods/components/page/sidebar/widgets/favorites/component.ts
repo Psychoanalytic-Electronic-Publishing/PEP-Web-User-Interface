@@ -7,11 +7,18 @@ import { action } from '@ember/object';
 import Document from 'pep/pods/document/model';
 import { tracked } from '@glimmer/tracking';
 import { PreferenceKey } from 'pep/constants/preferences';
+import { SearchFacetId } from 'pep/constants/search';
+import { buildSearchQueryParams } from 'pep/utils/search';
+import { restartableTask } from 'ember-concurrency-decorators';
+import DS from 'ember-data';
+import { taskFor } from 'ember-concurrency-ts';
 
 interface PageSidebarWidgetsFavoritesArgs extends PageSidebarWidgetArgs {}
 
 export default class PageSidebarWidgetsFavorites extends Component<PageSidebarWidgetsFavoritesArgs> {
+    @service store!: DS.Store;
     @service currentUser!: CurrentUserService;
+
     @tracked results?: Document[];
 
     get isOpen() {
@@ -25,8 +32,20 @@ export default class PageSidebarWidgetsFavorites extends Component<PageSidebarWi
      *
      * @memberof PageSidebarWidgetsFavorites
      */
-    loadFromUserPreferences() {
-        this.results = this.currentUser.getDocuments(PreferenceKey.FAVORITES);
+    @restartableTask
+    *loadFromUserPreferences() {
+        const ids = this.currentUser.getDocuments(PreferenceKey.FAVORITES);
+        if (ids.length) {
+            const queryItems = ids.map((id) => {
+                return {
+                    id: SearchFacetId.ART_ID,
+                    value: id
+                };
+            });
+            const params = buildSearchQueryParams('', [], false, queryItems);
+            const results = yield this.store.query('document', params);
+            this.results = results.toArray();
+        }
     }
 
     /**
@@ -36,7 +55,7 @@ export default class PageSidebarWidgetsFavorites extends Component<PageSidebarWi
      */
     @action
     onElementChange() {
-        this.loadFromUserPreferences();
+        taskFor(this.loadFromUserPreferences).perform();
     }
 
     /**
@@ -47,6 +66,6 @@ export default class PageSidebarWidgetsFavorites extends Component<PageSidebarWi
      */
     @action
     removeFavorite(document: Document) {
-        this.currentUser.removeDocument(PreferenceKey.FAVORITES, document);
+        this.currentUser.removeDocument(PreferenceKey.FAVORITES, document.id);
     }
 }

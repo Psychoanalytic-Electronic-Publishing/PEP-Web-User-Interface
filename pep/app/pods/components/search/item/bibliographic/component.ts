@@ -22,9 +22,10 @@ export default class SearchItemBibliographic extends Component<SearchItemBibliog
      * @readonly
      * @memberof SearchItem
      */
-    @computed('currentUser.preferences', 'args.item')
+    @computed('currentUser.preferences', 'args.item.id')
     get favorited() {
-        return this.currentUser.hasDocument(PreferenceKey.FAVORITES, this.args.item);
+        const isInFavorites = this.currentUser.hasDocument(PreferenceKey.FAVORITES, this.args.item.id);
+        return isInFavorites;
     }
 
     /**
@@ -34,9 +35,9 @@ export default class SearchItemBibliographic extends Component<SearchItemBibliog
      * @readonly
      * @memberof SearchItem
      */
-    @computed('currentUser.preferences', 'args.item')
+    @computed('currentUser.preferences', 'args.item.id')
     get readLater() {
-        return this.currentUser.hasDocument(PreferenceKey.READ_LATER, this.args.item);
+        return this.currentUser.hasDocument(PreferenceKey.READ_LATER, this.args.item.id);
     }
 
     /**
@@ -71,10 +72,10 @@ export default class SearchItemBibliographic extends Component<SearchItemBibliog
      * @memberof SearchItem
      */
     toggleDocument(key: PreferenceDocumentsKey, document: Document) {
-        if (this.currentUser.hasDocument(key, document)) {
-            this.currentUser.removeDocument(key, document);
+        if (this.currentUser.hasDocument(key, document.id)) {
+            this.currentUser.removeDocument(key, document.id);
         } else {
-            this.currentUser.addDocument(key, document);
+            this.currentUser.addDocument(key, document.id);
         }
     }
 }

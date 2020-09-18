@@ -7,11 +7,18 @@ import { action } from '@ember/object';
 import Document from 'pep/pods/document/model';
 import { tracked } from '@glimmer/tracking';
 import { PreferenceKey } from 'pep/constants/preferences';
+import { restartableTask } from 'ember-concurrency-decorators';
+import { buildSearchQueryParams } from 'pep/utils/search';
+import { SearchFacetId } from 'pep/constants/search';
+import DS from 'ember-data';
+import { taskFor } from 'ember-concurrency-ts';
 
 interface PageSidebarWidgetsReadLaterArgs extends PageSidebarWidgetArgs {}
 
 export default class PageSidebarWidgetsReadLater extends Component<PageSidebarWidgetsReadLaterArgs> {
     @service currentUser!: CurrentUserService;
+    @service store!: DS.Store;
+
     @tracked results?: Document[];
 
     get isOpen() {
@@ -25,8 +32,20 @@ export default class PageSidebarWidgetsReadLater extends Component<PageSidebarWi
      *
      * @memberof PageSidebarWidgetsReadLater
      */
-    loadFromUserPreferences() {
-        this.results = this.currentUser.getDocuments(PreferenceKey.READ_LATER);
+    @restartableTask
+    *loadFromUserPreferences() {
+        const ids = this.currentUser.getDocuments(PreferenceKey.READ_LATER);
+        if (ids.length) {
+            const queryItems = ids.map((id) => {
+                return {
+                    id: SearchFacetId.ART_ID,
+                    value: id
+                };
+            });
+            const params = buildSearchQueryParams('', [], false, queryItems);
+            const results = yield this.store.query('document', params);
+            this.results = results.toArray();
+        }
     }
 
     /**
@@ -34,7 +53,7 @@ export default class PageSidebarWidgetsReadLater extends Component<PageSidebarWi
      */
     @action
     onElementChange() {
-        this.loadFromUserPreferences();
+        taskFor(this.loadFromUserPreferences).perform();
     }
 
     /**
@@ -45,6 +64,6 @@ export default class PageSidebarWidgetsReadLater extends Component<PageSidebarWi
      */
     @action
     removeReadLaterDocument(document: Document) {
-        this.currentUser.removeDocument(PreferenceKey.READ_LATER, document);
+        this.currentUser.removeDocument(PreferenceKey.READ_LATER, document.id);
     }
 }

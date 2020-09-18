@@ -302,16 +302,18 @@
                 "title": "Expert picks"
             },
             "favorites": {
-                "title": "Favorites"
+                "title": "Favorites",
+                "noResults": "You don't have any favorites. Add documents that you frequently view to your favorites for quick access"
             },
             "glossaryTerms": {
                 "title": "Glossary terms",
                 "view": "View complete glossary",
-                "empty": "No results found"
+                "noResults": "You must perform a search or view a document to see the glossary terms"
             },
             "moreLikeThese": {
                 "title": "More like these",
-                "confidence": "Similarity Confidence: {number}"
+                "confidence": "Similarity Confidence: {number}",
+                "noResults": "You must view a document to see the similar documents"
             },
             "mostCited": {
                 "title": "Most cited"
@@ -325,13 +327,15 @@
             "publisherInfo": {
                 "title": "Publisher Info",
                 "view": "View information for {publisher}",
-                "empty": "No results found"
+                "noResults": "You must view a document to see the documents publisher information"
             },
             "readLater": {
-                "title": "Read later"
+                "title": "Read later",
+                "noResults": "You don't have any documents saved for later. Add documents that you want to view for quick access"
             },
             "relatedDocuments": {
-                "title": "Related Documents"
+                "title": "Related Documents",
+                "noResults": "You must view a document to see the documents related to it"
             },
             "relevantSearches": {
                 "title": "Relevant searches"
