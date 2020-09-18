@@ -38,8 +38,6 @@ export default class Application extends Controller {
     @tracked viewedCount: string = '';
     @tracked viewedPeriod: ViewPeriod = ViewPeriod.PAST_WEEK;
     @tracked searchTerms: SearchTermValue[] = [];
-    @tracked readonly rightSidebarWidgets = this.configuration.base.global.cards.right;
-    @tracked readonly leftSidebarWidgets = this.configuration.base.global.cards.left;
 
     /**
      * Submits the application/nav sidebar's search form and transitions the

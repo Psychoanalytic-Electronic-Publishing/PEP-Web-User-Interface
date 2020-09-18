@@ -29,12 +29,13 @@ export default class PageSidebarWidgetsFavorites extends Component<PageSidebarWi
 
     /**
      * Load the documents that have been favorited by the user from local storage
+     * TODO: We need to be smarter about this and try to pull from cache
      *
      * @memberof PageSidebarWidgetsFavorites
      */
     @restartableTask
     *loadFromUserPreferences() {
-        const ids = this.currentUser.getDocuments(PreferenceKey.FAVORITES);
+        const ids = this.currentUser.getPreferenceDocuments(PreferenceKey.FAVORITES);
         if (ids.length) {
             const queryItems = ids.map((id) => {
                 return {
@@ -45,11 +46,15 @@ export default class PageSidebarWidgetsFavorites extends Component<PageSidebarWi
             const params = buildSearchQueryParams('', [], false, queryItems);
             const results = yield this.store.query('document', params);
             this.results = results.toArray();
+        } else {
+            this.results = [];
         }
     }
 
     /**
      * Load the widget results on render or update
+     * TODO: This updates when the user changes their theme, or any change to the preferences object
+     * since its immutable. We should eventually look at how to improve that
      *
      * @memberof PageSidebarWidgetsFavorites
      */
@@ -66,6 +71,6 @@ export default class PageSidebarWidgetsFavorites extends Component<PageSidebarWi
      */
     @action
     removeFavorite(document: Document) {
-        this.currentUser.removeDocument(PreferenceKey.FAVORITES, document.id);
+        this.currentUser.removePreferenceDocument(PreferenceKey.FAVORITES, document.id);
     }
 }

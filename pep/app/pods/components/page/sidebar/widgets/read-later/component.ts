@@ -34,7 +34,7 @@ export default class PageSidebarWidgetsReadLater extends Component<PageSidebarWi
      */
     @restartableTask
     *loadFromUserPreferences() {
-        const ids = this.currentUser.getDocuments(PreferenceKey.READ_LATER);
+        const ids = this.currentUser.getPreferenceDocuments(PreferenceKey.READ_LATER);
         if (ids.length) {
             const queryItems = ids.map((id) => {
                 return {
@@ -45,6 +45,8 @@ export default class PageSidebarWidgetsReadLater extends Component<PageSidebarWi
             const params = buildSearchQueryParams('', [], false, queryItems);
             const results = yield this.store.query('document', params);
             this.results = results.toArray();
+        } else {
+            this.results = [];
         }
     }
 
@@ -64,6 +66,6 @@ export default class PageSidebarWidgetsReadLater extends Component<PageSidebarWi
      */
     @action
     removeReadLaterDocument(document: Document) {
-        this.currentUser.removeDocument(PreferenceKey.READ_LATER, document.id);
+        this.currentUser.removePreferenceDocument(PreferenceKey.READ_LATER, document.id);
     }
 }

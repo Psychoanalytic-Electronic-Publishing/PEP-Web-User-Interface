@@ -9,5 +9,8 @@ interface PageSidebarLeftContentArgs {
 
 export default class PageSidebarLeftContent extends Component<PageSidebarLeftContentArgs> {
     @service configuration!: ConfigurationService;
-    @tracked leftSidebarWidgets = this.configuration.base.global.cards.left;
+
+    get leftSidebarWidgets() {
+        return this.configuration.base.global.cards.left;
+    }
 }

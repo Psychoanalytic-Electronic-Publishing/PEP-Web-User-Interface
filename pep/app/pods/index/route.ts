@@ -15,7 +15,8 @@ export default class Index extends Route {
      * Returns the expert pick of the day abstract
      */
     model() {
-        return this.store.findRecord('abstract', this.configuration.base.home.expertPicks[0].articleId);
+        const expertPicks = this.configuration.base.home.expertPicks;
+        return this.store.findRecord('abstract', expertPicks[expertPicks.length - 1].articleId);
     }
 
     /**

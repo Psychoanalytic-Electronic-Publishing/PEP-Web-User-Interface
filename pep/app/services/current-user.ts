@@ -215,7 +215,7 @@ export default class CurrentUserService extends Service {
      * @param {Document} document
      * @memberof CurrentUserService
      */
-    addDocument(key: PreferenceDocumentsKey, documentId: string) {
+    addPreferenceDocument(key: PreferenceDocumentsKey, documentId: string) {
         const prefs = this.loadLocalStoragePrefs();
         const currentDocs = prefs[key] ?? [];
         if (!currentDocs?.includes(documentId)) {
@@ -234,7 +234,7 @@ export default class CurrentUserService extends Service {
      * @returns {boolean}
      * @memberof CurrentUserService
      */
-    hasDocument(key: PreferenceDocumentsKey, documentId: string): boolean {
+    hasPreferenceDocument(key: PreferenceDocumentsKey, documentId: string): boolean {
         const prefs = this.loadLocalStoragePrefs();
         const currentDocs = prefs[key] ?? [];
         return !!currentDocs?.includes(documentId);
@@ -247,7 +247,7 @@ export default class CurrentUserService extends Service {
      * @param {Document} document
      * @memberof CurrentUserService
      */
-    removeDocument(key: PreferenceDocumentsKey, documentId: string) {
+    removePreferenceDocument(key: PreferenceDocumentsKey, documentId: string) {
         const prefs = this.loadLocalStoragePrefs();
         const currentDocs = prefs[key];
         const index = currentDocs?.findIndex((idToFind) => idToFind === documentId);
@@ -266,7 +266,7 @@ export default class CurrentUserService extends Service {
      * @returns {Document[]}
      * @memberof CurrentUserService
      */
-    getDocuments(key: PreferenceDocumentsKey): string[] {
+    getPreferenceDocuments(key: PreferenceDocumentsKey): string[] {
         const prefs = this.loadLocalStoragePrefs();
         return prefs[key] ?? [];
     }

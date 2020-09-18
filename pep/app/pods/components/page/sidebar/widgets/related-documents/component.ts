@@ -60,7 +60,7 @@ export default class PageSidebarWidgetsRelatedDocuments extends Component<PageSi
     }
 
     @action
-    onElementChange() {
+    onDataUpdate() {
         if (this.data?.relatedrx) {
             taskFor(this.loadResults).perform(this.data?.relatedrx);
         } else {

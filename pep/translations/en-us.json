@@ -312,7 +312,7 @@
             },
             "moreLikeThese": {
                 "title": "More like these",
-                "confidence": "Similarity Confidence: {number}",
+                "confidence": "Similarity Confidence: {number}%",
                 "noResults": "You must view a document to see the similar documents"
             },
             "mostCited": {
@@ -335,7 +335,7 @@
             },
             "relatedDocuments": {
                 "title": "Related Documents",
-                "noResults": "You must view a document to see the documents related to it"
+                "noResults": "You must view a document to see the documents related to it. If you are already viewing one, this means no results have been found"
             },
             "relevantSearches": {
                 "title": "Relevant searches"

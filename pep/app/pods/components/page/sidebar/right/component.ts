@@ -9,5 +9,8 @@ interface PageSidebarRightArgs {
 
 export default class PageSidebarRight extends Component<PageSidebarRightArgs> {
     @service configuration!: ConfigurationService;
-    @tracked readonly rightSidebarWidgets = this.configuration.base.global.cards.right;
+
+    get rightSidebarWidgets() {
+        return this.configuration.base.global.cards.right;
+    }
 }
