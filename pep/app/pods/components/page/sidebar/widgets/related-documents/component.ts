@@ -37,11 +37,11 @@ export default class PageSidebarWidgetsRelatedDocuments extends Component<PageSi
      * Load the widget results data
      */
     @restartableTask
-    *loadResults() {
+    *loadResults(relatedrx: string) {
         const params = buildSearchQueryParams('', [], false, [
             {
                 id: SearchFacetId.ART_QUAL,
-                value: this.data?.relatedrx!
+                value: relatedrx
             }
         ]);
         const results = yield this.store.query('document', params);
@@ -55,14 +55,14 @@ export default class PageSidebarWidgetsRelatedDocuments extends Component<PageSi
     @dontRunInFastboot
     onElementInsert() {
         if (this.data?.relatedrx) {
-            taskFor(this.loadResults).perform();
+            taskFor(this.loadResults).perform(this.data?.relatedrx);
         }
     }
 
     @action
     onElementChange() {
         if (this.data?.relatedrx) {
-            taskFor(this.loadResults).perform();
+            taskFor(this.loadResults).perform(this.data?.relatedrx);
         } else {
             this.results = [];
         }

@@ -7,8 +7,8 @@
 as |Panel|>
     <Panel.header @title={{t "relatedInfo.widgets.videoPreview.title"}} />
     <Panel.body>
-        <div class="embed-responsive embed-responsive-{{this.configuration.base.global.video.aspectRatio}}">
-            {{html-safe this.configuration.base.global.video.code}}
+        <div class="embed-responsive embed-responsive-{{this.configuration.base.global.cards.videoPreview.aspectRatio}}">
+            {{html-safe this.configuration.base.global.cards.videoPreview.code}}
         </div>
     </Panel.body>
 </CollapsiblePanel>

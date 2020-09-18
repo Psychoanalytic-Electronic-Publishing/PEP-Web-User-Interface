@@ -6,22 +6,33 @@ import { WIDGET } from 'pep/constants/sidebar';
 import DS from 'ember-data';
 import Modal from '@gavant/ember-modals/services/modal';
 import { htmlSafe } from '@ember/string';
+import { shuffle } from 'pep/utils/array';
+import LoadingBarService from 'pep/services/loading-bar';
 
 interface PageSidebarWidgetsGlossaryTermsArgs extends PageSidebarWidgetArgs {}
 
 export default class PageSidebarWidgetsGlossaryTerms extends Component<PageSidebarWidgetsGlossaryTermsArgs> {
+    @service loadingBar!: LoadingBarService;
     @service store!: DS.Store;
     @service modal!: Modal;
 
     smallestFontSize = 0.5;
     fontMultiplier = 2;
 
+    /**
+     * This gets the data from the passed in data object and transforms it to the glossary terms
+     *
+     * @readonly
+     * @memberof PageSidebarWidgetsGlossaryTerms
+     */
     get data() {
         const data = this.args.data[this.widget] ?? {};
+        //convert from an object with values to an array with label and values
         const glossaryGroupTerms = Object.entries(data).map((entry) => ({
             label: entry[0],
             count: entry[1] as number
         }));
+        //find the max and min of the array
         const { max, min } = glossaryGroupTerms.reduce(
             (prev, next) => {
                 prev.min = Math.min(prev.min, next.count);
@@ -34,6 +45,8 @@ export default class PageSidebarWidgetsGlossaryTerms extends Component<PageSideb
         const clamp = (a: number, min = 0, max = 1) => Math.min(max, Math.max(min, a));
         const inverseLinearInterpolation = (x: number, y: number, a: number) =>
             x !== y ? clamp((a - x) / (y - x)) : 1;
+        // build the mapped data by performing inverse linear interpolation to find the font size
+        // using the min and max calculated before
         const mappedData = glossaryGroupTerms.map((item) => {
             return {
                 label: item.label,
@@ -43,7 +56,7 @@ export default class PageSidebarWidgetsGlossaryTerms extends Component<PageSideb
                 )
             };
         });
-        return this.shuffle(mappedData);
+        return shuffle(mappedData);
     }
 
     get isOpen() {
@@ -53,21 +66,6 @@ export default class PageSidebarWidgetsGlossaryTerms extends Component<PageSideb
     widget = WIDGET.GLOSSARY_TERMS;
 
     /**
-     * Shuffle items in an array randomly
-     *
-     * @param {any[]} array
-     * @returns {array}
-     * @memberof PageSidebarWidgetsGlossaryTerms
-     */
-    shuffle(array: any[]) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-        return array;
-    }
-
-    /**
      * Open the glossary modal to view the term definition and information
      *
      * @param {string} term
@@ -75,8 +73,8 @@ export default class PageSidebarWidgetsGlossaryTerms extends Component<PageSideb
      */
     @action
     async viewGlossaryTerm(term: string) {
-        console.log('test');
         try {
+            this.loadingBar.show();
             const results = await this.store.query('glossary-term', {
                 termidtype: 'Group',
                 termIdentifier: term
@@ -86,7 +84,9 @@ export default class PageSidebarWidgetsGlossaryTerms extends Component<PageSideb
                 term
             });
         } catch (error) {
-            console.log(error);
+            throw error;
+        } finally {
+            this.loadingBar.hide();
         }
     }
 }

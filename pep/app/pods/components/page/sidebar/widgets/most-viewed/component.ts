@@ -11,6 +11,7 @@ import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/
 import { WIDGET } from 'pep/constants/sidebar';
 import { taskFor } from 'ember-concurrency-ts';
 import { restartableTask } from 'ember-concurrency-decorators';
+import ConfigurationService from 'pep/services/configuration';
 
 interface PageSidebarWidgetsMostViewedArgs extends PageSidebarWidgetArgs {}
 
@@ -18,6 +19,8 @@ export default class PageSidebarWidgetsMostViewed extends Component<PageSidebarW
     @service store!: DS.Store;
     @service router!: Router;
     @service fastboot!: FastbootService;
+    @service configuration!: ConfigurationService;
+
     @tracked isLoading = false;
     @tracked results: Document[] = [];
 
@@ -35,8 +38,7 @@ export default class PageSidebarWidgetsMostViewed extends Component<PageSidebarW
         const results = yield this.store.query('document', {
             queryType: 'MostViewed',
             viewperiod: 2,
-            morethan: 10,
-            limit: 10
+            limit: this.configuration.base.global.cards.mostViewed.limit
         });
         this.results = results.toArray();
     }

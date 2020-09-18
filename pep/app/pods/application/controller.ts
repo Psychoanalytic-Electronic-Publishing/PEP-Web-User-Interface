@@ -9,7 +9,6 @@ import Modal from '@gavant/ember-modals/services/modal';
 import { timeout } from 'ember-concurrency';
 import { restartableTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
-
 import { SEARCH_TYPE_EVERYWHERE, SearchTermValue, ViewPeriod, SEARCH_DEFAULT_VIEW_PERIOD } from 'pep/constants/search';
 import AjaxService from 'pep/services/ajax';
 import LoadingBarService from 'pep/services/loading-bar';
@@ -39,9 +38,8 @@ export default class Application extends Controller {
     @tracked viewedCount: string = '';
     @tracked viewedPeriod: ViewPeriod = ViewPeriod.PAST_WEEK;
     @tracked searchTerms: SearchTermValue[] = [];
-
-    @tracked rightSidebarWidgets = this.configuration.base.global.cards.right;
-    @tracked leftSidebarWidgets = this.configuration.base.global.cards.left;
+    @tracked readonly rightSidebarWidgets = this.configuration.base.global.cards.right;
+    @tracked readonly leftSidebarWidgets = this.configuration.base.global.cards.left;
 
     /**
      * Submits the application/nav sidebar's search form and transitions the

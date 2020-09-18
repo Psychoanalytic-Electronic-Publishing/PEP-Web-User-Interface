@@ -2,6 +2,19 @@
     <div>
         <a href="" {{on "click" (fn @openResultPreview @item)}}>
             {{@item.documentRef}}
+            {{#if @item.relatedrx}}
+                <span class="mr-2">
+                    <FaIcon @icon="books" class="p-0 "/>
+                    <EmberTooltip
+                        @text={{t "search.item.relatedDocuments"}}
+                        @popperContainer="body"
+                        @side="left"
+                        @spacing={{5}}
+                        @effect="slide"
+                        @innerClass=""
+                    />
+                </span>
+            {{/if}}
         </a>
         {{#if @item.kwicList}}
             <ul class="font-size-secondary">
@@ -12,33 +25,22 @@
         {{/if}}
     </div>
     <div class="pl-2 d-flex justify-content-end align-items-start">
-        {{#if @item.relatedrx}}
-            <span class="mr-2">
-                <FaIcon @icon="books" class="p-0 "/>
-                <EmberTooltip
-                    @text={{t "search.item.relatedDocuments"}}
-                    @popperContainer="body"
-                    @side="left"
-                    @spacing={{5}}
-                    @effect="slide"
-                    @innerClass=""
-                />
-            </span>
-        {{/if}}
-        <Button
+        <Button::WithTooltip
             @action={{fn this.toggleFavorite @item}}
             @iconOnly={{true}}
             @iconPrefix={{if this.favorited 'fas' 'fal'}}
             @icon="heart"
             @type="link"
+            @tooltip={{t (if this.favorited "search.item.removeFromFavorites" "search.item.addToFavorites")}}
             class="p-0"
         />
-        <Button
+        <Button::WithTooltip
             @action={{fn this.toggleReadLater @item}}
             @iconOnly={{true}}
             @iconPrefix={{if this.readLater 'fas' 'fal'}}
             @icon="bookmark"
             @type="link"
+            @tooltip={{t (if this.readLater "search.item.removeFromReadLater" "search.item.addToReadLater")}}
             class="p-0 ml-2"
         />
     </div>

@@ -116,7 +116,7 @@
                                     @lastReached={{this.paginator.loadMoreModels}}
                                     as |result|
                                 >
-                                    <Search::Item @item={{result}} @openResultPreview={{this.openResultPreview}}/>
+                                    <Search::Item::Bibliographic @item={{result}} @openResultPreview={{this.openResultPreview}}/>
                                 </VerticalCollection>
                                 {{#if this.paginator.isLoadingModels}}
                                     <Loading::Spinner @options={{hash text=(t "common.loadingResults")}} />

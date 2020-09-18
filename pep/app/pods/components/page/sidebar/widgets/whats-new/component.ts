@@ -36,7 +36,7 @@ export default class PageSidebarWidgetsWhatsNew extends Component<PageSidebarWid
     *loadResults() {
         const results = yield this.store.query('whats-new', {
             days_back: 30,
-            limit: this.configuration.base.global.cards.whatsNewSize
+            limit: this.configuration.base.global.cards.whatsNew.limit
         });
         this.results = results.toArray();
     }

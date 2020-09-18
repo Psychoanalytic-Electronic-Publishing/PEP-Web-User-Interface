@@ -60,9 +60,7 @@ export default class PageSidebarWidgetsMoreLikeThese extends Component<PageSideb
         if (this.data?.id) {
             taskFor(this.loadSimilarFromDocument).perform();
         } else {
-            this.results = {
-                similarDocuments: [] as Document[]
-            } as SimilarityMatch;
+            this.results = undefined;
         }
     }
 }

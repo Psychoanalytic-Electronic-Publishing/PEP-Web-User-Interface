@@ -73,7 +73,6 @@ export default class Search extends Controller {
     @tracked resultsMeta: SearchMetadata | null = null;
 
     @tracked previewedResult: Document | null = null;
-    @tracked documentWithSimilar?: Document;
     @tracked previewMode: SearchPreviewMode = 'minimized';
     @tracked containerMaxHeight = 0;
 

@@ -68,7 +68,11 @@
             "year": "Year"
         },
         "item": {
-            "relatedDocuments": "This document has related documents"
+            "relatedDocuments": "This document has related documents",
+            "addToFavorites": "Add to favorites",
+            "removeFromFavorites": "Remove from favorites",
+            "addToReadLater": "Add to read later",
+            "removeFromReadLater": "Remove from read later"
         },
         "view": {
             "label": "View:",
@@ -392,7 +396,8 @@
         "title": "Publisher Information"
     },
     "glossary": {
-        "title": "Glossary"
+        "title": "Glossary",
+        "searchForTerm": "Search for this term"
     },
     "login": {
         "title": "Login",

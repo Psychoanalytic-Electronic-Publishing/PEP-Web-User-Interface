@@ -5,14 +5,13 @@ import { PreferenceDocumentsKey, PreferenceKey } from 'pep/constants/preferences
 import CurrentUserService from 'pep/services/current-user';
 import Document from 'pep/pods/document/model';
 import SidebarService from 'pep/services/sidebar';
-import FastbootService from 'ember-cli-fastboot/services/fastboot';
 
-interface SearchItemArgs {
+interface SearchItemBibliographicArgs {
     item: Document;
     openResultPreview: () => void;
 }
 
-export default class SearchItem extends Component<SearchItemArgs> {
+export default class SearchItemBibliographic extends Component<SearchItemBibliographicArgs> {
     @service currentUser!: CurrentUserService;
     @service sidebar!: SidebarService;
 

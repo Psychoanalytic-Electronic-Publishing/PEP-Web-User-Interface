@@ -10,14 +10,17 @@ module('Integration | Component | page/sidebar/widgets/related-documents', funct
         // Set any properties with this.set('myProperty', 'value');
         // Handle any actions with this.set('myAction', function(val) { ... });
         this.set('openWidgets', []);
+        this.set('data', {});
 
-        await render(hbs`<Page::Sidebar::Widgets::RelatedDocuments @openWidgets{{this.openWidgets}} />`);
+        await render(
+            hbs`<Page::Sidebar::Widgets::RelatedDocuments @openWidgets{{this.openWidgets}} @data={{this.data}} />`
+        );
 
         assert.equal(this.element.textContent?.trim(), 'Related Documents');
 
         // Template block usage:
         await render(hbs`
-        <Page::Sidebar::Widgets::RelatedDocuments @openWidgets{{this.openWidgets}}>
+        <Page::Sidebar::Widgets::RelatedDocuments @openWidgets{{this.openWidgets}} @data={{this.data}}>
         template block text
         </Page::Sidebar::Widgets::RelatedDocuments>
     `);

@@ -59,7 +59,7 @@ export default class SidebarService extends Service {
     }
 
     /**
-     *
+     * Update the data thats sent to the left sidebar and right sidebar widgets
      *
      * @param {WidgetData} data
      * @memberof SidebarService

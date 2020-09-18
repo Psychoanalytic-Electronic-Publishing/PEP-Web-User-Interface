@@ -34,13 +34,21 @@ export interface Publisher {
 export interface BaseConfiguration {
     global: {
         cards: {
-            whatsNewSize: number;
+            whatsNew: {
+                limit: number;
+            };
+            mostCited: {
+                limit: number;
+            };
+            mostViewed: {
+                limit: number;
+            };
+            videoPreview: {
+                code: string;
+                aspectRatio: AspectRatio;
+            };
             left: WidgetConfiguration[];
             right: WidgetConfiguration[];
-        };
-        video: {
-            code: string;
-            aspectRatio: AspectRatio;
         };
     };
     home: {
@@ -130,7 +138,20 @@ export const CONTENT_CONFIG_NAME = 'pep-content';
 export const DEFAULT_BASE_CONFIGURATION: BaseConfiguration = {
     global: {
         cards: {
-            whatsNewSize: 10,
+            whatsNew: {
+                limit: 10
+            },
+            mostCited: {
+                limit: 10
+            },
+            mostViewed: {
+                limit: 10
+            },
+            videoPreview: {
+                aspectRatio: AspectRatio.SIXTEEN_BY_NINE,
+                code:
+                    '<iframe src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2Fpepweb%2Fvideos%2F1085606578152566%2F&show_text=0" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allowFullScreen="true"></iframe>'
+            },
             left: [{ widget: WIDGET.VIDEO_PREVIEW, open: true }],
             right: [
                 { widget: WIDGET.WHATS_NEW, open: true },
@@ -144,11 +165,6 @@ export const DEFAULT_BASE_CONFIGURATION: BaseConfiguration = {
                 { widget: WIDGET.FAVORITES, open: false },
                 { widget: WIDGET.PUBLISHER_INFO, open: false }
             ]
-        },
-        video: {
-            aspectRatio: AspectRatio.SIXTEEN_BY_NINE,
-            code:
-                '<iframe src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2Fpepweb%2Fvideos%2F1085606578152566%2F&show_text=0" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allowFullScreen="true"></iframe>'
         }
     },
     home: {
