@@ -157,17 +157,19 @@ export default class DragBar extends Component<DragBarArgs> {
     @action
     onDragMove(event: MouseEvent | TouchEvent) {
         const eventOffset = getEventOffset(event);
-        //TODO use reverse arg
         if (this.orientation === 'horizontal') {
             const minY = this.minClientY;
             const maxY = document.body.offsetHeight - this.barThickness - this.maxClientY;
             const yOffset = Math.max(minY, Math.min(maxY, eventOffset.top));
-            this.dragBarPosition = yOffset - (this.dragBarOffset?.top ?? 0);
+            const top = this.dragBarOffset?.top ?? 0;
+            this.dragBarPosition = yOffset - top;
         } else {
-            const minX = this.minClientX;
-            const maxX = document.body.offsetWidth - this.barThickness - this.maxClientX;
+            const docW = document.body.offsetWidth;
+            const minX = this.reversed ? docW - this.maxClientX : this.minClientX;
+            const maxX = this.reversed ? docW - this.minClientX : this.maxClientX;
             const xOffset = Math.max(minX, Math.min(maxX, eventOffset.left));
-            this.dragBarPosition = xOffset - (this.dragBarOffset?.left ?? 0);
+            const left = this.dragBarOffset?.left ?? 0;
+            this.dragBarPosition = this.reversed ? xOffset - left : xOffset + this.barThickness;
         }
 
         this.args.onDragMove?.(this.dragBarPosition, event);
@@ -187,19 +189,21 @@ export default class DragBar extends Component<DragBarArgs> {
         const lastDragPos = this.dragBarPosition ?? 0;
         let endPosition;
 
-        //TODO use reverse arg
         if (this.orientation === 'horizontal') {
             const minY = this.minClientY;
             const maxY = document.body.offsetHeight - this.barThickness - this.maxClientY;
-            endPosition = eventOffset.top
-                ? Math.max(minY, Math.min(maxY, eventOffset.top)) - (this.dragBarOffset?.top ?? 0)
-                : lastDragPos;
+            const top = this.dragBarOffset?.top ?? 0;
+            const yOffset = Math.max(minY, Math.min(maxY, eventOffset.top));
+            const newDragPos = yOffset - top;
+            endPosition = eventOffset.top ? newDragPos : lastDragPos;
         } else {
-            const minX = this.minClientX;
-            const maxX = document.body.offsetWidth - this.barThickness - this.maxClientX;
-            endPosition = eventOffset.left
-                ? Math.max(minX, Math.min(maxX, eventOffset.left)) - (this.dragBarOffset?.left ?? 0)
-                : lastDragPos;
+            const docW = document.body.offsetWidth;
+            const minX = this.reversed ? docW - this.maxClientX : this.minClientX;
+            const maxX = this.reversed ? docW - this.minClientX : this.maxClientX;
+            const left = this.dragBarOffset?.left ?? 0;
+            const xOffset = Math.max(minX, Math.min(maxX, eventOffset.left));
+            const newDragPos = this.reversed ? xOffset - left : xOffset + this.barThickness;
+            endPosition = eventOffset.left ? newDragPos : lastDragPos;
         }
 
         this.isDragging = false;

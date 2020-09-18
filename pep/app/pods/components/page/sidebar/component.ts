@@ -24,6 +24,7 @@ export default class PageSidebar extends Component<PageSidebarArgs> {
     @tracked windowWidth: number = 0;
     @tracked isResizing: boolean = false;
     startingResizeWidth: number = 0;
+    innerElement?: HTMLDivElement;
 
     get resizable() {
         return this.args.resizable ?? true;
@@ -62,11 +63,22 @@ export default class PageSidebar extends Component<PageSidebarArgs> {
     }
 
     get sidebarStyles() {
-        return this.resizedWidth ? htmlSafe(`width: ${this.resizedWidth}px;`) : null;
+        return this.resizedWidth && this.isOpen
+            ? htmlSafe(`width: ${this.resizedWidth + SIDEBAR_HANDLE_WIDTH}px;`)
+            : null;
     }
 
     get sidebarInnerStyles() {
-        return this.resizedWidth ? htmlSafe(`width: ${this.resizedWidth - SIDEBAR_HANDLE_WIDTH}px;`) : null;
+        return this.resizedWidth && this.isOpen ? htmlSafe(`width: ${this.resizedWidth}px;`) : null;
+    }
+
+    /**
+     * Store a reference to the sidebar inner element for resizing purposes
+     * @param {HTMLElemeHTMLDivElementnt} element
+     */
+    @action
+    onElementInsert(element: HTMLDivElement) {
+        this.innerElement = element;
     }
 
     /**
@@ -82,8 +94,7 @@ export default class PageSidebar extends Component<PageSidebarArgs> {
      */
     @action
     onDragStart() {
-        // TODO get the current width of the sidebar from its element
-        this.startingResizeWidth = 321;
+        this.startingResizeWidth = this.innerElement?.offsetWidth ?? 0;
         this.isResizing = true;
     }
 
@@ -92,7 +103,7 @@ export default class PageSidebar extends Component<PageSidebarArgs> {
      */
     @action
     onDragMove(position: number) {
-        this.resizedWidth = Math.max(this.minWidth, this.startingResizeWidth - position);
+        this.resizedWidth = this.isRight ? this.startingResizeWidth - position : position;
     }
 
     /**
@@ -101,7 +112,7 @@ export default class PageSidebar extends Component<PageSidebarArgs> {
      */
     @action
     onDragEnd(position: number) {
-        this.resizedWidth = Math.max(this.minWidth, this.startingResizeWidth - position);
+        this.resizedWidth = this.isRight ? this.startingResizeWidth - position : position;
         // TODO need to persist resize widths to sidebar service - so the width is preserved if the sidebars are re-rendered on another page
         this.startingResizeWidth = 0;
         next(this, () => (this.isResizing = false));

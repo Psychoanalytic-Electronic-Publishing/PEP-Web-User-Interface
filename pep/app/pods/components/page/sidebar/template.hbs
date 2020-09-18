@@ -6,11 +6,16 @@
     style={{this.sidebarStyles}}
     ...attributes
 >
-    <div class="sidebar-inner" style={{this.sidebarInnerStyles}}>
+    <div
+        class="sidebar-inner"
+        style={{this.sidebarInnerStyles}}
+        {{did-insert this.onElementInsert}}
+    >
         {{#if this.canResize}}
             <DragBar
                 @orientation="vertical"
                 @reversed={{this.isRight}}
+                @minClientX={{this.minWidth}}
                 @maxClientX={{this.maxWidth}}
                 @onDragStart={{this.onDragStart}}
                 @onDragMove={{this.onDragMove}}
