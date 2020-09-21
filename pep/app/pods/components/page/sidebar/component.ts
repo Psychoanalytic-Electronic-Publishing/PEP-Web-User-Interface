@@ -34,12 +34,14 @@ export default class PageSidebar extends Component<PageSidebarArgs> {
     }
 
     /**
-     * Sidebars default to a max width of 35% of the current window width
+     * Sidebars default to a max width of 35% of the current window width on desktop
+     * and 50% on tablets (as we only allow 1 sidebar open at a time on tablet)
      * @readonly
      * @returns {number}
      */
     get maxWidth() {
-        return this.args.maxWidth ?? Math.max(this.minWidth, this.windowWidth * 0.35);
+        const pct = this.fastbootMedia.isTablet ? 0.5 : 0.35;
+        return this.args.maxWidth ?? Math.max(this.minWidth, this.windowWidth * pct);
     }
 
     /**
