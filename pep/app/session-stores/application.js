@@ -1,5 +1,8 @@
 import CookieStore from 'ember-simple-auth/session-stores/cookie';
+import ENV from 'pep/config/environment';
 
 export default CookieStore.extend({
-    cookieExpirationTime: 2592000 //30 days
+    cookieDomain: ENV.cookieDomain,
+    cookieExpirationTime: 60 * 60 * 24 * 365, // 1 year
+    sameSite: ENV.cookieSameSite
 });

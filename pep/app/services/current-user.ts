@@ -4,7 +4,6 @@ import DS from 'ember-data';
 import { reject } from 'rsvp';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import CookiesService from 'ember-cookies/services/cookies';
-import merge from 'lodash.merge';
 
 import ENV from 'pep/config/environment';
 import User from 'pep/pods/user/model';
@@ -57,9 +56,7 @@ export default class CurrentUserService extends Service {
     async fetchUser(): Promise<User | void> {
         if (this.session.isAuthenticated) {
             const { SessionId } = this.session.data.authenticated;
-            const result = await this.store.query('user', { SessionId });
-            const users = result.toArray();
-            const user = users[0];
+            const user = await this.store.queryRecord('user', { SessionId });
             this.user = user;
             return user;
         }
@@ -77,7 +74,7 @@ export default class CurrentUserService extends Service {
         const userPrefs = this.user?.clientSettings ?? {};
         const cookiePrefs = this.loadCookiePrefs();
         const lsPrefs = this.loadLocalStoragePrefs();
-        const prefs = merge({}, DEFAULT_USER_PREFERENCES, lsPrefs, cookiePrefs, userPrefs) as UserPreferences;
+        const prefs = Object.assign({}, DEFAULT_USER_PREFERENCES, lsPrefs, cookiePrefs, userPrefs) as UserPreferences;
         this.preferences = prefs;
         return this.preferences;
     }
@@ -178,7 +175,12 @@ export default class CurrentUserService extends Service {
         // if the user is logged in, apply the new prefs locally, then save the user
         if (this.session.isAuthenticated && this.user) {
             const oldUserPrefs = this.user?.clientSettings ?? {};
-            const newUserPrefs = Object.assign({}, DEFAULT_USER_PREFERENCES, oldUserPrefs, prefValues);
+            const newUserPrefs = Object.assign(
+                {},
+                DEFAULT_USER_PREFERENCES,
+                oldUserPrefs,
+                prefValues
+            ) as UserPreferences;
             this.user.clientSettings = newUserPrefs;
             this.setup();
             await this.user.save();
