@@ -1,8 +1,10 @@
+import DS from 'ember-data';
 import { classify } from '@ember/string';
 import { pluralize } from 'ember-inflector';
 
 import ApplicationAdapter from 'pep/pods/application/adapter';
 import ENV from 'pep/config/environment';
+import { serializeQueryParams } from 'pep/utils/url';
 
 export default class UserAdapter extends ApplicationAdapter {
     host = ENV.authBaseUrl;
@@ -19,6 +21,20 @@ export default class UserAdapter extends ApplicationAdapter {
     pathForType<K extends string | number>(modelName: K) {
         const path = super.pathForType(modelName);
         return pluralize(classify(path));
+    }
+
+    /**
+     * Users are updated in PaDS by passing the User ID as a query param instead of a path segment
+     * PUT /PEPSecure/api/v1/Users/?UserId={string}
+     * @template K
+     * @param {string} id
+     * @param {K} modelName
+     * @param {DS.Snapshot<K>} snapshot
+     * @returns {string}
+     */
+    urlForUpdateRecord<K extends string | number>(id: string, modelName: K, snapshot: DS.Snapshot<K>) {
+        const url = super.urlForFindRecord(id, modelName, snapshot);
+        return url.replace(`/${id}`, `?${serializeQueryParams({ UserId: id })}`);
     }
 }
 

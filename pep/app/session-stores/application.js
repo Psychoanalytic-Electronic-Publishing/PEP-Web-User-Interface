@@ -3,6 +3,6 @@ import ENV from 'pep/config/environment';
 
 export default CookieStore.extend({
     cookieDomain: ENV.cookieDomain,
-    cookieExpirationTime: 60 * 60 * 24 * 365, //1 year
+    cookieExpirationTime: 60 * 60 * 24 * 365, // 1 year
     sameSite: ENV.cookieSameSite
 });

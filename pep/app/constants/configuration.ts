@@ -181,7 +181,7 @@ export const DEFAULT_CONTENT_CONFIGURATION: ContentConfiguration = {
                 everywhere: {
                     prompt: 'Terms or phrase',
                     help:
-                        'Search for words in the same paragraph, or phrases (surround words by quotes) of anywhere in the document, including abstracts and references. Surround phrases with quotes.'
+                        'Search for words in the same paragraph, or phrases of anywhere in the document, including abstracts and references. Surround phrases with quotes.'
                 },
                 author: {
                     prompt: "Author's name",
