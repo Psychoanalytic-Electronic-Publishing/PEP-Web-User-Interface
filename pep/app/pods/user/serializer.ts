@@ -1,10 +1,14 @@
 import DS from 'ember-data';
+import { inject as service } from '@ember/service';
 import { camelize, classify } from '@ember/string';
 import { pluralize } from 'ember-inflector';
 
 import ApplicationSerializerMixin from 'pep/mixins/application-serializer';
+import PepSessionService from 'pep/services/pep-session';
 
 export default class UserSerializer extends ApplicationSerializerMixin(DS.RESTSerializer) {
+    @service('pep-session') session!: PepSessionService;
+
     primaryKey = 'UserId';
 
     /**
@@ -58,6 +62,7 @@ export default class UserSerializer extends ApplicationSerializerMixin(DS.RESTSe
 
     /**
      * User payloads must be sent in the root JSON object
+     * and must include the currently logged in user's SessionId
      * @param {object} hash
      * @param {ModelWithName} typeClass
      * @param {DS.Snapshot<K>} snapshot
@@ -73,6 +78,10 @@ export default class UserSerializer extends ApplicationSerializerMixin(DS.RESTSe
         const root = this.payloadKeyFromModelName(typeClass.modelName);
         Object.keys(hash[root]).forEach((key) => (hash[key] = hash[root][key]));
         delete hash[root];
+
+        if (this.session.isAuthenticated) {
+            hash.SessionId = this.session.data.authenticated.SessionId;
+        }
     }
 }
 

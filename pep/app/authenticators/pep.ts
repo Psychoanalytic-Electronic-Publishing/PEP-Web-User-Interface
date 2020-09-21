@@ -6,6 +6,7 @@ import BaseAuthenticator from 'ember-simple-auth/authenticators/base';
 import AjaxService from 'pep/services/ajax';
 import ENV from 'pep/config/environment';
 import { PepSecureAuthenticatedData } from 'pep/api';
+import { serializeQueryParams } from 'pep/utils/url';
 
 // TODO: this is all likely to change a bit to account for authentication flow changes
 // i.e. using headers/instead of automatic cookie sending, session refreshing, etc
@@ -38,12 +39,10 @@ export default class PepAuthenticator extends BaseAuthenticator {
      * Invalidates the local session and logs the user out
      */
     invalidate(data: PepSecureAuthenticatedData) {
-        return this.ajax.request(`${ENV.authBaseUrl}/Users/Logout`, {
+        const params = serializeQueryParams({ SessionId: data.SessionId });
+        return this.ajax.request(`${ENV.authBaseUrl}/Users/Logout?${params}`, {
             method: 'POST',
-            headers: this.authenticationHeaders,
-            body: this.ajax.stringifyData({
-                SessionId: data.SessionId
-            })
+            headers: this.authenticationHeaders
         });
     }
 

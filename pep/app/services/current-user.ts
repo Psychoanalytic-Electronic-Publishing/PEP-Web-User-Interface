@@ -1,10 +1,10 @@
 import Service, { inject as service } from '@ember/service';
+import { assign } from '@ember/polyfills';
 import { tracked } from '@glimmer/tracking';
 import DS from 'ember-data';
 import { reject } from 'rsvp';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import CookiesService from 'ember-cookies/services/cookies';
-import merge from 'lodash.merge';
 
 import ENV from 'pep/config/environment';
 import PepSessionService from 'pep/services/pep-session';
@@ -74,7 +74,7 @@ export default class CurrentUserService extends Service {
         const userPrefs = this.user?.clientSettings ?? {};
         const cookiePrefs = this.loadCookiePrefs();
         const lsPrefs = this.loadLocalStoragePrefs();
-        const prefs = merge({}, DEFAULT_USER_PREFERENCES, lsPrefs, cookiePrefs, userPrefs) as UserPreferences;
+        const prefs = assign({}, DEFAULT_USER_PREFERENCES, lsPrefs, cookiePrefs, userPrefs) as UserPreferences;
         this.preferences = prefs;
         return this.preferences;
     }
@@ -175,7 +175,7 @@ export default class CurrentUserService extends Service {
         // if the user is logged in, apply the new prefs locally, then save the user
         if (this.session.isAuthenticated && this.user) {
             const oldUserPrefs = this.user?.clientSettings ?? {};
-            const newUserPrefs = merge({}, DEFAULT_USER_PREFERENCES, oldUserPrefs, prefValues);
+            const newUserPrefs = assign({}, DEFAULT_USER_PREFERENCES, oldUserPrefs, prefValues) as UserPreferences;
             this.user.clientSettings = newUserPrefs;
             this.setup();
             await this.user.save();
