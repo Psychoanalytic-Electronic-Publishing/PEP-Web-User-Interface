@@ -10,6 +10,9 @@ import Router from 'pep/router';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
 import { WIDGET } from 'pep/constants/sidebar';
+import { restartableTask } from 'ember-concurrency-decorators';
+import { taskFor } from 'ember-concurrency-ts';
+import ConfigurationService from 'pep/services/configuration';
 
 interface PageSidebarWidgetsMostCitedArgs extends PageSidebarWidgetArgs {}
 
@@ -17,6 +20,8 @@ export default class PageSidebarWidgetsMostCited extends Component<PageSidebarWi
     @service store!: DS.Store;
     @service router!: Router;
     @service fastboot!: FastbootService;
+    @service configuration!: ConfigurationService;
+
     @tracked isLoading = false;
     @tracked results: Document[] = [];
 
@@ -28,32 +33,23 @@ export default class PageSidebarWidgetsMostCited extends Component<PageSidebarWi
     /**
      * Load the widget results data
      */
-    @dontRunInFastboot
-    async loadResults() {
-        // TODO switch to ember-concurrency task (with TS-friendly decorators, etc)
-        // to remove manual `isLoading` state management etc
-        // @see https://jamescdavis.com/using-ember-concurrency-with-typescript/
-        try {
-            this.isLoading = true;
-            const results = await this.store.query('document', {
-                queryType: 'MostCited',
-                period: 'all',
-                morethan: 10,
-                limit: 10
-            });
-            this.results = results.toArray();
-            this.isLoading = false;
-        } catch (err) {
-            this.isLoading = false;
-        }
+    @restartableTask
+    *loadResults() {
+        const results = yield this.store.query('document', {
+            queryType: 'MostCited',
+            period: 'all',
+            limit: this.configuration.base.global.cards.mostCited.limit
+        });
+        this.results = results.toArray();
     }
 
     /**
      * Load the widget results on render
      */
     @action
+    @dontRunInFastboot
     onElementInsert() {
-        this.loadResults();
+        taskFor(this.loadResults).perform();
     }
 
     /**

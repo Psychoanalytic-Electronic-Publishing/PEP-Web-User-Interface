@@ -29,6 +29,7 @@ import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
 import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
 import { SearchMetadata } from 'pep/api';
+import { WIDGET } from 'pep/constants/sidebar';
 import { SearchPreviewMode } from 'pep/pods/components/search/preview/component';
 
 export default class Search extends Controller {
@@ -74,6 +75,9 @@ export default class Search extends Controller {
     @tracked previewedResult: Document | null = null;
     @tracked previewMode: SearchPreviewMode = 'minimized';
     @tracked containerMaxHeight = 0;
+
+    readLaterKey = PreferenceKey.READ_LATER;
+    favoritesKey = PreferenceKey.FAVORITES;
 
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
@@ -404,6 +408,12 @@ export default class Search extends Controller {
                 this.resultsMeta = null;
             }
 
+            this.sidebar.update({
+                [WIDGET.GLOSSARY_TERMS]: this.resultsMeta?.facetCounts.facet_fields.glossary_group_terms,
+                [WIDGET.RELATED_DOCUMENTS]: undefined,
+                [WIDGET.MORE_LIKE_THESE]: undefined
+            });
+
             return this.resultsMeta;
         } catch (errors) {
             if (!didCancel(errors)) {
@@ -440,6 +450,11 @@ export default class Search extends Controller {
     openResultPreview(result: Document, event: Event) {
         event.preventDefault();
         this.previewedResult = result;
+
+        this.sidebar.update({
+            [WIDGET.MORE_LIKE_THESE]: result,
+            [WIDGET.RELATED_DOCUMENTS]: result
+        });
     }
 
     /**

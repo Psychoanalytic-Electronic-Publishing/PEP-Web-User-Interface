@@ -1,5 +1,5 @@
-<Page::Sidebar @side="left" as |Sidebar|>
-    <Sidebar.content @scrollableNamespace="sidebar-left">
+<Page::Sidebar::Left as |Sidebar|>
+    <Sidebar.content>
         <div class="bg-white border-divider-b p-3">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h4 class="mb-0">
@@ -90,5 +90,4 @@
         </div>
         <Page::Sidebar::Widgets::Accolades />
     </Sidebar.content>
-</Page::Sidebar>
-
+</Page::Sidebar::Left>

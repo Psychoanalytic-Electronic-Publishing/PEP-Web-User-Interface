@@ -5,11 +5,7 @@
     ...attributes
 >
     <div class="sidebar-inner">
-        {{yield
-            (hash
-                content=(component 'page/sidebar/content')
-            )
-        }}
+        {{yield}}
     </div>
     <button type="button" class="sidebar-toggle-handle" {{on "click" this.toggle}}>
         <FaIcon @icon={{if

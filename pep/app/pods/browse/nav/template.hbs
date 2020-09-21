@@ -1,5 +1,5 @@
-<Page::Sidebar @side="left" as |Sidebar|>
-    <Sidebar.content @scrollableNamespace="sidebar-left">
+<Page::Sidebar::Left as |Sidebar|>
+    <Sidebar.content>
         <Search::Form
             @smartSearchTerm={{this.smartSearchTerm}}
             @searchTerms={{this.searchTerms}}
@@ -24,4 +24,4 @@
             {{!-- Browse UI here --}}
         </div>
     </Sidebar.content>
-</Page::Sidebar>
+</Page::Sidebar::Left>

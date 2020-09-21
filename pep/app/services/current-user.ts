@@ -7,7 +7,6 @@ import CookiesService from 'ember-cookies/services/cookies';
 import merge from 'lodash.merge';
 
 import ENV from 'pep/config/environment';
-import PepSessionService from 'pep/services/pep-session';
 import User from 'pep/pods/user/model';
 import {
     DEFAULT_USER_PREFERENCES,
@@ -17,8 +16,10 @@ import {
     USER_PREFERENCES_LS_PREFIX,
     COOKIE_PREFERENCES,
     USER_PREFERENCES_COOKIE_NAME,
-    PreferenceKey
+    PreferenceKey,
+    PreferenceDocumentsKey
 } from 'pep/constants/preferences';
+import PepSessionService from 'pep/services/pep-session';
 
 export default class CurrentUserService extends Service {
     @service store!: DS.Store;
@@ -27,7 +28,7 @@ export default class CurrentUserService extends Service {
     @service cookies!: CookiesService;
 
     @tracked user: User | null = null;
-    @tracked preferences: UserPreferences | null = null;
+    @tracked preferences?: UserPreferences;
 
     /**
      * Loads the current user from the API
@@ -177,7 +178,7 @@ export default class CurrentUserService extends Service {
         // if the user is logged in, apply the new prefs locally, then save the user
         if (this.session.isAuthenticated && this.user) {
             const oldUserPrefs = this.user?.clientSettings ?? {};
-            const newUserPrefs = merge({}, DEFAULT_USER_PREFERENCES, oldUserPrefs, prefValues);
+            const newUserPrefs = Object.assign({}, DEFAULT_USER_PREFERENCES, oldUserPrefs, prefValues);
             this.user.clientSettings = newUserPrefs;
             this.setup();
             await this.user.save();
@@ -187,5 +188,69 @@ export default class CurrentUserService extends Service {
             this.setup();
             return this.preferences;
         }
+    }
+
+    /**
+     * Add document to local storage based upon the preference key that can be passed in and the document.
+     * Does not add in duplicates
+     *
+     * @param {PreferenceDocumentsKey} key
+     * @param {Document} document
+     * @memberof CurrentUserService
+     */
+    addPreferenceDocument(key: PreferenceDocumentsKey, documentId: string) {
+        const prefs = this.preferences;
+        const currentDocs = prefs?.[key] ?? [];
+        if (!currentDocs?.includes(documentId)) {
+            currentDocs?.push(documentId);
+        }
+        this.updatePrefs({
+            [key]: currentDocs
+        });
+    }
+
+    /**
+     * Checks if the document for the specific key exists in the document array for that key
+     *
+     * @param {PreferenceDocumentsKey} key
+     * @param {Document} document
+     * @returns {boolean}
+     * @memberof CurrentUserService
+     */
+    hasPreferenceDocument(key: PreferenceDocumentsKey, documentId: string): boolean {
+        const prefs = this.preferences;
+        const currentDocs = prefs?.[key] ?? [];
+        return !!currentDocs?.includes(documentId);
+    }
+
+    /**
+     * Remove document from local storage based upon the preference key that can be passed in and the document.
+     *
+     * @param {PreferenceDocumentsKey} key
+     * @param {Document} document
+     * @memberof CurrentUserService
+     */
+    removePreferenceDocument(key: PreferenceDocumentsKey, documentId: string) {
+        const prefs = this.preferences;
+        const currentDocs = prefs?.[key];
+        const index = currentDocs?.findIndex((idToFind) => idToFind === documentId);
+        if (index !== undefined) {
+            currentDocs?.removeAt(index);
+        }
+        this.updatePrefs({
+            [key]: currentDocs
+        });
+    }
+
+    /**
+     * Retrieves all documents for a specific preference key
+     *
+     * @param {PreferenceDocumentsKey} key
+     * @returns {Document[]}
+     * @memberof CurrentUserService
+     */
+    getPreferenceDocuments(key: PreferenceDocumentsKey): string[] {
+        const prefs = this.preferences;
+        return prefs?.[key] ?? [];
     }
 }
