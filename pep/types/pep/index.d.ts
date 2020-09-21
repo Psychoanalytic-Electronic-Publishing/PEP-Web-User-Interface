@@ -21,6 +21,11 @@ declare global {
         target: T;
         currentTarget: T;
     };
+
+    type HTMLElementKeyboardEvent<T extends HTMLElement> = KeyboardEvent & {
+        target: T;
+        currentTarget: T;
+    };
 }
 
 export {};

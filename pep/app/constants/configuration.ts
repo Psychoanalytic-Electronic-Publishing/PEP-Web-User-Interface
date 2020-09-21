@@ -121,6 +121,9 @@ export interface ContentConfiguration {
         tooManyResults: {
             instructions: string;
         };
+        smartSearch: {
+            help?: string;
+        };
         terms: {
             types: {
                 [K in SearchTermId]?: {
@@ -257,40 +260,49 @@ export const DEFAULT_CONTENT_CONFIGURATION: ContentConfiguration = {
             instructions:
                 "Enter at least two terms, additional criteria, and/or use the 'Refine' form below to increase search precision."
         },
+        smartSearch: {
+            help:
+                'This field performs a SmartSearch, a search based on the semantics of what you enter. It can recognize an article citation (author and year) or a reference in APA standard form, a DOI, a year or volume and page number, or a PEP Article ID (Locator). Or if you enter words or phrases, it performs a words within paragraph or phrase search anywhere in the document, other than in abstracts and references (equivalent to an Article search).'
+        },
         terms: {
             types: {
                 everywhere: {
                     prompt: 'Terms or phrase',
                     help:
-                        'Searches the entire document. Use quotes to match exact phrases (e.g. "loving memory") (TODO final content)'
+                        'Search for words in the same paragraph, or phrases (surround words by quotes) of anywhere in the document, including abstracts and references. Surround phrases with quotes.'
                 },
                 author: {
                     prompt: "Author's name",
-                    help: 'Search by an author\'s name. You can use a * wildcard for partial entries (e.g. "Johan*")'
+                    help: 'Search author names (e.g., Lastname, or Lastname, Firstname). Use * to search partial names.'
                 },
                 title: {
                     prompt: 'Document title',
-                    help: 'The title of the document. (TODO final content)'
+                    help: 'Search for words or phrases within document titles. Surround phrases with quotes.'
                 },
                 dream: {
                     prompt: 'Terms or phrase',
-                    help: 'Find documents by dream (TODO final content)'
+                    help:
+                        'Search for words in the same paragraph, or phrases, in areas of documents which are descriptions of dreams. Surround phrases with quotes.'
                 },
                 quote: {
                     prompt: 'Terms or phrase',
-                    help: 'Find documents by quotes (TODO final content)'
+                    help:
+                        'Search for words in the same paragraph, or phrases, in areas of documents which are quoted passages. Surround phrases with quotes.'
                 },
                 reference: {
                     prompt: 'Terms or phrase',
-                    help: 'Find documents by reference (TODO final content)'
+                    help:
+                        'Search for words in the same reference, or phrases, in the reference section (bibliographies) of documents. Surround phrases with quotes.'
                 },
                 dialog: {
                     prompt: 'Terms or phrase',
-                    help: 'Find documents by dialog (TODO final content)'
+                    help:
+                        'Search for words in the same paragraph, or phrases, in areas of documents which are dialogs between people. Surround phrases with quotes.'
                 },
                 article: {
                     prompt: 'Terms or phrase',
-                    help: 'Find document by article (TODO final content)'
+                    help:
+                        'Search for words in the same paragraph, or phrases, anywhere in the document EXCEPT in abstracts and references. Surround phrases with quotes.'
                 },
                 startYear: {
                     prompt: 'Publication year',

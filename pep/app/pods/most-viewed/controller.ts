@@ -13,12 +13,16 @@ import { PERIODS, PossiblePeriodValues } from 'pep/constants/sidebar';
 import { QueryParams } from 'pep/hooks/useQueryParams';
 import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
 import { documentCSVUrl } from 'pep/utils/url';
+import ConfigurationService from 'pep/services/configuration';
+import ScrollableService from 'pep/services/scrollable';
 
 export default class MostViewed extends Controller {
     @service loadingBar!: LoadingBarService;
     @service fastbootMedia!: FastbootMediaService;
     @service sidebar!: SidebarService;
     @service intl!: IntlService;
+    @service configuration!: ConfigurationService;
+    @service scrollable!: ScrollableService;
 
     queryParams = ['author', 'title', 'sourcename', 'period'];
     @tracked searchQueryParams!: QueryParams;
@@ -70,6 +74,7 @@ export default class MostViewed extends Controller {
 
             this.loadingBar.show();
             const results = await this.paginator.filterModels();
+            this.scrollable.scrollToTop('page-content');
             this.loadingBar.hide();
             return results;
         } catch (err) {
@@ -123,6 +128,7 @@ export default class MostViewed extends Controller {
             filterRootKey: null,
             filterList: ['author', 'title', 'sourcename', 'period', 'queryType']
         });
+        delete queryParams.limit;
         window.location.href = documentCSVUrl(this.store, queryParams);
     }
 }

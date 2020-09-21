@@ -7,6 +7,7 @@ import ConfigurationService from 'pep/services/configuration';
 interface SearchFormTermControlArgs {
     searchTerm: SearchTermValue;
     onTermTextChange: (searchTerm: SearchTermValue, event: HTMLElementEvent<HTMLInputElement>) => void;
+    updateTermText: (oldTerm: SearchTermValue, event: HTMLElementEvent<HTMLInputElement>) => void;
     updateTermType: (oldTerm: SearchTermValue, event: HTMLElementEvent<HTMLSelectElement>) => void;
     removeSearchTerm: (searchTerm: SearchTermValue) => void;
 }

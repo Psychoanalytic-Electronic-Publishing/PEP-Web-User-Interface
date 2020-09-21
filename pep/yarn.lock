@@ -6856,7 +6856,7 @@ ember-basic-dropdown@3.0.1:
     ember-maybe-in-element "^0.4.0"
     ember-truth-helpers "2.1.0"
 
-ember-basic-dropdown@^3.0.3:
+ember-basic-dropdown@3.0.10, ember-basic-dropdown@^3.0.3:
   version "3.0.10"
   resolved "https://registry.yarnpkg.com/ember-basic-dropdown/-/ember-basic-dropdown-3.0.10.tgz#47ed9fe9ff9e69d1a021771a91823c730985ffe0"
   integrity sha512-TabEKUIlLPQLZqyXx1N8M/tDhrf/2meXjK2mNw6RfiOvwMHYJ41MwIhJusnlQd/Rn7cL0MbA+EGCnjdI0HhB/w==
@@ -6869,21 +6869,6 @@ ember-basic-dropdown@^3.0.3:
     ember-cli-typescript "^3.1.2"
     ember-element-helper "^0.2.0"
     ember-maybe-in-element "^2.0.1"
-    ember-truth-helpers "2.1.0"
-
-ember-basic-dropdown@^3.0.5:
-  version "3.0.5"
-  resolved "https://registry.yarnpkg.com/ember-basic-dropdown/-/ember-basic-dropdown-3.0.5.tgz#911eddd6d5166ed5c0af052b0d331dbe073155db"
-  integrity sha512-R7a9hJjwYlZZvGKz4PNbzN7UVCkceU19kxG/o3/PiWiWZ5WFFFn7HhbO9toLBskTsm/7N2klHyfDeC9h59mcTg==
-  dependencies:
-    "@ember/render-modifiers" "^1.0.2"
-    "@glimmer/component" "^1.0.0"
-    "@glimmer/tracking" "^1.0.0"
-    ember-cli-babel "^7.13.0"
-    ember-cli-htmlbars "^4.2.0"
-    ember-cli-typescript "^3.1.2"
-    ember-element-helper "^0.2.0"
-    ember-maybe-in-element "^0.4.0"
     ember-truth-helpers "2.1.0"
 
 ember-body-class2@^2.1.1:

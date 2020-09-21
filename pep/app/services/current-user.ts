@@ -1,4 +1,3 @@
-import { set } from '@ember/object';
 import Service, { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import DS from 'ember-data';
@@ -35,7 +34,7 @@ export default class CurrentUserService extends Service {
      * Loads the current user from the API
      * @returns {Promise<User>}
      */
-    load(): Promise<User> {
+    load(): Promise<User | void> {
         return this.fetchUser();
     }
 
@@ -43,7 +42,7 @@ export default class CurrentUserService extends Service {
      * Refreshes the current user if logged in
      * @returns {Promise}
      */
-    refresh(): Promise<User> {
+    refresh(): Promise<User | void> {
         //only attempt to refresh the user if there is a logged in user
         if (this.session.isAuthenticated) {
             return this.fetchUser();
@@ -53,33 +52,17 @@ export default class CurrentUserService extends Service {
 
     /**
      * Fetches the current user model
-     * @returns Promise<User>
+     * @returns Promise<User | void>
      */
-    async fetchUser(): Promise<User> {
-        // TODO reenable when we have a real endpoint to hit
-        // const result = await this.store.query('user', { me: true });
-        // const user = result[0];
-
-        //TODO remove this when we have a real endpoint to hit
-        this.store.pushPayload('user', {
-            user: {
-                id: 1,
-                preferences: {},
-                firstName: 'Joe',
-                lastName: 'User',
-                username: 'joe.user',
-                institutionBrandLogoUrl:
-                    'https://www.jhu.edu/assets/themes/machado/assets/images/logos/university-logo-small-vertical-white-no-clear-space-29e2bdee83.png'
-            }
-        });
-
-        const user = this.store.peekRecord('user', 1)!;
-
-        // TODO can we improve this at all so we dont need to ts-ignore it?
-        // @ts-ignore allow setting a non-standard property `user` on the session service instance
-        set(this.session, 'user', user);
-        this.user = user;
-        return user;
+    async fetchUser(): Promise<User | void> {
+        if (this.session.isAuthenticated) {
+            const { SessionId } = this.session.data.authenticated;
+            const result = await this.store.query('user', { SessionId });
+            const users = result.toArray();
+            const user = users[0];
+            this.user = user;
+            return user;
+        }
     }
 
     /**
@@ -91,7 +74,7 @@ export default class CurrentUserService extends Service {
      * @returns {UserPreferences}
      */
     setup() {
-        const userPrefs = this.user?.preferences ?? {};
+        const userPrefs = this.user?.clientSettings ?? {};
         const cookiePrefs = this.loadCookiePrefs();
         const lsPrefs = this.loadLocalStoragePrefs();
         const prefs = merge({}, DEFAULT_USER_PREFERENCES, lsPrefs, cookiePrefs, userPrefs) as UserPreferences;
@@ -194,9 +177,9 @@ export default class CurrentUserService extends Service {
 
         // if the user is logged in, apply the new prefs locally, then save the user
         if (this.session.isAuthenticated && this.user) {
-            const oldUserPrefs = this.user?.preferences ?? {};
+            const oldUserPrefs = this.user?.clientSettings ?? {};
             const newUserPrefs = Object.assign({}, DEFAULT_USER_PREFERENCES, oldUserPrefs, prefValues);
-            this.user.preferences = newUserPrefs;
+            this.user.clientSettings = newUserPrefs;
             this.setup();
             await this.user.save();
             return this.preferences;

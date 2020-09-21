@@ -120,7 +120,7 @@
         }
 
         &.other-sidebar-is-open {
-            z-index: $z-page-content;
+            z-index: $z-sidebar-mask - 1;
         }
     }
 }

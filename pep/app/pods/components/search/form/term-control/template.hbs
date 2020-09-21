@@ -1,14 +1,25 @@
 <div class="search-form-term-control mb-2" ...attributes>
     <div class="d-flex">
         <div class="search-form-term-control-field flex-fill">
-            <FlInput
-                @placeholder={{or this.termContentConfig.prompt (t "search.form.terms.label")}}
-                @value={{@searchTerm.term}}
-                class="search-form-term-control-field-text"
-                maxlength="255"
-                autocomplete="off"
-                {{on "input" (fn @onTermTextChange @searchTerm)}}
-            />
+            {{#if this.selectedSearchType.wordWheelField}}
+                <WordWheel
+                    @placeholder={{or this.termContentConfig.prompt (t "search.form.terms.label")}}
+                    @value={{@searchTerm.term}}
+                    @onChange={{fn @updateTermText @searchTerm}}
+                    @apiField={{this.selectedSearchType.wordWheelField}}
+                    @apiCore={{this.selectedSearchType.wordWheelCore}}
+                    class="search-form-term-control-field-text"
+                />
+            {{else}}
+                <FlInput
+                    @placeholder={{or this.termContentConfig.prompt (t "search.form.terms.label")}}
+                    @value={{@searchTerm.term}}
+                    class="search-form-term-control-field-text"
+                    maxlength="255"
+                    autocomplete="off"
+                    {{on "input" (fn @onTermTextChange @searchTerm)}}
+                />
+            {{/if}}
             <select
                 class="custom-select search-form-term-control-field-type"
                 {{on "change" (fn @updateTermType @searchTerm)}}
