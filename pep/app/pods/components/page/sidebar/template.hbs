@@ -10,6 +10,7 @@
         class="sidebar-inner"
         style={{this.sidebarInnerStyles}}
         {{did-insert this.onElementInsert}}
+        {{did-window-resize this.onWindowResize}}
     >
         {{#if this.canResize}}
             <DragBar

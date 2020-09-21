@@ -20,7 +20,6 @@ export default class PageSidebar extends Component<PageSidebarArgs> {
     @service sidebar!: SidebarService;
     @service fastbootMedia!: FastbootMediaService;
 
-    @tracked resizedWidth?: number;
     @tracked windowWidth: number = 0;
     @tracked isResizing: boolean = false;
     startingResizeWidth: number = 0;
@@ -34,15 +33,22 @@ export default class PageSidebar extends Component<PageSidebarArgs> {
         return this.args.minWidth ?? 300;
     }
 
+    /**
+     * Sidebars default to a max width of 35% of the current window width
+     * @readonly
+     * @returns {number}
+     */
     get maxWidth() {
-        //TODO make this dynamic to be 35%~ of the current window size using a window resize listener
-        //and also adjust current width if its >maxWidth after a window resize
-        return this.args.maxWidth ?? 500;
+        return this.args.maxWidth ?? Math.max(this.minWidth, this.windowWidth * 0.35);
     }
 
+    /**
+     * Dont allow resizing on mobile since the sidebar is modal (has a backdrop)
+     * and should take up most of the viewport already
+     * @readonly
+     * @returns {boolean}
+     */
     get canResize() {
-        // dont allow resizing on mobile since the sidebar is modal (has a backdrop)
-        // and should take up most of the viewport already
         return this.resizable && !this.fastbootMedia.isMobile;
     }
 
@@ -69,16 +75,31 @@ export default class PageSidebar extends Component<PageSidebarArgs> {
     }
 
     get sidebarInnerStyles() {
-        return this.resizedWidth && this.isOpen ? htmlSafe(`width: ${this.resizedWidth}px;`) : null;
+        const width = this.resizedWidth ?? 0;
+        const transform = !this.isOpen ? `transform: translateX(${this.isLeft ? -width : 0}px);` : '';
+        return width ? htmlSafe(`width: ${width}px; ${transform}`) : null;
     }
 
     /**
-     * Store a reference to the sidebar inner element for resizing purposes
+     * Proxies storing of the sidebar's resized width to the sidebar service
+     * so the width is preserved if the sidebar is re-rendered on another page
+     * @returns {number}
+     */
+    get resizedWidth() {
+        return this.sidebar[this.isRight ? 'rightSidebarWidth' : 'leftSidebarWidth'] ?? 0;
+    }
+    set resizedWidth(width: number) {
+        this.sidebar[this.isRight ? 'rightSidebarWidth' : 'leftSidebarWidth'] = width;
+    }
+
+    /**
+     * Store a reference to the sidebar inner element and the current window width for resizing purposes
      * @param {HTMLElemeHTMLDivElementnt} element
      */
     @action
     onElementInsert(element: HTMLDivElement) {
         this.innerElement = element;
+        this.windowWidth = document.body.offsetWidth;
     }
 
     /**
@@ -113,8 +134,20 @@ export default class PageSidebar extends Component<PageSidebarArgs> {
     @action
     onDragEnd(position: number) {
         this.resizedWidth = this.isRight ? this.startingResizeWidth - position : position;
-        // TODO need to persist resize widths to sidebar service - so the width is preserved if the sidebars are re-rendered on another page
         this.startingResizeWidth = 0;
         next(this, () => (this.isResizing = false));
+    }
+
+    /**
+     * Updates the current window width and ensures the sidebar's
+     * resized width does not extend beyond the max width
+     * @param {number} width
+     */
+    @action
+    onWindowResize(width: number) {
+        this.windowWidth = width;
+        if (this.resizedWidth) {
+            this.resizedWidth = Math.max(this.minWidth, Math.min(this.maxWidth, this.resizedWidth));
+        }
     }
 }
