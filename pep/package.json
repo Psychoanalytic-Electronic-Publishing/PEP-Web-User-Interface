@@ -12,6 +12,7 @@
     },
     "scripts": {
         "build": "ember build --environment=production --output-path=../build/",
+        "build:docs": "npx typedoc --ignoreCompilerErrors --out ./documentation ./app ./types",
         "lint": "npm-run-all --aggregate-output --continue-on-error --parallel lint:*",
         "lint:hbs": "ember-template-lint .",
         "lint:js": "eslint .",
@@ -123,7 +124,8 @@
         "prettier": "^1.19.1",
         "qunit-dom": "^1.2.0",
         "sass": "^1.26.2",
-        "typescript": "3.7.5"
+        "typedoc": "0.18.0",
+        "typescript": "3.9.7"
     },
     "engines": {
         "node": "10.* || >= 12"

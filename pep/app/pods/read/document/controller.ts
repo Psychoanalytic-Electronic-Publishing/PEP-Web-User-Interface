@@ -8,13 +8,13 @@ import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
 import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 
-import Document from 'pep/pods/document/model';
 import AuthService from 'pep/services/auth';
 import LoadingBarService from 'pep/services/loading-bar';
 import ConfigurationService from 'pep/services/configuration';
 import PepSessionService from 'pep/services/pep-session';
 import { buildSearchQueryParams } from 'pep/utils/search';
 import { ViewPeriod, SEARCH_DEFAULT_VIEW_PERIOD } from 'pep/constants/search';
+import Document from 'pep/pods/document/model';
 
 export default class ReadDocument extends Controller {
     @service('pep-session') session!: PepSessionService;

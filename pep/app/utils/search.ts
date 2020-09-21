@@ -155,7 +155,7 @@ export function buildSearchQueryParams(
  */
 export function joinParamValues(
     currentParam: string | undefined,
-    newParam: string,
+    newParam: string | string[],
     joinOperator: 'AND' | 'OR' = 'AND'
 ) {
     return `${currentParam ? `${currentParam} ${joinOperator} ` : ''}${newParam}`;

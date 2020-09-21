@@ -1,0 +1,15 @@
+<ModalDialog @onClose={{@onClose}} @size="md" as |Modal|>
+    <Modal.header @title={{t "publisherInfo.title"}} />
+    <Modal.body>
+        <p class="text-muted">
+            {{html-safe @options.model.fullHTML}}
+        </p>
+    </Modal.body>
+    <Modal.footer>
+        <Button
+            @type="link"
+            @label={{t "common.close"}}
+            @action={{@onClose}}
+        />
+    </Modal.footer>
+</ModalDialog>

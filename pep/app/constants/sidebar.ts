@@ -8,15 +8,21 @@ export const PERIOD_ALL_YEARS: Period = { translationKey: 'mostCited.allYears', 
 export const PERIODS = [PERIOD_5_YEARS, PERIOD_10_YEARS, PERIOD_20_YEARS, PERIOD_ALL_YEARS];
 
 export enum WIDGET {
-    ACCOLADES,
-    EXPERT_PICKS,
-    GLOSSARY_TERMS,
-    MORE_LIKE_THESE,
-    MOST_CITED,
-    MOST_VIEWED,
-    PAST_SEARCHES,
-    RELEVANT_SEARCHES,
-    SEMINAL_PAPERS,
-    WHATS_NEW,
-    YOUR_INTERESTS
+    EXPERT_PICKS = 'expert-picks',
+    FAVORITES = 'favorites',
+    GLOSSARY_TERMS = 'glossary-terms',
+    MORE_LIKE_THESE = 'more-like-these',
+    MOST_CITED = 'most-cited',
+    MOST_VIEWED = 'most-viewed',
+    PAST_SEARCHES = 'past-searches',
+    READ_LATER = 'read-later',
+    RELATED_DOCUMENTS = 'related-documents',
+    RELEVANT_SEARCHES = 'relevant-searches',
+    SEMINAL_PAPERS = 'seminal-papers',
+    VIDEO_PREVIEW = 'video-preview',
+    WHATS_NEW = 'whats-new',
+    YOUR_INTERESTS = 'your-interests',
+    PUBLISHER_INFO = 'publisher-info'
 }
+
+export type WidgetData = Partial<Record<WIDGET, any>>;

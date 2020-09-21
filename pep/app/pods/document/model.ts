@@ -1,7 +1,11 @@
 import DS from 'ember-data';
 import attr from 'ember-data/attr';
+import { belongsTo } from 'ember-data/relationships';
+
 import { isEmpty } from '@ember/utils';
+
 import { INVALID_ABSTRACT_TAGS, INVALID_ABSTRACT_PREVIEW_TAGS, HTML_BODY_REGEX } from 'pep/constants/regex';
+import SimilarityMatch from 'pep/pods/similarity-match/model';
 
 export default class Document extends DS.Model {
     // attributes
@@ -40,6 +44,10 @@ export default class Document extends DS.Model {
     @attr('string') vol!: string;
     @attr('string') year!: string;
 
+    // Doing this to allow metadata on find record calls - which ember data currently doesn't handle
+    // properly
+    @attr() meta!: any;
+
     // TODO we should consider using the XML return format for documents instead of the HTML format
     // for more control and render safety with the returned content, however will probably require
     // more work to render/style initially (e.g. handing embedded videos)
@@ -70,6 +78,14 @@ export default class Document extends DS.Model {
         const document = !isEmpty(this.document) ? this.document : '';
         return document.replace(HTML_BODY_REGEX, '$1');
     }
+
+    /**
+     * Relationship
+     *
+     * @type {SimilarityMatch}
+     * @memberof Document
+     */
+    @belongsTo('similarityMatch', { async: false }) similarityMatch!: SimilarityMatch | null;
 }
 
 declare module 'ember-data/types/registries/model' {
