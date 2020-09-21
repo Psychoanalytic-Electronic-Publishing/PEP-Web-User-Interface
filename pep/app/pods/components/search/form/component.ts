@@ -60,10 +60,6 @@ export default class SearchForm extends Component<SearchFormArgs> {
         );
     }
 
-    get hasEnteredLimits() {
-        return !!this.args.citedCount || !!this.args.viewedCount;
-    }
-
     get searchTypeOptions() {
         return SEARCH_TYPES.filter((t) => t.isTypeOption);
     }
