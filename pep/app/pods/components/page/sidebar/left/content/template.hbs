@@ -1,4 +1,8 @@
 <Page::Sidebar::Content @scrollableNamespace="sidebar-left">
     {{yield}}
-    <Page::Sidebar::Widgets @widgets={{this.leftSidebarWidgets}} @data={{@data}}/>
+    <Page::Sidebar::Widgets
+        @widgets={{this.leftSidebarWidgets}}
+        @data={{@data}}
+        class="pt-2"
+    />
 </Page::Sidebar::Content>
