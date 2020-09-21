@@ -1,6 +1,6 @@
 export enum LanguageCode {
-    enUS = 'en-us',
-    esES = 'es-es'
+    enUS = 'en-us'
+    // esES = 'es-es'
 }
 
 export interface Language {
@@ -13,9 +13,10 @@ export const LANG_EN_US: Language = {
     label: 'language.codes.enUS'
 };
 
-export const LANG_ES_ES: Language = {
-    code: LanguageCode.esES,
-    label: 'language.codes.esES'
-};
+// TODO once re-enabled, needs a pep/translations/es-es.json file created
+// export const LANG_ES_ES: Language = {
+//     code: LanguageCode.esES,
+//     label: 'language.codes.esES'
+// };
 
-export default [LANG_EN_US, LANG_ES_ES];
+export default [LANG_EN_US /*, LANG_ES_ES */];
