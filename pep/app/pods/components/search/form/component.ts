@@ -14,6 +14,7 @@ import {
 } from 'pep/constants/search';
 import ScrollableService from 'pep/services/scrollable';
 import ConfigurationService from 'pep/services/configuration';
+import PepSessionService from 'pep/services/pep-session';
 import { fadeTransition } from 'pep/utils/animation';
 
 interface SearchFormArgs {
@@ -32,12 +33,14 @@ interface SearchFormArgs {
     onSearchTermTextChange?: (term: SearchTermValue) => void;
     onLimitTextChange?: (value?: string) => void;
     toggleLimitFields?: (isOpen: boolean) => void;
+    resetForm: () => void;
 }
 
 export default class SearchForm extends Component<SearchFormArgs> {
     @service scrollable!: ScrollableService;
     @service intl!: IntlService;
     @service configuration!: ConfigurationService;
+    @service('pep-session') session!: PepSessionService;
 
     animateTransition = fadeTransition;
     animateDuration = 300;
@@ -57,6 +60,10 @@ export default class SearchForm extends Component<SearchFormArgs> {
         );
     }
 
+    get hasEnteredLimits() {
+        return !!this.args.citedCount || !!this.args.viewedCount;
+    }
+
     get searchTypeOptions() {
         return SEARCH_TYPES.filter((t) => t.isTypeOption);
     }
@@ -69,6 +76,37 @@ export default class SearchForm extends Component<SearchFormArgs> {
         return (
             this.args.resultsCount && this.args.resultsCount > this.configuration.base.search.tooManyResults.threshold
         );
+    }
+
+    /**
+     * Sets up an auth succeeded event listener to update the search form using
+     * the logged in user's preferences
+     * @param {unknown} owner
+     * @param {SearchFormArgs} args
+     */
+    constructor(owner: unknown, args: SearchFormArgs) {
+        super(owner, args);
+        this.session.on('authenticationAndSetupSucceeded', this.onAuthenticationSucceeded);
+    }
+
+    /**
+     * Removes the auth succeeded event listener on component destroy
+     */
+    willDestroy() {
+        super.willDestroy();
+        this.session.off('authenticationAndSetupSucceeded', this.onAuthenticationSucceeded);
+    }
+
+    /**
+     * When the user is logged in, update the search form using their current preferences
+     * (since the current values are created/detached on route enter) but ONLY if the user
+     * does not have the search form already populated
+     */
+    @action
+    onAuthenticationSucceeded() {
+        if (!this.hasEnteredSearch) {
+            this.args.resetForm();
+        }
     }
 
     /**

@@ -72,7 +72,7 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
      */
     async sessionAuthenticated() {
         try {
-            //get the current user's model before transitioning from the login page
+            // get the current user's model before transitioning from the login page
             await this.currentUser.load();
         } catch (err) {
             this.notifications.error(this.intl.t('login.error'));
@@ -80,10 +80,15 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
             throw err;
         }
 
-        //update configurations based on the newly logged in user session
+        // update configurations based on the newly logged in user session
         await this.appSetup();
 
-        //dont redirect the user on login if the behavior is suppressed
+        // trigger a custom event on the session that tells us when the user is logged in
+        // and all other post-login tasks (loading user record, prefs/configs setup, etc) is complete
+        // as the built-in `authenticationSucceeded` event fires immediately after the login request returns
+        this.session.trigger('authenticationAndSetupSucceeded');
+
+        // dont redirect the user on login if the behavior is suppressed
         if (this.auth.dontRedirectOnLogin) {
             this.auth.dontRedirectOnLogin = false;
         } else {
