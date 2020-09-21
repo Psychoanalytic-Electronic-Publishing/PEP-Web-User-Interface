@@ -7,7 +7,7 @@ import FastbootService from 'ember-cli-fastboot/services/fastboot';
 
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import { getElementOffset, ElementOffset, getEventOffset } from 'pep/utils/dom';
-import { NAV_BAR_HEIGHT, FOOT_BAR_HEIGHT } from 'pep/constants/dimensions';
+import { NAV_BAR_HEIGHT, FOOT_BAR_HEIGHT, DRAG_BAR_THICKNESS } from 'pep/constants/dimensions';
 
 interface DragBarArgs {
     orientation?: 'vertical' | 'horizontal';
@@ -31,8 +31,6 @@ export default class DragBar extends Component<DragBarArgs> {
     @tracked dragBarPosition: number | null = null;
     @tracked dragBarOffset: ElementOffset | null = null;
     @tracked isDragging: boolean = false;
-
-    barThickness: number = 5;
 
     /**
      * The orientation/axis to display the drag bar on
@@ -158,18 +156,9 @@ export default class DragBar extends Component<DragBarArgs> {
     onDragMove(event: MouseEvent | TouchEvent) {
         const eventOffset = getEventOffset(event);
         if (this.orientation === 'horizontal') {
-            const minY = this.minClientY;
-            const maxY = document.body.offsetHeight - this.barThickness - this.maxClientY;
-            const yOffset = Math.max(minY, Math.min(maxY, eventOffset.top));
-            const top = this.dragBarOffset?.top ?? 0;
-            this.dragBarPosition = yOffset - top;
+            this.dragBarPosition = this.calculateNewHorizPosition(eventOffset);
         } else {
-            const docW = document.body.offsetWidth;
-            const minX = this.reversed ? docW - this.maxClientX : this.minClientX;
-            const maxX = this.reversed ? docW - this.minClientX : this.maxClientX;
-            const xOffset = Math.max(minX, Math.min(maxX, eventOffset.left));
-            const left = this.dragBarOffset?.left ?? 0;
-            this.dragBarPosition = this.reversed ? xOffset - left : xOffset + this.barThickness;
+            this.dragBarPosition = this.calculateNewVertPosition(eventOffset);
         }
 
         this.args.onDragMove?.(this.dragBarPosition, event);
@@ -190,19 +179,10 @@ export default class DragBar extends Component<DragBarArgs> {
         let endPosition;
 
         if (this.orientation === 'horizontal') {
-            const minY = this.minClientY;
-            const maxY = document.body.offsetHeight - this.barThickness - this.maxClientY;
-            const top = this.dragBarOffset?.top ?? 0;
-            const yOffset = Math.max(minY, Math.min(maxY, eventOffset.top));
-            const newDragPos = yOffset - top;
+            const newDragPos = this.calculateNewHorizPosition(eventOffset);
             endPosition = eventOffset.top ? newDragPos : lastDragPos;
         } else {
-            const docW = document.body.offsetWidth;
-            const minX = this.reversed ? docW - this.maxClientX : this.minClientX;
-            const maxX = this.reversed ? docW - this.minClientX : this.maxClientX;
-            const left = this.dragBarOffset?.left ?? 0;
-            const xOffset = Math.max(minX, Math.min(maxX, eventOffset.left));
-            const newDragPos = this.reversed ? xOffset - left : xOffset + this.barThickness;
+            const newDragPos = this.calculateNewVertPosition(eventOffset);
             endPosition = eventOffset.left ? newDragPos : lastDragPos;
         }
 
@@ -210,5 +190,34 @@ export default class DragBar extends Component<DragBarArgs> {
         this.dragBarPosition = null;
         this.dragBarOffset = null;
         this.args.onDragEnd?.(endPosition, event);
+    }
+
+    /**
+     * Calculates the new relative position of the dragged element for horizontally oriented drag bars
+     * @private
+     * @param {ElementOffset} eventOffset
+     * @returns {number}
+     */
+    private calculateNewHorizPosition(eventOffset: ElementOffset) {
+        const minY = this.minClientY;
+        const maxY = document.body.offsetHeight - DRAG_BAR_THICKNESS - this.maxClientY;
+        const yOffset = Math.max(minY, Math.min(maxY, eventOffset.top));
+        const top = this.dragBarOffset?.top ?? 0;
+        return yOffset - top;
+    }
+
+    /**
+     * Calculates the new relative position of the dragged element for vertically oriented drag bars
+     * @private
+     * @param {ElementOffset} eventOffset
+     * @returns {number}
+     */
+    private calculateNewVertPosition(eventOffset: ElementOffset) {
+        const docW = document.body.offsetWidth;
+        const minX = this.reversed ? docW - this.maxClientX : this.minClientX;
+        const maxX = this.reversed ? docW - this.minClientX : this.maxClientX;
+        const xOffset = Math.max(minX, Math.min(maxX, eventOffset.left));
+        const left = this.dragBarOffset?.left ?? 0;
+        return this.reversed ? xOffset - left : xOffset + DRAG_BAR_THICKNESS;
     }
 }

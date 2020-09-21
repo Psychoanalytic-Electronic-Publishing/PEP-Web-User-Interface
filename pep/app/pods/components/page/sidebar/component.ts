@@ -7,7 +7,12 @@ import { htmlSafe } from '@ember/template';
 
 import SidebarService from 'pep/services/sidebar';
 import FastbootMediaService from 'pep/services/fastboot-media';
-import { SIDEBAR_HANDLE_WIDTH, SIDEBAR_WIDTH } from 'pep/constants/dimensions';
+import {
+    SIDEBAR_HANDLE_WIDTH,
+    SIDEBAR_MAX_WIN_PCT_DESKTOP,
+    SIDEBAR_MAX_WIN_PCT_TABLET,
+    SIDEBAR_WIDTH
+} from 'pep/constants/dimensions';
 
 interface PageSidebarArgs {
     side: 'left' | 'right';
@@ -40,7 +45,7 @@ export default class PageSidebar extends Component<PageSidebarArgs> {
      * @returns {number}
      */
     get maxWidth() {
-        const pct = this.fastbootMedia.isTablet ? 0.5 : 0.35;
+        const pct = this.fastbootMedia.isTablet ? SIDEBAR_MAX_WIN_PCT_TABLET : SIDEBAR_MAX_WIN_PCT_DESKTOP;
         return this.args.maxWidth ?? Math.max(this.minWidth, this.windowWidth * pct);
     }
 
