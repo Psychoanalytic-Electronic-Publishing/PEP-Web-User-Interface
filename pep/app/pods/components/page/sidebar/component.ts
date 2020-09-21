@@ -7,7 +7,7 @@ import { htmlSafe } from '@ember/template';
 
 import SidebarService from 'pep/services/sidebar';
 import FastbootMediaService from 'pep/services/fastboot-media';
-import { SIDEBAR_HANDLE_WIDTH } from 'pep/constants/dimensions';
+import { SIDEBAR_HANDLE_WIDTH, SIDEBAR_WIDTH } from 'pep/constants/dimensions';
 
 interface PageSidebarArgs {
     side: 'left' | 'right';
@@ -30,7 +30,7 @@ export default class PageSidebar extends Component<PageSidebarArgs> {
     }
 
     get minWidth() {
-        return this.args.minWidth ?? 300;
+        return this.args.minWidth ?? SIDEBAR_WIDTH;
     }
 
     /**
