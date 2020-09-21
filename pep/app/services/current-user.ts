@@ -29,7 +29,7 @@ export default class CurrentUserService extends Service {
     @service cookies!: CookiesService;
 
     @tracked user: User | null = null;
-    @tracked preferences: UserPreferences | null = null;
+    @tracked preferences?: UserPreferences;
 
     /**
      * Loads the current user from the API
@@ -195,7 +195,7 @@ export default class CurrentUserService extends Service {
         // if the user is logged in, apply the new prefs locally, then save the user
         if (this.session.isAuthenticated && this.user) {
             const oldUserPrefs = this.user?.preferences ?? {};
-            const newUserPrefs = merge({}, DEFAULT_USER_PREFERENCES, oldUserPrefs, prefValues);
+            const newUserPrefs = Object.assign({}, DEFAULT_USER_PREFERENCES, oldUserPrefs, prefValues);
             this.user.preferences = newUserPrefs;
             this.setup();
             await this.user.save();
@@ -216,8 +216,8 @@ export default class CurrentUserService extends Service {
      * @memberof CurrentUserService
      */
     addPreferenceDocument(key: PreferenceDocumentsKey, documentId: string) {
-        const prefs = this.loadLocalStoragePrefs();
-        const currentDocs = prefs[key] ?? [];
+        const prefs = this.preferences;
+        const currentDocs = prefs?.[key] ?? [];
         if (!currentDocs?.includes(documentId)) {
             currentDocs?.push(documentId);
         }
@@ -235,8 +235,8 @@ export default class CurrentUserService extends Service {
      * @memberof CurrentUserService
      */
     hasPreferenceDocument(key: PreferenceDocumentsKey, documentId: string): boolean {
-        const prefs = this.loadLocalStoragePrefs();
-        const currentDocs = prefs[key] ?? [];
+        const prefs = this.preferences;
+        const currentDocs = prefs?.[key] ?? [];
         return !!currentDocs?.includes(documentId);
     }
 
@@ -248,8 +248,8 @@ export default class CurrentUserService extends Service {
      * @memberof CurrentUserService
      */
     removePreferenceDocument(key: PreferenceDocumentsKey, documentId: string) {
-        const prefs = this.loadLocalStoragePrefs();
-        const currentDocs = prefs[key];
+        const prefs = this.preferences;
+        const currentDocs = prefs?.[key];
         const index = currentDocs?.findIndex((idToFind) => idToFind === documentId);
         if (index !== undefined) {
             currentDocs?.removeAt(index);
@@ -267,7 +267,7 @@ export default class CurrentUserService extends Service {
      * @memberof CurrentUserService
      */
     getPreferenceDocuments(key: PreferenceDocumentsKey): string[] {
-        const prefs = this.loadLocalStoragePrefs();
-        return prefs[key] ?? [];
+        const prefs = this.preferences;
+        return prefs?.[key] ?? [];
     }
 }

@@ -1,5 +1,4 @@
 import Component from '@glimmer/component';
-import { tracked } from '@glimmer/tracking';
 import ConfigurationService from 'pep/services/configuration';
 import { inject as service } from '@ember/service';
 import { WidgetData } from 'pep/constants/sidebar';
