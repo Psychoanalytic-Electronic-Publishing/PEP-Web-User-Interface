@@ -6,6 +6,10 @@
     transition: $duration-sidebar-toggle ease width;
     overflow: hidden;
 
+    &.is-drag-resizing {
+        transition: none;
+    }
+
     &-mask {
         position: absolute;
         top: 0;

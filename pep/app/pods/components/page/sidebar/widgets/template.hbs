@@ -1,4 +1,4 @@
-<div class="px-2 pt-3 pb-1 d-flex justify-content-between align-items-center">
+<div class="px-2 pb-1 d-flex justify-content-between align-items-center" ...attributes>
     <h5 class="m-0">{{t "relatedInfo.title"}}</h5>
     <Button
         @type="link"
@@ -9,14 +9,12 @@
     />
 </div>
 <div class="p-2">
-    <Page::Sidebar::Widgets::WhatsNew @toggleIsOpen={{this.toggleIsOpen}} @openWidgets={{this.openWidgets}} />
-    <Page::Sidebar::Widgets::MostViewed @toggleIsOpen={{this.toggleIsOpen}} @openWidgets={{this.openWidgets}} />
-    <Page::Sidebar::Widgets::MostCited @toggleIsOpen={{this.toggleIsOpen}} @openWidgets={{this.openWidgets}} />
-    <Page::Sidebar::Widgets::PastSearches @toggleIsOpen={{this.toggleIsOpen}} @openWidgets={{this.openWidgets}} />
-    <Page::Sidebar::Widgets::YourInterests @toggleIsOpen={{this.toggleIsOpen}} @openWidgets={{this.openWidgets}} />
-    <Page::Sidebar::Widgets::GlossaryTerms @toggleIsOpen={{this.toggleIsOpen}} @openWidgets={{this.openWidgets}} />
-    <Page::Sidebar::Widgets::MoreLikeThese @toggleIsOpen={{this.toggleIsOpen}} @openWidgets={{this.openWidgets}} />
-    <Page::Sidebar::Widgets::SeminalPapers @toggleIsOpen={{this.toggleIsOpen}} @openWidgets={{this.openWidgets}} />
-    <Page::Sidebar::Widgets::ExpertPicks @toggleIsOpen={{this.toggleIsOpen}} @openWidgets={{this.openWidgets}} />
-    <Page::Sidebar::Widgets::RevelantSearches @toggleIsOpen={{this.toggleIsOpen}} @openWidgets={{this.openWidgets}} />
+    {{#each @widgets as |widget|}}
+        {{component
+            (concat "page/sidebar/widgets/" widget.widget)
+            toggleIsOpen=this.toggleIsOpen
+            openWidgets=this.openWidgets
+            data=@data
+        }}
+    {{/each}}
 </div>

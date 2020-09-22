@@ -1,15 +1,29 @@
 <div
     class="sidebar sidebar-{{@side}}
         {{~unless this.isOpen " sidebar-collapsed"}}
-        {{~if this.otherSidebarIsOpen " other-sidebar-is-open"}}"
+        {{~if this.otherSidebarIsOpen " other-sidebar-is-open"}}
+        {{~if this.isResizing " is-drag-resizing"}}"
+    style={{this.sidebarStyles}}
     ...attributes
 >
-    <div class="sidebar-inner">
-        {{yield
-            (hash
-                content=(component 'page/sidebar/content')
-            )
-        }}
+    <div
+        class="sidebar-inner"
+        style={{this.sidebarInnerStyles}}
+        {{did-insert this.onElementInsert}}
+        {{did-window-resize this.onWindowResize}}
+    >
+        {{#if this.canResize}}
+            <DragBar
+                @orientation="vertical"
+                @reversed={{this.isRight}}
+                @minClientX={{this.minWidth}}
+                @maxClientX={{this.maxWidth}}
+                @onDragStart={{this.onDragStart}}
+                @onDragMove={{this.onDragMove}}
+                @onDragEnd={{this.onDragEnd}}
+            />
+        {{/if}}
+        {{yield}}
     </div>
     <button type="button" class="sidebar-toggle-handle" {{on "click" this.toggle}}>
         <FaIcon @icon={{if

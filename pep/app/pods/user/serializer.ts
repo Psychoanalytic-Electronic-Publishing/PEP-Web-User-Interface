@@ -1,11 +1,24 @@
 import DS from 'ember-data';
-import { camelize } from '@ember/string';
+import { inject as service } from '@ember/service';
+import { camelize, classify } from '@ember/string';
 import { pluralize } from 'ember-inflector';
 
 import ApplicationSerializerMixin from 'pep/mixins/application-serializer';
+import PepSessionService from 'pep/services/pep-session';
 
 export default class UserSerializer extends ApplicationSerializerMixin(DS.RESTSerializer) {
+    @service('pep-session') session!: PepSessionService;
+
     primaryKey = 'UserId';
+
+    /**
+     * The PaDS API returns attributes in PascalCase
+     * @param {string} attr
+     * @returns {string}
+     */
+    keyForAttribute(attr: string) {
+        return classify(attr);
+    }
 
     /**
      * The PaDS API returns user list results in a root-level array
@@ -45,6 +58,30 @@ export default class UserSerializer extends ApplicationSerializerMixin(DS.RESTSe
         const modelKey = camelize(primaryModelClass.modelName);
         payload = { [modelKey]: payload };
         return super.normalizeSingleResponse(store, primaryModelClass, payload, id, requestType);
+    }
+
+    /**
+     * User payloads must be sent in the root JSON object
+     * and must include the currently logged in user's SessionId
+     * @param {object} hash
+     * @param {ModelWithName} typeClass
+     * @param {DS.Snapshot<K>} snapshot
+     * @param {object} options
+     */
+    serializeIntoHash<K extends string | number>(
+        hash: any,
+        typeClass: ModelWithName,
+        snapshot: DS.Snapshot<K>,
+        options: object
+    ) {
+        super.serializeIntoHash(hash, typeClass, snapshot, options);
+        const root = this.payloadKeyFromModelName(typeClass.modelName);
+        Object.keys(hash[root]).forEach((key) => (hash[key] = hash[root][key]));
+        delete hash[root];
+
+        if (this.session.isAuthenticated) {
+            hash.SessionId = this.session.data.authenticated.SessionId;
+        }
     }
 }
 

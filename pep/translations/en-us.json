@@ -67,6 +67,13 @@
             "label": "Sort:",
             "year": "Year"
         },
+        "item": {
+            "relatedDocuments": "This document has related documents",
+            "addToFavorites": "Add to favorites",
+            "removeFromFavorites": "Remove from favorites",
+            "addToReadLater": "Add to read later",
+            "removeFromReadLater": "Remove from read later"
+        },
         "view": {
             "label": "View:",
             "biblio": "Bibliographic"
@@ -294,12 +301,19 @@
             "expertPicks": {
                 "title": "Expert picks"
             },
+            "favorites": {
+                "title": "Favorites",
+                "noResults": "You don't have any favorites. Add documents that you frequently view to your favorites for quick access"
+            },
             "glossaryTerms": {
                 "title": "Glossary terms",
-                "view": "View complete glossary"
+                "view": "View complete glossary",
+                "noResults": "You must perform a search or view a document to see the glossary terms"
             },
             "moreLikeThese": {
-                "title": "More like these"
+                "title": "More like these",
+                "confidence": "Similarity Confidence: {number}%",
+                "noResults": "You must view a document to see the similar documents"
             },
             "mostCited": {
                 "title": "Most cited"
@@ -310,8 +324,21 @@
             "pastSearches": {
                 "title": "Your past searches"
             },
+            "publisherInfo": {
+                "title": "Publisher Info",
+                "view": "View information for {publisher}",
+                "noResults": "You must view a document to see the documents publisher information"
+            },
+            "readLater": {
+                "title": "Read later",
+                "noResults": "You don't have any documents saved for later. Add documents that you want to view for quick access"
+            },
+            "relatedDocuments": {
+                "title": "Related Documents",
+                "noResults": "You must view a document to see the documents related to it. If you are already viewing one, this means no results have been found"
+            },
             "relevantSearches": {
-                "title": "Revelant searches"
+                "title": "Relevant searches"
             },
             "seminalPapers": {
                 "title": "Seminal papers"
@@ -330,6 +357,9 @@
             },
             "yourInterests": {
                 "title": "Your interests"
+            },
+            "videoPreview": {
+                "title": "Latest Video"
             }
         }
     },
@@ -366,7 +396,13 @@
             "calendarYear": "Req. last calendar year"
         }
     },
-
+    "publisherInfo": {
+        "title": "Publisher Information"
+    },
+    "glossary": {
+        "title": "Glossary",
+        "searchForTerm": "Search for this term"
+    },
     "login": {
         "title": "Login",
         "info": "This is the Psychoanalytic Electronic Publishing Archive full text database. It is freely available for everyone to search, view tables of contents, and view summaries. However you will need a subscription in order to view the full text of articles and books and follow links within the database.",

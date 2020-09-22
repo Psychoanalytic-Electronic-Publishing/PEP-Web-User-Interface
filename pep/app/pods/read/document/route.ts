@@ -4,11 +4,13 @@ import Transition from '@ember/routing/-private/transition';
 import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hooks/pagination';
 import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
 
-import ConfigurationService from 'pep/services/configuration';
 import { PageNav } from 'pep/mixins/page-layout';
 import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
 import Document from 'pep/pods/document/model';
 import ReadDocumentController from 'pep/pods/read/document/controller';
+import ConfigurationService from 'pep/services/configuration';
+import { WIDGET } from 'pep/constants/sidebar';
+import SidebarService from 'pep/services/sidebar';
 
 export interface ReadDocumentParams {
     document_id: string;
@@ -23,8 +25,9 @@ export interface ReadDocumentParams {
 
 export default class ReadDocument extends PageNav(Route) {
     @service configuration!: ConfigurationService;
-
+    @service sidebar!: SidebarService;
     navController = 'read/document';
+
     searchResults?: Document[];
     searchResultsMeta?: any;
 
@@ -33,7 +36,9 @@ export default class ReadDocument extends PageNav(Route) {
      * @param {ReadDocumentParams} params
      */
     model(params: ReadDocumentParams) {
-        return this.store.findRecord('document', params.document_id, { reload: true });
+        return this.store.findRecord('document', params.document_id, {
+            reload: true
+        });
     }
 
     /**
@@ -41,8 +46,16 @@ export default class ReadDocument extends PageNav(Route) {
      * @param {Object} model
      * @param {Transition} transition
      */
-    async afterModel(model: object, transition: Transition) {
+    async afterModel(model: Document, transition: Transition) {
         super.afterModel(model, transition);
+
+        this.sidebar.update({
+            [WIDGET.RELATED_DOCUMENTS]: model,
+            [WIDGET.MORE_LIKE_THESE]: model,
+            [WIDGET.GLOSSARY_TERMS]: model?.meta?.facetCounts.facet_fields.glossary_group_terms,
+            [WIDGET.PUBLISHER_INFO]: model
+        });
+
         let results;
         let resultsMeta;
 

@@ -1,5 +1,4 @@
 import { computed, setProperties } from '@ember/object';
-import { assign } from '@ember/polyfills';
 import Service, { inject as service } from '@ember/service';
 import fetch from 'fetch';
 import { reject } from 'rsvp';
@@ -40,7 +39,7 @@ export default class AjaxService extends Service {
             'Content-Type': 'application/vnd.api+json',
             'client-id': ENV.clientId
         };
-        const headers = assign(baseHeaders, this.authorizationHeaders);
+        const headers = Object.assign(baseHeaders, this.authorizationHeaders);
         return headers;
     }
 

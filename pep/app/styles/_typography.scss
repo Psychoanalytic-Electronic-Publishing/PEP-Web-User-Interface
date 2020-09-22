@@ -17,16 +17,8 @@
         display: inline;
         padding: 0.25rem;
 
-        &:nth-of-type(3n + 1) {
-            font-size: 1.25rem;
-        }
-
-        &:nth-of-type(4n + 3) {
-            font-size: 1.75rem;
-        }
-
-        &:nth-of-type(5n - 3) {
-            font-size: 1rem;
+        .btn {
+            font-size: inherit;
         }
     }
 }
