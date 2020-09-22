@@ -327,15 +327,15 @@
             "publisherInfo": {
                 "title": "Publisher Info",
                 "view": "View information for {publisher}",
-                "noResults": "You must view a document to see the documents publisher information"
+                "noResults": "You must view a document to see the documents publisher information."
             },
             "readLater": {
                 "title": "Read later",
-                "noResults": "You don't have any documents saved for later. Add documents that you want to view for quick access"
+                "noResults": "You don't have any documents saved for later. Add documents that you want to view for quick access."
             },
             "relatedDocuments": {
                 "title": "Related Documents",
-                "noResults": "You must view a document to see the documents related to it. If you are already viewing one, this means no results have been found"
+                "noResults": "You must view a document to see the documents related to it. If you are already viewing one, this means no results have been found."
             },
             "relevantSearches": {
                 "title": "Relevant searches"
