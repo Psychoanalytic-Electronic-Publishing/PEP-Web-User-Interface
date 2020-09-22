@@ -1,19 +1,24 @@
+export enum ThemeId {
+    DEFAULT = 'default',
+    TOMATO = 'tomato'
+}
+
 export interface Theme {
-    id: string;
+    id: ThemeId;
     cssPath: string;
     label: string;
 }
 
 export const THEME_DEFAULT: Theme = {
-    id: 'default',
+    id: ThemeId.DEFAULT,
     cssPath: '/assets/pep.css',
-    label: 'Navy (default)'
+    label: 'theme.themes.default'
 };
 
 export const THEME_TOMATO: Theme = {
-    id: 'tomato',
+    id: ThemeId.TOMATO,
     cssPath: '/assets/themes/tomato.css',
-    label: 'Tomato'
+    label: 'theme.themes.tomato'
 };
 
 export default [THEME_DEFAULT, THEME_TOMATO];

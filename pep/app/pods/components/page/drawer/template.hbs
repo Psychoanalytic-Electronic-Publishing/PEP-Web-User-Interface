@@ -2,8 +2,8 @@
     class="page-drawer d-block d-md-none {{~if this.drawer.isOpen " is-open"}}"
     ...attributes
 >
-    <Scrollable @namespace="page-drawer" class="page-drawer-scrollable">
-        <div class="p-4 d-flex align-items-center page-drawer-header">
+    <Scrollable @namespace="page-drawer" class="page-drawer-scrollable d-flex flex-column">
+        <div class="p-4 flex-shrink-0 d-flex align-items-center page-drawer-header">
             <button type="button" class="page-drawer-close" {{on "click" this.closeDrawer}}>
                 <FaIcon @icon="times-circle" @prefix="fas" @size="lg" />
             </button>
@@ -25,7 +25,11 @@
                     </LinkTo>
                 </Page::Drawer::NavItem>
                 <Page::Drawer::NavItem class="mt-1">
-                    <LinkTo @route="search" class="list-group-item list-group-item-action">
+                    <LinkTo
+                        @route="search"
+                        @query={{this.defaultSearchParams}}
+                        class="list-group-item list-group-item-action"
+                    >
                         <FaIcon @icon="search" @fixedWidth={{true}} class="mr-2" />
                         {{t "nav.search"}}
                     </LinkTo>
@@ -70,6 +74,16 @@
                             {{t "nav.user.reportProblem"}}
                         </button>
                     </Page::Drawer::NavItem>
+                    <Page::Drawer::NavItem class="mt-1">
+                        <button
+                            type="button"
+                            class="list-group-item list-group-item-action"
+                            {{on "click" @openAboutModal}}
+                        >
+                            <FaIcon @icon="info-square" @fixedWidth={{true}} class="mr-2" />
+                            {{t "nav.user.about"}}
+                        </button>
+                    </Page::Drawer::NavItem>
                     {{#if this.session.isAuthenticated}}
                         <Page::Drawer::NavItem class="mt-1">
                             <button
@@ -95,6 +109,9 @@
                     {{/if}}
                 </Page::Drawer::NavMenu>
             </div>
+        </div>
+        <div class="page-drawer-footer mt-auto p-2 small text-center text-white-50">
+            {{t "brand.copywrite" htmlSafe=true}}
         </div>
     </Scrollable>
 </div>

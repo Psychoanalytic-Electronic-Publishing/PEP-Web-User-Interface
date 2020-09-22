@@ -2,21 +2,29 @@ import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import SessionService from 'ember-simple-auth/services/session';
 import ModalService from '@gavant/ember-modals/services/modal';
 
 import DrawerService from 'pep/services/drawer';
 import AuthService from 'pep/services/auth';
+import ConfigurationService from 'pep/services/configuration';
+import PepSessionService from 'pep/services/pep-session';
 
-interface PageDrawerArgs {}
+interface PageDrawerArgs {
+    openAboutModal: () => Promise<void>;
+}
 
 export default class PageDrawer extends Component<PageDrawerArgs> {
     @service drawer!: DrawerService;
-    @service session!: SessionService;
+    @service('pep-session') session!: PepSessionService;
     @service auth!: AuthService;
     @service modal!: ModalService;
+    @service configuration!: ConfigurationService;
 
     @tracked isUserMenuOpen = false;
+
+    get defaultSearchParams() {
+        return this.configuration.defaultSearchParams;
+    }
 
     /**
      * Closes the page drawer nav

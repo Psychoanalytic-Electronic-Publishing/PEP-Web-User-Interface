@@ -10,6 +10,7 @@ module.exports = {
         'attribute-indentation': {
             indentation: 4,
             'open-invocation-max-len': 120
-        }
+        },
+        'no-curly-component-invocation': false
     }
 };

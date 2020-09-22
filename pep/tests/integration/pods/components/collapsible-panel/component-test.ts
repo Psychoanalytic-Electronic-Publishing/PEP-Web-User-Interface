@@ -16,9 +16,9 @@ module('Integration | Component | collapsible-panel', function(hooks) {
 
         // Template block usage:
         await render(hbs`
-      <CollapsiblePanel>template block text</CollapsiblePanel>
+      <CollapsiblePanel>{{t "brand.name"}}</CollapsiblePanel>
     `);
 
-        assert.equal(this.element.textContent?.trim(), '');
+        assert.equal(this.element.textContent?.trim(), 'PEP');
     });
 });

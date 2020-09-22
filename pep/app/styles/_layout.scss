@@ -62,5 +62,12 @@ body {
 }
 
 .footer {
+    min-height: $footer-height;
     background-color: $color-brand-primary;
+
+    &-branding-img {
+        height: $footer-brand-img-height;
+        margin-top: ($footer-height - $footer-brand-img-height) * -1;
+        margin-bottom: ($footer-height - $footer-brand-img-height) * -1;
+    }
 }

@@ -4,40 +4,49 @@ import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import RouterService from '@ember/routing/router-service';
 import { reject } from 'rsvp';
-import SessionService from 'ember-simple-auth/services/session';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
 import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 
+import Document from 'pep/pods/document/model';
 import AuthService from 'pep/services/auth';
 import LoadingBarService from 'pep/services/loading-bar';
+import ConfigurationService from 'pep/services/configuration';
+import PepSessionService from 'pep/services/pep-session';
 import { buildSearchQueryParams } from 'pep/utils/search';
-import { SEARCH_DEFAULT_TERMS, SEARCH_DEFAULT_FACETS } from 'pep/constants/search';
-import Document from 'pep/pods/document/model';
+import { ViewPeriod, SEARCH_DEFAULT_VIEW_PERIOD } from 'pep/constants/search';
 
 export default class ReadDocument extends Controller {
-    @service session!: SessionService;
+    @service('pep-session') session!: PepSessionService;
     @service auth!: AuthService;
     @service fastboot!: FastbootService;
     @service loadingBar!: LoadingBarService;
     @service router!: RouterService;
+    @service configuration!: ConfigurationService;
 
-    defaultSearchTerms = JSON.stringify(SEARCH_DEFAULT_TERMS);
-    defaultSearchFacets = JSON.stringify(SEARCH_DEFAULT_FACETS);
+    get defaultSearchParams() {
+        return this.configuration.defaultSearchParams;
+    }
 
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
     //@ts-ignore
-    queryParams = ['q', { _searchTerms: 'searchTerms' }, 'matchSynonyms', { _facets: 'facets' }];
+    queryParams = [
+        'q',
+        { _searchTerms: 'searchTerms' },
+        'matchSynonyms',
+        'citedCount',
+        'viewedCount',
+        'viewedPeriod',
+        { _facets: 'facets' }
+    ];
+
     @tracked q: string = '';
     @tracked matchSynonyms: boolean = false;
-    //workaround for bug w/array-based query param values
-    //@see https://github.com/emberjs/ember.js/issues/18981
-    @tracked _searchTerms: string | null = JSON.stringify([
-        { type: 'everywhere', term: '' },
-        { type: 'title', term: '' },
-        { type: 'author', term: '' }
-    ]);
+    @tracked citedCount: string = '';
+    @tracked viewedCount: string = '';
+    @tracked viewedPeriod: ViewPeriod = SEARCH_DEFAULT_VIEW_PERIOD;
+    @tracked _searchTerms: string | null = null;
     @tracked paginator!: Pagination<Document>;
 
     get isLoadingRoute(): boolean {
@@ -91,7 +100,20 @@ export default class ReadDocument extends Controller {
      */
     @action
     processQueryParams(params: QueryParamsObj) {
-        const searchParams = buildSearchQueryParams(this.q, this.searchTerms, this.matchSynonyms, this.facets);
+        const cfg = this.configuration.base.search;
+        const searchParams = buildSearchQueryParams(
+            this.q,
+            this.searchTerms,
+            this.matchSynonyms,
+            this.facets,
+            this.citedCount,
+            this.viewedCount,
+            this.viewedPeriod,
+            cfg.facets.defaultFields,
+            'AND',
+            cfg.facets.valueLimit,
+            cfg.facets.valueMinCount
+        );
         return { ...params, ...searchParams };
     }
 

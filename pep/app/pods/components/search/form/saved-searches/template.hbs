@@ -1,0 +1,41 @@
+{{!-- TODO hiding saved searches for now until a future release --}}
+{{!--
+<div>
+    <DropdownMenu @horizontalPosition="right" as |DD|>
+        <DD.Trigger @htmlTag="button" class="btn btn-link">
+            <FaIcon @icon="bookmark" @size="lg" />
+            <EmberTooltip
+                @text={{t "search.form.savedSearch.label"}}
+                @popperContainer="body"
+                @side="bottom"
+                @spacing={{5}}
+                @effect="slide"
+                @innerClass=""
+            />
+        </DD.Trigger>
+        <DD.Content class="dropdown-menu">
+            <h6 class="dropdown-header">
+                <FaIcon @icon="bookmark" class="mr-1" />
+                {{t "search.form.savedSearch.mine"}}
+            </h6>
+            <DropdownAction @dd={{DD}}>
+                disjunction feminine
+                <small class="text-muted">(all, 132 matches)</small>
+            </DropdownAction>
+            <DropdownAction @dd={{DD}}>
+                family discord
+                <small class="text-muted">(books, 3 matches)</small>
+            </DropdownAction>
+            <DropdownAction @dd={{DD}}>
+                depression anxiety
+                <small class="text-muted">(videos, 5 matches)</small>
+            </DropdownAction>
+            <div class="dropdown-divider"></div>
+            <DropdownAction @dd={{DD}} disabled={{not this.hasEnteredSearch}}>
+                <FaIcon @icon="plus-circle" @fixedWidth={{true}} class="text-muted" />
+                {{t "search.form.savedSearch.save"}}
+            </DropdownAction>
+        </DD.Content>
+    </DropdownMenu>
+</div>
+--}}

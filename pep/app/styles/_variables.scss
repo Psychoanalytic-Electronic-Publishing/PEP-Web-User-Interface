@@ -3,11 +3,12 @@
 // ---------------------------
 //DIMENSIONS
 $navbar-height: 58px;
-$footer-height: 32px;
+$footer-height: 40px;
+$footer-brand-img-height: 34px;
 $sidebar-width: 305px;
 $sidebar-handle-width: 16px;
 $drawer-width: 305px;
-$search-preview-collapsed-height: 13rem;
+$search-preview-collapsed-height: 18rem;
 $progress-bar-height: 5px;
 $progress-spinner-loading-border-width: 2px;
 $progress-spinner-loading-size: 15px;
@@ -17,7 +18,7 @@ $drag-bar-thickness: 5px;
 
 //Z-INDICES / LAYERING
 $z-page-content: 2;
-$z-sidebar-mask: 3;
+$z-sidebar-mask: 5;
 $z-sidebar-overlay: 10;
 $z-sidebar-handle: 10;
 $z-drawer-mask: 1035;

@@ -1,0 +1,18 @@
+<div class="py-3 px-5 error-page" ...attributes>
+    <div class="px-3">
+        <div class="error-page-content mw-md-75 mw-xl-50 py-5">
+            <h4 class="error-page-heading">
+                {{@heading}}
+            </h4>
+            <h5 class="error-page-subheading mb-4 text-muted">
+                {{@subheading}}
+            </h5>
+            <p class="text-muted">
+                {{@message}}
+            </p>
+        </div>
+        <div class="error-page-graphic">
+            <FaIcon @icon="sad-tear" class="error-page-icon text-primary" />
+        </div>
+    </div>
+</div>

@@ -1,0 +1,21 @@
+<div {{did-insert this.loadInitialPage}}>
+    <PowerSelectInfinity::WithSearch
+        @options={{if (is-empty @options) this.options @options}}
+        @selected={{@selected}}
+        @search={{this.search}}
+        @canLoadMore={{this.canLoadMore}}
+        @loadMore={{this.loadMore}}
+        @searchField="title"
+        @onChange={{@onChange}}
+        @searchPlaceholder={{@searchPlaceholder}}
+        @placeholder={{@placeholder}}
+        @triggerClass="form-control"
+        @renderInPlace={{@renderInPlace}}
+        @allowClear={{true}}
+        @disabled={{@disabled}}
+        @verticalPosition={{@verticalPosition}}
+        as |option|
+    >
+        {{option.title}}
+    </PowerSelectInfinity::WithSearch>
+</div>

@@ -1,10 +1,14 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
+import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { isEmpty } from '@ember/utils';
 import { capitalize } from '@ember/string';
+import IntlService from 'ember-intl/services/intl';
 
+import ConfigurationService from 'pep/services/configuration';
 import { SEARCH_FACETS, SearchFacetValue } from 'pep/constants/search';
+import { SearchMetadata } from 'pep/api';
 
 export interface RefineOption {
     id: string;
@@ -19,16 +23,6 @@ export interface RefineGroup {
     optionsWithoutResults: RefineOption[];
 }
 
-export interface SearchMetadata {
-    facetCounts: {
-        facet_fields: {
-            [x: string]: {
-                [x: string]: number;
-            };
-        };
-    };
-}
-
 interface SearchRefineArgs {
     metadata?: SearchMetadata;
     selection: SearchFacetValue[];
@@ -36,25 +30,40 @@ interface SearchRefineArgs {
 }
 
 export default class SearchRefine extends Component<SearchRefineArgs> {
+    @service intl!: IntlService;
+    @service configuration!: ConfigurationService;
+
     @tracked expandedGroups: string[] = [];
 
     get groups() {
+        const cfg = this.configuration.base.search;
         const groups: RefineGroup[] = [];
         const fieldsMap = this.args.metadata?.facetCounts?.facet_fields ?? {};
         const incFields = Object.keys(fieldsMap);
+        const displayedFacets = cfg.facets.defaultFields.map((id) => SEARCH_FACETS.find((f) => f.id === id));
 
-        SEARCH_FACETS.forEach((facetType) => {
-            if (incFields.includes(facetType.id)) {
-                let fieldCountsMap = fieldsMap[facetType.id];
+        displayedFacets.forEach((facetType) => {
+            if (facetType && incFields.includes(facetType.id)) {
+                let fieldCountsMap = facetType.formatCounts
+                    ? facetType.formatCounts(fieldsMap[facetType.id])
+                    : fieldsMap[facetType.id];
                 let fieldCountIds = Object.keys(fieldCountsMap);
-                let allOptIds = facetType.dynamicValues ? fieldCountIds : facetType.values.mapBy('id');
-                let allOptions: RefineOption[] = allOptIds.map((optId) => ({
-                    id: optId,
-                    label: facetType.dynamicValues
-                        ? capitalize(optId)
-                        : facetType.values.findBy('id', optId)?.label ?? optId,
-                    numResults: fieldCountsMap[optId] ?? 0
-                }));
+                let allOptIds = facetType.dynamicValues ? fieldCountIds : facetType.values.map((v) => v.id);
+                let allOptions: RefineOption[] = allOptIds.map((optId) => {
+                    let label;
+                    if (facetType.dynamicValues) {
+                        label = facetType.formatOption ? facetType.formatOption(optId, this.intl) : capitalize(optId);
+                    } else {
+                        const valLabel = facetType.values.findBy('id', optId)?.label;
+                        label = valLabel ? this.intl.t(facetType.values.findBy('id', optId)!.label) : optId;
+                    }
+
+                    return {
+                        id: optId,
+                        label,
+                        numResults: fieldCountsMap[optId] ?? 0
+                    };
+                });
 
                 //sort options w/no results at the bottom
                 let optionsWithResults = allOptions.filter((opt) => opt.numResults > 0);
@@ -64,7 +73,7 @@ export default class SearchRefine extends Component<SearchRefineArgs> {
                 if (!isEmpty(allOptions)) {
                     groups.push({
                         id: facetType.id,
-                        label: facetType.label,
+                        label: this.intl.t(facetType.label),
                         optionsWithResults,
                         optionsWithoutResults
                     });

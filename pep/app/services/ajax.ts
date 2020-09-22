@@ -1,15 +1,15 @@
 import { computed, setProperties } from '@ember/object';
-import { assign } from '@ember/polyfills';
 import Service, { inject as service } from '@ember/service';
-import SessionService from 'ember-simple-auth/services/session';
 import fetch from 'fetch';
 import { reject } from 'rsvp';
 
 import ENV from 'pep/config/environment';
 import { appendTrailingSlash } from 'pep/utils/url';
+import { guard } from 'pep/utils/types';
+import PepSessionService from 'pep/services/pep-session';
 
 export default class AjaxService extends Service {
-    @service session!: SessionService;
+    @service('pep-session') session!: PepSessionService;
 
     host: string = ENV.apiBaseUrl;
     namespace: string = ENV.apiNamespace;
@@ -18,14 +18,14 @@ export default class AjaxService extends Service {
      * Add the oauth token authorization header to all requests
      * @returns {Object}
      */
-    @computed('session.{isAuthenticated,data.authenticated.access_token}')
+    @computed('session.{isAuthenticated,data.authenticated.SessionId}')
     get authorizationHeaders() {
         const headers = {} as any;
         // api auth token is sent in cookies
-        // if (this.session.isAuthenticated) {
-        //     const { access_token } = this.session.data!.authenticated;
-        //     headers['Authorization'] = `Bearer ${access_token}`;
-        // }
+        if (this.session.isAuthenticated) {
+            const { SessionId } = this.session.data.authenticated;
+            headers['client-session'] = SessionId;
+        }
         return headers;
     }
 
@@ -33,9 +33,13 @@ export default class AjaxService extends Service {
      * The default headers on all requests
      * @returns {Object}
      */
-    @computed('authorizationHeaders', 'clientIdentity.uuidHeader')
+    @computed('authorizationHeaders')
     get headers() {
-        const headers = assign({ 'Content-Type': 'application/vnd.api+json' }, this.authorizationHeaders);
+        const baseHeaders = {
+            'Content-Type': 'application/vnd.api+json',
+            'client-id': ENV.clientId
+        };
+        const headers = Object.assign(baseHeaders, this.authorizationHeaders);
         return headers;
     }
 
@@ -49,9 +53,9 @@ export default class AjaxService extends Service {
      * @param  {RequestInit}  [options={}]
      * @returns {Promise}
      */
-    async request(url: string, options: RequestInit = {}) {
+    async request<T>(url: string, options: RequestInit = {}): Promise<T> {
         setProperties(options, {
-            credentials: 'include', //NOTE: only needed if cookies must be sent in API requests (which are needed for auth right now)
+            credentials: 'include',
             headers: { ...this.headers, ...(options.headers || {}) }
         });
 
@@ -60,12 +64,12 @@ export default class AjaxService extends Service {
         const response = await fetch(requestUrl, options);
         const responseHeaders = this.parseHeaders(response.headers);
         const result = await this.handleResponse(response.status, responseHeaders, response);
-        if (this.isSuccess(response.status)) {
+        if (this.isSuccess(response.status) && guard(result, 'status')) {
             const isNoContent = this.normalizeStatus(response.status) === 204;
             if (isNoContent) {
-                return result;
+                return result as any;
             } else {
-                return await result.json();
+                return (await result.json()) as T;
             }
         } else {
             return reject(result);
@@ -79,7 +83,7 @@ export default class AjaxService extends Service {
      * @param  {Object} response
      * @returns {Promise}
      */
-    async handleResponse(status: number, _headers: {}, response: Response) {
+    async handleResponse(status: number, _headers: {}, response: Response): Promise<Response | Error> {
         // uncomment when using the @gavant/ember-app-version-update addon
         // this.versionUpdate.checkResponseHeaders(headers);
 
@@ -96,7 +100,7 @@ export default class AjaxService extends Service {
             return reject();
         }
 
-        return error;
+        return error as Error;
     }
 
     /**
@@ -161,6 +165,6 @@ export default class AjaxService extends Service {
      * @returns {String}
      */
     stringifyData(data: any) {
-        return JSON.stringify({ data });
+        return JSON.stringify(data);
     }
 }

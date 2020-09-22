@@ -1,3 +1,25 @@
+// ---------------------------
+// Sizing
+// ---------------------------
+@each $breakpoint in map-keys($grid-breakpoints) {
+    @include media-breakpoint-up($breakpoint) {
+        $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+        .mw#{$infix}-25 {
+            max-width: 25% !important;
+        }
+        .mw#{$infix}-50 {
+            max-width: 50% !important;
+        }
+        .mw#{$infix}-75 {
+            max-width: 75% !important;
+        }
+    }
+}
+
+// ---------------------------
+// Backgrounds
+// ---------------------------
 .bg-gradient-primary {
     background-image: linear-gradient(
         to right,
@@ -10,6 +32,9 @@
     background-color: $color-backdrop-well;
 }
 
+// ---------------------------
+// Borders
+// ---------------------------
 .border-divider-b {
     border-bottom: 1px solid $color-divider;
 }

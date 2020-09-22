@@ -1,0 +1,41 @@
+<BasicDropdown
+    @renderInPlace={{true}}
+    as |DD|
+>
+    <FlInput
+        @placeholder={{@placeholder}}
+        @value={{@value}}
+    >
+        <input
+            value={{@value}}
+            type="text"
+            class="form-control"
+            maxlength="255"
+            autocomplete="off"
+            aria-haspopup="true"
+            aria-expanded={{DD.isOpen}}
+            id="{{DD.uniqueId}}-fl-typeahead-input"
+            data-ebd-id="{{DD.uniqueId}}-trigger"
+            ...attributes
+            {{on "input" (fn this.onTextChange DD)}}
+            {{on "keydown" (fn this.onInputKeyDown DD)}}
+            {{on "focus" (fn this.onInputFocus DD)}}
+            {{did-insert this.onInputInsert}}
+        />
+    </FlInput>
+    <DD.Content
+        class="dropdown-menu fl-typeahead-menu {{@menuClassName}}"
+        aria-labelledby="{{DD.uniqueId}}-fl-typeahead-input"
+    >
+        {{#each @suggestions as |suggestion|}}
+            <button
+                type="button"
+                class="dropdown-item text-truncate {{~if (eq suggestion this.focusedSuggestion) " active"}}"
+                title={{suggestion.text}}
+                {{on "click" (fn this.onSelectSuggestion suggestion DD)}}
+            >
+                {{suggestion.text}}
+            </button>
+        {{/each}}
+    </DD.Content>
+</BasicDropdown>

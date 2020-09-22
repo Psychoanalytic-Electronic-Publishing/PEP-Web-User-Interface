@@ -1,4 +1,5 @@
 @import 'components/alert';
+@import 'components/collapsible-panel';
 @import 'components/drag-bar';
 @import 'components/progress-bar';
 @import 'components/progress-spinner';
@@ -7,4 +8,7 @@
 @import 'components/search/preview';
 @import 'components/search/refine';
 @import 'components/page/drawer';
+@import 'components/page/error';
 @import 'components/page/sidebar/widgets/accolades';
+@import 'components/ember-table';
+@import 'components/ember-power-select';

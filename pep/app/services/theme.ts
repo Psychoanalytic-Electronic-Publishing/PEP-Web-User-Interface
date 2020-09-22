@@ -1,18 +1,30 @@
 import Service from '@ember/service';
 import { inject as service } from '@ember/service';
-import SessionService from 'ember-simple-auth/services/session';
 import HeadDataService from 'ember-cli-head/services/head-data';
+import IntlService from 'ember-intl/services/intl';
+import PepSessionService from 'pep/services/pep-session';
 
-import THEMES, { THEME_DEFAULT } from 'pep/constants/themes';
+import CurrentUserService from 'pep/services/current-user';
+import THEMES, { THEME_DEFAULT, ThemeId } from 'pep/constants/themes';
+import { PreferenceKey } from 'pep/constants/preferences';
 
 export default class ThemeService extends Service {
     @service headData!: HeadDataService;
-    @service session!: SessionService;
+    @service('pep-session') session!: PepSessionService;
+    @service intl!: IntlService;
+    @service currentUser!: CurrentUserService;
 
     allThemes = THEMES;
 
+    get themeOptions() {
+        return this.allThemes.map((theme) => ({
+            ...theme,
+            label: this.intl.t(theme.label)
+        }));
+    }
+
     get currentTheme() {
-        return THEMES.findBy('id', this.session.data?.themeId) ?? THEME_DEFAULT;
+        return THEMES.findBy('id', this.currentUser.preferences?.theme) ?? THEME_DEFAULT;
     }
 
     /**
@@ -24,13 +36,10 @@ export default class ThemeService extends Service {
 
     /**
      * Updates the user's selected theme
-     * @param {String} newThemeId
+     * @param {ThemeId} newThemeId
      */
-    updateTheme(newThemeId: string) {
-        //@ts-ignore TODO need to allow arbitrary session.set() paths in ember-simple-auth/services/session
-        //session.set() MUST be used (can't use Ember.set()/tracked/etc) as it performs custom logic
-        //to sync changes to the user's browser cookies
-        this.session.set('data.themeId', newThemeId);
+    updateTheme(newThemeId: ThemeId) {
+        this.currentUser.updatePrefs({ [PreferenceKey.THEME]: newThemeId });
         this.setup();
     }
 }

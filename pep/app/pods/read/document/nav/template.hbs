@@ -2,7 +2,7 @@
     <Sidebar.content @scrollableNamespace="sidebar-left">
         {{#if (or this.paginator.metadata.fullCount this.isLoadingRoute)}}
             <div class="bg-white border-divider-b p-3">
-                {{#if this.isLoadingRoute}}
+                {{#if (and this.isLoadingRoute (not this.paginator.models))}}
                     <Loading::Read::Results />
                 {{else}}
                     <div class="d-flex justify-content-between align-items-center mb-2">
@@ -98,12 +98,7 @@
                 <p>
                     <LinkTo
                         @route="search"
-                        @query={{hash
-                            q=""
-                            matchSynonyms=false
-                            searchTerms=this.defaultSearchTerms
-                            facets=this.defaultSearchFacets
-                        }}
+                        @query={{this.defaultSearchParams}}
                         class="btn btn-outline-primary btn-block"
                     >
                         {{t "read.document.newSearch"}}

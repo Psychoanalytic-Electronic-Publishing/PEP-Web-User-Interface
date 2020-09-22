@@ -1,30 +1,32 @@
 <CollapsiblePanel
     @scrollableNamespace="sidebar-right"
-    @title={{t "relatedInfo.widgets.glossaryTerms.title"}}
     @isOpen={{this.isOpen}}
-    @toggle={{fn (mut this.isOpen)}}
+    @toggle={{fn @toggleIsOpen this.widget}}
     class="mb-2"
     ...attributes
->
-    <ul class="word-cloud text-muted mb-3">
-        {{!-- template-lint-disable no-bare-strings --}}
-        <li>Lacan</li>
-        <li>psychoanalytical</li>
-        <li>family</li>
-        <li>delusions</li>
-        <li>anxiety</li>
-        <li>Freud</li>
-        <li>emotions</li>
-        <li>fear</li>
-        <li>religion</li>
-        <li>parenting</li>
-        <li>feminism</li>
-        <li>behavior</li>
-    </ul>
-    <p class="mb-0">
-        <a href="#">
-            {{t "relatedInfo.widgets.glossaryTerms.view"}}
-            <FaIcon @icon="arrow-right" />
-        </a>
-    </p>
+as |Panel|>
+    <Panel.header @title={{t "relatedInfo.widgets.glossaryTerms.title"}} />
+    <Panel.body>
+        <ul class="word-cloud text-muted mb-3">
+            {{!-- template-lint-disable no-bare-strings --}}
+            <li>Lacan</li>
+            <li>psychoanalytical</li>
+            <li>family</li>
+            <li>delusions</li>
+            <li>anxiety</li>
+            <li>Freud</li>
+            <li>emotions</li>
+            <li>fear</li>
+            <li>religion</li>
+            <li>parenting</li>
+            <li>feminism</li>
+            <li>behavior</li>
+        </ul>
+        <p class="mb-0">
+            <a href="#">
+                {{t "relatedInfo.widgets.glossaryTerms.view"}}
+                <FaIcon @icon="arrow-right" />
+            </a>
+        </p>
+    </Panel.body>
 </CollapsiblePanel>

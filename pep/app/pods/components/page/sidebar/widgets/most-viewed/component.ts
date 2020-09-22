@@ -5,15 +5,25 @@ import { inject as service } from '@ember/service';
 import DS from 'ember-data';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import Document from 'pep/pods/document/model';
+import FastbootService from 'ember-cli-fastboot/services/fastboot';
+import Router from 'pep/router';
+import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
+import { WIDGET } from 'pep/constants/sidebar';
 
-interface PageSidebarWidgetsMostViewedArgs {}
+interface PageSidebarWidgetsMostViewedArgs extends PageSidebarWidgetArgs {}
 
 export default class PageSidebarWidgetsMostViewed extends Component<PageSidebarWidgetsMostViewedArgs> {
     @service store!: DS.Store;
-
-    @tracked isOpen = true;
+    @service router!: Router;
+    @service fastboot!: FastbootService;
     @tracked isLoading = false;
     @tracked results: Document[] = [];
+
+    get isOpen() {
+        return this.args.openWidgets.includes(this.widget);
+    }
+
+    widget = WIDGET.MOST_VIEWED;
 
     /**
      * Load the widget results data
@@ -27,10 +37,9 @@ export default class PageSidebarWidgetsMostViewed extends Component<PageSidebarW
             this.isLoading = true;
             const results = await this.store.query('document', {
                 queryType: 'MostViewed',
-                period: 'all',
-                sourcecode: 'AOP',
-                morethan: 3,
-                limit: 3
+                viewperiod: 2,
+                morethan: 10,
+                limit: 10
             });
             this.results = results.toArray();
             this.isLoading = false;
@@ -45,5 +54,16 @@ export default class PageSidebarWidgetsMostViewed extends Component<PageSidebarW
     @action
     onElementInsert() {
         this.loadResults();
+    }
+
+    /**
+     * Transition to the table on click. Stop anything else from happening so we dont close/open the
+     * widget
+     *
+     * @memberof PageSidebarWidgetsMostViewed
+     */
+    @action
+    viewTable() {
+        this.router.transitionTo('most-viewed');
     }
 }

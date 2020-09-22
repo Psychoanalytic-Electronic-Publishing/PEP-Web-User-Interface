@@ -3,7 +3,8 @@
     font-weight: bold;
 }
 
-.pep-document-content {
+.pep-document-content,
+.pep-abstract-preview {
     h1 {
         font-size: 1.2rem;
     }
@@ -21,5 +22,18 @@
 
     .footer {
         background-color: transparent;
+    }
+}
+
+// used in places like "expert pick of the day"
+// hides some known elements of the abstract HTML
+// so only the main body content is displayed
+.pep-abstract-preview {
+    p.title,
+    p.title_author,
+    p.figure,
+    p.pagenumber,
+    p:empty {
+        display: none;
     }
 }

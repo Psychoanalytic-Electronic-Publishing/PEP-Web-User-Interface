@@ -1,7 +1,9 @@
 .search-refine {
-    &-has-changes {
-        padding-bottom: 3.5rem !important; //necessary to override bootstrap padding
-    }
+    // not necessary anymore, but leaving it here for now in case
+    // we want to re-enable the "apply bar" UI later
+    // &-has-changes {
+    //     padding-bottom: 3.5rem !important; //necessary to override bootstrap padding
+    // }
 
     &-apply-bar {
         position: absolute;

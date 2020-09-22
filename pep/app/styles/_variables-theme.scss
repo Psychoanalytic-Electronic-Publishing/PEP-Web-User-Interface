@@ -1,32 +1,38 @@
 // ---------------------------
 // Application variables
 // ---------------------------
-$logo-path: '/assets/images/logo.jpg';
-$color-brand-primary: #313b46;
-$color-backdrop: #e9eef1;
-$color-backdrop-well: darken($color-backdrop, 2.5%);
-$color-divider: rgba(#000, 0.06);
-$color-progress-spinner-loading1: rgba(0, 0, 0, 0.25);
-$color-progress-spinner-loading2: saturate(lighten($color-brand-primary, 35%), 45%);
-$color-mask-background: rgba(#000, 0.4);
-$color-focus-shadow: rgba(#426082, 0.25);
-// ---------------------------
-// Addon overrides
-// ---------------------------
-$button-spinner-loading-color1: rgba(#fff, 0.75);
-$button-spinner-loading-color2: saturate(lighten($color-brand-primary, 35%), 45%);
-
+$logo-path: '/assets/images/logo.jpg' !default;
+$color-brand-primary: #313b46 !default;
+$color-backdrop: #e9eef1 !default;
+$color-backdrop-well: darken($color-backdrop, 2.5%) !default;
+$color-divider: rgba(#000, 0.06) !default;
+$color-progress-spinner-loading1: rgba(0, 0, 0, 0.25) !default;
+$color-progress-spinner-loading2: saturate(lighten($color-brand-primary, 35%), 45%) !default;
+$color-mask-background: rgba(#000, 0.4) !default;
+$color-focus-shadow: rgba(#426082, 0.25) !default;
+$color-muted-select-background: #f5f5f5 !default;
+$color-muted-select-text: #666666 !default;
 // ---------------------------
 // Bootstrap overrides
 // ---------------------------
-$enable-shadows: false;
-$primary: saturate(lighten($color-brand-primary, 15%), 15%);
-$link-color: saturate($primary, 10%);
-$font-size-base: $font-size-app-base;
+$enable-shadows: false !default;
+$primary: saturate(lighten($color-brand-primary, 15%), 15%) !default;
+$link-color: saturate($primary, 10%) !default;
+$font-size-base: $font-size-app-base !default;
 $font-family-sans-serif: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
-    'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji' !default;
 $headings-font-family: Muli, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
-    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-$hr-border-color: rgba(#000, 0.06);
-$dropdown-border-color: #dbdbdb;
-$dropdown-border-radius: 0.21rem;
+    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji' !default;
+$hr-border-color: rgba(#000, 0.06) !default;
+$dropdown-border-color: #dbdbdb !default;
+$dropdown-border-radius: 0.21rem !default;
+// ---------------------------
+// Addon overrides
+// ---------------------------
+$button-spinner-loading-color1: rgba(#fff, 0.75) !default;
+$button-spinner-loading-color2: saturate(lighten($color-brand-primary, 35%), 45%) !default;
+$ember-power-select-border-color: #ced4da !default;
+$ember-power-select-focus-border-color: lighten($primary, 25%) !default;
+$ember-power-select-focus-box-shadow: 0 0 0 0.2rem rgba($primary, 0.25) !default;
+$ember-power-select-trigger-icon-color: #afafaf !default;
+$ember-power-select-line-height: 1.5 !default;
