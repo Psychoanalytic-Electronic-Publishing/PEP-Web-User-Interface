@@ -16,7 +16,7 @@ export default class PageSidebarWidgetsGlossaryTerms extends Component<PageSideb
     @service store!: DS.Store;
     @service modal!: Modal;
 
-    smallestFontSize = 0.5;
+    smallestFontSize = 0.6;
     fontMultiplier = 2;
 
     /**
@@ -52,7 +52,7 @@ export default class PageSidebarWidgetsGlossaryTerms extends Component<PageSideb
                 label: item.label,
                 fontStyle: htmlSafe(
                     `font-size: ${this.smallestFontSize +
-                        this.fontMultiplier * inverseLinearInterpolation(min, max, item.count)};`
+                        this.fontMultiplier * inverseLinearInterpolation(min, max, item.count)}rem;`
                 )
             };
         });

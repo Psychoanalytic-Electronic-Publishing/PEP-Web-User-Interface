@@ -16,5 +16,9 @@
         list-style: none;
         display: inline;
         padding: 0.25rem;
+
+        .btn {
+            font-size: inherit;
+        }
     }
 }
