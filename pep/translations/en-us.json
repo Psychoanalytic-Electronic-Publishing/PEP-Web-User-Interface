@@ -416,9 +416,21 @@
     "preferences": {
         "title": "Preferences",
         "info": "Customize and personalize your PEP experience using the settings below.",
-        "theme": {
-            "label": "Color theme",
-            "select": "Select a theme"
+        "general": {
+            "heading": "General settings",
+            "theme": {
+                "label": "Color theme",
+                "select": "Select a theme"
+            }
+        },
+        "search": {
+            "heading": "Search",
+            "preview": {
+                "label": "On search result selection",
+                "select": "Select your desired behavior",
+                "enabled": "Display a preview pane",
+                "disabled": "Open the full document"
+            }
         }
     },
     "about": {
