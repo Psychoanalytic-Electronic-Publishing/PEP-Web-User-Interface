@@ -40,8 +40,8 @@ export default class PageSidebar extends Component<PageSidebarArgs> {
     }
 
     /**
-     * Sidebars default to a max width of 35% of the current window width on desktop
-     * and 50% on tablets (as we only allow 1 sidebar open at a time on tablet)
+     * Sidebars default to a max width that is a percentage of the total window width
+     * depending on the device type/size (desktop vs. tablet)
      * @readonly
      * @returns {number}
      */
