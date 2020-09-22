@@ -12,6 +12,7 @@ interface ButtonWithTooltipArgs {
     tooltipSide?: 'top' | 'right' | 'bottom' | 'left';
     tooltipSpacing?: number;
     tooltipEffect?: 'fade' | 'slide' | 'none';
+    tooltipContainer?: string;
 }
 
 export default class ButtonWithTooltip extends Component<ButtonWithTooltipArgs> {
@@ -25,5 +26,9 @@ export default class ButtonWithTooltip extends Component<ButtonWithTooltipArgs> 
 
     get tooltipEffect() {
         return this.args.tooltipEffect ?? 'slide';
+    }
+
+    get tooltipContainer() {
+        return this.args.tooltipContainer ?? 'body';
     }
 }

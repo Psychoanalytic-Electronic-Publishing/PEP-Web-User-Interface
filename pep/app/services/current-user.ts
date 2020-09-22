@@ -201,10 +201,9 @@ export default class CurrentUserService extends Service {
      * @memberof CurrentUserService
      */
     addPreferenceDocument(key: PreferenceDocumentsKey, documentId: string) {
-        const prefs = this.preferences;
-        const currentDocs = prefs?.[key] ?? [];
-        if (!currentDocs?.includes(documentId)) {
-            currentDocs?.push(documentId);
+        let currentDocs = this.getPreferenceDocuments(key);
+        if (!currentDocs.includes(documentId)) {
+            currentDocs = [...currentDocs, documentId];
         }
         this.updatePrefs({
             [key]: currentDocs
@@ -220,8 +219,7 @@ export default class CurrentUserService extends Service {
      * @memberof CurrentUserService
      */
     hasPreferenceDocument(key: PreferenceDocumentsKey, documentId: string): boolean {
-        const prefs = this.preferences;
-        const currentDocs = prefs?.[key] ?? [];
+        const currentDocs = this.getPreferenceDocuments(key);
         return !!currentDocs?.includes(documentId);
     }
 
@@ -233,14 +231,10 @@ export default class CurrentUserService extends Service {
      * @memberof CurrentUserService
      */
     removePreferenceDocument(key: PreferenceDocumentsKey, documentId: string) {
-        const prefs = this.preferences;
-        const currentDocs = prefs?.[key];
-        const index = currentDocs?.findIndex((idToFind) => idToFind === documentId);
-        if (index !== undefined) {
-            currentDocs?.removeAt(index);
-        }
+        const currentDocs = this.getPreferenceDocuments(key);
+        const newDocs = currentDocs.filter((id) => id !== documentId);
         this.updatePrefs({
-            [key]: currentDocs
+            [key]: newDocs
         });
     }
 

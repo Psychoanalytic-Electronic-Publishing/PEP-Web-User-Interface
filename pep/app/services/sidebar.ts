@@ -10,6 +10,8 @@ export default class SidebarService extends Service {
     @service fastbootMedia!: FastbootMediaService;
     @tracked leftSidebarIsOpen = true;
     @tracked rightSidebarIsOpen = true;
+    @tracked leftSidebarWidth?: number;
+    @tracked rightSidebarWidth?: number;
     @tracked data = {};
 
     get hasOpenSidebar() {
