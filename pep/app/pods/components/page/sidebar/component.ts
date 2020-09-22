@@ -7,6 +7,7 @@ import { htmlSafe } from '@ember/template';
 
 import SidebarService from 'pep/services/sidebar';
 import FastbootMediaService from 'pep/services/fastboot-media';
+import { clamp } from 'pep/utils/math';
 import {
     SIDEBAR_HANDLE_WIDTH,
     SIDEBAR_MAX_WIN_PCT_DESKTOP,
@@ -154,7 +155,7 @@ export default class PageSidebar extends Component<PageSidebarArgs> {
     onWindowResize(width: number) {
         this.windowWidth = width;
         if (this.resizedWidth) {
-            this.resizedWidth = Math.max(this.minWidth, Math.min(this.maxWidth, this.resizedWidth));
+            this.resizedWidth = clamp(this.resizedWidth, this.minWidth, this.maxWidth);
         }
     }
 }

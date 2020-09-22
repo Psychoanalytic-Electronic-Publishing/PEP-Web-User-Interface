@@ -7,6 +7,7 @@ import FastbootService from 'ember-cli-fastboot/services/fastboot';
 
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import { getElementOffset, ElementOffset, getEventOffset } from 'pep/utils/dom';
+import { clamp } from 'pep/utils/math';
 import { NAV_BAR_HEIGHT, FOOT_BAR_HEIGHT, DRAG_BAR_THICKNESS } from 'pep/constants/dimensions';
 
 interface DragBarArgs {
@@ -201,7 +202,7 @@ export default class DragBar extends Component<DragBarArgs> {
     private calculateNewHorizPosition(eventOffset: ElementOffset) {
         const minY = this.minClientY;
         const maxY = document.body.offsetHeight - DRAG_BAR_THICKNESS - this.maxClientY;
-        const yOffset = Math.max(minY, Math.min(maxY, eventOffset.top));
+        const yOffset = clamp(eventOffset.top, minY, maxY);
         const top = this.dragBarOffset?.top ?? 0;
         return yOffset - top;
     }
@@ -216,7 +217,7 @@ export default class DragBar extends Component<DragBarArgs> {
         const docW = document.body.offsetWidth;
         const minX = this.reversed ? docW - this.maxClientX : this.minClientX;
         const maxX = this.reversed ? docW - this.minClientX : this.maxClientX;
-        const xOffset = Math.max(minX, Math.min(maxX, eventOffset.left));
+        const xOffset = clamp(eventOffset.left, minX, maxX);
         const left = this.dragBarOffset?.left ?? 0;
         return this.reversed ? xOffset - left : xOffset + DRAG_BAR_THICKNESS;
     }
