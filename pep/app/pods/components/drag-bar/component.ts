@@ -143,7 +143,7 @@ export default class DragBar extends Component<DragBarArgs> {
         document.addEventListener('mouseup', this.onDragStop);
         document.addEventListener('touchmove', this.onDragMove);
         document.addEventListener('touchend', this.onDragStop);
-
+        document.body.classList?.add?.('drag-bar-is-dragging');
         this.isDragging = true;
         this.dragBarOffset = getElementOffset(event.target);
         this.args.onDragStart?.(this.dragBarOffset, event);
@@ -175,6 +175,7 @@ export default class DragBar extends Component<DragBarArgs> {
         document.removeEventListener('mouseup', this.onDragStop);
         document.removeEventListener('touchmove', this.onDragMove);
         document.removeEventListener('touchend', this.onDragStop);
+        document.body.classList?.remove?.('drag-bar-is-dragging');
         const eventOffset = getEventOffset(event);
         const lastDragPos = this.dragBarPosition ?? 0;
         let endPosition;
