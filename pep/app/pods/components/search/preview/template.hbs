@@ -62,7 +62,7 @@
                         {{html-safe @result.abstract}}
                     </div>
                     <div>
-                        {{#if this.session.isAuthenticated}}
+                        {{#if (and this.session.isAuthenticated (not @result.accessLimited))}}
                             <LinkTo
                                 @route="read.document"
                                 @model={{@result.id}}
@@ -91,10 +91,23 @@
                                 </DD.Content>
                             </DropdownMenu>
                         {{else}}
-                            <p class="p-3 bg-light rounded">
-                                {{t "search.preview.mustBeLoggedIn"}}
-                                <a href="" {{on "click" this.login}}>{{t "search.preview.login"}}</a>.
-                            </p>
+                            <Alert
+                                @isShown={{this.session.isAuthenticated}}
+                                @type="warning"
+                            >
+                                {{html-safe
+                                    (or
+                                        @result.noAccessMessage
+                                        (t "search.preview.accessLimited")
+                                    )
+                                }}
+                            </Alert>
+                            {{#unless this.session.isAuthenticated}}
+                                <p class="p-3 bg-light rounded">
+                                    {{t "search.preview.mustBeLoggedIn"}}
+                                    <a href="" {{on "click" this.login}}>{{t "search.preview.login"}}</a>.
+                                </p>
+                            {{/unless}}
                         {{/if}}
                     </div>
                 </div>

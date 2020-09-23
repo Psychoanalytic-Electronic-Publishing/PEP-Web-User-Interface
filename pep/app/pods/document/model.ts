@@ -14,6 +14,7 @@ export default class Document extends DS.Model {
     @attr('string') accessClassification!: string;
     @attr('boolean') accessLimited!: boolean;
     @attr('string') accessLimitedDescription!: string;
+    @attr('string') accessLimitedReason!: string;
     @attr('string') authorMast!: string;
     @attr('number') docLevel!: number;
     @attr('string') docType!: string;
@@ -77,6 +78,10 @@ export default class Document extends DS.Model {
         //(though DOMPurify may not be workabout in Fastboot)
         const document = !isEmpty(this.document) ? this.document : '';
         return document.replace(HTML_BODY_REGEX, '$1');
+    }
+
+    get noAccessMessage() {
+        return this.accessLimitedReason || this.accessLimitedDescription;
     }
 
     /**

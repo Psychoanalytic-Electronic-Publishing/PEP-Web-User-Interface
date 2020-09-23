@@ -149,6 +149,7 @@
             },
             "read": "Read",
             "mustBeLoggedIn": "You must be logged in to read or download this document.",
+            "accessLimited": "The full content of this document is not available. This may be due to your current subscription or publisher restrictions.",
             "login": "Click here to login",
             "download": {
                 "label": "Download docs",
@@ -289,7 +290,7 @@
             "findMore": "Want to find more articles and resources?",
             "newSearch": "Start a new search",
             "backToSearch": "Back to search",
-            "limitedAccess": "You must be logged in to read the full document.",
+            "loginToRead": "You must be logged in to read the full document.",
             "login": "Click here to login",
             "image": {
                 "alt": "Article image {id}"
