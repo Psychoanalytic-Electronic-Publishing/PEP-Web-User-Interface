@@ -420,7 +420,7 @@ export default class Search extends Controller {
                 if (showLoading) {
                     this.loadingBar.show();
                 }
-                const result = yield this.store.query('document', { ...searchParams, offset: 0, limit: 1 });
+                const result = yield this.store.query('search-document', { ...searchParams, offset: 0, limit: 1 });
                 this.resultsMeta = result.meta as SearchMetadata;
             } else {
                 //if there is no search fields populated, clear the Refine section

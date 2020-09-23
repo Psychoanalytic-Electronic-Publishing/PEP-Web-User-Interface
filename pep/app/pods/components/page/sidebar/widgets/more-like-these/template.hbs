@@ -13,7 +13,7 @@ as |Panel|>
             @isLoading={{this.loadSimilarFromDocument.isRunning}}
         >
             {{#if this.results.similarMaxScore}}
-                <h5>{{t "relatedInfo.widgets.moreLikeThese.confidence" number=(round this.results.similarMaxScore)}}</h5>
+                <h6>{{t "relatedInfo.widgets.moreLikeThese.confidence" number=(round this.results.similarMaxScore)}}</h6>
             {{/if}}
             <ul class="list-unstyled">
                 {{#each this.results.similarDocuments as |result|}}

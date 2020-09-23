@@ -75,7 +75,7 @@ export default class Search extends PageNav(Route) {
                 filterRootKey: null,
                 processQueryParams: (params) => ({ ...params, ...searchParams })
             });
-            return this.store.query('document', queryParams);
+            return this.store.query('search-document', queryParams);
         } else {
             return [];
         }
@@ -92,7 +92,7 @@ export default class Search extends PageNav(Route) {
 
         // if a search was submitted, do a 2nd query to get the metadata/facet counts w/o any facet values applied
         if (hasSearchQuery(searchParams)) {
-            const result = await this.store.query('document', { ...searchParams, offset: 0, limit: 1 });
+            const result = await this.store.query('search-document', { ...searchParams, offset: 0, limit: 1 });
             this.resultsMeta = result.meta as SearchMetadata;
         } else {
             this.resultsMeta = null;
@@ -140,7 +140,7 @@ export default class Search extends PageNav(Route) {
 
         controller.paginator = usePagination<Document>({
             context: controller,
-            modelName: 'document',
+            modelName: 'search-document',
             models: model.toArray(),
             metadata: model.meta,
             pagingRootKey: null,

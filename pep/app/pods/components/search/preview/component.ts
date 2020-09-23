@@ -6,9 +6,10 @@ import { scheduleOnce, next } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 
 import AuthService from 'pep/services/auth';
+import PepSessionService from 'pep/services/pep-session';
+import ScrollableService from 'pep/services/scrollable';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import Document from 'pep/pods/document/model';
-import PepSessionService from 'pep/services/pep-session';
 import { DOCUMENT_EPUB_BASE_URL, DOCUMENT_PDFORIG_BASE_URL, DOCUMENT_PDF_BASE_URL } from 'pep/constants/documents';
 
 export type SearchPreviewMode = 'minimized' | 'maximized' | 'fit' | 'custom';
@@ -24,6 +25,7 @@ interface SearchPreviewArgs {
 export default class SearchPreview extends Component<SearchPreviewArgs> {
     @service('pep-session') session!: PepSessionService;
     @service auth!: AuthService;
+    @service scrollable!: ScrollableService;
 
     @tracked fitHeight: number = 0;
     @tracked isDragResizing: boolean = false;
@@ -104,6 +106,7 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
      */
     @action
     onResultUpdate() {
+        this.scrollable.scrollToTop('search-preview');
         if (this.isFitMode) {
             scheduleOnce('afterRender', this, this.updateFitHeight);
         }

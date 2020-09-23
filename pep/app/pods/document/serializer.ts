@@ -9,17 +9,14 @@ import ApplicationSerializerMixin from 'pep/mixins/application-serializer';
  * Build correctly formatted similarity match items based on what the API sends
  *
  * @param {*} item
- * @returns
+ * @returns {Document}
  */
 const transformDocument = (item: any) => {
     const document = item;
     const similarDocumentItems = new Map(Object.entries(document?.similarityMatch?.similarDocs ?? {}));
     const similarDocuments = (similarDocumentItems.get(document.documentID) as []) ?? [];
-
     const documentToReturn = { ...document } as DocumentModel;
-    if (documentToReturn.kwicList.length === 0) {
-        delete documentToReturn.kwicList;
-    }
+
     if (documentToReturn)
         if (similarDocuments.length) {
             documentToReturn.similarityMatch = {
@@ -37,7 +34,9 @@ const transformDocument = (item: any) => {
     return documentToReturn;
 };
 
-export default class Document extends ApplicationSerializerMixin(DS.RESTSerializer.extend(DS.EmbeddedRecordsMixin)) {
+export default class DocumentSerializer extends ApplicationSerializerMixin(
+    DS.RESTSerializer.extend(DS.EmbeddedRecordsMixin)
+) {
     primaryKey = 'documentID';
 
     attrs = {
@@ -105,6 +104,6 @@ export default class Document extends ApplicationSerializerMixin(DS.RESTSerializ
 // DO NOT DELETE: this is how TypeScript knows how to look up your serializers.
 declare module 'ember-data/types/registries/serializer' {
     export default interface SerializerRegistry {
-        document: Document;
+        document: DocumentSerializer;
     }
 }
