@@ -62,7 +62,25 @@
                         {{html-safe @result.abstract}}
                     </div>
                     <div>
-                        {{#if (and this.session.isAuthenticated (not @result.accessLimited))}}
+                        {{#if @result.accessLimited}}
+                            <Alert
+                                @isShown={{this.session.isAuthenticated}}
+                                @type="warning"
+                            >
+                                {{html-safe
+                                    (or
+                                        @result.noAccessMessage
+                                        (t "search.preview.accessLimited")
+                                    )
+                                }}
+                            </Alert>
+                            {{#unless this.session.isAuthenticated}}
+                                <p class="p-3 bg-light rounded">
+                                    {{t "search.preview.mustBeLoggedIn"}}
+                                    <a href="" {{on "click" this.login}}>{{t "search.preview.login"}}</a>.
+                                </p>
+                            {{/unless}}
+                        {{else}}
                             <LinkTo
                                 @route="read.document"
                                 @model={{@result.id}}
@@ -90,24 +108,6 @@
                                     </DropdownAction>
                                 </DD.Content>
                             </DropdownMenu>
-                        {{else}}
-                            <Alert
-                                @isShown={{this.session.isAuthenticated}}
-                                @type="warning"
-                            >
-                                {{html-safe
-                                    (or
-                                        @result.noAccessMessage
-                                        (t "search.preview.accessLimited")
-                                    )
-                                }}
-                            </Alert>
-                            {{#unless this.session.isAuthenticated}}
-                                <p class="p-3 bg-light rounded">
-                                    {{t "search.preview.mustBeLoggedIn"}}
-                                    <a href="" {{on "click" this.login}}>{{t "search.preview.login"}}</a>.
-                                </p>
-                            {{/unless}}
                         {{/if}}
                     </div>
                 </div>
