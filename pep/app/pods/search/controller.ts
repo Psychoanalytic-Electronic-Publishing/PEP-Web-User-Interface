@@ -130,7 +130,12 @@ export default class Search extends Controller {
     }
 
     get hasSubmittedSearch() {
-        return this.q || this.searchTerms.filter((t: SearchTermValue) => !!t.term).length > 0;
+        return !!(
+            this.q ||
+            this.citedCount ||
+            this.viewedCount ||
+            this.searchTerms.filter((t: SearchTermValue) => !!t.term).length > 0
+        );
     }
 
     get noResults() {

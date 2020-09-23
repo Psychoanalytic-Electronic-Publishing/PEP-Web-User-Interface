@@ -162,8 +162,7 @@ export function joinParamValues(
 }
 
 /**
- * A "blank" search request could have the following params:
- * synonyms, facetfields, and abstract, citecount, viewcount, viewperiod
+ * A "blank" search request could have any of the params in the `exclude` arg
  * If there are params besides that, it is a valid search form submission
  * @export
  * @param {QueryParamsObj} params
@@ -172,16 +171,7 @@ export function joinParamValues(
  */
 export function hasSearchQuery(
     params: QueryParamsObj,
-    exclude = [
-        'synonyms',
-        'facetfields',
-        'abstract',
-        'citecount',
-        'viewcount',
-        'viewperiod',
-        'facetlimit',
-        'facetmincount'
-    ]
+    exclude = ['synonyms', 'facetfields', 'abstract', 'viewperiod', 'facetlimit', 'facetmincount']
 ) {
     return Object.keys(params).filter((p) => !exclude.includes(p)).length > 0;
 }
