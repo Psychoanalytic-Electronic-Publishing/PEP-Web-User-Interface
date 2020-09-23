@@ -1,5 +1,5 @@
 <Page::Sidebar::Left as |Sidebar|>
-    <Sidebar.content>
+    <Sidebar.content @hideWidgets={{bool this.resultsMeta}}>
         <Search::Form
             @smartSearchTerm={{this.currentSmartSearchTerm}}
             @searchTerms={{this.currentSearchTerms}}
