@@ -9,6 +9,7 @@ import AuthService from 'pep/services/auth';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import Document from 'pep/pods/document/model';
 import PepSessionService from 'pep/services/pep-session';
+import { DOCUMENT_EPUB_BASE_URL, DOCUMENT_PDFORIG_BASE_URL, DOCUMENT_PDF_BASE_URL } from 'pep/constants/documents';
 
 export type SearchPreviewMode = 'minimized' | 'maximized' | 'fit' | 'custom';
 
@@ -56,6 +57,18 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
 
     get adjustedFitHeight() {
         return Math.min(this.fitHeight, this.args.maxHeight || this.fitHeight);
+    }
+
+    get downloadUrlEpub() {
+        return `${DOCUMENT_EPUB_BASE_URL}/${this.args.result?.id}/`;
+    }
+
+    get downloadUrlPdf() {
+        return `${DOCUMENT_PDF_BASE_URL}/${this.args.result?.id}/`;
+    }
+
+    get downloadUrlPdfOrig() {
+        return `${DOCUMENT_PDFORIG_BASE_URL}/${this.args.result?.id}/`;
     }
 
     /**
@@ -127,6 +140,24 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
     login(event: Event) {
         event.preventDefault();
         return this.auth.openLoginModal(true);
+    }
+
+    /**
+     * Initiates a document download for the given URL
+     *
+     * NOTE: Opens the download in a new tab/window so that in case it fails
+     * (i.e. the doc does not exist), the app itself is not navigated to an API error page
+     *
+     * @TODO make sure opening a new window doesn't fail due to security settings (popup blockers/etc)
+     * in which case we may need to revert to starting the download in the same window, but get better
+     * indicators from the API on the document model when documents do or do not exist to download.
+     *
+     * @param {string} url
+     * @returns {Window | null}
+     */
+    @action
+    downloadDocument(url: string) {
+        return window.open(url, '_blank');
     }
 
     /**

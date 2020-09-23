@@ -72,14 +72,24 @@
                                 <FaIcon @icon="book-open" />
                                 {{t "search.preview.read"}}
                             </LinkTo>
-                            <Button
-                                @icon="download"
-                                @label={{t "search.preview.download.label"}}
-                                @type="link"
-                                class="px-2"
-                            >
-                                <FaIcon @icon="angle-down" class="ml-1 text-muted" />
-                            </Button>
+                            <DropdownMenu @horizontalPosition="auto-left" as |DD|>
+                                <DD.Trigger @htmlTag="button" class="btn btn-link px-2">
+                                    <FaIcon @icon="download" />
+                                    {{t "search.preview.download.label"}}
+                                    <FaIcon @icon="angle-down" class="ml-1 text-muted" />
+                                </DD.Trigger>
+                                <DD.Content class="dropdown-menu">
+                                    <DropdownAction @dd={{DD}} @action={{fn this.downloadDocument this.downloadUrlEpub}}>
+                                        {{t "search.preview.download.ePub"}}
+                                    </DropdownAction>
+                                    <DropdownAction @dd={{DD}} @action={{fn this.downloadDocument this.downloadUrlPdf}}>
+                                        {{t "search.preview.download.pdf"}}
+                                    </DropdownAction>
+                                    <DropdownAction @dd={{DD}} @action={{fn this.downloadDocument this.downloadUrlPdfOrig}}>
+                                        {{t "search.preview.download.pdfOrig"}}
+                                    </DropdownAction>
+                                </DD.Content>
+                            </DropdownMenu>
                         {{else}}
                             <p class="p-3 bg-light rounded">
                                 {{t "search.preview.mustBeLoggedIn"}}

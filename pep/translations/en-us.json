@@ -151,7 +151,10 @@
             "mustBeLoggedIn": "You must be logged in to read or download this document.",
             "login": "Click here to login",
             "download": {
-                "label": "Download docs"
+                "label": "Download docs",
+                "ePub": "ePub document",
+                "pdf": "PDF document",
+                "pdfOrig": "PDF (original) document"
             }
         },
         "terms": {
