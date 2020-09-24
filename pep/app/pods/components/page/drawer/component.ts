@@ -8,6 +8,7 @@ import DrawerService from 'pep/services/drawer';
 import AuthService from 'pep/services/auth';
 import ConfigurationService from 'pep/services/configuration';
 import PepSessionService from 'pep/services/pep-session';
+import { SessionType } from 'pep/authenticators/credentials';
 
 interface PageDrawerArgs {
     openAboutModal: () => Promise<void>;
@@ -24,6 +25,10 @@ export default class PageDrawer extends Component<PageDrawerArgs> {
 
     get defaultSearchParams() {
         return this.configuration.defaultSearchParams;
+    }
+
+    get canLogOut() {
+        return this.session.data.authenticated.SessionType === SessionType.CREDENTIALS;
     }
 
     /**

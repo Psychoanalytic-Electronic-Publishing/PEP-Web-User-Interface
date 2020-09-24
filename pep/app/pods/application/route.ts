@@ -56,6 +56,12 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
     async beforeModel(transition: Transition) {
         super.beforeModel(transition);
 
+        if (!this.session.getUnauthenticatedSession()?.SessionId && !this.session.data.authenticated.SessionId) {
+            try {
+                await this.session.authenticate('authenticator:ip');
+            } catch (errors) {}
+        }
+
         try {
             if (this.session.isAuthenticated) {
                 await this.currentUser.load();

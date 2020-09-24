@@ -7,6 +7,7 @@ import AuthService from 'pep/services/auth';
 import DrawerService from 'pep/services/drawer';
 import ConfigurationService from 'pep/services/configuration';
 import PepSessionService from 'pep/services/pep-session';
+import { SessionType } from 'pep/authenticators/credentials';
 
 interface PageNavArgs {
     openAboutModal: () => Promise<void>;
@@ -21,6 +22,10 @@ export default class PageNav extends Component<PageNavArgs> {
 
     get defaultSearchParams() {
         return this.configuration.defaultSearchParams;
+    }
+
+    get canLogOut() {
+        return this.session.data.authenticated.SessionType === SessionType.CREDENTIALS;
     }
 
     /**

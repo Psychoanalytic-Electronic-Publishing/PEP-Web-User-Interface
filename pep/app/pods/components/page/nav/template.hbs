@@ -66,17 +66,19 @@
                         <FaIcon @icon="info-square" @fixedWidth={{true}} class="text-muted" />
                         {{t "nav.user.about"}}
                     </DropdownAction>
-                    <div class="dropdown-divider"></div>
-                    {{#if this.session.isAuthenticated}}
-                        <DropdownAction @dd={{DD}} @action={{this.logout}}>
-                            <FaIcon @icon="sign-out" @fixedWidth={{true}} class="text-muted" />
-                            {{t "nav.user.logout"}}
-                        </DropdownAction>
-                    {{else}}
-                        <DropdownAction @dd={{DD}} @action={{this.openLoginModal}}>
-                            <FaIcon @icon="sign-in" @fixedWidth={{true}} class="text-muted" />
-                            {{t "nav.user.login"}}
-                        </DropdownAction>
+                    {{#if this.canLogOut}}
+                        <div class="dropdown-divider"></div>
+                        {{#if this.session.isAuthenticated}}
+                            <DropdownAction @dd={{DD}} @action={{this.logout}}>
+                                <FaIcon @icon="sign-out" @fixedWidth={{true}} class="text-muted" />
+                                {{t "nav.user.logout"}}
+                            </DropdownAction>
+                        {{else}}
+                            <DropdownAction @dd={{DD}} @action={{this.openLoginModal}}>
+                                <FaIcon @icon="sign-in" @fixedWidth={{true}} class="text-muted" />
+                                {{t "nav.user.login"}}
+                            </DropdownAction>
+                        {{/if}}
                     {{/if}}
                 </DD.Content>
             </DropdownMenu>
