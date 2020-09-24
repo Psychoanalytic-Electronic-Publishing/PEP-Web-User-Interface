@@ -149,9 +149,13 @@
             },
             "read": "Read",
             "mustBeLoggedIn": "You must be logged in to read or download this document.",
+            "accessLimited": "The full content of this document is not available. This may be due to your current subscription or publisher restrictions.",
             "login": "Click here to login",
             "download": {
-                "label": "Download docs"
+                "label": "Download docs",
+                "ePub": "ePub document",
+                "pdf": "PDF document",
+                "pdfOrig": "PDF (original) document"
             }
         },
         "terms": {
@@ -286,7 +290,7 @@
             "findMore": "Want to find more articles and resources?",
             "newSearch": "Start a new search",
             "backToSearch": "Back to search",
-            "limitedAccess": "You must be logged in to read the full document.",
+            "loginToRead": "You must be logged in to read the full document.",
             "login": "Click here to login",
             "image": {
                 "alt": "Article image {id}"
@@ -327,15 +331,15 @@
             "publisherInfo": {
                 "title": "Publisher Info",
                 "view": "View information for {publisher}",
-                "noResults": "You must view a document to see the documents publisher information"
+                "noResults": "You must view a document to see the documents publisher information."
             },
             "readLater": {
                 "title": "Read later",
-                "noResults": "You don't have any documents saved for later. Add documents that you want to view for quick access"
+                "noResults": "You don't have any documents saved for later. Add documents that you want to view for quick access."
             },
             "relatedDocuments": {
                 "title": "Related Documents",
-                "noResults": "You must view a document to see the documents related to it. If you are already viewing one, this means no results have been found"
+                "noResults": "You must view a document to see the documents related to it. If you are already viewing one, this means no results have been found."
             },
             "relevantSearches": {
                 "title": "Relevant searches"
@@ -416,9 +420,21 @@
     "preferences": {
         "title": "Preferences",
         "info": "Customize and personalize your PEP experience using the settings below.",
-        "theme": {
-            "label": "Color theme",
-            "select": "Select a theme"
+        "general": {
+            "heading": "General settings",
+            "theme": {
+                "label": "Color theme",
+                "select": "Select a theme"
+            }
+        },
+        "search": {
+            "heading": "Search",
+            "preview": {
+                "label": "On search result selection",
+                "select": "Select your desired behavior",
+                "enabled": "Display a preview pane",
+                "disabled": "Open the full document"
+            }
         }
     },
     "about": {

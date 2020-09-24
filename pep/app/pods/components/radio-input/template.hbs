@@ -1,0 +1,16 @@
+<div class="custom-control custom-radio {{if @inline "custom-control-inline"}}" ...attributes>
+    <input
+        type="radio"
+        class="custom-control-input"
+        {{on "click" this.onChange}}
+        checked={{@checked}}
+        id={{this.inputId}}
+        disabled={{@disabled}}
+    >
+    <label
+        class="custom-control-label {{@labelClass}}"
+        for={{this.inputId}}
+    >
+        {{@label}}{{yield}}
+    </label>
+</div>

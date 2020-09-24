@@ -8,7 +8,7 @@ import SidebarService from 'pep/services/sidebar';
 
 interface SearchItemBibliographicArgs {
     item: Document;
-    openResultPreview: () => void;
+    openResult: () => void;
 }
 
 export default class SearchItemBibliographic extends Component<SearchItemBibliographicArgs> {

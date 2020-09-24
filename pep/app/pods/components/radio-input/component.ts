@@ -2,8 +2,9 @@ import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { guidFor } from '@ember/object/internals';
 
-interface CheckboxInputArgs {
+interface RadioInputArgs {
     onChange?: (newValue: boolean, event: Event) => void;
+    value: any;
     inline?: boolean;
     checked?: boolean;
     disabled?: boolean;
@@ -12,8 +13,8 @@ interface CheckboxInputArgs {
     stopPropagation?: boolean;
 }
 
-export default class CheckboxInput extends Component<CheckboxInputArgs> {
-    inputId: string = `checkbox-input-${guidFor(this)}`;
+export default class RadioInput extends Component<RadioInputArgs> {
+    inputId: string = `radio-input-${guidFor(this)}`;
 
     get preventDefault() {
         return this.args.preventDefault ?? false;
@@ -24,7 +25,7 @@ export default class CheckboxInput extends Component<CheckboxInputArgs> {
     }
 
     /**
-     * Invoke the checkbox's `onChange` method if it was passed in
+     * Invoke the radio's `onChange` method if it was passed in
      * as an argument
      *
      */
@@ -38,6 +39,6 @@ export default class CheckboxInput extends Component<CheckboxInputArgs> {
             event.stopPropagation();
         }
 
-        this.args.onChange?.(!this.args.checked, event);
+        this.args.onChange?.(this.args.value, event);
     }
 }

@@ -9,11 +9,13 @@ import SimilarityMatch from 'pep/pods/similarity-match/model';
 
 export default class Document extends DS.Model {
     // attributes
-    @attr('string') PEPCode!: string;
     @attr('string') abstract!: string;
     @attr('string') accessClassification!: string;
     @attr('boolean') accessLimited!: boolean;
+    @attr('boolean') accessLimitedCurrentContent!: boolean;
     @attr('string') accessLimitedDescription!: string;
+    @attr('string') accessLimitedPubLink!: string;
+    @attr('string') accessLimitedReason!: string;
     @attr('string') authorMast!: string;
     @attr('number') docLevel!: number;
     @attr('string') docType!: string;
@@ -25,17 +27,18 @@ export default class Document extends DS.Model {
     @attr('string') doi!: string;
     @attr('string') issn!: string;
     @attr('string') issue!: string;
-    @attr('string') kwic!: string;
-    @attr() kwicList!: string[];
+    @attr('string') issueTitle!: string;
     @attr('string') lang!: string;
     @attr('string') newSectionName!: string;
     @attr('string') origrx!: string;
+    @attr('string') PEPCode!: string;
     @attr('string') pgEnd!: string;
     @attr('string') pgRg!: string;
     @attr('string') pgStart!: string;
-    @attr('string') rank!: number;
+    @attr('string') rank!: number; // TODO if this is a search-only attr, move to SearchDocument
+    @attr('string') rankField!: string; // TODO if this is a search-only attr, move to SearchDocument
     @attr('string') relatedrx!: string;
-    @attr('string') score!: number;
+    @attr('string') score!: number; // TODO if this is a search-only attr, move to SearchDocument
     @attr('string') sourceTitle!: string;
     @attr('string') sourceType!: string;
     @attr() stat!: object;
@@ -77,6 +80,10 @@ export default class Document extends DS.Model {
         //(though DOMPurify may not be workabout in Fastboot)
         const document = !isEmpty(this.document) ? this.document : '';
         return document.replace(HTML_BODY_REGEX, '$1');
+    }
+
+    get noAccessMessage() {
+        return this.accessLimitedReason || this.accessLimitedDescription;
     }
 
     /**

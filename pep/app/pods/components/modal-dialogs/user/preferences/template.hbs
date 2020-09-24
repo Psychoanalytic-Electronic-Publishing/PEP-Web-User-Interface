@@ -5,6 +5,7 @@
             {{t "preferences.info"}}
         </p>
         <div class="mb-4">
+            <h6 class="mb-3">{{t "preferences.general.heading"}}</h6>
             <div class="form-row">
                 <div class="col-sm-7">
                     <FlSelect
@@ -12,10 +13,32 @@
                         @value={{this.theme.currentTheme.id}}
                         @valuePath="id"
                         @labelPath="label"
-                        @placeholder={{t "preferences.theme.label"}}
-                        @emptyOptionText={{t "preferences.theme.select"}}
+                        @placeholder={{t "preferences.general.theme.label"}}
+                        @emptyOptionText={{t "preferences.general.theme.select"}}
                         @allowClear={{false}}
                         @onChange={{this.updateTheme}}
+                    />
+                </div>
+            </div>
+        </div>
+        <div class="mb-4">
+            <h6 class="mb-3">{{t "preferences.search.heading"}}</h6>
+            <div class="form-row">
+                <div class="col-sm-7">
+                    <p class="text-muted mb-2">{{t "preferences.search.preview.label"}}</p>
+                    <RadioInput
+                        @label={{t "preferences.search.preview.enabled"}}
+                        @value={{true}}
+                        @checked={{this.currentUser.preferences.searchPreviewEnabled}}
+                        @onChange={{fn this.updatePreference this.searchEnabledKey}}
+                        class="mb-1"
+                    />
+                    <RadioInput
+                        @label={{t "preferences.search.preview.disabled"}}
+                        @value={{false}}
+                        @checked={{not this.currentUser.preferences.searchPreviewEnabled}}
+                        @onChange={{fn this.updatePreference this.searchEnabledKey}}
+                        class="mb-1"
                     />
                 </div>
             </div>

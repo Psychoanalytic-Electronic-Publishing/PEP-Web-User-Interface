@@ -115,8 +115,27 @@ export default class Search extends Controller {
         }
     }
 
+    /**
+     * The query params object to pass to <LinkTo>'s and route transitions
+     * when opening the Read page for a document
+     * @readonly
+     */
+    get readQueryParms() {
+        return {
+            q: this.q,
+            searchTerms: this._searchTerms,
+            facets: this._facets,
+            matchSynonyms: this.matchSynonyms
+        };
+    }
+
     get hasSubmittedSearch() {
-        return this.q || this.searchTerms.filter((t: SearchTermValue) => !!t.term).length > 0;
+        return !!(
+            this.q ||
+            this.citedCount ||
+            this.viewedCount ||
+            this.searchTerms.filter((t: SearchTermValue) => !!t.term).length > 0
+        );
     }
 
     get noResults() {
@@ -401,7 +420,7 @@ export default class Search extends Controller {
                 if (showLoading) {
                     this.loadingBar.show();
                 }
-                const result = yield this.store.query('document', { ...searchParams, offset: 0, limit: 1 });
+                const result = yield this.store.query('search-document', { ...searchParams, offset: 0, limit: 1 });
                 this.resultsMeta = result.meta as SearchMetadata;
             } else {
                 //if there is no search fields populated, clear the Refine section
@@ -442,19 +461,25 @@ export default class Search extends Controller {
     }
 
     /**
-     * Opens the selected result in the preview pane
+     * Opens the selected result in the preview pane or the full read page,
+     * depending on the user's preferences
      * @param {Object} result
      * @param {Event} event
      */
     @action
-    openResultPreview(result: Document, event: Event) {
+    openResult(result: Document, event: Event) {
         event.preventDefault();
-        this.previewedResult = result;
-
-        this.sidebar.update({
-            [WIDGET.MORE_LIKE_THESE]: result,
-            [WIDGET.RELATED_DOCUMENTS]: result
-        });
+        if (this.currentUser.preferences?.searchPreviewEnabled) {
+            this.previewedResult = result;
+            this.sidebar.update({
+                [WIDGET.MORE_LIKE_THESE]: result,
+                [WIDGET.RELATED_DOCUMENTS]: result
+            });
+        } else {
+            this.transitionToRoute('read.document', result.id, {
+                queryParams: this.readQueryParms
+            });
+        }
     }
 
     /**
@@ -463,6 +488,10 @@ export default class Search extends Controller {
     @action
     closeResultPreview() {
         this.previewedResult = null;
+        this.sidebar.update({
+            [WIDGET.MORE_LIKE_THESE]: undefined,
+            [WIDGET.RELATED_DOCUMENTS]: undefined
+        });
     }
 
     /**

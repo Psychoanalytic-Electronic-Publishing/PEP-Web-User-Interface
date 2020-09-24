@@ -1,7 +1,9 @@
 import Component from '@glimmer/component';
-import ConfigurationService from 'pep/services/configuration';
 import { inject as service } from '@ember/service';
+
+import ConfigurationService from 'pep/services/configuration';
 import { WidgetData } from 'pep/constants/sidebar';
+
 interface PageSidebarRightArgs {
     data: WidgetData;
 }
