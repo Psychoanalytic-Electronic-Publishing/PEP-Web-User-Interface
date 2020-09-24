@@ -53,3 +53,11 @@
         }
     }
 }
+
+body.drag-bar-is-dragging {
+    *,
+    *::before,
+    *::after {
+        user-select: none;
+    }
+}
