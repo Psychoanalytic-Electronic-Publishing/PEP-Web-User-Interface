@@ -5,6 +5,7 @@ declare module 'ember-responsive/services/media' {
         isMobile: boolean;
         isTablet: boolean;
         isDesktop: boolean;
+        isJumbo: boolean;
         on(event: string, target: any, method: Function): void;
         off(event: string, target: any, method: Function): void;
     }

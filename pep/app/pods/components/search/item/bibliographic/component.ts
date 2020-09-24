@@ -5,6 +5,10 @@ import { PreferenceDocumentsKey, PreferenceKey } from 'pep/constants/preferences
 import CurrentUserService from 'pep/services/current-user';
 import Document from 'pep/pods/document/model';
 import SidebarService from 'pep/services/sidebar';
+import FastbootMediaService from 'pep/services/fastboot-media';
+import NotificationService from 'ember-cli-notifications/services/notifications';
+import IntlService from 'ember-intl/services/intl';
+import MediaService from 'ember-responsive/services/media';
 
 interface SearchItemBibliographicArgs {
     item: Document;
@@ -14,6 +18,9 @@ interface SearchItemBibliographicArgs {
 export default class SearchItemBibliographic extends Component<SearchItemBibliographicArgs> {
     @service currentUser!: CurrentUserService;
     @service sidebar!: SidebarService;
+    @service media!: MediaService;
+    @service notifications!: NotificationService;
+    @service intl!: IntlService;
 
     /**
      * Using a computed here so we A) dont dip into the local storage too often and B) so that this
@@ -71,10 +78,30 @@ export default class SearchItemBibliographic extends Component<SearchItemBibliog
      * @memberof SearchItem
      */
     toggleDocument(key: PreferenceDocumentsKey, document: Document) {
-        if (this.currentUser.hasPreferenceDocument(key, document.id)) {
-            this.currentUser.removePreferenceDocument(key, document.id);
-        } else {
-            this.currentUser.addPreferenceDocument(key, document.id);
+        try {
+            if (this.currentUser.hasPreferenceDocument(key, document.id)) {
+                this.currentUser.removePreferenceDocument(key, document.id);
+                this.notifications.success(
+                    this.intl.t(
+                        `search.item.notifications.success.removeFrom${
+                            key === PreferenceKey.FAVORITES ? 'Favorites' : 'ReadLater'
+                        }`
+                    )
+                );
+            } else {
+                this.currentUser.addPreferenceDocument(key, document.id);
+                this.notifications.success(
+                    this.intl.t(
+                        `search.item.notifications.success.addTo${
+                            key === PreferenceKey.FAVORITES ? 'Favorites' : 'ReadLater'
+                        }`
+                    )
+                );
+            }
+        } catch (errors) {
+            this.intl.t(
+                `search.item.notifications.failure.${key === PreferenceKey.FAVORITES ? 'favorites' : 'readLater'}`
+            );
         }
     }
 }
