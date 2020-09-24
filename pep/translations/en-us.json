@@ -75,10 +75,10 @@
             "removeFromReadLater": "Remove from read later",
             "notifications": {
                 "success": {
-                    "addToFavorites": "Document successfully added to favorites",
-                    "removeFromFavorites": "Document successfully removed from favorites",
-                    "addToReadLater": "Document successfully added to read later list",
-                    "removeFromReadLater": "Document successfully removed from read later list"
+                    "addToFavorites": "Document added to favorites",
+                    "removeFromFavorites": "Document removed from favorites",
+                    "addToReadLater": "Document added to read later list",
+                    "removeFromReadLater": "Document removed from read later list"
                 },
                 "failure": {
                     "favorites": "There was an error updating your favorites",

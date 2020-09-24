@@ -7,6 +7,7 @@ interface ButtonWithTooltipArgs {
     type?: string;
     action: () => void;
     containerClass?: string;
+    title?: string;
     tooltip: string;
     tooltipClass?: string;
     tooltipSide?: 'top' | 'right' | 'bottom' | 'left';

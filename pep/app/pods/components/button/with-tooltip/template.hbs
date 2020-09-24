@@ -7,6 +7,7 @@
         @type={{@type}}
         @action={{@action}}
         ...attributes
+        title={{unless this.tooltipVisible @title}}
     />
     {{#if this.tooltipVisible}}
         <EmberTooltip

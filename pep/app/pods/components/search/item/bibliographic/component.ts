@@ -99,8 +99,10 @@ export default class SearchItemBibliographic extends Component<SearchItemBibliog
                 );
             }
         } catch (errors) {
-            this.intl.t(
-                `search.item.notifications.failure.${key === PreferenceKey.FAVORITES ? 'favorites' : 'readLater'}`
+            this.notifications.error(
+                this.intl.t(
+                    `search.item.notifications.failure.${key === PreferenceKey.FAVORITES ? 'favorites' : 'readLater'}`
+                )
             );
         }
     }
