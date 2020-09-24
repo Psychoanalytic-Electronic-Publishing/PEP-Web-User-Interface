@@ -16,6 +16,14 @@ interface RadioInputArgs {
 export default class RadioInput extends Component<RadioInputArgs> {
     inputId: string = `radio-input-${guidFor(this)}`;
 
+    get preventDefault() {
+        return this.args.preventDefault ?? false;
+    }
+
+    get stopPropagation() {
+        return this.args.stopPropagation ?? false;
+    }
+
     /**
      * Invoke the radio's `onChange` method if it was passed in
      * as an argument
@@ -23,14 +31,14 @@ export default class RadioInput extends Component<RadioInputArgs> {
      */
     @action
     onChange(event: Event) {
-        if (this.args.preventDefault) {
+        if (this.preventDefault) {
             event.preventDefault();
         }
-        if (this.args.stopPropagation) {
+
+        if (this.stopPropagation) {
             event.stopPropagation();
         }
-        if (this.args.onChange) {
-            this.args.onChange(this.args.value, event);
-        }
+
+        this.args.onChange?.(this.args.value, event);
     }
 }
