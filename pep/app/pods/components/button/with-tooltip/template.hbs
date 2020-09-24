@@ -7,14 +7,17 @@
         @type={{@type}}
         @action={{@action}}
         ...attributes
+        title={{unless this.tooltipVisible @title}}
     />
-    <EmberTooltip
-        @text={{@tooltip}}
-        @class={{@tooltipClass}}
-        @side={{this.tooltipSide}}
-        @spacing={{this.tooltipSpacing}}
-        @effect={{this.tooltipEffect}}
-        @popperContainer={{this.tooltipContainer}}
-        @innerClass=""
-    />
+    {{#if this.tooltipVisible}}
+        <EmberTooltip
+            @text={{@tooltip}}
+            @class={{@tooltipClass}}
+            @side={{this.tooltipSide}}
+            @spacing={{this.tooltipSpacing}}
+            @effect={{this.tooltipEffect}}
+            @popperContainer={{this.tooltipContainer}}
+            @innerClass=""
+        />
+    {{/if}}
 </span>

@@ -72,7 +72,19 @@
             "addToFavorites": "Add to favorites",
             "removeFromFavorites": "Remove from favorites",
             "addToReadLater": "Add to read later",
-            "removeFromReadLater": "Remove from read later"
+            "removeFromReadLater": "Remove from read later",
+            "notifications": {
+                "success": {
+                    "addToFavorites": "Document added to favorites",
+                    "removeFromFavorites": "Document removed from favorites",
+                    "addToReadLater": "Document added to read later list",
+                    "removeFromReadLater": "Document removed from read later list"
+                },
+                "failure": {
+                    "favorites": "There was an error updating your favorites",
+                    "readLater": "There was an error updating your read later list"
+                }
+            }
         },
         "view": {
             "label": "View:",
