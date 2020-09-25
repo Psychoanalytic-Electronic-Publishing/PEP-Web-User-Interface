@@ -1,14 +1,14 @@
 import Component from '@glimmer/component';
 import { action, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
-import { PreferenceDocumentsKey, PreferenceKey } from 'pep/constants/preferences';
-import CurrentUserService from 'pep/services/current-user';
-import Document from 'pep/pods/document/model';
-import SidebarService from 'pep/services/sidebar';
-import FastbootMediaService from 'pep/services/fastboot-media';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import IntlService from 'ember-intl/services/intl';
 import MediaService from 'ember-responsive/services/media';
+
+import CurrentUserService from 'pep/services/current-user';
+import SidebarService from 'pep/services/sidebar';
+import Document from 'pep/pods/document/model';
+import { PreferenceDocumentsKey, PreferenceKey } from 'pep/constants/preferences';
 
 interface SearchItemBibliographicArgs {
     item: Document;
