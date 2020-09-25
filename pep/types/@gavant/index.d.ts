@@ -5,8 +5,8 @@ declare module '@gavant/ember-table' {
         valuePath?: string;
         name: string;
         isFixedLeft?: boolean;
-        width: number;
-        staticWidth: number;
+        width?: number;
+        staticWidth?: number;
         minWidth?: number;
         maxWidth?: number;
         textAlign?: string;

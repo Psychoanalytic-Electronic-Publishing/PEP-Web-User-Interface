@@ -602,3 +602,20 @@ export const VIEW_PERIODS = [
     VIEW_PERIOD_12_MONTHS,
     VIEW_PERIOD_CAL_YEAR
 ];
+
+export enum SearchViewType {
+    BIBLIOGRAPHIC = 'bibliographic',
+    TABLE = 'table'
+}
+
+export interface SearchView {
+    id: SearchViewType;
+    label: string;
+}
+
+export const SearchViews: SearchView[] = [
+    { id: SearchViewType.BIBLIOGRAPHIC, label: 'Bibliographic' },
+    { id: SearchViewType.TABLE, label: 'Table' }
+];
+
+export const SearchSort = '';

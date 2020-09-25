@@ -1,0 +1,7 @@
+{{#if @rowValue.kwicList}}
+    <ul class="font-size-secondary">
+        {{#each @rowValue.kwicList as |searchHit|}}
+            <li>{{html-safe searchHit}}</li>
+        {{/each}}
+    </ul>
+{{/if}}

@@ -5,13 +5,14 @@ import { PreferenceDocumentsKey, PreferenceKey } from 'pep/constants/preferences
 import CurrentUserService from 'pep/services/current-user';
 import Document from 'pep/pods/document/model';
 import SidebarService from 'pep/services/sidebar';
-import FastbootMediaService from 'pep/services/fastboot-media';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import IntlService from 'ember-intl/services/intl';
 import MediaService from 'ember-responsive/services/media';
 
 interface SearchItemBibliographicArgs {
     item: Document;
+    selectedItems: Document[];
+    onCheck: () => void;
     openResult: () => void;
 }
 
@@ -44,6 +45,10 @@ export default class SearchItemBibliographic extends Component<SearchItemBibliog
     @computed('currentUser.preferences', 'args.item.id')
     get readLater() {
         return this.currentUser.hasPreferenceDocument(PreferenceKey.READ_LATER, this.args.item.id);
+    }
+
+    get isSelected() {
+        return this.args.selectedItems.find((item) => item.id === this.args.item.id);
     }
 
     /**

@@ -1,3 +1,4 @@
+import Document from 'pep/pods/document/model';
 import Component from '@glimmer/component';
 import { ColumnValue } from '@gavant/ember-table';
 import IntlService from 'ember-intl/services/intl';

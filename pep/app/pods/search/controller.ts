@@ -1,3 +1,4 @@
+import { SearchView, SearchViewType } from './../../constants/search';
 import Controller from '@ember/controller';
 import { action, setProperties } from '@ember/object';
 import { isEmpty } from '@ember/utils';
@@ -18,7 +19,8 @@ import {
     SearchTermValue,
     SearchFacetValue,
     ViewPeriod,
-    SEARCH_DEFAULT_VIEW_PERIOD
+    SEARCH_DEFAULT_VIEW_PERIOD,
+    SearchViews
 } from 'pep/constants/search';
 import { PreferenceKey } from 'pep/constants/preferences';
 import SidebarService from 'pep/services/sidebar';
@@ -76,8 +78,13 @@ export default class Search extends Controller {
     @tracked previewMode: SearchPreviewMode = 'minimized';
     @tracked containerMaxHeight = 0;
 
+    @tracked selectedItems: Document[] = [];
+    @tracked selectedView = SearchViews[1];
+
     readLaterKey = PreferenceKey.READ_LATER;
     favoritesKey = PreferenceKey.FAVORITES;
+    searchViews = SearchViews;
+    tableView = SearchViewType.TABLE;
 
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
@@ -518,6 +525,22 @@ export default class Search extends Controller {
     @action
     updateContainerMaxHeight(element: HTMLElement) {
         this.containerMaxHeight = element.offsetHeight;
+    }
+
+    @action
+    onCheck(document: Document, isChecked: boolean) {
+        if (isChecked) {
+            this.selectedItems = [...this.selectedItems, document];
+        } else {
+            this.selectedItems = this.selectedItems.filter((item) => item.id !== document.id);
+        }
+    }
+
+    @action
+    updateSelectedView(event: HTMLElementEvent<HTMLSelectElement>) {
+        const id = event.target.value as SearchViewType;
+        const selectedView = SearchViews.find((item) => item.id === id);
+        this.selectedView = selectedView!;
     }
 }
 

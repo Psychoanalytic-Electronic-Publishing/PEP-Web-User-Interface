@@ -63,6 +63,12 @@
     "search": {
         "title": "Search",
         "new": "Start a new search",
+        "table": {
+            "author": "Author",
+            "year": "Year",
+            "title": "Title",
+            "source": "Source"
+        },
         "sort": {
             "label": "Sort:",
             "year": "Year"

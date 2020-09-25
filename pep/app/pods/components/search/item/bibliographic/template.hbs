@@ -1,28 +1,36 @@
 <li class="mb-4 d-flex justify-content-between">
-    <div>
-        <a href="" {{on "click" (fn @openResult @item)}}>
-            {{@item.documentRef}}
-            {{#if @item.relatedrx}}
-                <span class="mr-2">
-                    <FaIcon @icon="books" class="p-0 "/>
-                    <EmberTooltip
-                        @text={{t "search.item.relatedDocuments"}}
-                        @popperContainer="body"
-                        @side="left"
-                        @spacing={{5}}
-                        @effect="slide"
-                        @innerClass=""
-                    />
-                </span>
+    <div class="d-flex">
+        <div>
+            <CheckboxInput
+                @checked={{this.isSelected}}
+                @onChange={{fn @onCheck @item}}
+            />
+        </div>
+        <div class="d-flex flex-column">
+            <a href="" {{on "click" (fn @openResult @item)}}>
+                {{@item.documentRef}}
+                {{#if @item.relatedrx}}
+                    <span class="mr-2">
+                        <FaIcon @icon="books" class="p-0 "/>
+                        <EmberTooltip
+                            @text={{t "search.item.relatedDocuments"}}
+                            @popperContainer="body"
+                            @side="left"
+                            @spacing={{5}}
+                            @effect="slide"
+                            @innerClass=""
+                        />
+                    </span>
+                {{/if}}
+            </a>
+            {{#if @item.kwicList}}
+                <ul class="font-size-secondary">
+                    {{#each @item.kwicList as |searchHit|}}
+                        <li>{{html-safe searchHit}}</li>
+                    {{/each}}
+                </ul>
             {{/if}}
-        </a>
-        {{#if @item.kwicList}}
-            <ul class="font-size-secondary">
-                {{#each @item.kwicList as |searchHit|}}
-                    <li>{{html-safe searchHit}}</li>
-                {{/each}}
-            </ul>
-        {{/if}}
+        </div>
     </div>
     <div class="pl-2 d-flex justify-content-end align-items-start">
         <Button::WithTooltip

@@ -72,6 +72,19 @@
                                 }}
                             </h4>
                             <div class="d-flex align-items-center">
+                                <div class="d-flex align-items-center">
+                                    <span class="text-muted">{{t "search.view.label"}}</span>
+                                    <select
+                                        class="custom-select custom-select-sm text-truncate ml-1 mr-2"
+                                        {{on "change" this.updateSelectedView}}
+                                    >
+                                        {{#each this.searchViews as |view|}}
+                                            <option value={{view.id}} selected={{eq view.id this.selectedView.id}}>
+                                                {{view.label}}
+                                            </option>
+                                        {{/each}}
+                                    </select>
+                                </div>
                                 <Button
                                     @type="link"
                                     class="text-decoration-none p-1 mr-1"
@@ -80,14 +93,30 @@
                                     <span class="text-dark mr-1">{{t "search.sort.year"}}</span>
                                     <FaIcon @icon="angle-down" class="text-muted" />
                                 </Button>
-                                <Button
-                                    @type="link"
-                                    class="text-decoration-none p-1 mr-2"
-                                >
+                                <div class="d-flex align-items-center">
                                     <span class="text-muted">{{t "search.view.label"}}</span>
-                                    <span class="text-dark mr-1">{{t "search.view.biblio"}}</span>
-                                    <FaIcon @icon="angle-down" class="text-muted" />
-                                </Button>
+                                    <select
+                                        class="custom-select custom-select-sm text-truncate ml-1 mr-2"
+                                        {{on "change" this.updateSelectedView}}
+                                    >
+                                        {{#each this.searchViews as |view|}}
+                                            <option value={{view.id}} selected={{eq view.id this.selectedView.id}}>
+                                                {{view.label}}
+                                            </option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+
+                                {{!-- <FlSelect
+                                    class="p-1 mr-2 d-flex"
+                                    @options={{this.searchViews}}
+                                    @value={{this.selectedView}}
+                                    @valuePath="id"
+                                    @labelPath="label"
+                                    @emptyOptionText={{t "search.view.label"}}
+                                    @allowClear={{false}}
+                                    @onChange={{this.updateSelectedView}}
+                                /> --}}
                                 <Button::WithTooltip
                                     @type="link"
                                     @icon="download"
@@ -106,23 +135,37 @@
                         </div>
                         <div class="card">
                             <div class="card-body">
-                                <VerticalCollection
-                                    @items={{this.paginator.models}}
-                                    @tagName="ul"
-                                    @containerSelector=".page-content-inner"
-                                    @class="list-unstyled"
-                                    @estimateHeight={{100}}
-                                    @renderAll={{this.fastboot.isFastBoot}}
-                                    @lastReached={{this.paginator.loadMoreModels}}
-                                    as |result|
-                                >
-                                    <Search::Item::Bibliographic
-                                        @item={{result}}
-                                        @openResult={{this.openResult}}
+                                {{#if (eq this.selectedView.id this.tableView)}}
+                                    <Tables::Search
+                                        @rows={{this.paginator.models}}
+                                        @hasMoreRows={{this.paginator.hasMore}}
+                                        @loadMoreRows={{this.paginator.loadMoreModels}}
+                                        @isLoading={{this.paginator.isLoadingModels}}
+                                        @updateSorts={{this.paginator.changeSorting}}
+                                        @sorts={{this.paginator.sorts}}
                                     />
-                                </VerticalCollection>
-                                {{#if this.paginator.isLoadingModels}}
-                                    <Loading::Spinner @options={{hash text=(t "common.loadingResults")}} />
+
+                                {{else}}
+                                    <VerticalCollection
+                                        @items={{this.paginator.models}}
+                                        @tagName="ul"
+                                        @containerSelector=".page-content-inner"
+                                        @class="list-unstyled"
+                                        @estimateHeight={{100}}
+                                        @renderAll={{this.fastboot.isFastBoot}}
+                                        @lastReached={{this.paginator.loadMoreModels}}
+                                        as |result|
+                                    >
+                                        <Search::Item::Bibliographic
+                                            @item={{result}}
+                                            @selectedItems={{this.selectedItems}}
+                                            @onCheck={{this.onCheck}}
+                                            @openResult={{this.openResult}}
+                                        />
+                                    </VerticalCollection>
+                                    {{#if this.paginator.isLoadingModels}}
+                                        <Loading::Spinner @options={{hash text=(t "common.loadingResults")}} />
+                                    {{/if}}
                                 {{/if}}
                             </div>
                         </div>
