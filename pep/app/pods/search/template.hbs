@@ -63,7 +63,7 @@
                     </div>
                 {{else}}
                     <div class="py-3 px-4">
-                        <div class="d-md-flex justify-content-between align-items-center mb-3">
+                        <div class="d-md-flex justify-content-between align-items-center mb-3 py-1 sticky-top bg-backdrop">
                             <h4 class="mb-0">
                                 {{t
                                     "common.numResults"
@@ -72,57 +72,61 @@
                                 }}
                             </h4>
                             <div class="d-flex align-items-center">
-                                <div class="d-flex align-items-center">
-                                    <span class="text-muted">{{t "search.view.label"}}</span>
-                                    <select
-                                        class="custom-select custom-select-sm text-truncate ml-1 mr-2"
-                                        {{on "change" this.updateSelectedView}}
-                                    >
-                                        {{#each this.searchViews as |view|}}
-                                            <option value={{view.id}} selected={{eq view.id this.selectedView.id}}>
-                                                {{view.label}}
-                                            </option>
-                                        {{/each}}
-                                    </select>
-                                </div>
-                                <Button
-                                    @type="link"
-                                    class="text-decoration-none p-1 mr-1"
-                                >
-                                    <span class="text-muted">{{t "search.sort.label"}}</span>
-                                    <span class="text-dark mr-1">{{t "search.sort.year"}}</span>
-                                    <FaIcon @icon="angle-down" class="text-muted" />
-                                </Button>
-                                <div class="d-flex align-items-center">
-                                    <span class="text-muted">{{t "search.view.label"}}</span>
-                                    <select
-                                        class="custom-select custom-select-sm text-truncate ml-1 mr-2"
-                                        {{on "change" this.updateSelectedView}}
-                                    >
-                                        {{#each this.searchViews as |view|}}
-                                            <option value={{view.id}} selected={{eq view.id this.selectedView.id}}>
-                                                {{view.label}}
-                                            </option>
-                                        {{/each}}
-                                    </select>
+                                <div class="search-results-control">
+                                    <CheckboxInput
+                                        @checked={{this.currentUser.preferences.searchHICEnabled}}
+                                        @onChange={{this.updateHitsInContext}}
+                                        @label={{t "search.hitsInContext.label"}}
+                                    />
+                                    <abbr class="search-results-control-help">
+                                        <span class="fa-layers fa-sm">
+                                            <FaIcon @icon="circle" @prefix="fas" class="search-results-control-help-background"/>
+                                            <FaIcon @icon="question-circle" @size="xs" class="search-results-control-help-foreground" />
+                                        </span>
+                                        <EmberTooltip
+                                            @text={{t "search.hitsInContext.help"}}
+                                            @popperContainer="body"
+                                            @side="right"
+                                            @spacing={{5}}
+                                            @effect="slide"
+                                            @innerClass=""
+                                        />
+                                    </abbr>
                                 </div>
 
-                                {{!-- <FlSelect
-                                    class="p-1 mr-2 d-flex"
-                                    @options={{this.searchViews}}
-                                    @value={{this.selectedView}}
-                                    @valuePath="id"
-                                    @labelPath="label"
-                                    @emptyOptionText={{t "search.view.label"}}
-                                    @allowClear={{false}}
-                                    @onChange={{this.updateSelectedView}}
-                                /> --}}
+                                <div class="search-results-control">
+                                    <Button
+                                        @type="link"
+                                        class="text-decoration-none p-1 mr-1"
+                                    >
+                                        <span class="text-muted">{{t "search.sort.label"}}</span>
+                                        <span class="text-dark mr-1">{{t "search.sort.year"}}</span>
+                                        <FaIcon @icon="angle-down" class="text-muted" />
+                                    </Button>
+                                </div>
+
+                                <div class="search-results-control">
+                                    <div class="d-flex align-items-center">
+                                        <span class="search-results-control-label text-muted">{{t "search.view.label"}}</span>
+                                        <select
+                                            class="custom-select custom-select-sm text-truncate"
+                                            {{on "change" this.updateSelectedView}}
+                                        >
+                                            {{#each this.searchViews as |view|}}
+                                                <option value={{view.id}} selected={{eq view.id this.selectedView.id}}>
+                                                    {{view.label}}
+                                                </option>
+                                            {{/each}}
+                                        </select>
+                                    </div>
+                                </div>
+
                                 <Button::WithTooltip
                                     @type="link"
                                     @icon="download"
                                     @iconSize="lg"
                                     @tooltip={{t "common.export"}}
-                                    class="p-1"
+                                    class="p-1 pl-2"
                                 />
                                 <Button::WithTooltip
                                     @type="link"
@@ -143,6 +147,8 @@
                                         @isLoading={{this.paginator.isLoadingModels}}
                                         @updateSorts={{this.paginator.changeSorting}}
                                         @sorts={{this.paginator.sorts}}
+                                        @showHitsInContext={{this.currentUser.preferences.searchHICEnabled}}
+
                                     />
 
                                 {{else}}

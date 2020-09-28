@@ -12,6 +12,7 @@ interface TablesSearchArgs {
     hasMoreRows: boolean;
     loadMoreRows: () => Document[];
     isLoading: boolean;
+    showHitsInContext: boolean;
 }
 
 export default class TablesSearch extends Component<TablesSearchArgs> {
@@ -19,7 +20,7 @@ export default class TablesSearch extends Component<TablesSearchArgs> {
     @service fastbootMedia!: FastbootMediaService;
 
     @tracked expandedRows = this.args.rows;
-
+    defaultExpandedRows = [];
     /**
      * Columns for the table. The `computed` is required
      *
@@ -31,26 +32,37 @@ export default class TablesSearch extends Component<TablesSearchArgs> {
     get columns(): ColumnValue[] {
         return [
             {
+                valuePath: 'id',
+                cellComponent: 'tables/cell/checkbox',
+                isSortable: false,
+                width: 10,
+                staticWidth: 10
+            },
+            {
                 valuePath: 'authorMast',
                 name: this.intl.t('search.table.author'),
-                isSortable: true
+                isSortable: true,
+                staticWidth: 75
             },
 
             {
                 name: this.intl.t('search.table.year'),
                 valuePath: 'year',
-                isSortable: true
+                isSortable: true,
+                staticWidth: 25
             },
             {
                 name: this.intl.t('search.table.title'),
                 valuePath: 'title',
                 isSortable: true,
-                cellComponent: 'tables/cell/html'
+                cellComponent: 'tables/cell/html',
+                staticWidth: 100
             },
             {
                 name: this.intl.t('search.table.source'),
                 valuePath: 'documentRef',
-                isSortable: true
+                isSortable: true,
+                staticWidth: 100
             }
         ];
     }

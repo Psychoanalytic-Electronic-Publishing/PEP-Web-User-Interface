@@ -542,6 +542,16 @@ export default class Search extends Controller {
         const selectedView = SearchViews.find((item) => item.id === id);
         this.selectedView = selectedView!;
     }
+
+    @action
+    async updateHitsInContext(value: boolean) {
+        // Load more models to make up for the difference in height between displaying HIC and not
+        // so the user doesn't see a blank white space
+        if (!value) {
+            await this.paginator.loadMoreModels();
+        }
+        this.currentUser.updatePrefs({ [PreferenceKey.SEARCH_HIC_ENABLED]: value });
+    }
 }
 
 // DO NOT DELETE: this is how TypeScript knows how to look up your controllers.
