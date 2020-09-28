@@ -55,12 +55,10 @@ export default class CurrentUserService extends Service {
      * @returns Promise<User | void>
      */
     async fetchUser(): Promise<User | void> {
-        if (this.session.isAuthenticated && this.session.data.authenticated.SessionType === SessionType.CREDENTIALS) {
-            const { SessionId } = this.session.data.authenticated;
-            const user = await this.store.queryRecord('user', { SessionId });
-            this.user = user;
-            return user;
-        }
+        const { SessionId } = this.session.data.authenticated;
+        const user = await this.store.queryRecord('user', { SessionId });
+        this.user = user;
+        return user;
     }
 
     /**
