@@ -31,7 +31,7 @@ export default class HelpTooltip extends Component<HelpTooltipArgs> {
 
     /**
      * On mobile devices, show the tooltip content in a modal-like display instead
-     * of an actual tooltip. You can force the modal view via `@forceModal`
+     * of an actual tooltip. You can force the modal view to always show via `@forceModal`
      * @readonly
      * @returns {boolean}
      */

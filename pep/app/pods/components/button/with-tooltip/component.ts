@@ -39,7 +39,7 @@ export default class ButtonWithTooltip extends Component<ButtonWithTooltipArgs> 
     }
 
     /**
-     * Default tooltips to never show on buttons on mobile/tablet
+     * Default tooltips to never show for buttons on mobile/tablet
      * since in order for the tooltip to show, on touch devices you
      * must tap the button and therefore invoke its action to see
      * the tooltip, making it mostly useless.

@@ -5,6 +5,7 @@ interface ModalDialogsHelpTooltipArgs {
     options: {
         title?: string;
         content: string;
+        bodyId: string;
     };
 }
 
