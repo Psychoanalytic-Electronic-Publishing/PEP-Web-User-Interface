@@ -1,4 +1,7 @@
 import Component from '@glimmer/component';
+import { inject as service } from '@ember/service';
+
+import FastbootMediaService from 'pep/services/fastboot-media';
 
 interface CollapsiblePanelHeaderArgs {
     title: string;
@@ -9,4 +12,6 @@ interface CollapsiblePanelHeaderArgs {
     };
 }
 
-export default class CollapsiblePanelHeader extends Component<CollapsiblePanelHeaderArgs> {}
+export default class CollapsiblePanelHeader extends Component<CollapsiblePanelHeaderArgs> {
+    @service fastbootMedia!: FastbootMediaService;
+}
