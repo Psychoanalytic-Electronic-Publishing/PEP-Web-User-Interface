@@ -1,0 +1,25 @@
+<abbr
+    class="help-tooltip"
+    role="button"
+    aria-label={{t "common.help"}}
+    aria-controls={{if this.isModalView this.modalBodyId}}
+    aria-expanded={{if this.isModalView this.modalIsOpen}}
+    {{on "click" this.onClick}}
+    ...attributes
+>
+    {{yield}}
+    {{#unless hasBlock}}
+        <FaIcon @icon="question-circle" />
+    {{/unless}}
+    {{#unless this.isModalView}}
+        <EmberTooltip
+            @text={{@tooltip}}
+            @class={{@tooltipClass}}
+            @side={{this.tooltipSide}}
+            @spacing={{this.tooltipSpacing}}
+            @popperContainer={{this.tooltipContainer}}
+            @effect="slide"
+            @innerClass=""
+        />
+    {{/unless}}
+</abbr>
