@@ -9,11 +9,6 @@ import SidebarService from 'pep/services/sidebar';
 import { PreferenceDocumentsKey, PreferenceKey } from 'pep/constants/preferences';
 import Document from 'pep/pods/document/model';
 
-import CurrentUserService from 'pep/services/current-user';
-import SidebarService from 'pep/services/sidebar';
-import Document from 'pep/pods/document/model';
-import { PreferenceDocumentsKey, PreferenceKey } from 'pep/constants/preferences';
-
 interface SearchItemBibliographicArgs {
     item: Document;
     openResult: () => void;

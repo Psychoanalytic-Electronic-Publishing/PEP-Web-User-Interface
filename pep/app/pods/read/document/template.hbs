@@ -56,11 +56,6 @@
                         {{this.model.authorMast}}
                     </div>
                 </h4>
-                <div class="text-muted pep-document-content mb-3">
-                    <ContentWithPlaceholder @placeholderInFastboot={{true}}>
-                        {{html-safe this.model.abstractCleaned}}
-                    </ContentWithPlaceholder>
-                </div>
                 <Alert
                     @isShown={{this.model.accessLimited}}
                     @type="warning"
@@ -77,14 +72,15 @@
                         </p>
                     {{/unless}}
                 </Alert>
-                {{#unless this.model.accessLimited}}
-                    <div class="pep-document-content">
-                        {{!-- TODO document pagination --}}
-                        <ContentWithPlaceholder @placeholderInFastboot={{true}} @placeholderComponent="">
+                <div class="pep-document-content">
+                    <ContentWithPlaceholder @placeholderInFastboot={{true}}>
+                        {{#if this.model.accessLimited}}
+                            {{html-safe this.model.abstractCleaned}}
+                        {{else}}
                             {{html-safe this.model.documentCleaned}}
-                        </ContentWithPlaceholder>
-                    </div>
-                {{/unless}}
+                        {{/if}}
+                    </ContentWithPlaceholder>
+                </div>
             </div>
         </div>
     </div>

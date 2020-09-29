@@ -171,7 +171,7 @@ export function joinParamValues(
  */
 export function hasSearchQuery(
     params: QueryParamsObj,
-    exclude = ['synonyms', 'facetfields', 'abstract', 'viewperiod', 'facetlimit', 'facetmincount']
+    exclude = ['synonyms', 'facetfields', 'abstract', 'viewperiod', 'facetlimit', 'facetmincount', 'formatrequested']
 ) {
     return Object.keys(params).filter((p) => !exclude.includes(p)).length > 0;
 }
