@@ -339,6 +339,17 @@ export const SEARCH_FACET_SOURCETYPE: SearchFacetType = {
     ]
 };
 
+export const SEARCH_FACET_ART_ID: SearchFacetType = {
+    id: SearchFacetId.ART_ID,
+    param: 'fulltext1',
+    paramSeparator: ' OR ',
+    label: '',
+    dynamicValues: true,
+    prefixValues: true,
+    quoteValues: false,
+    values: []
+};
+
 export const SEARCH_FACET_SOURCE: SearchFacetType = {
     id: SearchFacetId.ART_SOURCETITLEABBR,
     param: 'fulltext1',
@@ -545,11 +556,12 @@ export const SEARCH_FACET_AUTHOR: SearchFacetType = {
 };
 
 export const SEARCH_FACETS = [
+    SEARCH_FACET_ART_ID,
+    SEARCH_FACET_LANG,
     SEARCH_FACET_DECADE,
     SEARCH_FACET_VIEW,
     SEARCH_FACET_CITATION,
     SEARCH_FACET_AUTHOR,
-    SEARCH_FACET_LANG,
     SEARCH_FACET_TYPE,
     SEARCH_FACET_SOURCETYPE,
     SEARCH_FACET_SOURCE,

@@ -25,7 +25,8 @@
         "loadingResults": "Loading results...",
         "loading": "Loading...",
         "filter": "Filter",
-        "viewAll": "View all"
+        "viewAll": "View all",
+        "help": "Help"
     },
     "serverErrors": {
         "heading": "The following {count, plural, =1 {error} other {errors}} occurred while attempting to process your request.",
@@ -66,6 +67,25 @@
         "sort": {
             "label": "Sort:",
             "year": "Year"
+        },
+        "item": {
+            "relatedDocuments": "This document has related documents",
+            "addToFavorites": "Add to favorites",
+            "removeFromFavorites": "Remove from favorites",
+            "addToReadLater": "Add to read later",
+            "removeFromReadLater": "Remove from read later",
+            "notifications": {
+                "success": {
+                    "addToFavorites": "Document added to favorites",
+                    "removeFromFavorites": "Document removed from favorites",
+                    "addToReadLater": "Document added to read later list",
+                    "removeFromReadLater": "Document removed from read later list"
+                },
+                "failure": {
+                    "favorites": "There was an error updating your favorites",
+                    "readLater": "There was an error updating your read later list"
+                }
+            }
         },
         "view": {
             "label": "View:",
@@ -142,9 +162,13 @@
             },
             "read": "Read",
             "mustBeLoggedIn": "You must be logged in to read or download this document.",
+            "accessLimited": "The full content of this document is not available. This may be due to your current subscription or publisher restrictions.",
             "login": "Click here to login",
             "download": {
-                "label": "Download docs"
+                "label": "Download docs",
+                "ePub": "ePub document",
+                "pdf": "PDF document",
+                "pdfOrig": "PDF (original) document"
             }
         },
         "terms": {
@@ -279,7 +303,7 @@
             "findMore": "Want to find more articles and resources?",
             "newSearch": "Start a new search",
             "backToSearch": "Back to search",
-            "limitedAccess": "You must be logged in to read the full document.",
+            "loginToRead": "You must be logged in to read the full document.",
             "login": "Click here to login",
             "image": {
                 "alt": "Article image {id}"
@@ -294,12 +318,19 @@
             "expertPicks": {
                 "title": "Expert picks"
             },
+            "favorites": {
+                "title": "Favorites",
+                "noResults": "You don't have any favorites. Add documents that you frequently view to your favorites for quick access"
+            },
             "glossaryTerms": {
                 "title": "Glossary terms",
-                "view": "View complete glossary"
+                "view": "View complete glossary",
+                "noResults": "You must perform a search or view a document to see the glossary terms"
             },
             "moreLikeThese": {
-                "title": "More like these"
+                "title": "More like these",
+                "confidence": "Similarity Confidence: {number}%",
+                "noResults": "You must view a document to see the similar documents"
             },
             "mostCited": {
                 "title": "Most cited"
@@ -310,8 +341,21 @@
             "pastSearches": {
                 "title": "Your past searches"
             },
+            "publisherInfo": {
+                "title": "Publisher Info",
+                "view": "View information for {publisher}",
+                "noResults": "You must view a document to see the documents publisher information."
+            },
+            "readLater": {
+                "title": "Read later",
+                "noResults": "You don't have any documents saved for later. Add documents that you want to view for quick access."
+            },
+            "relatedDocuments": {
+                "title": "Related Documents",
+                "noResults": "You must view a document to see the documents related to it. If you are already viewing one, this means no results have been found."
+            },
             "relevantSearches": {
-                "title": "Revelant searches"
+                "title": "Relevant searches"
             },
             "seminalPapers": {
                 "title": "Seminal papers"
@@ -330,6 +374,9 @@
             },
             "yourInterests": {
                 "title": "Your interests"
+            },
+            "videoPreview": {
+                "title": "Latest Video"
             }
         }
     },
@@ -366,7 +413,13 @@
             "calendarYear": "Req. last calendar year"
         }
     },
-
+    "publisherInfo": {
+        "title": "Publisher Information"
+    },
+    "glossary": {
+        "title": "Glossary",
+        "searchForTerm": "Search for this term"
+    },
     "login": {
         "title": "Login",
         "info": "This is the Psychoanalytic Electronic Publishing Archive full text database. It is freely available for everyone to search, view tables of contents, and view summaries. However you will need a subscription in order to view the full text of articles and books and follow links within the database.",
@@ -375,14 +428,27 @@
         "password": "Password",
         "notAMember": "Not a member?",
         "clickToSubscribe": "Click here to subscribe",
-        "success": "You are now logged in."
+        "success": "You are now logged in.",
+        "forgotPassword": "Forgot Password?"
     },
     "preferences": {
         "title": "Preferences",
         "info": "Customize and personalize your PEP experience using the settings below.",
-        "theme": {
-            "label": "Color theme",
-            "select": "Select a theme"
+        "general": {
+            "heading": "General settings",
+            "theme": {
+                "label": "Color theme",
+                "select": "Select a theme"
+            }
+        },
+        "search": {
+            "heading": "Search",
+            "preview": {
+                "label": "On search result selection",
+                "select": "Select your desired behavior",
+                "enabled": "Display a preview pane",
+                "disabled": "Open the full document"
+            }
         }
     },
     "about": {

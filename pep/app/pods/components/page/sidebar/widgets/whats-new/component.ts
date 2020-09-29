@@ -9,10 +9,14 @@ import WhatsNew from 'pep/pods/whats-new/model';
 import { WIDGET } from 'pep/constants/sidebar';
 import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
 import Modal from '@gavant/ember-modals/services/modal';
+import ConfigurationService from 'pep/services/configuration';
+import { restartableTask } from 'ember-concurrency-decorators';
+import { taskFor } from 'ember-concurrency-ts';
 
 interface PageSidebarWidgetsWhatsNewArgs extends PageSidebarWidgetArgs {}
 
 export default class PageSidebarWidgetsWhatsNew extends Component<PageSidebarWidgetsWhatsNewArgs> {
+    @service configuration!: ConfigurationService;
     @service store!: DS.Store;
     @service modal!: Modal;
 
@@ -28,27 +32,24 @@ export default class PageSidebarWidgetsWhatsNew extends Component<PageSidebarWid
     /**
      * Load the widget results data
      */
-    @dontRunInFastboot
-    async loadResults() {
-        // TODO switch to ember-concurrency task (with TS-friendly decorators, etc)
-        // to remove manual `isLoading` state management etc
-        // @see https://jamescdavis.com/using-ember-concurrency-with-typescript/
-        try {
-            this.isLoading = true;
-            const results = await this.store.query('whats-new', { days_back: 30, limit: 10 });
-            this.results = results.toArray();
-            this.isLoading = false;
-        } catch (err) {
-            this.isLoading = false;
-        }
+    @restartableTask
+    *loadResults() {
+        const results = yield this.store.query('whats-new', {
+            days_back: 30,
+            limit: this.configuration.base.global.cards.whatsNew.limit
+        });
+        this.results = results.toArray();
     }
 
     /**
      * Load the widget results on render
+     *
+     * @memberof PageSidebarWidgetsWhatsNew
      */
     @action
+    @dontRunInFastboot
     onElementInsert() {
-        this.loadResults();
+        taskFor(this.loadResults).perform();
     }
 
     /**

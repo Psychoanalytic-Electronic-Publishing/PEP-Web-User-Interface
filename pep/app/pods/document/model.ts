@@ -1,15 +1,21 @@
 import DS from 'ember-data';
 import attr from 'ember-data/attr';
+import { belongsTo } from 'ember-data/relationships';
+
 import { isEmpty } from '@ember/utils';
+
 import { INVALID_ABSTRACT_TAGS, INVALID_ABSTRACT_PREVIEW_TAGS, HTML_BODY_REGEX } from 'pep/constants/regex';
+import SimilarityMatch from 'pep/pods/similarity-match/model';
 
 export default class Document extends DS.Model {
     // attributes
-    @attr('string') PEPCode!: string;
     @attr('string') abstract!: string;
     @attr('string') accessClassification!: string;
     @attr('boolean') accessLimited!: boolean;
+    @attr('boolean') accessLimitedCurrentContent!: boolean;
     @attr('string') accessLimitedDescription!: string;
+    @attr('string') accessLimitedPubLink!: string;
+    @attr('string') accessLimitedReason!: string;
     @attr('string') authorMast!: string;
     @attr('number') docLevel!: number;
     @attr('string') docType!: string;
@@ -21,17 +27,18 @@ export default class Document extends DS.Model {
     @attr('string') doi!: string;
     @attr('string') issn!: string;
     @attr('string') issue!: string;
-    @attr('string') kwic!: string;
-    @attr() kwicList!: string[];
+    @attr('string') issueTitle!: string;
     @attr('string') lang!: string;
     @attr('string') newSectionName!: string;
     @attr('string') origrx!: string;
+    @attr('string') PEPCode!: string;
     @attr('string') pgEnd!: string;
     @attr('string') pgRg!: string;
     @attr('string') pgStart!: string;
-    @attr('string') rank!: number;
+    @attr('string') rank!: number; // TODO if this is a search-only attr, move to SearchDocument
+    @attr('string') rankField!: string; // TODO if this is a search-only attr, move to SearchDocument
     @attr('string') relatedrx!: string;
-    @attr('string') score!: number;
+    @attr('string') score!: number; // TODO if this is a search-only attr, move to SearchDocument
     @attr('string') sourceTitle!: string;
     @attr('string') sourceType!: string;
     @attr() stat!: object;
@@ -39,6 +46,10 @@ export default class Document extends DS.Model {
     @attr('date') updated!: Date;
     @attr('string') vol!: string;
     @attr('string') year!: string;
+
+    // Doing this to allow metadata on find record calls - which ember data currently doesn't handle
+    // properly
+    @attr() meta!: any;
 
     // TODO we should consider using the XML return format for documents instead of the HTML format
     // for more control and render safety with the returned content, however will probably require
@@ -70,6 +81,18 @@ export default class Document extends DS.Model {
         const document = !isEmpty(this.document) ? this.document : '';
         return document.replace(HTML_BODY_REGEX, '$1');
     }
+
+    get noAccessMessage() {
+        return this.accessLimitedReason || this.accessLimitedDescription;
+    }
+
+    /**
+     * Relationship
+     *
+     * @type {SimilarityMatch}
+     * @memberof Document
+     */
+    @belongsTo('similarityMatch', { async: false }) similarityMatch!: SimilarityMatch | null;
 }
 
 declare module 'ember-data/types/registries/model' {

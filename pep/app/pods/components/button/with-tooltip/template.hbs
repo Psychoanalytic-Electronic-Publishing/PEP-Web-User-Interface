@@ -2,17 +2,22 @@
     <Button
         @label={{@label}}
         @icon={{@icon}}
+        @iconPrefix={{@iconPrefix}}
         @iconSize={{@iconSize}}
         @type={{@type}}
         @action={{@action}}
+        title={{unless this.tooltipVisible @tooltip}}
         ...attributes
     />
-    <EmberTooltip
-        @text={{@tooltip}}
-        @class={{@tooltipClass}}
-        @side={{this.tooltipSide}}
-        @spacing={{this.tooltipSpacing}}
-        @effect={{this.tooltipEffect}}
-        @innerClass=""
-    />
+    {{#if this.tooltipVisible}}
+        <EmberTooltip
+            @text={{@tooltip}}
+            @class={{@tooltipClass}}
+            @side={{this.tooltipSide}}
+            @spacing={{this.tooltipSpacing}}
+            @effect={{this.tooltipEffect}}
+            @popperContainer={{this.tooltipContainer}}
+            @innerClass=""
+        />
+    {{/if}}
 </span>

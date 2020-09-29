@@ -1,11 +1,47 @@
 import DS from 'ember-data';
 import { camelize } from '@ember/string';
 import { pluralize } from 'ember-inflector';
+import DocumentModel from 'pep/pods/document/model';
 
 import ApplicationSerializerMixin from 'pep/mixins/application-serializer';
 
-export default class Document extends ApplicationSerializerMixin(DS.RESTSerializer) {
+/**
+ * Build correctly formatted similarity match items based on what the API sends
+ *
+ * @param {*} item
+ * @returns {Document}
+ */
+const transformDocument = (item: any) => {
+    const document = item;
+    const similarDocumentItems = new Map(Object.entries(document?.similarityMatch?.similarDocs ?? {}));
+    const similarDocuments = (similarDocumentItems.get(document.documentID) as []) ?? [];
+    const documentToReturn = { ...document } as DocumentModel;
+
+    if (documentToReturn)
+        if (similarDocuments.length) {
+            documentToReturn.similarityMatch = {
+                id: document.documentID,
+                // @ts-ignore Because we are building a model here - type does exist
+                type: 'similarity-match',
+                similarMaxScore: document?.similarityMatch?.similarMaxScore,
+                similarNumFound: document?.similarityMatch?.similarNumFound,
+                similarDocuments
+            };
+        } else {
+            documentToReturn.similarityMatch = null;
+        }
+
+    return documentToReturn;
+};
+
+export default class DocumentSerializer extends ApplicationSerializerMixin(
+    DS.RESTSerializer.extend(DS.EmbeddedRecordsMixin)
+) {
     primaryKey = 'documentID';
+
+    attrs = {
+        similarityMatch: { embedded: 'always' }
+    };
 
     /**
      * The API returns result sets in the JSON under documentList.responseSet
@@ -25,6 +61,10 @@ export default class Document extends ApplicationSerializerMixin(DS.RESTSerializ
     ) {
         const modelKey = pluralize(camelize(primaryModelClass.modelName));
         if (payload?.documentList) {
+            payload.documentList.responseSet = payload.documentList.responseSet.map((item: any) =>
+                transformDocument(item)
+            );
+
             payload.meta = payload.documentList.responseInfo;
             payload[modelKey] = payload.documentList.responseSet;
             delete payload.documentList;
@@ -41,7 +81,7 @@ export default class Document extends ApplicationSerializerMixin(DS.RESTSerializ
      * @param {string} id
      * @param {string} requestType
      */
-    normalizeFindRecordResponse(
+    normalizeSingleResponse(
         store: DS.Store,
         primaryModelClass: ModelWithName,
         payload: any,
@@ -50,18 +90,20 @@ export default class Document extends ApplicationSerializerMixin(DS.RESTSerializ
     ) {
         const modelKey = camelize(primaryModelClass.modelName);
         if (payload?.documents) {
-            payload.meta = payload.documents.responseInfo;
+            payload.documents.responseSet = payload.documents.responseSet.map((item: any) => transformDocument(item));
+
             payload[modelKey] = payload.documents.responseSet?.[0];
+            payload[modelKey].meta = payload.documents.responseInfo;
             delete payload.documents;
         }
 
-        return super.normalizeFindRecordResponse(store, primaryModelClass, payload, id, requestType);
+        return super.normalizeSingleResponse(store, primaryModelClass, payload, id, requestType);
     }
 }
 
 // DO NOT DELETE: this is how TypeScript knows how to look up your serializers.
 declare module 'ember-data/types/registries/serializer' {
     export default interface SerializerRegistry {
-        document: Document;
+        document: DocumentSerializer;
     }
 }

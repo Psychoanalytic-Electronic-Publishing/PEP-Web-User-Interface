@@ -29,6 +29,7 @@ import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
 import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
 import { SearchMetadata } from 'pep/api';
+import { WIDGET } from 'pep/constants/sidebar';
 import { SearchPreviewMode } from 'pep/pods/components/search/preview/component';
 
 export default class Search extends Controller {
@@ -75,6 +76,9 @@ export default class Search extends Controller {
     @tracked previewMode: SearchPreviewMode = 'minimized';
     @tracked containerMaxHeight = 0;
 
+    readLaterKey = PreferenceKey.READ_LATER;
+    favoritesKey = PreferenceKey.FAVORITES;
+
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
     @tracked _searchTerms: string | null = null;
@@ -111,8 +115,27 @@ export default class Search extends Controller {
         }
     }
 
+    /**
+     * The query params object to pass to <LinkTo>'s and route transitions
+     * when opening the Read page for a document
+     * @readonly
+     */
+    get readQueryParms() {
+        return {
+            q: this.q,
+            searchTerms: this._searchTerms,
+            facets: this._facets,
+            matchSynonyms: this.matchSynonyms
+        };
+    }
+
     get hasSubmittedSearch() {
-        return this.q || this.searchTerms.filter((t: SearchTermValue) => !!t.term).length > 0;
+        return !!(
+            this.q ||
+            this.citedCount ||
+            this.viewedCount ||
+            this.searchTerms.filter((t: SearchTermValue) => !!t.term).length > 0
+        );
     }
 
     get noResults() {
@@ -397,12 +420,18 @@ export default class Search extends Controller {
                 if (showLoading) {
                     this.loadingBar.show();
                 }
-                const result = yield this.store.query('document', { ...searchParams, offset: 0, limit: 1 });
+                const result = yield this.store.query('search-document', { ...searchParams, offset: 0, limit: 1 });
                 this.resultsMeta = result.meta as SearchMetadata;
             } else {
                 //if there is no search fields populated, clear the Refine section
                 this.resultsMeta = null;
             }
+
+            this.sidebar.update({
+                [WIDGET.GLOSSARY_TERMS]: this.resultsMeta?.facetCounts.facet_fields.glossary_group_terms,
+                [WIDGET.RELATED_DOCUMENTS]: undefined,
+                [WIDGET.MORE_LIKE_THESE]: undefined
+            });
 
             return this.resultsMeta;
         } catch (errors) {
@@ -432,14 +461,25 @@ export default class Search extends Controller {
     }
 
     /**
-     * Opens the selected result in the preview pane
+     * Opens the selected result in the preview pane or the full read page,
+     * depending on the user's preferences
      * @param {Object} result
      * @param {Event} event
      */
     @action
-    openResultPreview(result: Document, event: Event) {
+    openResult(result: Document, event: Event) {
         event.preventDefault();
-        this.previewedResult = result;
+        if (this.currentUser.preferences?.searchPreviewEnabled) {
+            this.previewedResult = result;
+            this.sidebar.update({
+                [WIDGET.MORE_LIKE_THESE]: result,
+                [WIDGET.RELATED_DOCUMENTS]: result
+            });
+        } else {
+            this.transitionToRoute('read.document', result.id, {
+                queryParams: this.readQueryParms
+            });
+        }
     }
 
     /**
@@ -448,6 +488,10 @@ export default class Search extends Controller {
     @action
     closeResultPreview() {
         this.previewedResult = null;
+        this.sidebar.update({
+            [WIDGET.MORE_LIKE_THESE]: undefined,
+            [WIDGET.RELATED_DOCUMENTS]: undefined
+        });
     }
 
     /**

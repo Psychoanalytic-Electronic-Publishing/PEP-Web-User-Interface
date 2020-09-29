@@ -9,16 +9,16 @@ import Modal from '@gavant/ember-modals/services/modal';
 import { timeout } from 'ember-concurrency';
 import { restartableTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
-
 import { SEARCH_TYPE_EVERYWHERE, SearchTermValue, ViewPeriod, SEARCH_DEFAULT_VIEW_PERIOD } from 'pep/constants/search';
 import AjaxService from 'pep/services/ajax';
 import LoadingBarService from 'pep/services/loading-bar';
-import ConfigurationService from 'pep/services/configuration';
-import CurrentUserService from 'pep/services/current-user';
 import PepSessionService from 'pep/services/pep-session';
 import ENV from 'pep/config/environment';
 import { ServerStatus } from 'pep/api';
+import ConfigurationService from 'pep/services/configuration';
 import { PreferenceKey } from 'pep/constants/preferences';
+import CurrentUserService from 'pep/services/current-user';
+import SidebarService from 'pep/services/sidebar';
 
 export default class Application extends Controller {
     @service loadingBar!: LoadingBarService;
@@ -29,6 +29,7 @@ export default class Application extends Controller {
     @service intl!: IntlService;
     @service configuration!: ConfigurationService;
     @service currentUser!: CurrentUserService;
+    @service sidebar!: SidebarService;
 
     @tracked isLimitOpen: boolean = false;
     @tracked smartSearchTerm: string = '';

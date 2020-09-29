@@ -12,6 +12,6 @@ module('Integration | Component | page/sidebar/widgets', function(hooks) {
 
         await render(hbs`{{page/sidebar/widgets}}`);
 
-        assert.ok(this.element.textContent);
+        assert.equal(this.element.textContent, '');
     });
 });

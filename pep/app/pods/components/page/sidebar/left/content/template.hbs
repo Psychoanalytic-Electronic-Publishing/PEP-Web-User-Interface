@@ -1,0 +1,10 @@
+<Page::Sidebar::Content @scrollableNamespace="sidebar-left">
+    {{yield}}
+    {{#unless @hideWidgets}}
+        <Page::Sidebar::Widgets
+            @widgets={{this.leftSidebarWidgets}}
+            @data={{@data}}
+            class="pt-2"
+        />
+    {{/unless}}
+</Page::Sidebar::Content>

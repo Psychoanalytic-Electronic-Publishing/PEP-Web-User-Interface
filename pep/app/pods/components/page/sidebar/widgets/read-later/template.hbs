@@ -1,0 +1,42 @@
+<CollapsiblePanel
+    @scrollableNamespace="sidebar-right"
+    @isOpen={{this.isOpen}}
+    @toggle={{fn @toggleIsOpen this.widget}}
+    {{did-insert this.onElementChange}}
+    {{did-update this.onElementChange this.currentUser.preferences}}
+    class="mb-2"
+as |Panel|>
+    <Panel.header @title={{t "relatedInfo.widgets.readLater.title"}} />
+    <Panel.body>
+        <ContentWithPlaceholder
+            @placeholderComponent="loading/widget"
+            @isLoading={{this.loadFromUserPreferences.isRunning}}
+        >
+            <ul class="list-unstyled">
+                {{#each this.results as |result|}}
+                    <li class="mb-2 d-flex justify-content-between align-items-start">
+                        <div>
+                            <LinkTo @route="read.document" @model={{result.id}}>
+                                {{html-safe result.title}}
+                            </LinkTo>
+                            <div class="text-muted small">
+                                {{html-safe result.sourceTitle}}
+                            </div>
+                        </div>
+                        <Button
+                            @action={{fn this.removeReadLaterDocument result}}
+                            @iconOnly={{true}}
+                            @icon="times"
+                            @type="link"
+                            class="p-0 ml-2 text-muted"
+                        />
+                    </li>
+                {{else}}
+                    <li class="py-3 mb-0 text-center text-muted">
+                        {{t "relatedInfo.widgets.readLater.noResults"}}
+                    </li>
+                {{/each}}
+            </ul>
+        </ContentWithPlaceholder>
+    </Panel.body>
+</CollapsiblePanel>

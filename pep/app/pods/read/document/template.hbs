@@ -61,28 +61,30 @@
                         {{html-safe this.model.abstractCleaned}}
                     </ContentWithPlaceholder>
                 </div>
-                {{#if this.model.accessLimited}}
-                    <div class="alert alert-warning" role="alert">
-                        {{#if this.model.accessLimitedDescription}}
-                            <p class={{if this.session.isAuthenticated "mb-0"}}>
-                                {{html-safe this.model.accessLimitedDescription}}
-                            </p>
-                        {{/if}}
-                        {{#unless this.session.isAuthenticated}}
-                            <p class="mb-0">
-                                {{t "read.document.limitedAccess"}}
-                                <a href="" {{on "click" this.login}}>{{t "read.document.login"}}</a>.
-                            </p>
-                        {{/unless}}
-                    </div>
-                {{else}}
+                <Alert
+                    @isShown={{this.model.accessLimited}}
+                    @type="warning"
+                >
+                    {{#if this.model.noAccessMessage}}
+                        <p class={{if this.session.isAuthenticated "mb-0"}}>
+                            {{html-safe this.model.noAccessMessage}}
+                        </p>
+                    {{/if}}
+                    {{#unless this.session.isAuthenticated}}
+                        <p class="mb-0">
+                            {{t "read.document.loginToRead"}}
+                            <a href="" {{on "click" this.login}}>{{t "read.document.login"}}</a>.
+                        </p>
+                    {{/unless}}
+                </Alert>
+                {{#unless this.model.accessLimited}}
                     <div class="pep-document-content">
                         {{!-- TODO document pagination --}}
                         <ContentWithPlaceholder @placeholderInFastboot={{true}} @placeholderComponent="">
                             {{html-safe this.model.documentCleaned}}
                         </ContentWithPlaceholder>
                     </div>
-                {{/if}}
+                {{/unless}}
             </div>
         </div>
     </div>

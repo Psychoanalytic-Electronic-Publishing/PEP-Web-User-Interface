@@ -1,0 +1,35 @@
+<abbr
+    class="help-tooltip"
+    role="button"
+    aria-label={{t "common.help"}}
+    aria-controls={{if this.isModalView this.modalBodyId}}
+    aria-expanded={{if this.isModalView this.modalIsOpen}}
+    {{on "click" this.onClick}}
+    ...attributes
+>
+    {{yield}}
+    {{#unless hasBlock}}
+        <span class="fa-stack help-tooltip-icon-stack">
+            <FaIcon
+                @icon="circle"
+                @prefix="fas"
+                class="fa-stack-2x help-tooltip-icon-background"
+            />
+            <FaIcon
+                @icon="question-circle"
+                class="fa-stack-1x help-tooltip-icon-foreground"
+            />
+        </span>
+    {{/unless}}
+    {{#unless this.isModalView}}
+        <EmberTooltip
+            @text={{@tooltip}}
+            @class={{@tooltipClass}}
+            @side={{this.tooltipSide}}
+            @spacing={{this.tooltipSpacing}}
+            @popperContainer={{this.tooltipContainer}}
+            @effect="slide"
+            @innerClass=""
+        />
+    {{/unless}}
+</abbr>

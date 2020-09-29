@@ -17,7 +17,7 @@ as |Panel|>
     <Panel.body>
         <ContentWithPlaceholder
             @placeholderComponent="loading/widget"
-            @isLoading={{this.isLoading}}
+            @isLoading={{this.loadResults.isRunning}}
         >
 
             <ul class="list-unstyled">

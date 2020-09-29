@@ -4,27 +4,29 @@ import { LanguageCode } from 'pep/constants/lang';
 import { SearchTermId } from 'pep/constants/search';
 
 export enum PreferenceKey {
-    THEME = 'theme',
+    FAVORITES = 'favorites',
     LANG = 'lang',
+    READ_LATER = 'readLater',
     SEARCH_LIMIT_IS_SHOWN = 'searchLimitIsShown',
-    SEARCH_TERM_FIELDS = 'searchTermFields'
+    SEARCH_PREVIEW_ENABLED = 'searchPreviewEnabled',
+    SEARCH_TERM_FIELDS = 'searchTermFields',
+    THEME = 'theme'
 }
 
 export interface UserPreferences {
-    preferencesVersion: string;
-    theme: ThemeId;
+    favorites?: string[];
     lang: LanguageCode;
+    preferencesVersion: string;
+    readLater?: string[];
     searchLimitIsShown?: boolean;
     searchTermFields?: SearchTermId[];
+    searchPreviewEnabled?: boolean;
+    theme: ThemeId;
 }
 
-export type PreferenceChangeset = {
-    preferencesVersion?: string;
-    theme?: ThemeId;
-    lang?: LanguageCode;
-    searchLimitIsShown?: boolean;
-    searchTermFields?: SearchTermId[];
-};
+export type PreferenceChangeset = Partial<UserPreferences>;
+
+export type PreferenceDocumentsKey = PreferenceKey.READ_LATER | PreferenceKey.FAVORITES;
 
 export const USER_PREFERENCES_COOKIE_NAME = 'pepweb_user_prefs';
 export const USER_PREFERENCES_LS_PREFIX = 'pepweb_user_prefs';
@@ -37,10 +39,10 @@ export const USER_PREFERENCES_LS_PREFIX = 'pepweb_user_prefs';
  * should be placed in here. Everything else should go in LOCALSTORAGE_PREFERENCES
  */
 export const COOKIE_PREFERENCES: PreferenceKey[] = [
-    PreferenceKey.THEME,
     PreferenceKey.LANG,
     PreferenceKey.SEARCH_LIMIT_IS_SHOWN,
-    PreferenceKey.SEARCH_TERM_FIELDS
+    PreferenceKey.SEARCH_TERM_FIELDS,
+    PreferenceKey.THEME
 ];
 
 /**
@@ -48,10 +50,17 @@ export const COOKIE_PREFERENCES: PreferenceKey[] = [
  * Note that as LocalStorage is clientside-only, the user-set values for these prefs will not be
  * accessible in FastBoot (the default preference value will be returned if access is attempted)
  */
-export const LOCALSTORAGE_PREFERENCES: PreferenceKey[] = [];
+export const LOCALSTORAGE_PREFERENCES: PreferenceKey[] = [
+    PreferenceKey.FAVORITES,
+    PreferenceKey.READ_LATER,
+    PreferenceKey.SEARCH_PREVIEW_ENABLED
+];
 
 export const DEFAULT_USER_PREFERENCES: UserPreferences = {
+    favorites: [],
     preferencesVersion: ENV.userPreferencesVersion,
-    theme: ThemeId.DEFAULT,
-    lang: LanguageCode.enUS
+    lang: LanguageCode.enUS,
+    searchPreviewEnabled: true,
+    readLater: [],
+    theme: ThemeId.DEFAULT
 };

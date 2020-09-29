@@ -116,18 +116,10 @@
                                     @lastReached={{this.paginator.loadMoreModels}}
                                     as |result|
                                 >
-                                    <li class="mb-4">
-                                        <a href="" {{on "click" (fn this.openResultPreview result)}}>
-                                            {{result.documentRef}}
-                                        </a>
-                                        {{#if result.kwicList}}
-                                            <ul class="font-size-secondary">
-                                                {{#each result.kwicList as |searchHit|}}
-                                                    <li>{{html-safe searchHit}}</li>
-                                                {{/each}}
-                                            </ul>
-                                        {{/if}}
-                                    </li>
+                                    <Search::Item::Bibliographic
+                                        @item={{result}}
+                                        @openResult={{this.openResult}}
+                                    />
                                 </VerticalCollection>
                                 {{#if this.paginator.isLoadingModels}}
                                     <Loading::Spinner @options={{hash text=(t "common.loadingResults")}} />
@@ -141,12 +133,7 @@
     </div>
     <Search::Preview
         @result={{this.previewedResult}}
-        @queryParams={{hash
-            q=this.q
-            matchSynonyms=this.matchSynonyms
-            searchTerms=this._searchTerms
-            facets=this._facets
-        }}
+        @queryParams={{this.readQueryParms}}
         @mode={{this.previewMode}}
         @setMode={{this.setPreviewMode}}
         @close={{this.closeResultPreview}}

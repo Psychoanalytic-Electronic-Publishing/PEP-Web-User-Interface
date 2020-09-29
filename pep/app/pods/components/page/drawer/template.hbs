@@ -84,28 +84,30 @@
                             {{t "nav.user.about"}}
                         </button>
                     </Page::Drawer::NavItem>
-                    {{#if this.session.isAuthenticated}}
-                        <Page::Drawer::NavItem class="mt-1">
-                            <button
-                                type="button"
-                                class="list-group-item list-group-item-action"
-                                {{on "click" this.logout}}
-                            >
-                                <FaIcon @icon="sign-out" @fixedWidth={{true}} class="mr-2" />
-                                {{t "nav.user.logout"}}
-                            </button>
-                        </Page::Drawer::NavItem>
-                    {{else}}
-                        <Page::Drawer::NavItem class="mt-1">
-                            <button
-                                type="button"
-                                class="list-group-item list-group-item-action"
-                                {{on "click" this.openLoginModal}}
-                            >
-                                <FaIcon @icon="sign-in" @fixedWidth={{true}} class="mr-2" />
-                                {{t "nav.user.login"}}
-                            </button>
-                        </Page::Drawer::NavItem>
+                    {{#if this.session.canLogOut}}
+                        {{#if this.session.isAuthenticated}}
+                            <Page::Drawer::NavItem class="mt-1">
+                                <button
+                                    type="button"
+                                    class="list-group-item list-group-item-action"
+                                    {{on "click" this.logout}}
+                                >
+                                    <FaIcon @icon="sign-out" @fixedWidth={{true}} class="mr-2" />
+                                    {{t "nav.user.logout"}}
+                                </button>
+                            </Page::Drawer::NavItem>
+                        {{else}}
+                            <Page::Drawer::NavItem class="mt-1">
+                                <button
+                                    type="button"
+                                    class="list-group-item list-group-item-action"
+                                    {{on "click" this.openLoginModal}}
+                                >
+                                    <FaIcon @icon="sign-in" @fixedWidth={{true}} class="mr-2" />
+                                    {{t "nav.user.login"}}
+                                </button>
+                            </Page::Drawer::NavItem>
+                        {{/if}}
                     {{/if}}
                 </Page::Drawer::NavMenu>
             </div>

@@ -1,4 +1,28 @@
+import { WIDGET } from 'pep/constants/sidebar';
 import { SearchTermId, SearchFacetId } from 'pep/constants/search';
+
+/**
+ * Widget configuration - tells us which widget and whether its open
+ *
+ * @export
+ * @interface WidgetConfiguration
+ */
+export interface WidgetConfiguration {
+    widget: WIDGET;
+    open: boolean;
+}
+
+export enum AspectRatio {
+    TWENTY_ONE_BY_NINE = '21by9',
+    SIXTEEN_BY_NINE = '16by9',
+    FOUR_BY_THREE = '4by3'
+}
+
+export interface Publisher {
+    sourceCode: string;
+    previewHTML: string;
+    fullHTML: string;
+}
 
 /**
  * Base admin configuration fields for the application
@@ -8,11 +32,30 @@ import { SearchTermId, SearchFacetId } from 'pep/constants/search';
  * @interface BaseConfiguration
  */
 export interface BaseConfiguration {
+    global: {
+        cards: {
+            whatsNew: {
+                limit: number;
+            };
+            mostCited: {
+                limit: number;
+            };
+            mostViewed: {
+                limit: number;
+            };
+            videoPreview: {
+                code: string;
+                aspectRatio: AspectRatio;
+            };
+            left: WidgetConfiguration[];
+            right: WidgetConfiguration[];
+        };
+    };
     home: {
-        expertPick: {
+        expertPicks: {
             articleId: string;
             imageId: string;
-        };
+        }[];
     };
     search: {
         tooManyResults: {
@@ -43,11 +86,12 @@ export interface ContentConfiguration {
         // [Rel.2] for future release
         tips: {
             isEnabled: boolean;
-            list: Array<{
+            list: {
                 shortDescription: string;
                 longDescription?: string;
-            }>;
+            }[];
         };
+        publishers: Publisher[];
     };
     home: {
         intro: {
@@ -95,11 +139,48 @@ export const BASE_CONFIG_NAME = 'pep-base';
 export const CONTENT_CONFIG_NAME = 'pep-content';
 
 export const DEFAULT_BASE_CONFIGURATION: BaseConfiguration = {
-    home: {
-        expertPick: {
-            articleId: 'CJP.024A.0233A',
-            imageId: 'CJP.024-025.0233A.FIG001'
+    global: {
+        cards: {
+            whatsNew: {
+                limit: 10
+            },
+            mostCited: {
+                limit: 10
+            },
+            mostViewed: {
+                limit: 10
+            },
+            videoPreview: {
+                aspectRatio: AspectRatio.SIXTEEN_BY_NINE,
+                code:
+                    '<iframe src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2Fpepweb%2Fvideos%2F1085606578152566%2F&show_text=0" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allowFullScreen="true"></iframe>'
+            },
+            left: [{ widget: WIDGET.VIDEO_PREVIEW, open: true }],
+            right: [
+                { widget: WIDGET.WHATS_NEW, open: true },
+                { widget: WIDGET.MOST_CITED, open: true },
+                { widget: WIDGET.MOST_VIEWED, open: true },
+                { widget: WIDGET.RELATED_DOCUMENTS, open: false },
+                { widget: WIDGET.EXPERT_PICKS, open: false },
+                { widget: WIDGET.GLOSSARY_TERMS, open: false },
+                { widget: WIDGET.MORE_LIKE_THESE, open: false },
+                { widget: WIDGET.READ_LATER, open: false },
+                { widget: WIDGET.FAVORITES, open: false },
+                { widget: WIDGET.PUBLISHER_INFO, open: false }
+            ]
         }
+    },
+    home: {
+        expertPicks: [
+            {
+                articleId: 'CJP.024A.0233A',
+                imageId: 'CJP.024-025.0233A.FIG001'
+            },
+            {
+                articleId: 'IJP.027.0099A',
+                imageId: 'CJP.024-025.0233A.FIG001'
+            }
+        ]
     },
     search: {
         tooManyResults: {
@@ -136,7 +217,14 @@ export const DEFAULT_CONTENT_CONFIGURATION: ContentConfiguration = {
         tips: {
             isEnabled: true,
             list: []
-        }
+        },
+        publishers: [
+            {
+                sourceCode: 'IJP',
+                previewHTML: 'Preview HTML',
+                fullHTML: 'Full HTML'
+            }
+        ]
     },
     home: {
         intro: {

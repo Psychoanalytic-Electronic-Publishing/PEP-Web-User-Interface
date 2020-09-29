@@ -52,10 +52,12 @@ export default class SearchForm extends Component<SearchFormArgs> {
         }));
     }
 
-    @computed('args.{smartSearchTerm,searchTerms.@each.term}')
+    @computed('args.{smartSearchTerm,citedCount,viewedCount,searchTerms.@each.term}')
     get hasEnteredSearch() {
-        return (
+        return !!(
             this.args.smartSearchTerm ||
+            this.args.citedCount ||
+            this.args.viewedCount ||
             (Array.isArray(this.args.searchTerms) && this.args.searchTerms.filter((t) => !!t.term).length > 0)
         );
     }

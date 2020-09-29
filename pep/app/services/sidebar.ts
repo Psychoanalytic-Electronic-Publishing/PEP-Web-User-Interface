@@ -4,11 +4,15 @@ import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 
 import FastbootMediaService from 'pep/services/fastboot-media';
+import { WidgetData } from 'pep/constants/sidebar';
 
 export default class SidebarService extends Service {
     @service fastbootMedia!: FastbootMediaService;
     @tracked leftSidebarIsOpen = true;
     @tracked rightSidebarIsOpen = true;
+    @tracked leftSidebarWidth?: number;
+    @tracked rightSidebarWidth?: number;
+    @tracked data = {};
 
     get hasOpenSidebar() {
         return this.leftSidebarIsOpen || this.rightSidebarIsOpen;
@@ -54,6 +58,19 @@ export default class SidebarService extends Service {
     toggleAll(open?: boolean) {
         this.toggleLeftSidebar(open);
         this.toggleRightSidebar(open);
+    }
+
+    /**
+     * Update the data thats sent to the left sidebar and right sidebar widgets
+     *
+     * @param {WidgetData} data
+     * @memberof SidebarService
+     */
+    update(data: WidgetData) {
+        this.data = {
+            ...this.data,
+            ...data
+        };
     }
 
     /**

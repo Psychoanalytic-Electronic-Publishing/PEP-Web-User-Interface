@@ -1,5 +1,8 @@
 <div
-    class="drag-bar {{this.orientation}} {{~if this.isDragging " is-dragging"}}"
+    class="drag-bar {{this.orientation}}
+        {{~if this.reversed " is-reversed"~}}
+        {{~if this.isDragging " is-dragging"~}}
+    "
     role="button"
     style={{this.dragBarStyles}}
     {{on "mousedown" this.onDragStart}}
