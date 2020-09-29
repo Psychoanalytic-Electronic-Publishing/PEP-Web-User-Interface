@@ -1,3 +1,4 @@
+import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
 import { inject as service } from '@ember/service';
 import { isEmpty } from '@ember/utils';
 import { resolve, reject } from 'rsvp';
@@ -66,12 +67,17 @@ export default class CredentialsAuthenticator extends BaseAuthenticator {
     async authenticate(username: string, password: string) {
         try {
             const sessionData = this.session.getUnauthenticatedSession();
-            const response = await this.ajax.request<PepSecureAuthenticatedData>(`${ENV.authBaseUrl}/Authenticate`, {
+            const sessionId = sessionData?.SessionId;
+            const params = serializeQueryParams({ SessionId: sessionId });
+            let url = `${ENV.authBaseUrl}/Authenticate`;
+            if (sessionId) {
+                url = `${url}?${params}`;
+            }
+
+            const response = await this.ajax.request<PepSecureAuthenticatedData>(url, {
                 method: 'POST',
                 headers: this.authenticationHeaders,
                 body: this.ajax.stringifyData({
-                    grant_type: 'password',
-                    SessionId: sessionData?.SessionId,
                     UserName: username,
                     Password: password
                 })
@@ -101,9 +107,10 @@ export default class CredentialsAuthenticator extends BaseAuthenticator {
                 method: 'POST',
                 headers: this.authenticationHeaders
             });
+        } catch (errors) {
+            return resolve();
         } finally {
             this._cancelTimeout();
-            return resolve();
         }
     }
 
@@ -132,8 +139,7 @@ export default class CredentialsAuthenticator extends BaseAuthenticator {
     /**
      * Schedule the session expiration to run
      *
-     * @param {number} expiresIn
-     * @param {number} [expiresAt]
+     * @param {PepSecureAuthenticatedData} data
      * @memberof CredentialsAuthenticator
      */
     _scheduleSessionExpiration(data: PepSecureAuthenticatedData) {

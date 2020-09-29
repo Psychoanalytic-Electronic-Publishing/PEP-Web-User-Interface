@@ -1,10 +1,11 @@
 import ENV from 'pep/config/environment';
 import SessionService from 'ember-simple-auth/services/session';
 import { oneWay } from '@ember/object/computed';
-import { PepSecureAuthenticatedData } from 'pep/api';
+
 import CookiesService from 'ember-cookies/services/cookies';
 import { inject as service } from '@ember/service';
-
+import { PepSecureAuthenticatedData } from 'pep/api';
+import { SessionType } from 'pep/authenticators/credentials';
 export interface AuthenticatedData {
     authenticated: PepSecureAuthenticatedData;
 }
@@ -68,6 +69,10 @@ export default class PepSessionService extends SessionService.extend({
             secure: this.isCookieSecure,
             sameSite: ENV.cookieSameSite
         });
+    }
+
+    get canLogOut() {
+        return this.data.authenticated.SessionType !== SessionType.IP;
     }
 }
 

@@ -171,7 +171,7 @@ export default class CurrentUserService extends Service {
         }
 
         // if the user is logged in, apply the new prefs locally, then save the user
-        if (this.session.isAuthenticated && this.user) {
+        if (this.session.isAuthenticated && this.user && this.user.userType !== 'Group') {
             const oldUserPrefs = this.user?.clientSettings ?? {};
             const newUserPrefs = Object.assign(
                 {},

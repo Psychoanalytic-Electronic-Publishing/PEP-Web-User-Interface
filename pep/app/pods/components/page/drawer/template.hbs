@@ -84,7 +84,7 @@
                             {{t "nav.user.about"}}
                         </button>
                     </Page::Drawer::NavItem>
-                    {{#if this.canLogOut}}
+                    {{#if this.session.canLogOut}}
                         {{#if this.session.isAuthenticated}}
                             <Page::Drawer::NavItem class="mt-1">
                                 <button

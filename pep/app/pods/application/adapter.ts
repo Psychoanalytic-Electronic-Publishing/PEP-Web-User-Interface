@@ -71,6 +71,8 @@ export default class Application extends DS.RESTAdapter.extend(FastbootAdapter) 
         if (this.session.isAuthenticated) {
             const { SessionId } = this.session.data.authenticated;
             headers['client-session'] = SessionId;
+        } else {
+            headers['client-session'] = this.session?.getUnauthenticatedSession()?.SessionId;
         }
 
         return headers;
