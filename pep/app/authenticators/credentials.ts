@@ -12,6 +12,7 @@ import isFastBoot from 'ember-simple-auth/utils/is-fastboot';
 import { getOwner } from '@ember/application';
 import { run } from '@ember/runloop';
 import { EmberRunTimer } from '@ember/runloop/types';
+import FastbootService from 'ember-cli-fastboot/services/fastboot';
 
 export enum SessionType {
     CREDENTIALS = 'credentials',
@@ -21,6 +22,8 @@ export enum SessionType {
 export default class CredentialsAuthenticator extends BaseAuthenticator {
     @service ajax!: AjaxService;
     @service('pep-session') session!: PepSessionService;
+    @service fastboot!: FastbootService;
+
     authenticationHeaders = {
         'Content-Type': 'application/json'
     };
@@ -41,28 +44,8 @@ export default class CredentialsAuthenticator extends BaseAuthenticator {
         }
     }
 
-    /**
-     * Authenticates and logs the user in as well as schedules a session expiration based on the
-     * SessionExpires number that is sent back in the result
-     * @param  {String} username
-     * @param {String} password
-     */
-    async authenticate(username: string, password: string) {
-        const sessionData = this.session.getUnauthenticatedSession();
-        const response = await this.ajax.request<PepSecureAuthenticatedData>(`${ENV.authBaseUrl}/Authenticate`, {
-            method: 'POST',
-            headers: this.authenticationHeaders,
-            body: this.ajax.stringifyData({
-                grant_type: 'password',
-                SessionId: sessionData?.SessionId,
-                UserName: username,
-                Password: password
-            })
-        });
-
-        response.SessionType = SessionType.CREDENTIALS;
+    setupExpiresAt(response: PepSecureAuthenticatedData) {
         const expiresAt = this._absolutizeExpirationTime(response.SessionExpires);
-        this._scheduleSessionExpiration(response.SessionExpires, expiresAt);
         if (expiresAt && !isEmpty(expiresAt)) {
             Object.assign(response, { expiresAt: expiresAt });
         }
@@ -70,15 +53,57 @@ export default class CredentialsAuthenticator extends BaseAuthenticator {
     }
 
     /**
+     * Authenticates and logs the user in as well as schedules a session expiration based on the
+     * SessionExpires number that is sent back in the result
+     * @param  {String} username
+     * @param {String} password
+     */
+    async authenticate(username: string, password: string) {
+        try {
+            const sessionData = this.session.getUnauthenticatedSession();
+            const response = await this.ajax.request<PepSecureAuthenticatedData>(`${ENV.authBaseUrl}/Authenticate`, {
+                method: 'POST',
+                headers: this.authenticationHeaders,
+                body: this.ajax.stringifyData({
+                    grant_type: 'password',
+                    SessionId: sessionData?.SessionId,
+                    UserName: username,
+                    Password: password
+                })
+            });
+            if (response.IsValidLogon) {
+                this.session.clearUnauthenticatedSession();
+                response.SessionType = SessionType.CREDENTIALS;
+                const updatedResponse = this.setupExpiresAt(response);
+                this._scheduleSessionExpiration(updatedResponse);
+                return updatedResponse;
+            } else {
+                this.session.setUnauthenticatedSession(response);
+                return Promise.reject(response);
+            }
+        } catch (errors) {
+            return Promise.reject(errors);
+        }
+    }
+
+    /**
      * Invalidates the local session and logs the user out
      */
-    async invalidate(data: PepSecureAuthenticatedData) {
-        const params = serializeQueryParams({ SessionId: data.SessionId });
-        await this.ajax.request(`${ENV.authBaseUrl}/Users/Logout?${params}`, {
-            method: 'POST',
-            headers: this.authenticationHeaders
+    invalidate(data: PepSecureAuthenticatedData) {
+        return new Promise((resolve) => {
+            try {
+                const params = serializeQueryParams({ SessionId: data.SessionId });
+                this.ajax
+                    .request(`${ENV.authBaseUrl}/Users/Logout?${params}`, {
+                        method: 'POST',
+                        headers: this.authenticationHeaders
+                    })
+                    .then(resolve);
+            } finally {
+                this._cancelTimeout();
+                return resolve();
+            }
         });
-        this._cancelTimeout();
     }
 
     /**
@@ -89,14 +114,14 @@ export default class CredentialsAuthenticator extends BaseAuthenticator {
     restore(data: PepSecureAuthenticatedData) {
         return new Promise((resolve, reject) => {
             const now = new Date().getTime();
-            if (!isEmpty(data.expiresAt) && data.expiresAt < now) {
-                resolve(this.invalidate(data));
+            if (!isEmpty(data.expiresAt) && data.expiresAt <= now) {
+                reject(this.invalidate(data));
             } else {
                 if (isEmpty(data.SessionId)) {
                     reject();
                 } else {
-                    this._scheduleSessionExpiration(data.SessionExpires, data.expiresAt);
                     resolve(data);
+                    this._scheduleSessionExpiration(data);
                 }
             }
         });
@@ -109,15 +134,17 @@ export default class CredentialsAuthenticator extends BaseAuthenticator {
      * @param {number} [expiresAt]
      * @memberof CredentialsAuthenticator
      */
-    _scheduleSessionExpiration(expiresIn: number, expiresAt?: number) {
-        const scheduleExpiration = !isFastBoot(getOwner(this));
+    _scheduleSessionExpiration(data: PepSecureAuthenticatedData) {
+        let expiresAt = data.expiresAt;
+        const expiresIn = data.SessionExpires;
+        const scheduleExpiration = !this.fastboot.isFastBoot;
         if (scheduleExpiration) {
             const now = new Date().getTime();
             if (isEmpty(expiresAt) && !isEmpty(expiresIn)) {
                 expiresAt = new Date(now + expiresIn * 1000).getTime();
             }
             this._cancelTimeout();
-            this._invalidateTimeout = run.later(this, this.invalidate, expiresIn, expiresAt! - now);
+            this._invalidateTimeout = run.later(this, this.invalidate, data, expiresAt! - now);
         }
     }
 

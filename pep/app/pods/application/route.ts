@@ -56,10 +56,12 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
     async beforeModel(transition: Transition) {
         super.beforeModel(transition);
 
-        if (!this.session.getUnauthenticatedSession()?.SessionId && !this.session.data.authenticated.SessionId) {
+        if (!this.session.isAuthenticated) {
             try {
                 await this.session.authenticate('authenticator:ip');
-            } catch (errors) {}
+            } catch (errors) {
+                // fail silently
+            }
         }
 
         try {

@@ -3,6 +3,7 @@ import CredentialsAuthenticator, { SessionType } from 'pep/authenticators/creden
 import { inject as service } from '@ember/service';
 import PepSessionService from 'pep/services/pep-session';
 import { PepSecureAuthenticatedData } from 'pep/api';
+import { serializeQueryParams } from 'pep/utils/url';
 
 export default class IpAuthenticator extends CredentialsAuthenticator {
     @service('pep-session') session!: PepSessionService;
@@ -14,18 +15,31 @@ export default class IpAuthenticator extends CredentialsAuthenticator {
      * @memberof IpAuthenticator
      */
     async authenticate() {
-        const sessionData = this.session.getUnauthenticatedSession();
-        let url = `${ENV.authBaseUrl}/Authenticate/ip`;
-        if (sessionData?.SessionId) {
-            url = url + `?SessionId=${sessionData.SessionId}`;
+        try {
+            const sessionData = this.session.getUnauthenticatedSession();
+            let url = `${ENV.authBaseUrl}/Authenticate/ip`;
+
+            if (sessionData?.SessionId) {
+                const params = serializeQueryParams({ SessionId: sessionData.SessionId });
+                url = url + params;
+            }
+
+            const response = await this.ajax.request<PepSecureAuthenticatedData>(url, {
+                headers: this.authenticationHeaders
+            });
+            if (response.IsValidLogon) {
+                this.session.clearUnauthenticatedSession();
+                response.SessionType = SessionType.IP;
+                response.SessionExpires = 60;
+                const updatedResponse = this.setupExpiresAt(response);
+                this._scheduleSessionExpiration(updatedResponse);
+                return updatedResponse;
+            } else {
+                this.session.setUnauthenticatedSession(response);
+                return Promise.reject(response);
+            }
+        } catch (errors) {
+            return Promise.reject(errors);
         }
-        const response = await this.ajax.request<PepSecureAuthenticatedData>(url, {
-            headers: this.authenticationHeaders
-        });
-        response.SessionType = SessionType.IP;
-        this.session.setUnauthenticatedSession(response);
-        const expiresAt = this._absolutizeExpirationTime(response.SessionExpires);
-        this._scheduleSessionExpiration(response.SessionExpires, expiresAt);
-        return response;
     }
 }

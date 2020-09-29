@@ -39,12 +39,7 @@ export default class ModalDialogsUserLogin extends Component<ModalDialogsUserLog
             const username = changeset.username;
             const password = changeset.password;
             this.loadingBar.show();
-            const response = await this.session.authenticate(
-                'authenticator:credentials',
-                username,
-                password,
-                this.session.data.authenticated.SessionId
-            );
+            const response = await this.session.authenticate('authenticator:credentials', username, password);
             this.loginError = null;
             this.loadingBar.hide();
             this.args.onClose();
