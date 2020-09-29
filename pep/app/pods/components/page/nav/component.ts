@@ -25,7 +25,7 @@ export default class PageNav extends Component<PageNavArgs> {
     }
 
     get canLogOut() {
-        return this.session.data.authenticated.SessionType === SessionType.CREDENTIALS;
+        return this.session.data.authenticated.SessionType !== SessionType.IP;
     }
 
     /**

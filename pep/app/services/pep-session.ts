@@ -64,6 +64,7 @@ export default class PepSessionService extends SessionService.extend({
      */
     clearUnauthenticatedSession() {
         this.cookies.clear(UNAUTHENTICATED_SESSION_COOKIE_NAME, {
+            domain: ENV.cookieDomain,
             secure: this.isCookieSecure,
             sameSite: ENV.cookieSameSite
         });

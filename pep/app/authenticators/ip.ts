@@ -21,7 +21,7 @@ export default class IpAuthenticator extends CredentialsAuthenticator {
 
             if (sessionData?.SessionId) {
                 const params = serializeQueryParams({ SessionId: sessionData.SessionId });
-                url = url + params;
+                url = `${url}?${params}`;
             }
 
             const response = await this.ajax.request<PepSecureAuthenticatedData>(url, {
@@ -30,7 +30,6 @@ export default class IpAuthenticator extends CredentialsAuthenticator {
             if (response.IsValidLogon) {
                 this.session.clearUnauthenticatedSession();
                 response.SessionType = SessionType.IP;
-                response.SessionExpires = 60;
                 const updatedResponse = this.setupExpiresAt(response);
                 this._scheduleSessionExpiration(updatedResponse);
                 return updatedResponse;

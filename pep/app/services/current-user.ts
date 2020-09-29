@@ -19,7 +19,6 @@ import {
     PreferenceDocumentsKey
 } from 'pep/constants/preferences';
 import PepSessionService from 'pep/services/pep-session';
-import { SessionType } from 'pep/authenticators/credentials';
 
 export default class CurrentUserService extends Service {
     @service store!: DS.Store;

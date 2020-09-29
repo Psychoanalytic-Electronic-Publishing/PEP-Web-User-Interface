@@ -1,6 +1,6 @@
 import { inject as service } from '@ember/service';
 import { isEmpty } from '@ember/utils';
-import { resolve, reject } from 'rsvp';
+import { resolve } from 'rsvp';
 import BaseAuthenticator from 'ember-simple-auth/authenticators/base';
 
 import AjaxService from 'pep/services/ajax';
@@ -8,8 +8,6 @@ import ENV from 'pep/config/environment';
 import { PepSecureAuthenticatedData } from 'pep/api';
 import { serializeQueryParams } from 'pep/utils/url';
 import PepSessionService from 'pep/services/pep-session';
-import isFastBoot from 'ember-simple-auth/utils/is-fastboot';
-import { getOwner } from '@ember/application';
 import { run } from '@ember/runloop';
 import { EmberRunTimer } from '@ember/runloop/types';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
@@ -89,21 +87,17 @@ export default class CredentialsAuthenticator extends BaseAuthenticator {
     /**
      * Invalidates the local session and logs the user out
      */
-    invalidate(data: PepSecureAuthenticatedData) {
-        return new Promise((resolve) => {
-            try {
-                const params = serializeQueryParams({ SessionId: data.SessionId });
-                this.ajax
-                    .request(`${ENV.authBaseUrl}/Users/Logout?${params}`, {
-                        method: 'POST',
-                        headers: this.authenticationHeaders
-                    })
-                    .then(resolve);
-            } finally {
-                this._cancelTimeout();
-                return resolve();
-            }
-        });
+    async invalidate(data: PepSecureAuthenticatedData) {
+        try {
+            const params = serializeQueryParams({ SessionId: data.SessionId });
+            await this.ajax.request(`${ENV.authBaseUrl}/Users/Logout?${params}`, {
+                method: 'POST',
+                headers: this.authenticationHeaders
+            });
+        } finally {
+            this._cancelTimeout();
+            return resolve();
+        }
     }
 
     /**
@@ -115,13 +109,14 @@ export default class CredentialsAuthenticator extends BaseAuthenticator {
         return new Promise((resolve, reject) => {
             const now = new Date().getTime();
             if (!isEmpty(data.expiresAt) && data.expiresAt <= now) {
-                reject(this.invalidate(data));
+                this.session.invalidate(data);
+                reject();
             } else {
                 if (isEmpty(data.SessionId)) {
                     reject();
                 } else {
-                    resolve(data);
                     this._scheduleSessionExpiration(data);
+                    resolve(data);
                 }
             }
         });
@@ -144,7 +139,7 @@ export default class CredentialsAuthenticator extends BaseAuthenticator {
                 expiresAt = new Date(now + expiresIn * 1000).getTime();
             }
             this._cancelTimeout();
-            this._invalidateTimeout = run.later(this, this.invalidate, data, expiresAt! - now);
+            this._invalidateTimeout = run.later(this, this.session.invalidate, data, expiresAt! - now);
         }
     }
 
