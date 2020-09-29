@@ -6,8 +6,8 @@
         @iconSize={{@iconSize}}
         @type={{@type}}
         @action={{@action}}
+        title={{unless this.tooltipVisible @tooltip}}
         ...attributes
-        title={{unless this.tooltipVisible @title}}
     />
     {{#if this.tooltipVisible}}
         <EmberTooltip

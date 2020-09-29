@@ -1,0 +1,17 @@
+.help-tooltip {
+    height: 2em;
+    font-size: 0.65rem;
+
+    &-icon-background {
+        color: $white;
+    }
+
+    &-icon-foreground {
+        color: darken($input-border-color, 15%);
+    }
+
+    .svg-inline--fa.fa-stack-1x {
+        width: 1.75em;
+        height: 1.5em;
+    }
+}

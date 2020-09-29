@@ -32,9 +32,7 @@
             @icon="heart"
             @type="link"
             @tooltip={{t (if this.favorited "search.item.removeFromFavorites" "search.item.addToFavorites")}}
-            @tooltipVisible={{or this.media.isDesktop this.media.isJumbo}}
             class="p-0"
-            @title={{t (if this.favorited "search.item.removeFromFavorites" "search.item.addToFavorites")}}
         />
         <Button::WithTooltip
             @action={{fn this.toggleReadLater @item}}
@@ -43,9 +41,7 @@
             @icon="bookmark"
             @type="link"
             @tooltip={{t (if this.readLater "search.item.removeFromReadLater" "search.item.addToReadLater")}}
-            @tooltipVisible={{or this.media.isDesktop this.media.isJumbo}}
             class="p-0 ml-2"
-            @title={{t (if this.readLater "search.item.removeFromReadLater" "search.item.addToReadLater")}}
         />
     </div>
 </li>
