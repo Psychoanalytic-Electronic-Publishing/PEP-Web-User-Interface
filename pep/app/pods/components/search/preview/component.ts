@@ -11,6 +11,8 @@ import ScrollableService from 'pep/services/scrollable';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import Document from 'pep/pods/document/model';
 import { DOCUMENT_EPUB_BASE_URL, DOCUMENT_PDFORIG_BASE_URL, DOCUMENT_PDF_BASE_URL } from 'pep/constants/documents';
+import { serializeQueryParams } from 'pep/utils/url';
+import ENV from 'pep/config/environment';
 
 export type SearchPreviewMode = 'minimized' | 'maximized' | 'fit' | 'custom';
 
@@ -61,16 +63,23 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
         return Math.min(this.fitHeight, this.args.maxHeight || this.fitHeight);
     }
 
+    get downloadAuthParams() {
+        return serializeQueryParams({
+            'client-id': ENV.clientId,
+            'session-id': this.session.data.authenticated.SessionId
+        });
+    }
+
     get downloadUrlEpub() {
-        return `${DOCUMENT_EPUB_BASE_URL}/${this.args.result?.id}/`;
+        return `${DOCUMENT_EPUB_BASE_URL}/${this.args.result?.id}/?${this.downloadAuthParams}`;
     }
 
     get downloadUrlPdf() {
-        return `${DOCUMENT_PDF_BASE_URL}/${this.args.result?.id}/`;
+        return `${DOCUMENT_PDF_BASE_URL}/${this.args.result?.id}/?${this.downloadAuthParams}`;
     }
 
     get downloadUrlPdfOrig() {
-        return `${DOCUMENT_PDFORIG_BASE_URL}/${this.args.result?.id}/`;
+        return `${DOCUMENT_PDFORIG_BASE_URL}/${this.args.result?.id}/?${this.downloadAuthParams}`;
     }
 
     /**
