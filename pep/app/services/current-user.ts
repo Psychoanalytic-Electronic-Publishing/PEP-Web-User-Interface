@@ -6,7 +6,7 @@ import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import CookiesService from 'ember-cookies/services/cookies';
 
 import ENV from 'pep/config/environment';
-import User from 'pep/pods/user/model';
+import User, { UserType } from 'pep/pods/user/model';
 import {
     DEFAULT_USER_PREFERENCES,
     UserPreferences,
@@ -54,12 +54,10 @@ export default class CurrentUserService extends Service {
      * @returns Promise<User | void>
      */
     async fetchUser(): Promise<User | void> {
-        if (this.session.isAuthenticated) {
-            const { SessionId } = this.session.data.authenticated;
-            const user = await this.store.queryRecord('user', { SessionId });
-            this.user = user;
-            return user;
-        }
+        const { SessionId } = this.session.data.authenticated;
+        const user = await this.store.queryRecord('user', { SessionId });
+        this.user = user;
+        return user;
     }
 
     /**
@@ -173,7 +171,7 @@ export default class CurrentUserService extends Service {
         }
 
         // if the user is logged in, apply the new prefs locally, then save the user
-        if (this.session.isAuthenticated && this.user) {
+        if (this.session.isAuthenticated && this.user && this.user.userType !== UserType.GROUP) {
             const oldUserPrefs = this.user?.clientSettings ?? {};
             const newUserPrefs = Object.assign(
                 {},

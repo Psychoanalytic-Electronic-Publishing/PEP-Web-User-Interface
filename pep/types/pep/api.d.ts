@@ -1,4 +1,5 @@
 declare module 'pep/api' {
+    import { SessionType } from 'pep/authenticators/credentials';
     export interface ServerStatus {
         db_server_ok: boolean;
         text_server_ok: boolean;
@@ -26,6 +27,9 @@ declare module 'pep/api' {
         ReasonId: number;
         ReasonStr: string;
         SessionId: string;
+        SessionExpires: number;
+        SessionType: SessionType;
         authenticator: string;
+        expiresAt: number;
     }
 }
