@@ -9,7 +9,17 @@
 >
     {{yield}}
     {{#unless hasBlock}}
-        <FaIcon @icon="question-circle" />
+        <span class="fa-stack help-tooltip-icon-stack">
+            <FaIcon
+                @icon="circle"
+                @prefix="fas"
+                class="fa-stack-2x help-tooltip-icon-background"
+            />
+            <FaIcon
+                @icon="question-circle"
+                class="fa-stack-1x help-tooltip-icon-foreground"
+            />
+        </span>
     {{/unless}}
     {{#unless this.isModalView}}
         <EmberTooltip
