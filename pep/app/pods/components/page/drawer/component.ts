@@ -28,7 +28,7 @@ export default class PageDrawer extends Component<PageDrawerArgs> {
     }
 
     get canLogOut() {
-        return this.session.data.authenticated.SessionType === SessionType.CREDENTIALS;
+        return this.session.data.authenticated.SessionType !== SessionType.IP;
     }
 
     /**

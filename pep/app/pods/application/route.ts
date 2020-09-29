@@ -60,7 +60,8 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
             try {
                 await this.session.authenticate('authenticator:ip');
             } catch (errors) {
-                // fail silently
+                // fail silently - we always want to just try and get authenticated by IP and if it
+                // doesn't work thats fine
             }
         }
 

@@ -1,6 +1,6 @@
 import { inject as service } from '@ember/service';
 import { isEmpty } from '@ember/utils';
-import { resolve } from 'rsvp';
+import { resolve, reject } from 'rsvp';
 import BaseAuthenticator from 'ember-simple-auth/authenticators/base';
 
 import AjaxService from 'pep/services/ajax';
@@ -42,6 +42,13 @@ export default class CredentialsAuthenticator extends BaseAuthenticator {
         }
     }
 
+    /**
+     * Calculate the expires at value and add it to the response so it gets saved in the cookie
+     *
+     * @param {PepSecureAuthenticatedData} response
+     * @returns
+     * @memberof CredentialsAuthenticator
+     */
     setupExpiresAt(response: PepSecureAuthenticatedData) {
         const expiresAt = this._absolutizeExpirationTime(response.SessionExpires);
         if (expiresAt && !isEmpty(expiresAt)) {
@@ -77,10 +84,10 @@ export default class CredentialsAuthenticator extends BaseAuthenticator {
                 return updatedResponse;
             } else {
                 this.session.setUnauthenticatedSession(response);
-                return Promise.reject(response);
+                return reject(response);
             }
         } catch (errors) {
-            return Promise.reject(errors);
+            return reject(errors);
         }
     }
 
