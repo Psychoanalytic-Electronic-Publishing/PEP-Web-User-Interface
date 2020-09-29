@@ -40,16 +40,9 @@
         />
     </div>
     {{#if this.termContentConfig.help}}
-        <abbr class="search-form-term-control-help">
-            <FaIcon @icon="question-circle" />
-            <EmberTooltip
-                @text={{this.termContentConfig.help}}
-                @popperContainer="body"
-                @side="right"
-                @spacing={{5}}
-                @effect="slide"
-                @innerClass=""
-            />
-        </abbr>
+        <HelpTooltip
+            @tooltip={{this.termContentConfig.help}}
+            class="search-form-term-control-help"
+        />
     {{/if}}
 </div>

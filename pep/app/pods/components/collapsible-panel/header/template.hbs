@@ -19,6 +19,7 @@
             type="button"
             class="p-3 collapsible-panel-action"
             aria-label={{@secondaryAction.label}}
+            title={{unless this.fastbootMedia.isLargeDevice @secondaryAction.label}}
             {{on "click" @secondaryAction.action}}
         >
             <FaIcon
@@ -27,14 +28,16 @@
                 class="collapsible-panel-action-icon"
                 @size="lg"
             />
-            <EmberTooltip
-                @text={{@secondaryAction.label}}
-                @popperContainer="body"
-                @side="left"
-                @spacing={{5}}
-                @effect="slide"
-                @innerClass=""
-            />
+            {{#if this.fastbootMedia.isLargeDevice}}
+                <EmberTooltip
+                    @text={{@secondaryAction.label}}
+                    @popperContainer="body"
+                    @side="left"
+                    @spacing={{5}}
+                    @effect="slide"
+                    @innerClass=""
+                />
+            {{/if}}
         </button>
     {{/if}}
 </div>

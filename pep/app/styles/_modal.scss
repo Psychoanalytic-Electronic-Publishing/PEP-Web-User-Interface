@@ -17,3 +17,44 @@
         box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
     }
 }
+
+.slide-card {
+    @include media-breakpoint-down(sm) {
+        &-modal {
+            position: absolute;
+            width: 100%;
+            max-width: none;
+            bottom: 0;
+            margin: 0;
+            box-shadow: 0 -2px 14px rgba($black, 0.25);
+
+            &.animated {
+                animation-duration: 0.3s;
+
+                &.zoomIn {
+                    animation-name: slideInUp;
+                }
+
+                &.zoomOut {
+                    animation-name: slideOutDown;
+                }
+            }
+
+            .modal-title {
+                font-size: 1rem;
+            }
+
+            .modal-body {
+                min-height: 15vh;
+                max-height: 30vh;
+                padding-top: 0;
+                overflow: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+        }
+
+        &-overlay {
+            background-color: transparent;
+        }
+    }
+}

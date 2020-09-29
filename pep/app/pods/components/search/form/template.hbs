@@ -15,17 +15,10 @@
                         @onChange={{@updateSmartSearchText}}
                     />
                     {{#if this.configuration.content.search.smartSearch.help}}
-                        <abbr class="search-form-term-control-help">
-                            <FaIcon @icon="question-circle" />
-                            <EmberTooltip
-                                @text={{this.configuration.content.search.smartSearch.help}}
-                                @popperContainer="body"
-                                @side="right"
-                                @spacing={{5}}
-                                @effect="slide"
-                                @innerClass=""
-                            />
-                        </abbr>
+                        <HelpTooltip
+                            @tooltip={{this.configuration.content.search.smartSearch.help}}
+                            class="search-form-term-control-help"
+                        />
                     {{/if}}
                 </div>
             </div>
