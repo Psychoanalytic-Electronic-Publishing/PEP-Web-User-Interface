@@ -15,6 +15,7 @@ import PepSessionService from 'pep/services/pep-session';
 import { buildSearchQueryParams } from 'pep/utils/search';
 import { ViewPeriod, SEARCH_DEFAULT_VIEW_PERIOD } from 'pep/constants/search';
 import Document from 'pep/pods/document/model';
+import CurrentUserService from 'pep/services/current-user';
 
 export default class ReadDocument extends Controller {
     @service('pep-session') session!: PepSessionService;
@@ -23,6 +24,7 @@ export default class ReadDocument extends Controller {
     @service loadingBar!: LoadingBarService;
     @service router!: RouterService;
     @service configuration!: ConfigurationService;
+    @service currentUser!: CurrentUserService;
 
     get defaultSearchParams() {
         return this.configuration.defaultSearchParams;
@@ -101,19 +103,21 @@ export default class ReadDocument extends Controller {
     @action
     processQueryParams(params: QueryParamsObj) {
         const cfg = this.configuration.base.search;
-        const searchParams = buildSearchQueryParams(
-            this.q,
-            this.searchTerms,
-            this.matchSynonyms,
-            this.facets,
-            this.citedCount,
-            this.viewedCount,
-            this.viewedPeriod,
-            cfg.facets.defaultFields,
-            'AND',
-            cfg.facets.valueLimit,
-            cfg.facets.valueMinCount
-        );
+        const searchParams = buildSearchQueryParams({
+            smartSearchTerm: this.q,
+            searchTerms: this.searchTerms,
+            synonyms: this.matchSynonyms,
+            facetValues: this.facets,
+            citedCount: this.citedCount,
+            viewedCount: this.viewedCount,
+            viewedPeriod: this.viewedPeriod,
+            facetFields: cfg.facets.defaultFields,
+            joinOp: 'AND',
+            facetLimit: cfg.facets.valueLimit,
+            facetMinCount: cfg.facets.valueMinCount,
+            highlightlimit: this.currentUser.preferences?.searchHICLimit ?? cfg.hitsInContext.limit
+        });
+
         return { ...params, ...searchParams };
     }
 

@@ -37,7 +37,10 @@ export default class PageSidebarWidgetsExpertPicks extends Component<PageSidebar
                 value: item.articleId
             };
         });
-        const params = buildSearchQueryParams('', [], false, queryItems);
+
+        const params = buildSearchQueryParams({
+            facetValues: queryItems
+        });
         const results = yield this.store.query('document', params);
         this.results = results.toArray();
     }

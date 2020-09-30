@@ -1,4 +1,4 @@
-import { TableCell, ColumnValue } from '@gavant/ember-table';
+import { ColumnValue } from '@gavant/ember-table';
 import Component from '@glimmer/component';
 
 interface TablesCellDocumentLinkArgs {

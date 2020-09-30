@@ -38,12 +38,15 @@ export default class PageSidebarWidgetsRelatedDocuments extends Component<PageSi
      */
     @restartableTask
     *loadResults(relatedrx: string) {
-        const params = buildSearchQueryParams('', [], false, [
-            {
-                id: SearchFacetId.ART_QUAL,
-                value: relatedrx
-            }
-        ]);
+        const params = buildSearchQueryParams({
+            facetValues: [
+                {
+                    id: SearchFacetId.ART_QUAL,
+                    value: relatedrx
+                }
+            ]
+        });
+
         const results = yield this.store.query('document', params);
         this.results = results.toArray();
     }

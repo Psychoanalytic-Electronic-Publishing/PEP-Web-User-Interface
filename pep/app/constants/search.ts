@@ -1,5 +1,4 @@
 import IntlService from 'ember-intl/services/intl';
-import Search from 'pep/pods/search/controller';
 
 import { SearchFacetCounts, groupCountsByRange } from 'pep/utils/search';
 

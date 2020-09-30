@@ -1,4 +1,4 @@
-import { SearchView, SearchViewType, SearchSorts, SearchSort } from './../../constants/search';
+import { SearchViewType, SearchSorts, SearchSort } from './../../constants/search';
 import Controller from '@ember/controller';
 import { action, setProperties } from '@ember/object';
 import { isEmpty } from '@ember/utils';
@@ -165,19 +165,21 @@ export default class Search extends Controller {
     @action
     processQueryParams(params: QueryParamsObj) {
         const cfg = this.configuration.base.search;
-        const searchParams = buildSearchQueryParams(
-            this.q,
-            this.searchTerms,
-            this.matchSynonyms,
-            this.facets,
-            this.citedCount,
-            this.viewedCount,
-            this.viewedPeriod,
-            cfg.facets.defaultFields,
-            'AND',
-            cfg.facets.valueLimit,
-            cfg.facets.valueMinCount
-        );
+        const searchParams = buildSearchQueryParams({
+            smartSearchTerm: this.q,
+            searchTerms: this.searchTerms,
+            synonyms: this.matchSynonyms,
+            facetValues: this.facets,
+            citedCount: this.citedCount,
+            viewedCount: this.viewedCount,
+            viewedPeriod: this.viewedPeriod,
+            facetFields: cfg.facets.defaultFields,
+            joinOp: 'AND',
+            facetLimit: cfg.facets.valueLimit,
+            facetMinCount: cfg.facets.valueMinCount,
+            highlightlimit: this.currentUser.preferences?.searchHICLimit ?? cfg.hitsInContext.limit
+        });
+
         return { ...params, ...searchParams };
     }
 
@@ -412,19 +414,20 @@ export default class Search extends Controller {
 
             const cfg = this.configuration.base.search;
             const searchTerms = this.currentSearchTerms.filter((t: SearchTermValue) => !!t.term);
-            const searchParams = buildSearchQueryParams(
-                this.currentSmartSearchTerm,
+            const searchParams = buildSearchQueryParams({
+                smartSearchTerm: this.currentSmartSearchTerm,
                 searchTerms,
-                this.currentMatchSynonyms,
-                [],
-                this.currentCitedCount,
-                this.currentViewedCount,
-                this.currentViewedPeriod,
-                cfg.facets.defaultFields,
-                'AND',
-                cfg.facets.valueLimit,
-                cfg.facets.valueMinCount
-            );
+                synonyms: this.currentMatchSynonyms,
+                citedCount: this.currentCitedCount,
+                viewedCount: this.currentViewedCount,
+                viewedPeriod: this.currentViewedPeriod,
+                facetFields: cfg.facets.defaultFields,
+                joinOp: 'AND',
+                facetLimit: cfg.facets.valueLimit,
+                facetMinCount: cfg.facets.valueMinCount,
+                highlightlimit: this.currentUser.preferences?.searchHICLimit ?? cfg.hitsInContext.limit
+            });
+
             if (hasSearchQuery(searchParams)) {
                 if (showLoading) {
                     this.loadingBar.show();

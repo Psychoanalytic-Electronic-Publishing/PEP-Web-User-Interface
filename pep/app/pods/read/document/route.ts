@@ -11,6 +11,7 @@ import ReadDocumentController from 'pep/pods/read/document/controller';
 import ConfigurationService from 'pep/services/configuration';
 import { WIDGET } from 'pep/constants/sidebar';
 import SidebarService from 'pep/services/sidebar';
+import CurrentUserService from 'pep/services/current-user';
 
 export interface ReadDocumentParams {
     document_id: string;
@@ -26,6 +27,7 @@ export interface ReadDocumentParams {
 export default class ReadDocument extends PageNav(Route) {
     @service configuration!: ConfigurationService;
     @service sidebar!: SidebarService;
+    @service currentUser!: CurrentUserService;
     navController = 'read/document';
 
     searchResults?: Document[];
@@ -74,19 +76,20 @@ export default class ReadDocument extends PageNav(Route) {
             const searchTerms = params._searchTerms ? JSON.parse(params._searchTerms) : [];
             const facets = params._facets ? JSON.parse(params._facets) : [];
             const cfg = this.configuration.base.search;
-            const searchParams = buildSearchQueryParams(
-                params.q,
+            const searchParams = buildSearchQueryParams({
+                smartSearchTerm: params.q,
                 searchTerms,
-                params.matchSynonyms,
-                facets,
-                params.citedCount,
-                params.viewedCount,
-                params.viewedPeriod,
-                cfg.facets.defaultFields,
-                'AND',
-                cfg.facets.valueLimit,
-                cfg.facets.valueMinCount
-            );
+                synonyms: params.matchSynonyms,
+                facetValues: facets,
+                citedCount: params.citedCount,
+                viewedCount: params.viewedCount,
+                viewedPeriod: params.viewedPeriod,
+                facetFields: cfg.facets.defaultFields,
+                joinOp: 'AND',
+                facetLimit: cfg.facets.valueLimit,
+                facetMinCount: cfg.facets.valueMinCount,
+                highlightlimit: this.currentUser.preferences?.searchHICLimit ?? cfg.hitsInContext.limit
+            });
 
             //if no search was submitted, don't fetch any results
             if (hasSearchQuery(searchParams)) {

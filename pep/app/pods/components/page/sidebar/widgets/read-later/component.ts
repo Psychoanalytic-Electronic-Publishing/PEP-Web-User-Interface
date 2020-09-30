@@ -42,7 +42,10 @@ export default class PageSidebarWidgetsReadLater extends Component<PageSidebarWi
                     value: id
                 };
             });
-            const params = buildSearchQueryParams('', [], false, queryItems);
+
+            const params = buildSearchQueryParams({
+                facetValues: queryItems
+            });
             const results = yield this.store.query('document', params);
             this.results = results.toArray();
         } else {

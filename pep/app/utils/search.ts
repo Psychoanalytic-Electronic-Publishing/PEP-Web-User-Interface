@@ -56,6 +56,21 @@ export interface SearchFacetCounts {
     [x: string]: number;
 }
 
+type BuildSearchQueryParams = {
+    smartSearchTerm?: string;
+    searchTerms?: SearchTermValue[];
+    synonyms?: boolean;
+    facetValues?: SearchFacetValue[];
+    citedCount?: string;
+    viewedCount?: string;
+    viewedPeriod?: ViewPeriod | null;
+    facetFields?: SearchFacetId[];
+    joinOp?: 'AND' | 'OR';
+    facetLimit?: number | null;
+    facetMinCount?: number | null;
+    highlightlimit?: number;
+};
+
 /**
  * Builds the query params object for document searches
  * @export
@@ -67,20 +82,22 @@ export interface SearchFacetCounts {
  * @param {('AND' | 'OR')} [logicalOperator='OR']
  * @returns {QueryParamsObj}
  */
-export function buildSearchQueryParams(
-    smartSearchTerm: string,
-    searchTerms: SearchTermValue[],
-    synonyms: boolean,
-    facetValues: SearchFacetValue[] = [],
-    citedCount: string = '',
-    viewedCount: string = '',
-    viewedPeriod: ViewPeriod | null = null,
-    facetFields: SearchFacetId[] = [],
-    joinOp: 'AND' | 'OR' = 'AND',
-    facetLimit: number | null = null,
-    facetMinCount: number | null = null,
-    highlightlimit?: number
-): QueryParamsObj {
+export function buildSearchQueryParams(searchQueryParams: BuildSearchQueryParams): QueryParamsObj {
+    const {
+        smartSearchTerm = '',
+        searchTerms,
+        synonyms = false,
+        facetValues = [],
+        citedCount = '',
+        viewedCount = '',
+        viewedPeriod = null,
+        facetFields = [],
+        joinOp = 'AND',
+        facetLimit = null,
+        facetMinCount = null,
+        highlightlimit
+    } = searchQueryParams;
+
     const queryParams: SearchQueryParams = {
         facetfields: !isEmpty(facetFields) ? facetFields.join(',') : null,
         facetlimit: facetLimit,
@@ -94,10 +111,10 @@ export function buildSearchQueryParams(
         synonyms
     };
 
-    const nonEmptyTerms = searchTerms.filter((t) => !!t.term);
+    const nonEmptyTerms = searchTerms?.filter((t) => !!t.term);
     const parascopes: string[] = [];
 
-    nonEmptyTerms.forEach((term) => {
+    nonEmptyTerms?.forEach((term) => {
         let searchType = SEARCH_TYPES.findBy('id', term.type);
         if (searchType && searchType.param) {
             let value = term.term.trim();
