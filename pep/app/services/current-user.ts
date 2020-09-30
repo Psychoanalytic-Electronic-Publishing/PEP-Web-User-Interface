@@ -109,10 +109,7 @@ export default class CurrentUserService extends Service {
      */
     loadCookiePrefs() {
         const prefs = {} as PreferenceChangeset;
-        const cookie = this.cookies.read(USER_PREFERENCES_COOKIE_NAME, {
-            secure: Number(ENV.cookieSecure) === 1,
-            sameSite: ENV.cookieSameSite
-        });
+        const cookie = this.cookies.read(USER_PREFERENCES_COOKIE_NAME);
 
         if (!cookie) {
             return prefs;
@@ -139,12 +136,7 @@ export default class CurrentUserService extends Service {
      */
     async updatePrefs(prefValues: PreferenceChangeset) {
         const keys = Object.keys(prefValues) as PreferenceKey[];
-
-        const cookie = this.cookies.read(USER_PREFERENCES_COOKIE_NAME, {
-            secure: Number(ENV.cookieSecure) === 1,
-            sameSite: ENV.cookieSameSite
-        });
-
+        const cookie = this.cookies.read(USER_PREFERENCES_COOKIE_NAME);
         const cookieValues = cookie ? JSON.parse(cookie) : {};
         let updatedCookie = false;
 
@@ -163,7 +155,6 @@ export default class CurrentUserService extends Service {
         if (updatedCookie) {
             const newCookie = JSON.stringify(cookieValues);
             this.cookies.write(USER_PREFERENCES_COOKIE_NAME, newCookie, {
-                domain: ENV.cookieDomain,
                 secure: Number(ENV.cookieSecure) === 1,
                 sameSite: ENV.cookieSameSite,
                 expires: new Date('2525-01-01') // never!!!

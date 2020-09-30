@@ -37,7 +37,6 @@ export default class PepSessionService extends SessionService.extend({
     setUnauthenticatedSession(sessionData: PepSecureAuthenticatedData) {
         const resultString = JSON.stringify(sessionData);
         this.cookies.write(UNAUTHENTICATED_SESSION_COOKIE_NAME, resultString, {
-            domain: ENV.cookieDomain,
             secure: this.isCookieSecure,
             sameSite: ENV.cookieSameSite,
             expires: new Date('2525-01-01') // never!!!
@@ -51,10 +50,7 @@ export default class PepSessionService extends SessionService.extend({
      * @memberof PepSessionService
      */
     getUnauthenticatedSession(): PepSecureAuthenticatedData | undefined {
-        const cookie = this.cookies.read(UNAUTHENTICATED_SESSION_COOKIE_NAME, {
-            secure: this.isCookieSecure,
-            sameSite: ENV.cookieSameSite
-        });
+        const cookie = this.cookies.read(UNAUTHENTICATED_SESSION_COOKIE_NAME);
         return cookie ? JSON.parse(cookie) : undefined;
     }
 
@@ -65,7 +61,6 @@ export default class PepSessionService extends SessionService.extend({
      */
     clearUnauthenticatedSession() {
         this.cookies.clear(UNAUTHENTICATED_SESSION_COOKIE_NAME, {
-            domain: ENV.cookieDomain,
             secure: this.isCookieSecure,
             sameSite: ENV.cookieSameSite
         });
