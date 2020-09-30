@@ -13,6 +13,7 @@ interface TablesSearchArgs {
     loadMoreRows: () => Document[];
     isLoading: boolean;
     showHitsInContext: boolean;
+    openPreview: (document: Document) => void;
 }
 
 export default class TablesSearch extends Component<TablesSearchArgs> {
@@ -42,21 +43,26 @@ export default class TablesSearch extends Component<TablesSearchArgs> {
                 valuePath: 'authorMast',
                 name: this.intl.t('search.table.author'),
                 isSortable: true,
-                staticWidth: 75
+                staticWidth: 75,
+                cellComponent: 'tables/cell/document-link',
+                onClick: this.args.openPreview
             },
 
             {
                 name: this.intl.t('search.table.year'),
                 valuePath: 'year',
                 isSortable: true,
-                staticWidth: 25
+                staticWidth: 25,
+                cellComponent: 'tables/cell/document-link',
+                onClick: this.args.openPreview
             },
             {
                 name: this.intl.t('search.table.title'),
                 valuePath: 'title',
                 isSortable: true,
-                cellComponent: 'tables/cell/html',
-                staticWidth: 100
+                staticWidth: 100,
+                cellComponent: 'tables/cell/document-link',
+                onClick: this.args.openPreview
             },
             {
                 name: this.intl.t('search.table.source'),

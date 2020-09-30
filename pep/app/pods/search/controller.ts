@@ -1,4 +1,4 @@
-import { SearchView, SearchViewType } from './../../constants/search';
+import { SearchView, SearchViewType, SearchSorts, SearchSort } from './../../constants/search';
 import Controller from '@ember/controller';
 import { action, setProperties } from '@ember/object';
 import { isEmpty } from '@ember/utils';
@@ -80,11 +80,13 @@ export default class Search extends Controller {
 
     @tracked selectedItems: Document[] = [];
     @tracked selectedView = SearchViews[1];
+    @tracked selectedSort = SearchSorts[0];
 
     readLaterKey = PreferenceKey.READ_LATER;
     favoritesKey = PreferenceKey.FAVORITES;
     searchViews = SearchViews;
     tableView = SearchViewType.TABLE;
+    sorts = SearchSorts;
 
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
@@ -474,8 +476,8 @@ export default class Search extends Controller {
      * @param {Event} event
      */
     @action
-    openResult(result: Document, event: Event) {
-        event.preventDefault();
+    openResult(result: Document, event?: Event) {
+        event?.preventDefault();
         if (this.currentUser.preferences?.searchPreviewEnabled) {
             this.previewedResult = result;
             this.sidebar.update({
@@ -551,6 +553,19 @@ export default class Search extends Controller {
             await this.paginator.loadMoreModels();
         }
         this.currentUser.updatePrefs({ [PreferenceKey.SEARCH_HIC_ENABLED]: value });
+    }
+
+    @action
+    updateSort(event: HTMLElementEvent<HTMLSelectElement>) {
+        const id = event.target.value as SearchSort;
+        const selectedSort = SearchSorts.find((item) => item.id === id);
+        this.selectedSort = selectedSort!;
+        this.paginator.changeSorting([
+            {
+                valuePath: id,
+                isAscending: false
+            }
+        ]);
     }
 }
 

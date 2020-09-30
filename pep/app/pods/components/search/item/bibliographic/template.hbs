@@ -23,7 +23,7 @@
                     </span>
                 {{/if}}
             </a>
-            {{#if @item.kwicList}}
+            {{#if (and this.currentUser.preferences.searchHICEnabled @item.kwicList) }}
                 <ul class="font-size-secondary">
                     {{#each @item.kwicList as |searchHit|}}
                         <li>{{html-safe searchHit}}</li>

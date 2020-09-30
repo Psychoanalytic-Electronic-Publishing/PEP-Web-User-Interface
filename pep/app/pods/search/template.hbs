@@ -95,14 +95,19 @@
                                 </div>
 
                                 <div class="search-results-control">
-                                    <Button
-                                        @type="link"
-                                        class="text-decoration-none p-1 mr-1"
-                                    >
-                                        <span class="text-muted">{{t "search.sort.label"}}</span>
-                                        <span class="text-dark mr-1">{{t "search.sort.year"}}</span>
-                                        <FaIcon @icon="angle-down" class="text-muted" />
-                                    </Button>
+                                    <div class="d-flex align-items-center">
+                                        <span class="search-results-control-label text-muted">{{t "search.sort.label"}}</span>
+                                        <select
+                                            class="custom-select custom-select-sm text-truncate"
+                                            {{on "change" this.updateSort}}
+                                        >
+                                            {{#each this.sorts as |sort|}}
+                                                <option value={{sort.id}} selected={{eq sort.id this.selectedSort.id}}>
+                                                    {{sort.label}}
+                                                </option>
+                                            {{/each}}
+                                        </select>
+                                    </div>
                                 </div>
 
                                 <div class="search-results-control">
@@ -148,7 +153,7 @@
                                         @updateSorts={{this.paginator.changeSorting}}
                                         @sorts={{this.paginator.sorts}}
                                         @showHitsInContext={{this.currentUser.preferences.searchHICEnabled}}
-
+                                        @openPreview={{this.openResult}}
                                     />
 
                                 {{else}}

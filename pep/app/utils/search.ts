@@ -11,6 +11,11 @@ import {
 } from 'pep/constants/search';
 import { QUOTED_VALUE_REGEX } from 'pep/constants/regex';
 
+/**
+ * Search params that come from the sidebar search form
+ *
+ * @interface SearchQueryStrParams
+ */
 interface SearchQueryStrParams {
     smarttext: string;
     fulltext1?: string;
@@ -32,12 +37,19 @@ interface SearchQueryStrParams {
     viewperiod?: string;
 }
 
+/**
+ * Search params that dont come from the search form
+ *
+ * @interface SearchQueryParams
+ * @extends {SearchQueryStrParams}
+ */
 interface SearchQueryParams extends SearchQueryStrParams {
     facetfields: string | null;
     facetlimit?: number | null;
     facetmincount?: number | null;
     synonyms: boolean;
     abstract: boolean;
+    highlightlimit?: number;
 }
 
 export interface SearchFacetCounts {
@@ -66,7 +78,8 @@ export function buildSearchQueryParams(
     facetFields: SearchFacetId[] = [],
     joinOp: 'AND' | 'OR' = 'AND',
     facetLimit: number | null = null,
-    facetMinCount: number | null = null
+    facetMinCount: number | null = null,
+    highlightlimit?: number
 ): QueryParamsObj {
     const queryParams: SearchQueryParams = {
         facetfields: !isEmpty(facetFields) ? facetFields.join(',') : null,
@@ -77,6 +90,7 @@ export function buildSearchQueryParams(
         viewcount: viewedCount,
         viewperiod: `${!isNone(viewedPeriod) && !isEmpty(viewedCount) ? viewedPeriod : ''}`,
         abstract: true,
+        highlightlimit,
         synonyms
     };
 
