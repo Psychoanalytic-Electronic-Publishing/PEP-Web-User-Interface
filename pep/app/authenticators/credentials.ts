@@ -1,4 +1,3 @@
-import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
 import { inject as service } from '@ember/service';
 import { isEmpty } from '@ember/utils';
 import { resolve, reject } from 'rsvp';
