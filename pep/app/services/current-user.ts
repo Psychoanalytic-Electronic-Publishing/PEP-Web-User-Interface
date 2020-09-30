@@ -19,6 +19,7 @@ import {
     PreferenceDocumentsKey
 } from 'pep/constants/preferences';
 import PepSessionService from 'pep/services/pep-session';
+import { DATE_FOREVER } from 'pep/constants/dates';
 
 export default class CurrentUserService extends Service {
     @service store!: DS.Store;
@@ -155,9 +156,9 @@ export default class CurrentUserService extends Service {
         if (updatedCookie) {
             const newCookie = JSON.stringify(cookieValues);
             this.cookies.write(USER_PREFERENCES_COOKIE_NAME, newCookie, {
-                secure: Number(ENV.cookieSecure) === 1,
+                secure: ENV.cookieSecure,
                 sameSite: ENV.cookieSameSite,
-                expires: new Date('2525-01-01') // never!!!
+                expires: DATE_FOREVER
             });
         }
 

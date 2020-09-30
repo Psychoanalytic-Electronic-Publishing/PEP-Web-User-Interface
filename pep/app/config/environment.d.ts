@@ -23,7 +23,7 @@ declare const config: {
     authBaseUrl: string;
     clientId: number;
     cookieDomain: string;
-    cookieSecure: string;
+    cookieSecure: boolean;
     cookieSameSite: string;
     fastboot: {
         hostWhitelist: Array<string | RegExp>;
