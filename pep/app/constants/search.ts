@@ -581,6 +581,7 @@ export const SEARCH_FACETS = [
     SEARCH_FACET_KEYWORDS,
     SEARCH_FACET_ART_QUAL
 ];
+
 export const VIEW_PERIOD_WEEK: ViewPeriodOption = {
     id: ViewPeriod.PAST_WEEK,
     label: 'search.viewPeriod.week'

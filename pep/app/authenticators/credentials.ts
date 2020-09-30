@@ -1,16 +1,16 @@
 import { inject as service } from '@ember/service';
 import { isEmpty } from '@ember/utils';
+import { run } from '@ember/runloop';
+import { EmberRunTimer } from '@ember/runloop/types';
+import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import { resolve, reject } from 'rsvp';
 import BaseAuthenticator from 'ember-simple-auth/authenticators/base';
 
 import AjaxService from 'pep/services/ajax';
+import PepSessionService from 'pep/services/pep-session';
 import ENV from 'pep/config/environment';
 import { PepSecureAuthenticatedData } from 'pep/api';
 import { serializeQueryParams } from 'pep/utils/url';
-import PepSessionService from 'pep/services/pep-session';
-import { run } from '@ember/runloop';
-import { EmberRunTimer } from '@ember/runloop/types';
-import FastbootService from 'ember-cli-fastboot/services/fastboot';
 
 export enum SessionType {
     CREDENTIALS = 'credentials',
