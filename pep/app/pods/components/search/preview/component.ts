@@ -66,7 +66,7 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
     get downloadAuthParams() {
         return serializeQueryParams({
             'client-id': ENV.clientId,
-            'session-id': this.session.data.authenticated.SessionId
+            'client-session': this.session.data.authenticated.SessionId
         });
     }
 
