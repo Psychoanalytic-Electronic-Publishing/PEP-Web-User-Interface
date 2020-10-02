@@ -1,15 +1,18 @@
 import { computed, setProperties } from '@ember/object';
 import Service, { inject as service } from '@ember/service';
-import fetch from 'fetch';
-import { reject } from 'rsvp';
 
+import FastbootService from 'ember-cli-fastboot/services/fastboot';
+
+import fetch from 'fetch';
 import ENV from 'pep/config/environment';
-import { appendTrailingSlash } from 'pep/utils/url';
-import { guard } from 'pep/utils/types';
 import PepSessionService from 'pep/services/pep-session';
+import { guard } from 'pep/utils/types';
+import { appendTrailingSlash } from 'pep/utils/url';
+import { reject } from 'rsvp';
 
 export default class AjaxService extends Service {
     @service('pep-session') session!: PepSessionService;
+    @service fastboot!: FastbootService;
 
     host: string = ENV.apiBaseUrl;
     namespace: string = ENV.apiNamespace;
@@ -28,6 +31,13 @@ export default class AjaxService extends Service {
         } else {
             headers['client-session'] = this.session?.getUnauthenticatedSession()?.SessionId;
         }
+        if (this.fastboot.isFastBoot) {
+            const headers = this.fastboot.request.headers;
+            console.log(this.fastboot.request.headers);
+            const xForwardedFor = headers.get('X-Forwarded-For');
+            headers['X-Forwarded-For'] = xForwardedFor;
+        }
+
         return headers;
     }
 
