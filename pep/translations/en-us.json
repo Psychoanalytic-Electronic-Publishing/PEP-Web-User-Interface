@@ -453,6 +453,9 @@
         },
         "search": {
             "heading": "Search",
+            "hic": {
+                "limit": "Hits in context limit"
+            },
             "preview": {
                 "label": "On search result selection",
                 "select": "Select your desired behavior",

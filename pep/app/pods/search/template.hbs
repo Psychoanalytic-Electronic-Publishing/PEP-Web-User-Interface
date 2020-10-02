@@ -23,28 +23,10 @@
                                     @onChange={{this.updateHitsInContext}}
                                     @label={{t "search.hitsInContext.label"}}
                                 />
-                                <abbr class="search-results-control-help">
-                                    <span class="fa-layers fa-sm">
-                                        <FaIcon
-                                            @icon="circle"
-                                            @prefix="fas"
-                                            class="search-results-control-help-background"
-                                        />
-                                        <FaIcon
-                                            @icon="question-circle"
-                                            @size="xs"
-                                            class="search-results-control-help-foreground"
-                                        />
-                                    </span>
-                                    <EmberTooltip
-                                        @text={{t "search.hitsInContext.help"}}
-                                        @popperContainer="body"
-                                        @side="right"
-                                        @spacing={{5}}
-                                        @effect="slide"
-                                        @innerClass=""
-                                    />
-                                </abbr>
+                                <HelpTooltip
+                                    @tooltip={{t "search.hitsInContext.help"}}
+                                    class="search-results-control-help"
+                                />
                             </div>
 
                             <div class="search-results-control">
@@ -197,12 +179,7 @@
                                         @renderAll={{this.fastboot.isFastBoot}}
                                         @lastReached={{this.paginator.loadMoreModels}} as |result|
                                     >
-                                        <Search::Item::Bibliographic
-                                            @item={{result}}
-                                            @selectedItems={{this.selectedItems}}
-                                            @onCheck={{this.onCheck}}
-                                            @openResult={{this.openResult}}
-                                        />
+                                        <Search::Item::Bibliographic @item={{result}} @openResult={{this.openResult}} />
                                     </VerticalCollection>
                                     {{#if this.paginator.isLoadingModels}}
                                         <Loading::Spinner @options={{hash text=(t "common.loadingResults")}} />

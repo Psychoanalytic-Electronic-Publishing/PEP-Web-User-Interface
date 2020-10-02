@@ -1,7 +1,7 @@
 import ENV from 'pep/config/environment';
-import { ThemeId } from 'pep/constants/themes';
 import { LanguageCode } from 'pep/constants/lang';
 import { SearchTermId } from 'pep/constants/search';
+import { ThemeId } from 'pep/constants/themes';
 
 export enum PreferenceKey {
     FAVORITES = 'favorites',
@@ -68,7 +68,7 @@ export const DEFAULT_USER_PREFERENCES: UserPreferences = {
     lang: LanguageCode.enUS,
     searchPreviewEnabled: true,
     searchHICEnabled: true,
-    searchHICLimit: 5,
+    searchHICLimit: 1,
     readLater: [],
     theme: ThemeId.DEFAULT
 };
