@@ -1,38 +1,35 @@
-import { SearchViewType, SearchSorts, SearchSort } from './../../constants/search';
 import Controller from '@ember/controller';
 import { action, setProperties } from '@ember/object';
+import { inject as service } from '@ember/service';
 import { isEmpty } from '@ember/utils';
 import { tracked } from '@glimmer/tracking';
-import FastbootService from 'ember-cli-fastboot/services/fastboot';
-import { inject as service } from '@ember/service';
-import { hash } from 'rsvp';
-import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
+
 import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
+import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
+import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import { didCancel, timeout } from 'ember-concurrency';
 import { restartableTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
 
-import Document from 'pep/pods/document/model';
-import AjaxService from 'pep/services/ajax';
-import {
-    SEARCH_TYPE_EVERYWHERE,
-    SearchTermValue,
-    SearchFacetValue,
-    ViewPeriod,
-    SEARCH_DEFAULT_VIEW_PERIOD,
-    SearchViews
-} from 'pep/constants/search';
-import { PreferenceKey } from 'pep/constants/preferences';
-import SidebarService from 'pep/services/sidebar';
-import LoadingBarService from 'pep/services/loading-bar';
-import FastbootMediaService from 'pep/services/fastboot-media';
-import ScrollableService from 'pep/services/scrollable';
-import ConfigurationService from 'pep/services/configuration';
-import CurrentUserService from 'pep/services/current-user';
-import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
 import { SearchMetadata } from 'pep/api';
+import { PreferenceKey } from 'pep/constants/preferences';
+import {
+    SEARCH_DEFAULT_VIEW_PERIOD, SEARCH_TYPE_EVERYWHERE, SearchFacetValue, SearchTermValue, SearchViews, ViewPeriod
+} from 'pep/constants/search';
 import { WIDGET } from 'pep/constants/sidebar';
 import { SearchPreviewMode } from 'pep/pods/components/search/preview/component';
+import Document from 'pep/pods/document/model';
+import AjaxService from 'pep/services/ajax';
+import ConfigurationService from 'pep/services/configuration';
+import CurrentUserService from 'pep/services/current-user';
+import FastbootMediaService from 'pep/services/fastboot-media';
+import LoadingBarService from 'pep/services/loading-bar';
+import ScrollableService from 'pep/services/scrollable';
+import SidebarService from 'pep/services/sidebar';
+import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
+import { hash } from 'rsvp';
+
+import { SearchSort, SearchSorts, SearchViewType } from '../../constants/search';
 
 export default class Search extends Controller {
     @service ajax!: AjaxService;
@@ -566,7 +563,7 @@ export default class Search extends Controller {
         this.paginator.changeSorting([
             {
                 valuePath: id,
-                isAscending: false
+                isAscending: true
             }
         ]);
     }

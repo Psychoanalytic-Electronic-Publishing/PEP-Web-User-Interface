@@ -6,6 +6,101 @@
 >
     <div class="page-content-section flex-fill">
         <Scrollable @namespace="search-results" class="page-content-inner">
+            <div class="sticky-top">
+                <div class="py-3 px-4 bg-backdrop">
+                    <div class="d-md-flex justify-content-between align-items-center py-1">
+                        <h4 class="mb-0">
+                            {{t
+                                "common.numResults"
+                                count=(format-number (or this.paginator.metadata.fullCount 0))
+                                htmlSafe=true
+                            }}
+                        </h4>
+                        <div class="d-flex align-items-center">
+                            <div class="search-results-control">
+                                <CheckboxInput
+                                    @checked={{this.currentUser.preferences.searchHICEnabled}}
+                                    @onChange={{this.updateHitsInContext}}
+                                    @label={{t "search.hitsInContext.label"}}
+                                />
+                                <abbr class="search-results-control-help">
+                                    <span class="fa-layers fa-sm">
+                                        <FaIcon
+                                            @icon="circle"
+                                            @prefix="fas"
+                                            class="search-results-control-help-background"
+                                        />
+                                        <FaIcon
+                                            @icon="question-circle"
+                                            @size="xs"
+                                            class="search-results-control-help-foreground"
+                                        />
+                                    </span>
+                                    <EmberTooltip
+                                        @text={{t "search.hitsInContext.help"}}
+                                        @popperContainer="body"
+                                        @side="right"
+                                        @spacing={{5}}
+                                        @effect="slide"
+                                        @innerClass=""
+                                    />
+                                </abbr>
+                            </div>
+
+                            <div class="search-results-control">
+                                <div class="d-flex align-items-center">
+                                    <span class="search-results-control-label text-muted">
+                                        {{t "search.sort.label"}}
+                                    </span>
+                                    <select
+                                        class="custom-select custom-select-sm text-truncate"
+                                        {{on "change" this.updateSort}}
+                                    >
+                                        {{#each this.sorts as |sort|}}
+                                            <option value={{sort.id}} selected={{eq sort.id this.selectedSort.id}}>
+                                                {{sort.label}}
+                                            </option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="search-results-control">
+                                <div class="d-flex align-items-center">
+                                    <span class="search-results-control-label text-muted">
+                                        {{t "search.view.label"}}
+                                    </span>
+                                    <select
+                                        class="custom-select custom-select-sm text-truncate"
+                                        {{on "change" this.updateSelectedView}}
+                                    >
+                                        {{#each this.searchViews as |view|}}
+                                            <option value={{view.id}} selected={{eq view.id this.selectedView.id}}>
+                                                {{view.label}}
+                                            </option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <Button::WithTooltip
+                                @type="link"
+                                @icon="download"
+                                @iconSize="lg"
+                                @tooltip={{t "common.export"}}
+                                class="p-1 pl-2"
+                            />
+                            <Button::WithTooltip
+                                @type="link"
+                                @icon="print"
+                                @iconSize="lg"
+                                @tooltip={{t "common.print"}}
+                                class="p-1"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
             {{#if (and (not this.paginator.models) this.paginator.isLoadingModels)}}
                 <div class="py-3 px-4">
                     <Loading::Search::Results />
@@ -31,7 +126,9 @@
                             </div>
                         {{else}}
                             <div class="m-3 m-md-5 p-3 bg-backdrop-well rounded text-muted">
-                                <h5>{{t "search.empty.heading"}}</h5>
+                                <h5>
+                                    {{t "search.empty.heading"}}
+                                </h5>
                                 <p class="mb-4">
                                     <FaIcon @icon="arrow-left" />
                                     {{t "search.empty.instructions"}}
@@ -46,102 +143,37 @@
                                         @action={{this.showSearch}}
                                     />
                                 </p>
-                                <h5>{{t "search.empty.tips.heading"}}</h5>
+                                <h5>
+                                    {{t "search.empty.tips.heading"}}
+                                </h5>
                                 <p>
                                     {{t "search.empty.tips.instructions"}}
                                 </p>
                                 <ul>
-                                    <li>{{t "search.empty.tips.tip1" htmlSafe=true}}</li>
-                                    <li>{{t "search.empty.tips.tip2" htmlSafe=true}}</li>
-                                    <li>{{t "search.empty.tips.tip3" htmlSafe=true}}</li>
-                                    <li>{{t "search.empty.tips.tip4" htmlSafe=true}}</li>
-                                    <li>{{t "search.empty.tips.tip5" htmlSafe=true}}</li>
-                                    <li>{{t "search.empty.tips.tip6" htmlSafe=true}}</li>
+                                    <li>
+                                        {{t "search.empty.tips.tip1" htmlSafe=true}}
+                                    </li>
+                                    <li>
+                                        {{t "search.empty.tips.tip2" htmlSafe=true}}
+                                    </li>
+                                    <li>
+                                        {{t "search.empty.tips.tip3" htmlSafe=true}}
+                                    </li>
+                                    <li>
+                                        {{t "search.empty.tips.tip4" htmlSafe=true}}
+                                    </li>
+                                    <li>
+                                        {{t "search.empty.tips.tip5" htmlSafe=true}}
+                                    </li>
+                                    <li>
+                                        {{t "search.empty.tips.tip6" htmlSafe=true}}
+                                    </li>
                                 </ul>
                             </div>
                         {{/if}}
                     </div>
                 {{else}}
                     <div class="py-3 px-4">
-                        <div class="d-md-flex justify-content-between align-items-center mb-3 py-1 sticky-top bg-backdrop">
-                            <h4 class="mb-0">
-                                {{t
-                                    "common.numResults"
-                                    count=(format-number (or this.paginator.metadata.fullCount 0))
-                                    htmlSafe=true
-                                }}
-                            </h4>
-                            <div class="d-flex align-items-center">
-                                <div class="search-results-control">
-                                    <CheckboxInput
-                                        @checked={{this.currentUser.preferences.searchHICEnabled}}
-                                        @onChange={{this.updateHitsInContext}}
-                                        @label={{t "search.hitsInContext.label"}}
-                                    />
-                                    <abbr class="search-results-control-help">
-                                        <span class="fa-layers fa-sm">
-                                            <FaIcon @icon="circle" @prefix="fas" class="search-results-control-help-background"/>
-                                            <FaIcon @icon="question-circle" @size="xs" class="search-results-control-help-foreground" />
-                                        </span>
-                                        <EmberTooltip
-                                            @text={{t "search.hitsInContext.help"}}
-                                            @popperContainer="body"
-                                            @side="right"
-                                            @spacing={{5}}
-                                            @effect="slide"
-                                            @innerClass=""
-                                        />
-                                    </abbr>
-                                </div>
-
-                                <div class="search-results-control">
-                                    <div class="d-flex align-items-center">
-                                        <span class="search-results-control-label text-muted">{{t "search.sort.label"}}</span>
-                                        <select
-                                            class="custom-select custom-select-sm text-truncate"
-                                            {{on "change" this.updateSort}}
-                                        >
-                                            {{#each this.sorts as |sort|}}
-                                                <option value={{sort.id}} selected={{eq sort.id this.selectedSort.id}}>
-                                                    {{sort.label}}
-                                                </option>
-                                            {{/each}}
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="search-results-control">
-                                    <div class="d-flex align-items-center">
-                                        <span class="search-results-control-label text-muted">{{t "search.view.label"}}</span>
-                                        <select
-                                            class="custom-select custom-select-sm text-truncate"
-                                            {{on "change" this.updateSelectedView}}
-                                        >
-                                            {{#each this.searchViews as |view|}}
-                                                <option value={{view.id}} selected={{eq view.id this.selectedView.id}}>
-                                                    {{view.label}}
-                                                </option>
-                                            {{/each}}
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <Button::WithTooltip
-                                    @type="link"
-                                    @icon="download"
-                                    @iconSize="lg"
-                                    @tooltip={{t "common.export"}}
-                                    class="p-1 pl-2"
-                                />
-                                <Button::WithTooltip
-                                    @type="link"
-                                    @icon="print"
-                                    @iconSize="lg"
-                                    @tooltip={{t "common.print"}}
-                                    class="p-1"
-                                />
-                            </div>
-                        </div>
                         <div class="card">
                             <div class="card-body">
                                 {{#if (eq this.selectedView.id this.tableView)}}
@@ -155,7 +187,6 @@
                                         @showHitsInContext={{this.currentUser.preferences.searchHICEnabled}}
                                         @openPreview={{this.openResult}}
                                     />
-
                                 {{else}}
                                     <VerticalCollection
                                         @items={{this.paginator.models}}
@@ -164,8 +195,7 @@
                                         @class="list-unstyled"
                                         @estimateHeight={{100}}
                                         @renderAll={{this.fastboot.isFastBoot}}
-                                        @lastReached={{this.paginator.loadMoreModels}}
-                                        as |result|
+                                        @lastReached={{this.paginator.loadMoreModels}} as |result|
                                     >
                                         <Search::Item::Bibliographic
                                             @item={{result}}
