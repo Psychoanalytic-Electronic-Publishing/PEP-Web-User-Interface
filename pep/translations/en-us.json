@@ -25,7 +25,8 @@
         "loadingResults": "Loading results...",
         "loading": "Loading...",
         "filter": "Filter",
-        "viewAll": "View all"
+        "viewAll": "View all",
+        "help": "Help"
     },
     "serverErrors": {
         "heading": "The following {count, plural, =1 {error} other {errors}} occurred while attempting to process your request.",
@@ -437,7 +438,8 @@
         "password": "Password",
         "notAMember": "Not a member?",
         "clickToSubscribe": "Click here to subscribe",
-        "success": "You are now logged in."
+        "success": "You are now logged in.",
+        "forgotPassword": "Forgot Password?"
     },
     "preferences": {
         "title": "Preferences",

@@ -18,7 +18,7 @@ module.exports = function(emberDistPath) {
         fastbootMiddleware({
             distPath: emberDistPath,
             //resilient mode = true swallows rendering errors and returns a 200 w/the default index.html
-            resilient: false
+            resilient: true
         })
     );
 

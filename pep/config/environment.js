@@ -74,7 +74,7 @@ module.exports = function(environment) {
         apiAdminNamespace: process.env.API_ADMIN_NAMESPACE,
         clientId: process.env.CLIENT_ID,
         cookieDomain: process.env.COOKIE_DOMAIN,
-        cookieSecure: process.env.COOKIE_SECURE,
+        cookieSecure: Number(process.env.COOKIE_SECURE) === 1,
         cookieSameSite: process.env.COOKIE_SAME_SITE
     };
 

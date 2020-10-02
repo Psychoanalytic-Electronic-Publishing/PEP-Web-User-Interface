@@ -31,10 +31,24 @@ export default class FastbootMediaService extends Service {
     }
 
     /**
+     * Isomorphic media/device check for large desktops, using the user agent in fastboot
+     */
+    get isJumbo() {
+        return this.media.isJumbo || (this.fastboot.isFastBoot && this.userAgent.device.isDesktop);
+    }
+
+    /**
      * Device is mobile or tablet
      */
     get isSmallDevice() {
         return this.isMobile || this.isTablet;
+    }
+
+    /**
+     * Device is a desktop or large desktop
+     */
+    get isLargeDevice() {
+        return this.isDesktop || this.isJumbo;
     }
 
     /**
