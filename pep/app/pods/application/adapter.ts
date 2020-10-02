@@ -78,7 +78,7 @@ export default class Application extends DS.RESTAdapter.extend(FastbootAdapter) 
 
         if (this.fastboot.isFastBoot) {
             const headers = this.fastboot.request.headers;
-            console.log(this.fastboot.request.headers);
+            console.log(this.fastboot.request);
             const xForwardedFor = headers.get('X-Forwarded-For');
             headers['X-Forwarded-For'] = xForwardedFor;
         }
