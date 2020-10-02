@@ -33,9 +33,8 @@ export default class AjaxService extends Service {
         }
         if (this.fastboot.isFastBoot) {
             const headers = this.fastboot.request.headers;
-            console.log(this.fastboot.request);
-            const xForwardedFor = headers.get('X-Forwarded-For');
-            headers['X-Forwarded-For'] = xForwardedFor;
+            const xForwardedFor: string[] = headers.get('X-Forwarded-For') ?? [];
+            headers['X-Forwarded-For'] = xForwardedFor[0];
         }
 
         return headers;
