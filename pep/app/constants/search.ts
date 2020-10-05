@@ -555,6 +555,17 @@ export const SEARCH_FACET_AUTHOR: SearchFacetType = {
     values: []
 };
 
+export const SEARCH_FACET_ART_QUAL: SearchFacetType = {
+    id: SearchFacetId.ART_QUAL,
+    param: 'fulltext1',
+    paramSeparator: ' OR ',
+    label: '',
+    dynamicValues: true,
+    prefixValues: true,
+    quoteValues: true,
+    values: []
+};
+
 export const SEARCH_FACETS = [
     SEARCH_FACET_ART_ID,
     SEARCH_FACET_LANG,
@@ -567,7 +578,8 @@ export const SEARCH_FACETS = [
     SEARCH_FACET_SOURCE,
     // SEARCH_FACET_GLOSSARY,
     SEARCH_FACET_GLOSSARY_GROUPS,
-    SEARCH_FACET_KEYWORDS
+    SEARCH_FACET_KEYWORDS,
+    SEARCH_FACET_ART_QUAL
 ];
 
 export const VIEW_PERIOD_WEEK: ViewPeriodOption = {

@@ -20,6 +20,8 @@ interface ModalDialogsUserLoginArgs {
     };
 }
 
+const ForgotPasswordUrl = 'https://www.psychoanalystdatabase.com/Pages/pg100Home.asp';
+
 export default class ModalDialogsUserLogin extends Component<ModalDialogsUserLoginArgs> {
     @service('pep-session') session!: PepSessionService;
     @service router!: RouterService;
@@ -29,6 +31,7 @@ export default class ModalDialogsUserLogin extends Component<ModalDialogsUserLog
 
     @tracked loginError = null;
 
+    forgotPasswordUrl = ForgotPasswordUrl;
     /**
      * Submits the login dialog form and logs the user in
      * @param {ModelChangeset<LoginForm>} changeset
@@ -39,7 +42,7 @@ export default class ModalDialogsUserLogin extends Component<ModalDialogsUserLog
             const username = changeset.username;
             const password = changeset.password;
             this.loadingBar.show();
-            const response = await this.session.authenticate('authenticator:pep', username, password);
+            const response = await this.session.authenticate('authenticator:credentials', username, password);
             this.loginError = null;
             this.loadingBar.hide();
             this.args.onClose();

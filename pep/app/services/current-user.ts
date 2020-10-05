@@ -6,7 +6,7 @@ import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import CookiesService from 'ember-cookies/services/cookies';
 
 import ENV from 'pep/config/environment';
-import User from 'pep/pods/user/model';
+import User, { UserType } from 'pep/pods/user/model';
 import {
     DEFAULT_USER_PREFERENCES,
     UserPreferences,
@@ -19,6 +19,7 @@ import {
     PreferenceDocumentsKey
 } from 'pep/constants/preferences';
 import PepSessionService from 'pep/services/pep-session';
+import { DATE_FOREVER } from 'pep/constants/dates';
 
 export default class CurrentUserService extends Service {
     @service store!: DS.Store;
@@ -54,12 +55,10 @@ export default class CurrentUserService extends Service {
      * @returns Promise<User | void>
      */
     async fetchUser(): Promise<User | void> {
-        if (this.session.isAuthenticated) {
-            const { SessionId } = this.session.data.authenticated;
-            const user = await this.store.queryRecord('user', { SessionId });
-            this.user = user;
-            return user;
-        }
+        const { SessionId } = this.session.data.authenticated;
+        const user = await this.store.queryRecord('user', { SessionId });
+        this.user = user;
+        return user;
     }
 
     /**
@@ -111,10 +110,7 @@ export default class CurrentUserService extends Service {
      */
     loadCookiePrefs() {
         const prefs = {} as PreferenceChangeset;
-        const cookie = this.cookies.read(USER_PREFERENCES_COOKIE_NAME, {
-            secure: Number(ENV.cookieSecure) === 1,
-            sameSite: ENV.cookieSameSite
-        });
+        const cookie = this.cookies.read(USER_PREFERENCES_COOKIE_NAME);
 
         if (!cookie) {
             return prefs;
@@ -141,12 +137,7 @@ export default class CurrentUserService extends Service {
      */
     async updatePrefs(prefValues: PreferenceChangeset) {
         const keys = Object.keys(prefValues) as PreferenceKey[];
-
-        const cookie = this.cookies.read(USER_PREFERENCES_COOKIE_NAME, {
-            secure: Number(ENV.cookieSecure) === 1,
-            sameSite: ENV.cookieSameSite
-        });
-
+        const cookie = this.cookies.read(USER_PREFERENCES_COOKIE_NAME);
         const cookieValues = cookie ? JSON.parse(cookie) : {};
         let updatedCookie = false;
 
@@ -165,15 +156,14 @@ export default class CurrentUserService extends Service {
         if (updatedCookie) {
             const newCookie = JSON.stringify(cookieValues);
             this.cookies.write(USER_PREFERENCES_COOKIE_NAME, newCookie, {
-                domain: ENV.cookieDomain,
-                secure: Number(ENV.cookieSecure) === 1,
+                secure: ENV.cookieSecure,
                 sameSite: ENV.cookieSameSite,
-                expires: new Date('2525-01-01') // never!!!
+                expires: DATE_FOREVER
             });
         }
 
         // if the user is logged in, apply the new prefs locally, then save the user
-        if (this.session.isAuthenticated && this.user) {
+        if (this.session.isAuthenticated && this.user && this.user.userType !== UserType.GROUP) {
             const oldUserPrefs = this.user?.clientSettings ?? {};
             const newUserPrefs = Object.assign(
                 {},

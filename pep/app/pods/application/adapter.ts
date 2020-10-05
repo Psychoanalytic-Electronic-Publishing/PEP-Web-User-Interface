@@ -1,13 +1,14 @@
 import { inject as service } from '@ember/service';
 import { classify } from '@ember/string';
-import DS from 'ember-data';
-import { reject } from 'rsvp';
-import FastbootAdapter from 'ember-data-storefront/mixins/fastboot-adapter';
+
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
+import DS from 'ember-data';
+import FastbootAdapter from 'ember-data-storefront/mixins/fastboot-adapter';
 
 import ENV from 'pep/config/environment';
-import { appendTrailingSlash, serializeQueryParams } from 'pep/utils/url';
 import PepSessionService from 'pep/services/pep-session';
+import { appendTrailingSlash, serializeQueryParams } from 'pep/utils/url';
+import { reject } from 'rsvp';
 
 export interface ApiServerError {
     code: string;
@@ -71,6 +72,14 @@ export default class Application extends DS.RESTAdapter.extend(FastbootAdapter) 
         if (this.session.isAuthenticated) {
             const { SessionId } = this.session.data.authenticated;
             headers['client-session'] = SessionId;
+        } else {
+            headers['client-session'] = this.session?.getUnauthenticatedSession()?.SessionId;
+        }
+
+        if (this.fastboot.isFastBoot) {
+            const headers = this.fastboot.request.headers;
+            const xForwardedFor: string[] = headers.get('X-Forwarded-For') ?? [];
+            headers['X-Forwarded-For'] = xForwardedFor[0];
         }
 
         return headers;

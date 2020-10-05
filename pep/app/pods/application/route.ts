@@ -56,6 +56,21 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
     async beforeModel(transition: Transition) {
         super.beforeModel(transition);
 
+        // IP authentication should only happen once, IN fastboot
+        // if the user doesn't get logged in, a second call on
+        // client-side boot would be pointless, and would add a
+        // delay (and as a result, FOUC) to the app setup process
+        // since we do not currently cache ajax service requests
+        // in the fastboot shoebox (like ember-data does)
+        if (!this.session.isAuthenticated && this.fastboot.isFastBoot) {
+            try {
+                await this.session.authenticate('authenticator:ip');
+            } catch (errors) {
+                // fail silently - we always want to just try and get authenticated by IP and if it
+                // doesn't work thats fine
+            }
+        }
+
         try {
             if (this.session.isAuthenticated) {
                 await this.currentUser.load();
