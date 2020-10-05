@@ -14,6 +14,9 @@ import SidebarService from 'pep/services/sidebar';
 interface SearchItemBibliographicArgs {
     item: Document;
     openResult: () => void;
+    showFavorites?: boolean;
+    showReadLater?: boolean;
+    showHitsInContext: boolean;
 }
 
 export default class SearchItemBibliographic extends Component<SearchItemBibliographicArgs> {
@@ -22,6 +25,14 @@ export default class SearchItemBibliographic extends Component<SearchItemBibliog
     @service notifications!: NotificationService;
     @service intl!: IntlService;
     @service searchSelection!: SearchSelection;
+
+    get showFavorites() {
+        return typeof this.args.showFavorites === 'boolean' ? this.args.showFavorites : true;
+    }
+
+    get showReadLater() {
+        return typeof this.args.showReadLater === 'boolean' ? this.args.showReadLater : true;
+    }
 
     /**
      * Using a computed here so we A) dont dip into the local storage too often and B) so that this

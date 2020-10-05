@@ -21,7 +21,7 @@
                                 <CheckboxInput
                                     @checked={{this.currentUser.preferences.searchHICEnabled}}
                                     @onChange={{this.updateHitsInContext}}
-                                    @label={{t "search.hitsInContext.label"}}
+                                    @label={{t "search.hitsInContext.label.short"}}
                                 />
                                 <HelpTooltip
                                     @tooltip={{t "search.hitsInContext.help"}}
@@ -160,6 +160,7 @@
                             <div class="card-body">
                                 {{#if (eq this.selectedView.id this.tableView)}}
                                     <Tables::Search
+                                        @containerSelector=".page-content-inner"
                                         @rows={{this.paginator.models}}
                                         @hasMoreRows={{this.paginator.hasMore}}
                                         @loadMoreRows={{this.paginator.loadMoreModels}}
@@ -167,7 +168,7 @@
                                         @updateSorts={{this.paginator.changeSorting}}
                                         @sorts={{this.paginator.sorts}}
                                         @showHitsInContext={{this.currentUser.preferences.searchHICEnabled}}
-                                        @openPreview={{this.openResult}}
+                                        @onLinkClick={{this.openResult}}
                                     />
                                 {{else}}
                                     <VerticalCollection
@@ -179,7 +180,11 @@
                                         @renderAll={{this.fastboot.isFastBoot}}
                                         @lastReached={{this.paginator.loadMoreModels}} as |result|
                                     >
-                                        <Search::Item::Bibliographic @item={{result}} @openResult={{this.openResult}} />
+                                        <Search::Item::Bibliographic
+                                            @item={{result}}
+                                            @openResult={{this.openResult}}
+                                            @showHitsInContext={{this.currentUser.preferences.searchHICEnabled}}
+                                        />
                                     </VerticalCollection>
                                     {{#if this.paginator.isLoadingModels}}
                                         <Loading::Spinner @options={{hash text=(t "common.loadingResults")}} />

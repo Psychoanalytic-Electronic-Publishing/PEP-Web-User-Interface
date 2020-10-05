@@ -2,22 +2,23 @@ import { action } from '@ember/object';
 import Transition from '@ember/routing/-private/transition';
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
-import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
-import MediaService from 'ember-responsive/services/media';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import IntlService from 'ember-intl/services/intl';
+import MediaService from 'ember-responsive/services/media';
+import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 
 import PageLayout from 'pep/mixins/page-layout';
+import { ApiServerErrorResponse } from 'pep/pods/application/adapter';
+import AuthService from 'pep/services/auth';
+import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
+import LangService from 'pep/services/lang';
 import LoadingBarService from 'pep/services/loading-bar';
+import PepSessionService from 'pep/services/pep-session';
 import SidebarService from 'pep/services/sidebar';
 import ThemeService from 'pep/services/theme';
-import AuthService from 'pep/services/auth';
-import LangService from 'pep/services/lang';
-import ConfigurationService from 'pep/services/configuration';
-import { ApiServerErrorResponse } from 'pep/pods/application/adapter';
-import PepSessionService from 'pep/services/pep-session';
 
 export default class Application extends PageLayout(Route.extend(ApplicationRouteMixin)) {
     routeAfterAuthentication = 'index';

@@ -5,6 +5,10 @@
         border-right: 1px solid $border-color;
         padding-right: 10px;
         padding-left: 10px;
+        &-sidebar {
+            border-right: none;
+            padding-left: 0;
+        }
         &-label {
             margin-right: 5px;
         }

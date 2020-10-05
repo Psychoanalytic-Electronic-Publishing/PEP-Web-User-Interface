@@ -1,17 +1,18 @@
+import Transition from '@ember/routing/-private/transition';
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import Transition from '@ember/routing/-private/transition';
+
 import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hooks/pagination';
 import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
 
+import { WIDGET } from 'pep/constants/sidebar';
 import { PageNav } from 'pep/mixins/page-layout';
-import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
 import Document from 'pep/pods/document/model';
 import ReadDocumentController from 'pep/pods/read/document/controller';
 import ConfigurationService from 'pep/services/configuration';
-import { WIDGET } from 'pep/constants/sidebar';
-import SidebarService from 'pep/services/sidebar';
 import CurrentUserService from 'pep/services/current-user';
+import SidebarService from 'pep/services/sidebar';
+import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
 
 export interface ReadDocumentParams {
     document_id: string;

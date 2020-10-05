@@ -68,11 +68,17 @@
             "author": "Author",
             "year": "Year",
             "title": "Title",
-            "source": "Source"
+            "source": "Source",
+            "kwicList": {
+                "empty": "No hits in context items found"
+            }
         },
         "hitsInContext": {
-            "label": "HIC",
-            "help": "Hits in context"
+            "label": {
+                "short": "HIC",
+                "full": "Hits in context"
+            },
+            "help": "Hits in context explanation goes here"
         },
         "sort": {
             "label": "Sort:",

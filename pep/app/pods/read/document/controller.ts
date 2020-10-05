@@ -8,7 +8,8 @@ import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
 import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 
-import { SEARCH_DEFAULT_VIEW_PERIOD, ViewPeriod } from 'pep/constants/search';
+import { PreferenceKey } from 'pep/constants/preferences';
+import { SEARCH_DEFAULT_VIEW_PERIOD, SearchSort, ViewPeriod } from 'pep/constants/search';
 import Document from 'pep/pods/document/model';
 import AuthService from 'pep/services/auth';
 import ConfigurationService from 'pep/services/configuration';
@@ -17,6 +18,8 @@ import LoadingBarService from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
 import { buildSearchQueryParams } from 'pep/utils/search';
 import { reject } from 'rsvp';
+
+import { SearchSorts, SearchViews, SearchViewType } from '../../../constants/search';
 
 export default class ReadDocument extends Controller {
     @service('pep-session') session!: PepSessionService;
@@ -27,9 +30,8 @@ export default class ReadDocument extends Controller {
     @service configuration!: ConfigurationService;
     @service currentUser!: CurrentUserService;
 
-    get defaultSearchParams() {
-        return this.configuration.defaultSearchParams;
-    }
+    @tracked selectedView = SearchViews[1];
+    @tracked selectedSort = SearchSorts[0];
 
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
@@ -51,9 +53,20 @@ export default class ReadDocument extends Controller {
     @tracked viewedPeriod: ViewPeriod = SEARCH_DEFAULT_VIEW_PERIOD;
     @tracked _searchTerms: string | null = null;
     @tracked paginator!: Pagination<Document>;
+    @tracked showHitsInContext = false;
+
+    readLaterKey = PreferenceKey.READ_LATER;
+    favoritesKey = PreferenceKey.FAVORITES;
+    tableView = SearchViewType.TABLE;
+    searchViews = SearchViews;
+    sorts = SearchSorts;
 
     get isLoadingRoute(): boolean {
         return /loading$/.test(this.router.currentRouteName);
+    }
+
+    get defaultSearchParams() {
+        return this.configuration.defaultSearchParams;
     }
 
     //workaround for bug w/array-based query param values
@@ -151,6 +164,66 @@ export default class ReadDocument extends Controller {
             this.loadingBar.hide();
             return reject(err);
         }
+    }
+
+    /**
+     * Update which view to show - table or list
+     *
+     * @param {HTMLElementEvent<HTMLSelectElement>} event
+     * @memberof Search
+     */
+    @action
+    updateSelectedView(event: HTMLElementEvent<HTMLSelectElement>) {
+        const id = event.target.value as SearchViewType;
+        const selectedView = SearchViews.find((item) => item.id === id);
+        this.selectedView = selectedView!;
+    }
+
+    /**
+     * Update whether to show hits in context or not
+     *
+     * @param {boolean} value
+     * @memberof Search
+     */
+    @action
+    async updateHitsInContext(value: boolean) {
+        // Load more models to make up for the difference in height between displaying HIC and not
+        // so the user doesn't see a blank white space
+        if (!value) {
+            await this.paginator.loadMoreModels();
+        }
+        this.currentUser.updatePrefs({ [PreferenceKey.SEARCH_HIC_ENABLED]: value });
+    }
+
+    /**
+     * Update the sort for the list
+     *
+     * @param {HTMLElementEvent<HTMLSelectElement>} event
+     * @memberof Search
+     */
+    @action
+    updateSort(event: HTMLElementEvent<HTMLSelectElement>) {
+        const id = event.target.value as SearchSort;
+        const selectedSort = SearchSorts.find((item) => item.id === id);
+        this.selectedSort = selectedSort!;
+        this.paginator.changeSorting([
+            {
+                valuePath: id,
+                isAscending: true
+            }
+        ]);
+    }
+
+    @action
+    loadDocument() {
+        // @route="read.document"
+        // @model={{result.id}}
+        // @query={{hash
+        //     q=this.q
+        //     matchSynonyms=this.matchSynonyms
+        //     searchTerms=this._searchTerms
+        // }}
+        // class="{{if (eq result.id this.model.id) "font-weight-bold"}}"
     }
 }
 
