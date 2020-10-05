@@ -1,15 +1,11 @@
 import { isEmpty, isNone } from '@ember/utils';
-import { removeEmptyQueryParams, QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 
-import {
-    SEARCH_TYPES,
-    SEARCH_FACETS,
-    SearchTermValue,
-    SearchFacetValue,
-    ViewPeriod,
-    SearchFacetId
-} from 'pep/constants/search';
+import { QueryParamsObj, removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
+
 import { QUOTED_VALUE_REGEX } from 'pep/constants/regex';
+import {
+    SEARCH_FACETS, SEARCH_TYPES, SearchFacetId, SearchFacetValue, SearchTermValue, ViewPeriod
+} from 'pep/constants/search';
 
 /**
  * Search params that come from the sidebar search form

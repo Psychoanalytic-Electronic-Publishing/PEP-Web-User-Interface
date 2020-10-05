@@ -1,6 +1,6 @@
 import IntlService from 'ember-intl/services/intl';
 
-import { SearchFacetCounts, groupCountsByRange } from 'pep/utils/search';
+import { groupCountsByRange, SearchFacetCounts } from 'pep/utils/search';
 
 /**
  * Accepted query param fields for the /v2/Database/Search endpoint

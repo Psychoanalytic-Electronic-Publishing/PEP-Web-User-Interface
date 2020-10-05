@@ -1,5 +1,6 @@
-import { ColumnValue } from '@gavant/ember-table';
 import Component from '@glimmer/component';
+
+import { ColumnValue } from '@gavant/ember-table';
 
 interface TablesCellDocumentLinkArgs {
     rowValue: Document;

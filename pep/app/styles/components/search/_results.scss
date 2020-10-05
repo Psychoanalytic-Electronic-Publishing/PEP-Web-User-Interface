@@ -8,14 +8,5 @@
         &-label {
             margin-right: 5px;
         }
-        &-help {
-            z-index: 2;
-            &-background {
-                color: $white;
-            }
-            &-foreground {
-                color: darken($input-border-color, 15%);
-            }
-        }
     }
 }

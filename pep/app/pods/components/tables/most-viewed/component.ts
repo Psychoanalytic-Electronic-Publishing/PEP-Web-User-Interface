@@ -1,10 +1,12 @@
-import Document from 'pep/pods/document/model';
+import { computed } from '@ember/object';
+import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
+
 import { ColumnValue } from '@gavant/ember-table';
 import IntlService from 'ember-intl/services/intl';
-import { inject as service } from '@ember/service';
+
+import Document from 'pep/pods/document/model';
 import FastbootMediaService from 'pep/services/fastboot-media';
-import { computed } from '@ember/object';
 
 interface TablesMostViewedArgs {
     rows: Document[];

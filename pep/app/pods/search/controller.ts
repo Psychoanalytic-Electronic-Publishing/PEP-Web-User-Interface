@@ -14,7 +14,8 @@ import { taskFor } from 'ember-concurrency-ts';
 import { SearchMetadata } from 'pep/api';
 import { PreferenceKey } from 'pep/constants/preferences';
 import {
-    SEARCH_DEFAULT_VIEW_PERIOD, SEARCH_TYPE_EVERYWHERE, SearchFacetValue, SearchTermValue, SearchViews, ViewPeriod
+    SEARCH_DEFAULT_VIEW_PERIOD, SEARCH_TYPE_EVERYWHERE, SearchFacetValue, SearchSort, SearchSorts, SearchTermValue,
+    SearchViews, SearchViewType, ViewPeriod
 } from 'pep/constants/search';
 import { WIDGET } from 'pep/constants/sidebar';
 import { SearchPreviewMode } from 'pep/pods/components/search/preview/component';
@@ -28,8 +29,6 @@ import ScrollableService from 'pep/services/scrollable';
 import SidebarService from 'pep/services/sidebar';
 import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
 import { hash } from 'rsvp';
-
-import { SearchSort, SearchSorts, SearchViewType } from '../../constants/search';
 
 export default class Search extends Controller {
     @service ajax!: AjaxService;
@@ -75,14 +74,13 @@ export default class Search extends Controller {
     @tracked previewMode: SearchPreviewMode = 'minimized';
     @tracked containerMaxHeight = 0;
 
-    @tracked selectedItems: Document[] = [];
     @tracked selectedView = SearchViews[1];
     @tracked selectedSort = SearchSorts[0];
 
     readLaterKey = PreferenceKey.READ_LATER;
     favoritesKey = PreferenceKey.FAVORITES;
-    searchViews = SearchViews;
     tableView = SearchViewType.TABLE;
+    searchViews = SearchViews;
     sorts = SearchSorts;
 
     //workaround for bug w/array-based query param values
@@ -529,15 +527,12 @@ export default class Search extends Controller {
         this.containerMaxHeight = element.offsetHeight;
     }
 
-    @action
-    onCheck(document: Document, isChecked: boolean) {
-        if (isChecked) {
-            this.selectedItems = [...this.selectedItems, document];
-        } else {
-            this.selectedItems = this.selectedItems.filter((item) => item.id !== document.id);
-        }
-    }
-
+    /**
+     * Update which view to show - table or list
+     *
+     * @param {HTMLElementEvent<HTMLSelectElement>} event
+     * @memberof Search
+     */
     @action
     updateSelectedView(event: HTMLElementEvent<HTMLSelectElement>) {
         const id = event.target.value as SearchViewType;
@@ -545,6 +540,12 @@ export default class Search extends Controller {
         this.selectedView = selectedView!;
     }
 
+    /**
+     * Update whether to show hits in context or not
+     *
+     * @param {boolean} value
+     * @memberof Search
+     */
     @action
     async updateHitsInContext(value: boolean) {
         // Load more models to make up for the difference in height between displaying HIC and not
@@ -555,6 +556,12 @@ export default class Search extends Controller {
         this.currentUser.updatePrefs({ [PreferenceKey.SEARCH_HIC_ENABLED]: value });
     }
 
+    /**
+     * Update the sort for the list
+     *
+     * @param {HTMLElementEvent<HTMLSelectElement>} event
+     * @memberof Search
+     */
     @action
     updateSort(event: HTMLElementEvent<HTMLSelectElement>) {
         const id = event.target.value as SearchSort;
