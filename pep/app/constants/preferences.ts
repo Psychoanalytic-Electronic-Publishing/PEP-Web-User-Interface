@@ -1,13 +1,15 @@
 import ENV from 'pep/config/environment';
-import { ThemeId } from 'pep/constants/themes';
 import { LanguageCode } from 'pep/constants/lang';
 import { SearchTermId } from 'pep/constants/search';
+import { ThemeId } from 'pep/constants/themes';
 
 export enum PreferenceKey {
     FAVORITES = 'favorites',
     LANG = 'lang',
     READ_LATER = 'readLater',
     SEARCH_LIMIT_IS_SHOWN = 'searchLimitIsShown',
+    SEARCH_HIC_ENABLED = 'searchHICEnabled',
+    SEARCH_HIC_LIMIT = 'searchHICLimit',
     SEARCH_PREVIEW_ENABLED = 'searchPreviewEnabled',
     SEARCH_TERM_FIELDS = 'searchTermFields',
     THEME = 'theme'
@@ -19,6 +21,8 @@ export interface UserPreferences {
     preferencesVersion: string;
     readLater?: string[];
     searchLimitIsShown?: boolean;
+    searchHICEnabled?: boolean;
+    searchHICLimit?: number;
     searchTermFields?: SearchTermId[];
     searchPreviewEnabled?: boolean;
     theme: ThemeId;
@@ -42,7 +46,9 @@ export const COOKIE_PREFERENCES: PreferenceKey[] = [
     PreferenceKey.LANG,
     PreferenceKey.SEARCH_LIMIT_IS_SHOWN,
     PreferenceKey.SEARCH_TERM_FIELDS,
-    PreferenceKey.THEME
+    PreferenceKey.THEME,
+    PreferenceKey.SEARCH_HIC_ENABLED,
+    PreferenceKey.SEARCH_HIC_LIMIT
 ];
 
 /**
@@ -61,6 +67,8 @@ export const DEFAULT_USER_PREFERENCES: UserPreferences = {
     preferencesVersion: ENV.userPreferencesVersion,
     lang: LanguageCode.enUS,
     searchPreviewEnabled: true,
+    searchHICEnabled: true,
+    searchHICLimit: 1,
     readLater: [],
     theme: ThemeId.DEFAULT
 };

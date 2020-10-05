@@ -1,20 +1,22 @@
 import Controller from '@ember/controller';
 import { action, set } from '@ember/object';
-import { tracked } from '@glimmer/tracking';
-import { inject as service } from '@ember/service';
 import RouterService from '@ember/routing/router-service';
-import { reject } from 'rsvp';
-import FastbootService from 'ember-cli-fastboot/services/fastboot';
+import { inject as service } from '@ember/service';
+import { tracked } from '@glimmer/tracking';
+
 import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
 import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
+import FastbootService from 'ember-cli-fastboot/services/fastboot';
 
+import { SEARCH_DEFAULT_VIEW_PERIOD, ViewPeriod } from 'pep/constants/search';
+import Document from 'pep/pods/document/model';
 import AuthService from 'pep/services/auth';
-import LoadingBarService from 'pep/services/loading-bar';
 import ConfigurationService from 'pep/services/configuration';
+import CurrentUserService from 'pep/services/current-user';
+import LoadingBarService from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
 import { buildSearchQueryParams } from 'pep/utils/search';
-import { ViewPeriod, SEARCH_DEFAULT_VIEW_PERIOD } from 'pep/constants/search';
-import Document from 'pep/pods/document/model';
+import { reject } from 'rsvp';
 
 export default class ReadDocument extends Controller {
     @service('pep-session') session!: PepSessionService;
@@ -23,6 +25,7 @@ export default class ReadDocument extends Controller {
     @service loadingBar!: LoadingBarService;
     @service router!: RouterService;
     @service configuration!: ConfigurationService;
+    @service currentUser!: CurrentUserService;
 
     get defaultSearchParams() {
         return this.configuration.defaultSearchParams;
@@ -101,19 +104,21 @@ export default class ReadDocument extends Controller {
     @action
     processQueryParams(params: QueryParamsObj) {
         const cfg = this.configuration.base.search;
-        const searchParams = buildSearchQueryParams(
-            this.q,
-            this.searchTerms,
-            this.matchSynonyms,
-            this.facets,
-            this.citedCount,
-            this.viewedCount,
-            this.viewedPeriod,
-            cfg.facets.defaultFields,
-            'AND',
-            cfg.facets.valueLimit,
-            cfg.facets.valueMinCount
-        );
+        const searchParams = buildSearchQueryParams({
+            smartSearchTerm: this.q,
+            searchTerms: this.searchTerms,
+            synonyms: this.matchSynonyms,
+            facetValues: this.facets,
+            citedCount: this.citedCount,
+            viewedCount: this.viewedCount,
+            viewedPeriod: this.viewedPeriod,
+            facetFields: cfg.facets.defaultFields,
+            joinOp: 'AND',
+            facetLimit: cfg.facets.valueLimit,
+            facetMinCount: cfg.facets.valueMinCount,
+            highlightlimit: this.currentUser.preferences?.searchHICLimit ?? cfg.hitsInContext.limit
+        });
+
         return { ...params, ...searchParams };
     }
 

@@ -1,36 +1,34 @@
 import Controller from '@ember/controller';
 import { action, setProperties } from '@ember/object';
+import { inject as service } from '@ember/service';
 import { isEmpty } from '@ember/utils';
 import { tracked } from '@glimmer/tracking';
-import FastbootService from 'ember-cli-fastboot/services/fastboot';
-import { inject as service } from '@ember/service';
-import { hash } from 'rsvp';
-import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
+
 import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
+import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
+import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import { didCancel, timeout } from 'ember-concurrency';
 import { restartableTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
 
-import Document from 'pep/pods/document/model';
-import AjaxService from 'pep/services/ajax';
-import {
-    SEARCH_TYPE_EVERYWHERE,
-    SearchTermValue,
-    SearchFacetValue,
-    ViewPeriod,
-    SEARCH_DEFAULT_VIEW_PERIOD
-} from 'pep/constants/search';
-import { PreferenceKey } from 'pep/constants/preferences';
-import SidebarService from 'pep/services/sidebar';
-import LoadingBarService from 'pep/services/loading-bar';
-import FastbootMediaService from 'pep/services/fastboot-media';
-import ScrollableService from 'pep/services/scrollable';
-import ConfigurationService from 'pep/services/configuration';
-import CurrentUserService from 'pep/services/current-user';
-import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
 import { SearchMetadata } from 'pep/api';
+import { PreferenceKey } from 'pep/constants/preferences';
+import {
+    SEARCH_DEFAULT_VIEW_PERIOD, SEARCH_TYPE_EVERYWHERE, SearchFacetValue, SearchSort, SearchSorts, SearchTermValue,
+    SearchViews, SearchViewType, ViewPeriod
+} from 'pep/constants/search';
 import { WIDGET } from 'pep/constants/sidebar';
 import { SearchPreviewMode } from 'pep/pods/components/search/preview/component';
+import Document from 'pep/pods/document/model';
+import AjaxService from 'pep/services/ajax';
+import ConfigurationService from 'pep/services/configuration';
+import CurrentUserService from 'pep/services/current-user';
+import FastbootMediaService from 'pep/services/fastboot-media';
+import LoadingBarService from 'pep/services/loading-bar';
+import ScrollableService from 'pep/services/scrollable';
+import SidebarService from 'pep/services/sidebar';
+import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
+import { hash } from 'rsvp';
 
 export default class Search extends Controller {
     @service ajax!: AjaxService;
@@ -76,8 +74,14 @@ export default class Search extends Controller {
     @tracked previewMode: SearchPreviewMode = 'minimized';
     @tracked containerMaxHeight = 0;
 
+    @tracked selectedView = SearchViews[1];
+    @tracked selectedSort = SearchSorts[0];
+
     readLaterKey = PreferenceKey.READ_LATER;
     favoritesKey = PreferenceKey.FAVORITES;
+    tableView = SearchViewType.TABLE;
+    searchViews = SearchViews;
+    sorts = SearchSorts;
 
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
@@ -156,19 +160,21 @@ export default class Search extends Controller {
     @action
     processQueryParams(params: QueryParamsObj) {
         const cfg = this.configuration.base.search;
-        const searchParams = buildSearchQueryParams(
-            this.q,
-            this.searchTerms,
-            this.matchSynonyms,
-            this.facets,
-            this.citedCount,
-            this.viewedCount,
-            this.viewedPeriod,
-            cfg.facets.defaultFields,
-            'AND',
-            cfg.facets.valueLimit,
-            cfg.facets.valueMinCount
-        );
+        const searchParams = buildSearchQueryParams({
+            smartSearchTerm: this.q,
+            searchTerms: this.searchTerms,
+            synonyms: this.matchSynonyms,
+            facetValues: this.facets,
+            citedCount: this.citedCount,
+            viewedCount: this.viewedCount,
+            viewedPeriod: this.viewedPeriod,
+            facetFields: cfg.facets.defaultFields,
+            joinOp: 'AND',
+            facetLimit: cfg.facets.valueLimit,
+            facetMinCount: cfg.facets.valueMinCount,
+            highlightlimit: this.currentUser.preferences?.searchHICLimit ?? cfg.hitsInContext.limit
+        });
+
         return { ...params, ...searchParams };
     }
 
@@ -403,19 +409,20 @@ export default class Search extends Controller {
 
             const cfg = this.configuration.base.search;
             const searchTerms = this.currentSearchTerms.filter((t: SearchTermValue) => !!t.term);
-            const searchParams = buildSearchQueryParams(
-                this.currentSmartSearchTerm,
+            const searchParams = buildSearchQueryParams({
+                smartSearchTerm: this.currentSmartSearchTerm,
                 searchTerms,
-                this.currentMatchSynonyms,
-                [],
-                this.currentCitedCount,
-                this.currentViewedCount,
-                this.currentViewedPeriod,
-                cfg.facets.defaultFields,
-                'AND',
-                cfg.facets.valueLimit,
-                cfg.facets.valueMinCount
-            );
+                synonyms: this.currentMatchSynonyms,
+                citedCount: this.currentCitedCount,
+                viewedCount: this.currentViewedCount,
+                viewedPeriod: this.currentViewedPeriod,
+                facetFields: cfg.facets.defaultFields,
+                joinOp: 'AND',
+                facetLimit: cfg.facets.valueLimit,
+                facetMinCount: cfg.facets.valueMinCount,
+                highlightlimit: this.currentUser.preferences?.searchHICLimit ?? cfg.hitsInContext.limit
+            });
+
             if (hasSearchQuery(searchParams)) {
                 if (showLoading) {
                     this.loadingBar.show();
@@ -467,8 +474,8 @@ export default class Search extends Controller {
      * @param {Event} event
      */
     @action
-    openResult(result: Document, event: Event) {
-        event.preventDefault();
+    openResult(result: Document, event?: Event) {
+        event?.preventDefault();
         if (this.currentUser.preferences?.searchPreviewEnabled) {
             this.previewedResult = result;
             this.sidebar.update({
@@ -518,6 +525,54 @@ export default class Search extends Controller {
     @action
     updateContainerMaxHeight(element: HTMLElement) {
         this.containerMaxHeight = element.offsetHeight;
+    }
+
+    /**
+     * Update which view to show - table or list
+     *
+     * @param {HTMLElementEvent<HTMLSelectElement>} event
+     * @memberof Search
+     */
+    @action
+    updateSelectedView(event: HTMLElementEvent<HTMLSelectElement>) {
+        const id = event.target.value as SearchViewType;
+        const selectedView = SearchViews.find((item) => item.id === id);
+        this.selectedView = selectedView!;
+    }
+
+    /**
+     * Update whether to show hits in context or not
+     *
+     * @param {boolean} value
+     * @memberof Search
+     */
+    @action
+    async updateHitsInContext(value: boolean) {
+        // Load more models to make up for the difference in height between displaying HIC and not
+        // so the user doesn't see a blank white space
+        if (!value) {
+            await this.paginator.loadMoreModels();
+        }
+        this.currentUser.updatePrefs({ [PreferenceKey.SEARCH_HIC_ENABLED]: value });
+    }
+
+    /**
+     * Update the sort for the list
+     *
+     * @param {HTMLElementEvent<HTMLSelectElement>} event
+     * @memberof Search
+     */
+    @action
+    updateSort(event: HTMLElementEvent<HTMLSelectElement>) {
+        const id = event.target.value as SearchSort;
+        const selectedSort = SearchSorts.find((item) => item.id === id);
+        this.selectedSort = selectedSort!;
+        this.paginator.changeSorting([
+            {
+                valuePath: id,
+                isAscending: true
+            }
+        ]);
     }
 }
 

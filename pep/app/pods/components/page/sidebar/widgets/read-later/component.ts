@@ -1,17 +1,19 @@
-import Component from '@glimmer/component';
-import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
-import { WIDGET } from 'pep/constants/sidebar';
-import { inject as service } from '@ember/service';
-import CurrentUserService from 'pep/services/current-user';
 import { action } from '@ember/object';
-import Document from 'pep/pods/document/model';
+import { inject as service } from '@ember/service';
+import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import { PreferenceKey } from 'pep/constants/preferences';
+
 import { restartableTask } from 'ember-concurrency-decorators';
-import { buildSearchQueryParams } from 'pep/utils/search';
-import { SearchFacetId } from 'pep/constants/search';
-import DS from 'ember-data';
 import { taskFor } from 'ember-concurrency-ts';
+import DS from 'ember-data';
+
+import { PreferenceKey } from 'pep/constants/preferences';
+import { SearchFacetId } from 'pep/constants/search';
+import { WIDGET } from 'pep/constants/sidebar';
+import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
+import Document from 'pep/pods/document/model';
+import CurrentUserService from 'pep/services/current-user';
+import { buildSearchQueryParams } from 'pep/utils/search';
 
 interface PageSidebarWidgetsReadLaterArgs extends PageSidebarWidgetArgs {}
 
@@ -42,7 +44,10 @@ export default class PageSidebarWidgetsReadLater extends Component<PageSidebarWi
                     value: id
                 };
             });
-            const params = buildSearchQueryParams('', [], false, queryItems);
+
+            const params = buildSearchQueryParams({
+                facetValues: queryItems
+            });
             const results = yield this.store.query('document', params);
             this.results = results.toArray();
         } else {

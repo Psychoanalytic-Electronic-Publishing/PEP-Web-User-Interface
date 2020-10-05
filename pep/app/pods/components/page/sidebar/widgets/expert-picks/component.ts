@@ -1,17 +1,19 @@
-import Component from '@glimmer/component';
-import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
-import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
+import { inject as service } from '@ember/service';
+import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
+
+import { restartableTask } from 'ember-concurrency-decorators';
+import { taskFor } from 'ember-concurrency-ts';
+import DS from 'ember-data';
+
+import { SearchFacetId } from 'pep/constants/search';
 import { WIDGET } from 'pep/constants/sidebar';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
-import { tracked } from '@glimmer/tracking';
-import DS from 'ember-data';
+import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
 import Document from 'pep/pods/document/model';
 import ConfigurationService from 'pep/services/configuration';
 import { buildSearchQueryParams } from 'pep/utils/search';
-import { SearchFacetId } from 'pep/constants/search';
-import { restartableTask } from 'ember-concurrency-decorators';
-import { taskFor } from 'ember-concurrency-ts';
 
 interface PageSidebarWidgetsExpertPicksArgs extends PageSidebarWidgetArgs {}
 
@@ -37,7 +39,10 @@ export default class PageSidebarWidgetsExpertPicks extends Component<PageSidebar
                 value: item.articleId
             };
         });
-        const params = buildSearchQueryParams('', [], false, queryItems);
+
+        const params = buildSearchQueryParams({
+            facetValues: queryItems
+        });
         const results = yield this.store.query('document', params);
         this.results = results.toArray();
     }
