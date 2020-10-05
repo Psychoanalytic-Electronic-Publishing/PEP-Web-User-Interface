@@ -58,6 +58,9 @@ export interface BaseConfiguration {
         }[];
     };
     search: {
+        hitsInContext: {
+            limit: number;
+        };
         tooManyResults: {
             threshold: number;
         };
@@ -183,6 +186,9 @@ export const DEFAULT_BASE_CONFIGURATION: BaseConfiguration = {
         ]
     },
     search: {
+        hitsInContext: {
+            limit: 3
+        },
         tooManyResults: {
             threshold: 200
         },

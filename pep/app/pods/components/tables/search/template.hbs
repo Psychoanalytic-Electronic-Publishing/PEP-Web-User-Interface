@@ -1,0 +1,19 @@
+<Table
+    @containerSelector=".page-content-inner"
+    @columns={{this.columns}}
+    @rows={{@rows}}
+    @hasMoreRows={{@hasMoreRows}}
+    @loadMoreRows={{@loadMoreRows}}
+    @isLoading={{@isLoading}}
+    @updateSorts={{@updateSorts}}
+    @enableSort={{true}}
+    @fillMode="nth-column"
+    @fillColumnIndex={{4}}
+    @sorts={{@sorts}}
+    @rowComponent="row/expandable-row"
+    @headerStickyOffset="70"
+    @tableMeta={{hash
+        expandedRowComponent="tables/row/search"
+        expandedRows=(if @showHitsInContext this.expandedRows this.defaultExpandedRows)
+    }}
+/>

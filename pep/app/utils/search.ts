@@ -1,16 +1,17 @@
 import { isEmpty, isNone } from '@ember/utils';
-import { removeEmptyQueryParams, QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 
-import {
-    SEARCH_TYPES,
-    SEARCH_FACETS,
-    SearchTermValue,
-    SearchFacetValue,
-    ViewPeriod,
-    SearchFacetId
-} from 'pep/constants/search';
+import { QueryParamsObj, removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
+
 import { QUOTED_VALUE_REGEX } from 'pep/constants/regex';
+import {
+    SEARCH_FACETS, SEARCH_TYPES, SearchFacetId, SearchFacetValue, SearchTermValue, ViewPeriod
+} from 'pep/constants/search';
 
+/**
+ * Search params that come from the sidebar search form
+ *
+ * @interface SearchQueryStrParams
+ */
 interface SearchQueryStrParams {
     smarttext: string;
     fulltext1?: string;
@@ -32,17 +33,39 @@ interface SearchQueryStrParams {
     viewperiod?: string;
 }
 
+/**
+ * Search params that dont come from the search form
+ *
+ * @interface SearchQueryParams
+ * @extends {SearchQueryStrParams}
+ */
 interface SearchQueryParams extends SearchQueryStrParams {
     facetfields: string | null;
     facetlimit?: number | null;
     facetmincount?: number | null;
     synonyms: boolean;
     abstract: boolean;
+    highlightlimit?: number;
 }
 
 export interface SearchFacetCounts {
     [x: string]: number;
 }
+
+type BuildSearchQueryParams = {
+    smartSearchTerm?: string;
+    searchTerms?: SearchTermValue[];
+    synonyms?: boolean;
+    facetValues?: SearchFacetValue[];
+    citedCount?: string;
+    viewedCount?: string;
+    viewedPeriod?: ViewPeriod | null;
+    facetFields?: SearchFacetId[];
+    joinOp?: 'AND' | 'OR';
+    facetLimit?: number | null;
+    facetMinCount?: number | null;
+    highlightlimit?: number;
+};
 
 /**
  * Builds the query params object for document searches
@@ -55,19 +78,22 @@ export interface SearchFacetCounts {
  * @param {('AND' | 'OR')} [logicalOperator='OR']
  * @returns {QueryParamsObj}
  */
-export function buildSearchQueryParams(
-    smartSearchTerm: string,
-    searchTerms: SearchTermValue[],
-    synonyms: boolean,
-    facetValues: SearchFacetValue[] = [],
-    citedCount: string = '',
-    viewedCount: string = '',
-    viewedPeriod: ViewPeriod | null = null,
-    facetFields: SearchFacetId[] = [],
-    joinOp: 'AND' | 'OR' = 'AND',
-    facetLimit: number | null = null,
-    facetMinCount: number | null = null
-): QueryParamsObj {
+export function buildSearchQueryParams(searchQueryParams: BuildSearchQueryParams): QueryParamsObj {
+    const {
+        smartSearchTerm = '',
+        searchTerms,
+        synonyms = false,
+        facetValues = [],
+        citedCount = '',
+        viewedCount = '',
+        viewedPeriod = null,
+        facetFields = [],
+        joinOp = 'AND',
+        facetLimit = null,
+        facetMinCount = null,
+        highlightlimit
+    } = searchQueryParams;
+
     const queryParams: SearchQueryParams = {
         facetfields: !isEmpty(facetFields) ? facetFields.join(',') : null,
         facetlimit: facetLimit,
@@ -77,13 +103,14 @@ export function buildSearchQueryParams(
         viewcount: viewedCount,
         viewperiod: `${!isNone(viewedPeriod) && !isEmpty(viewedCount) ? viewedPeriod : ''}`,
         abstract: true,
+        highlightlimit,
         synonyms
     };
 
-    const nonEmptyTerms = searchTerms.filter((t) => !!t.term);
+    const nonEmptyTerms = searchTerms?.filter((t) => !!t.term);
     const parascopes: string[] = [];
 
-    nonEmptyTerms.forEach((term) => {
+    nonEmptyTerms?.forEach((term) => {
         let searchType = SEARCH_TYPES.findBy('id', term.type);
         if (searchType && searchType.param) {
             let value = term.term.trim();

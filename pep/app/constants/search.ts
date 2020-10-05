@@ -1,6 +1,6 @@
 import IntlService from 'ember-intl/services/intl';
 
-import { SearchFacetCounts, groupCountsByRange } from 'pep/utils/search';
+import { groupCountsByRange, SearchFacetCounts } from 'pep/utils/search';
 
 /**
  * Accepted query param fields for the /v2/Database/Search endpoint
@@ -613,4 +613,45 @@ export const VIEW_PERIODS = [
     VIEW_PERIOD_6_MONTHS,
     VIEW_PERIOD_12_MONTHS,
     VIEW_PERIOD_CAL_YEAR
+];
+
+export enum SearchViewType {
+    BIBLIOGRAPHIC = 'bibliographic',
+    TABLE = 'table'
+}
+
+export interface SearchView {
+    id: SearchViewType;
+    label: string;
+}
+
+export const SearchViews: SearchView[] = [
+    { id: SearchViewType.BIBLIOGRAPHIC, label: 'Bibliographic' },
+    { id: SearchViewType.TABLE, label: 'Table' }
+];
+
+export enum SearchSort {
+    BIBLIOGRAPHIC = 'bibliographic',
+    YEAR = 'year',
+    AUTHOR = 'author',
+    TITLE = 'title',
+    SOURCE = 'source',
+    CITATIONS = 'citations',
+    VIEWS = 'views',
+    TOC = 'toc',
+    SCORE = 'score',
+    CITE_COUNT = 'citecount',
+    RANK = 'rank'
+}
+
+export const SearchSorts = [
+    { id: SearchSort.BIBLIOGRAPHIC, label: 'Bibliographic' },
+    { id: SearchSort.YEAR, label: 'Year' },
+    { id: SearchSort.AUTHOR, label: 'Author' },
+    { id: SearchSort.TITLE, label: 'Title' },
+    { id: SearchSort.SOURCE, label: 'Source' },
+    { id: SearchSort.CITATIONS, label: 'Citation Count' },
+    { id: SearchSort.VIEWS, label: 'View Count' },
+    { id: SearchSort.TOC, label: 'Vol/Issue/Page' },
+    { id: SearchSort.SCORE, label: 'Search Score' }
 ];

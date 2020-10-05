@@ -3,10 +3,10 @@ declare module '@gavant/ember-table' {
         [index: string]: any;
         id?: string;
         valuePath?: string;
-        name: string;
+        name?: string;
         isFixedLeft?: boolean;
-        width: number;
-        staticWidth: number;
+        width?: number;
+        staticWidth?: number;
         minWidth?: number;
         maxWidth?: number;
         textAlign?: string;

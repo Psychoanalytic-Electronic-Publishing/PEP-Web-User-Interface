@@ -1,13 +1,15 @@
-import Component from '@glimmer/component';
 import { action, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
+import Component from '@glimmer/component';
+
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import IntlService from 'ember-intl/services/intl';
 
-import CurrentUserService from 'pep/services/current-user';
-import SidebarService from 'pep/services/sidebar';
 import { PreferenceDocumentsKey, PreferenceKey } from 'pep/constants/preferences';
 import Document from 'pep/pods/document/model';
+import CurrentUserService from 'pep/services/current-user';
+import SearchSelection from 'pep/services/search-selection';
+import SidebarService from 'pep/services/sidebar';
 
 interface SearchItemBibliographicArgs {
     item: Document;
@@ -19,6 +21,7 @@ export default class SearchItemBibliographic extends Component<SearchItemBibliog
     @service sidebar!: SidebarService;
     @service notifications!: NotificationService;
     @service intl!: IntlService;
+    @service searchSelection!: SearchSelection;
 
     /**
      * Using a computed here so we A) dont dip into the local storage too often and B) so that this
@@ -42,6 +45,28 @@ export default class SearchItemBibliographic extends Component<SearchItemBibliog
     @computed('currentUser.preferences', 'args.item.id')
     get readLater() {
         return this.currentUser.hasPreferenceDocument(PreferenceKey.READ_LATER, this.args.item.id);
+    }
+
+    /**
+     *  Returns true/false if row is selected
+     *
+     * @readonly
+     * @memberof SearchItemBibliographic
+     */
+    get isSelected() {
+        return this.searchSelection.isSelected(this.args.item.id);
+    }
+
+    /**
+     * Toggles the selection of a row
+     *
+     * @param {string} rowId
+     * @returns
+     * @memberof SearchItemBibliographic
+     */
+    @action
+    toggleSelect(document: Document) {
+        return this.searchSelection.toggleRecordSelection(document.id);
     }
 
     /**

@@ -194,18 +194,19 @@ export default class Search extends PageNav(Route) {
         // workaround for https://github.com/emberjs/ember.js/issues/18981
         const searchTerms = params._searchTerms ? JSON.parse(params._searchTerms) : [];
         const facets = params._facets && includeFacets ? JSON.parse(params._facets) : [];
-        return buildSearchQueryParams(
-            params.q,
+        return buildSearchQueryParams({
+            smartSearchTerm: params.q,
             searchTerms,
-            params.matchSynonyms,
-            facets,
-            params.citedCount,
-            params.viewedCount,
-            params.viewedPeriod,
-            cfg.facets.defaultFields,
-            'AND',
-            cfg.facets.valueLimit,
-            cfg.facets.valueMinCount
-        );
+            synonyms: params.matchSynonyms,
+            facetValues: facets,
+            citedCount: params.citedCount,
+            viewedCount: params.viewedCount,
+            viewedPeriod: params.viewedPeriod,
+            facetFields: cfg.facets.defaultFields,
+            joinOp: 'AND',
+            facetLimit: cfg.facets.valueLimit,
+            facetMinCount: cfg.facets.valueMinCount,
+            highlightlimit: this.currentUser.preferences?.searchHICLimit ?? cfg.hitsInContext.limit
+        });
     }
 }

@@ -64,6 +64,16 @@
     "search": {
         "title": "Search",
         "new": "Start a new search",
+        "table": {
+            "author": "Author",
+            "year": "Year",
+            "title": "Title",
+            "source": "Source"
+        },
+        "hitsInContext": {
+            "label": "HIC",
+            "help": "Hits in context"
+        },
         "sort": {
             "label": "Sort:",
             "year": "Year"
@@ -443,6 +453,9 @@
         },
         "search": {
             "heading": "Search",
+            "hic": {
+                "limit": "Hits in context limit"
+            },
             "preview": {
                 "label": "On search result selection",
                 "select": "Select your desired behavior",
