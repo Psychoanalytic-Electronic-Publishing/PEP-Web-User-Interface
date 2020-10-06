@@ -20,7 +20,7 @@
                     <div class="mb-1 d-flex align-items-center justify-content-between">
                         <div class="search-results-control search-results-control-sidebar">
                             <CheckboxInput
-                                @checked={{this.currentUser.preferences.searchHICEnabled}}
+                                @checked={{this.showHitsInContext}}
                                 @onChange={{this.updateHitsInContext}}
                                 @label={{t "search.hitsInContext.label.full"}}
                             />

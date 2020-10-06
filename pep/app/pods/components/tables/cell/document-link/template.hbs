@@ -1,4 +1,3 @@
-
-<a href="" {{on "click" (fn @columnValue.onClick @rowValue)}}>
+<a href="" {{on "click" (fn this.onClick @rowValue)}}>
     {{html-safe @cellValue}}
 </a>

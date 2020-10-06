@@ -4,13 +4,16 @@ import RouterService from '@ember/routing/router-service';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 
+import ModalService from '@gavant/ember-modals/services/modal';
 import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
 import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 
+import $ from 'jquery';
 import { PreferenceKey } from 'pep/constants/preferences';
 import { SEARCH_DEFAULT_VIEW_PERIOD, SearchSort, ViewPeriod } from 'pep/constants/search';
 import Document from 'pep/pods/document/model';
+import GlossaryTerm from 'pep/pods/glossary-term/model';
 import AuthService from 'pep/services/auth';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
@@ -29,9 +32,18 @@ export default class ReadDocument extends Controller {
     @service router!: RouterService;
     @service configuration!: ConfigurationService;
     @service currentUser!: CurrentUserService;
+    @service modal!: ModalService;
 
-    @tracked selectedView = SearchViews[1];
+    @tracked selectedView = SearchViews[0];
     @tracked selectedSort = SearchSorts[0];
+    @tracked q: string = '';
+    @tracked matchSynonyms: boolean = false;
+    @tracked citedCount: string = '';
+    @tracked viewedCount: string = '';
+    @tracked viewedPeriod: ViewPeriod = SEARCH_DEFAULT_VIEW_PERIOD;
+    @tracked _searchTerms: string | null = null;
+    @tracked paginator!: Pagination<Document>;
+    @tracked showHitsInContext = false;
 
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
@@ -45,15 +57,6 @@ export default class ReadDocument extends Controller {
         'viewedPeriod',
         { _facets: 'facets' }
     ];
-
-    @tracked q: string = '';
-    @tracked matchSynonyms: boolean = false;
-    @tracked citedCount: string = '';
-    @tracked viewedCount: string = '';
-    @tracked viewedPeriod: ViewPeriod = SEARCH_DEFAULT_VIEW_PERIOD;
-    @tracked _searchTerms: string | null = null;
-    @tracked paginator!: Pagination<Document>;
-    @tracked showHitsInContext = false;
 
     readLaterKey = PreferenceKey.READ_LATER;
     favoritesKey = PreferenceKey.FAVORITES;
@@ -192,7 +195,7 @@ export default class ReadDocument extends Controller {
         if (!value) {
             await this.paginator.loadMoreModels();
         }
-        this.currentUser.updatePrefs({ [PreferenceKey.SEARCH_HIC_ENABLED]: value });
+        this.showHitsInContext = value;
     }
 
     /**
@@ -215,15 +218,22 @@ export default class ReadDocument extends Controller {
     }
 
     @action
-    loadDocument() {
-        // @route="read.document"
-        // @model={{result.id}}
-        // @query={{hash
-        //     q=this.q
-        //     matchSynonyms=this.matchSynonyms
-        //     searchTerms=this._searchTerms
-        // }}
-        // class="{{if (eq result.id this.model.id) "font-weight-bold"}}"
+    loadDocument(document: Document) {
+        this.transitionToRoute('read.document', document.id, {
+            queryParams: {
+                q: this.q,
+                matchSynonyms: this.matchSynonyms,
+                searchTerms: this._searchTerms
+            }
+        });
+    }
+
+    @action
+    viewGlossaryTerm(term: string, results: GlossaryTerm) {
+        this.modal.open('glossary', {
+            results,
+            term
+        });
     }
 }
 

@@ -1,10 +1,12 @@
-import Component from '@glimmer/component';
 import { action } from '@ember/object';
-import { inject as service } from '@ember/service';
 import RouterService from '@ember/routing/router-service';
+import { inject as service } from '@ember/service';
+import Component from '@glimmer/component';
 
-import GlossaryTerm from 'pep/pods/glossary-term/adapter';
+import Modal from '@gavant/ember-modals/services/modal';
+
 import { SEARCH_DEFAULT_VIEW_PERIOD } from 'pep/constants/search';
+import GlossaryTerm from 'pep/pods/glossary-term/model';
 
 interface ModalDialogsGlossaryArgs {
     onClose: () => void;
@@ -16,6 +18,7 @@ interface ModalDialogsGlossaryArgs {
 
 export default class ModalDialogsGlossary extends Component<ModalDialogsGlossaryArgs> {
     @service router!: RouterService;
+    @service modal!: Modal;
 
     /**
      * Method to search for a specific term using the main search. Navigates the user out of the
@@ -37,5 +40,13 @@ export default class ModalDialogsGlossary extends Component<ModalDialogsGlossary
             }
         });
         this.args.onClose();
+    }
+
+    @action
+    viewGlossaryTerm(term: string, results: GlossaryTerm[]) {
+        this.args.options = {
+            term,
+            results
+        };
     }
 }

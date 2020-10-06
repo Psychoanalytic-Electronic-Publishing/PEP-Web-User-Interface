@@ -13,7 +13,7 @@ import SidebarService from 'pep/services/sidebar';
 
 interface SearchItemBibliographicArgs {
     item: Document;
-    openResult: () => void;
+    openResult: (document: Document) => void;
     showFavorites?: boolean;
     showReadLater?: boolean;
     showHitsInContext: boolean;
@@ -139,5 +139,18 @@ export default class SearchItemBibliographic extends Component<SearchItemBibliog
                 )
             );
         }
+    }
+
+    /**
+     * Prevent the default link action and pass the document up
+     *
+     * @param {Document} document
+     * @param {Event} event
+     * @memberof SearchItemBibliographic
+     */
+    @action
+    openResult(document: Document, event: Event) {
+        event.preventDefault();
+        this.args.openResult(document);
     }
 }

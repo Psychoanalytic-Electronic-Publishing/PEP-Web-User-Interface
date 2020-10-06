@@ -9,6 +9,7 @@ import { WIDGET } from 'pep/constants/sidebar';
 import { PageNav } from 'pep/mixins/page-layout';
 import Document from 'pep/pods/document/model';
 import ReadDocumentController from 'pep/pods/read/document/controller';
+import SearchDocument from 'pep/pods/search-document/model';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
 import SidebarService from 'pep/services/sidebar';
@@ -102,9 +103,11 @@ export default class ReadDocument extends PageNav(Route) {
                     processQueryParams: (params) => ({ ...params, ...searchParams })
                 });
 
-                const res = (await this.store.query('document', queryParams)) as RecordArrayWithMeta<Document>;
-                results = res.toArray();
-                resultsMeta = res.meta;
+                const response = (await this.store.query('search-document', queryParams)) as RecordArrayWithMeta<
+                    SearchDocument
+                >;
+                results = response.toArray();
+                resultsMeta = response.meta;
             }
         }
 
@@ -129,7 +132,7 @@ export default class ReadDocument extends PageNav(Route) {
         super.setupController(controller, model);
         controller.paginator = usePagination<Document>({
             context: controller,
-            modelName: 'document',
+            modelName: 'search-document',
             models: this.searchResults ?? [],
             metadata: this.searchResultsMeta,
             pagingRootKey: null,

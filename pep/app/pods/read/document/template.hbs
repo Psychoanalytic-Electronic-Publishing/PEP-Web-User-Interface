@@ -2,7 +2,11 @@
     <div class="py-3 px-4">
         <div
             class="d-flex
+
+
                 {{if this.paginator.metadata.fullCount "justify-content-between" "justify-content-end"}}
+
+
                  align-items-center mb-2"
         >
             {{#if this.paginator.metadata.fullCount}}
@@ -68,13 +72,12 @@
                         </p>
                     {{/unless}}
                 </Alert>
-                <div class="pep-document-content">
+                <div class="pep-document-content" {{did-insert this.setupListeners}}>
                     <ContentWithPlaceholder @placeholderInFastboot={{true}}>
-                        {{#if this.model.accessLimited}}
-                            {{html-safe this.model.abstractCleaned}}
-                        {{else}}
-                            {{html-safe this.model.documentCleaned}}
-                        {{/if}}
+                        <Document::Text
+                            @text={{if this.model.accessLimited this.model.abstractCleaned this.model.documentCleaned}}
+                            @onGlossaryItemClick={{this.viewGlossaryTerm}}
+                        />
                     </ContentWithPlaceholder>
                 </div>
             </div>

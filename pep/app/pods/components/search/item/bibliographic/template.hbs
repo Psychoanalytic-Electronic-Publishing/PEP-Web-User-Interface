@@ -4,7 +4,7 @@
             <CheckboxInput @checked={{this.isSelected}} @onChange={{fn this.toggleSelect @item}} />
         </div>
         <div class="d-flex flex-column">
-            <a href="" {{on "click" (fn @openResult @item)}}>
+            <a href="" {{on "click" (fn this.openResult @item)}}>
                 {{@item.documentRef}}
                 {{#if @item.relatedrx}}
                     <span class="mr-2">
