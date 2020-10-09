@@ -23,9 +23,11 @@ import Document from 'pep/pods/document/model';
 import AjaxService from 'pep/services/ajax';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
+import ExportsService, { ExportType } from 'pep/services/exports';
 import FastbootMediaService from 'pep/services/fastboot-media';
 import LoadingBarService from 'pep/services/loading-bar';
 import ScrollableService from 'pep/services/scrollable';
+import SearchSelection from 'pep/services/search-selection';
 import SidebarService from 'pep/services/sidebar';
 import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
 import { hash } from 'rsvp';
@@ -39,6 +41,8 @@ export default class Search extends Controller {
     @service scrollable!: ScrollableService;
     @service configuration!: ConfigurationService;
     @service currentUser!: CurrentUserService;
+    @service exports!: ExportsService;
+    @service searchSelection!: SearchSelection;
 
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
@@ -573,6 +577,18 @@ export default class Search extends Controller {
                 isAscending: true
             }
         ]);
+    }
+
+    @action
+    export() {
+        const data = this.searchSelection.includedRecords.length
+            ? this.searchSelection.includedRecords
+            : this.paginator.models;
+        this.exports.export(
+            ExportType.CSV,
+            'test.csv',
+            data.map((item) => item.documentRef)
+        );
     }
 }
 

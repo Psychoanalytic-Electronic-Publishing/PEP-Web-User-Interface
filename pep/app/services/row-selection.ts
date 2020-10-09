@@ -1,10 +1,12 @@
 import Service from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 
+import Document from 'pep/pods/document/model';
+
 export default class RowSelection extends Service {
     @tracked allRecords: boolean = false;
-    @tracked includeRecordIds: string[] = [];
-    @tracked excludeRecordIds: string[] = [];
+    @tracked includedRecords: Document[] = [];
+    @tracked excludedRecords: Document[] = [];
     @tracked totalRecordCount: number = 0;
 
     /**
@@ -14,7 +16,7 @@ export default class RowSelection extends Service {
      * @memberof RowSelectionService
      */
     get totalSelected() {
-        return this.allRecords ? this.totalRecordCount - this.excludeRecordIds.length : this.includeRecordIds.length;
+        return this.allRecords ? this.totalRecordCount - this.excludedRecords.length : this.includedRecords.length;
     }
 
     /**
@@ -24,27 +26,11 @@ export default class RowSelection extends Service {
      * @returns
      * @memberof RowSelectionService
      */
-    isSelected(rowId: string) {
-        const selectedRow = rowId;
+    isSelected(row: Document) {
         return (
-            (!this.allRecords && this.includeRecordIds.includes(selectedRow)) ||
-            (this.allRecords && !this.excludeRecordIds.includes(selectedRow))
+            (!this.allRecords && this.includedRecords.includes(row)) ||
+            (this.allRecords && !this.excludedRecords.includes(row))
         );
-    }
-
-    /**
-     * Toggle the selection of all rows
-     *
-     * @memberof RowSelectionService
-     */
-    toggleSelectAllRecords() {
-        if (!this.allRecords) {
-            this.includeRecordIds = [];
-            this.allRecords = true;
-        } else {
-            this.excludeRecordIds = [];
-            this.allRecords = false;
-        }
     }
 
     /**
@@ -53,24 +39,23 @@ export default class RowSelection extends Service {
      * @param {string} id
      * @memberof RowSelectionService
      */
-    toggleRecordSelection(id: string) {
-        let includeRecordIds = this.includeRecordIds.concat([]);
-        let excludeRecordIds = this.excludeRecordIds.concat([]);
-        const rowId = id;
+    toggleRecordSelection(document: Document) {
+        let includeRecordIds = this.includedRecords.concat([]);
+        let excludeRecordIds = this.excludedRecords.concat([]);
 
         if (this.allRecords) {
-            const selected = excludeRecordIds.includes(rowId);
+            const selected = excludeRecordIds.includes(document);
             if (selected) {
-                excludeRecordIds.removeObject(rowId);
+                excludeRecordIds.removeObject(document);
             } else {
-                excludeRecordIds.push(rowId);
+                excludeRecordIds.push(document);
             }
         } else {
-            const selected = includeRecordIds.includes(rowId);
+            const selected = includeRecordIds.includes(document);
             if (selected) {
-                includeRecordIds.removeObject(rowId);
+                includeRecordIds.removeObject(document);
             } else {
-                includeRecordIds.push(rowId);
+                includeRecordIds.push(document);
             }
         }
 
@@ -79,8 +64,8 @@ export default class RowSelection extends Service {
             excludeRecordIds = [];
         }
 
-        this.includeRecordIds = includeRecordIds;
-        this.excludeRecordIds = excludeRecordIds;
+        this.includedRecords = includeRecordIds;
+        this.excludedRecords = excludeRecordIds;
     }
 }
 
