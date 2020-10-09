@@ -72,7 +72,7 @@
                         </p>
                     {{/unless}}
                 </Alert>
-                <div class="pep-document-content" {{did-insert this.setupListeners}}>
+                <div class="pep-document-content">
                     <ContentWithPlaceholder @placeholderInFastboot={{true}}>
                         <Document::Text
                             @text={{if this.model.accessLimited this.model.abstractCleaned this.model.documentCleaned}}

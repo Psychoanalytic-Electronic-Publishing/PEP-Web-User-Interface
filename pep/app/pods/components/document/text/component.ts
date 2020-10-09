@@ -9,7 +9,7 @@ import GlossaryTerm from 'pep/pods/glossary-term/model';
 import LoadingBarService from 'pep/services/loading-bar';
 
 interface DocumentTextArgs {
-    text: string;
+    text: XMLDocument;
     onGlossaryItemClick: (term: string, termResults: GlossaryTerm[]) => void;
 }
 
@@ -17,6 +17,11 @@ export default class DocumentText extends Component<DocumentTextArgs> {
     @service store!: DS.Store;
     @service loadingBar!: LoadingBarService;
     @service modal!: ModalService;
+
+    get text() {
+        const xmlimages = this.args.text.getElementsByTagName('image');
+        return this.args.text;
+    }
 
     @action
     setupListeners() {

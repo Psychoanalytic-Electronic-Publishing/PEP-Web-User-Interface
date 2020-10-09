@@ -9,7 +9,6 @@ import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
 import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 
-import $ from 'jquery';
 import { PreferenceKey } from 'pep/constants/preferences';
 import { SEARCH_DEFAULT_VIEW_PERIOD, SearchSort, ViewPeriod } from 'pep/constants/search';
 import Document from 'pep/pods/document/model';
