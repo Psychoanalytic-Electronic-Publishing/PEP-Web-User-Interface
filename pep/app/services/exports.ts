@@ -8,7 +8,8 @@ export enum ExportType {
 }
 
 export enum ExportMimeType {
-    CSV = 'text/csv;charset=utf-8;'
+    CSV = 'text/csv;charset=utf-8;',
+    RTF = 'text/rtf;charset=utf-8;'
 }
 
 export interface Export {
@@ -22,15 +23,14 @@ export const CSVExport: Export = {
 };
 
 export default class ExportsService extends Service {
+
+
     exports: Map<ExportType, Export> = new Map();
     constructor() {
         super();
 
         Object.keys(ExportType).forEach((key: ExportType) => {
-            const mimeTypes = Object.keys(ExportMimeType) as ExportMimeType[];
-            const mimetype = mimeTypes.find(
-                (mimeType) => mimeType === ExportMimeType[key as keyof typeof ExportMimeType]
-            );
+            const mimetype = ExportMimeType[key]
             if (mimetype) {
                 this.exports.set(key, {
                     id: key,
@@ -64,7 +64,7 @@ export default class ExportsService extends Service {
         setTimeout(url.revokeObjectURL.bind(url, objectURL));
     }
 
-    export(type: ExportType, fileName: string, data: any[]) {
+    export(type: ExportType, fileName: string, data: any[] | { fields: any[], data: any[] }) {
         const exportValue = this.exports.get(type);
         const method = `export${exportValue?.id}` as keyof this;
         const exportedData = ((this[method] as unknown) as Function)(data);

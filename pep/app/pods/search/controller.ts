@@ -7,9 +7,11 @@ import { tracked } from '@glimmer/tracking';
 import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
 import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
+import NotificationService from 'ember-cli-notifications/services/notifications';
 import { didCancel, timeout } from 'ember-concurrency';
 import { restartableTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
+import IntlService from 'ember-intl/services/intl';
 
 import { SearchMetadata } from 'pep/api';
 import { PreferenceKey } from 'pep/constants/preferences';
@@ -32,6 +34,8 @@ import SidebarService from 'pep/services/sidebar';
 import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
 import { hash } from 'rsvp';
 
+import { TITLE_REGEX } from '../../constants/regex';
+
 export default class Search extends Controller {
     @service ajax!: AjaxService;
     @service sidebar!: SidebarService;
@@ -43,6 +47,8 @@ export default class Search extends Controller {
     @service currentUser!: CurrentUserService;
     @service exports!: ExportsService;
     @service searchSelection!: SearchSelection;
+    @service notifications!: NotificationService;
+    @service intl!: IntlService;
 
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
@@ -579,16 +585,49 @@ export default class Search extends Controller {
         ]);
     }
 
+    get exportedData() {
+        return  this.searchSelection.includedRecords.length
+        ? this.searchSelection.includedRecords
+        : this.paginator.models;
+    }
+
     @action
-    export() {
-        const data = this.searchSelection.includedRecords.length
-            ? this.searchSelection.includedRecords
-            : this.paginator.models;
+    exportCSV() {
+        const data = this.exportedData;
+        const formattedData = data.map((item) => [item.authorMast, item.year, item.title.replace(TITLE_REGEX, '$1'), item.documentRef]);
         this.exports.export(
             ExportType.CSV,
-            'test.csv',
-            data.map((item) => item.documentRef)
+            'data.csv',
+            {
+                fields: ['Author', 'Year', 'Title', 'Source'],
+                data: [
+                    ...formattedData
+                ]
+            }
         );
+    }
+
+    @action
+    exportClipboard() {
+        const data = this.exportedData;
+        const formattedData = data.map((item) => `${item.authorMast}, ${item.year}, ${item.title.replace(TITLE_REGEX, '$1')}, ${item.documentRef}`);
+        return formattedData.join('\r\n');
+    }
+
+    @action
+    clipboardSuccess() {
+        const translation = this.intl.t('exports.clipboard.success')
+        this.notifications.success(translation);
+    }
+
+    @action
+    clipboardFailure() {
+        this.notifications.success(this.intl.t('exports.clipboard.failure'));
+    }
+
+    @action
+    print() {
+        $('#print-page').printThis();
     }
 }
 
