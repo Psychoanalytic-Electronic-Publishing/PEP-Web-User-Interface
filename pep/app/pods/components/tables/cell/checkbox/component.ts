@@ -2,6 +2,7 @@ import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
 
+import Document from 'pep/pods/document/model';
 import SearchSelection from 'pep/services/search-selection';
 
 interface TablesCellCheckboxArgs {
@@ -23,7 +24,7 @@ export default class TablesCellCheckbox extends Component<TablesCellCheckboxArgs
      * @memberof TableCellCheckbox
      */
     get isRowSelected() {
-        return this.searchSelection.isSelected(this.args.cellValue);
+        return this.searchSelection.isSelected(this.args.rowValue as Document);
     }
 
     /**
@@ -34,7 +35,7 @@ export default class TablesCellCheckbox extends Component<TablesCellCheckboxArgs
      * @memberof TableCellCheckbox
      */
     @action
-    toggleSelect(rowId: string) {
-        return this.searchSelection.toggleRecordSelection(rowId);
+    toggleSelect(document: Document) {
+        return this.searchSelection.toggleRecordSelection(document);
     }
 }

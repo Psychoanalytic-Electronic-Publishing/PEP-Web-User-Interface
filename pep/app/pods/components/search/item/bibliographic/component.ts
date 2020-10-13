@@ -65,7 +65,7 @@ export default class SearchItemBibliographic extends Component<SearchItemBibliog
      * @memberof SearchItemBibliographic
      */
     get isSelected() {
-        return this.searchSelection.isSelected(this.args.item.id);
+        return this.searchSelection.isSelected(this.args.item);
     }
 
     /**
@@ -77,7 +77,7 @@ export default class SearchItemBibliographic extends Component<SearchItemBibliog
      */
     @action
     toggleSelect(document: Document) {
-        return this.searchSelection.toggleRecordSelection(document.id);
+        return this.searchSelection.toggleRecordSelection(document);
     }
 
     /**

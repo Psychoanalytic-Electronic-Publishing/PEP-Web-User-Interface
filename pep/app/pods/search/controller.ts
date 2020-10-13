@@ -7,9 +7,11 @@ import { tracked } from '@glimmer/tracking';
 import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
 import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
+import NotificationService from 'ember-cli-notifications/services/notifications';
 import { didCancel, timeout } from 'ember-concurrency';
 import { restartableTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
+import IntlService from 'ember-intl/services/intl';
 
 import { SearchMetadata } from 'pep/api';
 import { PreferenceKey } from 'pep/constants/preferences';
@@ -23,12 +25,17 @@ import Document from 'pep/pods/document/model';
 import AjaxService from 'pep/services/ajax';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
+import ExportsService, { ExportType } from 'pep/services/exports';
 import FastbootMediaService from 'pep/services/fastboot-media';
 import LoadingBarService from 'pep/services/loading-bar';
+import PrinterService from 'pep/services/printer';
 import ScrollableService from 'pep/services/scrollable';
+import SearchSelection from 'pep/services/search-selection';
 import SidebarService from 'pep/services/sidebar';
 import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
 import { hash } from 'rsvp';
+
+import { TITLE_REGEX } from '../../constants/regex';
 
 export default class Search extends Controller {
     @service ajax!: AjaxService;
@@ -39,6 +46,11 @@ export default class Search extends Controller {
     @service scrollable!: ScrollableService;
     @service configuration!: ConfigurationService;
     @service currentUser!: CurrentUserService;
+    @service exports!: ExportsService;
+    @service searchSelection!: SearchSelection;
+    @service notifications!: NotificationService;
+    @service intl!: IntlService;
+    @service printer!: PrinterService;
 
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
@@ -148,6 +160,18 @@ export default class Search extends Controller {
 
     get hasRefineChanges() {
         return JSON.stringify(this.currentFacets) !== JSON.stringify(this.facets);
+    }
+
+    /**
+     * If items are selected, use that for the export/print data. Otherwise use the paginator
+     *
+     * @readonly
+     * @memberof Search
+     */
+    get exportedData() {
+        return this.searchSelection.includedRecords.length
+            ? this.searchSelection.includedRecords
+            : this.paginator.models;
     }
 
     /**
@@ -571,6 +595,91 @@ export default class Search extends Controller {
             {
                 valuePath: id,
                 isAscending: true
+            }
+        ]);
+    }
+
+    /**
+     * Export a CSV
+     *
+     * @memberof Search
+     */
+    @action
+    exportCSV() {
+        const data = this.exportedData;
+        const formattedData = data.map((item) => [
+            item.authorMast,
+            item.year,
+            item.title.replace(TITLE_REGEX, '$1'),
+            item.documentRef
+        ]);
+        this.exports.export(ExportType.CSV, 'data.csv', {
+            fields: ['Author', 'Year', 'Title', 'Source'],
+            data: [...formattedData]
+        });
+    }
+
+    /**
+     * Get the correctly formatted data for the clipboard and return it
+     *
+     * @returns
+     * @memberof Search
+     */
+    @action
+    exportClipboard() {
+        const data = this.exportedData;
+        const formattedData = data.map(
+            (item) => `${item.authorMast}, ${item.year}, ${item.title.replace(TITLE_REGEX, '$1')}, ${item.documentRef}`
+        );
+        return formattedData.join('\r\n');
+    }
+
+    /**
+     * Show success message for clipboard
+     *
+     * @memberof Search
+     */
+    @action
+    clipboardSuccess() {
+        const translation = this.intl.t('exports.clipboard.success');
+
+        this.notifications.success(translation);
+    }
+
+    /**
+     * Show failure message for clipboard
+     *
+     * @memberof Search
+     */
+    @action
+    clipboardFailure() {
+        this.notifications.success(this.intl.t('exports.clipboard.failure'));
+    }
+
+    /**
+     * Print the current selected items or whats loaded into the paginator
+     *
+     * @memberof Search
+     */
+    @action
+    print() {
+        const data = this.exportedData;
+        this.printer.print<Document>(data, [
+            {
+                field: 'authorMast',
+                displayName: 'Author'
+            },
+            {
+                field: 'year',
+                displayName: 'Year'
+            },
+            {
+                field: 'title',
+                displayName: 'Title'
+            },
+            {
+                field: 'documentRef',
+                displayName: 'Source'
             }
         ]);
     }
