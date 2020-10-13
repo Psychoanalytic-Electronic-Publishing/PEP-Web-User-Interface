@@ -28,7 +28,6 @@ import CurrentUserService from 'pep/services/current-user';
 import ExportsService, { ExportType } from 'pep/services/exports';
 import FastbootMediaService from 'pep/services/fastboot-media';
 import LoadingBarService from 'pep/services/loading-bar';
-import PrintService from 'pep/services/print';
 import PrinterService from 'pep/services/printer';
 import ScrollableService from 'pep/services/scrollable';
 import SearchSelection from 'pep/services/search-selection';
@@ -161,6 +160,18 @@ export default class Search extends Controller {
 
     get hasRefineChanges() {
         return JSON.stringify(this.currentFacets) !== JSON.stringify(this.facets);
+    }
+
+    /**
+     * If items are selected, use that for the export/print data. Otherwise use the paginator
+     *
+     * @readonly
+     * @memberof Search
+     */
+    get exportedData() {
+        return this.searchSelection.includedRecords.length
+            ? this.searchSelection.includedRecords
+            : this.paginator.models;
     }
 
     /**
@@ -588,12 +599,11 @@ export default class Search extends Controller {
         ]);
     }
 
-    get exportedData() {
-        return this.searchSelection.includedRecords.length
-            ? this.searchSelection.includedRecords
-            : this.paginator.models;
-    }
-
+    /**
+     * Export a CSV
+     *
+     * @memberof Search
+     */
     @action
     exportCSV() {
         const data = this.exportedData;
@@ -609,6 +619,12 @@ export default class Search extends Controller {
         });
     }
 
+    /**
+     * Get the correctly formatted data for the clipboard and return it
+     *
+     * @returns
+     * @memberof Search
+     */
     @action
     exportClipboard() {
         const data = this.exportedData;
@@ -618,6 +634,11 @@ export default class Search extends Controller {
         return formattedData.join('\r\n');
     }
 
+    /**
+     * Show success message for clipboard
+     *
+     * @memberof Search
+     */
     @action
     clipboardSuccess() {
         const translation = this.intl.t('exports.clipboard.success');
@@ -625,11 +646,21 @@ export default class Search extends Controller {
         this.notifications.success(translation);
     }
 
+    /**
+     * Show failure message for clipboard
+     *
+     * @memberof Search
+     */
     @action
     clipboardFailure() {
         this.notifications.success(this.intl.t('exports.clipboard.failure'));
     }
 
+    /**
+     * Print the current selected items or whats loaded into the paginator
+     *
+     * @memberof Search
+     */
     @action
     print() {
         const data = this.exportedData;

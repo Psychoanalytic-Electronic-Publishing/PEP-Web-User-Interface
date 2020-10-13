@@ -23,14 +23,16 @@ export const CSVExport: Export = {
 };
 
 export default class ExportsService extends Service {
-
-
     exports: Map<ExportType, Export> = new Map();
+    /**
+     * Creates an instance of ExportsService. Also sets up the exports map that has all the possible exports
+     * @memberof ExportsService
+     */
     constructor() {
         super();
 
         Object.keys(ExportType).forEach((key: ExportType) => {
-            const mimetype = ExportMimeType[key]
+            const mimetype = ExportMimeType[key];
             if (mimetype) {
                 this.exports.set(key, {
                     id: key,
@@ -39,7 +41,43 @@ export default class ExportsService extends Service {
             }
         });
     }
-    openSaveFileDialog(data: any, filename: string, mimetype?: ExportMimeType) {
+
+    /**
+     * Main method to export data into a multitude of different formats
+     *
+     * @param {ExportType} type
+     * @param {string} fileName
+     * @param {(any[] | { fields: any[]; data: any[] })} data
+     * @memberof ExportsService
+     */
+    export(type: ExportType, fileName: string, data: any[] | { fields: any[]; data: any[] }) {
+        const exportValue = this.exports.get(type);
+        const method = `_export${exportValue?.id}` as keyof this;
+        const exportedData = ((this[method] as unknown) as Function)(data);
+        this._openSaveFileDialog(exportedData, fileName, exportValue?.mimetype);
+    }
+
+    /**
+     * Private method to export CSV
+     *
+     * @param {any[]} data
+     * @returns
+     * @memberof ExportsService
+     */
+    _exportCSV(data: any[]) {
+        return Papa.unparse(data);
+    }
+
+    /**
+     * Private method that creates the file and downloads it
+     *
+     * @param {*} data
+     * @param {string} filename
+     * @param {ExportMimeType} [mimetype]
+     * @returns
+     * @memberof ExportsService
+     */
+    _openSaveFileDialog(data: any, filename: string, mimetype?: ExportMimeType) {
         if (!data) return;
 
         const blob =
@@ -62,17 +100,6 @@ export default class ExportsService extends Service {
         lnk.href = objectURL;
         lnk.dispatchEvent(new MouseEvent('click'));
         setTimeout(url.revokeObjectURL.bind(url, objectURL));
-    }
-
-    export(type: ExportType, fileName: string, data: any[] | { fields: any[], data: any[] }) {
-        const exportValue = this.exports.get(type);
-        const method = `export${exportValue?.id}` as keyof this;
-        const exportedData = ((this[method] as unknown) as Function)(data);
-        this.openSaveFileDialog(exportedData, fileName, exportValue?.mimetype);
-    }
-
-    exportCSV(data: any[]) {
-        return Papa.unparse(data);
     }
 }
 
