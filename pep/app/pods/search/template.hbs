@@ -64,15 +64,26 @@
                                     </select>
                                 </div>
                             </div>
-
-                            <Button::WithTooltip
-                                @type="link"
-                                @icon="download"
-                                @iconSize="lg"
-                                @tooltip={{t "common.export"}}
-                                class="p-1 pl-2"
-                            />
-                            <Button::WithTooltip
+                            <DropdownMenu @horizontalPosition="auto-right" as |DD|>
+                                <DD.Trigger @htmlTag="a" class="p-1">
+                                    <FaIcon @icon="download" @size="lg" />
+                                </DD.Trigger>
+                                <DD.Content class="dropdown-menu">
+                                    <DropdownAction @dd={{DD}} @action={{this.exportCSV}}>
+                                        {{t "search.exports.csv"}}
+                                    </DropdownAction>
+                                </DD.Content>
+                            </DropdownMenu>
+                            <CopyButton
+                                class="p-1 btn btn-link"
+                                @success={{this.clipboardSuccess}}
+                                @error={{this.clipboardFailure}}
+                                @clipboardText={{this.exportClipboard}}
+                            >
+                                <FaIcon @icon="clipboard" @size="lg" />
+                            </CopyButton>
+                            <Button
+                                @action={{this.print}}
                                 @type="link"
                                 @icon="print"
                                 @iconSize="lg"
@@ -168,6 +179,7 @@
                                         @sorts={{this.paginator.sorts}}
                                         @showHitsInContext={{this.currentUser.preferences.searchHICEnabled}}
                                         @openPreview={{this.openResult}}
+                                        @renderAll={{this.fastboot.isFastBoot}}
                                     />
                                 {{else}}
                                     <VerticalCollection

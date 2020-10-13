@@ -1,7 +1,9 @@
-import { module, test } from 'qunit';
-import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
+
+import { setupRenderingTest } from 'ember-qunit';
+
 import hbs from 'htmlbars-inline-precompile';
+import { module, test } from 'qunit';
 
 module('Integration | Component | tables/row/search', function(hooks) {
     setupRenderingTest(hooks);
@@ -13,14 +15,5 @@ module('Integration | Component | tables/row/search', function(hooks) {
         await render(hbs`{{tables/row/search}}`);
 
         assert.equal(this.element.textContent?.trim(), '');
-
-        // Template block usage:
-        await render(hbs`
-      {{#tables/row/search}}
-        template block text
-      {{/tables/row/search}}
-    `);
-
-        assert.equal(this.element.textContent?.trim(), 'template block text');
     });
 });
