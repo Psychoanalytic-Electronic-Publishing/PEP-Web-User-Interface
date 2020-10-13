@@ -32,8 +32,8 @@ export default class AjaxService extends Service {
             headers['client-session'] = this.session?.getUnauthenticatedSession()?.SessionId;
         }
         if (this.fastboot.isFastBoot) {
-            const fastbootHeaders = this.fastboot.request.headers;
-            headers['X-Forwarded-For'] = fastbootHeaders.get('X-Forwarded-For') ?? [''];
+            const fastbootHeaders = this.fastboot.request.headers ?? [''];
+            headers['X-Forwarded-For'] = fastbootHeaders.get('X-Forwarded-For')[0];
         }
         return headers;
     }
