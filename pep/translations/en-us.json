@@ -493,7 +493,7 @@
     },
     "exports": {
         "clipboard": {
-            "success": "Successfully copied to the clipboard",
+            "success": "Copied to the clipboard",
             "failure": "There was an issue copying to the clipboard. Please try again later"
         }
     },
