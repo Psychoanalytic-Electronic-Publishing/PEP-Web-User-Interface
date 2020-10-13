@@ -28,6 +28,8 @@ import CurrentUserService from 'pep/services/current-user';
 import ExportsService, { ExportType } from 'pep/services/exports';
 import FastbootMediaService from 'pep/services/fastboot-media';
 import LoadingBarService from 'pep/services/loading-bar';
+import PrintService from 'pep/services/print';
+import PrinterService from 'pep/services/printer';
 import ScrollableService from 'pep/services/scrollable';
 import SearchSelection from 'pep/services/search-selection';
 import SidebarService from 'pep/services/sidebar';
@@ -49,6 +51,7 @@ export default class Search extends Controller {
     @service searchSelection!: SearchSelection;
     @service notifications!: NotificationService;
     @service intl!: IntlService;
+    @service printer!: PrinterService;
 
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
@@ -586,37 +589,39 @@ export default class Search extends Controller {
     }
 
     get exportedData() {
-        return  this.searchSelection.includedRecords.length
-        ? this.searchSelection.includedRecords
-        : this.paginator.models;
+        return this.searchSelection.includedRecords.length
+            ? this.searchSelection.includedRecords
+            : this.paginator.models;
     }
 
     @action
     exportCSV() {
         const data = this.exportedData;
-        const formattedData = data.map((item) => [item.authorMast, item.year, item.title.replace(TITLE_REGEX, '$1'), item.documentRef]);
-        this.exports.export(
-            ExportType.CSV,
-            'data.csv',
-            {
-                fields: ['Author', 'Year', 'Title', 'Source'],
-                data: [
-                    ...formattedData
-                ]
-            }
-        );
+        const formattedData = data.map((item) => [
+            item.authorMast,
+            item.year,
+            item.title.replace(TITLE_REGEX, '$1'),
+            item.documentRef
+        ]);
+        this.exports.export(ExportType.CSV, 'data.csv', {
+            fields: ['Author', 'Year', 'Title', 'Source'],
+            data: [...formattedData]
+        });
     }
 
     @action
     exportClipboard() {
         const data = this.exportedData;
-        const formattedData = data.map((item) => `${item.authorMast}, ${item.year}, ${item.title.replace(TITLE_REGEX, '$1')}, ${item.documentRef}`);
+        const formattedData = data.map(
+            (item) => `${item.authorMast}, ${item.year}, ${item.title.replace(TITLE_REGEX, '$1')}, ${item.documentRef}`
+        );
         return formattedData.join('\r\n');
     }
 
     @action
     clipboardSuccess() {
-        const translation = this.intl.t('exports.clipboard.success')
+        const translation = this.intl.t('exports.clipboard.success');
+
         this.notifications.success(translation);
     }
 
@@ -627,7 +632,25 @@ export default class Search extends Controller {
 
     @action
     print() {
-        $('#print-page').printThis();
+        const data = this.exportedData;
+        this.printer.print<Document>(data, [
+            {
+                field: 'authorMast',
+                displayName: 'Author'
+            },
+            {
+                field: 'year',
+                displayName: 'Year'
+            },
+            {
+                field: 'title',
+                displayName: 'Title'
+            },
+            {
+                field: 'documentRef',
+                displayName: 'Source'
+            }
+        ]);
     }
 }
 
