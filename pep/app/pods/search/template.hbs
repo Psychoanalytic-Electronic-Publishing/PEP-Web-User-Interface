@@ -15,6 +15,11 @@
                                 count=(format-number (or this.paginator.metadata.fullCount 0))
                                 htmlSafe=true
                             }}
+                            {{#if this.paginator.metadata.description}}
+                                <span class="text-muted font-size-secondary">
+                                    {{t "search.description" description=this.paginator.metadata.description}}
+                                </span>
+                            {{/if}}
                         </h4>
                         <div class="d-flex align-items-center">
                             <div class="search-results-control">

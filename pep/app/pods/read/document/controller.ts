@@ -8,16 +8,22 @@ import ModalService from '@gavant/ember-modals/services/modal';
 import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
 import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
+import NotificationService from 'ember-cli-notifications/services/notifications';
+import IntlService from 'ember-intl/services/intl';
 
 import { PreferenceKey } from 'pep/constants/preferences';
+import { TITLE_REGEX } from 'pep/constants/regex';
 import { SEARCH_DEFAULT_VIEW_PERIOD, SearchSort, ViewPeriod } from 'pep/constants/search';
 import Document from 'pep/pods/document/model';
 import GlossaryTerm from 'pep/pods/glossary-term/model';
 import AuthService from 'pep/services/auth';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
+import ExportsService, { ExportType } from 'pep/services/exports';
 import LoadingBarService from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
+import PrinterService from 'pep/services/printer';
+import SearchSelection from 'pep/services/search-selection';
 import { buildSearchQueryParams } from 'pep/utils/search';
 import { reject } from 'rsvp';
 
@@ -32,6 +38,11 @@ export default class ReadDocument extends Controller {
     @service configuration!: ConfigurationService;
     @service currentUser!: CurrentUserService;
     @service modal!: ModalService;
+    @service exports!: ExportsService;
+    @service notifications!: NotificationService;
+    @service intl!: IntlService;
+    @service printer!: PrinterService;
+    @service searchSelection!: SearchSelection;
 
     @tracked selectedView = SearchViews[0];
     @tracked selectedSort = SearchSorts[0];
@@ -107,6 +118,18 @@ export default class ReadDocument extends Controller {
         } else {
             this._searchTerms = null;
         }
+    }
+
+    /**
+     * If items are selected, use that for the export/print data. Otherwise use the paginator
+     *
+     * @readonly
+     * @memberof Search
+     */
+    get exportedData() {
+        return this.searchSelection.includedRecords.length
+            ? this.searchSelection.includedRecords
+            : this.paginator.models;
     }
 
     /**
@@ -216,6 +239,12 @@ export default class ReadDocument extends Controller {
         ]);
     }
 
+    /**
+     *
+     *
+     * @param {Document} document
+     * @memberof ReadDocument
+     */
     @action
     loadDocument(document: Document) {
         this.transitionToRoute('read.document', document.id, {
@@ -227,12 +256,104 @@ export default class ReadDocument extends Controller {
         });
     }
 
+    /**
+     *
+     *
+     * @param {string} term
+     * @param {GlossaryTerm} results
+     * @memberof ReadDocument
+     */
     @action
     viewGlossaryTerm(term: string, results: GlossaryTerm) {
         this.modal.open('glossary', {
             results,
             term
         });
+    }
+
+    /**
+     * Export a CSV
+     *
+     * @memberof Search
+     */
+    @action
+    exportCSV() {
+        const data = this.exportedData;
+        const formattedData = data.map((item) => [
+            item.authorMast,
+            item.year,
+            item.title.replace(TITLE_REGEX, '$1'),
+            item.documentRef
+        ]);
+        this.exports.export(ExportType.CSV, 'data.csv', {
+            fields: ['Author', 'Year', 'Title', 'Source'],
+            data: [...formattedData]
+        });
+    }
+
+    /**
+     * Get the correctly formatted data for the clipboard and return it
+     *
+     * @returns
+     * @memberof Search
+     */
+    @action
+    exportClipboard() {
+        const data = this.exportedData;
+        const formattedData = data.map(
+            (item) => `${item.authorMast}, ${item.year}, ${item.title.replace(TITLE_REGEX, '$1')}, ${item.documentRef}`
+        );
+        return formattedData.join('\r\n');
+    }
+
+    /**
+     * Show success message for clipboard
+     *
+     * @memberof Search
+     */
+    @action
+    clipboardSuccess() {
+        const translation = this.intl.t('exports.clipboard.success');
+
+        this.notifications.success(translation);
+    }
+
+    /**
+     * Show failure message for clipboard
+     *
+     * @memberof Search
+     */
+    @action
+    clipboardFailure() {
+        this.notifications.success(this.intl.t('exports.clipboard.failure'));
+    }
+
+    /**
+     * Print the current selected items or whats loaded into the paginator
+     *
+     * @memberof Search
+     */
+    @action
+    print() {
+        const data = this.exportedData;
+        this.printer.print<Document>(data, [
+            {
+                field: 'authorMast',
+                displayName: 'Author'
+            },
+            {
+                field: 'year',
+                displayName: 'Year'
+            },
+            {
+                field: 'title',
+                displayName: 'Title'
+            },
+            {
+                field: 'documentRef',
+                displayName: 'Source'
+            }
+        ]);
     }
 }
 

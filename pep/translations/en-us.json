@@ -20,7 +20,7 @@
         "done": "Done",
         "export": "Export",
         "print": "Print",
-        "numResults": "{count} {count, plural, =1 {'<span class=\"text-muted\">'result'</span>'} other {'<span class=\"text-muted\">'results'</span>'}}",
+        "numResults": "{count} {count, plural, =1 {'<span class=\"text-muted font-size-secondary\">'result'</span>'} other {'<span class=\"text-muted font-size-secondary\">'results'</span>'}}",
         "noResults": "No results found",
         "loadingResults": "Loading results...",
         "loading": "Loading...",
@@ -64,6 +64,7 @@
     "search": {
         "title": "Search",
         "new": "Start a new search",
+        "description": "- {description}",
         "exports": {
             "csv": "CSV",
             "clipboard": "Clipboard",
