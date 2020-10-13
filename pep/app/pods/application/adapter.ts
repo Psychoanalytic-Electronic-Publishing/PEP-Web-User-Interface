@@ -7,7 +7,7 @@ import FastbootAdapter from 'ember-data-storefront/mixins/fastboot-adapter';
 
 import ENV from 'pep/config/environment';
 import PepSessionService from 'pep/services/pep-session';
-import { appendTrailingSlash, parseForwardedForHeaders, serializeQueryParams } from 'pep/utils/url';
+import { appendTrailingSlash, serializeQueryParams } from 'pep/utils/url';
 import { reject } from 'rsvp';
 
 export interface ApiServerError {
@@ -77,7 +77,8 @@ export default class Application extends DS.RESTAdapter.extend(FastbootAdapter) 
         }
 
         if (this.fastboot.isFastBoot) {
-            headers['X-Forwarded-For'] = parseForwardedForHeaders(this.fastboot.request.headers);
+            const fastbootHeaders = this.fastboot.request.headers;
+            headers['X-Forwarded-For'] = fastbootHeaders.get('X-Forwarded-For') ?? [''];
         }
 
         return headers;

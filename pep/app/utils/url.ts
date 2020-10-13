@@ -100,20 +100,3 @@ export function documentCSVUrl(store: DS.Store, queryParams: QueryParamsObj) {
     queryParams.download = true;
     return `${url}?${serializeQueryParams(queryParams)}`;
 }
-
-/**
- * Parse the correct ip address from the x-forwarded-for headers
- *
- * @export
- * @param {*} headers
- * @returns {string}
- */
-export function parseForwardedForHeaders(headers?: any) {
-    if (headers) {
-        const xForwardedFor: string[] = headers.get('X-Forwarded-For') ?? [''];
-        const ipAddress = xForwardedFor[0].split(',');
-        return ipAddress[0];
-    } else {
-        return '';
-    }
-}

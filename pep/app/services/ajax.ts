@@ -7,7 +7,7 @@ import fetch from 'fetch';
 import ENV from 'pep/config/environment';
 import PepSessionService from 'pep/services/pep-session';
 import { guard } from 'pep/utils/types';
-import { appendTrailingSlash, parseForwardedForHeaders } from 'pep/utils/url';
+import { appendTrailingSlash } from 'pep/utils/url';
 import { reject } from 'rsvp';
 
 export default class AjaxService extends Service {
@@ -32,7 +32,8 @@ export default class AjaxService extends Service {
             headers['client-session'] = this.session?.getUnauthenticatedSession()?.SessionId;
         }
         if (this.fastboot.isFastBoot) {
-            headers['X-Forwarded-For'] = parseForwardedForHeaders(this.fastboot.request.headers);
+            const fastbootHeaders = this.fastboot.request.headers;
+            headers['X-Forwarded-For'] = fastbootHeaders.get('X-Forwarded-For') ?? [''];
         }
         return headers;
     }
