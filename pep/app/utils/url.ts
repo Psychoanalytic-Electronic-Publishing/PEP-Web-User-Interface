@@ -1,5 +1,4 @@
 import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
-
 import DS from 'ember-data';
 
 const RBRACKET = /\[\]$/;
