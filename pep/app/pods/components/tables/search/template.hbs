@@ -10,9 +10,10 @@
     @fillMode="nth-column"
     @fillColumnIndex={{4}}
     @sorts={{@sorts}}
-    @rowComponent="row/expandable-row"
+    @rowComponent="tables/row/expandable-selected-row"
     @headerStickyOffset={{this.headerStickyOffset}}
     @tableMeta={{hash
+        document=@document
         expandedRowComponent="tables/row/search"
         expandedRows=(if @showHitsInContext this.expandedRows this.defaultExpandedRows)
     }}

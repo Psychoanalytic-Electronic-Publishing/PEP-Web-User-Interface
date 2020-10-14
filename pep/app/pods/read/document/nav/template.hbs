@@ -107,6 +107,7 @@
                             @showHitsInContext={{this.showHitsInContext}}
                             @onLinkClick={{this.loadDocument}}
                             @headerStickyOffset="0"
+                            @document={{this.model}}
                         />
                     {{else}}
                         <VerticalCollection
@@ -124,6 +125,7 @@
                                 @showFavorites={{false}}
                                 @showReadLater={{false}}
                                 @showHitsInContext={{this.showHitsInContext}}
+                                @highlight={{eq this.model.id result.id}}
                             />
                         </VerticalCollection>
                         {{#if this.paginator.isLoadingModels}}

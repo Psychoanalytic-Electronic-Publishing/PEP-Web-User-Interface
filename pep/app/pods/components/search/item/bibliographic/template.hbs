@@ -1,4 +1,4 @@
-<li class="mb-4 d-flex justify-content-between">
+<li class="mb-4 d-flex justify-content-between p-1 {{if @highlight "bg-backdrop"}}">
     <div class="d-flex">
         <div>
             <CheckboxInput @checked={{this.isSelected}} @onChange={{fn this.toggleSelect @item}} />

@@ -19,6 +19,7 @@ interface TablesSearchArgs {
     onLinkClick: (document: Document) => void;
     rows: Document[];
     showHitsInContext: boolean;
+    document: Document;
 }
 
 export default class TablesSearch extends Component<TablesSearchArgs> {

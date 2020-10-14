@@ -19,7 +19,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
     @service modal!: ModalService;
 
     get text() {
-        const xmlimages = this.args.text.getElementsByTagName('image');
+        // const xmlimages = this.args.text.getElementsByTagName('image');
         return this.args.text;
     }
 

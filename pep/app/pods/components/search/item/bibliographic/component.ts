@@ -16,6 +16,7 @@ interface SearchItemBibliographicArgs {
     openResult: (document: Document) => void;
     showFavorites?: boolean;
     showReadLater?: boolean;
+    highlight?: boolean;
     showHitsInContext: boolean;
 }
 

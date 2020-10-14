@@ -21,7 +21,7 @@
                                 </span>
                             {{/if}}
                         </h4>
-                        <div class="d-flex align-items-center">
+                        <div class="d-flex align-items-center flex-wrap">
                             <div class="search-results-control">
                                 <CheckboxInput
                                     @checked={{this.currentUser.preferences.searchHICEnabled}}
@@ -67,32 +67,34 @@
                                     </select>
                                 </div>
                             </div>
-                            <DropdownMenu @horizontalPosition="auto-right" as |DD|>
-                                <DD.Trigger @htmlTag="a" class="p-1">
-                                    <FaIcon @icon="download" @size="lg" />
-                                </DD.Trigger>
-                                <DD.Content class="dropdown-menu">
-                                    <DropdownAction @dd={{DD}} @action={{this.exportCSV}}>
-                                        {{t "search.exports.csv"}}
-                                    </DropdownAction>
-                                </DD.Content>
-                            </DropdownMenu>
-                            <CopyButton
-                                class="p-1 btn btn-link"
-                                @success={{this.clipboardSuccess}}
-                                @error={{this.clipboardFailure}}
-                                @clipboardText={{this.exportClipboard}}
-                            >
-                                <FaIcon @icon="clipboard" @size="lg" />
-                            </CopyButton>
-                            <Button
-                                @action={{this.print}}
-                                @type="link"
-                                @icon="print"
-                                @iconSize="lg"
-                                @tooltip={{t "common.print"}}
-                                class="p-1"
-                            />
+                            <div class="d-flex">
+                                <DropdownMenu @horizontalPosition="auto-right" as |DD|>
+                                    <DD.Trigger @htmlTag="a" class="p-1">
+                                        <FaIcon @icon="download" @size="lg" />
+                                    </DD.Trigger>
+                                    <DD.Content class="dropdown-menu">
+                                        <DropdownAction @dd={{DD}} @action={{this.exportCSV}}>
+                                            {{t "search.exports.csv"}}
+                                        </DropdownAction>
+                                    </DD.Content>
+                                </DropdownMenu>
+                                <CopyButton
+                                    class="p-1 btn btn-link"
+                                    @success={{this.clipboardSuccess}}
+                                    @error={{this.clipboardFailure}}
+                                    @clipboardText={{this.exportClipboard}}
+                                >
+                                    <FaIcon @icon="clipboard" @size="lg" />
+                                </CopyButton>
+                                <Button
+                                    @action={{this.print}}
+                                    @type="link"
+                                    @icon="print"
+                                    @iconSize="lg"
+                                    @tooltip={{t "common.print"}}
+                                    class="p-1"
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
