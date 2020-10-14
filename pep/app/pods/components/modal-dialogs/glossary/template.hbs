@@ -1,7 +1,7 @@
 <ModalDialog @onClose={{@onClose}} @size="lg" as |Modal|>
     <Modal.header @title={{t "glossary.title"}} />
     <Modal.body>
-        {{#each @options.results as |glossary|}}
+        {{#each this.glossaryItem.results as |glossary|}}
             <Document::Text @text={{glossary.document}} @onGlossaryItemClick={{this.viewGlossaryTerm}} />
         {{/each}}
     </Modal.body>

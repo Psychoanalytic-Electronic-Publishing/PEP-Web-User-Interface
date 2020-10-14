@@ -23,24 +23,21 @@ export default class DocumentText extends Component<DocumentTextArgs> {
         return this.args.text;
     }
 
-    /**
-     * Setup listeners on document text to handle misc. actions
-     *
-     * @memberof DocumentText
-     */
     @action
-    setupListeners() {
-        $('.document-text').on('click', (event: JQuery.TriggeredEvent) => {
-            const attributes = event.target.attributes as NamedNodeMap;
-            const type = attributes.getNamedItem('type')?.nodeValue;
-            if (type === 'TERM2') {
-                const rx = attributes.getNamedItem('rx')?.nodeValue;
-                if (rx) {
-                    const id = rx.split('.');
-                    this.viewGlossaryTerm(event.target.innerText, id[id.length - 1]);
-                }
+    onDocumentClick(event: Event) {
+        const target = event.target as HTMLElement;
+        const attributes = target.attributes;
+        const type = attributes.getNamedItem('type')?.nodeValue || attributes.getNamedItem('data-type')?.nodeValue;
+        if (type === 'TERM2') {
+            const rx = attributes.getNamedItem('rx')?.nodeValue;
+            const groupName = attributes.getNamedItem('data-grpname')?.nodeValue;
+            if (rx) {
+                const id = rx.split('.');
+                this.viewGlossaryTerm(target.innerText, id[id.length - 1]);
+            } else if (groupName) {
+                this.viewGlossaryTerm(groupName);
             }
-        });
+        }
     }
 
     /**

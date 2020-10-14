@@ -2,6 +2,7 @@ import { action } from '@ember/object';
 import RouterService from '@ember/routing/router-service';
 import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
 
 import Modal from '@gavant/ember-modals/services/modal';
 
@@ -19,6 +20,10 @@ interface ModalDialogsGlossaryArgs {
 export default class ModalDialogsGlossary extends Component<ModalDialogsGlossaryArgs> {
     @service router!: RouterService;
     @service modal!: Modal;
+    @tracked glossaryItem = {
+        term: this.args.options.term,
+        results: this.args.options.results
+    };
 
     /**
      * Method to search for a specific term using the main search. Navigates the user out of the
@@ -51,7 +56,7 @@ export default class ModalDialogsGlossary extends Component<ModalDialogsGlossary
      */
     @action
     viewGlossaryTerm(term: string, results: GlossaryTerm[]) {
-        this.args.options = {
+        this.glossaryItem = {
             term,
             results
         };
