@@ -240,7 +240,7 @@ export default class ReadDocument extends Controller {
     }
 
     /**
-     *
+     * Navigate to the passed in document
      *
      * @param {Document} document
      * @memberof ReadDocument
@@ -257,7 +257,7 @@ export default class ReadDocument extends Controller {
     }
 
     /**
-     *
+     * Open the glossary modal to view the term
      *
      * @param {string} term
      * @param {GlossaryTerm} results

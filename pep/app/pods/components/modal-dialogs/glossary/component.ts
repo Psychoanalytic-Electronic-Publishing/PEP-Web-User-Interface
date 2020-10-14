@@ -42,6 +42,13 @@ export default class ModalDialogsGlossary extends Component<ModalDialogsGlossary
         this.args.onClose();
     }
 
+    /**
+     * View different glossary item (this happens when you click on a glossary item in a glossary item)
+     *
+     * @param {string} term
+     * @param {GlossaryTerm[]} results
+     * @memberof ModalDialogsGlossary
+     */
     @action
     viewGlossaryTerm(term: string, results: GlossaryTerm[]) {
         this.args.options = {

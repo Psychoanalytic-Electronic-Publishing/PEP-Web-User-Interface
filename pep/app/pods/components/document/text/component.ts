@@ -23,6 +23,11 @@ export default class DocumentText extends Component<DocumentTextArgs> {
         return this.args.text;
     }
 
+    /**
+     * Setup listeners on document text to handle misc. actions
+     *
+     * @memberof DocumentText
+     */
     @action
     setupListeners() {
         $('.document-text').on('click', (event: JQuery.TriggeredEvent) => {
