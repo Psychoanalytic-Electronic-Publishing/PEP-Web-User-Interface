@@ -6,22 +6,49 @@
                     <Loading::Read::Results />
                 {{else}}
                     <div class="d-flex justify-content-between align-items-center mb-2">
-                        <h4 class="mb-0">
+                        <h5 class="mb-0">
                             {{t
                                 "common.numResults"
                                 count=(format-number (or this.paginator.metadata.fullCount 0))
                                 htmlSafe=true
                             }}
-                        </h4>
-                        <div class="d-flex align-items-center">
-                            <Button::WithTooltip
-                                @type="link"
-                                @icon="download"
-                                @iconSize="lg"
-                                @tooltip={{t "common.export"}}
-                                class="p-1"
+                            {{#if this.paginator.metadata.description}}
+                                <span class="text-muted font-size-secondary">
+                                    {{t "search.description" description=this.paginator.metadata.description}}
+                                </span>
+                            {{/if}}
+                        </h5>
+                    </div>
+                    <div class="mb-1 d-flex align-items-center justify-content-between">
+                        <div class="search-results-control search-results-control-sidebar">
+                            <CheckboxInput
+                                @checked={{this.showHitsInContext}}
+                                @onChange={{this.updateHitsInContext}}
+                                @label={{t "search.hitsInContext.label.full"}}
                             />
-                            <Button::WithTooltip
+                            <HelpTooltip @tooltip={{t "search.hitsInContext.help"}} />
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <DropdownMenu @horizontalPosition="auto-right" as |DD|>
+                                <DD.Trigger @htmlTag="a" class="p-1">
+                                    <FaIcon @icon="download" @size="lg" />
+                                </DD.Trigger>
+                                <DD.Content class="dropdown-menu">
+                                    <DropdownAction @dd={{DD}} @action={{this.exportCSV}}>
+                                        {{t "search.exports.csv"}}
+                                    </DropdownAction>
+                                </DD.Content>
+                            </DropdownMenu>
+                            <CopyButton
+                                class="p-1 btn btn-link"
+                                @success={{this.clipboardSuccess}}
+                                @error={{this.clipboardFailure}}
+                                @clipboardText={{this.exportClipboard}}
+                            >
+                                <FaIcon @icon="clipboard" @size="lg" />
+                            </CopyButton>
+                            <Button
+                                @action={{this.print}}
                                 @type="link"
                                 @icon="print"
                                 @iconSize="lg"
@@ -30,63 +57,80 @@
                             />
                         </div>
                     </div>
-                    <div class="mb-3">
-                        <Button
-                            @type="link"
-                            class="text-decoration-none p-1 mr-1"
-                        >
-                            <span class="text-muted">{{t "search.sort.label"}}</span>
-                            <span class="text-dark mr-1">{{t "search.sort.year"}}</span>
-                            <FaIcon @icon="angle-down" class="text-muted" />
-                        </Button>
-                        <Button
-                            @type="link"
-                            class="text-decoration-none p-1 mr-2"
-                        >
-                            <span class="text-muted">{{t "search.view.label"}}</span>
-                            <span class="text-dark mr-1">{{t "search.view.biblio"}}</span>
-                            <FaIcon @icon="angle-down" class="text-muted" />
-                        </Button>
+                    <div class="mb-3 d-flex align-items-center">
+                        <div class="search-results-control search-results-control-sidebar">
+                            <div class="d-flex align-items-center">
+                                <span class="search-results-control-label text-muted">
+                                    {{t "search.sort.label"}}
+                                </span>
+                                <select
+                                    class="custom-select custom-select-sm text-truncate"
+                                    {{on "change" this.updateSort}}
+                                >
+                                    {{#each this.sorts as |sort|}}
+                                        <option value={{sort.id}} selected={{eq sort.id this.selectedSort.id}}>
+                                            {{sort.label}}
+                                        </option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="search-results-control search-results-control-sidebar">
+                            <div class="d-flex align-items-center">
+                                <span class="search-results-control-label text-muted">
+                                    {{t "search.view.label"}}
+                                </span>
+                                <select
+                                    class="custom-select custom-select-sm text-truncate"
+                                    {{on "change" this.updateSelectedView}}
+                                >
+                                    {{#each this.searchViews as |view|}}
+                                        <option value={{view.id}} selected={{eq view.id this.selectedView.id}}>
+                                            {{view.label}}
+                                        </option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                        </div>
                     </div>
-                    <VerticalCollection
-                        @items={{this.paginator.models}}
-                        @tagName="ul"
-                        @containerSelector=".sidebar-content"
-                        @class="list-unstyled"
-                        @estimateHeight={{100}}
-                        @renderAll={{this.fastboot.isFastBoot}}
-                        @lastReached={{this.paginator.loadMoreModels}}
-                        as |result|
-                    >
-                        <li class="mb-2">
-                            <LinkTo
-                                @route="read.document"
-                                @model={{result.id}}
-                                @query={{hash
-                                    q=this.q
-                                    matchSynonyms=this.matchSynonyms
-                                    searchTerms=this._searchTerms
-                                }}
-                                class="{{if (eq result.id this.model.id) "font-weight-bold"}}"
-                            >
-                                {{#if (eq result.id this.model.id)}}
-                                    <FaIcon @icon="caret-right" />
-                                {{/if}}
-                                {{#if result.authorMast}}
-                                    {{result.authorMast}}.
-                                {{/if}}
-                                {{html-safe result.title}}
-                            </LinkTo>
-                            <ul class="list-unstyled small ml-3">
-                                <li>{{t "search.results.sidebar.title" title=result.sourceTitle year=result.year}}</li>
-                            </ul>
-                        </li>
-                    </VerticalCollection>
-                    {{#if this.paginator.isLoadingModels}}
-                        <Loading::Spinner
-                            @options={{hash text=(t "common.loadingResults")}}
-                            class="pt-2"
+
+                    {{#if (eq this.selectedView.id this.tableView)}}
+                        <Tables::Search
+                            @containerSelector=".sidebar-left .sidebar-content"
+                            @rows={{this.paginator.models}}
+                            @hasMoreRows={{this.paginator.hasMore}}
+                            @loadMoreRows={{this.paginator.loadMoreModels}}
+                            @isLoading={{this.paginator.isLoadingModels}}
+                            @updateSorts={{this.paginator.changeSorting}}
+                            @sorts={{this.paginator.sorts}}
+                            @showHitsInContext={{this.showHitsInContext}}
+                            @onLinkClick={{this.loadDocument}}
+                            @headerStickyOffset="0"
+                            @document={{this.model}}
                         />
+                    {{else}}
+                        <VerticalCollection
+                            @items={{this.paginator.models}}
+                            @tagName="ul"
+                            @containerSelector=".sidebar-content"
+                            @class="list-unstyled"
+                            @estimateHeight={{100}}
+                            @renderAll={{this.fastboot.isFastBoot}}
+                            @lastReached={{this.paginator.loadMoreModels}} as |result|
+                        >
+                            <Search::Item::Bibliographic
+                                @item={{result}}
+                                @openResult={{this.loadDocument}}
+                                @showFavorites={{false}}
+                                @showReadLater={{false}}
+                                @showHitsInContext={{this.showHitsInContext}}
+                                @highlight={{eq this.model.id result.id}}
+                            />
+                        </VerticalCollection>
+                        {{#if this.paginator.isLoadingModels}}
+                            <Loading::Spinner @options={{hash text=(t "common.loadingResults")}} class="pt-2" />
+                        {{/if}}
                     {{/if}}
                 {{/if}}
             </div>

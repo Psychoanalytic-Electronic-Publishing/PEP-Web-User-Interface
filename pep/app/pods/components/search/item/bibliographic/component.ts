@@ -13,7 +13,11 @@ import SidebarService from 'pep/services/sidebar';
 
 interface SearchItemBibliographicArgs {
     item: Document;
-    openResult: () => void;
+    openResult: (document: Document) => void;
+    showFavorites?: boolean;
+    showReadLater?: boolean;
+    highlight?: boolean;
+    showHitsInContext: boolean;
 }
 
 export default class SearchItemBibliographic extends Component<SearchItemBibliographicArgs> {
@@ -22,6 +26,14 @@ export default class SearchItemBibliographic extends Component<SearchItemBibliog
     @service notifications!: NotificationService;
     @service intl!: IntlService;
     @service searchSelection!: SearchSelection;
+
+    get showFavorites() {
+        return typeof this.args.showFavorites === 'boolean' ? this.args.showFavorites : true;
+    }
+
+    get showReadLater() {
+        return typeof this.args.showReadLater === 'boolean' ? this.args.showReadLater : true;
+    }
 
     /**
      * Using a computed here so we A) dont dip into the local storage too often and B) so that this
@@ -128,5 +140,18 @@ export default class SearchItemBibliographic extends Component<SearchItemBibliog
                 )
             );
         }
+    }
+
+    /**
+     * Prevent the default link action and pass the document up
+     *
+     * @param {Document} document
+     * @param {Event} event
+     * @memberof SearchItemBibliographic
+     */
+    @action
+    openResult(document: Document, event: Event) {
+        event.preventDefault();
+        this.args.openResult(document);
     }
 }

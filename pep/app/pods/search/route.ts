@@ -1,21 +1,22 @@
+import Transition from '@ember/routing/-private/transition';
 import Route from '@ember/routing/route';
+import { next } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 import { isEmpty } from '@ember/utils';
-import { next } from '@ember/runloop';
-import Transition from '@ember/routing/-private/transition';
-import FastbootService from 'ember-cli-fastboot/services/fastboot';
+
 import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hooks/pagination';
 import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
+import FastbootService from 'ember-cli-fastboot/services/fastboot';
 
-import { PageNav } from 'pep/mixins/page-layout';
-import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
-import SidebarService from 'pep/services/sidebar';
-import ConfigurationService from 'pep/services/configuration';
-import CurrentUserService from 'pep/services/current-user';
-import SearchController from 'pep/pods/search/controller';
-import Document from 'pep/pods/document/model';
 import { SearchMetadata } from 'pep/api';
 import { WIDGET } from 'pep/constants/sidebar';
+import { PageNav } from 'pep/mixins/page-layout';
+import Document from 'pep/pods/document/model';
+import SearchController from 'pep/pods/search/controller';
+import ConfigurationService from 'pep/services/configuration';
+import CurrentUserService from 'pep/services/current-user';
+import SidebarService from 'pep/services/sidebar';
+import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
 
 export interface SearchParams {
     q: string;

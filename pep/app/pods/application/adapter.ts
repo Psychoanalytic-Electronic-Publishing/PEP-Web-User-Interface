@@ -141,6 +141,7 @@ export default class Application extends DS.RESTAdapter.extend(FastbootAdapter) 
         }
         return url;
     }
+
     /**
      * Overrides the urlForFindRecord to allow for a find request with a query param
      * @see https://github.com/emberjs/data/issues/3596#issuecomment-126604014

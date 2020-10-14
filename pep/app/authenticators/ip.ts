@@ -1,8 +1,9 @@
-import ENV from 'pep/config/environment';
-import CredentialsAuthenticator, { SessionType } from 'pep/authenticators/credentials';
 import { inject as service } from '@ember/service';
-import PepSessionService from 'pep/services/pep-session';
+
 import { PepSecureAuthenticatedData } from 'pep/api';
+import CredentialsAuthenticator, { SessionType } from 'pep/authenticators/credentials';
+import ENV from 'pep/config/environment';
+import PepSessionService from 'pep/services/pep-session';
 import { serializeQueryParams } from 'pep/utils/url';
 
 export default class IpAuthenticator extends CredentialsAuthenticator {

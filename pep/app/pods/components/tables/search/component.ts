@@ -4,26 +4,35 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
 import { ColumnValue } from '@gavant/ember-table';
+import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import IntlService from 'ember-intl/services/intl';
 
 import Document from 'pep/pods/document/model';
 import FastbootMediaService from 'pep/services/fastboot-media';
 
 interface TablesSearchArgs {
-    rows: Document[];
+    containerSelector?: string;
     hasMoreRows: boolean;
-    loadMoreRows: () => Document[];
+    headerStickyOffset?: string;
     isLoading: boolean;
+    loadMoreRows: () => Document[];
+    onLinkClick: (document: Document) => void;
+    rows: Document[];
     showHitsInContext: boolean;
-    openPreview: (document: Document) => void;
+    document: Document;
 }
 
 export default class TablesSearch extends Component<TablesSearchArgs> {
     @service intl!: IntlService;
     @service fastbootMedia!: FastbootMediaService;
+    @service fastboot!: FastbootService;
 
     @tracked expandedRows = this.args.rows;
     defaultExpandedRows = [];
+
+    get headerStickyOffset() {
+        return this.args.headerStickyOffset ?? '70';
+    }
     /**
      * Columns for the table. The `computed` is required
      *
@@ -47,16 +56,17 @@ export default class TablesSearch extends Component<TablesSearchArgs> {
                 isSortable: true,
                 staticWidth: 75,
                 cellComponent: 'tables/cell/document-link',
-                onClick: this.args.openPreview
+                onClick: this.args.onLinkClick
             },
 
             {
                 name: this.intl.t('search.table.year'),
                 valuePath: 'year',
                 isSortable: true,
-                staticWidth: 25,
+                staticWidth: 50,
+                width: 50,
                 cellComponent: 'tables/cell/document-link',
-                onClick: this.args.openPreview
+                onClick: this.args.onLinkClick
             },
             {
                 name: this.intl.t('search.table.title'),
@@ -64,7 +74,7 @@ export default class TablesSearch extends Component<TablesSearchArgs> {
                 isSortable: true,
                 staticWidth: 100,
                 cellComponent: 'tables/cell/document-link',
-                onClick: this.args.openPreview
+                onClick: this.args.onLinkClick
             },
             {
                 name: this.intl.t('search.table.source'),

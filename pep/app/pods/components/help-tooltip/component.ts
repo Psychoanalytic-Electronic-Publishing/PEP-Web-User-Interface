@@ -44,7 +44,7 @@ export default class HelpTooltip extends Component<HelpTooltipArgs> {
     }
 
     get tooltipSpacing() {
-        return this.args.tooltipSpacing ?? 5;
+        return this.args.tooltipSpacing ?? 2;
     }
 
     get tooltipContainer() {

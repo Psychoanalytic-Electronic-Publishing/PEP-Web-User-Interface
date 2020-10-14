@@ -1,17 +1,19 @@
+import Transition from '@ember/routing/-private/transition';
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import Transition from '@ember/routing/-private/transition';
+
 import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hooks/pagination';
 import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
 
+import { WIDGET } from 'pep/constants/sidebar';
 import { PageNav } from 'pep/mixins/page-layout';
-import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
 import Document from 'pep/pods/document/model';
 import ReadDocumentController from 'pep/pods/read/document/controller';
+import SearchDocument from 'pep/pods/search-document/model';
 import ConfigurationService from 'pep/services/configuration';
-import { WIDGET } from 'pep/constants/sidebar';
-import SidebarService from 'pep/services/sidebar';
 import CurrentUserService from 'pep/services/current-user';
+import SidebarService from 'pep/services/sidebar';
+import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
 
 export interface ReadDocumentParams {
     document_id: string;
@@ -101,9 +103,11 @@ export default class ReadDocument extends PageNav(Route) {
                     processQueryParams: (params) => ({ ...params, ...searchParams })
                 });
 
-                const res = (await this.store.query('document', queryParams)) as RecordArrayWithMeta<Document>;
-                results = res.toArray();
-                resultsMeta = res.meta;
+                const response = (await this.store.query('search-document', queryParams)) as RecordArrayWithMeta<
+                    SearchDocument
+                >;
+                results = response.toArray();
+                resultsMeta = response.meta;
             }
         }
 
@@ -128,7 +132,7 @@ export default class ReadDocument extends PageNav(Route) {
         super.setupController(controller, model);
         controller.paginator = usePagination<Document>({
             context: controller,
-            modelName: 'document',
+            modelName: 'search-document',
             models: this.searchResults ?? [],
             metadata: this.searchResultsMeta,
             pagingRootKey: null,
