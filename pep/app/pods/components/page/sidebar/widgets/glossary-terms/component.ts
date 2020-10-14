@@ -1,13 +1,15 @@
-import Component from '@glimmer/component';
-import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
-import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
-import { WIDGET } from 'pep/constants/sidebar';
-import DS from 'ember-data';
-import Modal from '@gavant/ember-modals/services/modal';
+import { inject as service } from '@ember/service';
 import { htmlSafe } from '@ember/string';
-import { shuffle } from 'pep/utils/array';
+import Component from '@glimmer/component';
+
+import Modal from '@gavant/ember-modals/services/modal';
+import DS from 'ember-data';
+
+import { WIDGET } from 'pep/constants/sidebar';
+import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
 import LoadingBarService from 'pep/services/loading-bar';
+import { shuffle } from 'pep/utils/array';
 
 interface PageSidebarWidgetsGlossaryTermsArgs extends PageSidebarWidgetArgs {}
 
@@ -48,12 +50,13 @@ export default class PageSidebarWidgetsGlossaryTerms extends Component<PageSideb
         // build the mapped data by performing inverse linear interpolation to find the font size
         // using the min and max calculated before
         const mappedData = glossaryGroupTerms.map((item) => {
+            const size =
+                min !== max
+                    ? this.smallestFontSize + this.fontMultiplier * inverseLinearInterpolation(min, max, item.count)
+                    : 1;
             return {
                 label: item.label,
-                fontStyle: htmlSafe(
-                    `font-size: ${this.smallestFontSize +
-                        this.fontMultiplier * inverseLinearInterpolation(min, max, item.count)}rem;`
-                )
+                fontStyle: htmlSafe(`font-size: ${size}rem;`)
             };
         });
         return shuffle(mappedData);
