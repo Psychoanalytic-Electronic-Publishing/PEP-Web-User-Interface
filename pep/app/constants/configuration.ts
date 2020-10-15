@@ -1,5 +1,5 @@
+import { SearchFacetId, SearchTermId } from 'pep/constants/search';
 import { WIDGET } from 'pep/constants/sidebar';
-import { SearchTermId, SearchFacetId } from 'pep/constants/search';
 
 /**
  * Widget configuration - tells us which widget and whether its open
@@ -196,7 +196,7 @@ export const DEFAULT_BASE_CONFIGURATION: BaseConfiguration = {
             isShown: false
         },
         terms: {
-            defaultFields: [SearchTermId.EVERYWHERE, SearchTermId.TITLE, SearchTermId.AUTHOR]
+            defaultFields: [SearchTermId.ARTICLE, SearchTermId.TITLE, SearchTermId.AUTHOR]
         },
         facets: {
             valueLimit: 15,

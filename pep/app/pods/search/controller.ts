@@ -16,8 +16,7 @@ import IntlService from 'ember-intl/services/intl';
 import { SearchMetadata } from 'pep/api';
 import { PreferenceKey } from 'pep/constants/preferences';
 import {
-    SEARCH_DEFAULT_VIEW_PERIOD, SEARCH_TYPE_EVERYWHERE, SearchFacetValue, SearchTermValue, SearchViews, SearchViewType,
-    ViewPeriod
+    SEARCH_DEFAULT_VIEW_PERIOD, SearchFacetValue, SearchTermValue, SearchViews, SearchViewType, ViewPeriod
 } from 'pep/constants/search';
 import { WIDGET } from 'pep/constants/sidebar';
 import { SearchPreviewMode } from 'pep/pods/components/search/preview/component';
@@ -37,6 +36,7 @@ import { SearchSort, SearchSorts, transformSearchSortsToTable, transformSearchSo
 import { hash } from 'rsvp';
 
 import { TITLE_REGEX } from '../../constants/regex';
+import { SEARCH_TYPE_ARTICLE } from '../../constants/search';
 
 export default class Search extends Controller {
     @service ajax!: AjaxService;
@@ -340,7 +340,7 @@ export default class Search extends Controller {
         searchTerms.removeObject(removedSearchTerm);
 
         if (searchTerms.length === 0) {
-            searchTerms.pushObject({ type: SEARCH_TYPE_EVERYWHERE.id, term: '' });
+            searchTerms.pushObject({ type: SEARCH_TYPE_ARTICLE.id, term: '' });
         }
 
         this.currentSearchTerms = searchTerms;

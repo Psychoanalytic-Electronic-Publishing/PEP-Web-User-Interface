@@ -1,21 +1,19 @@
-import Component from '@glimmer/component';
 import { action, computed, setProperties } from '@ember/object';
 import { later, next } from '@ember/runloop';
 import { inject as service } from '@ember/service';
+import Component from '@glimmer/component';
+
 import IntlService from 'ember-intl/services/intl';
 
 import {
-    SEARCH_TYPE_EVERYWHERE,
-    SearchTermValue,
-    VIEW_PERIODS,
-    ViewPeriod,
-    SearchTermId,
-    SEARCH_TYPES
+    SEARCH_TYPE_EVERYWHERE, SEARCH_TYPES, SearchTermId, SearchTermValue, VIEW_PERIODS, ViewPeriod
 } from 'pep/constants/search';
-import ScrollableService from 'pep/services/scrollable';
 import ConfigurationService from 'pep/services/configuration';
 import PepSessionService from 'pep/services/pep-session';
+import ScrollableService from 'pep/services/scrollable';
 import { fadeTransition } from 'pep/utils/animation';
+
+import { SEARCH_TYPE_ARTICLE } from '../../../../constants/search';
 
 interface SearchFormArgs {
     resultsCount?: number;
@@ -114,7 +112,7 @@ export default class SearchForm extends Component<SearchFormArgs> {
     addSearchTerm() {
         if (this.canAddSearchTerm) {
             this.args.addSearchTerm({
-                type: SEARCH_TYPE_EVERYWHERE.id,
+                type: SEARCH_TYPE_ARTICLE.id,
                 term: ''
             });
             later(() => this.scrollable.recalculate('sidebar-left'), this.animateDuration);

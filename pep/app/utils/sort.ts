@@ -51,7 +51,7 @@ export function transformSearchSortToAPI(sorts: string[]) {
     } else {
         name = SearchSort.SOURCE;
     }
-    const transformedSort = transformSortDirectionToAPI(sort, name);
+    const transformedSort = transformSortDirectionToAPI(sort);
     return [transformedSort];
 }
 
@@ -59,8 +59,9 @@ export function transformSearchSortsToTable(sorts?: string[]) {
     return sorts?.map((sort) => {
         const sortValue = sort.split(' ');
         const name = sortValue[0];
-        const direction = sortValue[1];
         let transformedName = '';
+
+        const tableSort = transformSortDirectionToTable(sort);
 
         if (name === SearchSort.AUTHOR) {
             transformedName = SearchTableSortFields.AUTHOR_MAST;
@@ -73,14 +74,25 @@ export function transformSearchSortsToTable(sorts?: string[]) {
         }
 
         return {
-            valuePath: transformedName,
-            isAscending: direction === APISortDirection.DESCENDING ? false : true
+            ...tableSort,
+            valuePath: transformedName
         };
     });
 }
 
-export function transformSortDirectionToAPI(original: string, name: string) {
-    return original.indexOf('-') !== -1
-        ? `${name} ${APISortDirection.DESCENDING}`
-        : `${name} ${APISortDirection.ASCENDING}`;
+export function transformSortDirectionToTable(sort: string) {
+    const sortValue = sort.split(' ');
+    const name = sortValue[0];
+    const direction = sortValue[1];
+    return {
+        valuePath: name,
+        isAscending: direction === APISortDirection.DESCENDING ? false : true
+    };
+}
+
+export function transformSortDirectionToAPI(sort: string) {
+    const sortWithoutDirection = sort.replace(SORT_DASH_REGEX, '');
+    return sort.indexOf('-') !== -1
+        ? `${sortWithoutDirection} ${APISortDirection.DESCENDING}`
+        : `${sortWithoutDirection} ${APISortDirection.ASCENDING}`;
 }
