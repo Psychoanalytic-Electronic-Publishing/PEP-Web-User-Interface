@@ -1,17 +1,19 @@
 import Route from '@ember/routing/route';
+
 import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hooks/pagination';
 import { buildQueryParams, removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
 
+import { PUBPERIOD_ALL_YEARS } from 'pep/constants/sidebar';
+import { useQueryParams } from 'pep/hooks/useQueryParams';
+import { PageNav } from 'pep/mixins/page-layout';
 import Document from 'pep/pods/document/model';
 import MostViewedController from 'pep/pods/most-viewed/controller';
-import { PageNav } from 'pep/mixins/page-layout';
-import { useQueryParams } from 'pep/hooks/useQueryParams';
 
 interface RouteQueryParams {
     author: string;
     title: string;
     sourcename: string;
-    period: string;
+    pubperiod?: string;
 }
 
 export default class MostViewed extends PageNav(Route) {
@@ -24,8 +26,17 @@ export default class MostViewed extends PageNav(Route) {
             context: this.controllerFor('most-viewed'),
             pagingRootKey: null,
             filterRootKey: null,
-            filterList: ['author', 'title', 'sourcename', 'period', 'queryType'],
-            processQueryParams: (params) => ({ ...params, ...queryParams })
+            filterList: ['author', 'title', 'sourcename', 'pubperiod', 'queryType'],
+            processQueryParams: (params) => {
+                const newParams = {
+                    ...params,
+                    ...queryParams
+                };
+                if (newParams.pubperiod === PUBPERIOD_ALL_YEARS.value) {
+                    delete newParams.pubperiod;
+                }
+                return newParams;
+            }
         });
         return this.store.query('document', removeEmptyQueryParams(apiQueryParams));
     }
@@ -42,13 +53,19 @@ export default class MostViewed extends PageNav(Route) {
             modelName: 'document',
             models: model?.toArray() ?? [],
             metadata: model?.meta,
-            filterList: ['author', 'title', 'sourcename', 'period', 'queryType'],
+            filterList: ['author', 'title', 'sourcename', 'pubperiod', 'queryType'],
             pagingRootKey: null,
-            filterRootKey: null
+            filterRootKey: null,
+            processQueryParams: (params) => {
+                if (params.pubperiod === PUBPERIOD_ALL_YEARS.value) {
+                    delete params.pubperiod;
+                }
+                return params;
+            }
         });
         controller.searchQueryParams = useQueryParams({
             context: controller,
-            params: ['author', 'title', 'journal', 'period']
+            params: ['author', 'title', 'journal', 'pubperiod']
         });
     }
 }

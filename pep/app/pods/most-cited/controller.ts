@@ -1,20 +1,24 @@
 import Controller from '@ember/controller';
-import { tracked } from '@glimmer/tracking';
-import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
-import Document from 'pep/pods/document/model';
 import { action, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
-import LoadingBarService from 'pep/services/loading-bar';
-import FastbootMediaService from 'pep/services/fastboot-media';
-import SidebarService from 'pep/services/sidebar';
-import IntlService from 'ember-intl/services/intl';
-import Journal from 'pep/pods/journal/model';
-import { PERIODS, PossiblePeriodValues } from 'pep/constants/sidebar';
-import { QueryParams } from 'pep/hooks/useQueryParams';
+import { tracked } from '@glimmer/tracking';
+
+import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
 import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
-import { documentCSVUrl } from 'pep/utils/url';
+import IntlService from 'ember-intl/services/intl';
+
+import { PERIODS, PossiblePeriodValues, PossiblePubPeriodValues, PUBPERIODS } from 'pep/constants/sidebar';
+import { QueryParams } from 'pep/hooks/useQueryParams';
+import Document from 'pep/pods/document/model';
+import Journal from 'pep/pods/journal/model';
 import ConfigurationService from 'pep/services/configuration';
+import FastbootMediaService from 'pep/services/fastboot-media';
+import LoadingBarService from 'pep/services/loading-bar';
 import ScrollableService from 'pep/services/scrollable';
+import SidebarService from 'pep/services/sidebar';
+import { documentCSVUrl } from 'pep/utils/url';
+
+import { PUBPERIOD_ALL_YEARS } from '../../constants/sidebar';
 
 export default class MostCited extends Controller {
     @service loadingBar!: LoadingBarService;
@@ -24,13 +28,13 @@ export default class MostCited extends Controller {
     @service configuration!: ConfigurationService;
     @service scrollable!: ScrollableService;
 
-    queryParams = ['author', 'title', 'period', 'sourcename'];
+    queryParams = ['author', 'title', 'pubperiod', 'sourcename'];
     @tracked searchQueryParams!: QueryParams;
     @tracked paginator!: Pagination<Document>;
     @tracked author = '';
     @tracked title = '';
     @tracked journal?: Journal;
-    @tracked period: PossiblePeriodValues = 'all';
+    @tracked pubperiod: PossiblePubPeriodValues = PUBPERIOD_ALL_YEARS.value;
 
     /**
      * GET/SET for sourcename. Ember requires the set if we are using it as a query param.
@@ -50,7 +54,7 @@ export default class MostCited extends Controller {
     queryType = 'MostCited';
 
     get periods() {
-        return PERIODS.map((item) => {
+        return PUBPERIODS.map((item) => {
             return {
                 label: this.intl.t(item.translationKey),
                 value: item.value
@@ -100,7 +104,7 @@ export default class MostCited extends Controller {
      */
     @action
     updatePeriod(period: PossiblePeriodValues) {
-        this.searchQueryParams.period = period;
+        this.searchQueryParams.pubperiod = period;
     }
 
     /**
@@ -125,7 +129,13 @@ export default class MostCited extends Controller {
             context: this,
             pagingRootKey: null,
             filterRootKey: null,
-            filterList: ['author', 'title', 'sourcename', 'period', 'queryType']
+            filterList: ['author', 'title', 'sourcename', 'pubperiod', 'queryType'],
+            processQueryParams: (params) => {
+                if (params.pubperiod === PUBPERIOD_ALL_YEARS.value) {
+                    delete params.pubperiod;
+                }
+                return params;
+            }
         });
         delete queryParams.limit;
         window.location.href = documentCSVUrl(this.store, queryParams);
