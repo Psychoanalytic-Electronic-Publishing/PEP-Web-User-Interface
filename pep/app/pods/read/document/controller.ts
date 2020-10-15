@@ -13,7 +13,7 @@ import IntlService from 'ember-intl/services/intl';
 
 import { PreferenceKey } from 'pep/constants/preferences';
 import { TITLE_REGEX } from 'pep/constants/regex';
-import { SEARCH_DEFAULT_VIEW_PERIOD, SearchSort, ViewPeriod } from 'pep/constants/search';
+import { SEARCH_DEFAULT_VIEW_PERIOD, SearchViews, SearchViewType, ViewPeriod } from 'pep/constants/search';
 import Document from 'pep/pods/document/model';
 import GlossaryTerm from 'pep/pods/glossary-term/model';
 import AuthService from 'pep/services/auth';
@@ -25,9 +25,8 @@ import PepSessionService from 'pep/services/pep-session';
 import PrinterService from 'pep/services/printer';
 import SearchSelection from 'pep/services/search-selection';
 import { buildSearchQueryParams } from 'pep/utils/search';
+import { SearchSort, SearchSorts } from 'pep/utils/sort';
 import { reject } from 'rsvp';
-
-import { SearchSorts, SearchViews, SearchViewType } from '../../../constants/search';
 
 export default class ReadDocument extends Controller {
     @service('pep-session') session!: PepSessionService;
