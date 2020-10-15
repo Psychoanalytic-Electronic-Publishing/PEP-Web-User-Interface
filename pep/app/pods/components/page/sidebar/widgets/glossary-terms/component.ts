@@ -19,7 +19,7 @@ export default class PageSidebarWidgetsGlossaryTerms extends Component<PageSideb
     @service modal!: Modal;
 
     smallestFontSize = 0.6;
-    fontMultiplier = 2;
+    fontMultiplier = 1.1;
 
     /**
      * This gets the data from the passed in data object and transforms it to the glossary terms

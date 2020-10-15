@@ -629,29 +629,3 @@ export const SearchViews: SearchView[] = [
     { id: SearchViewType.BIBLIOGRAPHIC, label: 'Bibliographic' },
     { id: SearchViewType.TABLE, label: 'Table' }
 ];
-
-export enum SearchSort {
-    BIBLIOGRAPHIC = 'bibliographic',
-    YEAR = 'year',
-    AUTHOR = 'author',
-    TITLE = 'title',
-    SOURCE = 'source',
-    CITATIONS = 'citations',
-    VIEWS = 'views',
-    TOC = 'toc',
-    SCORE = 'score',
-    CITE_COUNT = 'citecount',
-    RANK = 'rank'
-}
-
-export const SearchSorts = [
-    { id: SearchSort.BIBLIOGRAPHIC, label: 'Bibliographic' },
-    { id: SearchSort.YEAR, label: 'Year' },
-    { id: SearchSort.AUTHOR, label: 'Author' },
-    { id: SearchSort.TITLE, label: 'Title' },
-    { id: SearchSort.SOURCE, label: 'Source' },
-    { id: SearchSort.CITATIONS, label: 'Citation Count' },
-    { id: SearchSort.VIEWS, label: 'View Count' },
-    { id: SearchSort.TOC, label: 'Vol/Issue/Page' },
-    { id: SearchSort.SCORE, label: 'Search Score' }
-];

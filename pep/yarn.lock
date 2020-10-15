@@ -2508,10 +2508,10 @@
     ember-cli-typescript "^3.1.4"
     moment "^2.24.0"
 
-"@gavant/ember-table@^0.6.2":
-  version "0.6.2"
-  resolved "https://registry.yarnpkg.com/@gavant/ember-table/-/ember-table-0.6.2.tgz#91dd28b68e1cd1f81aa907b387c1f7bc112be1ee"
-  integrity sha512-jEkIOfivGJTVDyBSqp0diw7KNkMivX2RKTQ+EA38LP/p8a20MGz9gGodaFQaChqnKwbieuppnGyD1/bl0AV5+Q==
+"@gavant/ember-table@^0.6.3":
+  version "0.6.3"
+  resolved "https://registry.yarnpkg.com/@gavant/ember-table/-/ember-table-0.6.3.tgz#101d697eea20e7de158240d55e2006709358c297"
+  integrity sha512-vBVaOB9lCwjiAJvEsEqoZEPuQ9XwaOGF1im9Q/UI2UmCufGZrtLUgIE1V6lVu+gxMwA/bNRL6xXUfOkzAPnacw==
   dependencies:
     "@ember/render-modifiers" "^1.0.2"
     "@glimmer/tracking" "^1.0.0"

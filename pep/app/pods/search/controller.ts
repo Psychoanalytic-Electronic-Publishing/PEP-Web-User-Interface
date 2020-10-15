@@ -16,8 +16,7 @@ import IntlService from 'ember-intl/services/intl';
 import { SearchMetadata } from 'pep/api';
 import { PreferenceKey } from 'pep/constants/preferences';
 import {
-    SEARCH_DEFAULT_VIEW_PERIOD, SEARCH_TYPE_EVERYWHERE, SearchFacetValue, SearchSort, SearchSorts, SearchTermValue,
-    SearchViews, SearchViewType, ViewPeriod
+    SEARCH_DEFAULT_VIEW_PERIOD, SearchFacetValue, SearchTermValue, SearchViews, SearchViewType, ViewPeriod
 } from 'pep/constants/search';
 import { WIDGET } from 'pep/constants/sidebar';
 import { SearchPreviewMode } from 'pep/pods/components/search/preview/component';
@@ -33,9 +32,11 @@ import ScrollableService from 'pep/services/scrollable';
 import SearchSelection from 'pep/services/search-selection';
 import SidebarService from 'pep/services/sidebar';
 import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
+import { SearchSort, SearchSorts, transformSearchSortsToTable, transformSearchSortToAPI } from 'pep/utils/sort';
 import { hash } from 'rsvp';
 
 import { TITLE_REGEX } from '../../constants/regex';
+import { SEARCH_TYPE_ARTICLE } from '../../constants/search';
 
 export default class Search extends Controller {
     @service ajax!: AjaxService;
@@ -203,6 +204,26 @@ export default class Search extends Controller {
     }
 
     /**
+     * Transform the sorting to a format the API can handle
+     *
+     * @param {string[]} sorts
+     * @returns
+     * @memberof Search
+     */
+    @action
+    async onChangeSorting(sorts: string[]) {
+        if (sorts.length) {
+            return transformSearchSortToAPI(sorts);
+        } else {
+            return [];
+        }
+    }
+
+    get tableSorts() {
+        return transformSearchSortsToTable(this.paginator.sorts);
+    }
+
+    /**
      * Submits the search/nav template's search form
      * @returns Document[]
      */
@@ -326,7 +347,7 @@ export default class Search extends Controller {
         searchTerms.removeObject(removedSearchTerm);
 
         if (searchTerms.length === 0) {
-            searchTerms.pushObject({ type: SEARCH_TYPE_EVERYWHERE.id, term: '' });
+            searchTerms.pushObject({ type: SEARCH_TYPE_ARTICLE.id, term: '' });
         }
 
         this.currentSearchTerms = searchTerms;

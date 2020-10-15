@@ -5,3 +5,4 @@ export const INVALID_ABSTRACT_TAGS = /(<\!DOCTYPE html>|<\/?html>|<\/?body>|<hea
 export const INVALID_ABSTRACT_PREVIEW_TAGS = /(<\!DOCTYPE html>|<\/?html>|<\/?body>|<head>.*<\/head>|<img[^>]*>|<arttitle>.*<\/arttitle>)/gim;
 export const QUOTED_VALUE_REGEX = /^"(.*)"$/;
 export const TITLE_REGEX = /^.*?<arttitle[^>]*>(.*?)<\/arttitle>.*?$/i;
+export const SORT_DASH_REGEX = /-/g;

@@ -146,7 +146,8 @@ export default class Search extends PageNav(Route) {
             metadata: model.meta,
             pagingRootKey: null,
             filterRootKey: null,
-            processQueryParams: controller.processQueryParams
+            processQueryParams: controller.processQueryParams,
+            onChangeSorting: controller.onChangeSorting
         });
 
         this.sidebar.update({
