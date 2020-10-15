@@ -203,6 +203,13 @@ export default class Search extends Controller {
         return { ...params, ...searchParams };
     }
 
+    /**
+     * Transform the sorting to a format the API can handle
+     *
+     * @param {string[]} sorts
+     * @returns
+     * @memberof Search
+     */
     @action
     async onChangeSorting(sorts: string[]) {
         if (sorts.length) {

@@ -38,6 +38,13 @@ export const SearchSorts = [
     { id: SearchSort.SCORE, label: 'Search Score' }
 ];
 
+/**
+ * Transform the sort to a format the api can handle
+ *
+ * @export
+ * @param {string[]} sorts
+ * @returns {string[]}
+ */
 export function transformSearchSortToAPI(sorts: string[]) {
     const sort = sorts[0];
     const sortWithoutDirection = sorts[0].replace(SORT_DASH_REGEX, '');
@@ -55,6 +62,13 @@ export function transformSearchSortToAPI(sorts: string[]) {
     return [transformedSort];
 }
 
+/**
+ * Transform the sort to a format the table can handle
+ *
+ * @export
+ * @param {string[]} [sorts]
+ * @returns {TableSort[] | undefined}
+ */
 export function transformSearchSortsToTable(sorts?: string[]) {
     return sorts?.map((sort) => {
         const sortValue = sort.split(' ');
@@ -80,6 +94,13 @@ export function transformSearchSortsToTable(sorts?: string[]) {
     });
 }
 
+/**
+ * Transform sort and direction to tables format
+ *
+ * @export
+ * @param {string} sort
+ * @returns {TableSort}
+ */
 export function transformSortDirectionToTable(sort: string) {
     const sortValue = sort.split(' ');
     const name = sortValue[0];
@@ -90,6 +111,13 @@ export function transformSortDirectionToTable(sort: string) {
     };
 }
 
+/**
+ * Transform sort direction to api format
+ *
+ * @export
+ * @param {string} sort
+ * @returns {string}
+ */
 export function transformSortDirectionToAPI(sort: string) {
     const sortWithoutDirection = sort.replace(SORT_DASH_REGEX, '');
     return sort.indexOf('-') !== -1
