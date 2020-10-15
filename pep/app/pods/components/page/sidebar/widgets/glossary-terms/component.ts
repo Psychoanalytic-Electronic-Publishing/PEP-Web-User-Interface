@@ -50,12 +50,13 @@ export default class PageSidebarWidgetsGlossaryTerms extends Component<PageSideb
         // build the mapped data by performing inverse linear interpolation to find the font size
         // using the min and max calculated before
         const mappedData = glossaryGroupTerms.map((item) => {
+            const size =
+                min !== max
+                    ? this.smallestFontSize + this.fontMultiplier * inverseLinearInterpolation(min, max, item.count)
+                    : 1;
             return {
                 label: item.label,
-                fontStyle: htmlSafe(
-                    `font-size: ${this.smallestFontSize +
-                        this.fontMultiplier * inverseLinearInterpolation(min, max, item.count)}rem;`
-                )
+                fontStyle: htmlSafe(`font-size: ${size}rem;`)
             };
         });
         return shuffle(mappedData);

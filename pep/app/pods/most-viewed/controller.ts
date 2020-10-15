@@ -7,7 +7,7 @@ import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
 import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
 import IntlService from 'ember-intl/services/intl';
 
-import { PERIODS, PossiblePeriodValues } from 'pep/constants/sidebar';
+import { PossiblePeriodValues, PossiblePubPeriodValues, PUBPERIOD_ALL_YEARS, PUBPERIODS } from 'pep/constants/sidebar';
 import { QueryParams } from 'pep/hooks/useQueryParams';
 import Document from 'pep/pods/document/model';
 import Journal from 'pep/pods/journal/model';
@@ -26,13 +26,13 @@ export default class MostViewed extends Controller {
     @service configuration!: ConfigurationService;
     @service scrollable!: ScrollableService;
 
-    queryParams = ['author', 'title', 'sourcename', 'period'];
+    queryParams = ['author', 'title', 'sourcename', 'pubperiod'];
     @tracked searchQueryParams!: QueryParams;
     @tracked paginator!: Pagination<Document>;
     @tracked author = '';
     @tracked title = '';
     @tracked journal?: Journal;
-    @tracked period: PossiblePeriodValues = 'all';
+    @tracked pubperiod: PossiblePubPeriodValues = PUBPERIOD_ALL_YEARS.value;
     queryType = 'MostViewed';
 
     /**
@@ -51,7 +51,7 @@ export default class MostViewed extends Controller {
     }
 
     get periods() {
-        return PERIODS.map((item) => {
+        return PUBPERIODS.map((item) => {
             return {
                 label: this.intl.t(item.translationKey),
                 value: item.value
@@ -103,7 +103,7 @@ export default class MostViewed extends Controller {
      */
     @action
     updatePeriod(period: PossiblePeriodValues) {
-        this.searchQueryParams.period = period;
+        this.searchQueryParams.pubperiod = period;
     }
 
     /**
@@ -128,7 +128,13 @@ export default class MostViewed extends Controller {
             context: this,
             pagingRootKey: null,
             filterRootKey: null,
-            filterList: ['author', 'title', 'sourcename', 'period', 'queryType']
+            filterList: ['author', 'title', 'sourcename', 'pubperiod', 'queryType'],
+            processQueryParams: (params) => {
+                if (params.pubperiod === PUBPERIOD_ALL_YEARS.value) {
+                    delete params.pubperiod;
+                }
+                return params;
+            }
         });
         delete queryParams.limit;
         window.location.href = documentCSVUrl(this.store, queryParams);
