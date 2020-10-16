@@ -1,15 +1,21 @@
 <div class="bg-white border-divider-b border-divider-t p-3" ...attributes>
-    <h5>{{t "search.refine.heading"}}</h5>
+    <h5>
+        {{t "search.refine.heading"}}
+    </h5>
     {{#if this.groups}}
-        <p class="text-muted">{{t "search.refine.instructions"}}</p>
+        <p class="text-muted">
+            {{t "search.refine.instructions"}}
+        </p>
         <ul class="list-unstyled">
             {{#each this.groups as |group|}}
                 <li>
                     <div>
-                        <strong>{{group.label}}</strong>
+                        <strong>
+                            {{group.label}}
+                        </strong>
                     </div>
                     <ul class="list-unstyled ml-3 mb-2">
-                        {{#each group.optionsWithResults as |option|}}
+                        {{#each group.visibleOptions as |option|}}
                             <Search::Refine::Option
                                 @facetId={{group.id}}
                                 @option={{option}}
@@ -17,9 +23,9 @@
                                 @onFacetChange={{this.onFacetChange}}
                             />
                         {{/each}}
-                        {{#if group.optionsWithoutResults}}
+                        {{#if group.hiddenOptions.length}}
                             {{#if (contains group.id this.expandedGroups)}}
-                                {{#each group.optionsWithoutResults as |option|}}
+                                {{#each group.hiddenOptions as |option|}}
                                     <Search::Refine::Option
                                         @facetId={{group.id}}
                                         @option={{option}}
@@ -56,7 +62,7 @@
         </ul>
     {{else}}
         <p class="text-muted text-center p-4">
-            {{t  "search.refine.none"}}
+            {{t "search.refine.none"}}
         </p>
     {{/if}}
 </div>

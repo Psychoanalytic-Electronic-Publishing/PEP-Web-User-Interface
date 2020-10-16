@@ -84,7 +84,7 @@ export default class Search extends Controller {
     @tracked resultsMeta: SearchMetadata | null = null;
 
     @tracked previewedResult: Document | null = null;
-    @tracked previewMode: SearchPreviewMode = 'minimized';
+    @tracked previewMode: SearchPreviewMode = 'fit';
     @tracked containerMaxHeight = 0;
 
     @tracked selectedView = SearchViews[1];

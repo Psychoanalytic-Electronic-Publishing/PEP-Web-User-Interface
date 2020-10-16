@@ -1,11 +1,17 @@
+import { getOwner } from '@ember/application';
+import Controller from '@ember/controller';
 import { isEmpty, isNone } from '@ember/utils';
 
 import { QueryParamsObj, removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
 
 import { QUOTED_VALUE_REGEX } from 'pep/constants/regex';
 import {
-    SEARCH_FACETS, SEARCH_TYPES, SearchFacetId, SearchFacetValue, SearchTermValue, ViewPeriod
+    SEARCH_DEFAULT_VIEW_PERIOD, SEARCH_FACETS, SEARCH_TYPES, SearchFacetId, SearchFacetValue, SearchTermValue,
+    ViewPeriod
 } from 'pep/constants/search';
+import Search from 'pep/pods/search/controller';
+import ConfigurationService from 'pep/services/configuration';
+import CurrentUserService from 'pep/services/current-user';
 
 /**
  * Search params that come from the sidebar search form
@@ -65,6 +71,16 @@ type BuildSearchQueryParams = {
     facetLimit?: number | null;
     facetMinCount?: number | null;
     highlightlimit?: number;
+};
+
+type SearchController = {
+    smartSearchTerm: string;
+    matchSynonyms: boolean;
+    citedCount: string;
+    viewedCount: string;
+    viewedPeriod: ViewPeriod;
+    isLimitOpen: boolean;
+    searchTerms: SearchTermValue[];
 };
 
 /**
@@ -227,4 +243,64 @@ export function groupCountsByRange(
         countsByRanges[key] = counts[`${v}`] + (countsByRanges[key] ? countsByRanges[key] : 0);
     });
     return countsByRanges;
+}
+
+/**
+ *
+ *
+ * @export
+ * @param {(Controller & SearchController)} toController
+ * @param {Search} searchController
+ */
+export function copySearchToController(toController: Controller & SearchController) {
+    const searchController = getOwner(toController).lookup(`controller:search`);
+    toController.smartSearchTerm = searchController.currentSmartSearchTerm;
+    toController.matchSynonyms = searchController.matchSynonyms;
+    toController.citedCount = searchController.citedCount;
+    toController.viewedCount = searchController.viewedCount;
+    toController.viewedPeriod = searchController.viewedPeriod;
+    toController.isLimitOpen = searchController.isLimitOpen;
+    toController.searchTerms = searchController.searchTerms;
+}
+
+/**
+ *
+ *
+ * @export
+ * @param {(Controller & SearchController)} controller
+ * @param {ConfigurationService} configuration
+ * @param {CurrentUserService} user
+ */
+export function clearSearch(
+    controller: Controller & SearchController,
+    configuration: ConfigurationService,
+    user: CurrentUserService
+) {
+    const searchController = getOwner(controller).lookup(`controller:search`);
+    const cfg = configuration.base.search;
+    const preferences = user.preferences;
+    const terms = preferences?.searchTermFields ?? cfg.terms.defaultFields;
+    const isLimitOpen = preferences?.searchLimitIsShown ?? cfg.limitFields.isShown;
+
+    const controllers = [controller, searchController];
+    controllers.forEach((controller, index) => {
+        controller.smartSearchTerm = '';
+        controller.matchSynonyms = false;
+        controller.citedCount = '';
+        controller.viewedCount = '';
+        controller.viewedPeriod = SEARCH_DEFAULT_VIEW_PERIOD;
+        controller.isLimitOpen = isLimitOpen;
+        controller.searchTerms = terms.map((f) => ({ type: f, term: '' }));
+        if (index === 1) {
+            controller.paginator.metadata = null;
+            controller.q = '';
+            controller.currentSmartSearchTerm = '';
+            controller.currentSearchTerms = terms.map((f) => ({ type: f, term: '' }));
+            controller.currentMatchSynonyms = false;
+            controller.currentCitedCount = '';
+            controller.currentViewedCount = '';
+            controller.currentViewedPeriod = SEARCH_DEFAULT_VIEW_PERIOD;
+            controller.currentFacets = [];
+        }
+    });
 }

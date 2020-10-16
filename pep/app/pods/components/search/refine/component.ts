@@ -1,14 +1,14 @@
+import { action } from '@ember/object';
+import { inject as service } from '@ember/service';
+import { capitalize } from '@ember/string';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import { inject as service } from '@ember/service';
-import { action } from '@ember/object';
-import { isEmpty } from '@ember/utils';
-import { capitalize } from '@ember/string';
+
 import IntlService from 'ember-intl/services/intl';
 
-import ConfigurationService from 'pep/services/configuration';
-import { SEARCH_FACETS, SearchFacetValue } from 'pep/constants/search';
 import { SearchMetadata } from 'pep/api';
+import { SEARCH_FACETS, SearchFacetValue } from 'pep/constants/search';
+import ConfigurationService from 'pep/services/configuration';
 
 export interface RefineOption {
     id: string;
@@ -19,8 +19,8 @@ export interface RefineOption {
 export interface RefineGroup {
     id: string;
     label: string;
-    optionsWithResults: RefineOption[];
-    optionsWithoutResults: RefineOption[];
+    visibleOptions: RefineOption[];
+    hiddenOptions: RefineOption[];
 }
 
 interface SearchRefineArgs {
@@ -34,6 +34,7 @@ export default class SearchRefine extends Component<SearchRefineArgs> {
     @service configuration!: ConfigurationService;
 
     @tracked expandedGroups: string[] = [];
+    visibleOptionsCount = 10;
 
     get groups() {
         const cfg = this.configuration.base.search;
@@ -65,17 +66,31 @@ export default class SearchRefine extends Component<SearchRefineArgs> {
                     };
                 });
 
-                //sort options w/no results at the bottom
-                let optionsWithResults = allOptions.filter((opt) => opt.numResults > 0);
-                let optionsWithoutResults = allOptions.filter((opt) => opt.numResults === 0);
+                // Use all options to build the visible and hidden options.
+                // The option is visible if there are results and we are showing less than the visibleOptionsCount options already, otherwise its hidden
+                const options = allOptions.reduce<Pick<RefineGroup, 'visibleOptions' | 'hiddenOptions'>>(
+                    (options, option) => {
+                        const hasResults = option.numResults > 0;
+                        if (options.visibleOptions.length < this.visibleOptionsCount && hasResults) {
+                            options.visibleOptions.push(option);
+                        } else {
+                            options.hiddenOptions.push(option);
+                        }
+                        return options;
+                    },
+                    {
+                        visibleOptions: [],
+                        hiddenOptions: []
+                    }
+                );
 
                 //only show facets that have at least one option
-                if (!isEmpty(allOptions)) {
+                if (options.visibleOptions?.length > 1) {
                     groups.push({
                         id: facetType.id,
                         label: this.intl.t(facetType.label),
-                        optionsWithResults,
-                        optionsWithoutResults
+                        visibleOptions: options.visibleOptions,
+                        hiddenOptions: options.hiddenOptions
                     });
                 }
             }

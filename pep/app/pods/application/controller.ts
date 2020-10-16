@@ -21,6 +21,7 @@ import CurrentUserService from 'pep/services/current-user';
 import LoadingBarService from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
 import SidebarService from 'pep/services/sidebar';
+import { clearSearch } from 'pep/utils/search';
 
 import { SEARCH_TYPE_ARTICLE } from '../../constants/search';
 
@@ -71,18 +72,7 @@ export default class Application extends Controller {
      */
     @action
     clearSearch() {
-        const cfg = this.configuration.base.search;
-        const prefs = this.currentUser.preferences;
-        const terms = prefs?.searchTermFields ?? cfg.terms.defaultFields;
-        const isLimitOpen = prefs?.searchLimitIsShown ?? cfg.limitFields.isShown;
-
-        this.smartSearchTerm = '';
-        this.matchSynonyms = false;
-        this.citedCount = '';
-        this.viewedCount = '';
-        this.viewedPeriod = ViewPeriod.PAST_WEEK;
-        this.isLimitOpen = isLimitOpen;
-        this.searchTerms = terms.map((f) => ({ type: f, term: '' }));
+        clearSearch(this, this.configuration, this.currentUser);
     }
 
     /**

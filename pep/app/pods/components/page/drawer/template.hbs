@@ -1,7 +1,4 @@
-<div
-    class="page-drawer d-block d-md-none {{~if this.drawer.isOpen " is-open"}}"
-    ...attributes
->
+<div class="page-drawer d-block d-md-none{{if this.drawer.isOpen " is-open"}}" ...attributes>
     <Scrollable @namespace="page-drawer" class="page-drawer-scrollable d-flex flex-column">
         <div class="p-4 flex-shrink-0 d-flex align-items-center page-drawer-header">
             <button type="button" class="page-drawer-close" {{on "click" this.closeDrawer}}>
@@ -10,9 +7,15 @@
             <div class="page-drawer-brand d-flex">
                 <div class="page-drawer-brand-logo"></div>
                 <div class="ml-2">
-                    <div>{{t "brand.nameFull.psychoanalytic"}}</div>
-                    <div>{{t "brand.nameFull.electronic"}}</div>
-                    <div>{{t "brand.nameFull.publishing"}}</div>
+                    <div>
+                        {{t "brand.nameFull.psychoanalytic"}}
+                    </div>
+                    <div>
+                        {{t "brand.nameFull.electronic"}}
+                    </div>
+                    <div>
+                        {{t "brand.nameFull.publishing"}}
+                    </div>
                 </div>
             </div>
         </div>
@@ -35,6 +38,12 @@
                     </LinkTo>
                 </Page::Drawer::NavItem>
                 <Page::Drawer::NavItem class="mt-1">
+                    <LinkTo @route="read" class="list-group-item list-group-item-action">
+                        <FaIcon @icon="list" @fixedWidth={{true}} class="mr-2" />
+                        {{t "nav.read"}}
+                    </LinkTo>
+                </Page::Drawer::NavItem>
+                <Page::Drawer::NavItem class="mt-1">
                     <LinkTo @route="browse" class="list-group-item list-group-item-action">
                         <FaIcon @icon="list" @fixedWidth={{true}} class="mr-2" />
                         {{t "nav.browse"}}
@@ -52,24 +61,18 @@
                             class="list-group-item list-group-item-action"
                             {{on "click" this.openPreferencesModal}}
                         >
-                            <FaIcon @icon="cog" @fixedWidth={{true}}  class="mr-2" />
+                            <FaIcon @icon="cog" @fixedWidth={{true}} class="mr-2" />
                             {{t "nav.user.preferences"}}
                         </button>
                     </Page::Drawer::NavItem>
                     <Page::Drawer::NavItem class="mt-1">
-                        <button
-                            type="button"
-                            class="list-group-item list-group-item-action"
-                        >
+                        <button type="button" class="list-group-item list-group-item-action">
                             <FaIcon @icon="question-square" @fixedWidth={{true}} class="mr-2" />
                             {{t "nav.user.help"}}
                         </button>
                     </Page::Drawer::NavItem>
                     <Page::Drawer::NavItem class="mt-1">
-                        <button
-                            type="button"
-                            class="list-group-item list-group-item-action"
-                        >
+                        <button type="button" class="list-group-item list-group-item-action">
                             <FaIcon @icon="comment-exclamation" @fixedWidth={{true}} class="mr-2" />
                             {{t "nav.user.reportProblem"}}
                         </button>
@@ -118,10 +121,6 @@
     </Scrollable>
 </div>
 {{#if this.drawer.isOpen}}
-    <div
-        class="page-drawer-mask d-block d-md-none"
-        role="button"
-        {{on "click" this.closeDrawer}}
-    >
+    <div class="page-drawer-mask d-block d-md-none" role="button" {{on "click" this.closeDrawer}}>
     </div>
 {{/if}}
