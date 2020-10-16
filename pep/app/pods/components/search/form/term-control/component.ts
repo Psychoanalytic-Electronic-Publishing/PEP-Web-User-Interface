@@ -29,6 +29,6 @@ export default class SearchFormTermControl extends Component<SearchFormTermContr
     }
 
     get canRemove() {
-        return typeof this.args.canRemove === 'boolean' ? this.args.canRemove : true;
+        return this.args.canRemove ?? true;
     }
 }
