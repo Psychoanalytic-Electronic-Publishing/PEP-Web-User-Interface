@@ -6,99 +6,101 @@
 >
     <div class="page-content-section flex-fill">
         <Scrollable @namespace="search-results" class="page-content-inner">
-            <div class="sticky-top">
-                <div class="py-3 px-4 bg-backdrop">
-                    <div class="d-md-flex justify-content-between align-items-center py-1">
-                        <h4 class="mb-0">
-                            {{t
-                                "common.numResults"
-                                count=(format-number (or this.paginator.metadata.fullCount 0))
-                                htmlSafe=true
-                            }}
-                            {{#if this.paginator.metadata.description}}
-                                <span class="text-muted font-size-secondary">
-                                    {{t "search.description" description=this.paginator.metadata.description}}
-                                </span>
-                            {{/if}}
-                        </h4>
-                        <div class="d-flex align-items-center flex-wrap">
-                            <div class="search-results-control">
-                                <CheckboxInput
-                                    @checked={{this.currentUser.preferences.searchHICEnabled}}
-                                    @onChange={{this.updateHitsInContext}}
-                                    @label={{t "search.hitsInContext.label.short"}}
-                                />
-                                <HelpTooltip
-                                    @tooltip={{t "search.hitsInContext.help"}}
-                                    class="search-results-control-help"
-                                />
-                            </div>
-                            <div class="search-results-control">
-                                <div class="d-flex align-items-center">
-                                    <span class="search-results-control-label text-muted">
-                                        {{t "search.sort.label"}}
+            {{#if this.paginator.models}}
+                <div class="sticky-top">
+                    <div class="py-3 px-4 bg-backdrop">
+                        <div class="d-md-flex justify-content-between align-items-center py-1">
+                            <h4 class="mb-0">
+                                {{t
+                                    "common.numResults"
+                                    count=(format-number (or this.paginator.metadata.fullCount 0))
+                                    htmlSafe=true
+                                }}
+                                {{#if this.paginator.metadata.description}}
+                                    <span class="text-muted font-size-secondary">
+                                        {{t "search.description" description=this.paginator.metadata.description}}
                                     </span>
-                                    <select
-                                        class="custom-select custom-select-sm text-truncate"
-                                        {{on "change" this.updateSort}}
-                                    >
-                                        {{#each this.sorts as |sort|}}
-                                            <option value={{sort.id}} selected={{eq sort.id this.selectedSort.id}}>
-                                                {{sort.label}}
-                                            </option>
-                                        {{/each}}
-                                    </select>
+                                {{/if}}
+                            </h4>
+                            <div class="d-flex align-items-center flex-wrap">
+                                <div class="search-results-control">
+                                    <CheckboxInput
+                                        @checked={{this.currentUser.preferences.searchHICEnabled}}
+                                        @onChange={{this.updateHitsInContext}}
+                                        @label={{t "search.hitsInContext.label.short"}}
+                                    />
+                                    <HelpTooltip
+                                        @tooltip={{t "search.hitsInContext.help"}}
+                                        class="search-results-control-help"
+                                    />
                                 </div>
-                            </div>
-                            <div class="search-results-control">
-                                <div class="d-flex align-items-center">
-                                    <span class="search-results-control-label text-muted">
-                                        {{t "search.view.label"}}
-                                    </span>
-                                    <select
-                                        class="custom-select custom-select-sm text-truncate"
-                                        {{on "change" this.updateSelectedView}}
-                                    >
-                                        {{#each this.searchViews as |view|}}
-                                            <option value={{view.id}} selected={{eq view.id this.selectedView.id}}>
-                                                {{view.label}}
-                                            </option>
-                                        {{/each}}
-                                    </select>
+                                <div class="search-results-control">
+                                    <div class="d-flex align-items-center">
+                                        <span class="search-results-control-label text-muted">
+                                            {{t "search.sort.label"}}
+                                        </span>
+                                        <select
+                                            class="custom-select custom-select-sm text-truncate"
+                                            {{on "change" this.updateSort}}
+                                        >
+                                            {{#each this.sorts as |sort|}}
+                                                <option value={{sort.id}} selected={{eq sort.id this.selectedSort.id}}>
+                                                    {{sort.label}}
+                                                </option>
+                                            {{/each}}
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="d-flex">
-                                <DropdownMenu @horizontalPosition="auto-right" as |DD|>
-                                    <DD.Trigger @htmlTag="a" class="p-1">
-                                        <FaIcon @icon="download" @size="lg" />
-                                    </DD.Trigger>
-                                    <DD.Content class="dropdown-menu">
-                                        <DropdownAction @dd={{DD}} @action={{this.exportCSV}}>
-                                            {{t "search.exports.csv"}}
-                                        </DropdownAction>
-                                    </DD.Content>
-                                </DropdownMenu>
-                                <CopyButton
-                                    class="p-1 btn btn-link"
-                                    @success={{this.clipboardSuccess}}
-                                    @error={{this.clipboardFailure}}
-                                    @clipboardText={{this.exportClipboard}}
-                                >
-                                    <FaIcon @icon="clipboard" @size="lg" />
-                                </CopyButton>
-                                <Button
-                                    @action={{this.print}}
-                                    @type="link"
-                                    @icon="print"
-                                    @iconSize="lg"
-                                    @tooltip={{t "common.print"}}
-                                    class="p-1"
-                                />
+                                <div class="search-results-control">
+                                    <div class="d-flex align-items-center">
+                                        <span class="search-results-control-label text-muted">
+                                            {{t "search.view.label"}}
+                                        </span>
+                                        <select
+                                            class="custom-select custom-select-sm text-truncate"
+                                            {{on "change" this.updateSelectedView}}
+                                        >
+                                            {{#each this.searchViews as |view|}}
+                                                <option value={{view.id}} selected={{eq view.id this.selectedView.id}}>
+                                                    {{view.label}}
+                                                </option>
+                                            {{/each}}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="d-flex">
+                                    <DropdownMenu @horizontalPosition="auto-right" as |DD|>
+                                        <DD.Trigger @htmlTag="a" class="p-1">
+                                            <FaIcon @icon="download" @size="lg" />
+                                        </DD.Trigger>
+                                        <DD.Content class="dropdown-menu">
+                                            <DropdownAction @dd={{DD}} @action={{this.exportCSV}}>
+                                                {{t "search.exports.csv"}}
+                                            </DropdownAction>
+                                        </DD.Content>
+                                    </DropdownMenu>
+                                    <CopyButton
+                                        class="p-1 btn btn-link"
+                                        @success={{this.clipboardSuccess}}
+                                        @error={{this.clipboardFailure}}
+                                        @clipboardText={{this.exportClipboard}}
+                                    >
+                                        <FaIcon @icon="clipboard" @size="lg" />
+                                    </CopyButton>
+                                    <Button
+                                        @action={{this.print}}
+                                        @type="link"
+                                        @icon="print"
+                                        @iconSize="lg"
+                                        @tooltip={{t "common.print"}}
+                                        class="p-1"
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            {{/if}}
             {{#if (and (not this.paginator.models) this.paginator.isLoadingModels)}}
                 <div class="py-3 px-4">
                     <Loading::Search::Results />

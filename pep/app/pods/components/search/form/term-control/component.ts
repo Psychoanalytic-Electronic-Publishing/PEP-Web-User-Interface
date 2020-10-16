@@ -1,5 +1,5 @@
-import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
+import Component from '@glimmer/component';
 
 import { SEARCH_TYPES, SearchTermValue } from 'pep/constants/search';
 import ConfigurationService from 'pep/services/configuration';
@@ -10,6 +10,7 @@ interface SearchFormTermControlArgs {
     updateTermText: (oldTerm: SearchTermValue, event: HTMLElementEvent<HTMLInputElement>) => void;
     updateTermType: (oldTerm: SearchTermValue, event: HTMLElementEvent<HTMLSelectElement>) => void;
     removeSearchTerm: (searchTerm: SearchTermValue) => void;
+    canRemove?: boolean;
 }
 
 export default class SearchFormTermControl extends Component<SearchFormTermControlArgs> {
@@ -25,5 +26,9 @@ export default class SearchFormTermControl extends Component<SearchFormTermContr
 
     get termContentConfig() {
         return this.args.searchTerm ? this.configuration.content.search.terms.types[this.args.searchTerm.type] : null;
+    }
+
+    get canRemove() {
+        return typeof this.args.canRemove === 'boolean' ? this.args.canRemove : true;
     }
 }
