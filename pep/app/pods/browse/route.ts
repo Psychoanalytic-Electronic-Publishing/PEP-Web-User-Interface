@@ -4,7 +4,6 @@ import { PageNav } from 'pep/mixins/page-layout';
 import { copySearchToController } from 'pep/utils/search';
 
 import Application from '../application/controller';
-import Search from '../search/controller';
 
 export default class Browse extends PageNav(Route) {
     //TODO browse will have its own sidebar behavior/logic
@@ -18,8 +17,7 @@ export default class Browse extends PageNav(Route) {
     setupController(controller: Application, model: object) {
         super.setupController(controller, model);
         const appController = this.controllerFor('application') as Application;
-        const searchController = this.controllerFor('search') as Search;
 
-        copySearchToController(appController, searchController);
+        copySearchToController(appController);
     }
 }

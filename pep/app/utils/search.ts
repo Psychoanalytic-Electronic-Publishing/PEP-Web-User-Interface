@@ -245,7 +245,15 @@ export function groupCountsByRange(
     return countsByRanges;
 }
 
-export function copySearchToController(toController: Controller & SearchController, searchController: Search) {
+/**
+ *
+ *
+ * @export
+ * @param {(Controller & SearchController)} toController
+ * @param {Search} searchController
+ */
+export function copySearchToController(toController: Controller & SearchController) {
+    const searchController = getOwner(toController).lookup(`controller:search`);
     toController.smartSearchTerm = searchController.currentSmartSearchTerm;
     toController.matchSynonyms = searchController.matchSynonyms;
     toController.citedCount = searchController.citedCount;
@@ -255,6 +263,14 @@ export function copySearchToController(toController: Controller & SearchControll
     toController.searchTerms = searchController.searchTerms;
 }
 
+/**
+ *
+ *
+ * @export
+ * @param {(Controller & SearchController)} controller
+ * @param {ConfigurationService} configuration
+ * @param {CurrentUserService} user
+ */
 export function clearSearch(
     controller: Controller & SearchController,
     configuration: ConfigurationService,

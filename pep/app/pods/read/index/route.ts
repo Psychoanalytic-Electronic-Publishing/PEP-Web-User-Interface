@@ -2,7 +2,6 @@ import Controller from '@ember/controller';
 import Route from '@ember/routing/route';
 
 import Application from 'pep/pods/application/controller';
-import Search from 'pep/pods/search/controller';
 import { copySearchToController } from 'pep/utils/search';
 
 export default class ReadIndex extends Route {
@@ -14,8 +13,7 @@ export default class ReadIndex extends Route {
     setupController(controller: Controller, model: object) {
         super.setupController(controller, model);
         const appController = this.controllerFor('application') as Application;
-        const searchController = this.controllerFor('search') as Search;
 
-        copySearchToController(appController, searchController);
+        copySearchToController(appController);
     }
 }

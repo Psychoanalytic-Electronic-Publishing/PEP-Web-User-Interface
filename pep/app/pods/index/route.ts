@@ -7,8 +7,6 @@ import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
 import { copySearchToController } from 'pep/utils/search';
 
-import Search from '../search/controller';
-
 export default class Index extends Route {
     @service configuration!: ConfigurationService;
     @service currentUser!: CurrentUserService;
@@ -29,8 +27,7 @@ export default class Index extends Route {
     setupController(controller: IndexController, model: object) {
         super.setupController(controller, model);
         const appController = this.controllerFor('application') as Application;
-        const searchController = this.controllerFor('search') as Search;
 
-        copySearchToController(appController, searchController);
+        copySearchToController(appController);
     }
 }
