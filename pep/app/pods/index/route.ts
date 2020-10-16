@@ -5,7 +5,9 @@ import Application from 'pep/pods/application/controller';
 import IndexController from 'pep/pods/index/controller';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
-import { SEARCH_DEFAULT_VIEW_PERIOD } from 'pep/constants/search';
+import { copySearchToController } from 'pep/utils/search';
+
+import Search from '../search/controller';
 
 export default class Index extends Route {
     @service configuration!: ConfigurationService;
@@ -20,24 +22,15 @@ export default class Index extends Route {
     }
 
     /**
-     * Reset the application controller's search form when returning to the home page
+     * Reset the application controller's search form to the latest search
      * @param {IndexController} controller
      * @param {Object} model
      */
     setupController(controller: IndexController, model: object) {
         super.setupController(controller, model);
         const appController = this.controllerFor('application') as Application;
-        const cfg = this.configuration.base.search;
-        const prefs = this.currentUser.preferences;
-        const terms = prefs?.searchTermFields ?? cfg.terms.defaultFields;
-        const isLimitOpen = prefs?.searchLimitIsShown ?? cfg.limitFields.isShown;
+        const searchController = this.controllerFor('search') as Search;
 
-        appController.smartSearchTerm = '';
-        appController.matchSynonyms = false;
-        appController.citedCount = '';
-        appController.viewedCount = '';
-        appController.viewedPeriod = SEARCH_DEFAULT_VIEW_PERIOD;
-        appController.isLimitOpen = isLimitOpen;
-        appController.searchTerms = terms.map((f) => ({ type: f, term: '' }));
+        copySearchToController(appController, searchController);
     }
 }
