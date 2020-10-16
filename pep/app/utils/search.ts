@@ -214,7 +214,16 @@ export function joinParamValues(
  */
 export function hasSearchQuery(
     params: QueryParamsObj,
-    exclude = ['synonyms', 'facetfields', 'abstract', 'viewperiod', 'facetlimit', 'facetmincount', 'formatrequested']
+    exclude = [
+        'synonyms',
+        'facetfields',
+        'abstract',
+        'viewperiod',
+        'facetlimit',
+        'facetmincount',
+        'formatrequested',
+        'highlightlimit'
+    ]
 ) {
     return Object.keys(params).filter((p) => !exclude.includes(p)).length > 0;
 }
@@ -292,7 +301,6 @@ export function clearSearch(
         controller.isLimitOpen = isLimitOpen;
         controller.searchTerms = terms.map((f) => ({ type: f, term: '' }));
         if (index === 1) {
-            controller.paginator.metadata = null;
             controller.q = '';
             controller.currentSmartSearchTerm = '';
             controller.currentSearchTerms = terms.map((f) => ({ type: f, term: '' }));

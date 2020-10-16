@@ -316,6 +316,7 @@ export default class Search extends Controller {
         const terms = prefs?.searchTermFields ?? cfg.terms.defaultFields;
         const isLimitOpen = prefs?.searchLimitIsShown ?? cfg.limitFields.isShown;
 
+        this.q = '';
         this.currentSmartSearchTerm = '';
         this.currentMatchSynonyms = false;
         this.currentCitedCount = '';
@@ -325,6 +326,7 @@ export default class Search extends Controller {
         this.currentSearchTerms = terms.map((f) => ({ type: f, term: '' }));
         this.currentFacets = [];
         taskFor(this.updateRefineMetadata).perform(true, 0);
+        this.paginator.clearModels();
     }
 
     /**

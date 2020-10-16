@@ -37,12 +37,10 @@
             @action={{fn @removeSearchTerm @searchTerm}}
             class="ml-1 p-0"
             title={{t "search.form.terms.remove"}}
+            disabled={{not this.canRemove}}
         />
     </div>
     {{#if this.termContentConfig.help}}
-        <HelpTooltip
-            @tooltip={{this.termContentConfig.help}}
-            class="search-form-term-control-help"
-        />
+        <HelpTooltip @tooltip={{this.termContentConfig.help}} class="search-form-term-control-help" />
     {{/if}}
 </div>
