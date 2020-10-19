@@ -93,6 +93,7 @@ export default class MostViewed extends Controller {
         this.searchQueryParams.author = '';
         this.searchQueryParams.title = '';
         this.searchQueryParams.journal = undefined;
+        this.paginator.clearModels();
     }
 
     /**

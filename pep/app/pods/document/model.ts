@@ -1,11 +1,12 @@
+import { isEmpty } from '@ember/utils';
+
 import DS from 'ember-data';
 import attr from 'ember-data/attr';
 import { belongsTo } from 'ember-data/relationships';
 
-import { isEmpty } from '@ember/utils';
-
-import { INVALID_ABSTRACT_TAGS, INVALID_ABSTRACT_PREVIEW_TAGS, HTML_BODY_REGEX } from 'pep/constants/regex';
+import { HTML_BODY_REGEX, INVALID_ABSTRACT_PREVIEW_TAGS, INVALID_ABSTRACT_TAGS } from 'pep/constants/regex';
 import SimilarityMatch from 'pep/pods/similarity-match/model';
+import { parseXML } from 'pep/utils/dom';
 
 export default class Document extends DS.Model {
     // attributes

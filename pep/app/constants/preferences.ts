@@ -2,6 +2,9 @@ import ENV from 'pep/config/environment';
 import { LanguageCode } from 'pep/constants/lang';
 import { SearchTermId } from 'pep/constants/search';
 import { ThemeId } from 'pep/constants/themes';
+import { SearchSort, SearchSorts, SearchSortType } from 'pep/utils/sort';
+
+import { SearchView, SearchViews } from './search';
 
 export enum PreferenceKey {
     FAVORITES = 'favorites',
@@ -12,6 +15,8 @@ export enum PreferenceKey {
     SEARCH_HIC_LIMIT = 'searchHICLimit',
     SEARCH_PREVIEW_ENABLED = 'searchPreviewEnabled',
     SEARCH_TERM_FIELDS = 'searchTermFields',
+    SEARCH_VIEW_TYPE = 'searchViewType',
+    SEARCH_SORT_TYPE = 'searchSortType',
     THEME = 'theme'
 }
 
@@ -24,7 +29,9 @@ export interface UserPreferences {
     searchHICEnabled?: boolean;
     searchHICLimit?: number;
     searchTermFields?: SearchTermId[];
+    searchViewType: SearchView;
     searchPreviewEnabled?: boolean;
+    searchSortType: SearchSort;
     theme: ThemeId;
 }
 
@@ -48,7 +55,9 @@ export const COOKIE_PREFERENCES: PreferenceKey[] = [
     PreferenceKey.SEARCH_TERM_FIELDS,
     PreferenceKey.THEME,
     PreferenceKey.SEARCH_HIC_ENABLED,
-    PreferenceKey.SEARCH_HIC_LIMIT
+    PreferenceKey.SEARCH_HIC_LIMIT,
+    PreferenceKey.SEARCH_VIEW_TYPE,
+    PreferenceKey.SEARCH_SORT_TYPE
 ];
 
 /**
@@ -70,5 +79,7 @@ export const DEFAULT_USER_PREFERENCES: UserPreferences = {
     searchHICEnabled: true,
     searchHICLimit: 1,
     readLater: [],
-    theme: ThemeId.DEFAULT
+    theme: ThemeId.DEFAULT,
+    searchViewType: SearchViews[0],
+    searchSortType: SearchSorts[0]
 };

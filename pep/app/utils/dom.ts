@@ -47,3 +47,17 @@ export function getCaretPosition(input: HTMLInputElement | HTMLTextAreaElement) 
 
     return pos;
 }
+
+export function parseXML(input: string): XMLDocument | Error {
+    if (window.DOMParser) {
+        const parser = new DOMParser();
+        return parser.parseFromString(input, 'text/xml');
+    } else if (typeof window.ActiveXObject != 'undefined' && new window.ActiveXObject('Microsoft.XMLDOM')) {
+        var xmlDoc = new window.ActiveXObject('Microsoft.XMLDOM');
+        xmlDoc.async = 'false';
+        xmlDoc.loadXML(input);
+        return xmlDoc;
+    } else {
+        return new Error('Unable to parse xml');
+    }
+}

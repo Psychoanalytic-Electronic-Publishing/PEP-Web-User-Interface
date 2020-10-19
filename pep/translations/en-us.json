@@ -20,7 +20,7 @@
         "done": "Done",
         "export": "Export",
         "print": "Print",
-        "numResults": "{count} {count, plural, =1 {'<span class=\"text-muted font-size-secondary\">'result'</span>'} other {'<span class=\"text-muted font-size-secondary\">'results'</span>'}}",
+        "numResults": "{count} {count, plural, =1 {'<span class=\"text-muted \">'result'</span>'} other {'<span class=\"text-muted\">'results'</span>'}}",
         "noResults": "No results found",
         "loadingResults": "Loading results...",
         "loading": "Loading...",
@@ -66,7 +66,8 @@
         "new": "Start a new search",
         "description": "- {description}",
         "exports": {
-            "csv": "CSV",
+            "csv": "Comma Separated Values (CSV)",
+            "ris": "Standard Tagged Format (RIS)",
             "clipboard": "Clipboard",
             "title": "Export"
         },
@@ -81,7 +82,7 @@
         },
         "hitsInContext": {
             "label": {
-                "short": "HIC",
+                "short": "Hits",
                 "full": "Hits in context"
             },
             "help": "Hits in context explanation goes here"
@@ -187,7 +188,7 @@
             "accessLimited": "The full content of this document is not available. This may be due to your current subscription or publisher restrictions.",
             "login": "Click here to login",
             "download": {
-                "label": "Download docs",
+                "label": "Download",
                 "ePub": "ePub document",
                 "pdf": "PDF document",
                 "pdfOrig": "PDF (original) document"
