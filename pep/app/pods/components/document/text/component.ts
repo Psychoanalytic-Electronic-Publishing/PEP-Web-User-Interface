@@ -65,8 +65,12 @@ export default class DocumentText extends Component<DocumentTextArgs> {
     addImages(document: XMLDocument) {}
 
     get text() {
-        // const xmlimages = this.args.text.getElementsByTagName('image');
-        return this.args.text;
+        if (this.xml) {
+            var s = new XMLSerializer();
+            return s.serializeToString(this.xml);
+        } else {
+            return '';
+        }
     }
 
     @action

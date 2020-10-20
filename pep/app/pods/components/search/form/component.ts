@@ -5,9 +5,7 @@ import Component from '@glimmer/component';
 
 import IntlService from 'ember-intl/services/intl';
 
-import {
-    SEARCH_TYPE_EVERYWHERE, SEARCH_TYPES, SearchTermId, SearchTermValue, VIEW_PERIODS, ViewPeriod
-} from 'pep/constants/search';
+import { SEARCH_TYPES, SearchTermId, SearchTermValue, VIEW_PERIODS, ViewPeriod } from 'pep/constants/search';
 import ConfigurationService from 'pep/services/configuration';
 import PepSessionService from 'pep/services/pep-session';
 import ScrollableService from 'pep/services/scrollable';
