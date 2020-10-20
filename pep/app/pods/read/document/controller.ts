@@ -25,7 +25,7 @@ import PepSessionService from 'pep/services/pep-session';
 import PrinterService from 'pep/services/printer';
 import SearchSelection from 'pep/services/search-selection';
 import { buildSearchQueryParams } from 'pep/utils/search';
-import { SearchSort, SearchSorts } from 'pep/utils/sort';
+import { SearchSorts, SearchSortType } from 'pep/utils/sort';
 import { reject } from 'rsvp';
 
 export default class ReadDocument extends Controller {
@@ -227,7 +227,7 @@ export default class ReadDocument extends Controller {
      */
     @action
     updateSort(event: HTMLElementEvent<HTMLSelectElement>) {
-        const id = event.target.value as SearchSort;
+        const id = event.target.value as SearchSortType;
         const selectedSort = SearchSorts.find((item) => item.id === id);
         this.selectedSort = selectedSort!;
         this.paginator.changeSorting([

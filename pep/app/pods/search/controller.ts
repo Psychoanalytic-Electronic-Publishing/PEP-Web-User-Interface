@@ -32,7 +32,7 @@ import ScrollableService from 'pep/services/scrollable';
 import SearchSelection from 'pep/services/search-selection';
 import SidebarService from 'pep/services/sidebar';
 import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
-import { SearchSort, SearchSorts, transformSearchSortsToTable, transformSearchSortToAPI } from 'pep/utils/sort';
+import { SearchSorts, SearchSortType, transformSearchSortsToTable, transformSearchSortToAPI } from 'pep/utils/sort';
 import { hash } from 'rsvp';
 
 import { TITLE_REGEX } from '../../constants/regex';
@@ -87,8 +87,8 @@ export default class Search extends Controller {
     @tracked previewMode: SearchPreviewMode = 'fit';
     @tracked containerMaxHeight = 0;
 
-    @tracked selectedView = SearchViews[1];
-    @tracked selectedSort = SearchSorts[0];
+    @tracked selectedView = this.currentUser.preferences?.searchViewType ?? SearchViews[0];
+    @tracked selectedSort = this.currentUser.preferences?.searchSortType ?? SearchSorts[0];
 
     readLaterKey = PreferenceKey.READ_LATER;
     favoritesKey = PreferenceKey.FAVORITES;
@@ -585,6 +585,9 @@ export default class Search extends Controller {
         const id = event.target.value as SearchViewType;
         const selectedView = SearchViews.find((item) => item.id === id);
         this.selectedView = selectedView!;
+        this.currentUser.updatePrefs({
+            [PreferenceKey.SEARCH_VIEW_TYPE]: selectedView
+        });
     }
 
     /**
@@ -611,7 +614,7 @@ export default class Search extends Controller {
      */
     @action
     updateSort(event: HTMLElementEvent<HTMLSelectElement>) {
-        const id = event.target.value as SearchSort;
+        const id = event.target.value as SearchSortType;
         const selectedSort = SearchSorts.find((item) => item.id === id);
         this.selectedSort = selectedSort!;
         this.paginator.changeSorting([
@@ -620,6 +623,7 @@ export default class Search extends Controller {
                 isAscending: true
             }
         ]);
+        this.currentUser.updatePrefs({ [PreferenceKey.SEARCH_SORT_TYPE]: selectedSort });
     }
 
     /**

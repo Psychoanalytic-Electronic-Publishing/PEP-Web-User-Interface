@@ -17,6 +17,7 @@ import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
 import SidebarService from 'pep/services/sidebar';
 import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
+import { transformSearchSortToAPI } from 'pep/utils/sort';
 
 export interface SearchParams {
     q: string;
@@ -74,6 +75,7 @@ export default class Search extends PageNav(Route) {
                 context: controller,
                 pagingRootKey: null,
                 filterRootKey: null,
+                sorts: transformSearchSortToAPI([this.currentUser.preferences?.searchSortType.id ?? '']),
                 processQueryParams: (params) => ({ ...params, ...searchParams })
             });
             return this.store.query('search-document', queryParams);
@@ -146,6 +148,7 @@ export default class Search extends PageNav(Route) {
             metadata: model.meta,
             pagingRootKey: null,
             filterRootKey: null,
+            sorts: transformSearchSortToAPI([this.currentUser.preferences?.searchSortType.id ?? '']),
             processQueryParams: controller.processQueryParams,
             onChangeSorting: controller.onChangeSorting
         });

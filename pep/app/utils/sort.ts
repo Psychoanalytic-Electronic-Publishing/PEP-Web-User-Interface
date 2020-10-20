@@ -12,7 +12,7 @@ export enum SearchTableSortFields {
     DOCUMENT_REF = 'documentRef'
 }
 
-export enum SearchSort {
+export enum SearchSortType {
     BIBLIOGRAPHIC = 'bibliographic',
     YEAR = 'year',
     AUTHOR = 'author',
@@ -26,16 +26,21 @@ export enum SearchSort {
     RANK = 'rank'
 }
 
+export interface SearchSort {
+    id: SearchSortType;
+    label: string;
+}
+
 export const SearchSorts = [
-    { id: SearchSort.BIBLIOGRAPHIC, label: 'Bibliographic' },
-    { id: SearchSort.YEAR, label: 'Year' },
-    { id: SearchSort.AUTHOR, label: 'Author' },
-    { id: SearchSort.TITLE, label: 'Title' },
-    { id: SearchSort.SOURCE, label: 'Source' },
-    { id: SearchSort.CITATIONS, label: 'Citation Count' },
-    { id: SearchSort.VIEWS, label: 'View Count' },
-    { id: SearchSort.TOC, label: 'Vol/Issue/Page' },
-    { id: SearchSort.SCORE, label: 'Search Score' }
+    { id: SearchSortType.BIBLIOGRAPHIC, label: 'Bibliographic' },
+    { id: SearchSortType.YEAR, label: 'Year' },
+    { id: SearchSortType.AUTHOR, label: 'Author' },
+    { id: SearchSortType.TITLE, label: 'Title' },
+    { id: SearchSortType.SOURCE, label: 'Source' },
+    { id: SearchSortType.CITATIONS, label: 'Citation Count' },
+    { id: SearchSortType.VIEWS, label: 'View Count' },
+    { id: SearchSortType.TOC, label: 'Vol/Issue/Page' },
+    { id: SearchSortType.SCORE, label: 'Search Score' }
 ];
 
 /**
@@ -47,17 +52,6 @@ export const SearchSorts = [
  */
 export function transformSearchSortToAPI(sorts: string[]) {
     const sort = sorts[0];
-    const sortWithoutDirection = sorts[0].replace(SORT_DASH_REGEX, '');
-    let name = '';
-    if (sortWithoutDirection === SearchTableSortFields.AUTHOR_MAST) {
-        name = SearchSort.AUTHOR;
-    } else if (sortWithoutDirection === SearchTableSortFields.YEAR) {
-        name = SearchSort.YEAR;
-    } else if (sortWithoutDirection === SearchTableSortFields.TITLE) {
-        name = SearchSort.TITLE;
-    } else {
-        name = SearchSort.SOURCE;
-    }
     const transformedSort = transformSortDirectionToAPI(sort);
     return [transformedSort];
 }
@@ -77,11 +71,11 @@ export function transformSearchSortsToTable(sorts?: string[]) {
 
         const tableSort = transformSortDirectionToTable(sort);
 
-        if (name === SearchSort.AUTHOR) {
+        if (name === SearchSortType.AUTHOR) {
             transformedName = SearchTableSortFields.AUTHOR_MAST;
-        } else if (name === SearchSort.YEAR) {
+        } else if (name === SearchSortType.YEAR) {
             transformedName = SearchTableSortFields.YEAR;
-        } else if (name === SearchSort.TITLE) {
+        } else if (name === SearchSortType.TITLE) {
             transformedName = SearchTableSortFields.TITLE;
         } else {
             transformedName = SearchTableSortFields.DOCUMENT_REF;
