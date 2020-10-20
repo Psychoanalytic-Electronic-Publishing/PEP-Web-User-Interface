@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+LC_ALL=C
+red='\033\[0;31m'
+no_color='\033\[0m'
+
+local_branch="$(git rev-parse --abbrev-ref HEAD)"
+branch_regex="^(feature|bug|story)\/tp[0-9]+-[0-9a-zA-Z-]+$"
+release_regex="^release\/[0-9]+[0-9a-zA-Z-]+$"
+master_regex="master"
+
+message="ERROR: your branch name format is invalid for gitlab. \nPlease follow this regex for proper branch names: \n\t $branch_regex. \nExample: feature/tp12345-brief-name"
+
+if [[ ! $local_branch =~ $branch_regex ]] && [[ ! $local_branch =~ $release_regex ]] && [[ ! $local_branch =~ $master_regex ]]
+then
+    echo -e "$message"
+    exit 1
+fi
+
+exit 0

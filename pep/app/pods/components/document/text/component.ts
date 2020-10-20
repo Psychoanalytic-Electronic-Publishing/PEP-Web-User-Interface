@@ -28,9 +28,9 @@ export default class DocumentText extends Component<DocumentTextArgs> {
         if (!(XML instanceof Error)) {
             const artinfo = XML.getElementsByTagName('artinfo')[0];
             artinfo.parentNode?.removeChild(artinfo);
-            const bibliography = XML.getElementsByTagName('bib')[0];
-            this.convertBibliography(bibliography);
-            this.convertPageBreaks(XML);
+            // const bibliography = XML.getElementsByTagName('bib')[0];
+            // this.convertBibliography(bibliography);
+            // this.convertPageBreaks(XML);
             this.xml = XML;
         }
     }
