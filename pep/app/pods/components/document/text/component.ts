@@ -4,11 +4,14 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
 import ModalService from '@gavant/ember-modals/services/modal';
+import NotificationService from 'ember-cli-notifications/services/notifications';
 import { DS } from 'ember-data';
+import IntlService from 'ember-intl/services/intl';
 
+import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import GlossaryTerm from 'pep/pods/glossary-term/model';
 import LoadingBarService from 'pep/services/loading-bar';
-import { parseXML } from 'pep/utils/dom';
+import { findElement, findElements, parseXML, PepXmlTagNames } from 'pep/utils/dom';
 
 interface DocumentTextArgs {
     text: string;
@@ -19,26 +22,35 @@ export default class DocumentText extends Component<DocumentTextArgs> {
     @service store!: DS.Store;
     @service loadingBar!: LoadingBarService;
     @service modal!: ModalService;
+    @service notifications!: NotificationService;
+    @service intl!: IntlService;
 
     @tracked xml?: XMLDocument;
 
-    constructor(owner, args) {
+    constructor(owner: unknown, args: DocumentTextArgs) {
         super(owner, args);
-        const XML = parseXML(this.args.text);
+        this.parseDocumentText(args.text);
+    }
+
+    @dontRunInFastboot
+    parseDocumentText(text: string) {
+        const XML = parseXML(text);
         if (!(XML instanceof Error)) {
-            const artinfo = XML.getElementsByTagName('artinfo')[0];
+            const artinfo = findElement(XML, PepXmlTagNames.ARTICLE_INFO);
             artinfo.parentNode?.removeChild(artinfo);
-            // const bibliography = XML.getElementsByTagName('bib')[0];
-            // this.convertBibliography(bibliography);
-            // this.convertPageBreaks(XML);
+
+            this.convertBibliography(XML);
+            this.convertPageBreaks(XML);
             this.xml = XML;
+        } else {
+            this.notifications.error(this.intl.t('document.text.error'));
         }
     }
 
     convertPageBreaks(xml: XMLDocument) {
-        const pageBreaks = Array.from(xml.getElementsByTagName('pb') ?? []);
+        const pageBreaks = findElements(xml, PepXmlTagNames.PAGE_BREAK);
         pageBreaks?.forEach((tag) => {
-            const number = tag.getElementsByTagName('n')[0];
+            const number = findElement(tag, PepXmlTagNames.NUMBER);
             number.classList.add('text-muted');
             number.classList.add('small');
 
@@ -50,20 +62,20 @@ export default class DocumentText extends Component<DocumentTextArgs> {
         });
     }
 
-    convertBibliography(element: Element) {
-        const bilbiography = element;
-        const information = bilbiography.getElementsByTagName('pb')[0];
-        const sources = Array.from(bilbiography.getElementsByTagName('be'));
+    convertBibliography(xml: XMLDocument) {
+        const bibliography = findElement(xml, PepXmlTagNames.BIBLIOGRAPHY);
+        const information = findElement(bibliography, PepXmlTagNames.PAGE_BREAK);
+        const sources = findElements(bibliography, PepXmlTagNames.BIBLIOGRAPHY_SOURCE);
         const html = sources.map((item) => {
             const div = document.createElement('div');
             div.appendChild(item);
             return div;
         });
         html.forEach((item) => {
-            bilbiography.appendChild(item);
+            bibliography.appendChild(item);
         });
-        bilbiography.removeChild(information);
-        bilbiography.appendChild(information);
+        bibliography.removeChild(information);
+        bibliography.appendChild(information);
     }
 
     get text() {

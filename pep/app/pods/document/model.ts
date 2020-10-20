@@ -6,7 +6,6 @@ import { belongsTo } from 'ember-data/relationships';
 
 import { HTML_BODY_REGEX, INVALID_ABSTRACT_PREVIEW_TAGS, INVALID_ABSTRACT_TAGS } from 'pep/constants/regex';
 import SimilarityMatch from 'pep/pods/similarity-match/model';
-import { parseXML } from 'pep/utils/dom';
 
 export default class Document extends DS.Model {
     // attributes

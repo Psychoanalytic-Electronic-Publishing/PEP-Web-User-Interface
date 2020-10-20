@@ -197,8 +197,7 @@ export default class Search extends Controller {
             joinOp: 'AND',
             facetLimit: cfg.facets.valueLimit,
             facetMinCount: cfg.facets.valueMinCount,
-            highlightlimit: this.currentUser.preferences?.searchHICLimit ?? cfg.hitsInContext.limit,
-            sort: this.paginator.sorts
+            highlightlimit: this.currentUser.preferences?.searchHICLimit ?? cfg.hitsInContext.limit
         });
 
         return { ...params, ...searchParams };

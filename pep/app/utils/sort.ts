@@ -52,17 +52,6 @@ export const SearchSorts = [
  */
 export function transformSearchSortToAPI(sorts: string[]) {
     const sort = sorts[0];
-    const sortWithoutDirection = sorts[0].replace(SORT_DASH_REGEX, '');
-    let name = '';
-    if (sortWithoutDirection === SearchTableSortFields.AUTHOR_MAST) {
-        name = SearchSortType.AUTHOR;
-    } else if (sortWithoutDirection === SearchTableSortFields.YEAR) {
-        name = SearchSortType.YEAR;
-    } else if (sortWithoutDirection === SearchTableSortFields.TITLE) {
-        name = SearchSortType.TITLE;
-    } else {
-        name = SearchSortType.SOURCE;
-    }
     const transformedSort = transformSortDirectionToAPI(sort);
     return [transformedSort];
 }

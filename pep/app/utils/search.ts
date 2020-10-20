@@ -9,7 +9,6 @@ import {
     SEARCH_DEFAULT_VIEW_PERIOD, SEARCH_FACETS, SEARCH_TYPES, SearchFacetId, SearchFacetValue, SearchTermValue,
     ViewPeriod
 } from 'pep/constants/search';
-import Search from 'pep/pods/search/controller';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
 

@@ -5,6 +5,15 @@ export interface ElementOffset {
     left: number;
 }
 
+export enum PepXmlTagNames {
+    ARTICLE_INFO = 'artinfo',
+    BIBLIOGRAPHY = 'bib',
+    BIBLIOGRAPHY_SOURCE = 'be',
+    PAGE_BREAK = 'pb',
+    NUMBER = 'n',
+    FOOT_NOTE = 'ftn'
+}
+
 /**
  * Returns the top/left offset of an element relative to the entire document
  * @param {HTMLElement} el
@@ -46,6 +55,15 @@ export function getCaretPosition(input: HTMLInputElement | HTMLTextAreaElement) 
     }
 
     return pos;
+}
+
+export function findElements(source: Element | XMLDocument, tagName: PepXmlTagNames) {
+    const elements = Array.from(source.getElementsByTagName(tagName) ?? []);
+    return elements;
+}
+
+export function findElement(source: Element | XMLDocument, tagName: PepXmlTagNames) {
+    return source.getElementsByTagName(tagName)[0];
 }
 
 export function parseXML(input: string): XMLDocument | Error {

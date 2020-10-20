@@ -2,7 +2,7 @@ import ENV from 'pep/config/environment';
 import { LanguageCode } from 'pep/constants/lang';
 import { SearchTermId } from 'pep/constants/search';
 import { ThemeId } from 'pep/constants/themes';
-import { SearchSort, SearchSorts, SearchSortType } from 'pep/utils/sort';
+import { SearchSort, SearchSorts } from 'pep/utils/sort';
 
 import { SearchView, SearchViews } from './search';
 
