@@ -1,6 +1,736 @@
 .document-text {
-    [data-type='TERM2'],
-    [type='TERM2'] {
+    a {
+        text-decoration: none;
+        color: #465979;
+        &:hover {
+            text-decoration: underline;
+        }
+        &.action {
+            color: black;
+        }
+        &.toggle {
+            font-size: 6pt;
+            position: relative;
+            bottom: 8px;
+        }
+        &.url {
+            color: red;
+            font-weight: bold;
+        }
+        &.bibx {
+            color: red;
+            font-weight: bold;
+            font-size: 8pt;
+            position: relative;
+            bottom: 1px;
+        }
+        &.def,
+        &.figx,
+        &.pgx,
+        &.tblx,
+        &.hdix,
+        &.volx,
+        &.issuex,
+        &.webx,
+        &.bib {
+            color: red;
+            font-weight: bold;
+        }
+
+        &.whocitedthis {
+            color: blue;
+            font-size: 11pt;
+            font-weight: bold;
+        }
+        &.author {
+            font-weight: bold;
+        }
+    }
+
+    p {
+        &.banner {
+            margin-top: 0pt;
+            margin-bottom: 3pt;
+        }
+        &.heading {
+            font-size: 7pt;
+            margin-top: 0pt;
+            margin-bottom: 3pt;
+        }
+        &.newsecnm {
+            font-size: 10pt;
+            font-weight: bold;
+            text-align: right;
+            margin-top: 0pt;
+            margin-bottom: 6pt;
+        }
+        &.title {
+            font-size: 14pt;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 0pt;
+            margin-bottom: 3pt;
+        }
+        &.subtitle {
+            font-size: 10pt;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 9pt;
+            margin-bottom: 9pt;
+        }
+        &.title-author {
+            text-align: center;
+            margin-bottom: 3pt;
+            margin-top: 0pt;
+            font-size: 12pt;
+            font-style: italic;
+            font-weight: bold;
+        }
+        &.body {
+            font-size: 10pt;
+            text-indent: 18pt;
+            margin-top: 3pt;
+            margin-bottom: 3pt;
+        }
+        &.autaffname {
+            text-align: center;
+            margin-top: 3pt;
+            margin-bottom: 0pt;
+            font-weight: bold;
+        }
+        &.autaffbio {
+            text-align: center;
+            margin-top: 10pt;
+            margin-bottom: 0pt;
+            font-style: italic;
+        }
+        &.autaffaddr {
+            text-align: center;
+            margin-top: 0pt;
+            margin-bottom: 0pt;
+            font-style: italic;
+        }
+        &.ftn {
+            font-size: 9pt;
+            margin-left: 0pt;
+            margin-top: 0pt;
+            margin-bottom: 0pt;
+            margin-right: 0pt;
+        }
+    }
+
+    span.autaffname {
+        font-style: normal;
         font-weight: bold;
+    }
+
+    p.ftn_top {
+        margin-top: 5pt;
+        height: 1px;
+    }
+    div.ftn_group {
+        margin-left: 9pt;
+        margin-top: 0pt;
+        margin-bottom: 0pt;
+    }
+    div.ftn {
+        margin-top: 10pt;
+        margin-left: 0pt;
+        margin-right: 0pt;
+        margin-bottom: 3pt;
+    }
+    div.note {
+        margin-top: 10pt;
+        margin-left: 0pt;
+        margin-right: 0pt;
+        margin-bottom: 3pt;
+    }
+
+    p.ftr {
+        font-size: 9pt;
+        margin-left: 0pt;
+        margin-top: 0pt;
+        margin-bottom: 0pt;
+        margin-right: 0pt;
+    }
+    p.ftr_cont {
+        font-size: 9pt;
+        margin-left: 0pt;
+        margin-top: 0pt;
+        margin-bottom: 0pt;
+        margin-right: 0pt;
+    }
+    p.note {
+        font-size: 9pt;
+        margin-top: 3pt;
+        margin-bottom: 3pt;
+        margin-right: 0px;
+        text-indent: 18pt;
+    }
+    p.note_cont {
+        font-size: 9pt;
+        margin-top: 3pt;
+        margin-bottom: 3pt;
+        margin-right: 0px;
+        text-indent: 18pt;
+    }
+    span.ftnlabel {
+        font-size: 80%;
+        position: relative;
+        bottom: 3px;
+    }
+    span.ftrlabel {
+        font-size: 80%;
+        position: relative;
+        bottom: 3px;
+    }
+    span.notelabel {
+        font-size: 80%;
+        position: relative;
+        bottom: 3px;
+    }
+    span.su {
+        font-size: 80%;
+        position: relative;
+        bottom: 3px;
+    }
+
+    p.abbr {
+        font-size: 9pt;
+        margin-top: 3pt;
+        margin-bottom: 3pt;
+        margin-right: 0px;
+        text-indent: 18pt;
+    }
+    div.boxed-text {
+        border: 1px solid black;
+        padding: 5px 10px;
+        margin: 10px 0;
+    }
+
+    div.verse {
+        padding: 3pt 0;
+    }
+    p.verse {
+        font-size: 9pt;
+        margin-left: 18pt;
+        margin-top: 0pt;
+        margin-bottom: 0pt;
+        margin-right: 0pt;
+    }
+    p.verse_cont {
+        font-size: 9pt;
+        margin-left: 18pt;
+        margin-top: 0pt;
+        margin-bottom: 0pt;
+        margin-right: 0pt;
+    }
+
+    p.pagebreak {
+        color: grey;
+        text-align: center;
+        margin-top: 3pt;
+        margin-bottom: 12pt;
+    }
+    p.pagebreak span.warning {
+        color: #ccc;
+        font-size: 6pt;
+    }
+    h1 {
+        margin-top: 9pt;
+        margin-bottom: 0pt;
+        font-size: 14pt;
+        font-weight: bold;
+    }
+    h2 {
+        margin-top: 9pt;
+        margin-bottom: 0pt;
+        font-size: 12pt;
+        font-weight: bold;
+    }
+    h3 {
+        margin-top: 9pt;
+        margin-bottom: 0pt;
+        font-size: 12pt;
+        font-weight: none;
+        font-style: normal;
+    }
+    h4 {
+        margin-top: 9pt;
+        margin-bottom: 0pt;
+        font-size: 12pt;
+        font-weight: none;
+        font-style: italic;
+    }
+    h5 {
+        margin-top: 9pt;
+        margin-bottom: 0pt;
+        font-size: 10pt;
+        font-weight: bold;
+        font-style: italic;
+    }
+    h6 {
+        margin-top: 9pt;
+        margin-bottom: 0pt;
+        font-size: 9pt;
+        font-weight: bold;
+        font-style: italic;
+    }
+
+    p.headingsubtitle {
+        margin-top: 9pt;
+        margin-bottom: 0pt;
+        font-size: 10pt;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    div.bib {
+        display: inline;
+    }
+    p.body_bib,
+    p.bib_bib {
+        margin-top: 0pt;
+        margin-bottom: 0pt;
+        margin-left: 18pt;
+        text-indent: -18pt;
+
+        font-size: 10pt;
+    }
+    p.bib_bib a.webx {
+        color: #0000ff;
+        font-weight: normal;
+    }
+    p.bib_cont {
+        margin-top: 0pt;
+        margin-bottom: 0pt;
+        margin-left: 18pt;
+        text-indent: -18pt;
+
+        font-size: 10pt;
+    }
+    div.artsubbib {
+    }
+    p.artsubbib {
+        margin-top: 10pt;
+        margin-bottom: 0pt;
+        margin-left: 18pt;
+        text-align: center;
+        font-size: 10pt;
+        font-weight: bold;
+    }
+    p.toabibtitle {
+        margin-top: 0pt;
+        margin-bottom: 0pt;
+        margin-left: 18pt;
+        text-indent: -18pt;
+
+        font-size: 10pt;
+    }
+
+    p.quote {
+        margin-top: 0pt;
+        margin-bottom: 4.45pt;
+        margin-left: 30pt;
+        margin-right: 30pt;
+
+        font-size: 10pt;
+    }
+    p.quote_cont {
+        margin-top: 0pt;
+        margin-bottom: 4.45pt;
+        margin-left: 30pt;
+        margin-right: 30pt;
+
+        font-size: 10pt;
+    }
+    p.src {
+        margin-top: 0pt;
+        margin-bottom: 4.45pt;
+        margin-left: 18pt;
+        margin-right: 18pt;
+
+        font-size: 10pt;
+    }
+    p.binc {
+        margin-top: 0pt;
+        margin-bottom: 0pt;
+        margin-left: 18pt;
+        text-indent: -18pt;
+
+        font-size: 10pt;
+    }
+    p.dialog {
+        margin-top: 0pt;
+        margin-bottom: 3pt;
+        margin-left: 30pt;
+        margin-right: 30pt;
+
+        font-size: 10pt;
+    }
+    p.dialog_cont {
+        margin-top: 0pt;
+        margin-bottom: 3pt;
+        margin-left: 30pt;
+        margin-right: 30pt;
+
+        font-size: 10pt;
+    }
+    p.dream {
+        margin-top: 3pt;
+        margin-bottom: 3pt;
+        margin-left: 30pt;
+
+        font-size: 10pt;
+    }
+    p.dream_cont {
+        margin-top: 3pt;
+        margin-bottom: 3pt;
+        margin-left: 30pt;
+
+        font-size: 10pt;
+    }
+
+    p.figtitle {
+        margin-top: 3pt;
+        margin-bottom: 3pt;
+        text-align: center;
+
+        font-size: 10pt;
+        font-weight: bold;
+    }
+    p.tbltitle {
+        margin-top: 3pt;
+        margin-bottom: 3pt;
+        text-align: center;
+
+        font-size: 10pt;
+        font-weight: bold;
+    }
+    p.figure {
+        margin-top: 3pt;
+        margin-bottom: 3pt;
+        text-align: center;
+    }
+
+    div.list {
+        margin-left: 18pt;
+    }
+    div.li {
+        margin-left: 18pt;
+    }
+    div.li_bib {
+        margin-left: 9pt;
+    }
+    p.li1 {
+        font-size: 10pt;
+        margin-left: 18pt;
+        text-indent: -18pt;
+        margin-top: 3pt;
+        margin-bottom: 3pt;
+    }
+    p.li1_bib {
+        font-size: 10pt;
+        margin-left: -18pt;
+        text-indent: -18pt;
+        margin-top: 3pt;
+        margin-bottom: 3pt;
+    }
+    div.domTTOverlib p.li1_bib {
+        margin-left: 18pt;
+    }
+    p.li1_cont {
+        font-size: 10pt;
+        margin-left: 18pt;
+        text-indent: 18pt;
+        margin-top: 3pt;
+        margin-bottom: 3pt;
+    }
+    p.li2 {
+        font-size: 10pt;
+        margin-left: 0pt;
+        text-indent: -18pt;
+        margin-top: 3pt;
+        margin-bottom: 3pt;
+    }
+    p.li2_bib {
+        font-size: 10pt;
+        margin-left: 0pt;
+        text-indent: -18pt;
+        margin-top: 3pt;
+        margin-bottom: 3pt;
+    }
+    p.li2_cont {
+        font-size: 10pt;
+        margin-left: 0pt;
+        text-indent: 18pt;
+        margin-top: 3pt;
+        margin-bottom: 3pt;
+    }
+    p.li3 {
+        font-size: 10pt;
+        margin-left: 0pt;
+        text-indent: -18pt;
+        margin-top: 3pt;
+        margin-bottom: 3pt;
+    }
+    p.li3_bib {
+        font-size: 10pt;
+        margin-left: 0pt;
+        text-indent: -18pt;
+        margin-top: 3pt;
+        margin-bottom: 3pt;
+    }
+    p.li3_cont {
+        font-size: 10pt;
+        margin-left: 0pt;
+        text-indent: 18pt;
+        margin-top: 3pt;
+        margin-bottom: 3pt;
+    }
+    p.li4 {
+        font-size: 10pt;
+        margin-left: 0pt;
+        text-indent: -18pt;
+        margin-top: 3pt;
+        margin-bottom: 3pt;
+    }
+    p.li4_bib {
+        font-size: 10pt;
+        margin-left: 0pt;
+        text-indent: -18pt;
+        margin-top: 3pt;
+        margin-bottom: 3pt;
+    }
+    p.li4_cont {
+        font-size: 10pt;
+        margin-left: 0pt;
+        text-indent: 18pt;
+        margin-top: 3pt;
+        margin-bottom: 3pt;
+    }
+
+    p.blank {
+        font-size: 10pt;
+        text-align: center;
+        font-style: italic;
+    }
+
+    table.table {
+        width: 100%;
+    }
+    td.td {
+        font-size: 10pt;
+        margin-top: 3pt;
+        margin-bottom: 3pt;
+    }
+    p.cell {
+        font-size: 10pt;
+        margin-top: 3pt;
+        margin-bottom: 3pt;
+    }
+    .widetable-wrapper1,
+    .widetable-wrapper2 {
+        width: 908px;
+        overflow-x: scroll;
+        overflow-y: hidden;
+    }
+    .widetable-wrapper1 {
+        height: 20px;
+    }
+    .widetable-div1 {
+        width: 1816px;
+        height: 20px;
+    }
+    .widetable-div2 {
+        width: 1816px;
+        overflow: auto;
+    }
+
+    tr.abstract p {
+        margin: 0 0 5px;
+    }
+    div.abs {
+        color: blue;
+        margin-left: 36pt;
+        margin-right: 36pt;
+    }
+    p.abs {
+        font-size: 10pt;
+    }
+    p.abs_cont {
+        font-size: 10pt;
+    }
+
+    iframe.videopreview {
+        border: 0;
+        margin: 0 auto;
+        display: block;
+    }
+
+    div.tagline {
+        margin-left: 18pt;
+        margin-right: 18pt;
+    }
+
+    span.numerator {
+        font-size: 90%;
+        position: relative;
+        bottom: 3px;
+    }
+    span.denominator {
+        font-size: 90%;
+        position: relative;
+        top: 1px;
+    }
+
+    span.b {
+        font-weight: bold;
+    }
+    span.u {
+        text-decoration: underline;
+    }
+    span.i {
+        font-style: italic;
+    }
+    span.bi {
+        font-weight: bold;
+        font-style: italic;
+    }
+    span.bu {
+        font-weight: bold;
+        text-decoration: underline;
+    }
+    span.bui {
+        font-weight: bold;
+        text-decoration: underline;
+        font-style: italic;
+    }
+    span.ui {
+        text-decoration: underline;
+        font-style: italic;
+    }
+    span.so {
+        text-decoration: line-through;
+    }
+    span.su {
+        font-size: 70%;
+        position: relative;
+        bottom: 2px;
+    }
+    span.sb {
+        font-size: 70%;
+        position: relative;
+        top: 2px;
+    }
+    span.sm {
+        font-variant: small-caps;
+    }
+    span.sy {
+        font-family: symbol;
+    }
+    span.spkr {
+        font-weight: bold;
+    }
+
+    span.bibtip {
+        color: red;
+        font-weight: bold;
+        cursor: pointer;
+        font-weight: bold;
+    }
+    span.ftntip {
+        color: red;
+        font-size: 80%;
+        position: relative;
+        bottom: 3px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+    span.notetip {
+        color: gray;
+        font-size: 80%;
+        position: relative;
+        bottom: 3px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+    span.booktip {
+        color: gray;
+        font-size: 80%;
+        position: relative;
+        bottom: 3px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+    span.authortip {
+        font-weight: bold;
+        cursor: pointer;
+    }
+    span.imagetip {
+        color: red;
+        font-weight: bold;
+        cursor: pointer;
+        font-weight: bold;
+    }
+    span.deftip {
+        color: orange;
+        cursor: pointer;
+    }
+    span.glosstip:hover {
+        color: blue;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    span.smallcaps {
+        font-size: 0.8em;
+    }
+    span.spacedout,
+    span.spaced {
+        letter-spacing: 2px;
+    }
+
+    // GLOSSARY ITEMS
+    .dictentrygrp {
+        & p {
+            text-indent: 0px;
+        }
+        & h1 {
+            font-size: small;
+        }
+        & > .dictentry-src,
+        & > .body,
+        & > .seemore,
+        & > .defrest,
+        & > .dictentry-bib,
+        & > .dictentry-dictalso,
+        & > .dictentrygrp-dictalso {
+            margin-left: 15px;
+        }
+
+        &-term {
+            font-weight: bold;
+            font-size: 14pt;
+            border-top: 1px solid black;
+        }
+    }
+
+    .dictentry-term {
+        font-weight: bold;
+        font-size: 11.9pt;
+    }
+
+    .dictalso-term {
+        color: blue;
+        font-weight: bold;
+    }
+    .dictentrygrp-dictalso-term {
+        font-weight: bold;
+    }
+    .dictentry-src {
+        font-weight: bold;
+        font-size: 11.9pt;
+        font-style: italic;
     }
 }

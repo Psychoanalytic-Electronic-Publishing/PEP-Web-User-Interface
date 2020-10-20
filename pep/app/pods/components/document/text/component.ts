@@ -1,15 +1,22 @@
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
 
 import ModalService from '@gavant/ember-modals/services/modal';
+import NotificationService from 'ember-cli-notifications/services/notifications';
 import { DS } from 'ember-data';
+import IntlService from 'ember-intl/services/intl';
 
+import { DOCUMENT_IMG_BASE_URL } from 'pep/constants/documents';
+import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import GlossaryTerm from 'pep/pods/glossary-term/model';
+import AjaxService from 'pep/services/ajax';
 import LoadingBarService from 'pep/services/loading-bar';
+import { parseXML } from 'pep/utils/dom';
 
 interface DocumentTextArgs {
-    text: XMLDocument;
+    text: string;
     onGlossaryItemClick: (term: string, termResults: GlossaryTerm[]) => void;
 }
 
@@ -17,6 +24,45 @@ export default class DocumentText extends Component<DocumentTextArgs> {
     @service store!: DS.Store;
     @service loadingBar!: LoadingBarService;
     @service modal!: ModalService;
+    @service notifications!: NotificationService;
+    @service intl!: IntlService;
+    @service ajax!: AjaxService;
+
+    @tracked xml?: XMLDocument;
+
+    constructor(owner: unknown, args: DocumentTextArgs) {
+        super(owner, args);
+        this.parseDocumentText(args.text);
+    }
+
+    loadXLTS() {
+        let request = new XMLHttpRequest();
+        request.open('GET', '/xmlToHtml.xslt', false);
+        request.send('');
+        return request.responseXML;
+    }
+
+    @dontRunInFastboot
+    async parseDocumentText(text: string) {
+        const xml = parseXML(text);
+
+        if (!(xml instanceof Error)) {
+            const xlts = await this.loadXLTS();
+
+            if (xlts && document.implementation && document.implementation.createDocument) {
+                const processor = new XSLTProcessor();
+                processor.setParameter(null, 'imageUrl', DOCUMENT_IMG_BASE_URL);
+                processor.importStylesheet(xlts);
+                const transformedDocument = (processor.transformToFragment(xml, document) as unknown) as XMLDocument;
+                this.addImages(transformedDocument);
+                this.xml = transformedDocument;
+            }
+        } else {
+            this.notifications.error(this.intl.t('document.text.error'));
+        }
+    }
+
+    addImages(document: XMLDocument) {}
 
     get text() {
         // const xmlimages = this.args.text.getElementsByTagName('image');
