@@ -38,7 +38,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
 
     loadXSLT() {
         let request = new XMLHttpRequest();
-        request.open('GET', `${ENV.assetBaseUrl}/xmlToHtml.xslt`, false);
+        request.open('GET', `${ENV.assetBaseUrl}xmlToHtml.xslt`, false);
         request.send('');
         return request.responseXML;
     }
