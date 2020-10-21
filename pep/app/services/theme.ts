@@ -1,12 +1,14 @@
-import Service from '@ember/service';
-import { inject as service } from '@ember/service';
+import Service, { inject as service } from '@ember/service';
+
 import HeadDataService from 'ember-cli-head/services/head-data';
 import IntlService from 'ember-intl/services/intl';
-import PepSessionService from 'pep/services/pep-session';
 
-import CurrentUserService from 'pep/services/current-user';
-import THEMES, { THEME_DEFAULT, ThemeId } from 'pep/constants/themes';
+import Color from 'color';
 import { PreferenceKey } from 'pep/constants/preferences';
+import THEMES, { THEME_DEFAULT, ThemeId } from 'pep/constants/themes';
+import { dontRunInFastboot } from 'pep/decorators/fastboot';
+import CurrentUserService from 'pep/services/current-user';
+import PepSessionService from 'pep/services/pep-session';
 
 export default class ThemeService extends Service {
     @service headData!: HeadDataService;
@@ -32,6 +34,7 @@ export default class ThemeService extends Service {
      */
     setup() {
         this.headData.set('themePath', this.currentTheme.cssPath);
+        this.injectLinkColors();
     }
 
     /**
@@ -41,6 +44,29 @@ export default class ThemeService extends Service {
     updateTheme(newThemeId: ThemeId) {
         this.currentUser.updatePrefs({ [PreferenceKey.THEME]: newThemeId });
         this.setup();
+    }
+
+    @dontRunInFastboot
+    injectLinkColors() {
+        const colors = this.currentTheme.colors.links;
+        const styles = `
+            .glosstip {
+                background-color: ${Color(colors.glossary).alpha(0.075)};
+            }
+            .glosstip:hover {
+                color: ${colors.glossary};
+            }
+            .bibtip {
+                color: ${colors.bibliography}
+            }
+            .pgx {
+                color: ${colors.pageReference}
+            }
+            .figuretip {
+                color: ${colors.figure}
+            }
+        `;
+        this.headData.set('linkColors', styles);
     }
 }
 

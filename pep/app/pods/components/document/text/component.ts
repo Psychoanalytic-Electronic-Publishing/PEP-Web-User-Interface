@@ -8,10 +8,12 @@ import NotificationService from 'ember-cli-notifications/services/notifications'
 import { DS } from 'ember-data';
 import IntlService from 'ember-intl/services/intl';
 
+import { DOCUMENT_IMG_BASE_URL } from 'pep/constants/documents';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import GlossaryTerm from 'pep/pods/glossary-term/model';
 import LoadingBarService from 'pep/services/loading-bar';
-import { findElement, findElements, parseXML, PepXmlTagNames } from 'pep/utils/dom';
+import ThemeService from 'pep/services/theme';
+import { parseXML } from 'pep/utils/dom';
 
 interface DocumentTextArgs {
     text: string;
@@ -24,6 +26,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
     @service modal!: ModalService;
     @service notifications!: NotificationService;
     @service intl!: IntlService;
+    @service theme!: ThemeService;
 
     @tracked xml?: XMLDocument;
 
@@ -32,50 +35,30 @@ export default class DocumentText extends Component<DocumentTextArgs> {
         this.parseDocumentText(args.text);
     }
 
-    @dontRunInFastboot
-    parseDocumentText(text: string) {
-        const XML = parseXML(text);
-        if (!(XML instanceof Error)) {
-            const artinfo = findElement(XML, PepXmlTagNames.ARTICLE_INFO);
-            artinfo.parentNode?.removeChild(artinfo);
+    loadXSLT() {
+        let request = new XMLHttpRequest();
+        request.open('GET', '/xmlToHtml.xslt', false);
+        request.send('');
+        return request.responseXML;
+    }
 
-            this.convertBibliography(XML);
-            this.convertPageBreaks(XML);
-            this.xml = XML;
+    @dontRunInFastboot
+    async parseDocumentText(text: string) {
+        const xml = parseXML(text);
+
+        if (!(xml instanceof Error)) {
+            const xslt = await this.loadXSLT();
+
+            if (xslt && document.implementation && document.implementation.createDocument) {
+                const processor = new XSLTProcessor();
+                processor.setParameter('', 'imageUrl', DOCUMENT_IMG_BASE_URL);
+                processor.importStylesheet(xslt);
+                const transformedDocument = (processor.transformToFragment(xml, document) as unknown) as XMLDocument;
+                this.xml = transformedDocument;
+            }
         } else {
             this.notifications.error(this.intl.t('document.text.error'));
         }
-    }
-
-    convertPageBreaks(xml: XMLDocument) {
-        const pageBreaks = findElements(xml, PepXmlTagNames.PAGE_BREAK);
-        pageBreaks?.forEach((tag) => {
-            const number = findElement(tag, PepXmlTagNames.NUMBER);
-            number.classList.add('text-muted');
-            number.classList.add('small');
-
-            const div = document.createElement('div');
-            div.classList.add('text-center');
-            div.appendChild(number);
-
-            tag.appendChild(div);
-        });
-    }
-
-    convertBibliography(xml: XMLDocument) {
-        const bibliography = findElement(xml, PepXmlTagNames.BIBLIOGRAPHY);
-        const information = findElement(bibliography, PepXmlTagNames.PAGE_BREAK);
-        const sources = findElements(bibliography, PepXmlTagNames.BIBLIOGRAPHY_SOURCE);
-        const html = sources.map((item) => {
-            const div = document.createElement('div');
-            div.appendChild(item);
-            return div;
-        });
-        html.forEach((item) => {
-            bibliography.appendChild(item);
-        });
-        bibliography.removeChild(information);
-        bibliography.appendChild(information);
     }
 
     get text() {

@@ -1,4 +1,5 @@
 import { classify } from '@ember/string';
+
 import DS from 'ember-data';
 import { pluralize } from 'ember-inflector';
 

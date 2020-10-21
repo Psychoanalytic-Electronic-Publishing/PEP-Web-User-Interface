@@ -502,7 +502,12 @@
     "exports": {
         "clipboard": {
             "success": "Copied to the clipboard",
-            "failure": "There was an issue copying to the clipboard. Please try again later"
+            "failure": "There was an issue copying to the clipboard. Please try again later."
+        }
+    },
+    "document": {
+        "text": {
+            "error": "Failed to load the document. Please contact a PEP administrator for assistance."
         }
     },
     "document": {
