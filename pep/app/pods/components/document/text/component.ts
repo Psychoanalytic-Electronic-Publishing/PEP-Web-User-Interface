@@ -51,8 +51,6 @@ export default class DocumentText extends Component<DocumentTextArgs> {
 
             if (xslt && document.implementation && document.implementation.createDocument) {
                 const processor = new XSLTProcessor();
-                const colors = this.theme.currentTheme.colors.links;
-                processor.setParameter('', 'glossaryColor', colors.glossary);
                 processor.setParameter('', 'imageUrl', DOCUMENT_IMG_BASE_URL);
                 processor.importStylesheet(xslt);
                 const transformedDocument = (processor.transformToFragment(xml, document) as unknown) as XMLDocument;
