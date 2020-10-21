@@ -41,15 +41,8 @@ export default class ReadDocument extends PageNav(Route) {
      */
     model(params: ReadDocumentParams) {
         return this.store.findRecord('document', params.document_id, {
-            adapterOptions: {
-                query: {
-                    page: 0
-                }
-            }
+            reload: true
         });
-        // return this.store.findRecord('document', params.document_id, {
-        //     reload: true
-        // });
     }
 
     /**

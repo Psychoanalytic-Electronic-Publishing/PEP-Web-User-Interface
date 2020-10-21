@@ -11,8 +11,6 @@ import IntlService from 'ember-intl/services/intl';
 import { DOCUMENT_IMG_BASE_URL } from 'pep/constants/documents';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import GlossaryTerm from 'pep/pods/glossary-term/model';
-import AjaxService from 'pep/services/ajax';
-import CurrentUserService from 'pep/services/current-user';
 import LoadingBarService from 'pep/services/loading-bar';
 import ThemeService from 'pep/services/theme';
 import { parseXML } from 'pep/utils/dom';
@@ -28,7 +26,6 @@ export default class DocumentText extends Component<DocumentTextArgs> {
     @service modal!: ModalService;
     @service notifications!: NotificationService;
     @service intl!: IntlService;
-    @service ajax!: AjaxService;
     @service theme!: ThemeService;
 
     @tracked xml?: XMLDocument;
@@ -38,7 +35,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
         this.parseDocumentText(args.text);
     }
 
-    loadXLTS() {
+    loadXSLT() {
         let request = new XMLHttpRequest();
         request.open('GET', '/xmlToHtml.xslt', false);
         request.send('');
@@ -50,24 +47,21 @@ export default class DocumentText extends Component<DocumentTextArgs> {
         const xml = parseXML(text);
 
         if (!(xml instanceof Error)) {
-            const xlts = await this.loadXLTS();
+            const xslt = await this.loadXSLT();
 
-            if (xlts && document.implementation && document.implementation.createDocument) {
+            if (xslt && document.implementation && document.implementation.createDocument) {
                 const processor = new XSLTProcessor();
                 const colors = this.theme.currentTheme.colors.links;
-                processor.setParameter(null, 'glossaryColor', colors.glossary);
-                processor.setParameter(null, 'imageUrl', DOCUMENT_IMG_BASE_URL);
-                processor.importStylesheet(xlts);
+                processor.setParameter('', 'glossaryColor', colors.glossary);
+                processor.setParameter('', 'imageUrl', DOCUMENT_IMG_BASE_URL);
+                processor.importStylesheet(xslt);
                 const transformedDocument = (processor.transformToFragment(xml, document) as unknown) as XMLDocument;
-                this.addImages(transformedDocument);
                 this.xml = transformedDocument;
             }
         } else {
             this.notifications.error(this.intl.t('document.text.error'));
         }
     }
-
-    addImages(document: XMLDocument) {}
 
     get text() {
         if (this.xml) {
