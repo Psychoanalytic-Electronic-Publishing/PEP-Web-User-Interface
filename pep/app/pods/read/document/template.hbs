@@ -50,12 +50,6 @@
         </p>
         <div class="card">
             <div class="card-body">
-                <h4 class="mb-3">
-                    {{html-safe this.model.title}}
-                    <div class="small text-muted">
-                        {{this.model.authorMast}}
-                    </div>
-                </h4>
                 <Alert @isShown={{this.model.accessLimited}} @type="warning">
                     {{#if this.model.noAccessMessage}}
                         <p class={{if this.session.isAuthenticated "mb-0"}}>

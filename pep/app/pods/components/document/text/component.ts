@@ -12,7 +12,9 @@ import { DOCUMENT_IMG_BASE_URL } from 'pep/constants/documents';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import GlossaryTerm from 'pep/pods/glossary-term/model';
 import AjaxService from 'pep/services/ajax';
+import CurrentUserService from 'pep/services/current-user';
 import LoadingBarService from 'pep/services/loading-bar';
+import ThemeService from 'pep/services/theme';
 import { parseXML } from 'pep/utils/dom';
 
 interface DocumentTextArgs {
@@ -27,6 +29,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
     @service notifications!: NotificationService;
     @service intl!: IntlService;
     @service ajax!: AjaxService;
+    @service theme!: ThemeService;
 
     @tracked xml?: XMLDocument;
 
@@ -51,6 +54,8 @@ export default class DocumentText extends Component<DocumentTextArgs> {
 
             if (xlts && document.implementation && document.implementation.createDocument) {
                 const processor = new XSLTProcessor();
+                const colors = this.theme.currentTheme.colors.links;
+                processor.setParameter(null, 'glossaryColor', colors.glossary);
                 processor.setParameter(null, 'imageUrl', DOCUMENT_IMG_BASE_URL);
                 processor.importStylesheet(xlts);
                 const transformedDocument = (processor.transformToFragment(xml, document) as unknown) as XMLDocument;

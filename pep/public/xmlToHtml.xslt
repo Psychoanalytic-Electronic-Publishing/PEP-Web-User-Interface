@@ -69,6 +69,7 @@
   <xsl:param name="css3" select="'pepepub.css'"/>
   <xsl:param name="report-warnings" select="'no'"/>
   <xsl:param name="imageUrl"/>
+  <xsl:param name="glossaryColor"/>
   <xsl:variable name="verbose" select="$report-warnings = 'yes'"/>
     <xsl:variable name="fa-right-arrow">
         <svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" role="img" focusable="false" aria-hidden="true" data-icon="arrow-right" data-prefix="fal" id="ember488" class="svg-inline--fa fa-arrow-right fa-w-14 ember-view"><path fill="currentColor" d="M216.464 36.465l-7.071 7.07c-4.686 4.686-4.686 12.284 0 16.971L387.887 239H12c-6.627 0-12 5.373-12 12v10c0 6.627 5.373 12 12 12h375.887L209.393 451.494c-4.686 4.686-4.686 12.284 0 16.971l7.071 7.07c4.686 4.686 12.284 4.686 16.97 0l211.051-211.05c4.686-4.686 4.686-12.284 0-16.971L233.434 36.465c-4.686-4.687-12.284-4.687-16.97 0z"></path>
@@ -582,7 +583,7 @@
 
   <xsl:template match="ftr">
     <xsl:text>&#13;</xsl:text>
-    <div class="footer above-border" data-class="ftr">
+    <div class="footer pt-1" data-class="ftr">
       <xsl:apply-templates/>
     </div>
   </xsl:template>
@@ -691,29 +692,21 @@
     <xsl:apply-templates/>
     <p class="figure">
       <img alt="{@xlink:href}">
-        <xsl:if test="@align">
-          <xsl:attribute name="style">
-            <xsl:value-of select="@align"/>
-          </xsl:attribute>
-        </xsl:if>
         <xsl:for-each select="alt-text">
           <xsl:attribute name="alt">
             <xsl:value-of select="normalize-space(string(.))"/>
           </xsl:attribute>
         </xsl:for-each>
-        <!--<xsl:call-template name="assign-src"/>  (This was for JATS)-->
-        <xsl:for-each select="@source">
 
+        <xsl:for-each select="@source">
           <xsl:attribute name="src">
             <xsl:variable name="image">
               <xsl:value-of select="."/>
             </xsl:variable>
-            <!--<xsl:value-of select="concat('g/', $image, '.jpg')"/>-->
-            <!--Use api call to grab image-->
-            <xsl:value-of select="concat($imageUrl, $image)"/>
-            <!--          <xsl:value-of select="."/>-->
+            <xsl:value-of select="concat($imageUrl, '/', $image)"/>
           </xsl:attribute>
         </xsl:for-each>
+
       </img>
     </p>
   </xsl:template>
@@ -1004,6 +997,21 @@
     </xsl:choose>
   </xsl:template>
 
+    <xsl:template match="figx"> <!--when not in metadata mode -->
+    <xsl:choose>
+      <xsl:when test="@rx"> <!-- for the generated links -->
+        <span class="peppopup figuretip figx" data-type="{@type}" data-docid="{@rx}" data-grpname="{@grpname}">
+          <xsl:value-of select="."/>
+        </span>
+      </xsl:when>
+      <xsl:otherwise> <!-- sometimes impx is manually tagged -->
+        <span class="figx figuretip" data-type="{@type}">
+          <xsl:value-of select="."/>
+        </span>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
   <xsl:template match="poem">
     <div class="poem">
       <xsl:call-template name="data-pagehelper"/>
@@ -1041,7 +1049,7 @@
   </xsl:template>
 
   <xsl:template match="p | p2">
-    <p class="para">
+    <p class="para my-1">
       <xsl:call-template name="assign-lang"/>
       <xsl:call-template name="data-pagehelper"/>
       <xsl:if test="@lgrid">
@@ -1170,7 +1178,7 @@
             <xsl:apply-templates/>
           </span>
           <xsl:if test="@rx"> <!--matched reference id-->
-            <a class="bibx" >
+            <a class="bibx pl-2" >
               <xsl:attribute name="href">
                 <xsl:value-of select="concat('#', '/Document/',@rx)"/>
               </xsl:attribute>
@@ -1256,7 +1264,7 @@
 
   <xsl:template match="body//tbl">
     <!-- other labels are displayed as blocks -->
-    <div class="table nrs">
+    <div class="table-responsive nrs my-3">
       <xsl:call-template name="data-pagehelper"/>
       <xsl:attribute name="id">
         <xsl:value-of select="@id"/>
@@ -1275,9 +1283,16 @@
     </div>
   </xsl:template>
 
+<!--
+  <xsl:template match="tbl">
+    <table class="table table-responsive">
+      <xsl:apply-templates/>
+    </table>
+  </xsl:template> -->
+
   <xsl:template match="row">
     <!-- other labels are displayed as blocks -->
-    <tr class="tablerow row">
+    <tr>
       <xsl:apply-templates/>
     </tr>
   </xsl:template>
@@ -1333,6 +1348,13 @@
 
 
   <xsl:template match="@content-type" mode="table-copy"/>
+
+  <xsl:template match="table">
+    <table class="table mb-0">
+      <xsl:apply-templates/>
+    </table>
+  </xsl:template>
+
 
 
   <!-- ============================================================= -->
@@ -1613,7 +1635,7 @@
     </xsl:call-template>
   </xsl:template>
 
-  <xsl:template match="fig" mode="label-text">
+  <xsl:template match="figx" mode="label-text">
     <xsl:param name="warning" select="true()"/>
     <!-- pass $warning in as false() if a warning string is not wanted
          (for example, if generating autonumbered labels) -->
