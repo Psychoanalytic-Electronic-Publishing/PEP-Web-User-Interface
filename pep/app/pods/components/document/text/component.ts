@@ -18,6 +18,7 @@ import { parseXML } from 'pep/utils/dom';
 
 interface DocumentTextArgs {
     text: string;
+    journalName: string;
     onGlossaryItemClick: (term: string, termResults: GlossaryTerm[]) => void;
 }
 
@@ -52,6 +53,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
 
             if (xslt && document.implementation && document.implementation.createDocument) {
                 const processor = new XSLTProcessor();
+                processor.setParameter('', 'journalName', this.args.journalName);
                 processor.setParameter('', 'imageUrl', DOCUMENT_IMG_BASE_URL);
                 processor.importStylesheet(xslt);
                 const transformedDocument = (processor.transformToFragment(xml, document) as unknown) as XMLDocument;

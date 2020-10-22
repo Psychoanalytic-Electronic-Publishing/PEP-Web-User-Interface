@@ -69,6 +69,7 @@
                 <div class="pep-document-content">
                     <ContentWithPlaceholder @placeholderInFastboot={{true}}>
                         <Document::Text
+                            @journalName={{this.model.sourceTitle}}
                             @text={{if this.model.accessLimited this.model.abstractCleaned this.model.documentCleaned}}
                             @onGlossaryItemClick={{this.viewGlossaryTerm}}
                         />
