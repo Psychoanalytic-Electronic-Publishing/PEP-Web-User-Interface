@@ -9,6 +9,7 @@ import NotificationService from 'ember-cli-notifications/services/notifications'
 import { DS } from 'ember-data';
 import IntlService from 'ember-intl/services/intl';
 
+import ENV from 'pep/config/environment';
 import { DOCUMENT_IMG_BASE_URL } from 'pep/constants/documents';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import GlossaryTerm from 'pep/pods/glossary-term/model';
@@ -19,6 +20,7 @@ import tippy from 'tippy.js';
 
 interface DocumentTextArgs {
     text: string;
+    journalName: string;
     onGlossaryItemClick: (term: string, termResults: GlossaryTerm[]) => void;
 }
 
@@ -40,7 +42,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
 
     loadXSLT() {
         let request = new XMLHttpRequest();
-        request.open('GET', '/xmlToHtml.xslt', false);
+        request.open('GET', `${ENV.assetBaseUrl}xmlToHtml.xslt`, false);
         request.send('');
         return request.responseXML;
     }
@@ -54,6 +56,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
 
             if (xslt && document.implementation && document.implementation.createDocument) {
                 const processor = new XSLTProcessor();
+                processor.setParameter('', 'journalName', this.args.journalName);
                 processor.setParameter('', 'imageUrl', DOCUMENT_IMG_BASE_URL);
                 processor.importStylesheet(xslt);
                 const transformedDocument = (processor.transformToFragment(xml, document) as unknown) as XMLDocument;

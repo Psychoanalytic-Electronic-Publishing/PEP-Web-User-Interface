@@ -20,6 +20,7 @@ declare const config: {
     apiNamespace: string;
     apiDataNamespace: string;
     apiAdminNamespace: string;
+    assetBaseUrl: string;
     authBaseUrl: string;
     clientId: number;
     cookieDomain: string;

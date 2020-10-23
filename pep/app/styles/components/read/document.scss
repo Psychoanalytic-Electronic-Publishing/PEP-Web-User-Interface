@@ -185,10 +185,6 @@ $document-paragraph-indent: 1.5rem;
             padding: 5px 10px;
             margin: 10px 0;
         }
-        &.abs {
-            margin-left: 36pt;
-            margin-right: 36pt;
-        }
         &.artauth {
             display: flex;
             justify-content: center;
@@ -204,8 +200,6 @@ $document-paragraph-indent: 1.5rem;
                 left: 0%;
                 border-top: 1px solid;
             }
-        }
-        &.footer::before {
         }
     }
 
@@ -237,14 +231,12 @@ $document-paragraph-indent: 1.5rem;
 
         &-term {
             font-weight: bold;
-            font-size: 14pt;
             border-top: 1px solid black;
         }
     }
 
     .dictentry-term {
         font-weight: bold;
-        font-size: 11.9pt;
     }
 
     .dictalso-term {
@@ -255,7 +247,6 @@ $document-paragraph-indent: 1.5rem;
     }
     .dictentry-src {
         font-weight: bold;
-        font-size: 11.9pt;
         font-style: italic;
     }
 
