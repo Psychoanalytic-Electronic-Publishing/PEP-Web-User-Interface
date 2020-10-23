@@ -54,6 +54,8 @@ module.exports = function(defaults) {
     app.import('node_modules/moment/moment.js', { using: [{ transformation: 'amd', as: 'moment' }] });
 
     app.import('node_modules/animate.css/animate.min.css');
+    app.import('node_modules/tippy.js/dist/tippy.css');
+    app.import('node_modules/tippy.js/themes/light.css');
 
     return app.toTree();
 };

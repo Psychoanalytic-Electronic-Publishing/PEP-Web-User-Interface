@@ -1,4 +1,5 @@
 import { action } from '@ember/object';
+import { scheduleOnce } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -15,6 +16,7 @@ import GlossaryTerm from 'pep/pods/glossary-term/model';
 import LoadingBarService from 'pep/services/loading-bar';
 import ThemeService from 'pep/services/theme';
 import { parseXML } from 'pep/utils/dom';
+import tippy from 'tippy.js';
 
 interface DocumentTextArgs {
     text: string;
@@ -31,6 +33,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
     @service theme!: ThemeService;
 
     @tracked xml?: XMLDocument;
+    containerElement?: HTMLElement;
 
     constructor(owner: unknown, args: DocumentTextArgs) {
         super(owner, args);
@@ -110,5 +113,26 @@ export default class DocumentText extends Component<DocumentTextArgs> {
         } finally {
             this.loadingBar.hide();
         }
+    }
+
+    @action
+    setupTooltips(element: HTMLElement) {
+        this.containerElement = element;
+        scheduleOnce('afterRender', this, this.attachTooltips);
+    }
+
+    attachTooltips() {
+        const elements = this.containerElement?.querySelectorAll('.bibtip');
+        elements?.forEach((item) => {
+            const id = item.attributes.getNamedItem('data-element')?.nodeValue;
+            const node = this.containerElement?.querySelector(`#${id}`);
+            if (node) {
+                tippy(item, {
+                    content: node.innerHTML,
+                    theme: 'light',
+                    allowHTML: true
+                });
+            }
+        });
     }
 }

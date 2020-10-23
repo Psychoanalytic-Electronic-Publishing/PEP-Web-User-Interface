@@ -46,14 +46,14 @@
             </div>
         </div>
         <p class="small text-muted">
-            {{this.model.documentRef}}
+            {{this.document.documentRef}}
         </p>
         <div class="card">
             <div class="card-body">
-                <Alert @isShown={{this.model.accessLimited}} @type="warning">
-                    {{#if this.model.noAccessMessage}}
+                <Alert @isShown={{this.document.accessLimited}} @type="warning">
+                    {{#if this.document.noAccessMessage}}
                         <p class={{if this.session.isAuthenticated "mb-0"}}>
-                            {{html-safe this.model.noAccessMessage}}
+                            {{html-safe this.document.noAccessMessage}}
                         </p>
                     {{/if}}
                     {{#unless this.session.isAuthenticated}}
@@ -68,11 +68,19 @@
                 </Alert>
                 <div class="pep-document-content">
                     <ContentWithPlaceholder @placeholderInFastboot={{true}}>
-                        <Document::Text
-                            @journalName={{this.model.sourceTitle}}
-                            @text={{if this.model.accessLimited this.model.abstractCleaned this.model.documentCleaned}}
-                            @onGlossaryItemClick={{this.viewGlossaryTerm}}
-                        />
+                        {{#if this.document.accessLimited}}
+                            <Document::Text
+                                @journalName={{this.document.sourceTitle}}
+                                @text={{this.document.abstractCleaned}}
+                                @onGlossaryItemClick={{this.viewGlossaryTerm}}
+                            />
+                        {{else}}
+                            <Document::Text
+                                @journalName={{this.document.sourceTitle}}
+                                @text={{this.document.documentCleaned}}
+                                @onGlossaryItemClick={{this.viewGlossaryTerm}}
+                            />
+                        {{/if}}
                     </ContentWithPlaceholder>
                 </div>
             </div>

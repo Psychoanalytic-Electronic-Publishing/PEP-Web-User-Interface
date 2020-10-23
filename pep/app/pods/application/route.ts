@@ -72,6 +72,10 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
             }
         }
 
+        if (this.fastboot.isFastBoot) {
+            this.auth.dontRedirectOnLogin = true;
+        }
+
         try {
             if (this.session.isAuthenticated) {
                 await this.currentUser.load();
@@ -92,7 +96,6 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
             await this.currentUser.load();
         } catch (err) {
             this.notifications.error(this.intl.t('login.error'));
-            this.session.invalidate();
             throw err;
         }
 

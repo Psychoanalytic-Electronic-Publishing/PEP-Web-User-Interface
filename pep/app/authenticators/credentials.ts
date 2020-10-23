@@ -1,16 +1,17 @@
-import { inject as service } from '@ember/service';
-import { isEmpty } from '@ember/utils';
 import { run } from '@ember/runloop';
 import { EmberRunTimer } from '@ember/runloop/types';
+import { inject as service } from '@ember/service';
+import { isEmpty } from '@ember/utils';
+
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
-import { resolve, reject } from 'rsvp';
 import BaseAuthenticator from 'ember-simple-auth/authenticators/base';
 
+import { PepSecureAuthenticatedData } from 'pep/api';
+import ENV from 'pep/config/environment';
 import AjaxService from 'pep/services/ajax';
 import PepSessionService from 'pep/services/pep-session';
-import ENV from 'pep/config/environment';
-import { PepSecureAuthenticatedData } from 'pep/api';
 import { serializeQueryParams } from 'pep/utils/url';
+import { reject, resolve } from 'rsvp';
 
 export enum SessionType {
     CREDENTIALS = 'credentials',
@@ -106,6 +107,7 @@ export default class CredentialsAuthenticator extends BaseAuthenticator {
                 method: 'POST',
                 headers: this.authenticationHeaders
             });
+            return resolve();
         } catch (errors) {
             return resolve();
         } finally {

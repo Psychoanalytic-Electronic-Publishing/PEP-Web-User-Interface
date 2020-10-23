@@ -53,7 +53,20 @@ export const SearchSorts = [
 export function transformSearchSortToAPI(sorts: string[]) {
     const sort = sorts[0];
     const transformedSort = transformSortDirectionToAPI(sort);
-    return [transformedSort];
+    const sortName = transformedSort.split(' ');
+    const direction = sortName[1];
+    let name = sortName[0];
+    if (name === SearchTableSortFields.AUTHOR_MAST) {
+        name = SearchSortType.AUTHOR;
+    } else if (name === SearchTableSortFields.YEAR) {
+        name = SearchSortType.YEAR;
+    } else if (name === SearchTableSortFields.TITLE) {
+        name = SearchSortType.TITLE;
+    } else {
+        name = SearchSortType.SOURCE;
+    }
+
+    return [`${name} ${direction}`];
 }
 
 /**
@@ -77,7 +90,7 @@ export function transformSearchSortsToTable(sorts?: string[]) {
             transformedName = SearchTableSortFields.YEAR;
         } else if (name === SearchSortType.TITLE) {
             transformedName = SearchTableSortFields.TITLE;
-        } else {
+        } else if (name === SearchSortType.SOURCE) {
             transformedName = SearchTableSortFields.DOCUMENT_REF;
         }
 

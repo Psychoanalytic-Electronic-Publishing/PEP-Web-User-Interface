@@ -6,14 +6,14 @@
                     <Loading::Read::Results />
                 {{else}}
                     <div class="d-flex justify-content-between align-items-center mb-2">
-                        <h5 class="mb-0">
+                        <h5 class="mb-0 font-size-normal">
                             {{t
                                 "common.numResults"
                                 count=(format-number (or this.paginator.metadata.fullCount 0))
                                 htmlSafe=true
                             }}
                             {{#if this.paginator.metadata.description}}
-                                <span class="text-muted font-size-secondary">
+                                <span class="text-muted">
                                     {{t "search.description" description=this.paginator.metadata.description}}
                                 </span>
                             {{/if}}

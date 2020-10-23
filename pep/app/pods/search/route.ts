@@ -17,7 +17,6 @@ import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
 import SidebarService from 'pep/services/sidebar';
 import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
-import { transformSearchSortToAPI } from 'pep/utils/sort';
 
 export interface SearchParams {
     q: string;
@@ -70,12 +69,15 @@ export default class Search extends PageNav(Route) {
         const searchParams = this.buildQueryParams(params);
         // if no search was submitted, don't fetch any results
         if (hasSearchQuery(searchParams)) {
-            const controller = this.controllerFor(this.routeName);
+            const controller = this.controllerFor(this.routeName) as SearchController;
             const queryParams = buildQueryParams({
                 context: controller,
                 pagingRootKey: null,
                 filterRootKey: null,
-                sorts: transformSearchSortToAPI([this.currentUser.preferences?.searchSortType.id ?? '']),
+                sorts:
+                    controller.selectedView.id === controller.tableView
+                        ? ['']
+                        : [this.currentUser.preferences?.searchSortType.id ?? ''],
                 processQueryParams: (params) => ({ ...params, ...searchParams })
             });
             return this.store.query('search-document', queryParams);
@@ -148,7 +150,10 @@ export default class Search extends PageNav(Route) {
             metadata: model.meta,
             pagingRootKey: null,
             filterRootKey: null,
-            sorts: transformSearchSortToAPI([this.currentUser.preferences?.searchSortType.id ?? '']),
+            sorts:
+                controller.selectedView.id === controller.tableView
+                    ? ['']
+                    : [this.currentUser.preferences?.searchSortType.id ?? ''],
             processQueryParams: controller.processQueryParams,
             onChangeSorting: controller.onChangeSorting
         });
