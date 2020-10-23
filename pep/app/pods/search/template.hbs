@@ -78,7 +78,7 @@
                                     <div class="d-flex">
                                         <DropdownMenu @horizontalPosition="auto-right" as |DD|>
                                             <DD.Trigger @htmlTag="a" class="p-1">
-                                                <FaIcon @icon="download" @size="lg" />
+                                                <FaIcon @icon="download" @size="lg" @prefix="fas" />
                                             </DD.Trigger>
                                             <DD.Content class="dropdown-menu">
                                                 <DropdownAction @dd={{DD}} @action={{this.exportCSV}}>
@@ -95,12 +95,13 @@
                                             @error={{this.clipboardFailure}}
                                             @clipboardText={{this.exportClipboard}}
                                         >
-                                            <FaIcon @icon="clipboard" @size="lg" />
+                                            <FaIcon @icon="clipboard" @size="lg" @prefix="fas" />
                                         </CopyButton>
                                         <Button
                                             @action={{this.print}}
                                             @type="link"
                                             @icon="print"
+                                            @iconPrefix="fas"
                                             @iconSize="lg"
                                             @tooltip={{t "common.print"}}
                                             class="p-1"
@@ -136,51 +137,7 @@
                                 </p>
                             </div>
                         {{else}}
-                            <div class="m-3 m-md-5 p-3 bg-backdrop-well rounded text-muted">
-                                <h5>
-                                    {{t "search.empty.heading"}}
-                                </h5>
-                                <p class="mb-4">
-                                    <FaIcon @icon="arrow-left" />
-                                    {{t "search.empty.instructions"}}
-                                </p>
-                                <p class="d-lg-none mb-4">
-                                    <Button
-                                        @type="primary"
-                                        @size="lg"
-                                        @blockLayout={{this.fastbootMedia.isMobile}}
-                                        @icon="search"
-                                        @label={{t "search.new"}}
-                                        @action={{this.showSearch}}
-                                    />
-                                </p>
-                                <h5>
-                                    {{t "search.empty.tips.heading"}}
-                                </h5>
-                                <p>
-                                    {{t "search.empty.tips.instructions"}}
-                                </p>
-                                <ul>
-                                    <li>
-                                        {{t "search.empty.tips.tip1" htmlSafe=true}}
-                                    </li>
-                                    <li>
-                                        {{t "search.empty.tips.tip2" htmlSafe=true}}
-                                    </li>
-                                    <li>
-                                        {{t "search.empty.tips.tip3" htmlSafe=true}}
-                                    </li>
-                                    <li>
-                                        {{t "search.empty.tips.tip4" htmlSafe=true}}
-                                    </li>
-                                    <li>
-                                        {{t "search.empty.tips.tip5" htmlSafe=true}}
-                                    </li>
-                                    <li>
-                                        {{t "search.empty.tips.tip6" htmlSafe=true}}
-                                    </li>
-                                </ul>
-                            </div>
+                            <Home />
                         {{/if}}
                     </div>
                 {{else}}
