@@ -34,7 +34,7 @@ export default class ThemeService extends Service {
      */
     setup() {
         this.headData.set('themePath', this.currentTheme.cssPath);
-        // this.injectLinkColors();
+        this.injectLinkColors();
     }
 
     /**

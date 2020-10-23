@@ -53,6 +53,7 @@ export default class ReadDocument extends Controller {
     @tracked _searchTerms: string | null = null;
     @tracked paginator!: Pagination<Document>;
     @tracked showHitsInContext = false;
+    @tracked document?: Document = this.model;
 
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
@@ -181,7 +182,7 @@ export default class ReadDocument extends Controller {
         try {
             this.loadingBar.show();
             const model = await this.store.findRecord('document', this.model.id, { reload: true });
-            set(this, 'model', model);
+            set(this, 'document', model);
             this.loadingBar.hide();
             return model;
         } catch (err) {
