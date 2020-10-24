@@ -46,14 +46,14 @@
             </div>
         </div>
         <p class="small text-muted">
-            {{this.document.documentRef}}
+            {{this.model.documentRef}}
         </p>
         <div class="card">
             <div class="card-body">
-                <Alert @isShown={{this.document.accessLimited}} @type="warning">
-                    {{#if this.document.noAccessMessage}}
+                <Alert @isShown={{this.model.accessLimited}} @type="warning">
+                    {{#if this.model.noAccessMessage}}
                         <p class={{if this.session.isAuthenticated "mb-0"}}>
-                            {{html-safe this.document.noAccessMessage}}
+                            {{html-safe this.model.noAccessMessage}}
                         </p>
                     {{/if}}
                     {{#unless this.session.isAuthenticated}}
@@ -68,19 +68,11 @@
                 </Alert>
                 <div class="pep-document-content">
                     <ContentWithPlaceholder @placeholderInFastboot={{true}}>
-                        {{#if this.document.accessLimited}}
-                            <Document::Text
-                                @journalName={{this.document.sourceTitle}}
-                                @text={{this.document.abstractCleaned}}
-                                @onGlossaryItemClick={{this.viewGlossaryTerm}}
-                            />
-                        {{else}}
-                            <Document::Text
-                                @journalName={{this.document.sourceTitle}}
-                                @text={{this.document.documentCleaned}}
-                                @onGlossaryItemClick={{this.viewGlossaryTerm}}
-                            />
-                        {{/if}}
+                        <Document::Text
+                            @journalName={{this.model.sourceTitle}}
+                            @text={{if this.model.accessLimited this.model.abstractCleaned this.model.documentCleaned}}
+                            @onGlossaryItemClick={{this.viewGlossaryTerm}}
+                        />
                     </ContentWithPlaceholder>
                 </div>
             </div>

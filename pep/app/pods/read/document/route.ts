@@ -95,11 +95,15 @@ export default class ReadDocument extends PageNav(Route) {
 
             //if no search was submitted, don't fetch any results
             if (hasSearchQuery(searchParams)) {
-                const controller = this.controllerFor(this.routeName);
+                const controller = this.controllerFor(this.routeName) as ReadDocumentController;
                 const queryParams = buildQueryParams({
                     context: controller,
                     pagingRootKey: null,
                     filterRootKey: null,
+                    sorts:
+                        controller.selectedView.id === controller.tableView
+                            ? ['']
+                            : [this.currentUser.preferences?.searchSortType.id ?? ''],
                     processQueryParams: (params) => ({ ...params, ...searchParams })
                 });
 
@@ -135,6 +139,10 @@ export default class ReadDocument extends PageNav(Route) {
             modelName: 'search-document',
             models: this.searchResults ?? [],
             metadata: this.searchResultsMeta,
+            sorts:
+                controller.selectedView.id === controller.tableView
+                    ? ['']
+                    : [this.currentUser.preferences?.searchSortType.id ?? ''],
             pagingRootKey: null,
             filterRootKey: null,
             processQueryParams: controller.processQueryParams

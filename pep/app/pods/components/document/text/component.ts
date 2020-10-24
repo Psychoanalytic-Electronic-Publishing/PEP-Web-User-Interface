@@ -116,7 +116,12 @@ export default class DocumentText extends Component<DocumentTextArgs> {
     }
 
     @action
-    setupTooltips(element: HTMLElement) {
+    parseDocument() {
+        this.parseDocumentText(this.args.text);
+    }
+
+    @action
+    setupListeners(element: HTMLElement) {
         this.containerElement = element;
         scheduleOnce('afterRender', this, this.attachTooltips);
     }

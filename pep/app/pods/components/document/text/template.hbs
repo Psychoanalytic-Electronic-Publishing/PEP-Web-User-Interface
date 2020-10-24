@@ -1,3 +1,8 @@
-<div class="document-text" {{on "click" this.onDocumentClick}} {{did-update this.setupTooltips this.text}}>
+<div
+    class="document-text"
+    {{on "click" this.onDocumentClick}}
+    {{did-update this.setupListeners this.text}}
+    {{did-update this.parseDocument @text}}
+>
     {{html-safe this.text}}
 </div>
