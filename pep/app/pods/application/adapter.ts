@@ -93,12 +93,16 @@ export default class Application extends DS.RESTAdapter.extend(FastbootAdapter) 
      */
     handleResponse(status: number, headers: {}, payload: {}, requestData: {}) {
         if (status === 401) {
-            if (this.session.isAuthenticated) {
-                this.session.invalidate();
-                return reject();
-            } else {
-                this.browserRedirect('/login');
-                return {};
+            try {
+                if (this.session.isAuthenticated) {
+                    this.session.invalidate();
+                    return reject();
+                } else {
+                    this.browserRedirect('/login');
+                    return {};
+                }
+            } catch (errors) {
+                return errors;
             }
         }
 

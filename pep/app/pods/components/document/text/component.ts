@@ -135,7 +135,8 @@ export default class DocumentText extends Component<DocumentTextArgs> {
                 tippy(item, {
                     content: node.innerHTML,
                     theme: 'light',
-                    allowHTML: true
+                    allowHTML: true,
+                    interactive: true
                 });
             }
         });
