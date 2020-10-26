@@ -22,11 +22,15 @@ export default class GlossaryTerm extends ApplicationAdapter {
      * @returns {string}
      * @memberof GlossaryTerm
      */
-    urlForQuery<K extends string | number>(query: { termIdentifier?: string }, modelName: K) {
+    urlForQuery<K extends string | number>(
+        query: { queryType?: string; return_format?: 'HTML' | 'XML' | 'TEXTONLY'; termIdentifier?: string },
+        modelName: K
+    ) {
         const newPathSegment = query?.termIdentifier;
         if (query?.termIdentifier) {
             delete query.termIdentifier;
         }
+        query.return_format = 'XML';
 
         const url = super.urlForQuery(query, modelName);
         return url + `/${newPathSegment}`;

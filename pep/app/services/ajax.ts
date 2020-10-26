@@ -105,9 +105,13 @@ export default class AjaxService extends Service {
         error.response = response;
         error.payload = await response.json();
 
-        if (status === 401 && this.session.isAuthenticated) {
-            this.session.invalidate();
-            return reject();
+        try {
+            if (status === 401 && this.session.isAuthenticated) {
+                this.session.invalidate();
+                return reject();
+            }
+        } catch (errors) {
+            return errors;
         }
 
         return error as Error;

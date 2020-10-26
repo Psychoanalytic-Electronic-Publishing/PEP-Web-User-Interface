@@ -167,7 +167,7 @@
             "heading": "Refine",
             "instructions": "Check to limit results to only matching articles.",
             "showLess": "Show less",
-            "showAll": "show all",
+            "showAll": "Show more",
             "none": "No refine options available",
             "apply": {
                 "label": "Refine search"

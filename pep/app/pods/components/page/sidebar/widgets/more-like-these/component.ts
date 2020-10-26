@@ -1,16 +1,17 @@
-import Component from '@glimmer/component';
-import { inject as service } from '@ember/service';
-
-import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
-import { WIDGET } from 'pep/constants/sidebar';
-import Document from 'pep/pods/document/model';
-import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import { action } from '@ember/object';
+import { inject as service } from '@ember/service';
+import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import SimilarityMatch from 'pep/pods/similarity-match/model';
-import { DS } from 'ember-data';
+
 import { restartableTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
+import { DS } from 'ember-data';
+
+import { WIDGET } from 'pep/constants/sidebar';
+import { dontRunInFastboot } from 'pep/decorators/fastboot';
+import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
+import Document from 'pep/pods/document/model';
+import SimilarityMatch from 'pep/pods/similarity-match/model';
 
 interface PageSidebarWidgetsMoreLikeTheseArgs extends PageSidebarWidgetArgs {}
 
@@ -35,7 +36,7 @@ export default class PageSidebarWidgetsMoreLikeThese extends Component<PageSideb
     @restartableTask
     *loadSimilarFromDocument() {
         if (this.data?.id) {
-            const results = yield this.store.findRecord('document', this.data.id, {
+            const results = yield this.store.findRecord('abstract', this.data.id, {
                 reload: true,
                 adapterOptions: { query: { similarcount: this.similarCount } }
             });

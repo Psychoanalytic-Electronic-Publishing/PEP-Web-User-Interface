@@ -215,9 +215,10 @@
 
             <xsl:for-each select="artinfo">
                 <div id="{$this-article}-artinfo" class="artinfo" data-arttype="{@arttype}" data-journal="{@j}">
-
-                    <xsl:apply-templates mode="metadata" select="arttitle"/>
-                    <xsl:apply-templates mode="metadata" select="artsub"/>
+                    <div class="art-title d-flex flex-column justify-content-center align-items-center flex-lg-row flex-wrap mt-3">
+                        <xsl:apply-templates mode="metadata" select="arttitle"/>
+                        <xsl:apply-templates mode="metadata" select="artsub"/>
+                    </div>
                     <xsl:apply-templates mode="metadata" select="artauth"/>
                     <xsl:apply-templates mode="metadata" select="artkwds"/>
 
@@ -410,7 +411,7 @@
 
     <xsl:template match="artsub" mode="metadata">
         <p class="artsub">
-            <xsl:value-of select="."/>
+            &#58; <xsl:value-of select="."/>
         </p>
     </xsl:template>
 
@@ -703,7 +704,7 @@
     <xsl:template match="graphic">
         <xsl:apply-templates/>
         <p class="figure">
-            <img alt="{@xlink:href}">
+            <img alt="{@xlink:href}" class="img-fluid">
                 <xsl:for-each select="alt-text">
                     <xsl:attribute name="alt">
                         <xsl:value-of select="normalize-space(string(.))"/>

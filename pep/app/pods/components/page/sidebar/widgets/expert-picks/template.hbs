@@ -2,25 +2,19 @@
     @scrollableNamespace="sidebar-right"
     @isOpen={{this.isOpen}}
     @toggle={{fn @toggleIsOpen this.widget}}
-    {{did-insert this.onElementInsert}}
     class="mb-2"
-as |Panel|>
+    {{did-insert this.onElementInsert}} as |Panel|
+>
     <Panel.header @title={{t "relatedInfo.widgets.expertPicks.title"}} />
     <Panel.body>
-        <ContentWithPlaceholder
-            @placeholderComponent="loading/widget"
-            @isLoading={{this.loadResults.isRunning}}
-        >
+        <ContentWithPlaceholder @placeholderComponent="loading/widget" @isLoading={{this.loadResults.isRunning}}>
             <ul class="list-unstyled">
                 {{#each this.results as |result|}}
                     <li class="mb-2">
                         <div>
                             <LinkTo @route="read.document" @model={{result.id}}>
-                                {{html-safe result.title}}
+                                {{html-safe result.documentRef}}
                             </LinkTo>
-                            <div class="text-muted small">
-                                {{html-safe result.sourceTitle}}
-                            </div>
                         </div>
                     </li>
                 {{else}}
