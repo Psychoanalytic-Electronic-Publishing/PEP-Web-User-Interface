@@ -30,8 +30,9 @@ export default class TablesSearch extends Component<TablesSearchArgs> {
     @service fastbootMedia!: FastbootMediaService;
     @service fastboot!: FastbootService;
 
-    @tracked expandedRows = this.args.rows;
-    defaultExpandedRows = [];
+    get expandedRows() {
+        return this.args.showHitsInContext ? this.args.rows : [];
+    }
 
     get headerStickyOffset() {
         return this.args.headerStickyOffset ?? '70';

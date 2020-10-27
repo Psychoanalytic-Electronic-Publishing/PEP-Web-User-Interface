@@ -12,10 +12,6 @@
     @sorts={{@sorts}}
     @rowComponent="tables/row/expandable-selected-row"
     @headerStickyOffset={{this.headerStickyOffset}}
-    @tableMeta={{hash
-        document=@document
-        expandedRowComponent="tables/row/search"
-        expandedRows=(if @showHitsInContext this.expandedRows this.defaultExpandedRows)
-    }}
+    @tableMeta={{hash document=@document expandedRowComponent="tables/row/search" expandedRows=this.expandedRows}}
     @renderAllRows={{this.fastboot.isFastBoot}}
 />

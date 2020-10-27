@@ -34,6 +34,17 @@ export default class RowSelection extends Service {
     }
 
     /**
+     * Clear the selections back to the default state
+     *
+     * @memberof RowSelection
+     */
+    clear() {
+        this.includedRecords = [];
+        this.excludedRecords = [];
+        this.totalRecordCount = 0;
+    }
+
+    /**
      * Toggle the selected row
      *
      * @param {string} id
