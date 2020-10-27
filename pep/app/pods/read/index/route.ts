@@ -1,5 +1,4 @@
 import Controller from '@ember/controller';
-import Transition from '@ember/routing/-private/transition';
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 
@@ -21,8 +20,8 @@ export default class ReadIndex extends Route {
         copySearchToController(appController);
     }
 
-    redirect(model: any, transition: Transition) {
-        if (transition.to.name === this.routeName && this.currentUser.lastViewedDocumentId) {
+    redirect() {
+        if (this.currentUser.lastViewedDocumentId) {
             this.transitionTo('read.document', this.currentUser.lastViewedDocumentId);
         }
     }
