@@ -43,6 +43,7 @@ export default class Application extends Controller {
     @tracked viewedCount: string = '';
     @tracked viewedPeriod: ViewPeriod = ViewPeriod.PAST_WEEK;
     @tracked searchTerms: SearchTermValue[] = [];
+    @tracked lastViewedDocument?: Document;
 
     /**
      * Submits the application/nav sidebar's search form and transitions the

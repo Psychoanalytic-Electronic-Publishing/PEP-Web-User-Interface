@@ -1,12 +1,14 @@
-import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
+import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
+
 import ModalService from '@gavant/ember-modals/services/modal';
 
-import DrawerService from 'pep/services/drawer';
 import AuthService from 'pep/services/auth';
 import ConfigurationService from 'pep/services/configuration';
+import CurrentUserService from 'pep/services/current-user';
+import DrawerService from 'pep/services/drawer';
 import PepSessionService from 'pep/services/pep-session';
 
 interface PageDrawerArgs {
@@ -19,11 +21,16 @@ export default class PageDrawer extends Component<PageDrawerArgs> {
     @service auth!: AuthService;
     @service modal!: ModalService;
     @service configuration!: ConfigurationService;
+    @service currentUser!: CurrentUserService;
 
     @tracked isUserMenuOpen = false;
 
     get defaultSearchParams() {
         return this.configuration.defaultSearchParams;
+    }
+
+    get readDisabled() {
+        return !!!this.currentUser.lastViewedDocumentId;
     }
 
     /**

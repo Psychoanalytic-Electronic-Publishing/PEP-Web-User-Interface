@@ -38,7 +38,11 @@
                     </LinkTo>
                 </Page::Drawer::NavItem>
                 <Page::Drawer::NavItem class="mt-1">
-                    <LinkTo @route="read" class="list-group-item list-group-item-action">
+                    <LinkTo
+                        @route="read"
+                        @disabled={{this.readDisabled}}
+                        class="list-group-item list-group-item-action"
+                    >
                         <FaIcon @icon="list" @fixedWidth={{true}} class="mr-2" />
                         {{t "nav.read"}}
                     </LinkTo>

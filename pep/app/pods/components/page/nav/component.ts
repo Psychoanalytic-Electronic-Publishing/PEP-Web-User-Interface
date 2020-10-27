@@ -6,6 +6,7 @@ import ModalService from '@gavant/ember-modals/services/modal';
 
 import AuthService from 'pep/services/auth';
 import ConfigurationService from 'pep/services/configuration';
+import CurrentUserService from 'pep/services/current-user';
 import DrawerService from 'pep/services/drawer';
 import PepSessionService from 'pep/services/pep-session';
 
@@ -19,6 +20,11 @@ export default class PageNav extends Component<PageNavArgs> {
     @service auth!: AuthService;
     @service drawer!: DrawerService;
     @service configuration!: ConfigurationService;
+    @service currentUser!: CurrentUserService;
+
+    get readDisabled() {
+        return !this.currentUser.lastViewedDocumentId;
+    }
 
     /**
      * Opens the user preferences modal dialog
