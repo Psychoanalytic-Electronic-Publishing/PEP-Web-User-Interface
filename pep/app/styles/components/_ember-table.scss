@@ -24,4 +24,14 @@
     .data-table-col-pan-btn-right {
         right: 12px;
     }
+
+    tr {
+        cursor: auto;
+        .custom-control-label {
+            &::before,
+            &::after {
+                cursor: pointer;
+            }
+        }
+    }
 }
