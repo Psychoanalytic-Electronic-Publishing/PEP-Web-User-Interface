@@ -85,6 +85,13 @@ export default class TablesSearch extends Component<TablesSearchArgs> {
                 valuePath: SearchTableSortFields.DOCUMENT_REF,
                 isSortable: true,
                 staticWidth: 100
+            },
+            {
+                valuePath: 'id',
+                cellComponent: 'tables/cell/search-action',
+                isSortable: false,
+                width: 50,
+                staticWidth: 50
             }
         ];
     }
