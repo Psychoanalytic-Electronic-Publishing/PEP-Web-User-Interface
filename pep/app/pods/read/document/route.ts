@@ -147,6 +147,7 @@ export default class ReadDocument extends PageNav(Route) {
             filterRootKey: null,
             processQueryParams: controller.processQueryParams
         });
+        this.currentUser.lastViewedDocumentId = model.id;
     }
 
     /**

@@ -192,7 +192,7 @@
                 <a class="anchor" name="{$document-id}" id="{$document-id}"/>
                 <a class="toc-link" href="/#/ArticleList/?journal={$journal-code}">
                     <!--<img src="./images/banner{$journal-code}Logo.gif" alt=""/>-->
-                    <img>
+                    <img class="img-fluid">
                         <xsl:attribute name="src" >
                             <xsl:value-of select="concat($imageUrl, '/banner', $journal-code, 'Logo.gif')"/>
                         </xsl:attribute>
