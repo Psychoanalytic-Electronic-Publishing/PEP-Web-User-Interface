@@ -24,11 +24,11 @@ export default class TablesCellSearchAction extends Component<TablesCellSearchAc
     @service intl!: IntlService;
 
     get showFavorites() {
-        return typeof this.args.showFavorites === 'boolean' ? this.args.showFavorites : true;
+        return this.args.showFavorites ?? true;
     }
 
     get showReadLater() {
-        return typeof this.args.showReadLater === 'boolean' ? this.args.showReadLater : true;
+        return this.args.showReadLater ?? true;
     }
 
     /**
