@@ -105,7 +105,6 @@ export default class CredentialsAuthenticator extends BaseAuthenticator {
     async invalidate(data: PepSecureAuthenticatedData) {
         try {
             const params = serializeQueryParams({ SessionId: data.SessionId });
-            this.currentUser.clearPreferences();
             await this.ajax.request(`${ENV.authBaseUrl}/Users/Logout?${params}`, {
                 method: 'POST',
                 headers: this.authenticationHeaders
