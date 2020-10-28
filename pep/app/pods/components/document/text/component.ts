@@ -1,4 +1,5 @@
 import { action } from '@ember/object';
+import RouterService from '@ember/routing/router-service';
 import { scheduleOnce } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
@@ -12,6 +13,7 @@ import IntlService from 'ember-intl/services/intl';
 import ENV from 'pep/config/environment';
 import { DOCUMENT_IMG_BASE_URL } from 'pep/constants/documents';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
+import Document from 'pep/pods/document/model';
 import GlossaryTerm from 'pep/pods/glossary-term/model';
 import LoadingBarService from 'pep/services/loading-bar';
 import ThemeService from 'pep/services/theme';
@@ -19,8 +21,7 @@ import { parseXML } from 'pep/utils/dom';
 import tippy from 'tippy.js';
 
 interface DocumentTextArgs {
-    text: string;
-    journalName: string;
+    document: Document;
     onGlossaryItemClick: (term: string, termResults: GlossaryTerm[]) => void;
 }
 
@@ -31,13 +32,16 @@ export default class DocumentText extends Component<DocumentTextArgs> {
     @service notifications!: NotificationService;
     @service intl!: IntlService;
     @service theme!: ThemeService;
+    @service router!: RouterService;
 
     @tracked xml?: XMLDocument;
     containerElement?: HTMLElement;
 
     constructor(owner: unknown, args: DocumentTextArgs) {
         super(owner, args);
-        this.parseDocumentText(args.text);
+        this.parseDocumentText(
+            args.document.accessLimited ? args.document.abstractCleaned : args.document.documentCleaned
+        );
     }
 
     loadXSLT() {
@@ -56,7 +60,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
 
             if (xslt && document.implementation && document.implementation.createDocument) {
                 const processor = new XSLTProcessor();
-                processor.setParameter('', 'journalName', this.args.journalName);
+                processor.setParameter('', 'journalName', this.args.document.sourceTitle);
                 processor.setParameter('', 'imageUrl', DOCUMENT_IMG_BASE_URL);
                 processor.importStylesheet(xslt);
                 const transformedDocument = (processor.transformToFragment(xml, document) as unknown) as XMLDocument;
@@ -90,7 +94,30 @@ export default class DocumentText extends Component<DocumentTextArgs> {
             } else if (groupName) {
                 this.viewGlossaryTerm(groupName);
             }
+        } else if (type === 'BIBX') {
+            const id = attributes.getNamedItem('data-document-id')?.nodeValue;
+            if (id) {
+                this.router.transitionTo('read.document', id);
+            }
+        } else if (type === 'pagelink') {
+            const reference = attributes.getNamedItem('r')?.nodeValue;
+            const referenceArray = reference?.split(/\.(?=[^\.]+$)/) ?? [];
+            const documentId = referenceArray[0];
+            const page = referenceArray[1];
+            if (documentId === this.args.document.id) {
+                //scroll to page number
+                this.scrollToPage(page);
+            } else {
+                this.router.transitionTo('read.document', documentId, {
+                    page
+                });
+            }
         }
+    }
+
+    scrollToPage(page: string) {
+        this.containerElement?.querySelector('.bibtip');
+        element.scrollIntoView();
     }
 
     /**
@@ -117,7 +144,9 @@ export default class DocumentText extends Component<DocumentTextArgs> {
 
     @action
     parseDocument() {
-        this.parseDocumentText(this.args.text);
+        this.parseDocumentText(
+            this.args.document.accessLimited ? this.args.document.abstractCleaned : this.args.document.documentCleaned
+        );
     }
 
     @action
@@ -136,9 +165,20 @@ export default class DocumentText extends Component<DocumentTextArgs> {
                     content: node.innerHTML,
                     theme: 'light',
                     allowHTML: true,
-                    interactive: true
+                    interactive: true,
+                    trigger: 'mouseenter focus click'
                 });
             }
+        });
+
+        const relatedBibliographies = this.containerElement?.querySelectorAll('.bibx-related-info');
+        relatedBibliographies?.forEach((item) => {
+            tippy(item, {
+                allowHTML: true,
+                content: this.intl.t('document.text.relatedBibliography'),
+                theme: 'light',
+                trigger: 'mouseenter focus click'
+            });
         });
     }
 }

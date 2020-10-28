@@ -4,9 +4,12 @@ $document-paragraph-indent: 1.5rem;
 .document-text {
     h1 {
         font-weight: bold;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
     }
     a {
         text-decoration: none;
+        cursor: pointer;
         &:hover {
             text-decoration: underline;
         }
@@ -20,7 +23,6 @@ $document-paragraph-indent: 1.5rem;
         }
         &.bibx {
             font-weight: bold;
-            font-size: 8px;
             position: relative;
             bottom: 1px;
         }
