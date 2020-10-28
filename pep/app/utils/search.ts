@@ -262,13 +262,20 @@ export function groupCountsByRange(
  */
 export function copySearchToController(toController: Controller & SearchController) {
     const searchController = getOwner(toController).lookup(`controller:search`);
+    const config: ConfigurationService = getOwner(toController).lookup('service:configuration');
+    const user: CurrentUserService = getOwner(toController).lookup('service:currentUser');
+    const preferences = user.preferences;
+    const defaultFields = preferences?.searchTermFields ?? config.base.search.terms.defaultFields;
+    const defaultTerms = defaultFields.map((f) => ({ type: f, term: '' }));
     toController.smartSearchTerm = searchController.currentSmartSearchTerm;
     toController.matchSynonyms = searchController.matchSynonyms;
     toController.citedCount = searchController.citedCount;
     toController.viewedCount = searchController.viewedCount;
     toController.viewedPeriod = searchController.viewedPeriod;
     toController.isLimitOpen = searchController.isLimitOpen;
-    toController.searchTerms = searchController.searchTerms;
+    toController.searchTerms = searchController.currentSearchTerms.length
+        ? searchController.currentSearchTerms
+        : defaultTerms;
 }
 
 /**
