@@ -9,6 +9,7 @@ import BaseAuthenticator from 'ember-simple-auth/authenticators/base';
 import { PepSecureAuthenticatedData } from 'pep/api';
 import ENV from 'pep/config/environment';
 import AjaxService from 'pep/services/ajax';
+import CurrentUserService from 'pep/services/current-user';
 import PepSessionService from 'pep/services/pep-session';
 import { serializeQueryParams } from 'pep/utils/url';
 import { reject, resolve } from 'rsvp';
@@ -22,6 +23,7 @@ export default class CredentialsAuthenticator extends BaseAuthenticator {
     @service ajax!: AjaxService;
     @service('pep-session') session!: PepSessionService;
     @service fastboot!: FastbootService;
+    @service currentUser!: CurrentUserService;
 
     authenticationHeaders = {
         'Content-Type': 'application/json'
@@ -103,6 +105,7 @@ export default class CredentialsAuthenticator extends BaseAuthenticator {
     async invalidate(data: PepSecureAuthenticatedData) {
         try {
             const params = serializeQueryParams({ SessionId: data.SessionId });
+            this.currentUser.clearPreferences();
             await this.ajax.request(`${ENV.authBaseUrl}/Users/Logout?${params}`, {
                 method: 'POST',
                 headers: this.authenticationHeaders

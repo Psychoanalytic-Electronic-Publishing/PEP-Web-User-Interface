@@ -125,6 +125,20 @@ export default class CurrentUserService extends Service {
     }
 
     /**
+     * Clear preferences and remove items from cookies and local storage
+     *
+     * @memberof CurrentUserService
+     */
+    clearPreferences() {
+        this.preferences = undefined;
+        this.cookies.clear(USER_PREFERENCES_COOKIE_NAME, {
+            secure: ENV.cookieSecure,
+            sameSite: ENV.cookieSameSite
+        });
+        localStorage.clear();
+    }
+
+    /**
      * Updates the specified preference fields with the given values in the
      * user's browser cookie, localstorage, and session user db record (if uniquely logged in)
      * @param {PreferenceChangeset} prefValues
