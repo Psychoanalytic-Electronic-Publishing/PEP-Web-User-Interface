@@ -97,17 +97,7 @@
     <!--  ROOT TEMPLATE - HANDLES HTML FRAMEWORK                       -->
     <!-- ============================================================= -->
 
-    <xsl:template match="/">
-        <xsl:text disable-output-escaping='yes'>&lt;!DOCTYPE html&gt;</xsl:text>
-        <xsl:text>&#13;</xsl:text>
-        <html>
-            <!-- HTML header -->
-            <xsl:call-template name="make-html-header"/>
-            <!--      <xsl:call-template name="make-article"/>-->
-            <xsl:apply-templates/>
-            <div id="putciteashere"></div>
-        </html>
-    </xsl:template>
+
 
     <xsl:template name="make-html-header">
         <head>
@@ -203,10 +193,10 @@
                     </img>
                 </a>
             </p>
-            <div class='pubinfotop small'>
+            <div class="pubinfotop small">
                 <xsl:for-each select="artinfo">
                     <span class="mr-1">(<xsl:apply-templates select="artyear" mode="text"/>).</span>
-                    <span class="mr-1"><xsl:value-of select="$journalName" mode="text"/>,</span>
+                    <span class="mr-1"><xsl:value-of select="$journalName" />,</span>
                     <span><xsl:apply-templates mode="text" select="artvol"/></span>
                     <span>(<xsl:apply-templates mode="text" select="artiss"/>)</span>
                     <span>:<xsl:apply-templates mode="text" select="artpgrg"/></span>
