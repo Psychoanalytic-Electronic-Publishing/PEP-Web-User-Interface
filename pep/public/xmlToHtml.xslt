@@ -116,16 +116,22 @@
         </head>
     </xsl:template>
 
-    <!-- EXPERIMENTAL 20200421-->
+
     <xsl:template name="data-pagehelper">
-        <xsl:if test="descendant::pb">
-            <xsl:attribute name="data-pagehelper">pageend</xsl:attribute>
+        <!-- If the previous element is a page break, add the data attribute page-start and give it a value of the next page break  -->
+        <xsl:if test="name(preceding-sibling::*[1])='pb'">
+            <xsl:attribute name="data-page-start">
+                <xsl:value-of select="following-sibling::pb/n"/>
+            </xsl:attribute>
         </xsl:if>
-        <xsl:if test="not(preceding-sibling::*) and following-sibling::*">
-            <xsl:attribute name="data-pagehelper2">firstchild</xsl:attribute>
+        <!-- If there is no preceding sibling i.e. its the first element, grab the first page break value and put it into the data attribute -->
+        <xsl:if test="not(preceding-sibling::*)">
+            <xsl:attribute name="data-page-start">
+                <xsl:value-of select="../following-sibling::pb/n"/>
+            </xsl:attribute>
         </xsl:if>
     </xsl:template>
-    <!-- /EXPERIMENTAL CODE-->
+
 
     <!-- ============================================================= -->
     <!--  TOP LEVEL                                                    -->
@@ -508,9 +514,18 @@
     </xsl:template>
 
     <xsl:template match="webx">
-        <span class="webx" data-type="{@type}" data-url="{@url}">
-            <xsl:value-of select="."/>
-        </span>
+        <xsl:choose>
+            <xsl:when test="@type=''">
+                <span class="webx" data-type="web-link" data-url="{@url}">
+                    <xsl:value-of select="."/>
+                </span>
+            </xsl:when>
+            <xsl:otherwise>
+                <span class="webx" data-type="{@type}" data-url="{@url}">
+                    <xsl:value-of select="."/>
+                </span>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 
     <xsl:template match="cr">
@@ -566,7 +581,7 @@
 
     <xsl:template match="pgx">
         <span class="pgx" data-type="pagelink" data-r="{@rx}">
-            <a class="pgx" href="#/Document/{@rx}">
+            <a class="pgx" href="#/Document/{@rx}" data-type="pagelink" data-r="{@rx}">
                 <xsl:value-of select="."/>
             </a>
         </span>
@@ -957,6 +972,9 @@
     <xsl:template match="n">
         <xsl:apply-templates select="@content-type"/>
         <p class="pagenumber text-center text-muted small">
+            <xsl:attribute name="data-pgnum">
+                <xsl:apply-templates/>
+            </xsl:attribute>
             <xsl:if test="@nextpgnum">
                 <xsl:attribute name="data-nextpgnum">
                     <xsl:value-of select="@nextpgnum"/>
@@ -973,6 +991,9 @@
 
     <xsl:template match="pb">
         <div class="pagebreak" data-class="pb">
+            <xsl:attribute name="data-page-end">
+                <xsl:value-of select="n"/>
+            </xsl:attribute>
             <xsl:call-template name="named-anchor"/>
             <xsl:apply-templates select="@content-type"/>
             <xsl:apply-templates/>

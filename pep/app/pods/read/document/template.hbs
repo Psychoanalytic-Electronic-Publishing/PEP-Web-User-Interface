@@ -68,7 +68,11 @@
                 </Alert>
                 <div class="pep-document-content">
                     <ContentWithPlaceholder @placeholderInFastboot={{true}}>
-                        <Document::Text @document={{this.model}} @onGlossaryItemClick={{this.viewGlossaryTerm}} />
+                        <Document::Text
+                            @document={{this.model}}
+                            @onGlossaryItemClick={{this.viewGlossaryTerm}}
+                            @page={{this.page}}
+                        />
                     </ContentWithPlaceholder>
                 </div>
             </div>

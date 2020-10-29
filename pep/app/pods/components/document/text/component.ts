@@ -22,6 +22,7 @@ import tippy from 'tippy.js';
 
 interface DocumentTextArgs {
     document: Document;
+    page?: string;
     onGlossaryItemClick: (term: string, termResults: GlossaryTerm[]) => void;
 }
 
@@ -82,6 +83,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
 
     @action
     onDocumentClick(event: Event) {
+        event.preventDefault();
         const target = event.target as HTMLElement;
         const attributes = target.attributes;
         const type = attributes.getNamedItem('type')?.nodeValue || attributes.getNamedItem('data-type')?.nodeValue;
@@ -100,10 +102,11 @@ export default class DocumentText extends Component<DocumentTextArgs> {
                 this.router.transitionTo('read.document', id);
             }
         } else if (type === 'pagelink') {
-            const reference = attributes.getNamedItem('r')?.nodeValue;
+            const reference = attributes.getNamedItem('data-r')?.nodeValue;
             const referenceArray = reference?.split(/\.(?=[^\.]+$)/) ?? [];
             const documentId = referenceArray[0];
-            const page = referenceArray[1];
+            const apiPage = referenceArray[1];
+            const page = parseInt(apiPage.substring(1), 10);
             if (documentId === this.args.document.id) {
                 //scroll to page number
                 this.scrollToPage(page);
@@ -115,9 +118,9 @@ export default class DocumentText extends Component<DocumentTextArgs> {
         }
     }
 
-    scrollToPage(page: string) {
-        this.containerElement?.querySelector('.bibtip');
-        element.scrollIntoView();
+    scrollToPage(page: number) {
+        const element = this.containerElement?.querySelector(`[data-page-start='${page}']`);
+        element?.scrollIntoView();
     }
 
     /**
@@ -153,9 +156,13 @@ export default class DocumentText extends Component<DocumentTextArgs> {
     setupListeners(element: HTMLElement) {
         this.containerElement = element;
         scheduleOnce('afterRender', this, this.attachTooltips);
+        if (this.args.page) {
+            this.scrollToPage(parseInt(this.args.page, 10));
+        }
     }
 
     attachTooltips() {
+        const tippyTrigger = 'mouseenter focus click';
         const elements = this.containerElement?.querySelectorAll('.bibtip');
         elements?.forEach((item) => {
             const id = item.attributes.getNamedItem('data-element')?.nodeValue;
@@ -166,7 +173,21 @@ export default class DocumentText extends Component<DocumentTextArgs> {
                     theme: 'light',
                     allowHTML: true,
                     interactive: true,
-                    trigger: 'mouseenter focus click'
+                    trigger: tippyTrigger
+                });
+            }
+        });
+
+        const authorTooltips = this.containerElement?.querySelectorAll('.newauthortip');
+        authorTooltips?.forEach((item) => {
+            const node = this.containerElement?.querySelector(`.peppopuptext`);
+            if (node) {
+                tippy(item, {
+                    content: node.innerHTML,
+                    theme: 'light',
+                    allowHTML: true,
+                    interactive: true,
+                    trigger: tippyTrigger
                 });
             }
         });
@@ -177,7 +198,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
                 allowHTML: true,
                 content: this.intl.t('document.text.relatedBibliography'),
                 theme: 'light',
-                trigger: 'mouseenter focus click'
+                trigger: tippyTrigger
             });
         });
     }

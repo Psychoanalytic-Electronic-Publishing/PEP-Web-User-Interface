@@ -24,6 +24,7 @@ export interface ReadDocumentParams {
     viewedPeriod?: number;
     _searchTerms?: string;
     _facets?: string;
+    page?: string;
 }
 
 export default class ReadDocument extends PageNav(Route) {

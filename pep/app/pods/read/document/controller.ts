@@ -53,12 +53,14 @@ export default class ReadDocument extends Controller {
     @tracked _searchTerms: string | null = null;
     @tracked paginator!: Pagination<Document>;
     @tracked showHitsInContext = false;
+    @tracked page = null;
 
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
     //@ts-ignore
     queryParams = [
         'q',
+        'page',
         { _searchTerms: 'searchTerms' },
         'matchSynonyms',
         'citedCount',
