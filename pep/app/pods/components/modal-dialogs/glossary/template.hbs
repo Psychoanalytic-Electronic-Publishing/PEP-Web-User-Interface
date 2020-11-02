@@ -6,7 +6,8 @@
         {{/each}}
     </Modal.body>
     <Modal.footer>
-        <Button @type="link" @label={{t "glossary.searchForTerm"}} @action={{this.searchForTerm}} />
+        {{! Commenting this out for now }}
+        {{!-- <Button @type="link" @label={{t "glossary.searchForTerm"}} @action={{this.searchForTerm}} /> --}}
         <Button @type="link" @label={{t "common.cancel"}} @action={{@onClose}} />
     </Modal.footer>
 </ModalDialog>

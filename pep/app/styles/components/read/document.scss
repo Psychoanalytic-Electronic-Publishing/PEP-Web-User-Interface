@@ -36,6 +36,7 @@ $document-paragraph-indent: 1.5rem;
         &.webx,
         &.bib {
             font-weight: bold;
+            cursor: pointer;
         }
 
         &.whocitedthis {
@@ -108,12 +109,13 @@ $document-paragraph-indent: 1.5rem;
             margin-bottom: 0px;
             font-style: italic;
         }
+        &.ftr,
         &.ftn {
-            font-size: 9px;
+            font-size: 0.7rem;
             margin-left: 0px;
-            margin-top: 0px;
             margin-bottom: 0px;
             margin-right: 0px;
+            margin-top: 0px;
         }
 
         &.figure {
@@ -144,6 +146,12 @@ $document-paragraph-indent: 1.5rem;
             margin-bottom: 3px;
             margin-right: 0px;
             text-indent: 18px;
+        }
+        &.dictentrygrp-dictalso {
+            .glosstip {
+                margin-left: 5px;
+                margin-right: 5px;
+            }
         }
     }
 
@@ -179,6 +187,10 @@ $document-paragraph-indent: 1.5rem;
         }
         &.smallcaps {
             font-size: 0.8em;
+        }
+        &.highlight {
+            font-weight: bold;
+            font-style: italic;
         }
     }
 

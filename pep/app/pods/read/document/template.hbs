@@ -23,7 +23,8 @@
                     {{t "read.document.backToSearch"}}
                 </LinkTo>
             {{/if}}
-            <div class="ml-2 d-flex align-items-center">
+            {{! Removing paging for now }}
+            {{!-- <div class="ml-2 d-flex align-items-center">
                 <Button @type="link" @icon="chevron-left" @iconOnly={{true}} class="py-0 px-2 text-muted" />
                 <div class="input-group input-group-minimal mx-1">
                     <div class="input-group-prepend">
@@ -43,7 +44,7 @@
                     />
                 </div>
                 <Button @type="link" @icon="chevron-right" @iconOnly={{true}} class="py-0 px-2 text-muted" />
-            </div>
+            </div> --}}
         </div>
         <p class="small text-muted">
             {{this.model.documentRef}}
@@ -72,6 +73,7 @@
                             @document={{this.model}}
                             @onGlossaryItemClick={{this.viewGlossaryTerm}}
                             @page={{this.page}}
+                            @searchTerm={{this.q}}
                         />
                     </ContentWithPlaceholder>
                 </div>

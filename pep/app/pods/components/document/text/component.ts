@@ -22,6 +22,7 @@ import tippy from 'tippy.js';
 
 interface DocumentTextArgs {
     document: Document;
+    searchTerm: string;
     page?: string;
     onGlossaryItemClick: (term: string, termResults: GlossaryTerm[]) => void;
 }
@@ -45,6 +46,12 @@ export default class DocumentText extends Component<DocumentTextArgs> {
         );
     }
 
+    /**
+     * Load the XSLT doc to do the parsing of the xml
+     *
+     * @return {*}
+     * @memberof DocumentText
+     */
     loadXSLT() {
         let request = new XMLHttpRequest();
         request.open('GET', `${ENV.assetBaseUrl}xmlToHtml.xslt`, false);
@@ -52,6 +59,12 @@ export default class DocumentText extends Component<DocumentTextArgs> {
         return request.responseXML;
     }
 
+    /**
+     * Parse the document text to transform it to an xml document
+     *
+     * @param {string} text
+     * @memberof DocumentText
+     */
     @dontRunInFastboot
     async parseDocumentText(text: string) {
         const xml = parseXML(text);
@@ -61,6 +74,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
 
             if (xslt && document.implementation && document.implementation.createDocument) {
                 const processor = new XSLTProcessor();
+                processor.setParameter('', 'searchTerm', this.args.searchTerm);
                 processor.setParameter('', 'journalName', this.args.document.sourceTitle);
                 processor.setParameter('', 'imageUrl', DOCUMENT_IMG_BASE_URL);
                 processor.importStylesheet(xslt);
@@ -72,6 +86,12 @@ export default class DocumentText extends Component<DocumentTextArgs> {
         }
     }
 
+    /**
+     * Convert the xml doc back to a string for display
+     *
+     * @readonly
+     * @memberof DocumentText
+     */
     get text() {
         if (this.xml) {
             var s = new XMLSerializer();
@@ -81,22 +101,36 @@ export default class DocumentText extends Component<DocumentTextArgs> {
         }
     }
 
+    /**
+     * Document click handler. There are many things you can do with a document on click so we decipher what element the user is clicking on and based upon a data attribute type we do the correct thing
+     *
+     * @param {Event} event
+     * @memberof DocumentText
+     */
     @action
     onDocumentClick(event: Event) {
-        event.preventDefault();
         const target = event.target as HTMLElement;
         const attributes = target.attributes;
         const type = attributes.getNamedItem('type')?.nodeValue || attributes.getNamedItem('data-type')?.nodeValue;
+
+        if (target.tagName !== 'SUMMARY' && type !== 'web-link') {
+            event.preventDefault();
+        }
         if (type === 'TERM2') {
-            const rx = attributes.getNamedItem('rx')?.nodeValue;
+            const docId = attributes.getNamedItem('data-doc-id')?.nodeValue;
             const groupName = attributes.getNamedItem('data-grpname')?.nodeValue;
-            if (rx) {
-                const id = rx.split('.');
+            if (docId) {
+                const id = docId.split('.');
                 this.viewGlossaryTerm(target.innerText, id[id.length - 1]);
             } else if (groupName) {
                 this.viewGlossaryTerm(groupName);
             }
         } else if (type === 'BIBX') {
+            const id = attributes.getNamedItem('data-document-id')?.nodeValue;
+            if (id) {
+                this.router.transitionTo('read.document', id);
+            }
+        } else if (type === 'document-link') {
             const id = attributes.getNamedItem('data-document-id')?.nodeValue;
             if (id) {
                 this.router.transitionTo('read.document', id);
@@ -111,13 +145,33 @@ export default class DocumentText extends Component<DocumentTextArgs> {
                 //scroll to page number
                 this.scrollToPage(page);
             } else {
+                //transition to a different document with a specific page
                 this.router.transitionTo('read.document', documentId, {
-                    page
+                    queryParams: {
+                        page
+                    }
                 });
             }
+        } else if (type === 'figure') {
+            const figureId = attributes.getNamedItem('data-figure-id')?.nodeValue;
+            const figure = this.containerElement?.querySelector(`#${figureId}`);
+            const image = figure?.querySelector('img');
+            const url = image?.getAttribute('src');
+            const caption = figure?.querySelector('.caption')?.innerHTML;
+            this.modal.open('document/image', {
+                url,
+                caption,
+                id: parseInt(figureId?.substring(1) ?? '', 10)
+            });
         }
     }
 
+    /**
+     * Scroll to a specific page in the document (by scrolling to a specific page element)
+     *
+     * @param {number} page
+     * @memberof DocumentText
+     */
     scrollToPage(page: number) {
         const element = this.containerElement?.querySelector(`[data-page-start='${page}']`);
         element?.scrollIntoView();
@@ -133,11 +187,12 @@ export default class DocumentText extends Component<DocumentTextArgs> {
     async viewGlossaryTerm(term: string, id?: string) {
         try {
             this.loadingBar.show();
+            const parsedTerm = term.split(';');
             const results = await this.store.query('glossary-term', {
                 termidtype: id ? 'ID' : 'Name',
-                termIdentifier: id ? id : term
+                termIdentifier: id ? id : parsedTerm[0]
             });
-            this.args.onGlossaryItemClick(term, results.toArray());
+            this.args.onGlossaryItemClick(parsedTerm[0], [...new Set(results.toArray())]);
         } catch (error) {
             throw error;
         } finally {
@@ -145,6 +200,11 @@ export default class DocumentText extends Component<DocumentTextArgs> {
         }
     }
 
+    /**
+     * Parse the document on change of the text
+     *
+     * @memberof DocumentText
+     */
     @action
     parseDocument() {
         this.parseDocumentText(
@@ -152,6 +212,12 @@ export default class DocumentText extends Component<DocumentTextArgs> {
         );
     }
 
+    /**
+     * set up the tooltips and if we get passed in a page number - scroll to it
+     *
+     * @param {HTMLElement} element
+     * @memberof DocumentText
+     */
     @action
     setupListeners(element: HTMLElement) {
         this.containerElement = element;
@@ -161,6 +227,11 @@ export default class DocumentText extends Component<DocumentTextArgs> {
         }
     }
 
+    /**
+     * Attach the tooltips to the elements and provide what text/html they will show
+     *
+     * @memberof DocumentText
+     */
     attachTooltips() {
         const tippyTrigger = 'mouseenter focus click';
         const elements = this.containerElement?.querySelectorAll('.bibtip');
@@ -173,7 +244,10 @@ export default class DocumentText extends Component<DocumentTextArgs> {
                     theme: 'light',
                     allowHTML: true,
                     interactive: true,
-                    trigger: tippyTrigger
+                    trigger: tippyTrigger,
+                    onClickOutside(instance) {
+                        instance.hide();
+                    }
                 });
             }
         });
@@ -187,7 +261,11 @@ export default class DocumentText extends Component<DocumentTextArgs> {
                     theme: 'light',
                     allowHTML: true,
                     interactive: true,
-                    trigger: tippyTrigger
+                    trigger: tippyTrigger,
+                    placement: 'right',
+                    onClickOutside(instance) {
+                        instance.hide();
+                    }
                 });
             }
         });
@@ -198,7 +276,10 @@ export default class DocumentText extends Component<DocumentTextArgs> {
                 allowHTML: true,
                 content: this.intl.t('document.text.relatedBibliography'),
                 theme: 'light',
-                trigger: tippyTrigger
+                trigger: tippyTrigger,
+                onClickOutside(instance) {
+                    instance.hide();
+                }
             });
         });
     }

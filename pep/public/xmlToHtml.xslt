@@ -66,6 +66,7 @@
     <xsl:param name="report-warnings" select="'no'"/>
     <xsl:param name="imageUrl"/>
     <xsl:param name="journalName"/>
+    <xsl:param name="searchTerm"/>
     <xsl:variable name="verbose" select="$report-warnings = 'yes'"/>
     <xsl:variable name="fa-right-arrow">
         <svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" role="img" focusable="false" aria-hidden="true" data-icon="arrow-right" data-prefix="fal" id="ember488" class="pointer-events-none svg-inline--fa fa-arrow-right fa-w-14 ember-view"><path fill="currentColor" d="M216.464 36.465l-7.071 7.07c-4.686 4.686-4.686 12.284 0 16.971L387.887 239H12c-6.627 0-12 5.373-12 12v10c0 6.627 5.373 12 12 12h375.887L209.393 451.494c-4.686 4.686-4.686 12.284 0 16.971l7.071 7.07c4.686 4.686 12.284 4.686 16.97 0l211.051-211.05c4.686-4.686 4.686-12.284 0-16.971L233.434 36.465c-4.686-4.687-12.284-4.687-16.97 0z"></path>
@@ -515,15 +516,15 @@
 
     <xsl:template match="webx">
         <xsl:choose>
-            <xsl:when test="@type=''">
-                <span class="webx" data-type="web-link" data-url="{@url}">
+            <xsl:when test="@type">
+                <a class="webx" data-type="{@type}" data-url="{@url}" target="_blank" href="{@url}">
                     <xsl:value-of select="."/>
-                </span>
+                </a>
             </xsl:when>
             <xsl:otherwise>
-                <span class="webx" data-type="{@type}" data-url="{@url}">
+                <a class="webx" data-type="web-link" data-url="{@url}" target="_blank" href="{@url}">
                     <xsl:value-of select="."/>
-                </span>
+                </a>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
@@ -695,23 +696,45 @@
     </xsl:template>
 
     <xsl:template match="figure">
-        <p class="figure" id="{@id}">
+        <div class="figure d-flex flex-column" id="{@id}">
             <xsl:call-template name="data-pagehelper"/>
             <xsl:apply-templates/>
             <!--      <xsl:apply-templates select="graphic"/>-->
             <!--      <xsl:apply-templates/>-->
-        </p>
+        </div>
     </xsl:template>
 
     <xsl:template match="caption">
         <p class="figtitle caption">
-            <xsl:call-template name="data-pagehelper"/>
             <xsl:value-of select="."/>
         </p>
     </xsl:template>
 
     <xsl:template match="graphic">
         <xsl:apply-templates/>
+        <p class="figure-graphic d-flex justify-content-center">
+            <img alt="{@xlink:href}" class="img-fluid">
+                <xsl:for-each select="alt-text">
+                    <xsl:attribute name="alt">
+                        <xsl:value-of select="normalize-space(string(.))"/>
+                    </xsl:attribute>
+                </xsl:for-each>
+
+                <xsl:for-each select="@source">
+                    <xsl:attribute name="src">
+                        <xsl:variable name="image">
+                            <xsl:value-of select="."/>
+                        </xsl:variable>
+                        <xsl:value-of select="concat($imageUrl, '/', $image)"/>
+                    </xsl:attribute>
+                </xsl:for-each>
+
+            </img>
+        </p>
+    </xsl:template>
+
+    <xsl:template name="figure-graphic" >
+        <!-- <xsl:apply-templates/> -->
         <p class="figure">
             <img alt="{@xlink:href}" class="img-fluid">
                 <xsl:for-each select="alt-text">
@@ -740,6 +763,9 @@
 
          <xsl:template match="title | sec-meta" mode="drop-title"/>
     -->
+
+
+
 
     <xsl:template match="app">
         <div class="section app">
@@ -985,6 +1011,7 @@
                     <xsl:value-of select="@prefxused"/>
                 </xsl:attribute>
             </xsl:if>
+            <xsl:apply-templates select="@content-type"/>
             <xsl:apply-templates/>
         </p>
     </xsl:template>
@@ -1013,7 +1040,7 @@
     <xsl:template match="impx"> <!--when not in metadata mode -->
         <xsl:choose>
             <xsl:when test="@rx"> <!-- for the generated links -->
-                <span class="peppopup glosstip impx" data-type="{@type}" data-docid="{@rx}" data-grpname="{@grpname}">
+                <span class="peppopup glosstip impx" data-type="{@type}" data-doc-id="{@rx}" data-grpname="{@grpname}">
                     <xsl:value-of select="."/>
                 </span>
             </xsl:when>
@@ -1027,15 +1054,15 @@
 
     <xsl:template match="figx"> <!--when not in metadata mode -->
         <xsl:choose>
-            <xsl:when test="@rx"> <!-- for the generated links -->
-                <span class="peppopup figuretip figx" data-type="{@type}" data-docid="{@rx}" data-grpname="{@grpname}">
+            <xsl:when test="@r"> <!-- for the generated links -->
+                <a class="peppopup figuretip figx" data-type="figure" data-figure-id="{@r}" data-grpname="{@grpname}">
                     <xsl:value-of select="."/>
-                </span>
+                </a>
             </xsl:when>
             <xsl:otherwise> <!-- sometimes impx is manually tagged -->
-                <span class="figx figuretip" data-type="{@type}">
+                <a class="figx figuretip" data-type="figure">
                     <xsl:value-of select="."/>
-                </span>
+                </a>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
@@ -1080,6 +1107,7 @@
         <p class="para my-1">
             <xsl:call-template name="assign-lang"/>
             <xsl:call-template name="data-pagehelper"/>
+
             <xsl:if test="@lgrid">
                 <xsl:attribute name="data-lgrid">
                     <xsl:value-of select="@lgrid"/>
@@ -1111,7 +1139,11 @@
 
             <xsl:call-template name="assign-id"/>
             <xsl:apply-templates select="@content-type"/>
-            <xsl:apply-templates/>
+
+            <xsl:call-template name="highlight">
+                <xsl:with-param name="string" select="."/>
+                <xsl:with-param name="term" select="$searchTerm"/>
+            </xsl:call-template>
         </p>
     </xsl:template>
 
@@ -1164,13 +1196,17 @@
                 <summary>...excerpted...click for more...</summary>
                 <div class="def-def body">
                     <xsl:apply-templates/>
-                    <a class="seemore">
-                        <xsl:attribute name="href">
-                            <xsl:value-of select="../../@id"/>
-                        </xsl:attribute>
-                        Open full glossary entry in main window...
-                    </a>
-                </div>
+                    <!-- <a class="seemore" type="document-link">
+                         <xsl:attribute name="href">
+                         <xsl:value-of select="../../@id"/>
+                         </xsl:attribute>
+                         <xsl:attribute name="data-document-id">
+                         <xsl:value-of select="../../@id"/>
+                         </xsl:attribute>
+
+                         Open full glossary entry in main window...
+                         </a> -->
+                 </div>
             </details>
         </div>
     </xsl:template>
@@ -1193,6 +1229,45 @@
         </p>
     </xsl:template>
 
+    <xsl:template match="binc/j">
+        <span class="font-italic">
+            <xsl:apply-templates/>
+        </span>
+    </xsl:template>
+
+    <xsl:template match="bst">
+        <span class="font-italic">
+            <xsl:apply-templates/>
+        </span>
+    </xsl:template>
+
+    <xsl:template match="binc">
+        <span class="bibentry" id="{@id}">
+            <span class="ref-content cell">
+                <xsl:apply-templates/>
+            </span>
+            <!--matched reference id-->
+            <xsl:if test="@rx">
+                <a class="bibx pl-2" data-type="BIBX">
+                    <xsl:attribute name="data-document-id">
+                        <xsl:value-of select="@rx"/>
+                    </xsl:attribute>
+                    <xsl:copy-of select="$fa-right-arrow" />
+                </a>
+            </xsl:if>
+            <xsl:if test="@rxcf">
+                <a class="bibx pl-2" data-type="BIBX">
+                    <xsl:attribute name="data-document-id">
+                        <xsl:value-of select="@rxcf"/>
+                    </xsl:attribute>
+                    <xsl:copy-of select="$fa-robot" />
+                </a>
+                <span class="bibx-related-info ml-1">
+                    <xsl:copy-of select="$fa-information" />
+                </span>
+            </xsl:if>
+        </span>
+    </xsl:template>
 
     <xsl:template match="be">
         <p class="bibentry" id="{@id}">
@@ -1636,6 +1711,36 @@
                 <xsl:copy-of select="$contents"/>
             </h5>
         </xsl:if>
+    </xsl:template>
+
+
+    <xsl:template name="highlight">
+        <xsl:param name="string"/>
+
+        <xsl:param name="term"/>
+        <xsl:param name="termWithSpaces" select="concat(' ', $term, ' ')" />
+
+
+        <xsl:variable name="before" select="substring-before($string, $termWithSpaces)"/>
+
+        <xsl:choose>
+            <xsl:when test="starts-with($string, $termWithSpaces) or string-length($before) &gt; 0">
+                <xsl:value-of select="$before"/>
+                <!-- write whatever markup to highlight search term occurrence here -->
+                <span class="highlight"><xsl:value-of select="$termWithSpaces"/></span>
+                <xsl:variable name="after" select="substring-after($string, $termWithSpaces)"/>
+                <xsl:if test="string-length($after) &gt; 0">
+                    <xsl:call-template name="highlight">
+                        <xsl:with-param name="string" select="$after"/>
+                        <xsl:with-param name="term" select="$termWithSpaces"/>
+                    </xsl:call-template>
+                </xsl:if>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:apply-templates />
+                <!-- <xsl:value-of select="$string"/> -->
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 
 
