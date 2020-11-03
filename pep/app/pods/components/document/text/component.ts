@@ -12,6 +12,7 @@ import IntlService from 'ember-intl/services/intl';
 
 import ENV from 'pep/config/environment';
 import { DOCUMENT_IMG_BASE_URL } from 'pep/constants/documents';
+import { SearchTermId } from 'pep/constants/search';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import Document from 'pep/pods/document/model';
 import GlossaryTerm from 'pep/pods/glossary-term/model';
@@ -25,6 +26,7 @@ interface DocumentTextArgs {
     searchTerm: string;
     page?: string;
     onGlossaryItemClick: (term: string, termResults: GlossaryTerm[]) => void;
+    viewSearch: (searchTerms: string) => void;
 }
 
 export default class DocumentText extends Component<DocumentTextArgs> {
@@ -152,7 +154,15 @@ export default class DocumentText extends Component<DocumentTextArgs> {
                     }
                 });
             }
-        } else if (type === 'figure') {
+        } else if (type === 'figure' || type === 'table-figure') {
+            const url = target?.getAttribute('src');
+            const parent = target.parentElement?.parentElement;
+            const caption = parent?.querySelector('.caption')?.innerHTML;
+            this.modal.open('document/image', {
+                url,
+                caption
+            });
+        } else if (type === 'figure-id') {
             const figureId = attributes.getNamedItem('data-figure-id')?.nodeValue;
             const figure = this.containerElement?.querySelector(`#${figureId}`);
             const image = figure?.querySelector('img');
@@ -163,6 +173,11 @@ export default class DocumentText extends Component<DocumentTextArgs> {
                 caption,
                 id: parseInt(figureId?.substring(1) ?? '', 10)
             });
+        } else if (type === 'search-author') {
+            const firstName = target?.querySelector('.nfirst')?.innerHTML;
+            const lastName = target?.querySelector('.nlast')?.innerHTML;
+            const name = `${firstName} ${lastName}`;
+            this.args.viewSearch(JSON.stringify([{ term: name, type: SearchTermId.AUTHOR, value: name }]));
         }
     }
 

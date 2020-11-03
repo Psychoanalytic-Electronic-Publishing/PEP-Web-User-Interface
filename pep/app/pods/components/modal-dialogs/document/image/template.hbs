@@ -1,5 +1,7 @@
-<ModalDialog @onClose={{@onClose}} @size="lg" as |Modal|>
-    <Modal.header @title={{t "figure.title" id=@options.id}} />
+<ModalDialog @onClose={{@onClose}} @size="xl" as |Modal|>
+    {{#if @options.id}}
+        <Modal.header @title={{t "figure.title" id=@options.id}} />
+    {{/if}}
     <Modal.body>
         <div class="d-flex flex-column justify-content-center align-items-center">
             <span class="small text-muted">

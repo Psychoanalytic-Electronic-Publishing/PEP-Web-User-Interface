@@ -487,7 +487,7 @@
     <!--PEPKBD3 Author Information-->
     <xsl:template match="aut" mode="metadata">
         <span class="title-author" data-listed="{@listed}" data-authindexid="{@authindexid}" data-role="{@role}" data-alias="{@alias}" data-asis="{@asis}">
-            <a class="author" href="#/Search/?author={@authindexid}">
+            <a class="author" href="#/Search/?author={@authindexid}" data-type="search-author">
                 <xsl:apply-templates mode="metadata" select="nfirst"/>
                 <xsl:apply-templates mode="metadata" select="nlast"/>
             </a>
@@ -535,7 +535,7 @@
 
     <xsl:template match="nfirst" mode="metadata">
         <xsl:text>&#10;</xsl:text> <!-- newline character -->
-        <span class="nfirst" data-type="{@type}" data-initials="{@initials}">
+        <span class="nfirst pointer-events-none" data-type="{@type}" data-initials="{@initials}">
             <xsl:value-of select="."/>
         </span>
         <xsl:text> </xsl:text> <!-- space character -->
@@ -543,7 +543,7 @@
 
 
     <xsl:template match="nlast" mode="metadata">
-        <span class="nlast">
+        <span class="nlast pointer-events-none">
             <xsl:value-of select="."/>
         </span>
     </xsl:template>
@@ -699,8 +699,6 @@
         <div class="figure d-flex flex-column" id="{@id}">
             <xsl:call-template name="data-pagehelper"/>
             <xsl:apply-templates/>
-            <!--      <xsl:apply-templates select="graphic"/>-->
-            <!--      <xsl:apply-templates/>-->
         </div>
     </xsl:template>
 
@@ -713,7 +711,13 @@
     <xsl:template match="graphic">
         <xsl:apply-templates/>
         <p class="figure-graphic d-flex justify-content-center">
-            <img alt="{@xlink:href}" class="img-fluid">
+            <img alt="{@xlink:href}" class="image">
+                <xsl:if test="ancestor::figure">
+                    <xsl:attribute name="data-type">figure</xsl:attribute>
+                </xsl:if>
+                <xsl:if test="ancestor::tbl">
+                    <xsl:attribute name="data-type">table-figure</xsl:attribute>
+                </xsl:if>
                 <xsl:for-each select="alt-text">
                     <xsl:attribute name="alt">
                         <xsl:value-of select="normalize-space(string(.))"/>
@@ -933,7 +937,7 @@
     </xsl:template>
 
     <!--  Since lxml only supports XSLT 1.0, can't use the above functions, so do it the imperfect way!-->
-    <xsl:template match="list[@type = 'ALP' or @type = 'AUP' or @type = 'AUR' or @type = 'ALR' or @type = 'RLP' or @type = 'RUP' or @type = 'NNP' or @type = 'NNB' or @type = 'NNS']" mode="list">
+    <xsl:template match="list[@type = 'ALP' or @type = 'AUP' or @type = 'AUR' or @type = 'ALR' or @type = 'RLP' or @type = 'RUP' or @type = 'NNP' or @type = 'NNB' or @type = 'NNS']">
         <xsl:variable name="style">
             <xsl:choose>
                 <xsl:when test="@type = 'ALP'">a</xsl:when>
@@ -956,17 +960,17 @@
         </ol>
     </xsl:template>
 
-    <xsl:template match="list[@type = 'DASH' or @type = 'DIAMOND' or @type = 'ASTERISK']" mode="list">
-        <xsl:variable name="style">
+    <xsl:template match="list[@type = 'DASH' or @type = 'DIAMOND' or @type = 'ASTERISK' or @type= 'NONE']">
+        <ul>
             <xsl:call-template name="data-pagehelper"/>
-            <xsl:choose>
-                <xsl:when test="@type = 'DASH'">dash</xsl:when>
-                <xsl:when test="@type = 'DIAMOND'">diamond</xsl:when>
-                <xsl:when test="@type = 'ASTERISK'">asterisk</xsl:when>
-                <xsl:otherwise>other</xsl:otherwise>
-            </xsl:choose>
-        </xsl:variable>
-        <ul style="list-style-type: {$style}">
+            <xsl:attribute name="class">
+                <xsl:choose>
+                    <xsl:when test="@type = 'DASH'">ml-5 dash</xsl:when>
+                    <xsl:when test="@type = 'DIAMOND'">ml-5 diamond</xsl:when>
+                    <xsl:when test="@type = 'ASTERISK'">ml-5 asterisk</xsl:when>
+                    <xsl:otherwise>ml-5 list-unstyled</xsl:otherwise>
+                </xsl:choose>
+            </xsl:attribute>
             <xsl:attribute name="data-style">
                 <xsl:value-of select="@type"/>
             </xsl:attribute>
@@ -1055,12 +1059,12 @@
     <xsl:template match="figx"> <!--when not in metadata mode -->
         <xsl:choose>
             <xsl:when test="@r"> <!-- for the generated links -->
-                <a class="peppopup figuretip figx" data-type="figure" data-figure-id="{@r}" data-grpname="{@grpname}">
+                <a class="peppopup figuretip figx" data-type="figure-id" data-figure-id="{@r}" data-grpname="{@grpname}">
                     <xsl:value-of select="."/>
                 </a>
             </xsl:when>
             <xsl:otherwise> <!-- sometimes impx is manually tagged -->
-                <a class="figx figuretip" data-type="figure">
+                <a class="figx figuretip" data-type="figure-id">
                     <xsl:value-of select="."/>
                 </a>
             </xsl:otherwise>
@@ -1139,12 +1143,12 @@
 
             <xsl:call-template name="assign-id"/>
             <xsl:apply-templates select="@content-type"/>
-
-            <xsl:call-template name="highlight">
-                <xsl:with-param name="string" select="."/>
-                <xsl:with-param name="term" select="$searchTerm"/>
-            </xsl:call-template>
-        </p>
+            <xsl:apply-templates />
+            <!-- <xsl:call-template name="highlight">
+                 <xsl:with-param name="string" select="."/>
+                 <xsl:with-param name="term" select="$searchTerm"/>
+                 </xsl:call-template> -->
+         </p>
     </xsl:template>
 
     <xsl:template match="note">

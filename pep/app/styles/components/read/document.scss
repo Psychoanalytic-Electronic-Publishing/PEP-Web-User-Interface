@@ -124,6 +124,12 @@ $document-paragraph-indent: 1.5rem;
             margin-top: 3px;
             margin-bottom: 3px;
             text-align: center;
+            &-graphic {
+                .image {
+                    max-width: 60vw;
+                    max-height: 75vh;
+                }
+            }
         }
         &.figtitle {
             margin-top: 3px;
@@ -267,5 +273,18 @@ $document-paragraph-indent: 1.5rem;
 
     .bibentry {
         background-color: white;
+    }
+
+    li {
+        p.para {
+            font-size: 0.8rem;
+            margin-left: 18pt;
+            text-indent: -18pt;
+            margin-top: 3pt;
+            margin-bottom: 3pt;
+            .tippy-box {
+                text-indent: 0;
+            }
+        }
     }
 }

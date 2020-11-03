@@ -16,6 +16,7 @@ import { TITLE_REGEX } from 'pep/constants/regex';
 import { SEARCH_DEFAULT_VIEW_PERIOD, SearchViews, SearchViewType, ViewPeriod } from 'pep/constants/search';
 import Document from 'pep/pods/document/model';
 import GlossaryTerm from 'pep/pods/glossary-term/model';
+import { SearchController } from 'pep/pods/search/controller';
 import AuthService from 'pep/services/auth';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
@@ -24,7 +25,7 @@ import LoadingBarService from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
 import PrinterService from 'pep/services/printer';
 import SearchSelection from 'pep/services/search-selection';
-import { buildSearchQueryParams } from 'pep/utils/search';
+import { buildSearchQueryParams, clearSearch, clearSearchController } from 'pep/utils/search';
 import { SearchSorts, SearchSortType } from 'pep/utils/sort';
 import { reject } from 'rsvp';
 
@@ -355,6 +356,22 @@ export default class ReadDocument extends Controller {
                 displayName: 'Source'
             }
         ]);
+    }
+
+    @action
+    viewSearch(searchTerms: string) {
+        clearSearch(this as SearchController, this.configuration, this.currentUser);
+        this.router.transitionTo('search', {
+            queryParams: {
+                q: '',
+                matchSynonyms: false,
+                citedCount: '',
+                viewedCount: '',
+                viewedPeriod: SEARCH_DEFAULT_VIEW_PERIOD,
+                searchTerms,
+                facets: ''
+            }
+        });
     }
 }
 
