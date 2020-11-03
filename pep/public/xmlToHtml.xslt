@@ -598,9 +598,9 @@
 
     <xsl:template match="ftnx">
         <sup>
-            <span class="ftnx" data-type="{@type}" data-r="{@r}">
+            <a class="ftnx" data-type="{@type}" data-r="{@r}">
                 <xsl:value-of select="."/>
-            </span>
+            </a>
         </sup>
     </xsl:template>
 
@@ -612,7 +612,7 @@
     </xsl:template>
 
     <xsl:template match="ftn">
-        <p class="ftn" data-class="ftn_group">
+        <div class="ftn" data-class="ftn_group">
             <xsl:attribute name="id">
                 <xsl:value-of select="@id"/>
             </xsl:attribute>
@@ -621,10 +621,8 @@
                     <xsl:value-of select="@label"/>
                 </sup>
             </span>
-            <xsl:value-of select="."/>
-            <!--          <xsl:apply-templates/>-->
-        </p>
-
+            <xsl:apply-templates />
+        </div>
     </xsl:template>
 
     <xsl:template match="aff" mode="metadata">

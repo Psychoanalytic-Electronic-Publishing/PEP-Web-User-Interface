@@ -221,6 +221,11 @@ $document-paragraph-indent: 1.5rem;
                 left: 0%;
                 border-top: 1px solid;
             }
+            .ftn {
+                .ftr.first {
+                    display: inline;
+                }
+            }
         }
     }
 
@@ -285,6 +290,15 @@ $document-paragraph-indent: 1.5rem;
             .tippy-box {
                 text-indent: 0;
             }
+        }
+    }
+
+    .tippy-box {
+        p {
+            text-indent: 0;
+        }
+        .ftnlabel {
+            display: none;
         }
     }
 }

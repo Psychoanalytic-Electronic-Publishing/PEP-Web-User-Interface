@@ -297,5 +297,25 @@ export default class DocumentText extends Component<DocumentTextArgs> {
                 }
             });
         });
+
+        const footnotes = this.containerElement?.querySelectorAll('.ftnx');
+        footnotes?.forEach((item) => {
+            const id = item.attributes.getNamedItem('data-r')?.nodeValue;
+            const node = this.containerElement?.querySelector(`#${id}`);
+            const supParent = item.parentElement?.parentElement;
+            if (node && supParent) {
+                tippy(item, {
+                    appendTo: supParent,
+                    content: node.innerHTML,
+                    theme: 'light',
+                    allowHTML: true,
+                    interactive: true,
+                    trigger: tippyTrigger,
+                    onClickOutside(instance) {
+                        instance.hide();
+                    }
+                });
+            }
+        });
     }
 }
