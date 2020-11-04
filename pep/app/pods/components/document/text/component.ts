@@ -117,7 +117,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
 
             if (xslt && document.implementation && document.implementation.createDocument) {
                 const processor = new XSLTProcessor();
-                processor.setParameter('', 'searchTerm', this.args.searchTerm);
+                processor.setParameter('', 'searchTerm', [this.args.searchTerm]);
                 processor.setParameter('', 'journalName', this.args.document.sourceTitle);
                 processor.setParameter('', 'imageUrl', DOCUMENT_IMG_BASE_URL);
                 processor.importStylesheet(xslt);

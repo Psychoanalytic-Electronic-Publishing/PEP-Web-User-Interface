@@ -46,6 +46,10 @@ $document-paragraph-indent: 1.5rem;
         &.author {
             font-weight: bold;
         }
+        &.pgx {
+            margin-left: 2px;
+            margin-right: 2px;
+        }
     }
 
     p {
@@ -126,6 +130,7 @@ $document-paragraph-indent: 1.5rem;
             text-align: center;
             &-graphic {
                 .image {
+                    cursor: pointer;
                     max-width: 60vw;
                     max-height: 75vh;
                 }

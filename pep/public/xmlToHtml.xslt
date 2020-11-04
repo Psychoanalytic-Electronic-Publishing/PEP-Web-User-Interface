@@ -1715,37 +1715,6 @@
         </xsl:if>
     </xsl:template>
 
-
-    <xsl:template name="highlight">
-        <xsl:param name="string"/>
-
-        <xsl:param name="term"/>
-        <xsl:param name="termWithSpaces" select="concat(' ', $term, ' ')" />
-
-
-        <xsl:variable name="before" select="substring-before($string, $termWithSpaces)"/>
-
-        <xsl:choose>
-            <xsl:when test="starts-with($string, $termWithSpaces) or string-length($before) &gt; 0">
-                <xsl:value-of select="$before"/>
-                <!-- write whatever markup to highlight search term occurrence here -->
-                <span class="highlight"><xsl:value-of select="$termWithSpaces"/></span>
-                <xsl:variable name="after" select="substring-after($string, $termWithSpaces)"/>
-                <xsl:if test="string-length($after) &gt; 0">
-                    <xsl:call-template name="highlight">
-                        <xsl:with-param name="string" select="$after"/>
-                        <xsl:with-param name="term" select="$termWithSpaces"/>
-                    </xsl:call-template>
-                </xsl:if>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:apply-templates />
-                <!-- <xsl:value-of select="$string"/> -->
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:template>
-
-
     <xsl:template mode="label" match="ref">
         <xsl:param name="contents">
             <xsl:apply-templates select="." mode="label-text"/>
@@ -1756,6 +1725,45 @@
                 <xsl:copy-of select="$contents"/>
             </span>
         </xsl:if>
+    </xsl:template>
+
+    <xsl:template name="highlight">
+        <xsl:param name="element"/>
+        <xsl:param name="search" as="xs:string"/>
+        <xsl:param name="flags" required="no" select="'im'" as="xs:string"/>
+
+        <xsl:choose>
+            <xsl:when test="empty($search) or $search eq ''">
+                <xsl:value-of select="."/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:for-each select="$element/node()">
+                    <xsl:choose>
+                        <xsl:when test=". instance of text()">
+                            <xsl:for-each select="analyze-string(., $search, $flags)/*">
+                                <xsl:choose>
+                                    <xsl:when test="local-name(.) eq 'non-match'">
+                                        <xsl:value-of select="./text()"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <span class="highlighted">
+                                            <xsl:value-of select="./text()"/>
+                                        </span>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </xsl:for-each>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:call-template name="highlight">
+                                <xsl:with-param name="element" select="."/>
+                                <xsl:with-param name="search" select="$search"/>
+                                <xsl:with-param name="flags" select="$flags"/>
+                            </xsl:call-template>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:for-each>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 
 

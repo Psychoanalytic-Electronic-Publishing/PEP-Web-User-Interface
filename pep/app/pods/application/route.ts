@@ -9,6 +9,7 @@ import IntlService from 'ember-intl/services/intl';
 import MediaService from 'ember-responsive/services/media';
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 
+import { SessionType } from 'pep/authenticators/credentials';
 import PageLayout from 'pep/mixins/page-layout';
 import { ApiServerErrorResponse } from 'pep/pods/application/adapter';
 import AuthService from 'pep/services/auth';
@@ -63,12 +64,23 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
         // delay (and as a result, FOUC) to the app setup process
         // since we do not currently cache ajax service requests
         // in the fastboot shoebox (like ember-data does)
-        if (!this.session.isAuthenticated && this.fastboot.isFastBoot) {
-            try {
-                await this.session.authenticate('authenticator:ip');
-            } catch (errors) {
-                // fail silently - we always want to just try and get authenticated by IP and if it
-                // doesn't work thats fine
+
+        if (this.fastboot.isFastBoot) {
+            // If your not logged in yet - give IP auth a try
+            if (!this.session.isAuthenticated) {
+                try {
+                    await this.session.authenticate('authenticator:ip');
+                } catch (errors) {
+                    this.session.invalidate();
+                }
+                // If you are logged in, but your currently authenticated using IP - try again to ensure you didn't change locations
+                // But here we don't wait for the promise to return as that would cause a FOUC
+            } else if (this.session?.data?.authenticated?.SessionType === SessionType.IP) {
+                try {
+                    this.session.authenticate('authenticator:ip');
+                } catch (errors) {
+                    this.session.invalidate();
+                }
             }
         }
 
