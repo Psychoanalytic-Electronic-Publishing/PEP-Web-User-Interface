@@ -19,7 +19,7 @@ import GlossaryTerm from 'pep/pods/glossary-term/model';
 import LoadingBarService from 'pep/services/loading-bar';
 import ThemeService from 'pep/services/theme';
 import { parseXML } from 'pep/utils/dom';
-import tippy from 'tippy.js';
+import tippy, { Instance, Props } from 'tippy.js';
 
 interface DocumentTextArgs {
     document: Document;
@@ -27,6 +27,37 @@ interface DocumentTextArgs {
     page?: string;
     onGlossaryItemClick: (term: string, termResults: GlossaryTerm[]) => void;
     viewSearch: (searchTerms: string) => void;
+}
+
+/**
+ *  The types of links in a document - these come from a type data attribute
+ *
+ * @export
+ * @enum {number}
+ */
+export enum DocumentLinkTypes {
+    GLOSSARY_TERM = 'TERM2',
+    BIBLIOGRAPHY = 'BIBX',
+    DOCUMENT = 'document-link',
+    PAGE = 'pagelink',
+    FIGURE = 'figure',
+    TABLE_FIGURE = 'table-figure',
+    FIGURE_WITH_ID = 'figure-id',
+    AUTHOR_SEARCH = 'search-author',
+    WEB = 'web-link'
+}
+
+/**
+ * The selectors for attaching tooltips
+ *
+ * @export
+ * @enum {number}
+ */
+export enum DocumentTooltipSelectors {
+    BIBLIOGRAPHY = '.bibtip',
+    BIBLIOGRAPHY_RELATED_INFO = '.bibx-related-info',
+    NEW_AUTHOR = '.newauthortip',
+    FOOTNOTE = '.ftnx'
 }
 
 export default class DocumentText extends Component<DocumentTextArgs> {
@@ -40,6 +71,16 @@ export default class DocumentText extends Component<DocumentTextArgs> {
 
     @tracked xml?: XMLDocument;
     containerElement?: HTMLElement;
+
+    tippyOptions = {
+        theme: 'light',
+        allowHTML: true,
+        interactive: true,
+        trigger: 'mouseenter focus click',
+        onClickOutside(instance: Instance<Props>) {
+            instance.hide();
+        }
+    };
 
     constructor(owner: unknown, args: DocumentTextArgs) {
         super(owner, args);
@@ -113,12 +154,14 @@ export default class DocumentText extends Component<DocumentTextArgs> {
     onDocumentClick(event: Event) {
         const target = event.target as HTMLElement;
         const attributes = target.attributes;
-        const type = attributes.getNamedItem('type')?.nodeValue || attributes.getNamedItem('data-type')?.nodeValue;
+        const type =
+            (attributes.getNamedItem('type')?.nodeValue as DocumentLinkTypes) ||
+            (attributes.getNamedItem('data-type')?.nodeValue as DocumentLinkTypes);
 
-        if (target.tagName !== 'SUMMARY' && type !== 'web-link') {
+        if (target.tagName !== 'SUMMARY' && type !== DocumentLinkTypes.WEB) {
             event.preventDefault();
         }
-        if (type === 'TERM2') {
+        if (type === DocumentLinkTypes.GLOSSARY_TERM) {
             const docId = attributes.getNamedItem('data-doc-id')?.nodeValue;
             const groupName = attributes.getNamedItem('data-grpname')?.nodeValue;
             if (docId) {
@@ -127,17 +170,17 @@ export default class DocumentText extends Component<DocumentTextArgs> {
             } else if (groupName) {
                 this.viewGlossaryTerm(groupName);
             }
-        } else if (type === 'BIBX') {
+        } else if (type === DocumentLinkTypes.BIBLIOGRAPHY) {
             const id = attributes.getNamedItem('data-document-id')?.nodeValue;
             if (id) {
                 this.router.transitionTo('read.document', id);
             }
-        } else if (type === 'document-link') {
+        } else if (type === DocumentLinkTypes.DOCUMENT) {
             const id = attributes.getNamedItem('data-document-id')?.nodeValue;
             if (id) {
                 this.router.transitionTo('read.document', id);
             }
-        } else if (type === 'pagelink') {
+        } else if (type === DocumentLinkTypes.PAGE) {
             const reference = attributes.getNamedItem('data-r')?.nodeValue;
             const referenceArray = reference?.split(/\.(?=[^\.]+$)/) ?? [];
             const documentId = referenceArray[0];
@@ -154,7 +197,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
                     }
                 });
             }
-        } else if (type === 'figure' || type === 'table-figure') {
+        } else if (type === DocumentLinkTypes.FIGURE || type === DocumentLinkTypes.TABLE_FIGURE) {
             const url = target?.getAttribute('src');
             const parent = target.parentElement?.parentElement;
             const caption = parent?.querySelector('.caption')?.innerHTML;
@@ -162,7 +205,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
                 url,
                 caption
             });
-        } else if (type === 'figure-id') {
+        } else if (type === DocumentLinkTypes.FIGURE_WITH_ID) {
             const figureId = attributes.getNamedItem('data-figure-id')?.nodeValue;
             const figure = this.containerElement?.querySelector(`#${figureId}`);
             const image = figure?.querySelector('img');
@@ -173,7 +216,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
                 caption,
                 id: parseInt(figureId?.substring(1) ?? '', 10)
             });
-        } else if (type === 'search-author') {
+        } else if (type === DocumentLinkTypes.AUTHOR_SEARCH) {
             const firstName = target?.querySelector('.nfirst')?.innerHTML;
             const lastName = target?.querySelector('.nlast')?.innerHTML;
             const name = `${firstName} ${lastName}`;
@@ -248,57 +291,41 @@ export default class DocumentText extends Component<DocumentTextArgs> {
      * @memberof DocumentText
      */
     attachTooltips() {
-        const tippyTrigger = 'mouseenter focus click';
-        const elements = this.containerElement?.querySelectorAll('.bibtip');
+        const elements = this.containerElement?.querySelectorAll(DocumentTooltipSelectors.BIBLIOGRAPHY);
         elements?.forEach((item) => {
             const id = item.attributes.getNamedItem('data-element')?.nodeValue;
             const node = this.containerElement?.querySelector(`#${id}`);
             if (node) {
                 tippy(item, {
                     content: node.innerHTML,
-                    theme: 'light',
-                    allowHTML: true,
-                    interactive: true,
-                    trigger: tippyTrigger,
-                    onClickOutside(instance) {
-                        instance.hide();
-                    }
+                    ...this.tippyOptions
                 });
             }
         });
 
-        const authorTooltips = this.containerElement?.querySelectorAll('.newauthortip');
+        const authorTooltips = this.containerElement?.querySelectorAll(DocumentTooltipSelectors.NEW_AUTHOR);
         authorTooltips?.forEach((item) => {
             const node = this.containerElement?.querySelector(`.peppopuptext`);
             if (node) {
                 tippy(item, {
                     content: node.innerHTML,
-                    theme: 'light',
-                    allowHTML: true,
-                    interactive: true,
-                    trigger: tippyTrigger,
                     placement: 'right',
-                    onClickOutside(instance) {
-                        instance.hide();
-                    }
+                    ...this.tippyOptions
                 });
             }
         });
 
-        const relatedBibliographies = this.containerElement?.querySelectorAll('.bibx-related-info');
+        const relatedBibliographies = this.containerElement?.querySelectorAll(
+            DocumentTooltipSelectors.BIBLIOGRAPHY_RELATED_INFO
+        );
         relatedBibliographies?.forEach((item) => {
             tippy(item, {
-                allowHTML: true,
                 content: this.intl.t('document.text.relatedBibliography'),
-                theme: 'light',
-                trigger: tippyTrigger,
-                onClickOutside(instance) {
-                    instance.hide();
-                }
+                ...this.tippyOptions
             });
         });
 
-        const footnotes = this.containerElement?.querySelectorAll('.ftnx');
+        const footnotes = this.containerElement?.querySelectorAll(DocumentTooltipSelectors.FOOTNOTE);
         footnotes?.forEach((item) => {
             const id = item.attributes.getNamedItem('data-r')?.nodeValue;
             const node = this.containerElement?.querySelector(`#${id}`);
@@ -307,13 +334,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
                 tippy(item, {
                     appendTo: supParent,
                     content: node.innerHTML,
-                    theme: 'light',
-                    allowHTML: true,
-                    interactive: true,
-                    trigger: tippyTrigger,
-                    onClickOutside(instance) {
-                        instance.hide();
-                    }
+                    ...this.tippyOptions
                 });
             }
         });

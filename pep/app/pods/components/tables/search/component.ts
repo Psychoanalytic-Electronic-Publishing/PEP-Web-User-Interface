@@ -1,7 +1,6 @@
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
-import { tracked } from '@glimmer/tracking';
 
 import { Sorting } from '@gavant/ember-pagination/hooks/pagination';
 import { ColumnValue } from '@gavant/ember-table';

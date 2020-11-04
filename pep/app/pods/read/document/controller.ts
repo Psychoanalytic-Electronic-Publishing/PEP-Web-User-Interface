@@ -16,7 +16,6 @@ import { TITLE_REGEX } from 'pep/constants/regex';
 import { SEARCH_DEFAULT_VIEW_PERIOD, SearchViews, SearchViewType, ViewPeriod } from 'pep/constants/search';
 import Document from 'pep/pods/document/model';
 import GlossaryTerm from 'pep/pods/glossary-term/model';
-import { SearchController } from 'pep/pods/search/controller';
 import AuthService from 'pep/services/auth';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
@@ -25,7 +24,7 @@ import LoadingBarService from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
 import PrinterService from 'pep/services/printer';
 import SearchSelection from 'pep/services/search-selection';
-import { buildSearchQueryParams, clearSearch, clearSearchController } from 'pep/utils/search';
+import { buildSearchQueryParams, clearSearch } from 'pep/utils/search';
 import { SearchSorts, SearchSortType } from 'pep/utils/sort';
 import { reject } from 'rsvp';
 
@@ -358,9 +357,16 @@ export default class ReadDocument extends Controller {
         ]);
     }
 
+    /**
+     * Clear the old search and then go to the search page using the new search terms
+     *
+     * @param {string} searchTerms
+     * @memberof ReadDocument
+     */
     @action
     viewSearch(searchTerms: string) {
-        clearSearch(this as SearchController, this.configuration, this.currentUser);
+        // TODO improve this typing
+        clearSearch(this as any, this.configuration, this.currentUser);
         this.router.transitionTo('search', {
             queryParams: {
                 q: '',

@@ -72,7 +72,7 @@ type BuildSearchQueryParams = {
     highlightlimit?: number;
 };
 
-type SearchController = {
+export type SearchController = {
     smartSearchTerm: string;
     matchSynonyms: boolean;
     citedCount: string;
