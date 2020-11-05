@@ -1,27 +1,14 @@
 <Page::Sidebar::Left as |Sidebar|>
     <Sidebar.content>
-        <Search::Form
-            @smartSearchTerm={{this.smartSearchTerm}}
-            @searchTerms={{this.searchTerms}}
-            @matchSynonyms={{this.matchSynonyms}}
-            @isLimitOpen={{this.isLimitOpen}}
-            @citedCount={{this.citedCount}}
-            @viewedCount={{this.viewedCount}}
-            @viewedPeriod={{this.viewedPeriod}}
-            @submit={{this.submitSearch}}
-            @resetForm={{this.clearSearch}}
-            @updateSmartSearchText={{fn (mut this.smartSearchTerm)}}
-            @addSearchTerm={{this.addSearchTerm}}
-            @removeSearchTerm={{this.removeSearchTerm}}
-            @updateSearchTerm={{this.updateSearchTerm}}
-            @updateViewedPeriod={{this.updateViewedPeriod}}
-            @matchSynonymsChange={{this.updateMatchSynonyms}}
-            @toggleLimitFields={{this.toggleLimitFields}}
-            class="mb-2"
-        />
         <div class="p-3">
-            <h5>{{t "browse.title"}}</h5>
-            {{!-- Browse UI here --}}
+            <h5>
+                {{t "browse.title"}}
+            </h5>
         </div>
+        <Tabs as |Tabs|>
+            <Tabs.tab>
+                Test
+            </Tabs.tab>
+        </Tabs>
     </Sidebar.content>
 </Page::Sidebar::Left>

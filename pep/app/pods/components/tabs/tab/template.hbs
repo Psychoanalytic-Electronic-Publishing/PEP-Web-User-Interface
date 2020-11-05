@@ -1,0 +1,11 @@
+<li class="nav-item">
+    <a
+        class="nav-link p-2 {{if (eq @tabId @selected) "active"}}"
+        data-toggle="tab"
+        aria-controls="activeIcon"
+        aria-expanded="true"
+        {{on "click" (fn @onChange @tabId)}}
+    >
+        {{yield}}
+    </a>
+</li>
