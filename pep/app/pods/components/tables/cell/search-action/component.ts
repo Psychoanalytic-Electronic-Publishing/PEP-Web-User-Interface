@@ -8,7 +8,6 @@ import IntlService from 'ember-intl/services/intl';
 import { PreferenceDocumentsKey, PreferenceKey } from 'pep/constants/preferences';
 import Document from 'pep/pods/document/model';
 import CurrentUserService from 'pep/services/current-user';
-import SearchSelection from 'pep/services/search-selection';
 import SidebarService from 'pep/services/sidebar';
 
 interface TablesCellSearchActionArgs {

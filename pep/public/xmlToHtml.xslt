@@ -66,21 +66,26 @@
     <xsl:param name="report-warnings" select="'no'"/>
     <xsl:param name="imageUrl"/>
     <xsl:param name="journalName"/>
+    <xsl:param name="searchTerm"/>
     <xsl:variable name="verbose" select="$report-warnings = 'yes'"/>
     <xsl:variable name="fa-right-arrow">
-        <svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" role="img" focusable="false" aria-hidden="true" data-icon="arrow-right" data-prefix="fal" id="ember488" class="svg-inline--fa fa-arrow-right fa-w-14 ember-view"><path fill="currentColor" d="M216.464 36.465l-7.071 7.07c-4.686 4.686-4.686 12.284 0 16.971L387.887 239H12c-6.627 0-12 5.373-12 12v10c0 6.627 5.373 12 12 12h375.887L209.393 451.494c-4.686 4.686-4.686 12.284 0 16.971l7.071 7.07c4.686 4.686 12.284 4.686 16.97 0l211.051-211.05c4.686-4.686 4.686-12.284 0-16.971L233.434 36.465c-4.686-4.687-12.284-4.687-16.97 0z"></path>
+        <svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" role="img" focusable="false" aria-hidden="true" data-icon="arrow-right" data-prefix="fal" id="ember488" class="pointer-events-none svg-inline--fa fa-arrow-right fa-w-14 ember-view"><path fill="currentColor" d="M216.464 36.465l-7.071 7.07c-4.686 4.686-4.686 12.284 0 16.971L387.887 239H12c-6.627 0-12 5.373-12 12v10c0 6.627 5.373 12 12 12h375.887L209.393 451.494c-4.686 4.686-4.686 12.284 0 16.971l7.071 7.07c4.686 4.686 12.284 4.686 16.97 0l211.051-211.05c4.686-4.686 4.686-12.284 0-16.971L233.434 36.465c-4.686-4.687-12.284-4.687-16.97 0z"></path>
         </svg>
     </xsl:variable>
     <xsl:variable name="fa-information">
-        <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img" focusable="false" aria-hidden="true" data-icon="info-circle" data-prefix="fal" id="ember313" class="svg-inline--fa fa-info-circle fa-w-16 ember-view"><path fill="currentColor" d="M256 40c118.621 0 216 96.075 216 216 0 119.291-96.61 216-216 216-119.244 0-216-96.562-216-216 0-119.203 96.602-216 216-216m0-32C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm-36 344h12V232h-12c-6.627 0-12-5.373-12-12v-8c0-6.627 5.373-12 12-12h48c6.627 0 12 5.373 12 12v140h12c6.627 0 12 5.373 12 12v8c0 6.627-5.373 12-12 12h-72c-6.627 0-12-5.373-12-12v-8c0-6.627 5.373-12 12-12zm36-240c-17.673 0-32 14.327-32 32s14.327 32 32 32 32-14.327 32-32-14.327-32-32-32z"></path>
+        <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img" focusable="false" aria-hidden="true" data-icon="info-circle" data-prefix="fal" id="ember313" class="pointer-events-none svg-inline--fa fa-info-circle fa-w-16 ember-view"><path fill="currentColor" d="M256 40c118.621 0 216 96.075 216 216 0 119.291-96.61 216-216 216-119.244 0-216-96.562-216-216 0-119.203 96.602-216 216-216m0-32C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm-36 344h12V232h-12c-6.627 0-12-5.373-12-12v-8c0-6.627 5.373-12 12-12h48c6.627 0 12 5.373 12 12v140h12c6.627 0 12 5.373 12 12v8c0 6.627-5.373 12-12 12h-72c-6.627 0-12-5.373-12-12v-8c0-6.627 5.373-12 12-12zm36-240c-17.673 0-32 14.327-32 32s14.327 32 32 32 32-14.327 32-32-14.327-32-32-32z"></path>
         </svg>
     </xsl:variable>
     <xsl:variable name="fa-flag">
-        <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img" focusable="false" aria-hidden="true" data-icon="flag" data-prefix="fal" id="ember313" class="svg-inline--fa fa-flag fa-w-16 ember-view"><path fill="currentColor" d="M344.348 74.667C287.742 74.667 242.446 40 172.522 40c-28.487 0-53.675 5.322-76.965 14.449C99.553 24.713 75.808-1.127 46.071.038 21.532.999 1.433 20.75.076 45.271-1.146 67.34 12.553 86.382 32 93.258V500c0 6.627 5.373 12 12 12h8c6.627 0 12-5.373 12-12V378.398c31.423-14.539 72.066-29.064 135.652-29.064 56.606 0 101.902 34.667 171.826 34.667 51.31 0 91.933-17.238 130.008-42.953 6.589-4.45 10.514-11.909 10.514-19.86V59.521c0-17.549-18.206-29.152-34.122-21.76-36.78 17.084-86.263 36.906-133.53 36.906zM48 28c11.028 0 20 8.972 20 20s-8.972 20-20 20-20-8.972-20-20 8.972-20 20-20zm432 289.333C456.883 334.03 415.452 352 371.478 352c-63.615 0-108.247-34.667-171.826-34.667-46.016 0-102.279 10.186-135.652 26V106.667C87.117 89.971 128.548 72 172.522 72c63.615 0 108.247 34.667 171.826 34.667 45.92 0 102.217-18.813 135.652-34.667v245.333z"></path>
+        <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img" focusable="false" aria-hidden="true" data-icon="flag" data-prefix="fal" id="ember313" class="pointer-events-none svg-inline--fa fa-flag fa-w-16 ember-view"><path fill="currentColor" d="M344.348 74.667C287.742 74.667 242.446 40 172.522 40c-28.487 0-53.675 5.322-76.965 14.449C99.553 24.713 75.808-1.127 46.071.038 21.532.999 1.433 20.75.076 45.271-1.146 67.34 12.553 86.382 32 93.258V500c0 6.627 5.373 12 12 12h8c6.627 0 12-5.373 12-12V378.398c31.423-14.539 72.066-29.064 135.652-29.064 56.606 0 101.902 34.667 171.826 34.667 51.31 0 91.933-17.238 130.008-42.953 6.589-4.45 10.514-11.909 10.514-19.86V59.521c0-17.549-18.206-29.152-34.122-21.76-36.78 17.084-86.263 36.906-133.53 36.906zM48 28c11.028 0 20 8.972 20 20s-8.972 20-20 20-20-8.972-20-20 8.972-20 20-20zm432 289.333C456.883 334.03 415.452 352 371.478 352c-63.615 0-108.247-34.667-171.826-34.667-46.016 0-102.279 10.186-135.652 26V106.667C87.117 89.971 128.548 72 172.522 72c63.615 0 108.247 34.667 171.826 34.667 45.92 0 102.217-18.813 135.652-34.667v245.333z"></path>
         </svg>
     </xsl:variable>
     <xsl:variable name="fa-book">
-        <svg viewBox="0 0 576 512" xmlns="http://www.w3.org/2000/svg" role="img" focusable="false" aria-hidden="true" data-icon="book-open" data-prefix="fal" id="ember314" class="svg-inline--fa fa-book-open fa-w-18 ember-view"><path fill="currentColor" d="M514.91 32h-.16c-24.08.12-144.75 8.83-219.56 48.09-4.05 2.12-10.33 2.12-14.38 0C205.99 40.83 85.32 32.12 61.25 32h-.16C27.4 32 0 58.47 0 91.01v296.7c0 31.41 25.41 57.28 57.85 58.9 34.77 1.76 122.03 8.26 181.89 30.37 5.27 1.95 10.64 3.02 16.25 3.02h64c5.62 0 10.99-1.08 16.26-3.02 59.87-22.11 147.12-28.61 181.92-30.37 32.41-1.62 57.82-27.48 57.82-58.89V91.01C576 58.47 548.6 32 514.91 32zM272 433c0 8.61-7.14 15.13-15.26 15.13-1.77 0-3.59-.31-5.39-.98-62.45-23.21-148.99-30.33-191.91-32.51-15.39-.77-27.44-12.6-27.44-26.93V91.01c0-14.89 13.06-27 29.09-27 19.28.1 122.46 7.38 192.12 38.29 11.26 5 18.64 15.75 18.66 27.84l.13 100.32V433zm272-45.29c0 14.33-12.05 26.16-27.45 26.93-42.92 2.18-129.46 9.3-191.91 32.51-1.8.67-3.62.98-5.39.98-8.11 0-15.26-6.52-15.26-15.13V230.46l.13-100.32c.01-12.09 7.4-22.84 18.66-27.84 69.66-30.91 172.84-38.19 192.12-38.29 16.03 0 29.09 12.11 29.09 27v296.7z"></path>
+        <svg viewBox="0 0 576 512" xmlns="http://www.w3.org/2000/svg" role="img" focusable="false" aria-hidden="true" data-icon="book-open" data-prefix="fal" id="ember314" class="pointer-events-none svg-inline--fa fa-book-open fa-w-18 ember-view"><path fill="currentColor" d="M514.91 32h-.16c-24.08.12-144.75 8.83-219.56 48.09-4.05 2.12-10.33 2.12-14.38 0C205.99 40.83 85.32 32.12 61.25 32h-.16C27.4 32 0 58.47 0 91.01v296.7c0 31.41 25.41 57.28 57.85 58.9 34.77 1.76 122.03 8.26 181.89 30.37 5.27 1.95 10.64 3.02 16.25 3.02h64c5.62 0 10.99-1.08 16.26-3.02 59.87-22.11 147.12-28.61 181.92-30.37 32.41-1.62 57.82-27.48 57.82-58.89V91.01C576 58.47 548.6 32 514.91 32zM272 433c0 8.61-7.14 15.13-15.26 15.13-1.77 0-3.59-.31-5.39-.98-62.45-23.21-148.99-30.33-191.91-32.51-15.39-.77-27.44-12.6-27.44-26.93V91.01c0-14.89 13.06-27 29.09-27 19.28.1 122.46 7.38 192.12 38.29 11.26 5 18.64 15.75 18.66 27.84l.13 100.32V433zm272-45.29c0 14.33-12.05 26.16-27.45 26.93-42.92 2.18-129.46 9.3-191.91 32.51-1.8.67-3.62.98-5.39.98-8.11 0-15.26-6.52-15.26-15.13V230.46l.13-100.32c.01-12.09 7.4-22.84 18.66-27.84 69.66-30.91 172.84-38.19 192.12-38.29 16.03 0 29.09 12.11 29.09 27v296.7z"></path>
+        </svg>
+    </xsl:variable>
+    <xsl:variable name="fa-robot">
+        <svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg" role="img" focusable="false" aria-hidden="true" data-icon="robot" data-prefix="fal" id="ember313" class="pointer-events-none svg-inline--fa fa-robot fa-w-20 ember-view"><path fill="currentColor" d="M192,416h64V384H192ZM576,224H544V192a95.99975,95.99975,0,0,0-96-96H336V16a16,16,0,0,0-32,0V96H192a95.99975,95.99975,0,0,0-96,96v32H64a31.99908,31.99908,0,0,0-32,32V384a32.00033,32.00033,0,0,0,32,32H96a95.99975,95.99975,0,0,0,96,96H448a95.99975,95.99975,0,0,0,96-96h32a32.00033,32.00033,0,0,0,32-32V256A31.99908,31.99908,0,0,0,576,224ZM96,384H64V256H96Zm416,32a64.18916,64.18916,0,0,1-64,64H192a64.18916,64.18916,0,0,1-64-64V192a63.99942,63.99942,0,0,1,64-64H448a63.99942,63.99942,0,0,1,64,64Zm64-32H544V256h32ZM416,192a64,64,0,1,0,64,64A64.07333,64.07333,0,0,0,416,192Zm0,96a32,32,0,1,1,32-32A31.97162,31.97162,0,0,1,416,288ZM384,416h64V384H384Zm-96,0h64V384H288ZM224,192a64,64,0,1,0,64,64A64.07333,64.07333,0,0,0,224,192Zm0,96a32,32,0,1,1,32-32A31.97162,31.97162,0,0,1,224,288Z"></path>
         </svg>
     </xsl:variable>
 
@@ -112,16 +117,22 @@
         </head>
     </xsl:template>
 
-    <!-- EXPERIMENTAL 20200421-->
+
     <xsl:template name="data-pagehelper">
-        <xsl:if test="descendant::pb">
-            <xsl:attribute name="data-pagehelper">pageend</xsl:attribute>
+        <!-- If the previous element is a page break, add the data attribute page-start and give it a value of the next page break  -->
+        <xsl:if test="name(preceding-sibling::*[1])='pb'">
+            <xsl:attribute name="data-page-start">
+                <xsl:value-of select="following-sibling::pb/n"/>
+            </xsl:attribute>
         </xsl:if>
-        <xsl:if test="not(preceding-sibling::*) and following-sibling::*">
-            <xsl:attribute name="data-pagehelper2">firstchild</xsl:attribute>
+        <!-- If there is no preceding sibling i.e. its the first element, grab the first page break value and put it into the data attribute -->
+        <xsl:if test="not(preceding-sibling::*)">
+            <xsl:attribute name="data-page-start">
+                <xsl:value-of select="../following-sibling::pb/n"/>
+            </xsl:attribute>
         </xsl:if>
     </xsl:template>
-    <!-- /EXPERIMENTAL CODE-->
+
 
     <!-- ============================================================= -->
     <!--  TOP LEVEL                                                    -->
@@ -476,7 +487,7 @@
     <!--PEPKBD3 Author Information-->
     <xsl:template match="aut" mode="metadata">
         <span class="title-author" data-listed="{@listed}" data-authindexid="{@authindexid}" data-role="{@role}" data-alias="{@alias}" data-asis="{@asis}">
-            <a class="author" href="#/Search/?author={@authindexid}">
+            <a class="author" href="#/Search/?author={@authindexid}" data-type="search-author">
                 <xsl:apply-templates mode="metadata" select="nfirst"/>
                 <xsl:apply-templates mode="metadata" select="nlast"/>
             </a>
@@ -504,9 +515,18 @@
     </xsl:template>
 
     <xsl:template match="webx">
-        <span class="webx" data-type="{@type}" data-url="{@url}">
-            <xsl:value-of select="."/>
-        </span>
+        <xsl:choose>
+            <xsl:when test="@type">
+                <a class="webx" data-type="{@type}" data-url="{@url}" target="_blank" href="{@url}">
+                    <xsl:value-of select="."/>
+                </a>
+            </xsl:when>
+            <xsl:otherwise>
+                <a class="webx" data-type="web-link" data-url="{@url}" target="_blank" href="{@url}">
+                    <xsl:value-of select="."/>
+                </a>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 
     <xsl:template match="cr">
@@ -515,7 +535,7 @@
 
     <xsl:template match="nfirst" mode="metadata">
         <xsl:text>&#10;</xsl:text> <!-- newline character -->
-        <span class="nfirst" data-type="{@type}" data-initials="{@initials}">
+        <span class="nfirst pointer-events-none" data-type="{@type}" data-initials="{@initials}">
             <xsl:value-of select="."/>
         </span>
         <xsl:text> </xsl:text> <!-- space character -->
@@ -523,7 +543,7 @@
 
 
     <xsl:template match="nlast" mode="metadata">
-        <span class="nlast">
+        <span class="nlast pointer-events-none">
             <xsl:value-of select="."/>
         </span>
     </xsl:template>
@@ -562,7 +582,7 @@
 
     <xsl:template match="pgx">
         <span class="pgx" data-type="pagelink" data-r="{@rx}">
-            <a class="pgx" href="#/Document/{@rx}">
+            <a class="pgx" href="#/Document/{@rx}" data-type="pagelink" data-r="{@rx}">
                 <xsl:value-of select="."/>
             </a>
         </span>
@@ -578,9 +598,9 @@
 
     <xsl:template match="ftnx">
         <sup>
-            <span class="ftnx" data-type="{@type}" data-r="{@r}">
+            <a class="ftnx" data-type="{@type}" data-r="{@r}">
                 <xsl:value-of select="."/>
-            </span>
+            </a>
         </sup>
     </xsl:template>
 
@@ -592,7 +612,7 @@
     </xsl:template>
 
     <xsl:template match="ftn">
-        <p class="ftn" data-class="ftn_group">
+        <div class="ftn" data-class="ftn_group">
             <xsl:attribute name="id">
                 <xsl:value-of select="@id"/>
             </xsl:attribute>
@@ -601,10 +621,8 @@
                     <xsl:value-of select="@label"/>
                 </sup>
             </span>
-            <xsl:value-of select="."/>
-            <!--          <xsl:apply-templates/>-->
-        </p>
-
+            <xsl:apply-templates />
+        </div>
     </xsl:template>
 
     <xsl:template match="aff" mode="metadata">
@@ -676,23 +694,49 @@
     </xsl:template>
 
     <xsl:template match="figure">
-        <p class="figure" id="{@id}">
+        <div class="figure d-flex flex-column" id="{@id}">
             <xsl:call-template name="data-pagehelper"/>
             <xsl:apply-templates/>
-            <!--      <xsl:apply-templates select="graphic"/>-->
-            <!--      <xsl:apply-templates/>-->
-        </p>
+        </div>
     </xsl:template>
 
     <xsl:template match="caption">
         <p class="figtitle caption">
-            <xsl:call-template name="data-pagehelper"/>
             <xsl:value-of select="."/>
         </p>
     </xsl:template>
 
     <xsl:template match="graphic">
         <xsl:apply-templates/>
+        <p class="figure-graphic d-flex justify-content-center">
+            <img alt="{@xlink:href}" class="image">
+                <xsl:if test="ancestor::figure">
+                    <xsl:attribute name="data-type">figure</xsl:attribute>
+                </xsl:if>
+                <xsl:if test="ancestor::tbl">
+                    <xsl:attribute name="data-type">table-figure</xsl:attribute>
+                </xsl:if>
+                <xsl:for-each select="alt-text">
+                    <xsl:attribute name="alt">
+                        <xsl:value-of select="normalize-space(string(.))"/>
+                    </xsl:attribute>
+                </xsl:for-each>
+
+                <xsl:for-each select="@source">
+                    <xsl:attribute name="src">
+                        <xsl:variable name="image">
+                            <xsl:value-of select="."/>
+                        </xsl:variable>
+                        <xsl:value-of select="concat($imageUrl, '/', $image)"/>
+                    </xsl:attribute>
+                </xsl:for-each>
+
+            </img>
+        </p>
+    </xsl:template>
+
+    <xsl:template name="figure-graphic" >
+        <!-- <xsl:apply-templates/> -->
         <p class="figure">
             <img alt="{@xlink:href}" class="img-fluid">
                 <xsl:for-each select="alt-text">
@@ -721,6 +765,9 @@
 
          <xsl:template match="title | sec-meta" mode="drop-title"/>
     -->
+
+
+
 
     <xsl:template match="app">
         <div class="section app">
@@ -888,7 +935,7 @@
     </xsl:template>
 
     <!--  Since lxml only supports XSLT 1.0, can't use the above functions, so do it the imperfect way!-->
-    <xsl:template match="list[@type = 'ALP' or @type = 'AUP' or @type = 'AUR' or @type = 'ALR' or @type = 'RLP' or @type = 'RUP' or @type = 'NNP' or @type = 'NNB' or @type = 'NNS']" mode="list">
+    <xsl:template match="list[@type = 'ALP' or @type = 'AUP' or @type = 'AUR' or @type = 'ALR' or @type = 'RLP' or @type = 'RUP' or @type = 'NNP' or @type = 'NNB' or @type = 'NNS']">
         <xsl:variable name="style">
             <xsl:choose>
                 <xsl:when test="@type = 'ALP'">a</xsl:when>
@@ -911,17 +958,17 @@
         </ol>
     </xsl:template>
 
-    <xsl:template match="list[@type = 'DASH' or @type = 'DIAMOND' or @type = 'ASTERISK']" mode="list">
-        <xsl:variable name="style">
+    <xsl:template match="list[@type = 'DASH' or @type = 'DIAMOND' or @type = 'ASTERISK' or @type= 'NONE']">
+        <ul>
             <xsl:call-template name="data-pagehelper"/>
-            <xsl:choose>
-                <xsl:when test="@type = 'DASH'">dash</xsl:when>
-                <xsl:when test="@type = 'DIAMOND'">diamond</xsl:when>
-                <xsl:when test="@type = 'ASTERISK'">asterisk</xsl:when>
-                <xsl:otherwise>other</xsl:otherwise>
-            </xsl:choose>
-        </xsl:variable>
-        <ul style="list-style-type: {$style}">
+            <xsl:attribute name="class">
+                <xsl:choose>
+                    <xsl:when test="@type = 'DASH'">ml-5 dash</xsl:when>
+                    <xsl:when test="@type = 'DIAMOND'">ml-5 diamond</xsl:when>
+                    <xsl:when test="@type = 'ASTERISK'">ml-5 asterisk</xsl:when>
+                    <xsl:otherwise>ml-5 list-unstyled</xsl:otherwise>
+                </xsl:choose>
+            </xsl:attribute>
             <xsl:attribute name="data-style">
                 <xsl:value-of select="@type"/>
             </xsl:attribute>
@@ -953,6 +1000,9 @@
     <xsl:template match="n">
         <xsl:apply-templates select="@content-type"/>
         <p class="pagenumber text-center text-muted small">
+            <xsl:attribute name="data-pgnum">
+                <xsl:apply-templates/>
+            </xsl:attribute>
             <xsl:if test="@nextpgnum">
                 <xsl:attribute name="data-nextpgnum">
                     <xsl:value-of select="@nextpgnum"/>
@@ -963,12 +1013,16 @@
                     <xsl:value-of select="@prefxused"/>
                 </xsl:attribute>
             </xsl:if>
+            <xsl:apply-templates select="@content-type"/>
             <xsl:apply-templates/>
         </p>
     </xsl:template>
 
     <xsl:template match="pb">
         <div class="pagebreak" data-class="pb">
+            <xsl:attribute name="data-page-end">
+                <xsl:value-of select="n"/>
+            </xsl:attribute>
             <xsl:call-template name="named-anchor"/>
             <xsl:apply-templates select="@content-type"/>
             <xsl:apply-templates/>
@@ -988,7 +1042,7 @@
     <xsl:template match="impx"> <!--when not in metadata mode -->
         <xsl:choose>
             <xsl:when test="@rx"> <!-- for the generated links -->
-                <span class="peppopup glosstip impx" data-type="{@type}" data-docid="{@rx}" data-grpname="{@grpname}">
+                <span class="peppopup glosstip impx" data-type="{@type}" data-doc-id="{@rx}" data-grpname="{@grpname}">
                     <xsl:value-of select="."/>
                 </span>
             </xsl:when>
@@ -1002,15 +1056,15 @@
 
     <xsl:template match="figx"> <!--when not in metadata mode -->
         <xsl:choose>
-            <xsl:when test="@rx"> <!-- for the generated links -->
-                <span class="peppopup figuretip figx" data-type="{@type}" data-docid="{@rx}" data-grpname="{@grpname}">
+            <xsl:when test="@r"> <!-- for the generated links -->
+                <a class="peppopup figuretip figx" data-type="figure-id" data-figure-id="{@r}" data-grpname="{@grpname}">
                     <xsl:value-of select="."/>
-                </span>
+                </a>
             </xsl:when>
             <xsl:otherwise> <!-- sometimes impx is manually tagged -->
-                <span class="figx figuretip" data-type="{@type}">
+                <a class="figx figuretip" data-type="figure-id">
                     <xsl:value-of select="."/>
-                </span>
+                </a>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
@@ -1055,6 +1109,7 @@
         <p class="para my-1">
             <xsl:call-template name="assign-lang"/>
             <xsl:call-template name="data-pagehelper"/>
+
             <xsl:if test="@lgrid">
                 <xsl:attribute name="data-lgrid">
                     <xsl:value-of select="@lgrid"/>
@@ -1086,8 +1141,12 @@
 
             <xsl:call-template name="assign-id"/>
             <xsl:apply-templates select="@content-type"/>
-            <xsl:apply-templates/>
-        </p>
+            <xsl:apply-templates />
+            <!-- <xsl:call-template name="highlight">
+                 <xsl:with-param name="string" select="."/>
+                 <xsl:with-param name="term" select="$searchTerm"/>
+                 </xsl:call-template> -->
+         </p>
     </xsl:template>
 
     <xsl:template match="note">
@@ -1139,13 +1198,17 @@
                 <summary>...excerpted...click for more...</summary>
                 <div class="def-def body">
                     <xsl:apply-templates/>
-                    <a class="seemore">
-                        <xsl:attribute name="href">
-                            <xsl:value-of select="../../@id"/>
-                        </xsl:attribute>
-                        Open full glossary entry in main window...
-                    </a>
-                </div>
+                    <!-- <a class="seemore" type="document-link">
+                         <xsl:attribute name="href">
+                         <xsl:value-of select="../../@id"/>
+                         </xsl:attribute>
+                         <xsl:attribute name="data-document-id">
+                         <xsl:value-of select="../../@id"/>
+                         </xsl:attribute>
+
+                         Open full glossary entry in main window...
+                         </a> -->
+                 </div>
             </details>
         </div>
     </xsl:template>
@@ -1168,20 +1231,70 @@
         </p>
     </xsl:template>
 
+    <xsl:template match="binc/j">
+        <span class="font-italic">
+            <xsl:apply-templates/>
+        </span>
+    </xsl:template>
+
+    <xsl:template match="bst">
+        <span class="font-italic">
+            <xsl:apply-templates/>
+        </span>
+    </xsl:template>
+
+    <xsl:template match="binc">
+        <span class="bibentry" id="{@id}">
+            <span class="ref-content cell">
+                <xsl:apply-templates/>
+            </span>
+            <!--matched reference id-->
+            <xsl:if test="@rx">
+                <a class="bibx pl-2" data-type="BIBX">
+                    <xsl:attribute name="data-document-id">
+                        <xsl:value-of select="@rx"/>
+                    </xsl:attribute>
+                    <xsl:copy-of select="$fa-right-arrow" />
+                </a>
+            </xsl:if>
+            <xsl:if test="@rxcf">
+                <a class="bibx pl-2" data-type="BIBX">
+                    <xsl:attribute name="data-document-id">
+                        <xsl:value-of select="@rxcf"/>
+                    </xsl:attribute>
+                    <xsl:copy-of select="$fa-robot" />
+                </a>
+                <span class="bibx-related-info ml-1">
+                    <xsl:copy-of select="$fa-information" />
+                </span>
+            </xsl:if>
+        </span>
+    </xsl:template>
 
     <xsl:template match="be">
         <p class="bibentry" id="{@id}">
             <span class="ref-content cell">
                 <xsl:apply-templates/>
             </span>
-            <xsl:if test="@rx"> <!--matched reference id-->
-                <a class="bibx pl-2" >
-                    <xsl:attribute name="href">
-                        <xsl:value-of select="concat('#', '/Document/',@rx)"/>
+            <!--matched reference id-->
+            <xsl:if test="@rx">
+                <a class="bibx pl-2" data-type="BIBX">
+                    <xsl:attribute name="data-document-id">
+                        <xsl:value-of select="@rx"/>
                     </xsl:attribute>
-                    <!--              <xsl:text> [→]</xsl:text>-->
                     <xsl:copy-of select="$fa-right-arrow" />
                 </a>
+            </xsl:if>
+            <xsl:if test="@rxcf">
+                <a class="bibx pl-2" data-type="BIBX">
+                    <xsl:attribute name="data-document-id">
+                        <xsl:value-of select="@rxcf"/>
+                    </xsl:attribute>
+                    <xsl:copy-of select="$fa-robot" />
+                </a>
+                <span class="bibx-related-info ml-1">
+                    <xsl:copy-of select="$fa-information" />
+                </span>
             </xsl:if>
         </p>
     </xsl:template>
@@ -1602,7 +1715,6 @@
         </xsl:if>
     </xsl:template>
 
-
     <xsl:template mode="label" match="ref">
         <xsl:param name="contents">
             <xsl:apply-templates select="." mode="label-text"/>
@@ -1613,6 +1725,45 @@
                 <xsl:copy-of select="$contents"/>
             </span>
         </xsl:if>
+    </xsl:template>
+
+    <xsl:template name="highlight">
+        <xsl:param name="element"/>
+        <xsl:param name="search" as="xs:string"/>
+        <xsl:param name="flags" required="no" select="'im'" as="xs:string"/>
+
+        <xsl:choose>
+            <xsl:when test="empty($search) or $search eq ''">
+                <xsl:value-of select="."/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:for-each select="$element/node()">
+                    <xsl:choose>
+                        <xsl:when test=". instance of text()">
+                            <xsl:for-each select="analyze-string(., $search, $flags)/*">
+                                <xsl:choose>
+                                    <xsl:when test="local-name(.) eq 'non-match'">
+                                        <xsl:value-of select="./text()"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <span class="highlighted">
+                                            <xsl:value-of select="./text()"/>
+                                        </span>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </xsl:for-each>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:call-template name="highlight">
+                                <xsl:with-param name="element" select="."/>
+                                <xsl:with-param name="search" select="$search"/>
+                                <xsl:with-param name="flags" select="$flags"/>
+                            </xsl:call-template>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:for-each>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 
 

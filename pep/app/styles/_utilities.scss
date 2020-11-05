@@ -46,3 +46,10 @@
 .border-divider-t {
     border-top: 1px solid $color-divider;
 }
+
+// ---------------------------
+// Pointer events
+// ---------------------------
+.pointer-events-none {
+    pointer-events: none;
+}

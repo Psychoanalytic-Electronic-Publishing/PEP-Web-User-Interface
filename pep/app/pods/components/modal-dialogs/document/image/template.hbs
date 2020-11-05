@@ -1,0 +1,16 @@
+<ModalDialog @onClose={{@onClose}} @size="xl" as |Modal|>
+    {{#if @options.id}}
+        <Modal.header @title={{t "figure.title" id=@options.id}} />
+    {{/if}}
+    <Modal.body>
+        <div class="d-flex flex-column justify-content-center align-items-center">
+            <span class="small text-muted">
+                {{@options.caption}}
+            </span>
+            <img class="img-fluid" src={{@options.url}} alt={{t "figure.title" id=@options.id}} />
+        </div>
+    </Modal.body>
+    <Modal.footer>
+        <Button @type="link" @label={{t "common.close"}} @action={{@onClose}} />
+    </Modal.footer>
+</ModalDialog>

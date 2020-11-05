@@ -4,9 +4,12 @@ $document-paragraph-indent: 1.5rem;
 .document-text {
     h1 {
         font-weight: bold;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
     }
     a {
         text-decoration: none;
+        cursor: pointer;
         &:hover {
             text-decoration: underline;
         }
@@ -20,7 +23,6 @@ $document-paragraph-indent: 1.5rem;
         }
         &.bibx {
             font-weight: bold;
-            font-size: 8px;
             position: relative;
             bottom: 1px;
         }
@@ -34,6 +36,7 @@ $document-paragraph-indent: 1.5rem;
         &.webx,
         &.bib {
             font-weight: bold;
+            cursor: pointer;
         }
 
         &.whocitedthis {
@@ -42,6 +45,10 @@ $document-paragraph-indent: 1.5rem;
         }
         &.author {
             font-weight: bold;
+        }
+        &.pgx {
+            margin-left: 2px;
+            margin-right: 2px;
         }
     }
 
@@ -106,12 +113,13 @@ $document-paragraph-indent: 1.5rem;
             margin-bottom: 0px;
             font-style: italic;
         }
+        &.ftr,
         &.ftn {
-            font-size: 9px;
+            font-size: 0.7rem;
             margin-left: 0px;
-            margin-top: 0px;
             margin-bottom: 0px;
             margin-right: 0px;
+            margin-top: 0px;
         }
 
         &.figure {
@@ -120,6 +128,13 @@ $document-paragraph-indent: 1.5rem;
             margin-top: 3px;
             margin-bottom: 3px;
             text-align: center;
+            &-graphic {
+                .image {
+                    cursor: pointer;
+                    max-width: 60vw;
+                    max-height: 75vh;
+                }
+            }
         }
         &.figtitle {
             margin-top: 3px;
@@ -142,6 +157,12 @@ $document-paragraph-indent: 1.5rem;
             margin-bottom: 3px;
             margin-right: 0px;
             text-indent: 18px;
+        }
+        &.dictentrygrp-dictalso {
+            .glosstip {
+                margin-left: 5px;
+                margin-right: 5px;
+            }
         }
     }
 
@@ -178,6 +199,10 @@ $document-paragraph-indent: 1.5rem;
         &.smallcaps {
             font-size: 0.8em;
         }
+        &.highlight {
+            font-weight: bold;
+            font-style: italic;
+        }
     }
 
     div {
@@ -200,6 +225,11 @@ $document-paragraph-indent: 1.5rem;
                 width: 25%;
                 left: 0%;
                 border-top: 1px solid;
+            }
+            .ftn {
+                .ftr.first {
+                    display: inline;
+                }
             }
         }
     }
@@ -253,5 +283,27 @@ $document-paragraph-indent: 1.5rem;
 
     .bibentry {
         background-color: white;
+    }
+
+    li {
+        p.para {
+            font-size: 0.8rem;
+            margin-left: 18pt;
+            text-indent: -18pt;
+            margin-top: 3pt;
+            margin-bottom: 3pt;
+            .tippy-box {
+                text-indent: 0;
+            }
+        }
+    }
+
+    .tippy-box {
+        p {
+            text-indent: 0;
+        }
+        .ftnlabel {
+            display: none;
+        }
     }
 }

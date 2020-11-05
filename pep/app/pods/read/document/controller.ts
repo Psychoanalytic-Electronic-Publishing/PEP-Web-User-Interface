@@ -24,7 +24,7 @@ import LoadingBarService from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
 import PrinterService from 'pep/services/printer';
 import SearchSelection from 'pep/services/search-selection';
-import { buildSearchQueryParams } from 'pep/utils/search';
+import { buildSearchQueryParams, clearSearch } from 'pep/utils/search';
 import { SearchSorts, SearchSortType } from 'pep/utils/sort';
 import { reject } from 'rsvp';
 
@@ -53,12 +53,14 @@ export default class ReadDocument extends Controller {
     @tracked _searchTerms: string | null = null;
     @tracked paginator!: Pagination<Document>;
     @tracked showHitsInContext = false;
+    @tracked page = null;
 
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
     //@ts-ignore
     queryParams = [
         'q',
+        'page',
         { _searchTerms: 'searchTerms' },
         'matchSynonyms',
         'citedCount',
@@ -353,6 +355,24 @@ export default class ReadDocument extends Controller {
                 displayName: 'Source'
             }
         ]);
+    }
+
+    /**
+     * Clear the old search and then go to the search page using the new search terms
+     *
+     * @param {string} searchTerms
+     * @memberof ReadDocument
+     */
+    @action
+    viewSearch(searchTerms: string) {
+        // TODO improve this typing
+        clearSearch(this as any, this.configuration, this.currentUser);
+        this.router.transitionTo('search', {
+            queryParams: {
+                ...this.configuration.defaultSearchParams,
+                searchTerms
+            }
+        });
     }
 }
 

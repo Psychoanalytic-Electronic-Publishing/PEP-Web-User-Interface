@@ -5,7 +5,8 @@ const EmberApp = require('ember-cli/lib/broccoli/ember-app');
 module.exports = function(defaults) {
     let app = new EmberApp(defaults, {
         fingerprint: {
-            prepend: process.env.ASSETS_BASE_URL
+            prepend: process.env.ASSETS_BASE_URL,
+            extensions: ['js', 'css', 'png', 'jpg', 'gif', 'map', 'xslt']
         },
         outputPaths: {
             app: {

@@ -1,17 +1,19 @@
+import { action } from '@ember/object';
+import { later } from '@ember/runloop';
+import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import { action } from '@ember/object';
-import { inject as service } from '@ember/service';
-import DS from 'ember-data';
 
-import { dontRunInFastboot } from 'pep/decorators/fastboot';
-import WhatsNew from 'pep/pods/whats-new/model';
-import { WIDGET } from 'pep/constants/sidebar';
-import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
 import Modal from '@gavant/ember-modals/services/modal';
-import ConfigurationService from 'pep/services/configuration';
 import { restartableTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
+import DS from 'ember-data';
+
+import { WIDGET } from 'pep/constants/sidebar';
+import { dontRunInFastboot } from 'pep/decorators/fastboot';
+import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
+import WhatsNew from 'pep/pods/whats-new/model';
+import ConfigurationService from 'pep/services/configuration';
 
 interface PageSidebarWidgetsWhatsNewArgs extends PageSidebarWidgetArgs {}
 
@@ -49,7 +51,9 @@ export default class PageSidebarWidgetsWhatsNew extends Component<PageSidebarWid
     @action
     @dontRunInFastboot
     onElementInsert() {
-        taskFor(this.loadResults).perform();
+        later(() => {
+            taskFor(this.loadResults).perform();
+        }, 1000);
     }
 
     /**

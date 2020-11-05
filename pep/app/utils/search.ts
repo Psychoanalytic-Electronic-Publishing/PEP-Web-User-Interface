@@ -72,7 +72,7 @@ type BuildSearchQueryParams = {
     highlightlimit?: number;
 };
 
-type SearchController = {
+export type SearchController = {
     smartSearchTerm: string;
     matchSynonyms: boolean;
     citedCount: string;
@@ -296,6 +296,7 @@ export function clearSearch(
     const preferences = user.preferences;
     const terms = preferences?.searchTermFields ?? cfg.terms.defaultFields;
     const isLimitOpen = preferences?.searchLimitIsShown ?? cfg.limitFields.isShown;
+    const blankTerms = terms.map((f) => ({ type: f, term: '' }));
 
     const controllers = [controller, searchController];
     controllers.forEach((controller, index) => {
@@ -305,11 +306,11 @@ export function clearSearch(
         controller.viewedCount = '';
         controller.viewedPeriod = SEARCH_DEFAULT_VIEW_PERIOD;
         controller.isLimitOpen = isLimitOpen;
-        controller.searchTerms = terms.map((f) => ({ type: f, term: '' }));
+        controller.searchTerms = blankTerms;
         if (index === 1) {
             controller.q = '';
             controller.currentSmartSearchTerm = '';
-            controller.currentSearchTerms = terms.map((f) => ({ type: f, term: '' }));
+            controller.currentSearchTerms = blankTerms;
             controller.currentMatchSynonyms = false;
             controller.currentCitedCount = '';
             controller.currentViewedCount = '';
