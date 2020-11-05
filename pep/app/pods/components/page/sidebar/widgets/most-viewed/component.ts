@@ -1,4 +1,5 @@
 import { action } from '@ember/object';
+import { later } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -51,7 +52,7 @@ export default class PageSidebarWidgetsMostViewed extends Component<PageSidebarW
     @action
     @dontRunInFastboot
     onElementInsert() {
-        setTimeout(() => {
+        later(() => {
             taskFor(this.loadResults).perform();
         }, 3000);
     }

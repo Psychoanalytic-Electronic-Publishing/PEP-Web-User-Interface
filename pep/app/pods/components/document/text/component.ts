@@ -145,7 +145,10 @@ export default class DocumentText extends Component<DocumentTextArgs> {
     }
 
     /**
-     * Document click handler. There are many things you can do with a document on click so we decipher what element the user is clicking on and based upon a data attribute type we do the correct thing
+     * Document click handler. There are many things you can do with a document on click so we decipher what element the user is clicking on and
+     * based upon a data attribute type we do the correct thing.
+     *
+     * TODO - try to improve this method and split up into helper functions
      *
      * @param {Event} event
      * @memberof DocumentText

@@ -369,13 +369,8 @@ export default class ReadDocument extends Controller {
         clearSearch(this as any, this.configuration, this.currentUser);
         this.router.transitionTo('search', {
             queryParams: {
-                q: '',
-                matchSynonyms: false,
-                citedCount: '',
-                viewedCount: '',
-                viewedPeriod: SEARCH_DEFAULT_VIEW_PERIOD,
-                searchTerms,
-                facets: ''
+                ...this.configuration.defaultSearchParams,
+                searchTerms
             }
         });
     }
