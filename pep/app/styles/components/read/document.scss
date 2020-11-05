@@ -1,0 +1,309 @@
+$document-font-size: 1rem;
+$document-paragraph-indent: 1.5rem;
+
+.document-text {
+    h1 {
+        font-weight: bold;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+    a {
+        text-decoration: none;
+        cursor: pointer;
+        &:hover {
+            text-decoration: underline;
+        }
+        &.toggle {
+            font-size: 6px;
+            position: relative;
+            bottom: 8px;
+        }
+        &.url {
+            font-weight: bold;
+        }
+        &.bibx {
+            font-weight: bold;
+            position: relative;
+            bottom: 1px;
+        }
+        &.def,
+        &.figx,
+        &.pgx,
+        &.tblx,
+        &.hdix,
+        &.volx,
+        &.issuex,
+        &.webx,
+        &.bib {
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        &.whocitedthis {
+            font-size: 11px;
+            font-weight: bold;
+        }
+        &.author {
+            font-weight: bold;
+        }
+        &.pgx {
+            margin-left: 2px;
+            margin-right: 2px;
+        }
+    }
+
+    p {
+        &.banner {
+            margin-top: 0px;
+            margin-bottom: 3px;
+        }
+        &.heading {
+            font-size: 7px;
+            margin-top: 0px;
+            margin-bottom: 3px;
+        }
+        &.newsecnm {
+            font-size: 10px;
+            font-weight: bold;
+            text-align: right;
+            margin-top: 0px;
+            margin-bottom: 6px;
+        }
+        &.artsub,
+        &.title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 0px;
+            margin-bottom: 3px;
+        }
+        &.subtitle {
+            font-size: 10px;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 9px;
+            margin-bottom: 9px;
+        }
+        &.title-author {
+            text-align: center;
+            margin-bottom: 3px;
+            margin-top: 0px;
+            font-size: 12px;
+            font-style: italic;
+            font-weight: bold;
+        }
+        &.para {
+            text-indent: $document-paragraph-indent;
+        }
+        &.autaffname {
+            text-align: center;
+            margin-top: 3px;
+            margin-bottom: 0px;
+            font-weight: bold;
+        }
+        &.autaffbio {
+            text-align: center;
+            margin-top: 10px;
+            margin-bottom: 0px;
+            font-style: italic;
+        }
+        &.autaffaddr {
+            text-align: center;
+            margin-top: 0px;
+            margin-bottom: 0px;
+            font-style: italic;
+        }
+        &.ftr,
+        &.ftn {
+            font-size: 0.7rem;
+            margin-left: 0px;
+            margin-bottom: 0px;
+            margin-right: 0px;
+            margin-top: 0px;
+        }
+
+        &.figure {
+            display: flex;
+            justify-content: center;
+            margin-top: 3px;
+            margin-bottom: 3px;
+            text-align: center;
+            &-graphic {
+                .image {
+                    cursor: pointer;
+                    max-width: 60vw;
+                    max-height: 75vh;
+                }
+            }
+        }
+        &.figtitle {
+            margin-top: 3px;
+            margin-bottom: 3px;
+            text-align: center;
+
+            font-size: 10px;
+            font-weight: bold;
+        }
+        &.note {
+            font-size: 9px;
+            margin-top: 3px;
+            margin-bottom: 3px;
+            margin-right: 0px;
+            text-indent: 18px;
+        }
+        &.note_cont {
+            font-size: 9px;
+            margin-top: 3px;
+            margin-bottom: 3px;
+            margin-right: 0px;
+            text-indent: 18px;
+        }
+        &.dictentrygrp-dictalso {
+            .glosstip {
+                margin-left: 5px;
+                margin-right: 5px;
+            }
+        }
+    }
+
+    span {
+        &.ftnlabel {
+            font-size: 80%;
+            position: relative;
+            bottom: 3px;
+        }
+        &.ftrlabel {
+            font-size: 80%;
+            position: relative;
+            bottom: 3px;
+        }
+        &.notelabel {
+            font-size: 80%;
+            position: relative;
+            bottom: 3px;
+        }
+        &.su {
+            font-size: 80%;
+            position: relative;
+            bottom: 3px;
+        }
+        &.bibtip {
+            font-weight: bold;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        &.glosstip:hover {
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        &.smallcaps {
+            font-size: 0.8em;
+        }
+        &.highlight {
+            font-weight: bold;
+            font-style: italic;
+        }
+    }
+
+    div {
+        &.boxed-text {
+            border: 1px solid black;
+            padding: 5px 10px;
+            margin: 10px 0;
+        }
+        &.artauth {
+            display: flex;
+            justify-content: center;
+        }
+        &.footer {
+            position: relative;
+            &::before {
+                content: '';
+                display: block;
+                position: absolute;
+                top: 0;
+                width: 25%;
+                left: 0%;
+                border-top: 1px solid;
+            }
+            .ftn {
+                .ftr.first {
+                    display: inline;
+                }
+            }
+        }
+    }
+
+    tr {
+        &.abstract {
+            p {
+                margin: 0 0 5px;
+            }
+        }
+    }
+
+    // GLOSSARY ITEMS
+    .dictentrygrp {
+        & p {
+            text-indent: 0px;
+        }
+        & h1 {
+            font-size: small;
+        }
+        & > .dictentry-src,
+        & > .body,
+        & > .seemore,
+        & > .defrest,
+        & > .dictentry-bib,
+        & > .dictentry-dictalso,
+        & > .dictentrygrp-dictalso {
+            margin-left: 15px;
+        }
+
+        &-term {
+            font-weight: bold;
+            border-top: 1px solid black;
+        }
+    }
+
+    .dictentry-term {
+        font-weight: bold;
+    }
+
+    .dictalso-term {
+        font-weight: bold;
+    }
+    .dictentrygrp-dictalso-term {
+        font-weight: bold;
+    }
+    .dictentry-src {
+        font-weight: bold;
+        font-style: italic;
+    }
+
+    .bibentry {
+        background-color: white;
+    }
+
+    li {
+        p.para {
+            font-size: 0.8rem;
+            margin-left: 18pt;
+            text-indent: -18pt;
+            margin-top: 3pt;
+            margin-bottom: 3pt;
+            .tippy-box {
+                text-indent: 0;
+            }
+        }
+    }
+
+    .tippy-box {
+        p {
+            text-indent: 0;
+        }
+        .ftnlabel {
+            display: none;
+        }
+    }
+}

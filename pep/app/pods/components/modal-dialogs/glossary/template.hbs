@@ -1,25 +1,13 @@
 <ModalDialog @onClose={{@onClose}} @size="lg" as |Modal|>
     <Modal.header @title={{t "glossary.title"}} />
     <Modal.body>
-        {{!-- TODO when we do this for real - comment this out --}}
-        {{!-- {{#each @options.results as |glossary|}}
-            <p class="text-strong">{{glossary.term}}</p>
-            <p class="text-strong">{{glossary.termSource}}</p>
-            <p class="text-muted">
-                {{html-safe glossary.document}}
-            </p>
-        {{/each}} --}}
+        {{#each this.glossaryItem.results as |glossary|}}
+            <Document::Text @document={{glossary}} @onGlossaryItemClick={{this.viewGlossaryTerm}} />
+        {{/each}}
     </Modal.body>
     <Modal.footer>
-        <Button
-            @type="link"
-            @label={{t "glossary.searchForTerm"}}
-            @action={{this.searchForTerm}}
-        />
-        <Button
-            @type="link"
-            @label={{t "common.cancel"}}
-            @action={{@onClose}}
-        />
+        {{! Commenting this out for now }}
+        {{!-- <Button @type="link" @label={{t "glossary.searchForTerm"}} @action={{this.searchForTerm}} /> --}}
+        <Button @type="link" @label={{t "common.close"}} @action={{@onClose}} />
     </Modal.footer>
 </ModalDialog>

@@ -1,0 +1,11 @@
+{{#if @rowValue.kwicList.length}}
+    <ul class="font-size-secondary">
+        {{#each @rowValue.kwicList as |searchHit|}}
+            <li>
+                {{html-safe searchHit}}
+            </li>
+        {{/each}}
+    </ul>
+{{else}}
+    {{t "search.table.kwicList.empty"}}
+{{/if}}

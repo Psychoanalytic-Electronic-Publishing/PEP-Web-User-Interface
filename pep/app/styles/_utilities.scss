@@ -32,6 +32,10 @@
     background-color: $color-backdrop-well;
 }
 
+.bg-backdrop {
+    background-color: $color-backdrop;
+}
+
 // ---------------------------
 // Borders
 // ---------------------------
@@ -41,4 +45,11 @@
 
 .border-divider-t {
     border-top: 1px solid $color-divider;
+}
+
+// ---------------------------
+// Pointer events
+// ---------------------------
+.pointer-events-none {
+    pointer-events: none;
 }

@@ -7,7 +7,7 @@ import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
 import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
 import IntlService from 'ember-intl/services/intl';
 
-import { PERIODS, PossiblePeriodValues, PossiblePubPeriodValues, PUBPERIODS } from 'pep/constants/sidebar';
+import { PossiblePeriodValues, PossiblePubPeriodValues, PUBPERIODS } from 'pep/constants/sidebar';
 import { QueryParams } from 'pep/hooks/useQueryParams';
 import Document from 'pep/pods/document/model';
 import Journal from 'pep/pods/journal/model';
@@ -94,6 +94,7 @@ export default class MostCited extends Controller {
         this.searchQueryParams.author = '';
         this.searchQueryParams.title = '';
         this.searchQueryParams.journal = undefined;
+        this.paginator.clearModels();
     }
 
     /**

@@ -20,7 +20,7 @@
         "done": "Done",
         "export": "Export",
         "print": "Print",
-        "numResults": "{count} {count, plural, =1 {'<span class=\"text-muted\">'result'</span>'} other {'<span class=\"text-muted\">'results'</span>'}}",
+        "numResults": "{count} {count, plural, =1 {'<span class=\"text-muted \">'result'</span>'} other {'<span class=\"text-muted\">'results'</span>'}}",
         "noResults": "No results found",
         "loadingResults": "Loading results...",
         "loading": "Loading...",
@@ -64,6 +64,29 @@
     "search": {
         "title": "Search",
         "new": "Start a new search",
+        "description": "- {description}",
+        "exports": {
+            "csv": "Comma Separated Values (CSV)",
+            "ris": "Standard Tagged Format (RIS)",
+            "clipboard": "Clipboard",
+            "title": "Export"
+        },
+        "table": {
+            "author": "Author",
+            "year": "Year",
+            "title": "Title",
+            "source": "Source",
+            "kwicList": {
+                "empty": "No hits in context items found"
+            }
+        },
+        "hitsInContext": {
+            "label": {
+                "short": "Hits",
+                "full": "Hits in context"
+            },
+            "help": "Hits in context explanation goes here"
+        },
         "sort": {
             "label": "Sort:",
             "year": "Year"
@@ -144,7 +167,7 @@
             "heading": "Refine",
             "instructions": "Check to limit results to only matching articles.",
             "showLess": "Show less",
-            "showAll": "show all",
+            "showAll": "Show more",
             "none": "No refine options available",
             "apply": {
                 "label": "Refine search"
@@ -165,7 +188,7 @@
             "accessLimited": "The full content of this document is not available. This may be due to your current subscription or publisher restrictions.",
             "login": "Click here to login",
             "download": {
-                "label": "Download docs",
+                "label": "Download",
                 "ePub": "ePub document",
                 "pdf": "PDF document",
                 "pdfOrig": "PDF (original) document"
@@ -420,6 +443,9 @@
         "title": "Glossary",
         "searchForTerm": "Search for this term"
     },
+    "figure": {
+        "title": "Figure {id}"
+    },
     "login": {
         "title": "Login",
         "info": "This is the Psychoanalytic Electronic Publishing Archive full text database. It is freely available for everyone to search, view tables of contents, and view summaries. However you will need a subscription in order to view the full text of articles and books and follow links within the database.",
@@ -443,6 +469,9 @@
         },
         "search": {
             "heading": "Search",
+            "hic": {
+                "limit": "Hits in context limit"
+            },
             "preview": {
                 "label": "On search result selection",
                 "select": "Select your desired behavior",
@@ -471,6 +500,18 @@
         "archive": {
             "title": "PEP Archive",
             "description": "PEP Web has been designed to provide a powerful rapid search of the entire psychoanalytic literature in English, French, German, Greek, Italian, Romanian, Spanish and Turkish. It is the result of an innovative, high quality series of technical developments and a considerable financial and scholarly investment. You can '<a href=\"http://support.pep-web.org/about-the-pep-archive/digitization-and-quality-control/\" target=\"_blank\">'read about the innovative developments required to produce and keep updating the PEP archive'</a>' and read '<a href=\"http://support.pep-web.org/about-pep/history-of-pep/\" target=\"_blank\">'about the history of the PEP archive'</a>'. You can even '<a href=\"http://support.pep-web.org/about-the-pep-archive/suggest-new-content/\" target=\"_blank\">'suggest new content'</a>' that you would like to see added to the PEP Archive. '<br><br>' For more information, see the '<a href=\"http://support.pep-web.org\" target=\"_blank\">'PEP Web support pages'</a>'"
+        }
+    },
+    "exports": {
+        "clipboard": {
+            "success": "Copied to the clipboard",
+            "failure": "There was an issue copying to the clipboard. Please try again later."
+        }
+    },
+    "document": {
+        "text": {
+            "relatedBibliography": "This specific reference was not found to match any articles on PEP. However, using artificial intelligence, our software has found a reference which appears related, or may in some cases be a republication of the same article. '<div class=\"text-muted small mt-2\">'Disclaimer: This link is provided with the intent of possibly providing a relevant match where none would otherwise be provided. As it is by nature imprecise, and we are still refining the matching methods, not all references may actually be a close enough match to meet your needs'</div>'",
+            "error": "Failed to load the document. Please contact a PEP administrator for assistance."
         }
     },
     "language": {

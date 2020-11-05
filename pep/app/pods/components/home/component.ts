@@ -1,19 +1,30 @@
-import Controller from '@ember/controller';
 import { action } from '@ember/object';
+import RouterService from '@ember/routing/router-service';
 import { inject as service } from '@ember/service';
+import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
 
-import SidebarService from 'pep/services/sidebar';
-import FastbootMediaService from 'pep/services/fastboot-media';
-import ConfigurationService from 'pep/services/configuration';
+import { DS } from 'ember-data';
+
+import Abstract from 'pep/pods/abstract/model';
 import AuthService from 'pep/services/auth';
+import ConfigurationService from 'pep/services/configuration';
+import FastbootMediaService from 'pep/services/fastboot-media';
 import PepSessionService from 'pep/services/pep-session';
+import SidebarService from 'pep/services/sidebar';
 
-export default class Index extends Controller {
+interface HomeArgs {}
+
+export default class Home extends Component<HomeArgs> {
     @service sidebar!: SidebarService;
     @service fastbootMedia!: FastbootMediaService;
     @service configuration!: ConfigurationService;
     @service auth!: AuthService;
     @service('pep-session') session!: PepSessionService;
+    @service store!: DS.Store;
+    @service router!: RouterService;
+
+    @tracked model?: Abstract;
 
     get intro() {
         return this.configuration.content.home.intro;
@@ -57,13 +68,16 @@ export default class Index extends Controller {
      */
     @action
     async transitionToExpertPick() {
-        return this.transitionToRoute('read.document', this.expertPick.articleId);
+        return this.router.transitionTo('read.document', this.expertPick.articleId);
     }
-}
 
-// DO NOT DELETE: this is how TypeScript knows how to look up your controllers.
-declare module '@ember/controller' {
-    interface Registry {
-        index: Index;
+    /**
+     * Returns the expert pick of the day abstract
+     */
+    @action
+    async loadModel() {
+        const expertPicks = this.configuration.base.home.expertPicks;
+        const result = await this.store.findRecord('abstract', expertPicks[expertPicks.length - 1].articleId);
+        this.model = result;
     }
 }

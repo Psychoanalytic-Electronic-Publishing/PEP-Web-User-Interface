@@ -1,17 +1,19 @@
+import { action } from '@ember/object';
+import { later } from '@ember/runloop';
+import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import { action } from '@ember/object';
-import { inject as service } from '@ember/service';
-import DS from 'ember-data';
 
-import { dontRunInFastboot } from 'pep/decorators/fastboot';
-import Document from 'pep/pods/document/model';
-import Router from 'pep/router';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
-import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
-import { WIDGET } from 'pep/constants/sidebar';
 import { restartableTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
+import DS from 'ember-data';
+
+import { WIDGET } from 'pep/constants/sidebar';
+import { dontRunInFastboot } from 'pep/decorators/fastboot';
+import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
+import Document from 'pep/pods/document/model';
+import Router from 'pep/router';
 import ConfigurationService from 'pep/services/configuration';
 
 interface PageSidebarWidgetsMostCitedArgs extends PageSidebarWidgetArgs {}
@@ -49,7 +51,9 @@ export default class PageSidebarWidgetsMostCited extends Component<PageSidebarWi
     @action
     @dontRunInFastboot
     onElementInsert() {
-        taskFor(this.loadResults).perform();
+        later(() => {
+            taskFor(this.loadResults).perform();
+        }, 2000);
     }
 
     /**

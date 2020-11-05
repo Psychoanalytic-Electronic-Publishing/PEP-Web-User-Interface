@@ -1,17 +1,23 @@
-import Component from '@glimmer/component';
 import { action, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
+import Component from '@glimmer/component';
+
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import IntlService from 'ember-intl/services/intl';
 
-import CurrentUserService from 'pep/services/current-user';
-import SidebarService from 'pep/services/sidebar';
 import { PreferenceDocumentsKey, PreferenceKey } from 'pep/constants/preferences';
 import Document from 'pep/pods/document/model';
+import CurrentUserService from 'pep/services/current-user';
+import SearchSelection from 'pep/services/search-selection';
+import SidebarService from 'pep/services/sidebar';
 
 interface SearchItemBibliographicArgs {
     item: Document;
-    openResult: () => void;
+    openResult: (document: Document) => void;
+    showFavorites?: boolean;
+    showReadLater?: boolean;
+    highlight?: boolean;
+    showHitsInContext: boolean;
 }
 
 export default class SearchItemBibliographic extends Component<SearchItemBibliographicArgs> {
@@ -19,6 +25,15 @@ export default class SearchItemBibliographic extends Component<SearchItemBibliog
     @service sidebar!: SidebarService;
     @service notifications!: NotificationService;
     @service intl!: IntlService;
+    @service searchSelection!: SearchSelection;
+
+    get showFavorites() {
+        return typeof this.args.showFavorites === 'boolean' ? this.args.showFavorites : true;
+    }
+
+    get showReadLater() {
+        return typeof this.args.showReadLater === 'boolean' ? this.args.showReadLater : true;
+    }
 
     /**
      * Using a computed here so we A) dont dip into the local storage too often and B) so that this
@@ -42,6 +57,28 @@ export default class SearchItemBibliographic extends Component<SearchItemBibliog
     @computed('currentUser.preferences', 'args.item.id')
     get readLater() {
         return this.currentUser.hasPreferenceDocument(PreferenceKey.READ_LATER, this.args.item.id);
+    }
+
+    /**
+     *  Returns true/false if row is selected
+     *
+     * @readonly
+     * @memberof SearchItemBibliographic
+     */
+    get isSelected() {
+        return this.searchSelection.isSelected(this.args.item);
+    }
+
+    /**
+     * Toggles the selection of a row
+     *
+     * @param {string} rowId
+     * @returns
+     * @memberof SearchItemBibliographic
+     */
+    @action
+    toggleSelect(document: Document) {
+        return this.searchSelection.toggleRecordSelection(document);
     }
 
     /**
@@ -103,5 +140,18 @@ export default class SearchItemBibliographic extends Component<SearchItemBibliog
                 )
             );
         }
+    }
+
+    /**
+     * Prevent the default link action and pass the document up
+     *
+     * @param {Document} document
+     * @param {Event} event
+     * @memberof SearchItemBibliographic
+     */
+    @action
+    openResult(document: Document, event: Event) {
+        event.preventDefault();
+        this.args.openResult(document);
     }
 }

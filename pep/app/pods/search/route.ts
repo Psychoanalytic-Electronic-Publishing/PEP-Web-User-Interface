@@ -1,21 +1,22 @@
+import Transition from '@ember/routing/-private/transition';
 import Route from '@ember/routing/route';
+import { next } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 import { isEmpty } from '@ember/utils';
-import { next } from '@ember/runloop';
-import Transition from '@ember/routing/-private/transition';
-import FastbootService from 'ember-cli-fastboot/services/fastboot';
+
 import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hooks/pagination';
 import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
+import FastbootService from 'ember-cli-fastboot/services/fastboot';
 
-import { PageNav } from 'pep/mixins/page-layout';
-import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
-import SidebarService from 'pep/services/sidebar';
-import ConfigurationService from 'pep/services/configuration';
-import CurrentUserService from 'pep/services/current-user';
-import SearchController from 'pep/pods/search/controller';
-import Document from 'pep/pods/document/model';
 import { SearchMetadata } from 'pep/api';
 import { WIDGET } from 'pep/constants/sidebar';
+import { PageNav } from 'pep/mixins/page-layout';
+import Document from 'pep/pods/document/model';
+import SearchController from 'pep/pods/search/controller';
+import ConfigurationService from 'pep/services/configuration';
+import CurrentUserService from 'pep/services/current-user';
+import SidebarService from 'pep/services/sidebar';
+import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
 
 export interface SearchParams {
     q: string;
@@ -68,11 +69,15 @@ export default class Search extends PageNav(Route) {
         const searchParams = this.buildQueryParams(params);
         // if no search was submitted, don't fetch any results
         if (hasSearchQuery(searchParams)) {
-            const controller = this.controllerFor(this.routeName);
+            const controller = this.controllerFor(this.routeName) as SearchController;
             const queryParams = buildQueryParams({
                 context: controller,
                 pagingRootKey: null,
                 filterRootKey: null,
+                sorts:
+                    controller.selectedView.id === controller.tableView
+                        ? ['']
+                        : [this.currentUser.preferences?.searchSortType.id ?? ''],
                 processQueryParams: (params) => ({ ...params, ...searchParams })
             });
             return this.store.query('search-document', queryParams);
@@ -145,7 +150,12 @@ export default class Search extends PageNav(Route) {
             metadata: model.meta,
             pagingRootKey: null,
             filterRootKey: null,
-            processQueryParams: controller.processQueryParams
+            sorts:
+                controller.selectedView.id === controller.tableView
+                    ? ['']
+                    : [this.currentUser.preferences?.searchSortType.id ?? ''],
+            processQueryParams: controller.processQueryParams,
+            onChangeSorting: controller.onChangeSorting
         });
 
         this.sidebar.update({
@@ -194,18 +204,19 @@ export default class Search extends PageNav(Route) {
         // workaround for https://github.com/emberjs/ember.js/issues/18981
         const searchTerms = params._searchTerms ? JSON.parse(params._searchTerms) : [];
         const facets = params._facets && includeFacets ? JSON.parse(params._facets) : [];
-        return buildSearchQueryParams(
-            params.q,
+        return buildSearchQueryParams({
+            smartSearchTerm: params.q,
             searchTerms,
-            params.matchSynonyms,
-            facets,
-            params.citedCount,
-            params.viewedCount,
-            params.viewedPeriod,
-            cfg.facets.defaultFields,
-            'AND',
-            cfg.facets.valueLimit,
-            cfg.facets.valueMinCount
-        );
+            synonyms: params.matchSynonyms,
+            facetValues: facets,
+            citedCount: params.citedCount,
+            viewedCount: params.viewedCount,
+            viewedPeriod: params.viewedPeriod,
+            facetFields: cfg.facets.defaultFields,
+            joinOp: 'AND',
+            facetLimit: cfg.facets.valueLimit,
+            facetMinCount: cfg.facets.valueMinCount,
+            highlightlimit: this.currentUser.preferences?.searchHICLimit ?? cfg.hitsInContext.limit
+        });
     }
 }

@@ -1,6 +1,14 @@
 <Page::Content>
     <div class="py-3 px-4">
-        <div class="d-flex {{if this.paginator.metadata.fullCount "justify-content-between" "justify-content-end"}} align-items-center mb-2">
+        <div
+            class="d-flex
+
+
+                {{if this.paginator.metadata.fullCount "justify-content-between" "justify-content-end"}}
+
+
+                 align-items-center mb-2"
+        >
             {{#if this.paginator.metadata.fullCount}}
                 <LinkTo
                     @route="search"
@@ -15,16 +23,14 @@
                     {{t "read.document.backToSearch"}}
                 </LinkTo>
             {{/if}}
-            <div class="ml-2 d-flex align-items-center">
-                <Button
-                    @type="link"
-                    @icon="chevron-left"
-                    @iconOnly={{true}}
-                    class="py-0 px-2 text-muted"
-                />
+            {{! Removing paging for now }}
+            {{!-- <div class="ml-2 d-flex align-items-center">
+                <Button @type="link" @icon="chevron-left" @iconOnly={{true}} class="py-0 px-2 text-muted" />
                 <div class="input-group input-group-minimal mx-1">
                     <div class="input-group-prepend">
-                        <span class="input-group-text" id="doc-page-control-label">{{t "read.document.page"}}</span>
+                        <span class="input-group-text" id="doc-page-control-label">
+                            {{t "read.document.page"}}
+                        </span>
                     </div>
                     <input
                         type="number"
@@ -37,34 +43,15 @@
                         aria-describedby="doc-page-control-label"
                     />
                 </div>
-                <Button
-                    @type="link"
-                    @icon="chevron-right"
-                    @iconOnly={{true}}
-                    class="py-0 px-2 text-muted"
-                />
-            </div>
+                <Button @type="link" @icon="chevron-right" @iconOnly={{true}} class="py-0 px-2 text-muted" />
+            </div> --}}
         </div>
         <p class="small text-muted">
             {{this.model.documentRef}}
         </p>
         <div class="card">
             <div class="card-body">
-                <h4 class="mb-3">
-                    {{html-safe this.model.title}}
-                    <div class="small text-muted">
-                        {{this.model.authorMast}}
-                    </div>
-                </h4>
-                <div class="text-muted pep-document-content mb-3">
-                    <ContentWithPlaceholder @placeholderInFastboot={{true}}>
-                        {{html-safe this.model.abstractCleaned}}
-                    </ContentWithPlaceholder>
-                </div>
-                <Alert
-                    @isShown={{this.model.accessLimited}}
-                    @type="warning"
-                >
+                <Alert @isShown={{this.model.accessLimited}} @type="warning">
                     {{#if this.model.noAccessMessage}}
                         <p class={{if this.session.isAuthenticated "mb-0"}}>
                             {{html-safe this.model.noAccessMessage}}
@@ -73,18 +60,24 @@
                     {{#unless this.session.isAuthenticated}}
                         <p class="mb-0">
                             {{t "read.document.loginToRead"}}
-                            <a href="" {{on "click" this.login}}>{{t "read.document.login"}}</a>.
+                            <a href="" {{on "click" this.login}}>
+                                {{t "read.document.login"}}
+                            </a>
+                            .
                         </p>
                     {{/unless}}
                 </Alert>
-                {{#unless this.model.accessLimited}}
-                    <div class="pep-document-content">
-                        {{!-- TODO document pagination --}}
-                        <ContentWithPlaceholder @placeholderInFastboot={{true}} @placeholderComponent="">
-                            {{html-safe this.model.documentCleaned}}
-                        </ContentWithPlaceholder>
-                    </div>
-                {{/unless}}
+                <div class="pep-document-content">
+                    <ContentWithPlaceholder @placeholderInFastboot={{true}}>
+                        <Document::Text
+                            @document={{this.model}}
+                            @onGlossaryItemClick={{this.viewGlossaryTerm}}
+                            @page={{this.page}}
+                            @searchTerm={{this.q}}
+                            @viewSearch={{this.viewSearch}}
+                        />
+                    </ContentWithPlaceholder>
+                </div>
             </div>
         </div>
     </div>

@@ -1,24 +1,29 @@
 import Controller from '@ember/controller';
 import { action, setProperties } from '@ember/object';
-import { isEmpty } from '@ember/utils';
 import { inject as service } from '@ember/service';
+import { isEmpty } from '@ember/utils';
 import { tracked } from '@glimmer/tracking';
-import NotificationService from 'ember-cli-notifications/services/notifications';
-import IntlService from 'ember-intl/services/intl';
+
 import Modal from '@gavant/ember-modals/services/modal';
+import NotificationService from 'ember-cli-notifications/services/notifications';
 import { timeout } from 'ember-concurrency';
 import { restartableTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
-import { SEARCH_TYPE_EVERYWHERE, SearchTermValue, ViewPeriod, SEARCH_DEFAULT_VIEW_PERIOD } from 'pep/constants/search';
+import IntlService from 'ember-intl/services/intl';
+
+import { ServerStatus } from 'pep/api';
+import ENV from 'pep/config/environment';
+import { PreferenceKey } from 'pep/constants/preferences';
+import { SEARCH_DEFAULT_VIEW_PERIOD, SearchTermValue, ViewPeriod } from 'pep/constants/search';
 import AjaxService from 'pep/services/ajax';
+import ConfigurationService from 'pep/services/configuration';
+import CurrentUserService from 'pep/services/current-user';
 import LoadingBarService from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
-import ENV from 'pep/config/environment';
-import { ServerStatus } from 'pep/api';
-import ConfigurationService from 'pep/services/configuration';
-import { PreferenceKey } from 'pep/constants/preferences';
-import CurrentUserService from 'pep/services/current-user';
 import SidebarService from 'pep/services/sidebar';
+import { clearSearch } from 'pep/utils/search';
+
+import { SEARCH_TYPE_ARTICLE } from '../../constants/search';
 
 export default class Application extends Controller {
     @service loadingBar!: LoadingBarService;
@@ -67,18 +72,7 @@ export default class Application extends Controller {
      */
     @action
     clearSearch() {
-        const cfg = this.configuration.base.search;
-        const prefs = this.currentUser.preferences;
-        const terms = prefs?.searchTermFields ?? cfg.terms.defaultFields;
-        const isLimitOpen = prefs?.searchLimitIsShown ?? cfg.limitFields.isShown;
-
-        this.smartSearchTerm = '';
-        this.matchSynonyms = false;
-        this.citedCount = '';
-        this.viewedCount = '';
-        this.viewedPeriod = ViewPeriod.PAST_WEEK;
-        this.isLimitOpen = isLimitOpen;
-        this.searchTerms = terms.map((f) => ({ type: f, term: '' }));
+        clearSearch(this, this.configuration, this.currentUser);
     }
 
     /**
@@ -101,7 +95,7 @@ export default class Application extends Controller {
         searchTerms.removeObject(removedSearchTerm);
 
         if (searchTerms.length === 0) {
-            searchTerms.pushObject({ type: SEARCH_TYPE_EVERYWHERE.id, term: '' });
+            searchTerms.pushObject({ type: SEARCH_TYPE_ARTICLE.id, term: '' });
         }
 
         this.searchTerms = searchTerms;

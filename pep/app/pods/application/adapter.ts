@@ -78,8 +78,8 @@ export default class Application extends DS.RESTAdapter.extend(FastbootAdapter) 
 
         if (this.fastboot.isFastBoot) {
             const fastbootHeaders = this.fastboot.request.headers;
-            const xForwardedFor = fastbootHeaders.get('X-Forwarded-For') ?? [''];
-            headers['X-Forwarded-For-PEP'] = xForwardedFor[0];
+            const xForwardedFor = (fastbootHeaders.get('X-Forwarded-For') as string) ?? '';
+            headers['X-Forwarded-For-PEP'] = xForwardedFor.split(',')[0];
         }
 
         return headers;
@@ -93,12 +93,16 @@ export default class Application extends DS.RESTAdapter.extend(FastbootAdapter) 
      */
     handleResponse(status: number, headers: {}, payload: {}, requestData: {}) {
         if (status === 401) {
-            if (this.session.isAuthenticated) {
-                this.session.invalidate();
-                return reject();
-            } else {
-                this.browserRedirect('/login');
-                return {};
+            try {
+                if (this.session.isAuthenticated) {
+                    this.session.invalidate();
+                    return reject();
+                } else {
+                    this.browserRedirect('/login');
+                    return {};
+                }
+            } catch (errors) {
+                return errors;
             }
         }
 
@@ -141,6 +145,7 @@ export default class Application extends DS.RESTAdapter.extend(FastbootAdapter) 
         }
         return url;
     }
+
     /**
      * Overrides the urlForFindRecord to allow for a find request with a query param
      * @see https://github.com/emberjs/data/issues/3596#issuecomment-126604014

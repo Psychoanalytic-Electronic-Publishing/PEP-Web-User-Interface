@@ -1,16 +1,22 @@
+import { getOwner } from '@ember/application';
+import Controller from '@ember/controller';
 import { isEmpty, isNone } from '@ember/utils';
-import { removeEmptyQueryParams, QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 
-import {
-    SEARCH_TYPES,
-    SEARCH_FACETS,
-    SearchTermValue,
-    SearchFacetValue,
-    ViewPeriod,
-    SearchFacetId
-} from 'pep/constants/search';
+import { QueryParamsObj, removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
+
 import { QUOTED_VALUE_REGEX } from 'pep/constants/regex';
+import {
+    SEARCH_DEFAULT_VIEW_PERIOD, SEARCH_FACETS, SEARCH_TYPES, SearchFacetId, SearchFacetValue, SearchTermValue,
+    ViewPeriod
+} from 'pep/constants/search';
+import ConfigurationService from 'pep/services/configuration';
+import CurrentUserService from 'pep/services/current-user';
 
+/**
+ * Search params that come from the sidebar search form
+ *
+ * @interface SearchQueryStrParams
+ */
 interface SearchQueryStrParams {
     smarttext: string;
     fulltext1?: string;
@@ -32,17 +38,49 @@ interface SearchQueryStrParams {
     viewperiod?: string;
 }
 
+/**
+ * Search params that dont come from the search form
+ *
+ * @interface SearchQueryParams
+ * @extends {SearchQueryStrParams}
+ */
 interface SearchQueryParams extends SearchQueryStrParams {
     facetfields: string | null;
     facetlimit?: number | null;
     facetmincount?: number | null;
     synonyms: boolean;
     abstract: boolean;
+    highlightlimit?: number;
 }
 
 export interface SearchFacetCounts {
     [x: string]: number;
 }
+
+type BuildSearchQueryParams = {
+    smartSearchTerm?: string;
+    searchTerms?: SearchTermValue[];
+    synonyms?: boolean;
+    facetValues?: SearchFacetValue[];
+    citedCount?: string;
+    viewedCount?: string;
+    viewedPeriod?: ViewPeriod | null;
+    facetFields?: SearchFacetId[];
+    joinOp?: 'AND' | 'OR';
+    facetLimit?: number | null;
+    facetMinCount?: number | null;
+    highlightlimit?: number;
+};
+
+export type SearchController = {
+    smartSearchTerm: string;
+    matchSynonyms: boolean;
+    citedCount: string;
+    viewedCount: string;
+    viewedPeriod: ViewPeriod;
+    isLimitOpen: boolean;
+    searchTerms: SearchTermValue[];
+};
 
 /**
  * Builds the query params object for document searches
@@ -55,19 +93,22 @@ export interface SearchFacetCounts {
  * @param {('AND' | 'OR')} [logicalOperator='OR']
  * @returns {QueryParamsObj}
  */
-export function buildSearchQueryParams(
-    smartSearchTerm: string,
-    searchTerms: SearchTermValue[],
-    synonyms: boolean,
-    facetValues: SearchFacetValue[] = [],
-    citedCount: string = '',
-    viewedCount: string = '',
-    viewedPeriod: ViewPeriod | null = null,
-    facetFields: SearchFacetId[] = [],
-    joinOp: 'AND' | 'OR' = 'AND',
-    facetLimit: number | null = null,
-    facetMinCount: number | null = null
-): QueryParamsObj {
+export function buildSearchQueryParams(searchQueryParams: BuildSearchQueryParams): QueryParamsObj {
+    const {
+        smartSearchTerm = '',
+        searchTerms,
+        synonyms = false,
+        facetValues = [],
+        citedCount = '',
+        viewedCount = '',
+        viewedPeriod = null,
+        facetFields = [],
+        joinOp = 'AND',
+        facetLimit = null,
+        facetMinCount = null,
+        highlightlimit
+    } = searchQueryParams;
+
     const queryParams: SearchQueryParams = {
         facetfields: !isEmpty(facetFields) ? facetFields.join(',') : null,
         facetlimit: facetLimit,
@@ -77,13 +118,14 @@ export function buildSearchQueryParams(
         viewcount: viewedCount,
         viewperiod: `${!isNone(viewedPeriod) && !isEmpty(viewedCount) ? viewedPeriod : ''}`,
         abstract: true,
+        highlightlimit,
         synonyms
     };
 
-    const nonEmptyTerms = searchTerms.filter((t) => !!t.term);
+    const nonEmptyTerms = searchTerms?.filter((t) => !!t.term);
     const parascopes: string[] = [];
 
-    nonEmptyTerms.forEach((term) => {
+    nonEmptyTerms?.forEach((term) => {
         let searchType = SEARCH_TYPES.findBy('id', term.type);
         if (searchType && searchType.param) {
             let value = term.term.trim();
@@ -171,7 +213,16 @@ export function joinParamValues(
  */
 export function hasSearchQuery(
     params: QueryParamsObj,
-    exclude = ['synonyms', 'facetfields', 'abstract', 'viewperiod', 'facetlimit', 'facetmincount']
+    exclude = [
+        'synonyms',
+        'facetfields',
+        'abstract',
+        'viewperiod',
+        'facetlimit',
+        'facetmincount',
+        'formatrequested',
+        'highlightlimit'
+    ]
 ) {
     return Object.keys(params).filter((p) => !exclude.includes(p)).length > 0;
 }
@@ -200,4 +251,71 @@ export function groupCountsByRange(
         countsByRanges[key] = counts[`${v}`] + (countsByRanges[key] ? countsByRanges[key] : 0);
     });
     return countsByRanges;
+}
+
+/**
+ *
+ *
+ * @export
+ * @param {(Controller & SearchController)} toController
+ * @param {Search} searchController
+ */
+export function copySearchToController(toController: Controller & SearchController) {
+    const searchController = getOwner(toController).lookup(`controller:search`);
+    const config: ConfigurationService = getOwner(toController).lookup('service:configuration');
+    const user: CurrentUserService = getOwner(toController).lookup('service:currentUser');
+    const preferences = user.preferences;
+    const defaultFields = preferences?.searchTermFields ?? config.base.search.terms.defaultFields;
+    const defaultTerms = defaultFields.map((f) => ({ type: f, term: '' }));
+    toController.smartSearchTerm = searchController.currentSmartSearchTerm;
+    toController.matchSynonyms = searchController.matchSynonyms;
+    toController.citedCount = searchController.citedCount;
+    toController.viewedCount = searchController.viewedCount;
+    toController.viewedPeriod = searchController.viewedPeriod;
+    toController.isLimitOpen = searchController.isLimitOpen;
+    toController.searchTerms = searchController.currentSearchTerms.length
+        ? searchController.currentSearchTerms
+        : defaultTerms;
+}
+
+/**
+ *
+ *
+ * @export
+ * @param {(Controller & SearchController)} controller
+ * @param {ConfigurationService} configuration
+ * @param {CurrentUserService} user
+ */
+export function clearSearch(
+    controller: Controller & SearchController,
+    configuration: ConfigurationService,
+    user: CurrentUserService
+) {
+    const searchController = getOwner(controller).lookup(`controller:search`);
+    const cfg = configuration.base.search;
+    const preferences = user.preferences;
+    const terms = preferences?.searchTermFields ?? cfg.terms.defaultFields;
+    const isLimitOpen = preferences?.searchLimitIsShown ?? cfg.limitFields.isShown;
+    const blankTerms = terms.map((f) => ({ type: f, term: '' }));
+
+    const controllers = [controller, searchController];
+    controllers.forEach((controller, index) => {
+        controller.smartSearchTerm = '';
+        controller.matchSynonyms = false;
+        controller.citedCount = '';
+        controller.viewedCount = '';
+        controller.viewedPeriod = SEARCH_DEFAULT_VIEW_PERIOD;
+        controller.isLimitOpen = isLimitOpen;
+        controller.searchTerms = blankTerms;
+        if (index === 1) {
+            controller.q = '';
+            controller.currentSmartSearchTerm = '';
+            controller.currentSearchTerms = blankTerms;
+            controller.currentMatchSynonyms = false;
+            controller.currentCitedCount = '';
+            controller.currentViewedCount = '';
+            controller.currentViewedPeriod = SEARCH_DEFAULT_VIEW_PERIOD;
+            controller.currentFacets = [];
+        }
+    });
 }

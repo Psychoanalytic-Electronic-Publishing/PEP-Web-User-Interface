@@ -23,7 +23,9 @@
                 </div>
             </div>
             <div class="d-flex justify-content-between align-items-center mb-2">
-                <p class="text-muted mb-0">{{t "search.form.terms.heading"}}</p>
+                <p class="text-muted mb-0">
+                    {{t "search.form.terms.heading"}}
+                </p>
                 <Button
                     @label={{t "search.form.additional.limitTo"}}
                     @icon={{if @isLimitOpen "chevron-up" "chevron-down"}}
@@ -82,6 +84,7 @@
                         @updateTermText={{this.updateTermText}}
                         @updateTermType={{this.updateTermType}}
                         @removeSearchTerm={{this.removeSearchTerm}}
+                        @canRemove={{not-eq @searchTerms.length 1}}
                     />
                 {{/animated-each}}
             </AnimatedContainer>
@@ -101,12 +104,7 @@
                 />
             </div>
             <div class="d-flex justify-content-end">
-                <Button
-                    @type="link"
-                    @label="Clear"
-                    @action={{@resetForm}}
-                    class="mr-1"
-                />
+                <Button @type="link" @label="Clear" @action={{@resetForm}} class="mr-1" />
                 <ButtonSpinner
                     @type="primary"
                     @blockLayout={{false}}
@@ -129,14 +127,12 @@
             <span class="mr-1">
                 <FaIcon @icon="info-circle" @size="lg" />
             </span>
-            <strong>{{t "search.form.tooManyResults.heading"}}</strong>
+            <strong>
+                {{t "search.form.tooManyResults.heading"}}
+            </strong>
         </p>
         <p class="mb-1">
-            {{t
-                "search.form.tooManyResults.numResults"
-                count=(format-number @resultsCount)
-                htmlSafe=true
-            }}
+            {{t "search.form.tooManyResults.numResults" count=(format-number @resultsCount) htmlSafe=true}}
         </p>
         <p class="mb-0">
             {{html-safe this.configuration.content.search.tooManyResults.instructions}}

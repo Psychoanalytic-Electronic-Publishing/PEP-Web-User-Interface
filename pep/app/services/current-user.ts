@@ -1,25 +1,19 @@
 import Service, { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import DS from 'ember-data';
-import { reject } from 'rsvp';
+
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import CookiesService from 'ember-cookies/services/cookies';
+import DS from 'ember-data';
 
 import ENV from 'pep/config/environment';
-import User, { UserType } from 'pep/pods/user/model';
-import {
-    DEFAULT_USER_PREFERENCES,
-    UserPreferences,
-    PreferenceChangeset,
-    LOCALSTORAGE_PREFERENCES,
-    USER_PREFERENCES_LS_PREFIX,
-    COOKIE_PREFERENCES,
-    USER_PREFERENCES_COOKIE_NAME,
-    PreferenceKey,
-    PreferenceDocumentsKey
-} from 'pep/constants/preferences';
-import PepSessionService from 'pep/services/pep-session';
 import { DATE_FOREVER } from 'pep/constants/dates';
+import {
+    COOKIE_PREFERENCES, DEFAULT_USER_PREFERENCES, LOCALSTORAGE_PREFERENCES, PreferenceChangeset, PreferenceDocumentsKey,
+    PreferenceKey, USER_PREFERENCES_COOKIE_NAME, USER_PREFERENCES_LS_PREFIX, UserPreferences
+} from 'pep/constants/preferences';
+import User, { UserType } from 'pep/pods/user/model';
+import PepSessionService from 'pep/services/pep-session';
+import { reject } from 'rsvp';
 
 export default class CurrentUserService extends Service {
     @service store!: DS.Store;
@@ -29,6 +23,7 @@ export default class CurrentUserService extends Service {
 
     @tracked user: User | null = null;
     @tracked preferences?: UserPreferences;
+    @tracked lastViewedDocumentId?: string;
 
     /**
      * Loads the current user from the API
@@ -127,6 +122,20 @@ export default class CurrentUserService extends Service {
         } catch (err) {
             return prefs;
         }
+    }
+
+    /**
+     * Clear preferences and remove items from cookies and local storage
+     *
+     * @memberof CurrentUserService
+     */
+    clearPreferences() {
+        this.preferences = undefined;
+        this.cookies.clear(USER_PREFERENCES_COOKIE_NAME, {
+            secure: ENV.cookieSecure,
+            sameSite: ENV.cookieSameSite
+        });
+        localStorage.clear();
     }
 
     /**

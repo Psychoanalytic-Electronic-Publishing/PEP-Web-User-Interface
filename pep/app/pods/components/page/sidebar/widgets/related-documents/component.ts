@@ -1,18 +1,20 @@
-import Component from '@glimmer/component';
-import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
-import { WIDGET } from 'pep/constants/sidebar';
-import { tracked } from '@glimmer/tracking';
-import ConfigurationService from 'pep/services/configuration';
-import AjaxService from 'pep/services/ajax';
-import DS from 'ember-data';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import { dontRunInFastboot } from 'pep/decorators/fastboot';
-import { SearchFacetId } from 'pep/constants/search';
-import { buildSearchQueryParams } from 'pep/utils/search';
-import Document from 'pep/pods/document/model';
+import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
+
 import { restartableTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
+import DS from 'ember-data';
+
+import { SearchFacetId } from 'pep/constants/search';
+import { WIDGET } from 'pep/constants/sidebar';
+import { dontRunInFastboot } from 'pep/decorators/fastboot';
+import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
+import Document from 'pep/pods/document/model';
+import AjaxService from 'pep/services/ajax';
+import ConfigurationService from 'pep/services/configuration';
+import { buildSearchQueryParams } from 'pep/utils/search';
 
 interface PageSidebarWidgetsRelatedDocumentsArgs extends PageSidebarWidgetArgs {}
 
@@ -38,12 +40,15 @@ export default class PageSidebarWidgetsRelatedDocuments extends Component<PageSi
      */
     @restartableTask
     *loadResults(relatedrx: string) {
-        const params = buildSearchQueryParams('', [], false, [
-            {
-                id: SearchFacetId.ART_QUAL,
-                value: relatedrx
-            }
-        ]);
+        const params = buildSearchQueryParams({
+            facetValues: [
+                {
+                    id: SearchFacetId.ART_QUAL,
+                    value: relatedrx
+                }
+            ]
+        });
+
         const results = yield this.store.query('document', params);
         this.results = results.toArray();
     }

@@ -1,10 +1,6 @@
 <ModalDialog @onClose={{@onClose}} @size="md" as |Modal|>
     <Modal.header @title={{t "relatedInfo.widgets.whatsNew.title"}} />
-    <FormValidator
-        @changeset={{@options.changeset}}
-        @submit={{this.update}}
-        as |changeset validator|
-    >
+    <FormValidator @changeset={{@options.changeset}} @submit={{this.update}} as |changeset validator|>
         <Modal.body>
             <p class="text-muted">
                 {{t "relatedInfo.widgets.whatsNew.signUp"}}
@@ -43,11 +39,7 @@
             />
         </Modal.body>
         <Modal.footer>
-            <Button
-                @type="link"
-                @label={{t "common.cancel"}}
-                @action={{@onClose}}
-            />
+            <Button @type="link" @label={{t "common.cancel"}} @action={{@onClose}} />
             <ButtonSpinner
                 @type="primary"
                 @label={{t "relatedInfo.widgets.whatsNew.update"}}

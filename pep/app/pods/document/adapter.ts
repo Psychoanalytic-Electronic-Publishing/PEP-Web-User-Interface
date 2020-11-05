@@ -1,9 +1,10 @@
 import { classify } from '@ember/string';
+
 import DS from 'ember-data';
 import { pluralize } from 'ember-inflector';
 
 import ENV from 'pep/config/environment';
-import ApplicationAdapter from 'pep/pods/application/adapter';
+import ApplicationAdapter, { SnapshotWithQuery } from 'pep/pods/application/adapter';
 
 export default class DocumentAdapter extends ApplicationAdapter {
     modelNameOverride?: string;
@@ -15,7 +16,10 @@ export default class DocumentAdapter extends ApplicationAdapter {
      * @param {String | Number} modelName
      * @returns {String}
      */
-    urlForQuery<K extends string | number>(query: { queryType?: string }, modelName: K): string {
+    urlForQuery<K extends string | number>(
+        query: { queryType?: string; formatrequested?: 'HTML' | 'XML' | 'TEXTONLY' },
+        modelName: K
+    ): string {
         const modelNameStr = this.modelNameOverride ?? modelName.toString();
         const origNamespace = ENV.apiNamespace;
         const newNamespace = `${ENV.apiNamespace}/${ENV.apiDataNamespace}`;
@@ -24,6 +28,9 @@ export default class DocumentAdapter extends ApplicationAdapter {
         if (query?.queryType) {
             delete query.queryType;
         }
+
+        // always return XML version of documents
+        query.formatrequested = 'XML';
 
         const url = super.urlForQuery(query, modelName);
         return url
@@ -42,7 +49,14 @@ export default class DocumentAdapter extends ApplicationAdapter {
         const modelNameStr = this.modelNameOverride ?? modelName.toString();
         const origPathSegment = pluralize(classify(modelNameStr));
         const newPathSegment = `${origPathSegment}/${classify(modelNameStr)}`;
-        const url = super.urlForFindRecord(id, modelName, snapshot);
+
+        // always return XML version of documents
+        const snapshotWithQuery = (snapshot as unknown) as SnapshotWithQuery;
+        const adapterOpts = snapshotWithQuery.adapterOptions ?? {};
+        const query = adapterOpts.query ?? {};
+        snapshotWithQuery.adapterOptions = { ...adapterOpts, query: { ...query, return_format: 'XML' } };
+
+        const url = super.urlForFindRecord(id, modelName, snapshotWithQuery);
         return url.replace(`/${origPathSegment}`, `/${newPathSegment}`);
     }
 }

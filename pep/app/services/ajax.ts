@@ -33,8 +33,8 @@ export default class AjaxService extends Service {
         }
         if (this.fastboot.isFastBoot) {
             const fastbootHeaders = this.fastboot.request.headers;
-            const xForwardedFor = fastbootHeaders.get('X-Forwarded-For') ?? [''];
-            headers['X-Forwarded-For-PEP'] = xForwardedFor[0];
+            const xForwardedFor = (fastbootHeaders.get('X-Forwarded-For') as string) ?? '';
+            headers['X-Forwarded-For-PEP'] = xForwardedFor.split(',')[0];
         }
         return headers;
     }
@@ -105,9 +105,13 @@ export default class AjaxService extends Service {
         error.response = response;
         error.payload = await response.json();
 
-        if (status === 401 && this.session.isAuthenticated) {
-            this.session.invalidate();
-            return reject();
+        try {
+            if (status === 401 && this.session.isAuthenticated) {
+                this.session.invalidate();
+                return reject();
+            }
+        } catch (errors) {
+            return errors;
         }
 
         return error as Error;

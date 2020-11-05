@@ -5,6 +5,7 @@
         "pubperiods",
         "citecount",
         "facetfields",
+        "highlightlimit",
         "parascope",
         "parascopes",
         "relatedrx",
@@ -12,6 +13,7 @@
         "smarttext",
         "sourcecode",
         "sourcename",
+        "unparse",
         "viewcount",
         "viewperiod"
     ]

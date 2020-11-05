@@ -72,6 +72,7 @@ module.exports = function(environment) {
         apiNamespace: process.env.API_NAMESPACE,
         apiDataNamespace: process.env.API_DATA_NAMESPACE,
         apiAdminNamespace: process.env.API_ADMIN_NAMESPACE,
+        assetBaseUrl: process.env.ASSETS_BASE_URL,
         clientId: process.env.CLIENT_ID,
         cookieDomain: process.env.COOKIE_DOMAIN,
         cookieSecure: Number(process.env.COOKIE_SECURE) === 1,

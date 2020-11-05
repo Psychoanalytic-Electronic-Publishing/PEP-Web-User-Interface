@@ -8,6 +8,7 @@ import { inject as service } from '@ember/service';
 import AuthService from 'pep/services/auth';
 import PepSessionService from 'pep/services/pep-session';
 import ScrollableService from 'pep/services/scrollable';
+import LoadingBarService from 'pep/services/loading-bar';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import Document from 'pep/pods/document/model';
 import { DOCUMENT_EPUB_BASE_URL, DOCUMENT_PDFORIG_BASE_URL, DOCUMENT_PDF_BASE_URL } from 'pep/constants/documents';
@@ -28,6 +29,7 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
     @service('pep-session') session!: PepSessionService;
     @service auth!: AuthService;
     @service scrollable!: ScrollableService;
+    @service loadingBar!: LoadingBarService;
 
     @tracked fitHeight: number = 0;
     @tracked isDragResizing: boolean = false;
@@ -83,22 +85,39 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
     }
 
     /**
+     * Sets up an auth succeeded event listener to reload open search result documents
+     * @param {unknown} owner
+     * @param {SearchFormArgs} args
+     */
+    constructor(owner: unknown, args: SearchPreviewArgs) {
+        super(owner, args);
+        this.session.on('authenticationAndSetupSucceeded', this.onAuthenticationSucceeded);
+    }
+
+    /**
+     * Removes the auth succeeded event listener on component destroy
+     */
+    willDestroy() {
+        super.willDestroy();
+        this.session.off('authenticationAndSetupSucceeded', this.onAuthenticationSucceeded);
+    }
+
+    /**
+     * If a result preview is open when the user logs in, reload it to make sure
+     * its displaying the correct content based on their current session/subscription/etc
+     */
+    @action
+    onAuthenticationSucceeded() {
+        this.args.result?.reload();
+    }
+
+    /**
      * Calculates the height that will allow all the content to show w/o scrolling
      * constrained to a maximum height that is the parent container's height
      */
     @dontRunInFastboot
     updateFitHeight() {
         this.fitHeight = this.innerElement?.offsetHeight ?? 0;
-    }
-
-    /**
-     * Calculate the content's "fit" height on render
-     * @param {HTMLElement} element
-     */
-    @action
-    onElementInsert(element: HTMLElement) {
-        this.innerElement = element;
-        scheduleOnce('afterRender', this, this.updateFitHeight);
     }
 
     /**
@@ -111,13 +130,42 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
     }
 
     /**
-     * Recalculate the content's "fit" height when the result model changes
+     * Calculate the content's "fit" height on render
+     * @param {HTMLElement} element
      */
     @action
-    onResultUpdate() {
-        this.scrollable.scrollToTop('search-preview');
+    async onElementInsert(element: HTMLElement) {
+        this.innerElement = element;
+        scheduleOnce('afterRender', this, this.updateFitHeight);
+
+        try {
+            this.loadingBar.show();
+            await this.args.result?.reload();
+        } finally {
+            this.loadingBar.hide();
+            scheduleOnce('afterRender', this, this.updateFitHeight);
+        }
+    }
+
+    /**
+     * Reloads the previewed result on open/change, to ensure its displaying the
+     * correct content based on their current session/subscription/etc, and then
+     * recalculate the content's "fit" height
+     */
+    @action
+    async onResultUpdate() {
         if (this.isFitMode) {
             scheduleOnce('afterRender', this, this.updateFitHeight);
+        }
+
+        try {
+            this.loadingBar.show();
+            await this.args.result?.reload();
+        } finally {
+            this.loadingBar.hide();
+            if (this.isFitMode) {
+                scheduleOnce('afterRender', this, this.updateFitHeight);
+            }
         }
     }
 

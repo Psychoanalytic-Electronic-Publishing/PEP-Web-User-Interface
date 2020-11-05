@@ -10,7 +10,7 @@ export default class Router extends EmberRouter {
 
 Router.map(function() {
     this.route('login');
-    this.route('search');
+    this.route('search', function() {});
     this.route('browse');
     this.route('read', function() {
         this.route('document', { path: '/:document_id' });

@@ -5,7 +5,8 @@ const EmberApp = require('ember-cli/lib/broccoli/ember-app');
 module.exports = function(defaults) {
     let app = new EmberApp(defaults, {
         fingerprint: {
-            prepend: process.env.ASSETS_BASE_URL
+            prepend: process.env.ASSETS_BASE_URL,
+            extensions: ['js', 'css', 'png', 'jpg', 'gif', 'map', 'xslt']
         },
         outputPaths: {
             app: {
@@ -54,6 +55,8 @@ module.exports = function(defaults) {
     app.import('node_modules/moment/moment.js', { using: [{ transformation: 'amd', as: 'moment' }] });
 
     app.import('node_modules/animate.css/animate.min.css');
+    app.import('node_modules/tippy.js/dist/tippy.css');
+    app.import('node_modules/tippy.js/themes/light.css');
 
     return app.toTree();
 };

@@ -2,9 +2,15 @@
     <LinkTo @route="index" class="navbar-brand mr-auto d-flex">
         <div class="navbar-brand-logo"></div>
         <div class="ml-2">
-            <div>{{t "brand.nameFull.psychoanalytic"}}</div>
-            <div>{{t "brand.nameFull.electronic"}}</div>
-            <div>{{t "brand.nameFull.publishing"}}</div>
+            <div>
+                {{t "brand.nameFull.psychoanalytic"}}
+            </div>
+            <div>
+                {{t "brand.nameFull.electronic"}}
+            </div>
+            <div>
+                {{t "brand.nameFull.publishing"}}
+            </div>
         </div>
     </LinkTo>
     <button
@@ -19,21 +25,15 @@
     </button>
     <ul class="navbar-nav d-none d-md-flex">
         <li class="nav-item">
-            <LinkTo
-                @route="search"
-                @query={{this.defaultSearchParams}}
-                class="nav-link"
-            >
+            <LinkTo @route="search" class="nav-link">
                 {{t "nav.search"}}
             </LinkTo>
         </li>
-        {{!-- TODO project reqs state that there should be a "Read" nav item         --}}
-        {{!-- but where does it go/show? Seems like it would be redundant w/"Browse" --}}
-        {{!-- <li class="nav-item">
-            <LinkTo @route="read" class="nav-link">
+        <li class="nav-item">
+            <LinkTo @route="read" @disabled={{this.readDisabled}} class="nav-link">
                 {{t "nav.read"}}
             </LinkTo>
-        </li> --}}
+        </li>
         <li class="nav-item">
             <LinkTo @route="browse" class="nav-link">
                 {{t "nav.browse"}}

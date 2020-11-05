@@ -1,6 +1,6 @@
 import IntlService from 'ember-intl/services/intl';
 
-import { SearchFacetCounts, groupCountsByRange } from 'pep/utils/search';
+import { groupCountsByRange, SearchFacetCounts } from 'pep/utils/search';
 
 /**
  * Accepted query param fields for the /v2/Database/Search endpoint
@@ -613,4 +613,19 @@ export const VIEW_PERIODS = [
     VIEW_PERIOD_6_MONTHS,
     VIEW_PERIOD_12_MONTHS,
     VIEW_PERIOD_CAL_YEAR
+];
+
+export enum SearchViewType {
+    BIBLIOGRAPHIC = 'bibliographic',
+    TABLE = 'table'
+}
+
+export interface SearchView {
+    id: SearchViewType;
+    label: string;
+}
+
+export const SearchViews: SearchView[] = [
+    { id: SearchViewType.BIBLIOGRAPHIC, label: 'Bibliographic' },
+    { id: SearchViewType.TABLE, label: 'Table' }
 ];
