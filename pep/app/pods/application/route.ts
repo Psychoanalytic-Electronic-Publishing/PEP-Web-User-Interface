@@ -76,11 +76,9 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
                 // If you are logged in, but your currently authenticated using IP - try again to ensure you didn't change locations
                 // But here we don't wait for the promise to return as that would cause a FOUC
             } else if (this.session?.data?.authenticated?.SessionType === SessionType.IP) {
-                try {
-                    this.session.authenticate('authenticator:ip');
-                } catch (errors) {
+                this.session.authenticate('authenticator:ip').catch(() => {
                     this.session.invalidate();
-                }
+                });
             }
         }
 
