@@ -1,10 +1,9 @@
 <li class="nav-item">
     <a
-        class="nav-link p-2 {{if (eq @tabId @selected) "active"}}"
-        data-toggle="tab"
-        aria-controls="activeIcon"
+        class="nav-link p-2 {{if (eq @id @selected) "active"}}"
         aria-expanded="true"
-        {{on "click" (fn @onChange @tabId)}}
+        href={{null}}
+        {{on "click" (fn @onChange @id)}}
     >
         {{yield}}
     </a>

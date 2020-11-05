@@ -1,8 +1,7 @@
-<ul class="nav nav-tabs nav-justified">
-    {{yield
-        (hash
-            tab=(component "tab-set/tab" selected=@selected onChange=@onChange)
-            panel=(component "tab-set/panel" selected=@selected)
-        )
-    }}
-</ul>
+{{yield
+    (hash
+        list=(component "tabs/list")
+        tab=(component "tabs/tab" selected=@selected onChange=@onChange)
+        panel=(component "tabs/panel" selected=@selected)
+    )
+}}

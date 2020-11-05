@@ -53,3 +53,11 @@
 .pointer-events-none {
     pointer-events: none;
 }
+
+.highlight-even li:nth-child(even) {
+    background-color: $color-backdrop;
+}
+
+.highlight-odd li:nth-child(odd) {
+    background-color: $color-backdrop;
+}

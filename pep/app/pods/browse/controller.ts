@@ -2,6 +2,10 @@ import Controller from '@ember/controller';
 import { action, setProperties } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 
+import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
+
+import Journal from 'pep/pods/journal/model';
+
 export enum BrowseTabs {
     JOURNALS = 'journals',
     BOOKS = 'books',
@@ -9,6 +13,7 @@ export enum BrowseTabs {
 }
 export default class Browse extends Controller {
     @tracked tab = BrowseTabs.JOURNALS;
+    @tracked journals!: Pagination<Journal>;
     tabs = BrowseTabs;
 
     @action

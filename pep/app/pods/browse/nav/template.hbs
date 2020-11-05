@@ -1,14 +1,61 @@
 <Page::Sidebar::Left as |Sidebar|>
     <Sidebar.content>
-        <div class="p-3">
+        <div class="p-3 bg-white">
             <h5>
                 {{t "browse.title"}}
             </h5>
+            <Tabs @onChange={{this.changeTab}} @selected={{this.tab}} as |tabs|>
+                <tabs.list>
+                    <tabs.tab @id={{this.tabs.JOURNALS}}>
+                        <FaIcon @icon="books" />
+                        Journals
+                    </tabs.tab>
+                    <tabs.tab @id={{this.tabs.BOOKS}}>
+                        <FaIcon @icon="book" />
+                        Books
+                    </tabs.tab>
+                    <tabs.tab @id={{this.tabs.VIDEOS}}>
+                        <FaIcon @icon="video" />
+                        Videos
+                    </tabs.tab>
+                </tabs.list>
+                <tabs.panel @id={{this.tabs.JOURNALS}}>
+                    <VerticalCollection
+                        @items={{this.journals.models}}
+                        @tagName="ul"
+                        @containerSelector=".sidebar-content"
+                        @class="list-unstyled highlight-even"
+                        @estimateHeight={{100}}
+                        @renderAll={{this.fastboot.isFastBoot}}
+                        @lastReached={{this.journals.loadMoreModels}} as |result|
+                    >
+                        {{!-- {{result.displayTitle}} --}}
+                        <li class="p-1">
+                            <LinkTo
+                                @route="browse.journal"
+                                @model={{result.id}}
+                                class="d-flex align-items-center justify-content-between"
+                            >
+                                <span class="small w-90">
+                                    {{result.srcTitle}}
+                                </span>
+                                {{!-- <FaIcon @icon="arrow-right" @fixedWidth={{true}} class="ml-5" @size="sm" /> --}}
+                            </LinkTo>
+                        </li>
+                    </VerticalCollection>
+                    {{#if this.journals.isLoadingModels}}
+                        <Loading::Spinner @options={{hash text=(t "common.loadingResults")}} class="pt-2" />
+                    {{/if}}
+                </tabs.panel>
+
+                <tabs.panel @id={{this.tabs.BOOKS}}>
+                    Test1
+                </tabs.panel>
+
+                <tabs.panel @id={{this.tabs.VIDEOS}}>
+                    Test2
+                </tabs.panel>
+            </Tabs>
         </div>
-        <Tabs as |Tabs|>
-            <Tabs.tab>
-                Test
-            </Tabs.tab>
-        </Tabs>
     </Sidebar.content>
 </Page::Sidebar::Left>
