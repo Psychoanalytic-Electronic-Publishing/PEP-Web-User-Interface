@@ -8,8 +8,15 @@ import DS from 'ember-data';
 import ENV from 'pep/config/environment';
 import { DATE_FOREVER } from 'pep/constants/dates';
 import {
-    COOKIE_PREFERENCES, DEFAULT_USER_PREFERENCES, LOCALSTORAGE_PREFERENCES, PreferenceChangeset, PreferenceDocumentsKey,
-    PreferenceKey, USER_PREFERENCES_COOKIE_NAME, USER_PREFERENCES_LS_PREFIX, UserPreferences
+    COOKIE_PREFERENCES,
+    DEFAULT_USER_PREFERENCES,
+    LOCALSTORAGE_PREFERENCES,
+    PreferenceChangeset,
+    PreferenceDocumentsKey,
+    PreferenceKey,
+    USER_PREFERENCES_COOKIE_NAME,
+    USER_PREFERENCES_LS_PREFIX,
+    UserPreferences
 } from 'pep/constants/preferences';
 import User, { UserType } from 'pep/pods/user/model';
 import PepSessionService from 'pep/services/pep-session';
@@ -51,7 +58,7 @@ export default class CurrentUserService extends Service {
      */
     async fetchUser(): Promise<User | void> {
         const { SessionId } = this.session.data.authenticated;
-        const user = await this.store.queryRecord('user', { SessionId });
+        const user = await this.store.queryRecord('user', { SessionId: SessionId ?? '' });
         this.user = user;
         return user;
     }
