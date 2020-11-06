@@ -10,7 +10,6 @@ import NotificationService from 'ember-cli-notifications/services/notifications'
 import { DS } from 'ember-data';
 import IntlService from 'ember-intl/services/intl';
 
-import ENV from 'pep/config/environment';
 import { DOCUMENT_IMG_BASE_URL } from 'pep/constants/documents';
 import { SearchTermId } from 'pep/constants/search';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
