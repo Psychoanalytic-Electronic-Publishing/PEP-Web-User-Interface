@@ -27,9 +27,9 @@ export default class AjaxService extends Service {
         // api auth token is sent in cookies
         if (this.session.isAuthenticated) {
             const { SessionId } = this.session.data.authenticated;
-            headers['client-session'] = SessionId;
+            headers['client-session'] = SessionId ?? '';
         } else {
-            headers['client-session'] = this.session?.getUnauthenticatedSession()?.SessionId;
+            headers['client-session'] = this.session?.getUnauthenticatedSession()?.SessionId ?? '';
         }
         if (this.fastboot.isFastBoot) {
             const fastbootHeaders = this.fastboot.request.headers;

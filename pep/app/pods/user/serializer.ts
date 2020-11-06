@@ -1,6 +1,7 @@
-import DS from 'ember-data';
 import { inject as service } from '@ember/service';
 import { camelize, classify } from '@ember/string';
+
+import DS from 'ember-data';
 import { pluralize } from 'ember-inflector';
 
 import ApplicationSerializerMixin from 'pep/mixins/application-serializer';
@@ -80,7 +81,7 @@ export default class UserSerializer extends ApplicationSerializerMixin(DS.RESTSe
         delete hash[root];
 
         if (this.session.isAuthenticated) {
-            hash.SessionId = this.session.data.authenticated.SessionId;
+            hash.SessionId = this.session.data.authenticated.SessionId ?? '';
         }
     }
 }

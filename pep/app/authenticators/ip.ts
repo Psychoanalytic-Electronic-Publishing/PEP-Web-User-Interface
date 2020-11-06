@@ -28,7 +28,7 @@ export default class IpAuthenticator extends CredentialsAuthenticator {
             const response = await this.ajax.request<PepSecureAuthenticatedData>(url, {
                 headers: this.authenticationHeaders
             });
-            if (response.IsValidLogon) {
+            if (response.IsValidLogon && response.SessionId) {
                 this.session.clearUnauthenticatedSession();
                 response.SessionType = SessionType.IP;
                 const updatedResponse = this.setupExpiresAt(response);
