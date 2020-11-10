@@ -4,12 +4,12 @@
 <!--     BASED-ON:  HTML Preview of NISO JATS Publishing 1.0 XML   -->
 <!--  DATE:      2020-10-10                                       -->
 <!--  Revisions:
-
+     
      TODO:
      - I've yet to remove the irrelevant JATS rules
      - Decide if the data-pagehelper attributes are helpful
      for page return
-
+     
      2020-10-10  - Substituted font-awesome icon for info, flag,
      and book icons.  Also arrow after biblio
      2020-09-07  - Added GW/SE language attributes so they are included
@@ -38,18 +38,18 @@
 -->
 <!-- ============================================================= -->
 <!--
-
+     
 -->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:xlink="http://www.w3.org/1999/xlink">
     <!--  xmlns:fn="http://www.w3.org/2005/xpath-functions" -->
-
+    
     <!--  Commented out next line site seems to have availability problems -->
     <!--  <xsl:import href="http://www.w3.org/2003/entities/2007/entitynamesmap.xsl"/>-->
-
+    
     <xsl:output method="html" encoding="UTF-8" indent="yes" />
-
+    
     <!--  <xsl:output doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN"
          doctype-system="http://www.w3.org/TR/html4/loose.dtd" encoding="UTF-8"/>
     -->
@@ -60,9 +60,9 @@
               p
               h1 h2 h3 h4 h5
               "/>
-
+    
     <xsl:strip-space elements="*"/>
-
+    
     <xsl:param name="report-warnings" select="'no'"/>
     <xsl:param name="imageUrl"/>
     <xsl:param name="journalName"/>
@@ -88,22 +88,22 @@
         <svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg" role="img" focusable="false" aria-hidden="true" data-icon="robot" data-prefix="fal" id="ember313" class="pointer-events-none svg-inline--fa fa-robot fa-w-20 ember-view"><path fill="currentColor" d="M192,416h64V384H192ZM576,224H544V192a95.99975,95.99975,0,0,0-96-96H336V16a16,16,0,0,0-32,0V96H192a95.99975,95.99975,0,0,0-96,96v32H64a31.99908,31.99908,0,0,0-32,32V384a32.00033,32.00033,0,0,0,32,32H96a95.99975,95.99975,0,0,0,96,96H448a95.99975,95.99975,0,0,0,96-96h32a32.00033,32.00033,0,0,0,32-32V256A31.99908,31.99908,0,0,0,576,224ZM96,384H64V256H96Zm416,32a64.18916,64.18916,0,0,1-64,64H192a64.18916,64.18916,0,0,1-64-64V192a63.99942,63.99942,0,0,1,64-64H448a63.99942,63.99942,0,0,1,64,64Zm64-32H544V256h32ZM416,192a64,64,0,1,0,64,64A64.07333,64.07333,0,0,0,416,192Zm0,96a32,32,0,1,1,32-32A31.97162,31.97162,0,0,1,416,288ZM384,416h64V384H384Zm-96,0h64V384H288ZM224,192a64,64,0,1,0,64,64A64.07333,64.07333,0,0,0,224,192Zm0,96a32,32,0,1,1,32-32A31.97162,31.97162,0,0,1,224,288Z"></path>
         </svg>
     </xsl:variable>
-
+    
     <!-- Keys -->
-
+    
     <!-- To reduce dependency on a DTD for processing, we declare
          a key to use instead of the id() function. -->
     <xsl:key name="element-by-id" match="*[@id]" use="@id"/>
-
+    
     <!-- Enabling retrieval of cross-references to objects -->
     <xsl:key name="xref-by-rid" match="xref" use="@rid"/>
-
+    
     <!-- ============================================================= -->
     <!--  ROOT TEMPLATE - HANDLES HTML FRAMEWORK                       -->
     <!-- ============================================================= -->
-
-
-
+    
+    
+    
     <xsl:template name="make-html-header">
         <head>
             <title class="head title">
@@ -116,8 +116,8 @@
             </title>
         </head>
     </xsl:template>
-
-
+    
+    
     <xsl:template name="data-pagehelper">
         <!-- If the previous element is a page break, add the data attribute page-start and give it a value of the next page break  -->
         <xsl:if test="name(preceding-sibling::*[1])='pb'">
@@ -132,12 +132,12 @@
             </xsl:attribute>
         </xsl:if>
     </xsl:template>
-
-
+    
+    
     <!-- ============================================================= -->
     <!--  TOP LEVEL                                                    -->
     <!-- ============================================================= -->
-
+    
     <!--Global Variables-->
     <!--  used with translate to convert between case, since this is for XSLT 1.0 -->
     <xsl:variable name="lowercase" select="'abcdefghijklmnopqrstuvwxyz'" />
@@ -168,7 +168,7 @@
     <xsl:variable name="artstartpg">
         <xsl:value-of select="substring-before(($artpgrg), '-')"/>
     </xsl:variable>
-
+    
     <xsl:template match="pepkbd3">
         <body>
             <div class="pepkbd3" data-ver="2012-08-13.FULL">
@@ -177,7 +177,7 @@
             </div>
         </body>
     </xsl:template>
-
+    
     <!-- ============================================================= -->
     <!--  "make-article" for the document architecture                 -->
     <!-- ============================================================= -->
@@ -186,7 +186,7 @@
         <xsl:variable name="this-article">
             <xsl:apply-templates select="." mode="id"/>
         </xsl:variable>
-
+        
         <div id="front" class="frontmatter">
             <xsl:apply-templates select="front | front-stub" mode="metadata"/>
             <p class="banner">
@@ -213,7 +213,7 @@
                     <span>:<xsl:apply-templates mode="text" select="artpgrg"/></span>
                 </xsl:for-each>
             </div>
-
+            
             <xsl:for-each select="artinfo">
                 <div id="{$this-article}-artinfo" class="artinfo" data-arttype="{@arttype}" data-journal="{@j}">
                     <div class="art-title d-flex flex-column justify-content-center align-items-center flex-lg-row flex-wrap mt-3">
@@ -222,27 +222,27 @@
                     </div>
                     <xsl:apply-templates mode="metadata" select="artauth"/>
                     <xsl:apply-templates mode="metadata" select="artkwds"/>
-
+                    
                     <!--<xsl:apply-templates/>-->
                 </div>
             </xsl:for-each>
         </div>
-
+        
         <!-- tagline -->
         <xsl:for-each select="tagline">
             <div id="{$this-article}-tagline" class="tagline">
                 <xsl:apply-templates/>
             </div>
         </xsl:for-each>
-
-
+        
+        
         <!-- abs -->
         <xsl:for-each select="abs">
             <div id="{$this-article}-abs" class="abs abstract text-muted mx-5">
                 <xsl:apply-templates/>
             </div>
         </xsl:for-each>
-
+        
         <!-- body -->
         <xsl:for-each select="body">
             <div id="body" class="body">
@@ -250,7 +250,7 @@
                 <xsl:apply-templates/>
             </div>
         </xsl:for-each>
-
+        
         <!-- summaries -->
         <xsl:for-each select="summaries">
             <div id="{$this-article}-summaries" class="summaries">
@@ -259,16 +259,16 @@
                 <xsl:apply-templates/>
             </div>
         </xsl:for-each>
-
+        
         <!-- body -->
         <xsl:for-each select="bib">
             <div id="{$this-article}-bib" class="biblio">
                 <xsl:apply-templates/>
             </div>
         </xsl:for-each>
-
+        
     </xsl:template>
-
+    
     <!-- ============================================================= -->
     <!--  "artinfo" for the document metadata                          -->
     <!-- ============================================================= -->
@@ -285,9 +285,9 @@
                 </xsl:for-each>
             </div>
         </div>
-
+        
         <hr class="part-rule"/>
-
+        
         <!-- change context to front/article-meta (again) -->
         <xsl:for-each select="article-meta | self::front-stub">
             <div class="metadata centered">
@@ -308,7 +308,7 @@
                     </div>
                 </div>
             </xsl:if>
-
+            
             <!-- end of dealing with abstracts -->
         </xsl:for-each>
         <xsl:for-each select="notes">
@@ -318,9 +318,9 @@
         </xsl:for-each>
         <!-- end of big front-matter pull -->
     </xsl:template>
-
+    
     <!-- In order of appearance... -->
-
+    
     <xsl:template match="email" mode="metadata">
         <xsl:call-template name="metadata-labeled-entry">
             <xsl:with-param name="label">Email</xsl:with-param>
@@ -329,8 +329,8 @@
             </xsl:with-param>
         </xsl:call-template>
     </xsl:template>
-
-
+    
+    
     <xsl:template match="url" mode="metadata">
         <xsl:call-template name="metadata-labeled-entry">
             <xsl:with-param name="label">URL</xsl:with-param>
@@ -339,7 +339,7 @@
             </xsl:with-param>
         </xsl:call-template>
     </xsl:template>
-
+    
     <xsl:template match="grp" mode="metadata">
         <xsl:call-template name="metadata-labeled-entry">
             <xsl:with-param name="label">URL</xsl:with-param>
@@ -348,26 +348,26 @@
             </xsl:with-param>
         </xsl:call-template>
     </xsl:template>
-
+    
     <xsl:template match="artvol" mode="metadata">
         <xsl:call-template name="metadata-labeled-entry">
             <xsl:with-param name="label">Artvol</xsl:with-param>
         </xsl:call-template>
     </xsl:template>
-
+    
     <xsl:template match="artyear" mode="metadata">
         <xsl:call-template name="metadata-labeled-entry">
             <xsl:with-param name="label">Artyear</xsl:with-param>
         </xsl:call-template>
     </xsl:template>
-
+    
     <xsl:template match="journalname" mode="metadata">
         <xsl:call-template name="metadata-labeled-entry">
             <xsl:with-param name="label">Artyear</xsl:with-param>
         </xsl:call-template>
     </xsl:template>
-
-
+    
+    
     <xsl:template match="artbkinfo" mode="metadata">
         <div class="metadata-entry artbookinfo">
             <xsl:if test="@extract">
@@ -387,19 +387,19 @@
             </xsl:if>
         </div>
     </xsl:template>
-
+    
     <xsl:template match="artiss" mode="metadata">
         <xsl:call-template name="metadata-labeled-entry">
             <xsl:with-param name="label">Artiss</xsl:with-param>
         </xsl:call-template>
     </xsl:template>
-
+    
     <xsl:template match="artpgrg" mode="metadata">
         <xsl:call-template name="metadata-labeled-entry">
             <xsl:with-param name="label">Artpgrg</xsl:with-param>
         </xsl:call-template>
     </xsl:template>
-
+    
     <xsl:template match="arttitle" mode="metadata">
         <p class="title">
             <a href="/#/ArticleList/?journal={$journal-code}&amp;vol={$artvol}&amp;page={$artstartpg}">
@@ -409,13 +409,13 @@
             <xsl:apply-templates select="ftnx"/>
         </p>
     </xsl:template>
-
+    
     <xsl:template match="artsub" mode="metadata">
         <p class="artsub">
             &#58; <xsl:value-of select="."/>
         </p>
     </xsl:template>
-
+    
     <xsl:template match="artkwds" mode="metadata">
         <div class="artkwds">
             <xsl:for-each select="//impx[@type='KEYWORD']">
@@ -427,7 +427,7 @@
             </xsl:for-each>
         </div>
     </xsl:template>
-
+    
     <xsl:template match="artauth" mode="metadata">
         <div class="artauth">
             <div class="authorwrapper title-author" data-class="artauth">
@@ -472,7 +472,7 @@
             </div>
         </div>
     </xsl:template>
-
+    
     <xsl:template match="autaff" mode="metadata">
         <div data-class="autaff">
             <xsl:if test="@affid">
@@ -483,7 +483,7 @@
             <xsl:apply-templates mode="metadata" select="addr"/>
         </div>
     </xsl:template>
-
+    
     <!--PEPKBD3 Author Information-->
     <xsl:template match="aut" mode="metadata">
         <span class="title-author" data-listed="{@listed}" data-authindexid="{@authindexid}" data-role="{@role}" data-alias="{@alias}" data-asis="{@asis}">
@@ -495,25 +495,25 @@
         </span>
         <xsl:text>&#13;</xsl:text>
     </xsl:template>
-
+    
     <xsl:template match="ln" mode="metadata">
         <span data-class="ln">
             <xsl:apply-templates/><br/>
         </span>
     </xsl:template>
-
+    
     <xsl:template match="addr" mode="metadata">
         <p class="autaffaddr" data-class="addr">
             <xsl:apply-templates mode="metadata"/>
         </p>
     </xsl:template>
-
+    
     <xsl:template match="nbio" mode="metadata">
         <span data-class="nbio">
             <xsl:apply-templates mode="metadata"/>
         </span>
     </xsl:template>
-
+    
     <xsl:template match="webx">
         <xsl:choose>
             <xsl:when test="@type">
@@ -528,11 +528,11 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-
+    
     <xsl:template match="cr">
         <br/>
     </xsl:template>
-
+    
     <xsl:template match="nfirst" mode="metadata">
         <xsl:text>&#10;</xsl:text> <!-- newline character -->
         <span class="nfirst pointer-events-none" data-type="{@type}" data-initials="{@initials}">
@@ -540,15 +540,15 @@
         </span>
         <xsl:text> </xsl:text> <!-- space character -->
     </xsl:template>
-
-
+    
+    
     <xsl:template match="nlast" mode="metadata">
         <span class="nlast pointer-events-none">
             <xsl:value-of select="."/>
         </span>
     </xsl:template>
-
-
+    
+    
     <xsl:template match="ndeg" mode="metadata">
         <xsl:choose>
             <xsl:when test="@other"> <!-- then i test if the attr exists -->
@@ -566,7 +566,7 @@
         </xsl:choose>
         <xsl:text> </xsl:text> <!-- space character -->
     </xsl:template>
-
+    
     <xsl:template match="videoplayer">
         <xsl:if test="'1'='1'">
             <!--This is the new Wistia player-\-it allows seeking in the transcript, press the arrow on the captions, or use the "Search Video" on the cc menu.
@@ -579,7 +579,7 @@
             <script src="https://fast.wistia.net/assets/external/E-v1.js" async="async"></script>
         </xsl:if>
     </xsl:template>
-
+    
     <xsl:template match="pgx">
         <span class="pgx" data-type="pagelink" data-r="{@rx}">
             <a class="pgx" href="#/Document/{@rx}" data-type="pagelink" data-r="{@rx}">
@@ -587,7 +587,7 @@
             </a>
         </span>
     </xsl:template>
-
+    
     <xsl:template match="xref" mode="metadata-inline">
         <!-- These are not expected to appear in mixed content, so
              brackets are provided -->
@@ -595,7 +595,7 @@
         <xsl:apply-templates select="."/>
         <span class="generated">]</span>
     </xsl:template>
-
+    
     <xsl:template match="ftnx">
         <sup>
             <a class="ftnx" data-type="{@type}" data-r="{@r}">
@@ -603,14 +603,14 @@
             </a>
         </sup>
     </xsl:template>
-
+    
     <xsl:template match="ftr">
         <xsl:text>&#13;</xsl:text>
         <div class="footer pt-1" data-class="ftr">
             <xsl:apply-templates/>
         </div>
     </xsl:template>
-
+    
     <xsl:template match="ftn">
         <div class="ftn" data-class="ftn_group">
             <xsl:attribute name="id">
@@ -624,7 +624,7 @@
             <xsl:apply-templates />
         </div>
     </xsl:template>
-
+    
     <xsl:template match="aff" mode="metadata">
         <xsl:call-template name="metadata-entry">
             <xsl:with-param name="contents">
@@ -633,19 +633,19 @@
             </xsl:with-param>
         </xsl:call-template>
     </xsl:template>
-
+    
     <xsl:template match="role" mode="metadata">
         <xsl:call-template name="metadata-entry"/>
     </xsl:template>
-
+    
     <xsl:template match="title" mode="metadata">
         <xsl:apply-templates select="."/>
     </xsl:template>
-
+    
     <!-- ============================================================= -->
     <!--  REGULAR (DEFAULT) MODE                                       -->
     <!-- ============================================================= -->
-
+    
     <!--  Additional author info in document authsectinfo
          Note this works right, but PEP-Easy loads the wrong
          info due to the fixed popup id in javascript
@@ -692,20 +692,20 @@
             </xsl:for-each>
         </div>
     </xsl:template>
-
+    
     <xsl:template match="figure">
         <div class="figure d-flex flex-column" id="{@id}">
             <xsl:call-template name="data-pagehelper"/>
             <xsl:apply-templates/>
         </div>
     </xsl:template>
-
+    
     <xsl:template match="caption">
         <p class="figtitle caption">
             <xsl:value-of select="."/>
         </p>
     </xsl:template>
-
+    
     <xsl:template match="graphic">
         <xsl:apply-templates/>
         <p class="figure-graphic d-flex justify-content-center">
@@ -721,7 +721,7 @@
                         <xsl:value-of select="normalize-space(string(.))"/>
                     </xsl:attribute>
                 </xsl:for-each>
-
+                
                 <xsl:for-each select="@source">
                     <xsl:attribute name="src">
                         <xsl:variable name="image">
@@ -730,11 +730,11 @@
                         <xsl:value-of select="concat($imageUrl, '/', $image)"/>
                     </xsl:attribute>
                 </xsl:for-each>
-
+                
             </img>
         </p>
     </xsl:template>
-
+    
     <xsl:template name="figure-graphic" >
         <!-- <xsl:apply-templates/> -->
         <p class="figure">
@@ -744,7 +744,7 @@
                         <xsl:value-of select="normalize-space(string(.))"/>
                     </xsl:attribute>
                 </xsl:for-each>
-
+                
                 <xsl:for-each select="@source">
                     <xsl:attribute name="src">
                         <xsl:variable name="image">
@@ -753,22 +753,22 @@
                         <xsl:value-of select="concat($imageUrl, '/', $image)"/>
                     </xsl:attribute>
                 </xsl:for-each>
-
+                
             </img>
         </p>
     </xsl:template>
-
+    
     <!--
          <xsl:template match="*" mode="drop-title">
          <xsl:apply-templates select="."/>
          </xsl:template>
-
+         
          <xsl:template match="title | sec-meta" mode="drop-title"/>
     -->
-
-
-
-
+    
+    
+    
+    
     <xsl:template match="app">
         <div class="section app">
             <xsl:call-template name="named-anchor"/>
@@ -776,8 +776,8 @@
             <xsl:apply-templates/>
         </div>
     </xsl:template>
-
-
+    
+    
     <!--  <xsl:template match="bib" name="ref-list">
          <div class="section bib">
          <xsl:call-template name="named-anchor"/>
@@ -792,11 +792,11 @@
          </div>
          </xsl:template>
     -->
-
+    
     <!-- ============================================================= -->
     <!--  Titles                                                       -->
     <!-- ============================================================= -->
-
+    
     <xsl:template name="main-title"
         match="
             abstract/title | body/*/title |
@@ -811,7 +811,7 @@
             </h2>
         </xsl:if>
     </xsl:template>
-
+    
     <xsl:template name="section-title"
         match="
             abstract/*/title | body/*/*/title |
@@ -826,8 +826,8 @@
             </h3>
         </xsl:if>
     </xsl:template>
-
-
+    
+    
     <xsl:template name="subsection-title"
         match="
             abstract/*/*/title | body/*/*/*/title |
@@ -842,8 +842,8 @@
             </h4>
         </xsl:if>
     </xsl:template>
-
-
+    
+    
     <xsl:template name="block-title" priority="2"
         match="
             list/title | def-list/title | boxed-text/title |
@@ -858,8 +858,8 @@
             </h4>
         </xsl:if>
     </xsl:template>
-
-
+    
+    
     <!-- default: any other titles found -->
     <xsl:template match="title">
         <xsl:if test="normalize-space(string(.))">
@@ -868,8 +868,8 @@
             </h3>
         </xsl:if>
     </xsl:template>
-
-
+    
+    
     <!--  <xsl:template match="subtitle">
          <xsl:if test="normalize-space(string(.))">
          <h5 class="subtitle">
@@ -878,11 +878,11 @@
          </xsl:if>
          </xsl:template>
     -->
-
+    
     <!-- ============================================================= -->
     <!--  Figures, lists and block-level objectS                       -->
     <!-- ============================================================= -->
-
+    
     <!-- abs -->
     <xsl:template match="abs">
         <div id="abs" class="abs">
@@ -890,7 +890,7 @@
             <xsl:apply-templates/>
         </div>
     </xsl:template>
-
+    
     <xsl:template match="h1|h2|h3|h4|h5|h6">
         <xsl:copy>
             <xsl:call-template name="assign-lang"/>
@@ -905,7 +905,7 @@
             <xsl:apply-templates/>
         </xsl:copy>
     </xsl:template>
-
+    
     <xsl:template match="glossary | gloss-group">
         <!-- gloss-group is from 2.3 -->
         <div class="glossary">
@@ -921,7 +921,7 @@
             <xsl:apply-templates select="*[not(self::label | self::title)]"/>
         </div>
     </xsl:template>
-
+    
     <xsl:template match="glossary/glossary | gloss-group/gloss-group">
         <!-- the same document shouldn't have both types -->
         <div class="glossary">
@@ -929,11 +929,11 @@
             <xsl:apply-templates/>
         </div>
     </xsl:template>
-
+    
     <xsl:template match="alt-text">
         <!-- handled with graphic or inline-graphic -->
     </xsl:template>
-
+    
     <!--  Since lxml only supports XSLT 1.0, can't use the above functions, so do it the imperfect way!-->
     <xsl:template match="list[@type = 'ALP' or @type = 'AUP' or @type = 'AUR' or @type = 'ALR' or @type = 'RLP' or @type = 'RUP' or @type = 'NNP' or @type = 'NNB' or @type = 'NNS']">
         <xsl:variable name="style">
@@ -957,7 +957,7 @@
             <xsl:apply-templates mode="list"/>
         </ol>
     </xsl:template>
-
+    
     <xsl:template match="list[@type = 'DASH' or @type = 'DIAMOND' or @type = 'ASTERISK' or @type= 'NONE']">
         <ul>
             <xsl:call-template name="data-pagehelper"/>
@@ -975,14 +975,14 @@
             <xsl:apply-templates mode="list"/>
         </ul>
     </xsl:template>
-
+    
     <xsl:template match="li" mode="list">
         <li>
             <xsl:apply-templates select="label"/>
             <xsl:apply-templates/>
         </li>
     </xsl:template>
-
+    
     <xsl:template match="list-item/p[not(preceding-sibling::*[not(self::label)])]">
         <p>
             <xsl:call-template name="assign-id"/>
@@ -996,7 +996,7 @@
             <xsl:apply-templates/>
         </p>
     </xsl:template>
-
+    
     <xsl:template match="n">
         <xsl:apply-templates select="@content-type"/>
         <p class="pagenumber text-center text-muted small">
@@ -1017,7 +1017,7 @@
             <xsl:apply-templates/>
         </p>
     </xsl:template>
-
+    
     <xsl:template match="pb">
         <div class="pagebreak" data-class="pb">
             <xsl:attribute name="data-page-end">
@@ -1028,8 +1028,8 @@
             <xsl:apply-templates/>
         </div>
     </xsl:template>
-
-
+    
+    
     <xsl:template match="bx">
         <span class="peppopup bibtip" data-type="velcro" data-element="{@r}" data-maxwidth="300" data-direction="southeast">
             <xsl:call-template name="assign-id"/>
@@ -1037,8 +1037,8 @@
             <xsl:apply-templates/>
         </span>
     </xsl:template>
-
-
+    
+    
     <xsl:template match="impx"> <!--when not in metadata mode -->
         <xsl:choose>
             <xsl:when test="@rx"> <!-- for the generated links -->
@@ -1053,7 +1053,7 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-
+    
     <xsl:template match="figx"> <!--when not in metadata mode -->
         <xsl:choose>
             <xsl:when test="@r"> <!-- for the generated links -->
@@ -1068,7 +1068,7 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-
+    
     <xsl:template match="poem">
         <div class="poem">
             <xsl:call-template name="data-pagehelper"/>
@@ -1077,7 +1077,7 @@
             <xsl:apply-templates/>
         </div>
     </xsl:template>
-
+    
     <xsl:template match="quote">
         <div class="quote">
             <xsl:call-template name="data-pagehelper"/>
@@ -1086,7 +1086,7 @@
             <xsl:apply-templates/>
         </div>
     </xsl:template>
-
+    
     <xsl:template match="dream">
         <div class="dream">
             <xsl:call-template name="data-pagehelper"/>
@@ -1095,7 +1095,7 @@
             <xsl:apply-templates/>
         </div>
     </xsl:template>
-
+    
     <xsl:template match="dialog">
         <div class="dialog">
             <xsl:call-template name="data-pagehelper"/>
@@ -1104,12 +1104,12 @@
             <xsl:apply-templates/>
         </div>
     </xsl:template>
-
+    
     <xsl:template match="p | p2">
         <p class="para my-1">
             <xsl:call-template name="assign-lang"/>
             <xsl:call-template name="data-pagehelper"/>
-
+            
             <xsl:if test="@lgrid">
                 <xsl:attribute name="data-lgrid">
                     <xsl:value-of select="@lgrid"/>
@@ -1138,7 +1138,7 @@
                 <!--          <xsl:value-of select="concat('continued',  ' ', @class)"/>-->
                 <xsl:attribute name="class">paracont</xsl:attribute>
             </xsl:if>
-
+            
             <xsl:call-template name="assign-id"/>
             <xsl:apply-templates select="@content-type"/>
             <xsl:apply-templates />
@@ -1148,7 +1148,7 @@
                  </xsl:call-template> -->
          </p>
     </xsl:template>
-
+    
     <xsl:template match="note">
         <div class="note" id='{@id}'>
             <xsl:call-template name="data-pagehelper"/>
@@ -1160,13 +1160,13 @@
             <xsl:apply-templates/>
         </div>
     </xsl:template>
-
+    
     <xsl:template match="dictentrygrp">
         <div class="dictentrygrp" id='{@id}'>
             <xsl:apply-templates/>
         </div>
     </xsl:template>
-
+    
     <xsl:template match="dictalso">
         <p class="dictentrygrp-dictalso">
             <xsl:copy-of select="$fa-flag" />
@@ -1174,7 +1174,7 @@
             <xsl:apply-templates/>
         </p>
     </xsl:template>
-
+    
     <xsl:template match="dictalso/term">
         <span class="dictentrygrp-dictalso-term smallcaps">
             <!-- xslt 1.0-->
@@ -1184,13 +1184,13 @@
             <xsl:text>; </xsl:text>
         </span>
     </xsl:template>
-
+    
     <xsl:template match="def">
         <div class="def-def body">
             <xsl:apply-templates/>
         </div>
     </xsl:template>
-
+    
     <xsl:template match="defrest">
         <div class="seemore">
             <xsl:text>&#13;</xsl:text>
@@ -1205,14 +1205,14 @@
                          <xsl:attribute name="data-document-id">
                          <xsl:value-of select="../../@id"/>
                          </xsl:attribute>
-
+                         
                          Open full glossary entry in main window...
                          </a> -->
                  </div>
             </details>
         </div>
     </xsl:template>
-
+    
     <xsl:template match="term">
         <div class="dictentrygrp-term">
             <xsl:call-template name="assign-id"/>
@@ -1221,7 +1221,7 @@
             </p>
         </div>
     </xsl:template>
-
+    
     <xsl:template match="src">
         <p class="dictentry-src">
             <xsl:call-template name="assign-id"/>
@@ -1230,19 +1230,19 @@
             <xsl:apply-templates/>
         </p>
     </xsl:template>
-
+    
     <xsl:template match="binc/j">
         <span class="font-italic">
             <xsl:apply-templates/>
         </span>
     </xsl:template>
-
+    
     <xsl:template match="bst">
         <span class="font-italic">
             <xsl:apply-templates/>
         </span>
     </xsl:template>
-
+    
     <xsl:template match="binc">
         <span class="bibentry" id="{@id}">
             <span class="ref-content cell">
@@ -1270,7 +1270,7 @@
             </xsl:if>
         </span>
     </xsl:template>
-
+    
     <xsl:template match="be">
         <p class="bibentry" id="{@id}">
             <span class="ref-content cell">
@@ -1298,80 +1298,80 @@
             </xsl:if>
         </p>
     </xsl:template>
-
-
+    
+    
     <xsl:template match="be/a">
         <xsl:text>&#13;</xsl:text>
         <span class="bibauthor a">
             <xsl:apply-templates/>
         </span>
     </xsl:template>
-
-
+    
+    
     <xsl:template match="a/l">
         <span class="bibauthorlastname l">
             <xsl:apply-templates/>
         </span>
     </xsl:template>
-
-
+    
+    
     <xsl:template match="be/y">
         <xsl:text>&#13;</xsl:text>
         <span class="bibyear y">
             <xsl:apply-templates/>
         </span>
     </xsl:template>
-
-
+    
+    
     <xsl:template match="be/t">
         <xsl:text>&#13;</xsl:text>
         <span class="bibtitle t">
             <xsl:apply-templates/>
         </span>
     </xsl:template>
-
-
+    
+    
     <xsl:template match="be/j">
         <xsl:text>&#xA0;</xsl:text>
         <span class="bibjournal j">
             <xsl:apply-templates/>
         </span>
     </xsl:template>
-
-
+    
+    
     <xsl:template match="be/bp">
         <span class="bibpublisher bp">
             <xsl:apply-templates/>
         </span>
     </xsl:template>
-
+    
     <xsl:template match="be/pp">
         <span class="bibpages pp">
             <xsl:apply-templates/>
         </span>
     </xsl:template>
-
-
+    
+    
     <xsl:template match="p/label">
         <span class="label">
             <xsl:apply-templates/>
         </span>
     </xsl:template>
-
+    
     <xsl:template match="label" name="label">
         <!-- other labels are displayed as blocks -->
         <h5 class="label">
             <xsl:apply-templates/>
         </h5>
     </xsl:template>
-
-
+    
+    
     <!-- ============================================================= -->
     <!--  TABLES                                                       -->
     <!-- ============================================================= -->
     <!--  Tables are already in XHTML, and can simply be copied
          through                                                      -->
-
+    
     <xsl:template match="body//tbl">
         <!-- other labels are displayed as blocks -->
         <div class="table-responsive nrs my-3">
@@ -1392,28 +1392,28 @@
             <xsl:apply-templates/>
         </div>
     </xsl:template>
-
+    
     <!--
          <xsl:template match="tbl">
          <table class="table table-responsive">
          <xsl:apply-templates/>
          </table>
          </xsl:template> -->
-
+    
     <xsl:template match="row">
         <!-- other labels are displayed as blocks -->
         <tr>
             <xsl:apply-templates/>
         </tr>
     </xsl:template>
-
+    
     <xsl:template match="entry">
         <!-- other labels are displayed as blocks -->
         <td class="tableentry entry">
             <xsl:apply-templates/>
         </td>
     </xsl:template>
-
+    
     <xsl:template match="tgroup">
         <!-- other labels are displayed as blocks -->
         <tgroup class="tablegroup tgroup">
@@ -1423,7 +1423,7 @@
             <xsl:apply-templates/>
         </tgroup>
     </xsl:template>
-
+    
     <!--Packaged in colgroup only-->
     <xsl:template match="colspec" mode="colgroup">
         <!-- other labels are displayed as blocks -->
@@ -1441,7 +1441,7 @@
             <xsl:apply-templates/>
         </col>
     </xsl:template>
-
+    
     <xsl:template match="
         table | tbl | thead | tbody | tfoot |
         col | colgroup | tr | th | td">
@@ -1451,43 +1451,43 @@
             <xsl:apply-templates/>
         </xsl:copy>
     </xsl:template>
-
+    
     <xsl:template match="@*" mode="table-copy">
         <xsl:apply-templates/>
     </xsl:template>
-
-
+    
+    
     <xsl:template match="@content-type" mode="table-copy"/>
-
+    
     <xsl:template match="table">
         <table class="table mb-0">
             <xsl:apply-templates/>
         </table>
     </xsl:template>
-
-
-
+    
+    
+    
     <!-- ============================================================= -->
     <!--  INLINE MISCELLANEOUS                                         -->
     <!-- ============================================================= -->
     <!--  Templates strictly for formatting follow; these are templates
          to handle various inline structures -->
-
+    
     <xsl:template match="break">
         <br class="br"/>
     </xsl:template>
-
+    
     <xsl:template match="email">
         <a href="mailto:{.}">
             <xsl:apply-templates/>
         </a>
     </xsl:template>
-
+    
     <xsl:template match="hr">
         <hr class="hr"/>
     </xsl:template>
-
-
+    
+    
     <xsl:template match="xref[not(normalize-space(string(.)))]">
         <a href="#{@rid}">
             <xsl:apply-templates select="key('element-by-id', @rid)" mode="label-text">
@@ -1495,88 +1495,88 @@
             </xsl:apply-templates>
         </a>
     </xsl:template>
-
+    
     <xsl:template match="xref">
         <a href="#{@rid}">
             <xsl:apply-templates/>
         </a>
     </xsl:template>
-
-
-
+    
+    
+    
     <!-- ============================================================= -->
     <!--  Formatting elements                                          -->
     <!-- ============================================================= -->
-
+    
     <xsl:template match="bi">  <!--bold italics-->
         <b><i>
                 <xsl:apply-templates/>
             </i></b>
     </xsl:template>
-
+    
     <xsl:template match="bold|b">  <!--We use b, but left in "bold"-->
         <b>
             <xsl:apply-templates/>
         </b>
     </xsl:template>
-
+    
     <xsl:template match="italic|i"> <!--We use i, but left in "italics"-->
         <i>
             <xsl:apply-templates/>
         </i>
     </xsl:template>
-
+    
     <xsl:template match="overline">  <!--we (PEP) don't have this-->
         <span style="text-decoration: overline">
             <xsl:apply-templates/>
         </span>
     </xsl:template>
-
+    
     <xsl:template match="roman">  <!--we (PEP) don't have this-->
         <span style="font-style: normal">
             <xsl:apply-templates/>
         </span>
     </xsl:template>
-
+    
     <xsl:template match="sc|sm">  <!--sc is for future JATS-->
         <span style="font-variant: small-caps">
             <xsl:apply-templates/>
         </span>
     </xsl:template>
-
-
+    
+    
     <xsl:template match="so">  <!--Strikeout-->
         <span style="text-decoration: line-through">
             <xsl:apply-templates/>
         </span>
     </xsl:template>
-
-
+    
+    
     <xsl:template match="sb"> <!--Subscript-->
         <sub>
             <xsl:apply-templates/>
         </sub>
     </xsl:template>
-
-
+    
+    
     <xsl:template match="su"> <!--superscript-->
         <sup>
             <xsl:apply-templates/>
         </sup>
     </xsl:template>
-
-
+    
+    
     <xsl:template match="underline|u"> <!--underlined-->
         <span style="text-decoration: underline">
             <xsl:apply-templates/>
         </span>
     </xsl:template>
-
-
+    
+    
     <!-- ============================================================= -->
     <!--  FOOTNOTES                                                    -->
     <!-- ============================================================= -->
-
+    
     <xsl:template match="fn">
         <!-- Footnotes appearing outside fn-group
              generate cross-references to the footnote,
@@ -1594,22 +1594,22 @@
             </xsl:apply-templates>
         </a>
     </xsl:template>
-
+    
     <xsl:template match="
         fn-group/fn | table-wrap-foot/fn |
         table-wrap-foot/fn-group/fn">
         <xsl:apply-templates select="." mode="footnote"/>
     </xsl:template>
-
-
+    
+    
     <xsl:template match="fn" mode="footnote">
         <div class="footnote">
             <xsl:call-template name="named-anchor"/>
             <xsl:apply-templates/>
         </div>
     </xsl:template>
-
-
+    
+    
     <xsl:template match="fn/p">
         <p>
             <xsl:call-template name="assign-id"/>
@@ -1621,15 +1621,15 @@
             <xsl:apply-templates/>
         </p>
     </xsl:template>
-
-
+    
+    
     <!-- ============================================================= -->
     <!--  MODE 'label-text'
          Generates label text for elements and their cross-references -->
     <!-- ============================================================= -->
     <!--  This mode is to support auto-numbering and generating of
          labels for certain elements by the stylesheet.
-
+         
          The logic is as follows: for any such element type, if a
          'label' element is ever present, it is expected always to be
          present; automatic numbering is not performed on any elements
@@ -1639,34 +1639,34 @@
          unlabelled (and unnumbered). But if no 'fig' elements have
          'label' children, labels with numbers are generated for all
          figs in display.
-
+         
          This logic applies to:
          app, boxed-text, chem-struct-wrap, disp-formula, fig, fn,
          note, ref, statement, table-wrap.
-
+         
          There is one exception in the case of fn elements, where
          the checking for labels (or for @symbol attributes in the
          case of this element) is performed only within its parent
          fn-group, or in the scope of all fn elements not in an
          fn-group, for fn elements appearing outside fn-group.
-
+         
          In all cases, this logic can be altered simply by overwriting
          templates in "label" mode for any of these elements.
-
+         
          For other elements, a label is simply displayed if present,
          and auto-numbering is never performed.
          These elements include:
          (label appearing in line) aff, corresp, chem-struct,
          element-citation, mixed-citation
-
+         
          (label appearing as a block) abstract, ack, app-group,
          author-notes, back, bio, def-list, disp-formula-group,
          disp-quote, fn-group, glossary, graphic, kwd-group,
          list, list-item, media, notes, ref-list, sec,
          supplementary-material, table-wrap-group,
          trans-abstract, verse-group -->
-
-
+    
+    
     <xsl:variable name="auto-label-app" select="false()"/>
     <xsl:variable name="auto-label-boxed-text" select="false()"/>
     <xsl:variable name="auto-label-chem-struct-wrap" select="false()"/>
@@ -1674,18 +1674,18 @@
     <xsl:variable name="auto-label-fig" select="false()"/>
     <xsl:variable name="auto-label-ref" select="not(//ref[label])"/>
     <!-- ref elements are labeled unless any ref already has a label -->
-
+    
     <xsl:variable name="auto-label-statement" select="false()"/>
     <xsl:variable name="auto-label-supplementary" select="false()"/>
     <xsl:variable name="auto-label-table-wrap" select="false()"/>
-
+    
     <!--
          These variables assignments show how autolabeling can be
          configured conditionally.
          For example: "label figures if no figures have labels" translates to
          "not(//fig[label])", which will resolve to Boolean true() when the set of
          all fig elements with labels is empty.
-
+         
          <xsl:variable name="auto-label-app" select="not(//app[label])"/>
          <xsl:variable name="auto-label-boxed-text" select="not(//boxed-text[label])"/>
          <xsl:variable name="auto-label-chem-struct-wrap" select="not(//chem-struct-wrap[label])"/>
@@ -1697,7 +1697,7 @@
          select="not(//supplementary-material[not(ancestor::front)][label])"/>
          <xsl:variable name="auto-label-table-wrap" select="not(//table-wrap[label])"/>
     -->
-
+    
     <xsl:template mode="label" match="*" name="block-label">
         <xsl:param name="contents">
             <xsl:apply-templates select="." mode="label-text">
@@ -1714,7 +1714,7 @@
             </h5>
         </xsl:if>
     </xsl:template>
-
+    
     <xsl:template mode="label" match="ref">
         <xsl:param name="contents">
             <xsl:apply-templates select="." mode="label-text"/>
@@ -1726,47 +1726,47 @@
             </span>
         </xsl:if>
     </xsl:template>
-
-    <xsl:template name="highlight">
-        <xsl:param name="element"/>
-        <xsl:param name="search" as="xs:string"/>
-        <xsl:param name="flags" required="no" select="'im'" as="xs:string"/>
-
-        <xsl:choose>
-            <xsl:when test="empty($search) or $search eq ''">
-                <xsl:value-of select="."/>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:for-each select="$element/node()">
-                    <xsl:choose>
-                        <xsl:when test=". instance of text()">
-                            <xsl:for-each select="analyze-string(., $search, $flags)/*">
-                                <xsl:choose>
-                                    <xsl:when test="local-name(.) eq 'non-match'">
-                                        <xsl:value-of select="./text()"/>
-                                    </xsl:when>
-                                    <xsl:otherwise>
-                                        <span class="highlighted">
-                                            <xsl:value-of select="./text()"/>
-                                        </span>
-                                    </xsl:otherwise>
-                                </xsl:choose>
-                            </xsl:for-each>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:call-template name="highlight">
-                                <xsl:with-param name="element" select="."/>
-                                <xsl:with-param name="search" select="$search"/>
-                                <xsl:with-param name="flags" select="$flags"/>
-                            </xsl:call-template>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </xsl:for-each>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:template>
-
-
+    
+    <!-- <xsl:template name="highlight">
+         <xsl:param name="element"/>
+         <xsl:param name="search" as="xs:string"/>
+         <xsl:param name="flags" required="no" select="'im'" as="xs:string"/>
+         
+         <xsl:choose>
+         <xsl:when test="empty($search) or $search eq ''">
+         <xsl:value-of select="."/>
+         </xsl:when>
+         <xsl:otherwise>
+         <xsl:for-each select="$element/node()">
+         <xsl:choose>
+         <xsl:when test=". instance of text()">
+         <xsl:for-each select="analyze-string(., $search, $flags)/*">
+         <xsl:choose>
+         <xsl:when test="local-name(.) eq 'non-match'">
+         <xsl:value-of select="./text()"/>
+         </xsl:when>
+         <xsl:otherwise>
+         <span class="highlighted">
+         <xsl:value-of select="./text()"/>
+         </span>
+         </xsl:otherwise>
+         </xsl:choose>
+         </xsl:for-each>
+         </xsl:when>
+         <xsl:otherwise>
+         <xsl:call-template name="highlight">
+         <xsl:with-param name="element" select="."/>
+         <xsl:with-param name="search" select="$search"/>
+         <xsl:with-param name="flags" select="$flags"/>
+         </xsl:call-template>
+         </xsl:otherwise>
+         </xsl:choose>
+         </xsl:for-each>
+         </xsl:otherwise>
+         </xsl:choose>
+         </xsl:template> -->
+    
+    
     <xsl:template match="app" mode="label-text">
         <xsl:param name="warning" select="true()"/>
         <!-- pass $warning in as false() if a warning string is not wanted
@@ -1782,7 +1782,7 @@
                  </xsl:with-param>-->
          </xsl:call-template>
     </xsl:template>
-
+    
     <xsl:template match="figx" mode="label-text">
         <xsl:param name="warning" select="true()"/>
         <!-- pass $warning in as false() if a warning string is not wanted
@@ -1796,7 +1796,7 @@
             </xsl:with-param>
         </xsl:call-template>
     </xsl:template>
-
+    
     <xsl:template match="front//fn" mode="label-text">
         <xsl:param name="warning" select="boolean(key('xref-by-rid', @id))"/>
         <!-- pass $warning in as false() if a warning string is not wanted
@@ -1818,8 +1818,8 @@
             </xsl:with-param>
         </xsl:call-template>
     </xsl:template>
-
-
+    
+    
     <xsl:template match="table-wrap//fn" mode="label-text">
         <xsl:param name="warning" select="boolean(key('xref-by-rid', @id))"/>
         <!-- pass $warning in as false() if a warning string is not wanted
@@ -1838,8 +1838,8 @@
             </xsl:with-param>
         </xsl:call-template>
     </xsl:template>
-
-
+    
+    
     <xsl:template match="fn" mode="label-text">
         <xsl:param name="warning" select="boolean(key('xref-by-rid', @id))"/>
         <!-- pass $warning in as false() if a warning string is not wanted
@@ -1871,88 +1871,88 @@
             </xsl:with-param>
         </xsl:call-template>
     </xsl:template>
-
+    
     <xsl:template match="fn/@fn-type[. = 'abbr']" priority="2">
         <span class="generated"> Abbreviation</span>
     </xsl:template>
-
+    
     <xsl:template match="fn/@fn-type[. = 'com']" priority="2">
         <span class="generated"> Communicated by</span>
     </xsl:template>
-
+    
     <xsl:template match="fn/@fn-type[. = 'con']" priority="2">
         <span class="generated"> Contributed by</span>
     </xsl:template>
-
+    
     <xsl:template match="fn/@fn-type[. = 'conflict']" priority="2">
         <span class="generated"> Conflicts of interest</span>
     </xsl:template>
-
+    
     <xsl:template match="fn/@fn-type[. = 'corresp']" priority="2">
         <span class="generated"> Corresponding author</span>
     </xsl:template>
-
+    
     <xsl:template match="fn/@fn-type[. = 'current-aff']" priority="2">
         <span class="generated"> Current affiliation</span>
     </xsl:template>
-
+    
     <xsl:template match="fn/@fn-type[. = 'deceased']" priority="2">
         <span class="generated"> Deceased</span>
     </xsl:template>
-
+    
     <xsl:template match="fn/@fn-type[. = 'edited-by']" priority="2">
         <span class="generated"> Edited by</span>
     </xsl:template>
-
+    
     <xsl:template match="fn/@fn-type[. = 'equal']" priority="2">
         <span class="generated"> Equal contributor</span>
     </xsl:template>
-
+    
     <xsl:template match="fn/@fn-type[. = 'financial-disclosure']" priority="2">
         <span class="generated"> Financial disclosure</span>
     </xsl:template>
-
+    
     <xsl:template match="fn/@fn-type[. = 'on-leave']" priority="2">
         <span class="generated"> On leave</span>
     </xsl:template>
-
+    
     <xsl:template match="fn/@fn-type[. = 'other']" priority="2"/>
-
+    
     <xsl:template match="fn/@fn-type[. = 'participating-researchers']" priority="2">
         <span class="generated"> Participating researcher</span>
     </xsl:template>
-
+    
     <xsl:template match="fn/@fn-type[. = 'present-address']" priority="2">
         <span class="generated"> Current address</span>
     </xsl:template>
-
+    
     <xsl:template match="fn/@fn-type[. = 'presented-at']" priority="2">
         <span class="generated"> Presented at</span>
     </xsl:template>
-
+    
     <xsl:template match="fn/@fn-type[. = 'presented-by']" priority="2">
         <span class="generated"> Presented by</span>
     </xsl:template>
-
+    
     <xsl:template match="fn/@fn-type[. = 'previously-at']" priority="2">
         <span class="generated"> Previously at</span>
     </xsl:template>
-
+    
     <xsl:template match="fn/@fn-type[. = 'study-group-members']" priority="2">
         <span class="generated"> Study group member</span>
     </xsl:template>
-
+    
     <xsl:template match="fn/@fn-type[. = 'supplementary-material']" priority="2">
         <span class="generated"> Supplementary material</span>
     </xsl:template>
-
+    
     <xsl:template match="fn/@fn-type[. = 'supported-by']" priority="2">
         <span class="generated"> Supported by</span>
     </xsl:template>
-
+    
     <xsl:template match="fn/@fn-type"/>
-
-
+    
+    
     <xsl:template match="ref" mode="label-text">
         <xsl:param name="warning" select="true()"/>
         <!-- pass $warning in as false() if a warning string is not wanted
@@ -1965,7 +1965,7 @@
             </xsl:with-param>
         </xsl:call-template>
     </xsl:template>
-
+    
     <xsl:template match="*" mode="label-text">
         <xsl:param name="warning" select="true()"/>
         <!-- pass $warning in as false() if a warning string is not wanted
@@ -1974,23 +1974,23 @@
             <xsl:with-param name="warning" select="$warning"/>
         </xsl:call-template>
     </xsl:template>
-
+    
     <xsl:template match="label" mode="label-text">
         <xsl:apply-templates mode="inline-label-text"/>
     </xsl:template>
-
+    
     <xsl:template match="text()" mode="inline-label-text">
         <!-- when displaying labels, space characters become non-breaking spaces -->
         <xsl:value-of
             select="translate(normalize-space(string(.)), ' &#xA;&#x9;', '&#xA0;&#xA0;&#xA0;')"/>
     </xsl:template>
-
+    
     <!-- ============================================================= -->
     <!--  Writing a name                                               -->
     <!-- ============================================================= -->
-
+    
     <!-- Called when displaying structured names in metadata         -->
-
+    
     <xsl:template match="name">
         <xsl:apply-templates select="prefix" mode="inline-name"/>
         <xsl:apply-templates select="surname[../@name-style = 'eastern']" mode="inline-name"/>
@@ -1998,56 +1998,56 @@
         <xsl:apply-templates select="surname[not(../@name-style = 'eastern')]" mode="inline-name"/>
         <xsl:apply-templates select="suffix" mode="inline-name"/>
     </xsl:template>
-
-
+    
+    
     <xsl:template match="prefix" mode="inline-name">
         <xsl:apply-templates/>
         <xsl:if test="../surname | ../given-names | ../suffix">
             <xsl:text> </xsl:text>
         </xsl:if>
     </xsl:template>
-
-
+    
+    
     <xsl:template match="given-names" mode="inline-name">
         <xsl:apply-templates/>
         <xsl:if test="../surname[not(../@name-style = 'eastern')] | ../suffix">
             <xsl:text> </xsl:text>
         </xsl:if>
     </xsl:template>
-
-
+    
+    
     <xsl:template match="contrib/name/surname" mode="inline-name">
         <xsl:apply-templates/>
         <xsl:if test="../given-names[../@name-style = 'eastern'] | ../suffix">
             <xsl:text> </xsl:text>
         </xsl:if>
     </xsl:template>
-
-
+    
+    
     <xsl:template match="surname" mode="inline-name">
         <xsl:apply-templates/>
         <xsl:if test="../given-names[../@name-style = 'eastern'] | ../suffix">
             <xsl:text> </xsl:text>
         </xsl:if>
     </xsl:template>
-
-
+    
+    
     <xsl:template match="suffix" mode="inline-name">
         <xsl:apply-templates/>
     </xsl:template>
-
-
+    
+    
     <!-- string-name elements are written as is -->
-
+    
     <xsl:template match="string-name">
         <xsl:apply-templates/>
     </xsl:template>
-
-
+    
+    
     <xsl:template match="string-name/*">
         <xsl:apply-templates/>
     </xsl:template>
-
+    
     <!--  *************************************************************
          METADATA GENERATING TEMPLATE HERE!
          *************************************************************
@@ -2064,8 +2064,8 @@
             <span class="jrnlabbr">($journal-abbr)</span>,<span class="vol">($vol)</span><xsl:text>:</xsl:text>><span class="pgrg">($pgrg).</span>
         </span>
     </xsl:template>
-
-
+    
+    
     <xsl:template name="metadata-labeled-entry">
         <xsl:param name="label"/>
         <xsl:param name="contents">
@@ -2085,8 +2085,8 @@
             </xsl:with-param>
         </xsl:call-template>
     </xsl:template>
-
-
+    
+    
     <xsl:template name="metadata-entry">
         <xsl:param name="contents">
             <xsl:apply-templates/>
@@ -2095,8 +2095,8 @@
             <xsl:copy-of select="$contents"/>
         </p>
     </xsl:template>
-
-
+    
+    
     <xsl:template name="metadata-area">
         <xsl:param name="label"/>
         <xsl:param name="contents">
@@ -2116,8 +2116,8 @@
             </div>
         </div>
     </xsl:template>
-
-
+    
+    
     <xsl:template name="make-label-text">
         <xsl:param name="auto" select="false()"/>
         <xsl:param name="warning" select="false()"/>
@@ -2147,7 +2147,7 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-
+    
     <xsl:template name="assign-lang">
         <xsl:choose>
             <xsl:when test="@lang">
@@ -2157,7 +2157,7 @@
             </xsl:when>
         </xsl:choose>
     </xsl:template>
-
+    
     <xsl:template name="assign-id">
         <xsl:variable name="id">
             <xsl:apply-templates select="." mode="id"/>
@@ -2166,8 +2166,8 @@
             <xsl:value-of select="$id"/>
         </xsl:attribute>
     </xsl:template>
-
-
+    
+    
     <xsl:template name="assign-src">
         <xsl:for-each select="@xlink:href">
             <xsl:attribute name="src">
@@ -2175,7 +2175,7 @@
             </xsl:attribute>
         </xsl:for-each>
     </xsl:template>
-
+    
     <xsl:template name="assign-href">
         <xsl:for-each select="@xlink:href">
             <xsl:attribute name="href">
@@ -2183,7 +2183,7 @@
             </xsl:attribute>
         </xsl:for-each>
     </xsl:template>
-
+    
     <xsl:template name="named-anchor">
         <!-- generates an HTML named anchor -->
         <xsl:variable name="id">
@@ -2215,21 +2215,21 @@
         </xsl:variable>
         <a id="{$id}" class="mods"></a>
     </xsl:template>
-
+    
     <!-- ============================================================= -->
     <!--  id mode                                                      -->
     <!-- ============================================================= -->
     <!-- An id can be derived for any element. If an @id is given,
          it is presumed unique and copied. If not, one is generated.   -->
-
+    
     <xsl:template match="*" mode="id">
         <xsl:value-of select="@id"/>
         <xsl:if test="not(@id)">
             <xsl:value-of select="generate-id(.)"/>
         </xsl:if>
     </xsl:template>
-
-
+    
+    
     <xsl:template match="pepbd3 | grp | unit" mode="id">
         <xsl:value-of select="@id"/>
         <xsl:if test="not(@id)">
@@ -2237,11 +2237,11 @@
             <xsl:number from="article" level="multiple" count="pepbd3 | grp | unit" format="1-1"/>
         </xsl:if>
     </xsl:template>
-
+    
     <!-- ============================================================= -->
     <!--  "author-string" writes authors' names in sequence            -->
     <!-- ============================================================= -->
-
+    
     <xsl:template name="author-string">
         <xsl:variable name="all-contribs" select="/pepkbd3/artinfo/artauth/aut"/>
         <xsl:for-each select="$all-contribs">
@@ -2260,10 +2260,10 @@
             <!--      <xsl:value-of select="."/>-->
         </xsl:for-each>
     </xsl:template>
-
-
+    
+    
     <!-- ============================================================= -->
     <!--  End stylesheet                                               -->
     <!-- ============================================================= -->
-
+    
 </xsl:stylesheet>

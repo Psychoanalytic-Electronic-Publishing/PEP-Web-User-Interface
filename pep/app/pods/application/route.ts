@@ -65,20 +65,27 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
         // since we do not currently cache ajax service requests
         // in the fastboot shoebox (like ember-data does)
 
-        if (this.fastboot.isFastBoot) {
-            // If your not logged in yet - give IP auth a try
-            if (!this.session.isAuthenticated) {
-                try {
-                    await this.session.authenticate('authenticator:ip');
-                } catch (errors) {
-                    this.session.invalidate();
-                }
-                // If you are logged in, but your currently authenticated using IP - try again to ensure you didn't change locations
-                // But here we don't wait for the promise to return as that would cause a FOUC
-            } else if (this.session?.data?.authenticated?.SessionType === SessionType.IP) {
-                this.session.authenticate('authenticator:ip').catch(() => {
-                    this.session.invalidate();
-                });
+        // if (this.fastboot.isFastBoot) {
+        //     // If your not logged in yet - give IP auth a try
+        //     if (!this.session.isAuthenticated) {
+        //         try {
+        //             await this.session.authenticate('authenticator:ip');
+        //         } catch (errors) {
+        //             this.session.invalidate();
+        //         }
+        //         // If you are logged in, but your currently authenticated using IP - try again to ensure you didn't change locations
+        //         // But here we don't wait for the promise to return as that would cause a FOUC
+        //     } else if (this.session?.data?.authenticated?.SessionType === SessionType.IP) {
+        //         this.session.authenticate('authenticator:ip').catch(() => {
+        //             this.session.invalidate();
+        //         });
+        //     }
+        // }
+        if (this.fastboot.isFastBoot && !this.session.isAuthenticated) {
+            try {
+                await this.session.authenticate('authenticator:ip');
+            } catch (errors) {
+                this.session.invalidate();
             }
         }
 
