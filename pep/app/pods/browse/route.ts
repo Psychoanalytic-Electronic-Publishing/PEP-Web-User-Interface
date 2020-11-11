@@ -4,8 +4,11 @@ import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hoo
 import { buildQueryParams, removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
 
 import { PageNav } from 'pep/mixins/page-layout';
+import Book from 'pep/pods/book/model';
 import BrowseController from 'pep/pods/browse/controller';
 import Journal from 'pep/pods/journal/model';
+import Video from 'pep/pods/video/model';
+import { hash } from 'rsvp';
 
 export default class Browse extends PageNav(Route) {
     navController = 'browse';
@@ -15,16 +18,18 @@ export default class Browse extends PageNav(Route) {
         const apiQueryParams = buildQueryParams({
             context: this.controllerFor('browse'),
             pagingRootKey: null,
-            filterRootKey: null
+            filterRootKey: null,
+            limit: 1000
         });
-        const journals = await this.store.query('journal', removeEmptyQueryParams(apiQueryParams));
-        controller.journals = usePagination<Journal>({
-            context: controller,
-            modelName: 'journal',
-            models: journals.toArray(),
-            metadata: journals?.meta,
-            pagingRootKey: null,
-            filterRootKey: null
+
+        const browseResults = await hash({
+            journals: this.store.query('journal', removeEmptyQueryParams(apiQueryParams)),
+            videos: this.store.query('video', removeEmptyQueryParams(apiQueryParams)),
+            books: this.store.query('book', removeEmptyQueryParams(apiQueryParams))
         });
+
+        controller.journals = browseResults.journals.toArray();
+        controller.videos = browseResults.videos.toArray();
+        controller.books = browseResults.books.toArray();
     }
 }

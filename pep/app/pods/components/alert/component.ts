@@ -1,10 +1,12 @@
-import Component from '@glimmer/component';
 import { action } from '@ember/object';
-import { inject as service } from '@ember/service';
 import { later } from '@ember/runloop';
+import { inject as service } from '@ember/service';
+import Component from '@glimmer/component';
+
+// import { fadeTransition } from 'pep/utils/animation';
+import fade from 'ember-animated/transitions/fade';
 
 import ScrollableService from 'pep/services/scrollable';
-import { fadeTransition } from 'pep/utils/animation';
 
 interface AlertArgs {
     isShown: boolean;
@@ -19,7 +21,7 @@ export default class Alert extends Component<AlertArgs> {
     @service scrollable!: ScrollableService;
 
     animateDuration = 300;
-    animateTransition = fadeTransition;
+    animateTransition = fade;
 
     get animateInitialInsert() {
         return this.args.animateInitialInsert ?? true;
