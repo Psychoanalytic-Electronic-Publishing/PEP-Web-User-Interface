@@ -6,7 +6,7 @@ import { pluralize } from 'ember-inflector';
 import ApplicationSerializerMixin from 'pep/mixins/application-serializer';
 
 export default class Book extends ApplicationSerializerMixin(DS.RESTSerializer) {
-    primaryKey = 'PEPCode';
+    primaryKey = 'documentID';
 
     /**
      * The API returns result sets in the JSON under sourceInfo.responseSet

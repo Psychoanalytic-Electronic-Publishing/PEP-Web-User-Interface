@@ -17,11 +17,12 @@ import Document from 'pep/pods/document/model';
 import GlossaryTerm from 'pep/pods/glossary-term/model';
 import LoadingBarService from 'pep/services/loading-bar';
 import ThemeService from 'pep/services/theme';
-import { parseXML } from 'pep/utils/dom';
+import { loadXSLT, parseXML } from 'pep/utils/dom';
 import tippy, { Instance, Props } from 'tippy.js';
 
 interface DocumentTextArgs {
     document: Document;
+    target?: 'abstract' | 'document';
     searchTerm: string;
     page?: string;
     onGlossaryItemClick: (term: string, termResults: GlossaryTerm[]) => void;
@@ -43,7 +44,8 @@ export enum DocumentLinkTypes {
     TABLE_FIGURE = 'table-figure',
     FIGURE_WITH_ID = 'figure-id',
     AUTHOR_SEARCH = 'search-author',
-    WEB = 'web-link'
+    WEB = 'web-link',
+    DOI = 'doi'
 }
 
 /**
@@ -83,22 +85,8 @@ export default class DocumentText extends Component<DocumentTextArgs> {
 
     constructor(owner: unknown, args: DocumentTextArgs) {
         super(owner, args);
-        this.parseDocumentText(
-            args.document.accessLimited ? args.document.abstractCleaned : args.document.documentCleaned
-        );
-    }
-
-    /**
-     * Load the XSLT doc to do the parsing of the xml
-     *
-     * @return {*}
-     * @memberof DocumentText
-     */
-    loadXSLT() {
-        let request = new XMLHttpRequest();
-        request.open('GET', `/xmlToHtml.xslt`, false);
-        request.send('');
-        return request.responseXML;
+        const target = args.target ?? args.document.accessLimited ? args.document.abstract : args.document.document;
+        this.parseDocumentText(target);
     }
 
     /**
@@ -112,7 +100,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
         const xml = parseXML(text);
 
         if (!(xml instanceof Error)) {
-            const xslt = await this.loadXSLT();
+            const xslt = await loadXSLT();
 
             if (xslt && document.implementation && document.implementation.createDocument) {
                 const processor = new XSLTProcessor();
@@ -160,7 +148,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
             (attributes.getNamedItem('type')?.nodeValue as DocumentLinkTypes) ||
             (attributes.getNamedItem('data-type')?.nodeValue as DocumentLinkTypes);
 
-        if (target.tagName !== 'SUMMARY' && type !== DocumentLinkTypes.WEB) {
+        if (target.tagName !== 'SUMMARY' && type !== DocumentLinkTypes.WEB && type !== DocumentLinkTypes.DOI) {
             event.preventDefault();
         }
         if (type === DocumentLinkTypes.GLOSSARY_TERM) {
@@ -267,9 +255,11 @@ export default class DocumentText extends Component<DocumentTextArgs> {
      */
     @action
     parseDocument() {
-        this.parseDocumentText(
-            this.args.document.accessLimited ? this.args.document.abstractCleaned : this.args.document.documentCleaned
-        );
+        const target =
+            this.args.target ?? this.args.document.accessLimited
+                ? this.args.document.abstract
+                : this.args.document.document;
+        this.parseDocumentText(target);
     }
 
     /**

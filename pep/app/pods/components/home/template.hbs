@@ -60,15 +60,18 @@
                                 {{html-safe this.model.title}}
                             </h6>
                         </div>
-                        {{! TODO needed because abstracts can contain broken/invalid HTML }}
-                        {{! that fastboot/server render chokes on. Need to come up with a }}
-                        {{! better solution for this problem general }}
                         <ContentWithPlaceholder @placeholderInFastboot={{true}}>
                             <div class="float-xl-right mw-xl-50 ml-xl-2 mb-xl-2">
                                 <Document::Image @id={{this.expertPick.imageId}} class="rounded img-fluid" />
                             </div>
                             <div class="card-text mb-3 pep-abstract-preview">
-                                {{html-safe this.model.abstractPreview}}
+                                {{#if this.model}}
+                                    <Document::Text
+                                        @document={{this.model}}
+                                        @target="abstract"
+                                        @onGlossaryItemClick={{this.viewGlossaryTerm}}
+                                    />
+                                {{/if}}
                             </div>
                             <div class="card-text mb-3">
                                 <Button

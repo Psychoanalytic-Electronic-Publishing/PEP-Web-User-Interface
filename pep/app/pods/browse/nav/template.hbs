@@ -36,26 +36,32 @@
                         @isLoading={{not this.journals}}
                         @options={{hash numLines=10}}
                     >
-                        <VerticalCollection
-                            @items={{this.filteredJournals}}
-                            @tagName="ul"
-                            @containerSelector=".sidebar-content"
-                            @class="list-unstyled"
-                            @estimateHeight={{100}}
-                            @renderAll={{this.fastboot.isFastBoot}} as |result|
-                        >
-                            <li class="p-1">
-                                <LinkTo
-                                    @route="browse.journal"
-                                    @model={{result.id}}
-                                    class="d-flex align-items-center justify-content-between"
-                                >
-                                    <span class="small w-90">
-                                        {{result.srcTitle}}
-                                    </span>
-                                </LinkTo>
-                            </li>
-                        </VerticalCollection>
+                        {{#if this.filteredJournals}}
+                            <VerticalCollection
+                                @items={{this.filteredJournals}}
+                                @tagName="ul"
+                                @containerSelector=".sidebar-content"
+                                @class="list-unstyled"
+                                @estimateHeight={{100}}
+                                @renderAll={{this.fastboot.isFastBoot}} as |result|
+                            >
+                                <li class="p-1">
+                                    <LinkTo
+                                        @route="browse.journal"
+                                        @model={{result.id}}
+                                        class="d-flex align-items-center justify-content-between"
+                                    >
+                                        <span class="small w-90">
+                                            {{result.srcTitle}}
+                                        </span>
+                                    </LinkTo>
+                                </li>
+                            </VerticalCollection>
+                        {{else}}
+                            <div class="text-muted small">
+                                {{t "browse.selection.search.noResults" term=this.filter}}
+                            </div>
+                        {{/if}}
                     </ContentWithPlaceholder>
                 </tabs.panel>
 
@@ -68,12 +74,64 @@
                         <h5>
                             {{t "browse.selection.books.freud"}}
                         </h5>
-                        {{#if this.filteredBooks.freudsCollectedWorks.GW}}
-                            <div class="small w-90">
-                                {{this.firstGWBook.authors}} {{this.firstGWBook.title}}
+                        {{#if
+                            (or
+                                this.filteredBooks.freudsCollectedWorks.GW.books
+                                this.filteredBooks.freudsCollectedWorks.SE.books
+                            )
+                        }}
+                            {{#if this.filteredBooks.freudsCollectedWorks.GW.books}}
+                                <div class="small w-90">
+                                    {{this.filteredBooks.freudsCollectedWorks.GW.title}}
+                                </div>
+                                <ul class="list-unstyled row px-3 mb-1">
+                                    {{#each this.filteredBooks.freudsCollectedWorks.GW.volumes as |result|}}
+                                        <li class="p-1 col-4">
+                                            <LinkTo
+                                                @route="browse.journal"
+                                                @model={{result.id}}
+                                                class="d-flex align-items-center justify-content-between"
+                                            >
+                                                <span class="small w-90">
+                                                    {{result.volume}}
+                                                </span>
+                                            </LinkTo>
+                                        </li>
+                                    {{/each}}
+                                </ul>
+                            {{/if}}
+                            {{#if this.filteredBooks.freudsCollectedWorks.SE.books}}
+                                <div class="small w-90">
+                                    {{this.filteredBooks.freudsCollectedWorks.SE.title}}
+                                </div>
+                                <ul class="list-unstyled row px-3 mb-1">
+                                    {{#each this.filteredBooks.freudsCollectedWorks.SE.volumes as |result|}}
+                                        <li class="p-1 col-4">
+                                            <LinkTo
+                                                @route="browse.journal"
+                                                @model={{result.id}}
+                                                class="d-flex align-items-center justify-content-between"
+                                            >
+                                                <span class="small w-90">
+                                                    {{result.volume}}
+                                                </span>
+                                            </LinkTo>
+                                        </li>
+                                    {{/each}}
+                                </ul>
+                            {{/if}}
+                        {{else}}
+                            <div class="text-muted small">
+                                {{t "browse.selection.search.noResults" term=this.filter}}
                             </div>
+                        {{/if}}
+
+                        <h5>
+                            {{t "browse.selection.books.glossaries"}}
+                        </h5>
+                        {{#if this.filteredBooks.glossaries}}
                             <ul class="list-unstyled">
-                                {{#each this.filteredBooks.freudsCollectedWorks.GW as |result|}}
+                                {{#each this.filteredBooks.glossaries as |result|}}
                                     <li class="p-1">
                                         <LinkTo
                                             @route="browse.journal"
@@ -81,7 +139,7 @@
                                             class="d-flex align-items-center justify-content-between"
                                         >
                                             <span class="small w-90">
-                                                {{result.id}}
+                                                {{result.title}}
                                             </span>
                                         </LinkTo>
                                     </li>
@@ -93,47 +151,34 @@
                             </div>
                         {{/if}}
                         <h5>
-                        </h5>
-                        {{#if this.filteredBooks.freudsCollectedWorks.SE}}
-                            <ul class="list-unstyled">
-                                {{#each this.filteredBooks.glossaries as |result|}}
-                                    <li class="p-1">
-                                        <LinkTo
-                                            @route="browse.journal"
-                                            @model={{result.id}}
-                                            class="d-flex align-items-center justify-content-between"
-                                        >
-                                            <span class="small w-90">
-                                                {{result.authors}} ({{result.pub_year}}) {{result.title}}
-                                            </span>
-                                        </LinkTo>
-                                    </li>
-                                {{/each}}
-                            </ul>
-                        {{/if}}
-                        <h5>
                             {{t "browse.selection.books.other"}}
                         </h5>
-                        <VerticalCollection
-                            @items={{this.filteredBooks.others}}
-                            @tagName="ul"
-                            @containerSelector=".sidebar-content"
-                            @class="list-unstyled"
-                            @estimateHeight={{100}}
-                            @renderAll={{this.fastboot.isFastBoot}} as |result|
-                        >
-                            <li class="p-1">
-                                <LinkTo
-                                    @route="browse.journal"
-                                    @model={{result.id}}
-                                    class="d-flex align-items-center justify-content-between"
-                                >
-                                    <span class="small w-90">
-                                        {{result.authors}} ({{result.pub_year}}) {{result.title}}
-                                    </span>
-                                </LinkTo>
-                            </li>
-                        </VerticalCollection>
+                        {{#if this.filteredBooks.others}}
+                            <VerticalCollection
+                                @items={{this.filteredBooks.others}}
+                                @tagName="ul"
+                                @containerSelector=".sidebar-content"
+                                @class="list-unstyled"
+                                @estimateHeight={{100}}
+                                @renderAll={{this.fastboot.isFastBoot}} as |result|
+                            >
+                                <li class="p-1">
+                                    <LinkTo
+                                        @route="browse.journal"
+                                        @model={{result.id}}
+                                        class="d-flex align-items-center justify-content-between"
+                                    >
+                                        <span class="small w-90">
+                                            {{result.authors}} ({{result.pub_year}}) {{result.title}}
+                                        </span>
+                                    </LinkTo>
+                                </li>
+                            </VerticalCollection>
+                        {{else}}
+                            <div class="text-muted small">
+                                {{t "browse.selection.search.noResults" term=this.filter}}
+                            </div>
+                        {{/if}}
                     </ContentWithPlaceholder>
                 </tabs.panel>
 

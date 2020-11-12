@@ -1,13 +1,11 @@
 import Route from '@ember/routing/route';
 
-import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hooks/pagination';
+import { RecordArrayWithMeta } from '@gavant/ember-pagination/hooks/pagination';
 import { buildQueryParams, removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
 
 import { PageNav } from 'pep/mixins/page-layout';
-import Book from 'pep/pods/book/model';
 import BrowseController from 'pep/pods/browse/controller';
 import Journal from 'pep/pods/journal/model';
-import Video from 'pep/pods/video/model';
 import { hash } from 'rsvp';
 
 export default class Browse extends PageNav(Route) {
@@ -25,11 +23,15 @@ export default class Browse extends PageNav(Route) {
         const browseResults = await hash({
             journals: this.store.query('journal', removeEmptyQueryParams(apiQueryParams)),
             videos: this.store.query('video', removeEmptyQueryParams(apiQueryParams)),
-            books: this.store.query('book', removeEmptyQueryParams(apiQueryParams))
+            books: this.store.query('book', removeEmptyQueryParams(apiQueryParams)),
+            gw: this.store.findRecord('document', 'GW.000.0000A'),
+            se: this.store.findRecord('document', 'SE.000.0000A')
         });
 
         controller.journals = browseResults.journals.toArray();
         controller.videos = browseResults.videos.toArray();
         controller.books = browseResults.books.toArray();
+        controller.gw = browseResults.gw;
+        controller.se = browseResults.se;
     }
 }

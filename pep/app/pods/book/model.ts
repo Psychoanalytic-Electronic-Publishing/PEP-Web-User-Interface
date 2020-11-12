@@ -7,7 +7,7 @@ export default class Book extends DS.Model {
     @attr('string') bannerURL!: string;
     @attr('string') bookCode!: string;
     @attr('string') displayTitle!: string;
-    @attr('string') documentId!: string;
+    @attr('string') documentID!: string;
     @attr('string') embargoYears!: string;
     @attr('string') ISBN10!: string;
     @attr('string') ISBN13!: string;

@@ -79,3 +79,17 @@ export function parseXML(input: string): XMLDocument | Error {
         return new Error('Unable to parse xml');
     }
 }
+
+/**
+ * Load the XSLT doc to do the parsing of the xml
+ *
+ * @return {XSLT}
+ */
+export function loadXSLT(this: any): Promise<Document | null> {
+    return new Promise((resolve) => {
+        let request = new XMLHttpRequest();
+        request.open('GET', `/xmlToHtml.xslt`, false);
+        request.send('');
+        resolve(request.responseXML);
+    });
+}

@@ -8,6 +8,7 @@ import ApplicationAdapter, { SnapshotWithQuery } from 'pep/pods/application/adap
 
 export default class DocumentAdapter extends ApplicationAdapter {
     modelNameOverride?: string;
+    origPathSegmentOverride?: string;
 
     /**
      * Depending on the type of document query, the endpoint
@@ -35,7 +36,7 @@ export default class DocumentAdapter extends ApplicationAdapter {
         const url = super.urlForQuery(query, modelName);
         return url
             .replace(`/${origNamespace}`, `/${newNamespace}`)
-            .replace(`/${origPathSegment}`, `/${newPathSegment}`);
+            .replace(`/${this.origPathSegmentOverride ?? origPathSegment}`, `/${newPathSegment}`);
     }
 
     /**
@@ -57,7 +58,7 @@ export default class DocumentAdapter extends ApplicationAdapter {
         snapshotWithQuery.adapterOptions = { ...adapterOpts, query: { ...query, return_format: 'XML' } };
 
         const url = super.urlForFindRecord(id, modelName, snapshotWithQuery);
-        return url.replace(`/${origPathSegment}`, `/${newPathSegment}`);
+        return url.replace(`/${this.origPathSegmentOverride ?? origPathSegment}`, `/${newPathSegment}`);
     }
 }
 
