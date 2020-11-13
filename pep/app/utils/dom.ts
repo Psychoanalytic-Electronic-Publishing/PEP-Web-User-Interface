@@ -87,9 +87,10 @@ export function parseXML(input: string): XMLDocument | Error {
  */
 export function loadXSLT(this: any): Promise<Document | null> {
     return new Promise((resolve) => {
-        let request = new XMLHttpRequest();
-        request.open('GET', `/xmlToHtml.xslt`, false);
-        request.send('');
-        resolve(request.responseXML);
+        fetch('/xmlToHtml.xslt').then(async (response) => {
+            const text = await response.text();
+            const xml = parseXML(text);
+            resolve(xml as Document);
+        });
     });
 }

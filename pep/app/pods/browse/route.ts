@@ -3,6 +3,7 @@ import Route from '@ember/routing/route';
 import { RecordArrayWithMeta } from '@gavant/ember-pagination/hooks/pagination';
 import { buildQueryParams, removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
 
+import { GW_VOLUME_DOCUMENT_ID, SE_VOLUME_DOCUMENT_ID } from 'pep/constants/books';
 import { PageNav } from 'pep/mixins/page-layout';
 import BrowseController from 'pep/pods/browse/controller';
 import Journal from 'pep/pods/journal/model';
@@ -24,8 +25,8 @@ export default class Browse extends PageNav(Route) {
             journals: this.store.query('journal', removeEmptyQueryParams(apiQueryParams)),
             videos: this.store.query('video', removeEmptyQueryParams(apiQueryParams)),
             books: this.store.query('book', removeEmptyQueryParams(apiQueryParams)),
-            gw: this.store.findRecord('document', 'GW.000.0000A'),
-            se: this.store.findRecord('document', 'SE.000.0000A')
+            gw: this.store.findRecord('document', GW_VOLUME_DOCUMENT_ID),
+            se: this.store.findRecord('document', SE_VOLUME_DOCUMENT_ID)
         });
 
         controller.journals = browseResults.journals.toArray();

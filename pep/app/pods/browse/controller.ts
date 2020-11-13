@@ -1,7 +1,7 @@
 import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import { tracked } from '@glimmer/tracking';
+import { cached, tracked } from '@glimmer/tracking';
 
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 
@@ -24,6 +24,23 @@ interface FreudVolume {
     title: string;
     id: string;
 }
+
+interface SortedBooks {
+    freudsCollectedWorks: {
+        GW: {
+            title: string;
+            books: Book[];
+            volumes: FreudVolume[];
+        };
+        SE: {
+            title: string;
+            books: Book[];
+            volumes: FreudVolume[];
+        };
+    };
+    glossaries: Book[];
+    others: Book[];
+}
 export default class Browse extends Controller {
     @service fastboot!: FastbootService;
 
@@ -43,6 +60,13 @@ export default class Browse extends Controller {
 
     tabs = BrowseTabs;
 
+    /**
+     * Parse the GW document to get the volumes with their titles
+     *
+     * @readonly
+     * @memberof Browse
+     */
+    @cached
     get gwVolumes() {
         const xml = parseXML(this.gw.document);
         if (!(xml instanceof Error)) {
@@ -63,6 +87,13 @@ export default class Browse extends Controller {
         }
     }
 
+    /**
+     * Parse the SE document to get the volumes with their titles
+     *
+     * @readonly
+     * @memberof Browse
+     */
+    @cached
     get seVolumes() {
         const xml = parseXML(this.se.document);
         if (!(xml instanceof Error)) {
@@ -90,24 +121,10 @@ export default class Browse extends Controller {
      * @readonly
      * @memberof Browse
      */
+    @cached
     get filteredBooks() {
         const filter = this.filter;
-        const books = this.books.reduce<{
-            freudsCollectedWorks: {
-                GW: {
-                    title: string;
-                    books: Book[];
-                    volumes: FreudVolume[];
-                };
-                SE: {
-                    title: string;
-                    books: Book[];
-                    volumes: FreudVolume[];
-                };
-            };
-            glossaries: Book[];
-            others: Book[];
-        }>(
+        const books = this.books.reduce<SortedBooks>(
             (books, book) => {
                 if (!filter || book.title.toLowerCase().includes(filter.toLowerCase())) {
                     if (book.documentID === PEP_GLOSSARY_ID || book.documentID === IPL_GLOSSARY_ID) {
@@ -192,7 +209,7 @@ export default class Browse extends Controller {
      * @memberof Browse
      */
     @action
-    async changeTab(tab: BrowseTabs) {
+    changeTab(tab: BrowseTabs) {
         this.tab = tab;
     }
 

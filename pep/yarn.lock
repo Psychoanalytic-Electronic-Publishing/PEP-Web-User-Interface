@@ -2655,6 +2655,14 @@
     "@glimmer/env" "^0.1.7"
     "@glimmer/validator" "^0.44.0"
 
+"@glimmer/tracking@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@glimmer/tracking/-/tracking-1.0.2.tgz#4fe9ca89e3f4a2ae8e37c8bd8e4ea0d886d9abbf"
+  integrity sha512-9Vp04TM2IDTShGFdxccfvnmcaj4NwqLrwbOXm4iju5KL/WkeB8mqoCSLtO3kUg+80DqU0pKE8tR460lQP8CutA==
+  dependencies:
+    "@glimmer/env" "^0.1.7"
+    "@glimmer/validator" "^0.44.0"
+
 "@glimmer/util@^0.27.0":
   version "0.27.0"
   resolved "https://registry.yarnpkg.com/@glimmer/util/-/util-0.27.0.tgz#e6e26779b4b7ced899ec376c7b949d0f16f92383"
@@ -6989,6 +6997,24 @@ ember-body-class2@^2.1.1:
   integrity sha512-sb9EIhxFM10T9H4iNjabbgX3YfY8IQ8iEL5V2esGoBSh/Fg320fFaPIBGSLiMaRKoKd/xsGz//uMT2zFzj8kvw==
   dependencies:
     ember-cli-babel "^6.6.0"
+
+ember-cache-primitive-polyfill@^1.0.0:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/ember-cache-primitive-polyfill/-/ember-cache-primitive-polyfill-1.0.1.tgz#a27075443bd87e5af286c1cd8a7df24e3b9f6715"
+  integrity sha512-hSPcvIKarA8wad2/b6jDd/eU+OtKmi6uP+iYQbzi5TQpjsqV6b4QdRqrLk7ClSRRKBAtdTuutx+m+X+WlEd2lw==
+  dependencies:
+    ember-cli-babel "^7.22.1"
+    ember-cli-version-checker "^5.1.1"
+    ember-compatibility-helpers "^1.2.1"
+    silent-error "^1.1.1"
+
+ember-cached-decorator-polyfill@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/ember-cached-decorator-polyfill/-/ember-cached-decorator-polyfill-0.1.0.tgz#ddda28af97c0ace234dc3c31acb97915c04917a2"
+  integrity sha512-RqomuRF00BZd+3uwb0lyLj4ThD9wOx4YT0ALumQJOd927wPQ4mmJ8ZqvMjUdh0TUc3zbXXTwAhfaJk7PjDKkzA==
+  dependencies:
+    ember-cache-primitive-polyfill "^1.0.0"
+    ember-cli-babel "^7.21.0"
 
 ember-can@^3.0.0:
   version "3.0.0"
