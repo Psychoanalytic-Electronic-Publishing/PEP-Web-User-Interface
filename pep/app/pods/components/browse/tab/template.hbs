@@ -1,0 +1,10 @@
+<span class="icon">
+    {{#if @filter}}
+        <span class="badge badge-pill badge-primary small">
+            {{@count}}
+        </span>
+    {{else}}
+        <FaIcon @icon={{@icon}} />
+    {{/if}}
+</span>
+{{yield}}

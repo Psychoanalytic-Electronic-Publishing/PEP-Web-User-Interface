@@ -1,0 +1,7 @@
+{{yield
+    (hash
+        list=(component "tabs/list")
+        tab=(component "tabs/tab" selected=@selected onChange=@onChange)
+        panel=(component "tabs/panel" selected=@selected)
+    )
+}}

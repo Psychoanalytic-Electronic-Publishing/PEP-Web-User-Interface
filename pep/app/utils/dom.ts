@@ -1,5 +1,7 @@
 import { isNone } from '@ember/utils';
 
+import fetch from 'fetch';
+
 export interface ElementOffset {
     top: number;
     left: number;
@@ -77,5 +79,25 @@ export function parseXML(input: string): XMLDocument | Error {
         return xmlDoc;
     } else {
         return new Error('Unable to parse xml');
+    }
+}
+
+/**
+ * Load the XSLT doc to do the parsing of the xml
+ *
+ * @return {XSLT}
+ */
+export async function loadXSLT(this: any): Promise<Document | null> {
+    try {
+        const response = await fetch('/xmlToHtml.xslt');
+        const text = await response.text();
+        if (text) {
+            const xml = parseXML(text);
+            return xml as Document;
+        } else {
+            return null;
+        }
+    } catch (errors) {
+        return null;
     }
 }
