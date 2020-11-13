@@ -1,5 +1,7 @@
 import { isNone } from '@ember/utils';
 
+import fetch from 'fetch';
+
 export interface ElementOffset {
     top: number;
     left: number;
@@ -85,12 +87,17 @@ export function parseXML(input: string): XMLDocument | Error {
  *
  * @return {XSLT}
  */
-export function loadXSLT(this: any): Promise<Document | null> {
-    return new Promise((resolve) => {
-        fetch('/xmlToHtml.xslt').then(async (response) => {
-            const text = await response.text();
+export async function loadXSLT(this: any): Promise<Document | null> {
+    try {
+        const response = await fetch('/xmlToHtml.xslt');
+        const text = await response.text();
+        if (text) {
             const xml = parseXML(text);
-            resolve(xml as Document);
-        });
-    });
+            return xml as Document;
+        } else {
+            return null;
+        }
+    } catch (errors) {
+        return null;
+    }
 }
