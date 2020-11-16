@@ -160,6 +160,7 @@ export default class Browse extends Controller {
         books.freudsCollectedWorks.GW.volumes = this.gwVolumes ?? [];
         books.freudsCollectedWorks.SE.title = `${books.freudsCollectedWorks.SE?.books[0]?.authors} ${books.freudsCollectedWorks.SE?.books[0]?.title}`;
         books.freudsCollectedWorks.SE.volumes = this.seVolumes ?? [];
+        books.others = books.others.sortBy('authors');
         return books;
     }
 

@@ -1,0 +1,52 @@
+<Page::Content>
+    <div class="py-3 px-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-center align-items-center">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <img src="{{this.journal.bannerURL}}" alt="{{t "browse.publication.alt"}}" />
+                    </div>
+                </div>
+                <div class="pep-document-content m-5">
+                    <h5>
+                        {{t "browse.availableVolumes"}}
+                    </h5>
+                    <ContentWithPlaceholder @isLoading={{not this.paginator.models}}>
+                        <div class="container-fluid">
+                            <ul class="list-unstyled row">
+                                {{#each this.paginator.models as |result|}}
+                                    <li class="col mb-2 text-center volume">
+                                        <LinkTo
+                                            @route="browse.journal.volume"
+                                            @model={{result.id}}
+                                            class="d-flex align-items-center justify-content-between"
+                                        >
+                                            <span>
+                                                {{result.vol}}
+                                                <span class="text-muted">
+                                                    ({{result.year}})
+                                                </span>
+                                            </span>
+                                        </LinkTo>
+                                    </li>
+                                {{/each}}
+                            </ul>
+                            <div
+                                class="sentinel"
+                                scrollableArea=".page-content-inner"
+                                {{in-viewport onEnter=this.paginator.loadMoreModels}}
+                            >
+                                {{#if this.paginator.isLoadingModels}}
+                                    <Loading::Spinner @options={{hash text=(t "common.loadingResults")}} class="pt-2" />
+                                {{/if}}
+                            </div>
+                        </div>
+                    </ContentWithPlaceholder>
+                    <div class="small text-muted">
+                        {{this.publisherInformation.description}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</Page::Content>

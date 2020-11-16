@@ -1,7 +1,7 @@
 import ENV from 'pep/config/environment';
 import Application from 'pep/pods/application/adapter';
 
-export default class Source extends Application {
+export default class SourceVolume extends Application {
     namespace = `${ENV.apiNamespace}/Metadata`;
     /**
      * Customize the default model endpoint path
@@ -22,10 +22,16 @@ export default class Source extends Application {
      * @returns {string}
      * @memberof GlossaryTerm
      */
-    urlForQuery<K extends string | number>(query: { queryType?: string; sourceCode?: string }, modelName: K) {
-        const newPathSegment = query?.sourceCode;
+    urlForQuery<K extends string | number>(
+        query: { queryType?: string; sourceCode?: string; volume?: string },
+        modelName: K
+    ) {
+        const newPathSegment = `${query?.sourceCode}/${query.volume}`;
         if (query?.sourceCode) {
             delete query.sourceCode;
+        }
+        if (query?.volume) {
+            delete query.volume;
         }
 
         const url = super.urlForQuery(query, modelName);
@@ -36,6 +42,6 @@ export default class Source extends Application {
 // DO NOT DELETE: this is how TypeScript knows how to look up your adapters.
 declare module 'ember-data/types/registries/adapter' {
     export default interface AdapterRegistry {
-        source: Source;
+        'source-volume': SourceVolume;
     }
 }
