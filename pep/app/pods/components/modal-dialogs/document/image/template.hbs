@@ -1,4 +1,4 @@
-<ModalDialog @onClose={{@onClose}} @size="xl" as |Modal|>
+<ModalDialog @onClose={{@onClose}} @size="xl" @closable={{false}} as |Modal|>
     {{#if @options.id}}
         <Modal.header @title={{t "figure.title" id=@options.id}} />
     {{/if}}

@@ -18,29 +18,24 @@ export default class BrowseJournalVolume extends Controller {
         const model = this.model as SourceVolume[];
 
         const models = model.reduce<{ [key: string]: SortedModel }>((sortedModels, sourceVolume) => {
-            const xml = parseXML(sourceVolume.documentInfoXML);
-            if (!(xml instanceof Error)) {
-                const issue = xml.querySelector('artiss')?.innerHTML;
-                const title = xml.querySelector('secttitle')?.innerHTML;
-                if (issue && title) {
-                    if (!sortedModels[issue]) {
-                        sortedModels[issue] = {
-                            issue,
-                            sections: {
-                                [title]: {
-                                    title,
-                                    models: [sourceVolume]
-                                }
+            if (issue && title) {
+                if (!sortedModels[issue]) {
+                    sortedModels[issue] = {
+                        issue,
+                        sections: {
+                            [title]: {
+                                title,
+                                models: [sourceVolume]
                             }
-                        };
-                    } else if (!sortedModels[issue].sections[title]) {
-                        sortedModels[issue].sections[title] = {
-                            title,
-                            models: [sourceVolume]
-                        };
-                    } else {
-                        sortedModels[issue].sections[title].models.push(sourceVolume);
-                    }
+                        }
+                    };
+                } else if (!sortedModels[issue].sections[title]) {
+                    sortedModels[issue].sections[title] = {
+                        title,
+                        models: [sourceVolume]
+                    };
+                } else {
+                    sortedModels[issue].sections[title].models.push(sourceVolume);
                 }
             }
             return sortedModels;

@@ -1,11 +1,11 @@
-<ModalDialog @onClose={{@onClose}} @size="md" as |Modal|>
+<ModalDialog @onClose={{@onClose}} @size="md" @closable={{false}} as |Modal|>
     <Modal.header @title={{t "about.title"}} />
     <Modal.body>
         <div class="mb-2">
             <h5>
                 {{t "about.status.title"}}
                 {{#if this.isStatusOk}}
-                    <FaIcon @icon="check-circle"  class="text-success"  />
+                    <FaIcon @icon="check-circle" class="text-success" />
                 {{else}}
                     <FaIcon @icon="exclamation-circle" class="text-danger" />
                 {{/if}}
@@ -15,30 +15,40 @@
             </p>
         </div>
         <div class="mb-2">
-            <h5>{{t "about.version.title"}}</h5>
-            <p class="text-muted font-size-secondary mb-0">{{t "about.version.client" versionNumber=@options.clientBuildVersion}}</p>
-            <p class="text-muted font-size-secondary mb-0">{{t "about.version.server" versionNumber=@options.serverInformation.text_server_version}}</p>
-            <p class="text-muted font-size-secondary">{{t "about.version.data" versionNumber=@options.serverInformation.dataSource}}</p>
+            <h5>
+                {{t "about.version.title"}}
+            </h5>
+            <p class="text-muted font-size-secondary mb-0">
+                {{t "about.version.client" versionNumber=@options.clientBuildVersion}}
+            </p>
+            <p class="text-muted font-size-secondary mb-0">
+                {{t "about.version.server" versionNumber=@options.serverInformation.text_server_version}}
+            </p>
+            <p class="text-muted font-size-secondary">
+                {{t "about.version.data" versionNumber=@options.serverInformation.dataSource}}
+            </p>
         </div>
         <div class="mb-2">
-            <h5>{{t "about.web.title"}}</h5>
+            <h5>
+                {{t "about.web.title"}}
+            </h5>
             <p class="text-muted font-size-secondary">
                 {{t "about.web.description"}}
             </p>
         </div>
         <div class="mb-2">
-            <h5>{{t "about.archive.title"}}</h5>
+            <h5>
+                {{t "about.archive.title"}}
+            </h5>
             <p class="text-muted font-size-secondary">
                 {{t "about.archive.description" htmlSafe=true}}
             </p>
         </div>
     </Modal.body>
     <Modal.footer class="justify-content-between align-items-center">
-        <span class="font-size-secondary">{{t "brand.copywrite" htmlSafe=true}}</span>
-        <Button
-            @type="primary"
-            @label={{t "common.close"}}
-            @action={{@onClose}}
-        />
+        <span class="font-size-secondary">
+            {{t "brand.copywrite" htmlSafe=true}}
+        </span>
+        <Button @type="primary" @label={{t "common.close"}} @action={{@onClose}} />
     </Modal.footer>
 </ModalDialog>

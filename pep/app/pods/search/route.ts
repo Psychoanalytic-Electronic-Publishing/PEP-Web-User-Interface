@@ -21,6 +21,7 @@ import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
 export interface SearchParams {
     q: string;
     matchSynonyms: boolean;
+    preview?: string;
     citedCount?: string;
     viewedCount?: string;
     viewedPeriod?: number;
@@ -36,12 +37,16 @@ export default class Search extends PageNav(Route) {
 
     navController = 'search';
     resultsMeta: SearchMetadata | null = null;
+    preview?: Document;
 
     queryParams = {
         q: {
             replace: true
         },
         _searchTerms: {
+            replace: true
+        },
+        preview: {
             replace: true
         },
         matchSynonyms: {
@@ -103,6 +108,11 @@ export default class Search extends PageNav(Route) {
             this.resultsMeta = null;
         }
 
+        if (params.preview) {
+            const result = await this.store.findRecord('document', params.preview);
+            this.preview = result;
+        }
+
         if (isEmpty(model) && !this.fastboot.isFastBoot) {
             next(this, () => this.sidebar.toggleLeftSidebar(true));
         }
@@ -136,6 +146,9 @@ export default class Search extends PageNav(Route) {
 
         // pass the search result meta data into the controller
         controller.resultsMeta = this.resultsMeta;
+
+        //set the preview pane
+        controller.previewedResult = this.preview;
 
         // open the search form's limit fields section if it has values
         // or the admin configs or user's prefs default it to open

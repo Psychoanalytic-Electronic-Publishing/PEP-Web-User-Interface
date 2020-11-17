@@ -63,7 +63,8 @@ export default class Search extends Controller {
         'citedCount',
         'viewedCount',
         'viewedPeriod',
-        { _facets: 'facets' }
+        { _facets: 'facets' },
+        'preview'
     ];
 
     @tracked isLimitOpen: boolean = false;
@@ -83,7 +84,8 @@ export default class Search extends Controller {
     @tracked currentFacets: SearchFacetValue[] = [];
     @tracked resultsMeta: SearchMetadata | null = null;
 
-    @tracked previewedResult: Document | null = null;
+    @tracked previewedResult?: Document | null = null;
+    @tracked preview?: string | null = null;
     @tracked previewMode: SearchPreviewMode = 'fit';
     @tracked containerMaxHeight = 0;
 
@@ -99,6 +101,7 @@ export default class Search extends Controller {
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
     @tracked _searchTerms: string | null = null;
+
     get searchTerms() {
         if (!this._searchTerms) {
             return [];
@@ -525,6 +528,7 @@ export default class Search extends Controller {
         event?.preventDefault();
         if (this.currentUser.preferences?.searchPreviewEnabled) {
             this.previewedResult = result;
+            this.preview = result.id;
             this.sidebar.update({
                 [WIDGET.MORE_LIKE_THESE]: result,
                 [WIDGET.RELATED_DOCUMENTS]: result
@@ -541,6 +545,7 @@ export default class Search extends Controller {
      */
     @action
     closeResultPreview() {
+        this.preview = null;
         this.previewedResult = null;
         this.sidebar.update({
             [WIDGET.MORE_LIKE_THESE]: undefined,

@@ -1,10 +1,6 @@
-<ModalDialog @onClose={{@onClose}} @size="md" as |Modal|>
+<ModalDialog @onClose={{@onClose}} @size="md" @closable={{false}} as |Modal|>
     <Modal.header @title={{t "login.title"}} />
-    <FormValidator
-        @changeset={{@options.changeset}}
-        @submit={{this.login}}
-        as |changeset validator|
-    >
+    <FormValidator @changeset={{@options.changeset}} @submit={{this.login}} as |changeset validator|>
         <Modal.body>
             <p class="text-muted">
                 {{t "login.info"}}
@@ -18,11 +14,7 @@
             <div class="form-row">
                 <div class="col-sm-8">
                     <validator.input @errors={{changeset.error.username.validation}} class="input-validator-compact">
-                        <FlInput
-                            @value={{changeset.username}}
-                            @placeholder={{t "login.username"}}
-                            maxlength="128"
-                        />
+                        <FlInput @value={{changeset.username}} @placeholder={{t "login.username"}} maxlength="128" />
                     </validator.input>
                     <validator.input @errors={{changeset.error.password.validation}} class="input-validator-compact">
                         <FlInput
@@ -32,7 +24,7 @@
                             type="password"
                         />
                     </validator.input>
-                    {{!-- TODO no subscribe link yet, hiding for now --}}
+                    {{! TODO no subscribe link yet, hiding for now }}
                     {{!--
                     <p class="mb-0 text-muted">
                         {{t "login.notAMember"}}
@@ -43,24 +35,15 @@
                     --}}
                     <p class="mb-0 text-muted">
                         <a href="{{this.forgotPasswordUrl}}" target="_blank" rel="noopener noreferrer">
-                            {{t 'login.forgotPassword'}}
+                            {{t "login.forgotPassword"}}
                         </a>
                     </p>
                 </div>
             </div>
         </Modal.body>
         <Modal.footer>
-            <Button
-                @type="link"
-                @label={{t "common.cancel"}}
-                @action={{@onClose}}
-            />
-            <ButtonSpinner
-                @type="primary"
-                @label={{t "login.title"}}
-                @wide={{true}}
-                @action={{validator.submit}}
-            />
+            <Button @type="link" @label={{t "common.cancel"}} @action={{@onClose}} />
+            <ButtonSpinner @type="primary" @label={{t "login.title"}} @wide={{true}} @action={{validator.submit}} />
         </Modal.footer>
     </FormValidator>
 </ModalDialog>

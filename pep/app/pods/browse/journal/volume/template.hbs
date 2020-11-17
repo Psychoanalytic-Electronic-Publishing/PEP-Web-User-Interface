@@ -10,24 +10,23 @@
                 <div class="pep-document-content m-5">
                     <ContentWithPlaceholder @isLoading={{not this.model}}>
                         <div class="container-fluid">
-                            <ul class="list-unstyled row">
-                                {{#each this.sortedModels as |result|}}
-                                    <li class="col mb-2 text-center volume">
-                                        <LinkTo
-                                            @route="browse.journal.volume"
-                                            @model={{result.id}}
-                                            class="d-flex align-items-center justify-content-between"
-                                        >
-                                            <span>
-                                                {{result.vol}}
-                                                <span class="text-muted">
-                                                    ({{result.year}})
-                                                </span>
-                                            </span>
-                                        </LinkTo>
+                            <ol class="list-unstyled">
+                                {{#each this.model as |result|}}
+                                    {{#if result.issueTitle}}
+                                        <strong>
+                                            {{result.issueTitle}}
+                                        </strong>
+                                    {{/if}}
+                                    {{#if result.newSectionName}}
+                                        <strong>
+                                            {{result.newSectionName}}
+                                        </strong>
+                                    {{/if}}
+                                    <li class="mb-2">
+                                        {{result.documentRef}}
                                     </li>
                                 {{/each}}
-                            </ul>
+                            </ol>
                         </div>
                     </ContentWithPlaceholder>
                 </div>

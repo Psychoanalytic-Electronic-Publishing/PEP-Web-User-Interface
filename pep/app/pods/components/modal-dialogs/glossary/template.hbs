@@ -1,4 +1,4 @@
-<ModalDialog @onClose={{@onClose}} @size="lg" as |Modal|>
+<ModalDialog @onClose={{@onClose}} @size="lg" @closable={{false}} as |Modal|>
     <Modal.header @title={{t "glossary.title"}} />
     <Modal.body>
         {{#each this.glossaryItem.results as |glossary|}}
