@@ -23,7 +23,12 @@ import tippy, { Instance, Props } from 'tippy.js';
 interface DocumentTextArgs {
     document: Document;
     target?: 'abstract' | 'document';
-    searchTerm: string;
+    readQueryParams: {
+        q: string;
+        searchTerms: string | null;
+        facets: string | null;
+        matchSynonyms: boolean;
+    };
     page?: string;
     onGlossaryItemClick: (term: string, termResults: GlossaryTerm[]) => void;
     viewSearch: (searchTerms: string) => void;
@@ -164,12 +169,16 @@ export default class DocumentText extends Component<DocumentTextArgs> {
         } else if (type === DocumentLinkTypes.BIBLIOGRAPHY) {
             const id = attributes.getNamedItem('data-document-id')?.nodeValue;
             if (id) {
-                this.router.transitionTo('read.document', id);
+                this.router.transitionTo('read.document', id, {
+                    queryParams: this.args.readQueryParams
+                });
             }
         } else if (type === DocumentLinkTypes.DOCUMENT) {
             const id = attributes.getNamedItem('data-document-id')?.nodeValue;
             if (id) {
-                this.router.transitionTo('read.document', id);
+                this.router.transitionTo('read.document', id, {
+                    queryParams: this.args.readQueryParams
+                });
             }
         } else if (type === DocumentLinkTypes.PAGE) {
             const reference = attributes.getNamedItem('data-r')?.nodeValue;
@@ -184,6 +193,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
                 //transition to a different document with a specific page
                 this.router.transitionTo('read.document', documentId, {
                     queryParams: {
+                        ...this.args.readQueryParams,
                         page
                     }
                 });

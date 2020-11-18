@@ -75,6 +75,15 @@ export default class ReadDocument extends Controller {
     searchViews = SearchViews;
     sorts = SearchSorts;
 
+    get readQueryParams() {
+        return {
+            q: this.q,
+            searchTerms: this._searchTerms,
+            facets: this._facets,
+            matchSynonyms: this.matchSynonyms
+        };
+    }
+
     get isLoadingRoute(): boolean {
         return /loading$/.test(this.router.currentRouteName);
     }

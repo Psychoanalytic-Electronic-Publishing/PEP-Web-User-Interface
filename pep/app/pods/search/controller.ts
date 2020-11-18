@@ -140,7 +140,7 @@ export default class Search extends Controller {
      * when opening the Read page for a document
      * @readonly
      */
-    get readQueryParms() {
+    get readQueryParams() {
         return {
             q: this.q,
             searchTerms: this._searchTerms,
@@ -537,7 +537,7 @@ export default class Search extends Controller {
             });
         } else {
             this.transitionToRoute('read.document', result.id, {
-                queryParams: this.readQueryParms
+                queryParams: this.readQueryParams
             });
         }
     }

@@ -1,3 +1,8 @@
+import Controller from '@ember/controller';
+
+export type ConcreteSubclass<T> = new (...args: any[]) => T;
+export type ControllerInstance = ConcreteSubclass<Controller>;
+
 /**
  * Generic type guard
  *
