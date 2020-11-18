@@ -233,6 +233,7 @@ export default class Search extends Controller {
     @action
     async submitSearch() {
         try {
+            this.searchSelection.clear();
             //update query params
             this.updateSearchQueryParams();
 
@@ -330,6 +331,7 @@ export default class Search extends Controller {
         this.currentFacets = [];
         taskFor(this.updateRefineMetadata).perform(true, 0);
         this.paginator.clearModels();
+        this.searchSelection.clear();
     }
 
     /**
