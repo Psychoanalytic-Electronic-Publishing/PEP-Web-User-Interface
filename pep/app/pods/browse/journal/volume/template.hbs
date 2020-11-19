@@ -1,58 +1,92 @@
-<Page::Content>
-    <div class="py-3 px-4">
-        <div class="card">
-            <div class="card-body">
-                <div class="d-flex justify-content-center align-items-center">
-                    <div class="d-flex justify-content-center align-items-center">
-                        <img src="{{this.journal.bannerURL}}" alt="{{t "browse.alt"}}" />
+<div
+    class="page-content page-content-sectioned"
+    {{did-insert this.updateContainerMaxHeight}}
+    {{did-resize this.updateContainerMaxHeight debounce=250}}
+>
+    <div class="page-content-section flex-fill">
+        <Scrollable @namespace="browse-results" class="page-content-inner">
+            <div class="py-3 px-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex justify-content-center align-items-center">
+                                <img src="{{this.journal.bannerURL}}" alt="{{t "browse.alt"}}" />
+                            </div>
+                            {{#if this.volumeInformation}}
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <FaIcon @icon="chevron-left" @prefix="fal" />
+                                    <span class="mx-2">
+                                        {{this.volumeInformation.vol}}
+                                    </span>
+                                    <FaIcon @icon="chevron-right" @prefix="fal" />
+                                </div>
+                            {{/if}}
+                        </div>
+                        <h4 class="text-center">
+                            {{#if this.volumeInformation}}
+                                {{t
+                                    "browse.journal.volume.title"
+                                    number=this.volumeInformation.vol
+                                    year=this.volumeInformation.year
+                                }}
+                            {{/if}}
+                        </h4>
+                        <div class="browse m-5">
+                            <ContentWithPlaceholder @isLoading={{not this.model}}>
+                                <div class="container-fluid">
+                                    {{#each this.sortedModels as |issue|}}
+                                        <h5>
+                                            <strong>
+                                                {{issue.title}}
+                                            </strong>
+                                        </h5>
+                                        <ol class="list-unstyled">
+                                            {{#each issue.models as |model|}}
+                                                {{#if model.newSectionName}}
+                                                    <li>
+                                                        {{model.newSectionName}}
+                                                    </li>
+                                                {{/if}}
+
+                                                <li class="mb-2">
+                                                    <div
+                                                        class="d-flex justify-content-between position-relative align-items-end"
+                                                    >
+                                                        <div class="d-flex">
+                                                            <a
+                                                                href=""
+                                                                class="d-flex align-items-center justify-content-between title"
+                                                                {{on "click" (fn this.openResult model.id)}}
+                                                            >
+                                                                {{model.title}}
+                                                            </a>
+                                                            <div class="dotted-line pointer-events-none"></div>
+                                                        </div>
+                                                        <span class="page small text-muted">
+                                                            {{model.pgStart}}
+                                                        </span>
+                                                    </div>
+                                                    <div class="small text-muted">
+                                                        {{model.authorMast}}
+                                                    </div>
+                                                </li>
+                                            {{/each}}
+                                        </ol>
+                                    {{/each}}
+                                </div>
+                            </ContentWithPlaceholder>
+                        </div>
                     </div>
                 </div>
-                <div class="browse m-5">
-                    <ContentWithPlaceholder @isLoading={{not this.model}}>
-                        <div class="container-fluid">
-                            {{#each this.sortedModels as |issue|}}
-                                <h5>
-                                    <strong>
-                                        {{issue.title}}
-                                    </strong>
-                                </h5>
-                                <ol class="list-unstyled">
-                                    {{#each issue.models as |model|}}
-                                        {{#if model.newSectionName}}
-                                            <li>
-                                                {{model.newSectionName}}
-                                            </li>
-                                        {{/if}}
-
-                                        <li class="mb-2">
-                                            <div
-                                                class="d-flex justify-content-between position-relative align-items-end"
-                                            >
-                                                <div class="d-flex">
-                                                    <LinkTo
-                                                        @route="read.document"
-                                                        @model={{model.documentID}}
-                                                        class="d-flex align-items-center justify-content-between title"
-                                                    >
-                                                        {{model.title}}
-                                                    </LinkTo>
-                                                    <div class="dotted-line"></div>
-                                                </div>
-                                                <span class="page small text-muted">
-                                                    {{model.pgStart}}
-                                                </span>
-                                            </div>
-                                            <div class="small text-muted">
-                                                {{model.authorMast}}
-                                            </div>
-                                        </li>
-                                    {{/each}}
-                                </ol>
-                            {{/each}}
-                        </div>
-                    </ContentWithPlaceholder>
-                </div>
             </div>
-        </div>
+        </Scrollable>
     </div>
-</Page::Content>
+    <Search::Preview
+        @result={{this.previewedResult}}
+        @mode={{this.previewMode}}
+        @setMode={{this.setPreviewMode}}
+        @close={{this.closeResultPreview}}
+        @maxHeight={{this.containerMaxHeight}}
+        class="page-content-section"
+    />
+</div>

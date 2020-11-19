@@ -23,7 +23,7 @@ export default class Browse extends PageNav(Route) {
 
         const browseResults = await hash({
             journals: this.store.query('journal', removeEmptyQueryParams(apiQueryParams)),
-            videos: this.store.query('video', { ...removeEmptyQueryParams(apiQueryParams), streams: false }),
+            videos: this.store.query('video', { ...removeEmptyQueryParams(apiQueryParams) }), //streams: false
             books: this.store.query('book', removeEmptyQueryParams(apiQueryParams)),
             gw: this.store.findRecord('document', GW_VOLUME_DOCUMENT_ID),
             se: this.store.findRecord('document', SE_VOLUME_DOCUMENT_ID)

@@ -334,7 +334,12 @@
             }
         },
         "alt": "Journal Banner",
-        "availableVolumes": "Available Volumes"
+        "availableVolumes": "Available Volumes",
+        "journal": {
+            "volume": {
+                "title": "Volume {number} ({year})"
+            }
+        }
     },
     "read": {
         "title": "Read",
