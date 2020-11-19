@@ -3,44 +3,34 @@ import Controller from '@ember/controller';
 import SourceVolume from 'pep/pods/source-volume/model';
 import { parseXML } from 'pep/utils/dom';
 
-interface SortedModel {
-    issue: string;
-    sections: {
-        [key: string]: {
-            title?: string;
-            models: SourceVolume[];
-        };
-    };
+interface Issue {
+    title: string;
+    models: SourceVolume[];
 }
 
 export default class BrowseJournalVolume extends Controller {
     get sortedModels() {
         const model = this.model as SourceVolume[];
 
-        const models = model.reduce<{ [key: string]: SortedModel }>((sortedModels, sourceVolume) => {
-            if (issue && title) {
+        const models = model.reduce<{ [key: string]: Issue }>((sortedModels, sourceVolume) => {
+            const issue = sourceVolume.issue;
+            if (issue) {
                 if (!sortedModels[issue]) {
                     sortedModels[issue] = {
-                        issue,
-                        sections: {
-                            [title]: {
-                                title,
-                                models: [sourceVolume]
-                            }
-                        }
-                    };
-                } else if (!sortedModels[issue].sections[title]) {
-                    sortedModels[issue].sections[title] = {
-                        title,
+                        title: sourceVolume.issueTitle,
                         models: [sourceVolume]
                     };
                 } else {
-                    sortedModels[issue].sections[title].models.push(sourceVolume);
+                    sortedModels[issue].models.push(sourceVolume);
                 }
             }
             return sortedModels;
         }, {});
-        return models;
+        const result = Object.keys(models).map((key) => {
+            return models[key];
+        });
+
+        return result;
     }
 }
 

@@ -15,6 +15,7 @@ export default class SourceVolume extends DS.Model {
     @attr('string') pgRg!: string;
     @attr('string') pgStart!: string;
     @attr('string') score!: string;
+    @attr('string') title!: string;
     @attr('string') vol!: string;
     @attr('string') year!: string;
 }
