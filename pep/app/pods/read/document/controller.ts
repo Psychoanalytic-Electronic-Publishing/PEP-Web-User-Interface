@@ -25,7 +25,7 @@ import PepSessionService from 'pep/services/pep-session';
 import PrinterService from 'pep/services/printer';
 import SearchSelection from 'pep/services/search-selection';
 import { buildSearchQueryParams, clearSearch } from 'pep/utils/search';
-import { SearchSorts, SearchSortType } from 'pep/utils/sort';
+import { SearchSorts, SearchSortType, transformSearchSortsToTable, transformSearchSortToAPI } from 'pep/utils/sort';
 import { reject } from 'rsvp';
 
 export default class ReadDocument extends Controller {
@@ -143,6 +143,26 @@ export default class ReadDocument extends Controller {
     }
 
     /**
+     * Transform the sorting to a format the API can handle
+     *
+     * @param {string[]} sorts
+     * @returns
+     * @memberof Search
+     */
+    @action
+    async onChangeSorting(sorts: string[]) {
+        if (sorts.length) {
+            return transformSearchSortToAPI(sorts);
+        } else {
+            return [];
+        }
+    }
+
+    get tableSorts() {
+        return transformSearchSortsToTable(this.paginator.sorts);
+    }
+
+    /**
      * Process query params
      *
      * @param {QueryParamsObj} params
@@ -240,13 +260,15 @@ export default class ReadDocument extends Controller {
     updateSort(event: HTMLElementEvent<HTMLSelectElement>) {
         const id = event.target.value as SearchSortType;
         const selectedSort = SearchSorts.find((item) => item.id === id);
-        this.selectedSort = selectedSort!;
-        this.paginator.changeSorting([
-            {
-                valuePath: id,
-                isAscending: true
-            }
-        ]);
+        if (selectedSort) {
+            this.selectedSort = selectedSort;
+            this.paginator.changeSorting([
+                {
+                    valuePath: id,
+                    isAscending: true
+                }
+            ]);
+        }
     }
 
     /**

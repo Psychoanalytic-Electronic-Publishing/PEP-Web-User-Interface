@@ -402,9 +402,16 @@
 
     <xsl:template match="arttitle" mode="metadata">
         <p class="title">
-            <a href="/#/ArticleList/?journal={$journal-code}&amp;vol={$artvol}&amp;page={$artstartpg}">
-                <xsl:apply-templates select="(text())[not(self::ftnx)]"/>
-                <xsl:apply-templates select="i"/>
+            <a href="/browse/{$journal-code}/volumes/{$artvol}?page={$artstartpg}">
+                <xsl:choose>
+                    <xsl:when test="text()">
+                        <xsl:apply-templates select="(text())[not(self::ftnx)]"/>
+                        <xsl:apply-templates select="i"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:apply-templates/>
+                    </xsl:otherwise>
+                </xsl:choose>
             </a>
             <xsl:apply-templates select="ftnx"/>
         </p>

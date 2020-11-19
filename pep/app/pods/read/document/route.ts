@@ -154,7 +154,8 @@ export default class ReadDocument extends PageNav(Route) {
                     : [this.currentUser.preferences?.searchSortType.id ?? ''],
             pagingRootKey: null,
             filterRootKey: null,
-            processQueryParams: controller.processQueryParams
+            processQueryParams: controller.processQueryParams,
+            onChangeSorting: controller.onChangeSorting
         });
         this.currentUser.lastViewedDocumentId = model.id;
     }
