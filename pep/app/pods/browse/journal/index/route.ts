@@ -19,7 +19,7 @@ export default class BrowseJournalIndex extends Route {
             filterRootKey: null
         });
 
-        return this.store.query('volume', { ...apiQueryParams, sourcecode: journalParams.pep_code });
+        return this.store.query('volume', { ...apiQueryParams, sourcecode: this.sourceCode });
     }
 
     async afterModel() {

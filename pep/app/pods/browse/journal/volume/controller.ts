@@ -9,6 +9,12 @@ interface Issue {
 }
 
 export default class BrowseJournalVolume extends Controller {
+    /**
+     * Organize the models by issue number
+     *
+     * @readonly
+     * @memberof BrowseJournalVolume
+     */
     get sortedModels() {
         const model = this.model as SourceVolume[];
 

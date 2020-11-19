@@ -13,9 +13,7 @@ import SearchDocument from 'pep/pods/search-document/model';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
 import SidebarService from 'pep/services/sidebar';
-import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
-
-import { copyToController } from '../../../utils/search';
+import { buildSearchQueryParams, copyToController, hasSearchQuery } from 'pep/utils/search';
 
 export interface ReadDocumentParams {
     document_id: string;

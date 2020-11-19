@@ -22,9 +22,6 @@ export default class ReadIndex extends Route {
 
     redirect() {
         if (this.currentUser.lastViewedDocumentId) {
-            // const appController = this.controllerFor('application') as Application;
-            // copySearchToController(appController);
-            // copySearchToController(this.controllerFor('read.document'));
             this.transitionTo('read.document', this.currentUser.lastViewedDocumentId);
         }
     }
