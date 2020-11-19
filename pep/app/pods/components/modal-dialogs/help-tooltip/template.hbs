@@ -2,13 +2,12 @@
     @onClose={{@onClose}}
     @size="sm"
     @overlayClassNames="slide-card-overlay"
-    @modal-class="slide-card-modal"
-    as |Modal|
+    @modal-class="slide-card-modal" as |Modal|
 >
     <Modal.header>
         <h4 class="modal-title">
             <FaIcon @icon="question-circle" class="text-muted" />
-            {{or @options.title  (t "common.help")}}
+            {{or @options.title (t "common.help")}}
         </h4>
     </Modal.header>
     <Modal.body id={{@options.bodyId}}>

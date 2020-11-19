@@ -6,7 +6,7 @@ import { pluralize } from 'ember-inflector';
 import ApplicationSerializerMixin from 'pep/mixins/application-serializer';
 
 export default class Volume extends ApplicationSerializerMixin(DS.RESTSerializer) {
-    primaryKey = 'PEPCode';
+    primaryKey = 'vol';
 
     /**
      * The API returns result sets in the JSON under sourceInfo.responseSet
@@ -25,10 +25,10 @@ export default class Volume extends ApplicationSerializerMixin(DS.RESTSerializer
         requestType: string
     ) {
         const modelKey = pluralize(camelize(primaryModelClass.modelName));
-        if (payload?.sourceInfo) {
-            payload.meta = payload.sourceInfo.responseInfo;
-            payload[modelKey] = payload.sourceInfo.responseSet;
-            delete payload.sourceInfo;
+        if (payload?.volumeList) {
+            payload.meta = payload.volumeList.responseInfo;
+            payload[modelKey] = payload.volumeList.responseSet;
+            delete payload.volumeList;
         }
 
         return super.normalizeArrayResponse(store, primaryModelClass, payload, id, requestType);
@@ -50,10 +50,10 @@ export default class Volume extends ApplicationSerializerMixin(DS.RESTSerializer
         requestType: string
     ) {
         const modelKey = camelize(primaryModelClass.modelName);
-        if (payload?.sourceInfo) {
-            payload.meta = payload.sourceInfo.responseInfo;
-            payload[modelKey] = payload.sourceInfo.responseSet?.[0];
-            delete payload.sourceInfo;
+        if (payload?.volumeList) {
+            payload.meta = payload.volumeList.responseInfo;
+            payload[modelKey] = payload.volumeList.responseSet?.[0];
+            delete payload.volumeList;
         }
 
         return super.normalizeFindRecordResponse(store, primaryModelClass, payload, id, requestType);

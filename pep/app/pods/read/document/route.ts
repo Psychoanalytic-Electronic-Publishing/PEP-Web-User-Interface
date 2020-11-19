@@ -13,7 +13,7 @@ import SearchDocument from 'pep/pods/search-document/model';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
 import SidebarService from 'pep/services/sidebar';
-import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
+import { buildSearchQueryParams, copyToController, hasSearchQuery } from 'pep/utils/search';
 
 export interface ReadDocumentParams {
     document_id: string;
@@ -35,6 +35,7 @@ export default class ReadDocument extends PageNav(Route) {
 
     searchResults?: Document[];
     searchResultsMeta?: any;
+    searchParams?: ReadDocumentParams;
 
     /**
      * Fetch the requested document
@@ -63,18 +64,21 @@ export default class ReadDocument extends PageNav(Route) {
 
         let results;
         let resultsMeta;
+        let pastParams;
 
         // if we are transitioning from either the search results page, or another read document page
         // attempt to pull in the existing documents models for the results list, instead of making
         // another search query request for the same data
         if (transition.from?.name === 'read.document' || transition.from?.name === 'search') {
             const controller = this.controllerFor(transition.from?.name) as ReadDocumentController;
+            pastParams = this.paramsFor(transition.from?.name) as ReadDocumentParams;
             results = controller?.paginator?.models;
             resultsMeta = controller?.paginator?.metadata;
         }
 
         if (!results) {
             const params = this.paramsFor('read.document') as ReadDocumentParams;
+            pastParams = params;
             //workaround for https://github.com/emberjs/ember.js/issues/18981
             const searchTerms = params._searchTerms ? JSON.parse(params._searchTerms) : [];
             const facets = params._facets ? JSON.parse(params._facets) : [];
@@ -119,6 +123,7 @@ export default class ReadDocument extends PageNav(Route) {
         if (results && resultsMeta) {
             this.searchResults = results;
             this.searchResultsMeta = resultsMeta;
+            this.searchParams = pastParams;
         }
     }
 
@@ -135,6 +140,7 @@ export default class ReadDocument extends PageNav(Route) {
         //@see https://github.com/emberjs/ember.js/issues/18981
         //@ts-ignore
         super.setupController(controller, model);
+        copyToController(this.searchParams, controller);
         controller.paginator = usePagination<Document>({
             context: controller,
             modelName: 'search-document',
@@ -146,7 +152,8 @@ export default class ReadDocument extends PageNav(Route) {
                     : [this.currentUser.preferences?.searchSortType.id ?? ''],
             pagingRootKey: null,
             filterRootKey: null,
-            processQueryParams: controller.processQueryParams
+            processQueryParams: controller.processQueryParams,
+            onChangeSorting: controller.onChangeSorting
         });
         this.currentUser.lastViewedDocumentId = model.id;
     }

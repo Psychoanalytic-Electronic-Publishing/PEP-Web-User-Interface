@@ -332,7 +332,9 @@
             "search": {
                 "noResults": "No results found for \"{term}\""
             }
-        }
+        },
+        "alt": "Journal Banner",
+        "availableVolumes": "Available Volumes"
     },
     "read": {
         "title": "Read",

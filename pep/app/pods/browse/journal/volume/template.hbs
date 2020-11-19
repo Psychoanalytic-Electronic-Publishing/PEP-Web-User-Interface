@@ -1,0 +1,58 @@
+<Page::Content>
+    <div class="py-3 px-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-center align-items-center">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <img src="{{this.journal.bannerURL}}" alt="{{t "browse.alt"}}" />
+                    </div>
+                </div>
+                <div class="browse m-5">
+                    <ContentWithPlaceholder @isLoading={{not this.model}}>
+                        <div class="container-fluid">
+                            {{#each this.sortedModels as |issue|}}
+                                <h5>
+                                    <strong>
+                                        {{issue.title}}
+                                    </strong>
+                                </h5>
+                                <ol class="list-unstyled">
+                                    {{#each issue.models as |model|}}
+                                        {{#if model.newSectionName}}
+                                            <li>
+                                                {{model.newSectionName}}
+                                            </li>
+                                        {{/if}}
+
+                                        <li class="mb-2">
+                                            <div
+                                                class="d-flex justify-content-between position-relative align-items-end"
+                                            >
+                                                <div class="d-flex">
+                                                    <LinkTo
+                                                        @route="read.document"
+                                                        @model={{model.documentID}}
+                                                        class="d-flex align-items-center justify-content-between title"
+                                                    >
+                                                        {{model.title}}
+                                                    </LinkTo>
+                                                    <div class="dotted-line"></div>
+                                                </div>
+                                                <span class="page small text-muted">
+                                                    {{model.pgStart}}
+                                                </span>
+                                            </div>
+                                            <div class="small text-muted">
+                                                {{model.authorMast}}
+                                            </div>
+                                        </li>
+                                    {{/each}}
+                                </ol>
+                            {{/each}}
+                        </div>
+                    </ContentWithPlaceholder>
+                </div>
+            </div>
+        </div>
+    </div>
+</Page::Content>

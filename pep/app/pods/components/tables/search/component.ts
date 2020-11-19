@@ -59,7 +59,9 @@ export default class TablesSearch extends Component<TablesSearchArgs> {
                 isSortable: true,
                 staticWidth: 75,
                 cellComponent: 'tables/cell/document-link',
-                onClick: this.args.onLinkClick
+                onClick: this.args.onLinkClick,
+                width: 75,
+                minWidth: 75
             },
 
             {
@@ -68,6 +70,7 @@ export default class TablesSearch extends Component<TablesSearchArgs> {
                 isSortable: true,
                 staticWidth: 50,
                 width: 50,
+                minWidth: 50,
                 cellComponent: 'tables/cell/document-link',
                 onClick: this.args.onLinkClick
             },
@@ -76,20 +79,25 @@ export default class TablesSearch extends Component<TablesSearchArgs> {
                 valuePath: SearchTableSortFields.TITLE,
                 isSortable: true,
                 staticWidth: 100,
+                minWidth: 100,
                 cellComponent: 'tables/cell/document-link',
-                onClick: this.args.onLinkClick
+                onClick: this.args.onLinkClick,
+                width: 100
             },
             {
                 name: this.intl.t('search.table.source'),
                 valuePath: SearchTableSortFields.DOCUMENT_REF,
                 isSortable: true,
-                staticWidth: 100
+                staticWidth: 100,
+                minWidth: 100,
+                width: 100
             },
             {
                 valuePath: 'id',
                 cellComponent: 'tables/cell/search-action',
                 isSortable: false,
                 width: 50,
+                minWidth: 50,
                 staticWidth: 50
             }
         ];

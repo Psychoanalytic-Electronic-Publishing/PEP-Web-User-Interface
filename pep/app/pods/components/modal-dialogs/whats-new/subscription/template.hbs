@@ -1,4 +1,4 @@
-<ModalDialog @onClose={{@onClose}} @size="md" as |Modal|>
+<ModalDialog @onClose={{@onClose}} @size="md" @closable={{false}} as |Modal|>
     <Modal.header @title={{t "relatedInfo.widgets.whatsNew.title"}} />
     <FormValidator @changeset={{@options.changeset}} @submit={{this.update}} as |changeset validator|>
         <Modal.body>

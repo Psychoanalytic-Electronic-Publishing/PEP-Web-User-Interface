@@ -22,6 +22,7 @@ export interface Publisher {
     sourceCode: string;
     previewHTML: string;
     fullHTML: string;
+    description: string;
 }
 
 /**
@@ -228,7 +229,8 @@ export const DEFAULT_CONTENT_CONFIGURATION: ContentConfiguration = {
             {
                 sourceCode: 'IJP',
                 previewHTML: 'Preview HTML',
-                fullHTML: 'Full HTML'
+                fullHTML: 'Full HTML',
+                description: 'A cool description test'
             }
         ]
     },
