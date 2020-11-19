@@ -1,7 +1,7 @@
 import Controller from '@ember/controller';
+import { cached } from '@glimmer/tracking';
 
 import SourceVolume from 'pep/pods/source-volume/model';
-import { parseXML } from 'pep/utils/dom';
 
 interface Issue {
     title: string;
@@ -15,6 +15,7 @@ export default class BrowseJournalVolume extends Controller {
      * @readonly
      * @memberof BrowseJournalVolume
      */
+    @cached
     get sortedModels() {
         const model = this.model as SourceVolume[];
 

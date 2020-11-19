@@ -1,8 +1,13 @@
 import Route from '@ember/routing/route';
 
+import { BrowseJournalParams } from 'pep/pods/browse/journal/route';
+
+export interface BrowseJournalVolumeParams {
+    volume_number: string;
+}
 export default class BrowseJournalVolume extends Route {
-    model(params: { volume_number: string }) {
-        const journalParams = this.paramsFor('browse.journal') as { pep_code: string };
+    model(params: BrowseJournalVolumeParams) {
+        const journalParams = this.paramsFor('browse.journal') as BrowseJournalParams;
 
         return this.store.query('source-volume', {
             limit: 1000,

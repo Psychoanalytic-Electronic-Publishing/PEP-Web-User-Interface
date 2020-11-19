@@ -150,12 +150,8 @@ export default class ReadDocument extends Controller {
      * @memberof Search
      */
     @action
-    async onChangeSorting(sorts: string[]) {
-        if (sorts.length) {
-            return transformSearchSortToAPI(sorts);
-        } else {
-            return [];
-        }
+    onChangeSorting(sorts: string[]) {
+        return transformSearchSortToAPI(sorts);
     }
 
     get tableSorts() {

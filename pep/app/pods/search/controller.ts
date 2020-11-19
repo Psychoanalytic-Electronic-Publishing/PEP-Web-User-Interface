@@ -215,11 +215,7 @@ export default class Search extends Controller {
      */
     @action
     async onChangeSorting(sorts: string[]) {
-        if (sorts.length) {
-            return transformSearchSortToAPI(sorts);
-        } else {
-            return [];
-        }
+        return transformSearchSortToAPI(sorts);
     }
 
     get tableSorts() {
