@@ -1,4 +1,5 @@
 import Route from '@ember/routing/route';
+import { later } from '@ember/runloop';
 
 import { RecordArrayWithMeta } from '@gavant/ember-pagination/hooks/pagination';
 import { buildQueryParams, removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
@@ -23,15 +24,22 @@ export default class Browse extends PageNav(Route) {
 
         const browseResults = await hash({
             journals: this.store.query('journal', removeEmptyQueryParams(apiQueryParams)),
-            videos: this.store.query('video', { ...removeEmptyQueryParams(apiQueryParams) }), //streams: false
-            books: this.store.query('book', removeEmptyQueryParams(apiQueryParams)),
             gw: this.store.findRecord('document', GW_VOLUME_DOCUMENT_ID),
             se: this.store.findRecord('document', SE_VOLUME_DOCUMENT_ID)
         });
+        later(async () => {
+            const videos = await this.store.query('video', {
+                ...removeEmptyQueryParams(apiQueryParams),
+                streams: false
+            }); //streams: false
+            controller.videos = videos.toArray().sortBy('id');
+        }, 10000);
+        later(async () => {
+            const books = await this.store.query('book', removeEmptyQueryParams(apiQueryParams));
+            controller.books = books.toArray();
+        }, 5000);
 
         controller.journals = browseResults.journals.toArray();
-        controller.videos = browseResults.videos.toArray();
-        controller.books = browseResults.books.toArray();
         controller.gw = browseResults.gw;
         controller.se = browseResults.se;
     }

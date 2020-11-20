@@ -405,8 +405,7 @@
             <a href="/browse/{$journal-code}/volumes/{$artvol}?page={$artstartpg}">
                 <xsl:choose>
                     <xsl:when test="text()">
-                        <xsl:apply-templates select="(text())[not(self::ftnx)]"/>
-                        <xsl:apply-templates select="i"/>
+                        <xsl:apply-templates select="(node())[not(self::ftnx)]"/>
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:apply-templates/>
@@ -439,6 +438,10 @@
         <div class="artauth">
             <div class="authorwrapper title-author" data-class="artauth">
                 <xsl:for-each select="aut">
+
+                    <xsl:if test="@role='reviewer'">
+                        <xsl:text>Review by </xsl:text>
+                    </xsl:if>
                     <span>
                         <xsl:apply-templates mode="metadata" select="."/>
                     </span>
