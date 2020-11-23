@@ -6,7 +6,7 @@ import { pluralize } from 'ember-inflector';
 import ApplicationSerializerMixin from 'pep/mixins/application-serializer';
 
 export default class Video extends ApplicationSerializerMixin(DS.RESTSerializer) {
-    primaryKey = 'title';
+    primaryKey = 'documentID';
 
     /**
      * The API returns result sets in the JSON under sourceInfo.responseSet

@@ -6,12 +6,12 @@ import { cached, tracked } from '@glimmer/tracking';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 
 import { FREUD_GW_CODE, FREUD_SE_CODE, IPL_GLOSSARY_ID, PEP_GLOSSARY_ID } from 'pep/constants/books';
-import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import Book from 'pep/pods/book/model';
-import Document from 'pep/pods/document/model';
 import Journal from 'pep/pods/journal/model';
 import Video from 'pep/pods/video/model';
-import { loadXSLT, parseXML } from 'pep/utils/dom';
+import { SortedBooks } from 'pep/utils/browse';
+
+import { getFreudGWVolumes, getFreudSEVolumes } from '../../utils/browse';
 
 export enum BrowseTabs {
     JOURNALS = 'journals',
@@ -19,28 +19,6 @@ export enum BrowseTabs {
     VIDEOS = 'videos'
 }
 
-interface FreudVolume {
-    volume: string;
-    title: string;
-    id: string;
-}
-
-interface SortedBooks {
-    freudsCollectedWorks: {
-        GW: {
-            title: string;
-            books: Book[];
-            volumes: FreudVolume[];
-        };
-        SE: {
-            title: string;
-            books: Book[];
-            volumes: FreudVolume[];
-        };
-    };
-    glossaries: Book[];
-    others: Book[];
-}
 export default class Browse extends Controller {
     @service fastboot!: FastbootService;
 
@@ -48,15 +26,7 @@ export default class Browse extends Controller {
     @tracked journals!: Journal[];
     @tracked books!: Book[];
     @tracked videos!: Video[];
-    @tracked gw!: Document;
-    @tracked se!: Document;
     @tracked filter = '';
-    @tracked xslt: Promise<globalThis.Document | null> = this.loadXSLT();
-
-    @dontRunInFastboot
-    loadXSLT() {
-        return loadXSLT();
-    }
 
     tabs = BrowseTabs;
 
@@ -68,23 +38,7 @@ export default class Browse extends Controller {
      */
     @cached
     get gwVolumes() {
-        const xml = parseXML(this.gw.document);
-        if (!(xml instanceof Error)) {
-            const volumeNodes = xml.getElementsByTagName('row');
-            const volumes = Array.from(volumeNodes);
-            volumes.shift();
-            return Array.from(volumes).map((item) => {
-                const title = item.querySelector('entry')?.innerHTML;
-                const pgx = item.querySelector('pgx');
-                const volume = pgx?.innerHTML;
-                const id = pgx?.getAttribute('rx');
-                return {
-                    volume,
-                    title,
-                    id
-                } as FreudVolume;
-            });
-        }
+        return getFreudGWVolumes(this.model.gw.document);
     }
 
     /**
@@ -95,23 +49,7 @@ export default class Browse extends Controller {
      */
     @cached
     get seVolumes() {
-        const xml = parseXML(this.se.document);
-        if (!(xml instanceof Error)) {
-            const volumeNodes = xml.getElementsByTagName('row');
-            const volumes = Array.from(volumeNodes);
-            volumes.splice(0, 2);
-            return Array.from(volumes).map((item) => {
-                const title = item.querySelector('entry')?.innerHTML;
-                const pgx = item.querySelector('pgx');
-                const volume = pgx?.innerHTML;
-                const id = pgx?.getAttribute('rx');
-                return {
-                    volume,
-                    title,
-                    id
-                } as FreudVolume;
-            });
-        }
+        return getFreudSEVolumes(this.model.se.document);
     }
 
     /**
