@@ -37,6 +37,7 @@ export default class BrowseJournalVolume extends Controller {
     @tracked previewMode: SearchPreviewMode = 'fit';
     @tracked containerMaxHeight = 0;
     @tracked meta?: { next_vol: string; prev_vol: string };
+    @tracked sourcecode?: string;
 
     /**
      * If items are selected, use that for the export/print data. Otherwise use the paginator

@@ -27,7 +27,14 @@ export default class BrowseJournalVolume extends Route {
         const routeParams = this.paramsFor(this.routeName) as BrowseJournalVolumeParams;
 
         const volumes = await this.store.query('volume', { sourcecode: journalParams.pep_code });
+        controller.sourcecode = journalParams.pep_code;
         controller.meta = model.meta;
         controller.volumeInformation = volumes.findBy('id', routeParams.volume_number);
+    }
+
+    resetController(controller: BrowseJournalVolumeController, isExiting: boolean) {
+        if (isExiting) {
+            controller.sourcecode = undefined;
+        }
     }
 }
