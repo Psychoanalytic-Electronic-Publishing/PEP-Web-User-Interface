@@ -16,7 +16,6 @@ Router.map(function() {
         this.route('journal', { path: '/:pep_code/volumes' }, function() {
             this.route('volume', { path: '/:volume_number' });
         });
-        this.route('journal-loading');
 
         this.route('book', function() {
             this.route('gw');
