@@ -694,24 +694,29 @@ export default class Search extends Controller {
     @action
     print() {
         const data = this.exportedData;
-        this.printer.print<Document>(data, [
-            {
-                field: 'authorMast',
-                displayName: 'Author'
-            },
-            {
-                field: 'year',
-                displayName: 'Year'
-            },
-            {
-                field: 'title',
-                displayName: 'Title'
-            },
-            {
-                field: 'documentRef',
-                displayName: 'Source'
-            }
-        ]);
+        if (this.selectedView.id === SearchViewType.BIBLIOGRAPHIC) {
+            const html = this.printer.dataToBibliographicHTML(data);
+            this.printer.printHTML(html);
+        } else {
+            this.printer.printJSON<Document>(data, [
+                {
+                    field: 'authorMast',
+                    displayName: 'Author'
+                },
+                {
+                    field: 'year',
+                    displayName: 'Year'
+                },
+                {
+                    field: 'title',
+                    displayName: 'Title'
+                },
+                {
+                    field: 'documentRef',
+                    displayName: 'Source'
+                }
+            ]);
+        }
     }
 }
 

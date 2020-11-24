@@ -1,8 +1,23 @@
 import Service from '@ember/service';
 
+import Document from 'pep/pods/document/model';
 import printJS from 'print-js';
 
 export default class PrinterService extends Service {
+    /**
+     * Convert document data to a list of bibliographic items
+     *
+     * @param {Document[]} data
+     * @return {*}
+     * @memberof PrinterService
+     */
+    dataToBibliographicHTML(data: Document[]) {
+        const listItemsHtml = data.map((item) => {
+            return `<li class="mb-3 print-item">${item.authorMast}, ${item.year}, ${item.title}, ${item.documentRef}</li>`;
+        });
+        const html = `<div><ul class="list-unstyled">${listItemsHtml.join('')}</ul></div>`;
+        return html;
+    }
     /**
      * Print data using [PrintJS](https://printjs.crabbly.com/)
      *
@@ -11,11 +26,25 @@ export default class PrinterService extends Service {
      * @param {{ field: keyof M; displayName: string }[]} properties
      * @memberof PrinterService
      */
-    print<M>(data: M[], properties: { field: keyof M; displayName: string }[]) {
+    printJSON<M>(data: M[], properties: { field: keyof M; displayName: string }[]) {
         printJS({
             printable: data,
             type: 'json',
             properties
+        });
+    }
+
+    /**
+     * Print data using [PrintJS](https://printjs.crabbly.com/)
+     *
+     * @param {string} data
+     * @memberof PrinterService
+     */
+    printHTML(data: string) {
+        printJS({
+            printable: data,
+            type: 'raw-html',
+            style: `.list-unstyled { padding-left: 0; list-style: none; font-size: 12px; } .mb-3 { margin-bottom: 1rem !important; }`
         });
     }
 }

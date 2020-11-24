@@ -2,7 +2,7 @@
     <Modal.header @title={{t "glossary.title"}} />
     <Modal.body>
         {{#each this.glossaryItem.results as |glossary|}}
-            <Document::Text @document={{glossary}} @onGlossaryItemClick={{this.viewGlossaryTerm}} />
+            <Document::Text @document={{glossary}} @onGlossaryItemClick={{this.viewGlossaryTerm}} @target="document" />
         {{/each}}
     </Modal.body>
     <Modal.footer>
