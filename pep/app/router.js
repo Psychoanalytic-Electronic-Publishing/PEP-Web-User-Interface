@@ -12,10 +12,14 @@ Router.map(function() {
     this.route('login');
     this.route('search', function() {});
     this.route('browse', function() {
-        this.route('books');
         this.route('videos');
         this.route('journal', { path: '/:pep_code/volumes' }, function() {
             this.route('volume', { path: '/:volume_number' });
+        });
+
+        this.route('book', function() {
+            this.route('gw');
+            this.route('se');
         });
     });
     this.route('read', function() {

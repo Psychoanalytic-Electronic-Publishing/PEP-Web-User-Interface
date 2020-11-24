@@ -6,21 +6,71 @@
     <div class="page-content-section flex-fill">
         <Scrollable @namespace="browse-results" class="page-content-inner">
             <div class="py-3 px-4">
+                <div class="d-flex justify-content-between align-items-center mb-2 sticky-top bg-backdrop py-2">
+                    <div>
+                        {{#if this.volumeInformation}}
+                            <div class="d-flex justify-content-center align-items-center">
+                                {{#if this.meta.supplementalInfo.prev_vol}}
+                                    <Button
+                                        @type="link"
+                                        @action={{fn this.navigateToVolume this.meta.supplementalInfo.prev_vol.value}}
+                                        @icon="chevron-left"
+                                        @iconOnly={{true}}
+                                    />
+                                {{/if}}
+                                <span class="mx-2">
+                                    {{this.volumeInformation.vol}}
+                                </span>
+                                {{#if this.meta.supplementalInfo.next_vol}}
+                                    <Button
+                                        @type="link"
+                                        @action={{fn this.navigateToVolume this.meta.supplementalInfo.next_vol.value}}
+                                        @icon="chevron-right"
+                                        @iconOnly={{true}}
+                                    />
+                                {{/if}}
+                            </div>
+                        {{/if}}
+                    </div>
+                    <div>
+                        <DropdownMenu @horizontalPosition="auto-right" as |DD|>
+                            <DD.Trigger @htmlTag="a" class="p-1">
+                                <FaIcon @icon="download" @size="lg" @prefix="fas" />
+                            </DD.Trigger>
+                            <DD.Content class="dropdown-menu">
+                                <DropdownAction @dd={{DD}} @action={{this.exportCSV}}>
+                                    {{t "search.exports.csv"}}
+                                </DropdownAction>
+                                <DropdownAction @dd={{DD}} @action={{this.exportCSV}}>
+                                    {{t "search.exports.ris"}}
+                                </DropdownAction>
+                            </DD.Content>
+                        </DropdownMenu>
+                        <CopyButton
+                            class="p-1 btn btn-link"
+                            @success={{this.clipboardSuccess}}
+                            @error={{this.clipboardFailure}}
+                            @clipboardText={{this.exportClipboard}}
+                        >
+                            <FaIcon @icon="clipboard" @size="lg" @prefix="fas" />
+                        </CopyButton>
+                        <Button
+                            @action={{this.print}}
+                            @type="link"
+                            @icon="print"
+                            @iconPrefix="fas"
+                            @iconSize="lg"
+                            @tooltip={{t "common.print"}}
+                            class="p-1"
+                        />
+                    </div>
+                </div>
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="d-flex justify-content-center align-items-center">
                                 <img src="{{this.journal.bannerURL}}" alt="{{t "browse.alt"}}" />
                             </div>
-                            {{#if this.volumeInformation}}
-                                <div class="d-flex justify-content-center align-items-center">
-                                    <FaIcon @icon="chevron-left" @prefix="fal" />
-                                    <span class="mx-2">
-                                        {{this.volumeInformation.vol}}
-                                    </span>
-                                    <FaIcon @icon="chevron-right" @prefix="fal" />
-                                </div>
-                            {{/if}}
                         </div>
                         <h4 class="text-center">
                             {{#if this.volumeInformation}}
@@ -47,29 +97,7 @@
                                                         {{model.newSectionName}}
                                                     </li>
                                                 {{/if}}
-
-                                                <li class="mb-2">
-                                                    <div
-                                                        class="d-flex justify-content-between position-relative align-items-end"
-                                                    >
-                                                        <div class="d-flex">
-                                                            <a
-                                                                href=""
-                                                                class="d-flex align-items-center justify-content-between title"
-                                                                {{on "click" (fn this.openResult model.id)}}
-                                                            >
-                                                                {{model.title}}
-                                                            </a>
-                                                            <div class="dotted-line pointer-events-none"></div>
-                                                        </div>
-                                                        <span class="page small text-muted">
-                                                            {{model.pgStart}}
-                                                        </span>
-                                                    </div>
-                                                    <div class="small text-muted">
-                                                        {{model.authorMast}}
-                                                    </div>
-                                                </li>
+                                                <Browse::VolumeItem @item={{model}} @openResult={{this.openResult}} />
                                             {{/each}}
                                         </ol>
                                     {{/each}}

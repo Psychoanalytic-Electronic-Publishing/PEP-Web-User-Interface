@@ -1,13 +1,22 @@
 import Controller from '@ember/controller';
 import { action } from '@ember/object';
+import RouterService from '@ember/routing/router-service';
 import { inject as service } from '@ember/service';
 import { cached, tracked } from '@glimmer/tracking';
 
+import NotificationService from 'ember-cli-notifications/services/notifications';
+import IntlService from 'ember-intl/services/intl';
+
+import { TITLE_REGEX } from 'pep/constants/regex';
 import Abstract from 'pep/pods/abstract/model';
 import { SearchPreviewMode } from 'pep/pods/components/search/preview/component';
+import Document from 'pep/pods/document/model';
 import SourceVolume from 'pep/pods/source-volume/model';
 import Volume from 'pep/pods/volume/model';
+import BrowseSelection from 'pep/services/browse-selection';
 import CurrentUserService from 'pep/services/current-user';
+import ExportsService, { ExportType } from 'pep/services/exports';
+import PrinterService from 'pep/services/printer';
 
 interface Issue {
     title: string;
@@ -16,11 +25,28 @@ interface Issue {
 
 export default class BrowseJournalVolume extends Controller {
     @service currentUser!: CurrentUserService;
+    @service exports!: ExportsService;
+    @service browseSelection!: BrowseSelection;
+    @service notifications!: NotificationService;
+    @service intl!: IntlService;
+    @service printer!: PrinterService;
+
     @tracked volumeInformation?: Volume;
     @tracked previewedResult?: Abstract | null = null;
     @tracked preview?: string | null = null;
     @tracked previewMode: SearchPreviewMode = 'fit';
     @tracked containerMaxHeight = 0;
+    @tracked meta?: { next_vol: string; prev_vol: string };
+
+    /**
+     * If items are selected, use that for the export/print data. Otherwise use the paginator
+     *
+     * @readonly
+     * @memberof Search
+     */
+    get exportedData() {
+        return this.browseSelection.includedRecords.length ? this.browseSelection.includedRecords : this.model;
+    }
 
     queryParams = ['preview'];
 
@@ -98,6 +124,96 @@ export default class BrowseJournalVolume extends Controller {
         } else {
             this.transitionToRoute('read.document', documentId);
         }
+    }
+
+    /**
+     * Export a CSV
+     *
+     * @memberof Search
+     */
+    @action
+    exportCSV() {
+        const data = this.exportedData;
+        const formattedData = data.map((item) => [
+            item.authorMast,
+            item.year,
+            item.title.replace(TITLE_REGEX, '$1'),
+            item.documentRef
+        ]);
+        this.exports.export(ExportType.CSV, 'data.csv', {
+            fields: ['Author', 'Year', 'Title', 'Source'],
+            data: [...formattedData]
+        });
+    }
+
+    /**
+     * Get the correctly formatted data for the clipboard and return it
+     *
+     * @returns
+     * @memberof Search
+     */
+    @action
+    exportClipboard() {
+        const data = this.exportedData;
+        const formattedData = data.map(
+            (item) => `${item.authorMast}, ${item.year}, ${item.title.replace(TITLE_REGEX, '$1')}, ${item.documentRef}`
+        );
+        return formattedData.join('\r\n');
+    }
+
+    /**
+     * Show success message for clipboard
+     *
+     * @memberof Search
+     */
+    @action
+    clipboardSuccess() {
+        const translation = this.intl.t('exports.clipboard.success');
+
+        this.notifications.success(translation);
+    }
+
+    /**
+     * Show failure message for clipboard
+     *
+     * @memberof Search
+     */
+    @action
+    clipboardFailure() {
+        this.notifications.success(this.intl.t('exports.clipboard.failure'));
+    }
+
+    /**
+     * Print the current selected items or whats loaded into the paginator
+     *
+     * @memberof Search
+     */
+    @action
+    print() {
+        const data = this.exportedData;
+        this.printer.print<Document>(data, [
+            {
+                field: 'authorMast',
+                displayName: 'Author'
+            },
+            {
+                field: 'year',
+                displayName: 'Year'
+            },
+            {
+                field: 'title',
+                displayName: 'Title'
+            },
+            {
+                field: 'documentRef',
+                displayName: 'Source'
+            }
+        ]);
+    }
+
+    @action
+    navigateToVolume(volume: string) {
+        this.transitionToRoute('browse.journal.volume', volume);
     }
 }
 

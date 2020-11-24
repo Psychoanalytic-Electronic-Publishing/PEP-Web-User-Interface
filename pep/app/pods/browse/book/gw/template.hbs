@@ -1,0 +1,36 @@
+<Page::Content>
+    <div class="py-3 px-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-center align-items-center">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <img src="{{this.journal.bannerURL}}" alt="{{t "browse.publication.alt"}}" />
+                    </div>
+                </div>
+                <div class="browse m-5">
+                    <h5>
+                        {{t "browse.gw.volumes"}}
+                    </h5>
+                    <ul class="list-unstyled row">
+                        {{#each this.model as |result|}}
+                            <li class="col-12 mb-2">
+                                <strong>
+                                    {{result.volume}}
+                                </strong>
+                                <LinkTo
+                                    @route="read.document"
+                                    @model={{result.id}}
+                                    class="d-flex align-items-center justify-content-between"
+                                >
+                                    <span class="text-muted">
+                                        {{result.title}}
+                                    </span>
+                                </LinkTo>
+                            </li>
+                        {{/each}}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</Page::Content>

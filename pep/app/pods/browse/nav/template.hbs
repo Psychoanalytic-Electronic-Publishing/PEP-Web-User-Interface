@@ -88,7 +88,7 @@
                                     {{#each this.filteredBooks.freudsCollectedWorks.GW.volumes as |result|}}
                                         <li class="p-1 col-4">
                                             <LinkTo
-                                                @route="browse.journal"
+                                                @route="read.document"
                                                 @model={{result.id}}
                                                 class="d-flex align-items-center justify-content-between"
                                             >
@@ -98,6 +98,12 @@
                                             </LinkTo>
                                         </li>
                                     {{/each}}
+                                    <li class="my-2">
+                                        <LinkTo @route="browse.book.gw">
+                                            {{t "common.more"}}
+                                            <FaIcon @icon="arrow-right" @prefix="fal" />
+                                        </LinkTo>
+                                    </li>
                                 </ul>
                             {{/if}}
                             {{#if this.filteredBooks.freudsCollectedWorks.SE.books}}
@@ -108,7 +114,7 @@
                                     {{#each this.filteredBooks.freudsCollectedWorks.SE.volumes as |result|}}
                                         <li class="p-1 col-4">
                                             <LinkTo
-                                                @route="browse.journal"
+                                                @route="read.document"
                                                 @model={{result.id}}
                                                 class="d-flex align-items-center justify-content-between"
                                             >
@@ -118,6 +124,12 @@
                                             </LinkTo>
                                         </li>
                                     {{/each}}
+                                    <li class="my-2">
+                                        <LinkTo @route="browse.book.se">
+                                            {{t "common.more"}}
+                                            <FaIcon @icon="arrow-right" @prefix="fal" />
+                                        </LinkTo>
+                                    </li>
                                 </ul>
                             {{/if}}
                         {{else}}
@@ -134,7 +146,7 @@
                                 {{#each this.filteredBooks.glossaries as |result|}}
                                     <li class="p-1">
                                         <LinkTo
-                                            @route="browse.journal"
+                                            @route="read.document"
                                             @model={{result.id}}
                                             class="d-flex align-items-center justify-content-between"
                                         >
@@ -199,7 +211,7 @@
                             >
                                 <li class="p-1">
                                     <LinkTo
-                                        @route="browse.journal"
+                                        @route="read.document"
                                         @model={{result.id}}
                                         class="d-flex align-items-center justify-content-between"
                                     >

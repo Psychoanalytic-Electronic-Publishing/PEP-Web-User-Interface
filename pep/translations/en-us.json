@@ -27,7 +27,8 @@
         "filter": "Filter",
         "viewAll": "View all",
         "help": "Help",
-        "find": "Find"
+        "find": "Find",
+        "more": "More"
     },
     "serverErrors": {
         "heading": "The following {count, plural, =1 {error} other {errors}} occurred while attempting to process your request.",
@@ -339,6 +340,12 @@
             "volume": {
                 "title": "Volume {number} ({year})"
             }
+        },
+        "gw": {
+            "volumes": "Freud, S. (1991). GESAMMELTE WERKE: CHRONOLOGISCH GEORDNET. Imago Publishing Co., Ltd., London."
+        },
+        "se": {
+            "volumes": "Strachey, J. (Ed.) The Standard Edition of the Complete Psychological Works of Sigmund Freud"
         }
     },
     "read": {

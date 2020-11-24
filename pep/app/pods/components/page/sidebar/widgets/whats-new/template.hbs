@@ -3,22 +3,15 @@
     @isOpen={{this.isOpen}}
     @toggle={{fn @toggleIsOpen this.widget}}
     class="mb-2 page-widget"
-    {{did-insert this.onElementInsert}}
     ...attributes
-as |Panel|>
+    {{did-insert this.onElementInsert}} as |Panel|
+>
     <Panel.header
         @title={{t "relatedInfo.widgets.whatsNew.title"}}
-        @secondaryAction={{hash
-            action=this.openModal
-            label=(t "relatedInfo.widgets.whatsNew.update")
-            icon="envelope"
-        }}
+        @secondaryAction={{hash action=this.openModal label=(t "relatedInfo.widgets.whatsNew.update") icon="envelope"}}
     />
     <Panel.body>
-        <ContentWithPlaceholder
-            @placeholderComponent="loading/widget"
-            @isLoading={{this.loadResults.isRunning}}
-        >
+        <ContentWithPlaceholder @placeholderComponent="loading/widget" @isLoading={{this.loadResults.isRunning}}>
             <ul class="list-unstyled">
                 {{#each this.results as |result|}}
                     <li class="mb-2">
@@ -27,7 +20,8 @@ as |Panel|>
                         </div>
                         <div class="text-muted small">
                             {{html-safe
-                                (t "relatedInfo.widgets.whatsNew.issue"
+                                (t
+                                    "relatedInfo.widgets.whatsNew.issue"
                                     issueNum=result.issue
                                     volNum=result.volume
                                     updatedDate=(moment-format result.updated "MMMM Do, YYYY")
@@ -41,13 +35,9 @@ as |Panel|>
                     </li>
                 {{/each}}
             </ul>
-            <Button
-                @action={{this.openModal}}
-                @type="link"
-                class="p-0"
-            >
+            <Button @action={{this.openModal}} @type="link" class="p-0">
                 {{t "relatedInfo.widgets.whatsNew.update"}}
-                <FaIcon @icon="arrow-right" @prefix="fal"/>
+                <FaIcon @icon="arrow-right" @prefix="fal" />
             </Button>
         </ContentWithPlaceholder>
     </Panel.body>

@@ -3,10 +3,10 @@ import { tracked } from '@glimmer/tracking';
 
 import Document from 'pep/pods/document/model';
 
-export default class RowSelection extends Service {
+export default class RowSelection<T> extends Service {
     @tracked allRecords: boolean = false;
-    @tracked includedRecords: Document[] = [];
-    @tracked excludedRecords: Document[] = [];
+    @tracked includedRecords: T[] = [];
+    @tracked excludedRecords: T[] = [];
     @tracked totalRecordCount: number = 0;
 
     /**
@@ -26,7 +26,7 @@ export default class RowSelection extends Service {
      * @returns
      * @memberof RowSelectionService
      */
-    isSelected(row: Document) {
+    isSelected(row: T) {
         return (
             (!this.allRecords && this.includedRecords.includes(row)) ||
             (this.allRecords && !this.excludedRecords.includes(row))
@@ -50,23 +50,23 @@ export default class RowSelection extends Service {
      * @param {string} id
      * @memberof RowSelectionService
      */
-    toggleRecordSelection(document: Document) {
+    toggleRecordSelection(item: T) {
         let includeRecordIds = this.includedRecords.concat([]);
         let excludeRecordIds = this.excludedRecords.concat([]);
 
         if (this.allRecords) {
-            const selected = excludeRecordIds.includes(document);
+            const selected = excludeRecordIds.includes(item);
             if (selected) {
-                excludeRecordIds.removeObject(document);
+                excludeRecordIds.removeObject(item);
             } else {
-                excludeRecordIds.push(document);
+                excludeRecordIds.push(item);
             }
         } else {
-            const selected = includeRecordIds.includes(document);
+            const selected = includeRecordIds.includes(item);
             if (selected) {
-                includeRecordIds.removeObject(document);
+                includeRecordIds.removeObject(item);
             } else {
-                includeRecordIds.push(document);
+                includeRecordIds.push(item);
             }
         }
 
@@ -83,6 +83,6 @@ export default class RowSelection extends Service {
 // DO NOT DELETE: this is how TypeScript knows how to look up your services.
 declare module '@ember/service' {
     interface Registry {
-        'row-selection': RowSelection;
+        'row-selection': RowSelection<any>;
     }
 }
