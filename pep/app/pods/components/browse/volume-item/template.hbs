@@ -1,0 +1,28 @@
+<li class="mb-2 d-flex">
+    <CheckboxInput
+        @checked={{this.isRowSelected}}
+        @stopPropagation={{true}}
+        @onChange={{fn this.toggleSelect @item}}
+        class="mb-1"
+    />
+    <div class="flex-grow-1">
+        <div class="d-flex justify-content-between position-relative align-items-end">
+            <div class="d-flex">
+                <a
+                    href=""
+                    class="d-flex align-items-center justify-content-between title"
+                    {{on "click" (fn @openResult @item.id)}}
+                >
+                    {{@item.title}}
+                </a>
+                <div class="dotted-line pointer-events-none"></div>
+            </div>
+            <span class="page small text-muted">
+                {{@item.pgStart}}
+            </span>
+        </div>
+        <div class="small text-muted">
+            {{@item.authorMast}}
+        </div>
+    </div>
+</li>

@@ -1,27 +1,234 @@
 <Page::Sidebar::Left as |Sidebar|>
     <Sidebar.content>
-        <Search::Form
-            @smartSearchTerm={{this.smartSearchTerm}}
-            @searchTerms={{this.searchTerms}}
-            @matchSynonyms={{this.matchSynonyms}}
-            @isLimitOpen={{this.isLimitOpen}}
-            @citedCount={{this.citedCount}}
-            @viewedCount={{this.viewedCount}}
-            @viewedPeriod={{this.viewedPeriod}}
-            @submit={{this.submitSearch}}
-            @resetForm={{this.clearSearch}}
-            @updateSmartSearchText={{fn (mut this.smartSearchTerm)}}
-            @addSearchTerm={{this.addSearchTerm}}
-            @removeSearchTerm={{this.removeSearchTerm}}
-            @updateSearchTerm={{this.updateSearchTerm}}
-            @updateViewedPeriod={{this.updateViewedPeriod}}
-            @matchSynonymsChange={{this.updateMatchSynonyms}}
-            @toggleLimitFields={{this.toggleLimitFields}}
-            class="mb-2"
-        />
-        <div class="p-3">
-            <h5>{{t "browse.title"}}</h5>
-            {{!-- Browse UI here --}}
+        <div class="p-3 bg-white">
+            <h5 class="d-flex justify-content-between align-items-center mb-3">
+                {{t "browse.title"}}
+                <FlInput
+                    @placeholder={{t "common.find"}}
+                    @value={{this.filter}}
+                    maxlength="255"
+                    autocomplete="off"
+                    {{on "input" (fn this.onFilter this.filter)}}
+                />
+            </h5>
+
+            <Tabs @onChange={{this.changeTab}} @selected={{this.tab}} as |tabs|>
+                <tabs.list class="mb-2 small">
+                    <tabs.tab @id={{this.tabs.JOURNALS}}>
+                        <Browse::Tab @filter={{this.filter}} @count={{this.filteredJournals.length}} @icon="books">
+                            {{t "browse.selection.journals"}}
+                        </Browse::Tab>
+                    </tabs.tab>
+                    <tabs.tab @id={{this.tabs.BOOKS}}>
+                        <Browse::Tab @filter={{this.filter}} @count={{this.filteredBookCounts}} @icon="book">
+                            {{t "browse.selection.books.title"}}
+                        </Browse::Tab>
+                    </tabs.tab>
+                    <tabs.tab @id={{this.tabs.VIDEOS}}>
+                        <Browse::Tab @filter={{this.filter}} @count={{this.filteredVideos.length}} @icon="video">
+                            {{t "browse.selection.videos"}}
+                        </Browse::Tab>
+                    </tabs.tab>
+                </tabs.list>
+                <tabs.panel @id={{this.tabs.JOURNALS}}>
+                    <ContentWithPlaceholder
+                        @placeholderComponent="loading/widget"
+                        @isLoading={{not this.journals}}
+                        @options={{hash numLines=10}}
+                    >
+                        {{#if this.filteredJournals}}
+                            <VerticalCollection
+                                @items={{this.filteredJournals}}
+                                @tagName="ul"
+                                @containerSelector=".sidebar-content"
+                                @class="list-unstyled"
+                                @estimateHeight={{100}}
+                                @renderAll={{this.fastboot.isFastBoot}} as |result|
+                            >
+                                <li class="p-1">
+                                    <LinkTo
+                                        @route="browse.journal"
+                                        @model={{result.id}}
+                                        class="d-flex align-items-center justify-content-between"
+                                    >
+                                        <span class="small w-90">
+                                            {{result.srcTitle}}
+                                        </span>
+                                    </LinkTo>
+                                </li>
+                            </VerticalCollection>
+                        {{else}}
+                            <div class="text-muted small">
+                                {{t "browse.selection.search.noResults" term=this.filter}}
+                            </div>
+                        {{/if}}
+                    </ContentWithPlaceholder>
+                </tabs.panel>
+
+                <tabs.panel @id={{this.tabs.BOOKS}}>
+                    <ContentWithPlaceholder
+                        @placeholderComponent="loading/widget"
+                        @isLoading={{not this.books}}
+                        @options={{hash numLines=10}}
+                    >
+                        <h5>
+                            {{t "browse.selection.books.freud"}}
+                        </h5>
+                        {{#if
+                            (or
+                                this.filteredBooks.freudsCollectedWorks.GW.books
+                                this.filteredBooks.freudsCollectedWorks.SE.books
+                            )
+                        }}
+                            {{#if this.filteredBooks.freudsCollectedWorks.GW.books}}
+                                <div class="small w-90">
+                                    {{this.filteredBooks.freudsCollectedWorks.GW.title}}
+                                </div>
+                                <ul class="list-unstyled row px-3 mb-1">
+                                    {{#each this.filteredBooks.freudsCollectedWorks.GW.volumes as |result|}}
+                                        <li class="p-1 col-4">
+                                            <LinkTo
+                                                @route="read.document"
+                                                @model={{result.id}}
+                                                class="d-flex align-items-center justify-content-between"
+                                            >
+                                                <span class="small w-90">
+                                                    {{result.volume}}
+                                                </span>
+                                            </LinkTo>
+                                        </li>
+                                    {{/each}}
+                                    <li class="my-2">
+                                        <LinkTo @route="browse.book.gw">
+                                            {{t "common.more"}}
+                                            <FaIcon @icon="arrow-right" @prefix="fal" />
+                                        </LinkTo>
+                                    </li>
+                                </ul>
+                            {{/if}}
+                            {{#if this.filteredBooks.freudsCollectedWorks.SE.books}}
+                                <div class="small w-90">
+                                    {{this.filteredBooks.freudsCollectedWorks.SE.title}}
+                                </div>
+                                <ul class="list-unstyled row px-3 mb-1">
+                                    {{#each this.filteredBooks.freudsCollectedWorks.SE.volumes as |result|}}
+                                        <li class="p-1 col-4">
+                                            <LinkTo
+                                                @route="read.document"
+                                                @model={{result.id}}
+                                                class="d-flex align-items-center justify-content-between"
+                                            >
+                                                <span class="small w-90">
+                                                    {{result.volume}}
+                                                </span>
+                                            </LinkTo>
+                                        </li>
+                                    {{/each}}
+                                    <li class="my-2">
+                                        <LinkTo @route="browse.book.se">
+                                            {{t "common.more"}}
+                                            <FaIcon @icon="arrow-right" @prefix="fal" />
+                                        </LinkTo>
+                                    </li>
+                                </ul>
+                            {{/if}}
+                        {{else}}
+                            <div class="text-muted small">
+                                {{t "browse.selection.search.noResults" term=this.filter}}
+                            </div>
+                        {{/if}}
+
+                        <h5>
+                            {{t "browse.selection.books.glossaries"}}
+                        </h5>
+                        {{#if this.filteredBooks.glossaries}}
+                            <ul class="list-unstyled">
+                                {{#each this.filteredBooks.glossaries as |result|}}
+                                    <li class="p-1">
+                                        <LinkTo
+                                            @route="read.document"
+                                            @model={{result.id}}
+                                            class="d-flex align-items-center justify-content-between"
+                                        >
+                                            <span class="small w-90">
+                                                {{result.title}}
+                                            </span>
+                                        </LinkTo>
+                                    </li>
+                                {{/each}}
+                            </ul>
+                        {{else}}
+                            <div class="text-muted small">
+                                {{t "browse.selection.search.noResults" term=this.filter}}
+                            </div>
+                        {{/if}}
+                        <h5>
+                            {{t "browse.selection.books.other"}}
+                        </h5>
+                        {{#if this.filteredBooks.others}}
+                            <VerticalCollection
+                                @items={{this.filteredBooks.others}}
+                                @tagName="ul"
+                                @containerSelector=".sidebar-content"
+                                @class="list-unstyled"
+                                @estimateHeight={{100}}
+                                @renderAll={{this.fastboot.isFastBoot}} as |result|
+                            >
+                                <li class="p-1">
+                                    <LinkTo
+                                        @route="read.document"
+                                        @model={{result.id}}
+                                        class="d-flex align-items-center justify-content-between"
+                                    >
+                                        <span class="small w-90">
+                                            {{result.authors}} ({{result.pub_year}}) {{result.title}}
+                                        </span>
+                                    </LinkTo>
+                                </li>
+                            </VerticalCollection>
+                        {{else}}
+                            <div class="text-muted small">
+                                {{t "browse.selection.search.noResults" term=this.filter}}
+                            </div>
+                        {{/if}}
+                    </ContentWithPlaceholder>
+                </tabs.panel>
+
+                <tabs.panel @id={{this.tabs.VIDEOS}}>
+                    <ContentWithPlaceholder
+                        @placeholderComponent="loading/widget"
+                        @isLoading={{not this.videos}}
+                        @options={{hash numLines=10}}
+                    >
+                        {{#if this.filteredVideos}}
+                            <VerticalCollection
+                                @items={{this.filteredVideos}}
+                                @tagName="ul"
+                                @containerSelector=".sidebar-content"
+                                @class="list-unstyled"
+                                @estimateHeight={{100}}
+                                @renderAll={{this.fastboot.isFastBoot}} as |result|
+                            >
+                                <li class="p-1">
+                                    <LinkTo
+                                        @route="read.document"
+                                        @model={{result.id}}
+                                        class="d-flex align-items-center justify-content-between"
+                                    >
+                                        <span class="small w-90">
+                                            {{result.title}}
+                                        </span>
+                                    </LinkTo>
+                                </li>
+                            </VerticalCollection>
+                        {{else}}
+                            <div class="text-muted small">
+                                {{t "browse.selection.search.noResults" term=this.filter}}
+                            </div>
+                        {{/if}}
+                    </ContentWithPlaceholder>
+                </tabs.panel>
+            </Tabs>
         </div>
     </Sidebar.content>
 </Page::Sidebar::Left>

@@ -1,0 +1,10 @@
+<li class="nav-item">
+    <a
+        class="nav-link p-2 {{if this.isActive "active"}}"
+        aria-expanded="{{this.isActive}}"
+        href={{null}}
+        {{on "click" (fn @onChange @id)}}
+    >
+        {{yield}}
+    </a>
+</li>

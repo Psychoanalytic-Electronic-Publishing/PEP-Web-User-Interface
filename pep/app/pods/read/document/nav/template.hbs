@@ -24,7 +24,7 @@
                             <CheckboxInput
                                 @checked={{this.showHitsInContext}}
                                 @onChange={{this.updateHitsInContext}}
-                                @label={{t "search.hitsInContext.label.full"}}
+                                @label={{t "search.hitsInContext.label.short"}}
                             />
                             <HelpTooltip @tooltip={{t "search.hitsInContext.help"}} />
                         </div>
@@ -100,13 +100,13 @@
 
                     {{#if (eq this.selectedView.id this.tableView)}}
                         <Tables::Search
-                            @containerSelector=".sidebar-left .sidebar-content"
+                            @containerSelector=".sidebar-content"
                             @rows={{this.paginator.models}}
                             @hasMoreRows={{this.paginator.hasMore}}
                             @loadMoreRows={{this.paginator.loadMoreModels}}
                             @isLoading={{this.paginator.isLoadingModels}}
                             @updateSorts={{this.paginator.changeSorting}}
-                            @sorts={{this.paginator.sorts}}
+                            @sorts={{this.tableSorts}}
                             @showHitsInContext={{this.showHitsInContext}}
                             @onLinkClick={{this.loadDocument}}
                             @headerStickyOffset="0"

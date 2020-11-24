@@ -319,3 +319,7 @@ export function clearSearch(
         }
     });
 }
+
+export function copyToController<ControllerInstance>(object: any, controller: ControllerInstance) {
+    Object.assign(controller, object);
+}

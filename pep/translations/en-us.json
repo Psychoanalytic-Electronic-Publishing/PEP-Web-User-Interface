@@ -26,7 +26,9 @@
         "loading": "Loading...",
         "filter": "Filter",
         "viewAll": "View all",
-        "help": "Help"
+        "help": "Help",
+        "find": "Find",
+        "more": "More"
     },
     "serverErrors": {
         "heading": "The following {count, plural, =1 {error} other {errors}} occurred while attempting to process your request.",
@@ -317,7 +319,34 @@
         }
     },
     "browse": {
-        "title": "Browse"
+        "title": "Browse",
+        "selection": {
+            "journals": "Journals",
+            "books": {
+                "title": "Books",
+                "freud": "Freud's Collected Works",
+                "glossaries": "Glossaries and Dictionaries",
+                "other": "Other Classic Books"
+            },
+            "videos": "Videos",
+
+            "search": {
+                "noResults": "No results found for \"{term}\""
+            }
+        },
+        "alt": "Journal Banner",
+        "availableVolumes": "Available Volumes",
+        "journal": {
+            "volume": {
+                "title": "Volume {number} ({year})"
+            }
+        },
+        "gw": {
+            "volumes": "Freud, S. (1991). GESAMMELTE WERKE: CHRONOLOGISCH GEORDNET. Imago Publishing Co., Ltd., London."
+        },
+        "se": {
+            "volumes": "Strachey, J. (Ed.) The Standard Edition of the Complete Psychological Works of Sigmund Freud"
+        }
     },
     "read": {
         "title": "Read",

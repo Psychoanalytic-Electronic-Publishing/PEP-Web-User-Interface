@@ -25,7 +25,7 @@ import PepSessionService from 'pep/services/pep-session';
 import PrinterService from 'pep/services/printer';
 import SearchSelection from 'pep/services/search-selection';
 import { buildSearchQueryParams, clearSearch } from 'pep/utils/search';
-import { SearchSorts, SearchSortType } from 'pep/utils/sort';
+import { SearchSorts, SearchSortType, transformSearchSortsToTable, transformSearchSortToAPI } from 'pep/utils/sort';
 import { reject } from 'rsvp';
 
 export default class ReadDocument extends Controller {
@@ -74,6 +74,15 @@ export default class ReadDocument extends Controller {
     tableView = SearchViewType.TABLE;
     searchViews = SearchViews;
     sorts = SearchSorts;
+
+    get readQueryParams() {
+        return {
+            q: this.q,
+            searchTerms: this._searchTerms,
+            facets: this._facets,
+            matchSynonyms: this.matchSynonyms
+        };
+    }
 
     get isLoadingRoute(): boolean {
         return /loading$/.test(this.router.currentRouteName);
@@ -131,6 +140,22 @@ export default class ReadDocument extends Controller {
         return this.searchSelection.includedRecords.length
             ? this.searchSelection.includedRecords
             : this.paginator.models;
+    }
+
+    /**
+     * Transform the sorting to a format the API can handle
+     *
+     * @param {string[]} sorts
+     * @returns
+     * @memberof Search
+     */
+    @action
+    onChangeSorting(sorts: string[]) {
+        return transformSearchSortToAPI(sorts);
+    }
+
+    get tableSorts() {
+        return transformSearchSortsToTable(this.paginator.sorts);
     }
 
     /**
@@ -231,13 +256,15 @@ export default class ReadDocument extends Controller {
     updateSort(event: HTMLElementEvent<HTMLSelectElement>) {
         const id = event.target.value as SearchSortType;
         const selectedSort = SearchSorts.find((item) => item.id === id);
-        this.selectedSort = selectedSort!;
-        this.paginator.changeSorting([
-            {
-                valuePath: id,
-                isAscending: true
-            }
-        ]);
+        if (selectedSort) {
+            this.selectedSort = selectedSort;
+            this.paginator.changeSorting([
+                {
+                    valuePath: id,
+                    isAscending: true
+                }
+            ]);
+        }
     }
 
     /**

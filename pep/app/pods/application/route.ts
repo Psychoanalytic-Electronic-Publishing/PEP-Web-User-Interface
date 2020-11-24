@@ -9,7 +9,6 @@ import IntlService from 'ember-intl/services/intl';
 import MediaService from 'ember-responsive/services/media';
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 
-import { SessionType } from 'pep/authenticators/credentials';
 import PageLayout from 'pep/mixins/page-layout';
 import { ApiServerErrorResponse } from 'pep/pods/application/adapter';
 import AuthService from 'pep/services/auth';
