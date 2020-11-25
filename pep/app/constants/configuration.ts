@@ -1,5 +1,6 @@
 import { SearchFacetId, SearchTermId } from 'pep/constants/search';
 import { WIDGET } from 'pep/constants/sidebar';
+import { WordWheelSearchType } from 'pep/pods/components/word-wheel/component';
 
 /**
  * Widget configuration - tells us which widget and whether its open
@@ -133,6 +134,7 @@ export interface ContentConfiguration {
                 [K in SearchTermId]?: {
                     prompt?: string;
                     help?: string;
+                    wordWheelSearchType?: WordWheelSearchType;
                 };
             };
         };
@@ -281,7 +283,9 @@ export const DEFAULT_CONTENT_CONFIGURATION: ContentConfiguration = {
                 },
                 author: {
                     prompt: "Author's name",
-                    help: 'Search author names (e.g., Lastname, or Lastname, Firstname). Use * to search partial names.'
+                    help:
+                        'Search author names (e.g., Lastname, or Lastname, Firstname). Use * to search partial names.',
+                    wordWheelSearchType: WordWheelSearchType.TEXT
                 },
                 title: {
                     prompt: 'Document title',
