@@ -90,8 +90,9 @@ export default class DocumentText extends Component<DocumentTextArgs> {
 
     constructor(owner: unknown, args: DocumentTextArgs) {
         super(owner, args);
-        const target = args.target ?? args.document.accessLimited ? args.document.abstract : args.document.document;
-        this.parseDocumentText(target);
+        const target = args.target ?? (args.document.accessLimited ? 'abstract' : 'document');
+        const text = args.document[target];
+        this.parseDocumentText(text);
     }
 
     /**
