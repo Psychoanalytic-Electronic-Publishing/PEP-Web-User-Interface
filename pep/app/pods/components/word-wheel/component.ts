@@ -8,12 +8,17 @@ import DS from 'ember-data';
 
 import { FlTypeaheadSuggestion } from 'pep/pods/components/fl-typeahead/component';
 
+export enum WordWheelSearchType {
+    WORD = 'word',
+    TEXT = 'text'
+}
 interface WordWheelArgs {
     placeholder: string;
     value?: string;
     limit?: number;
     apiField?: string;
     apiCore?: string;
+    searchType: WordWheelSearchType;
     onChange: (newText: string) => void;
 }
 
@@ -34,16 +39,20 @@ export default class WordWheel extends Component<WordWheelArgs> {
         return this.args.apiCore ?? 'docs';
     }
 
+    get searchType() {
+        return this.args.searchType ?? WordWheelSearchType.WORD;
+    }
+
     /**
      * Loads word wheel suggestions for the current word in the input value
      * @param {string} currentWord
      * @returns {Promise<FlTypeaheadSuggestion[]>}
      */
     @action
-    async loadSuggestions(currentWord?: string): Promise<FlTypeaheadSuggestion[]> {
+    async loadSuggestions(currentWord?: string, text?: string): Promise<FlTypeaheadSuggestion[]> {
         if (currentWord?.length) {
             const params = removeEmptyQueryParams({
-                word: currentWord,
+                word: this.searchType === WordWheelSearchType.WORD ? currentWord : text,
                 field: this.apiField,
                 core: this.apiCore,
                 limit: this.limit,
