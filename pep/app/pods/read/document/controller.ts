@@ -371,19 +371,19 @@ export default class ReadDocument extends Controller {
             this.printer.printJSON<Document>(data, [
                 {
                     field: 'authorMast',
-                    displayName: 'Author'
+                    displayName: this.intl.t('print.author')
                 },
                 {
                     field: 'year',
-                    displayName: 'Year'
+                    displayName: this.intl.t('print.year')
                 },
                 {
                     field: 'title',
-                    displayName: 'Title'
+                    displayName: this.intl.t('print.title')
                 },
                 {
                     field: 'documentRef',
-                    displayName: 'Source'
+                    displayName: this.intl.t('print.source')
                 }
             ]);
         }
