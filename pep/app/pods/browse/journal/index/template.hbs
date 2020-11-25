@@ -4,14 +4,18 @@
             <div class="card-body">
                 <div class="d-flex justify-content-center align-items-center">
                     <div class="d-flex justify-content-center align-items-center">
-                        <img src="{{this.journal.bannerURL}}" alt="{{t "browse.publication.alt"}}" />
+                        <img src="/assets/images/banner{{this.sourcecode}}Logo.gif" alt="{{t "browse.alt"}}" />
                     </div>
                 </div>
                 <div class="browse m-5">
                     <h5>
                         {{t "browse.availableVolumes"}}
                     </h5>
-                    <ContentWithPlaceholder @isLoading={{not this.paginator.models}}>
+                    <ContentWithPlaceholder
+                        @isLoading={{not this.paginator.models}}
+                        @placeholderComponent="loading/widget"
+                        @options={{hash numLines=10}}
+                    >
                         <div class="container-fluid">
                             <ul class="list-unstyled row">
                                 {{#each this.paginator.models as |result|}}
