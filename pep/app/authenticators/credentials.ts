@@ -1,15 +1,18 @@
 import { run } from '@ember/runloop';
 import { EmberRunTimer } from '@ember/runloop/types';
 import { inject as service } from '@ember/service';
+import { htmlSafe } from '@ember/string';
 import { isEmpty } from '@ember/utils';
 
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
+import IntlService from 'ember-intl/services/intl';
 import BaseAuthenticator from 'ember-simple-auth/authenticators/base';
 
 import { PepSecureAuthenticatedData } from 'pep/api';
 import ENV from 'pep/config/environment';
 import AjaxService from 'pep/services/ajax';
 import PepSessionService from 'pep/services/pep-session';
+import { guard } from 'pep/utils/types';
 import { serializeQueryParams } from 'pep/utils/url';
 import { reject, resolve } from 'rsvp';
 
@@ -18,8 +21,14 @@ export enum SessionType {
     IP = 'ip'
 }
 
+export interface AuthError {
+    payload: PepSecureAuthenticatedData;
+    response: Response;
+}
+
 export default class CredentialsAuthenticator extends BaseAuthenticator {
     @service ajax!: AjaxService;
+    @service intl!: IntlService;
     @service('pep-session') session!: PepSessionService;
     @service fastboot!: FastbootService;
 
@@ -90,10 +99,14 @@ export default class CredentialsAuthenticator extends BaseAuthenticator {
                 return updatedResponse;
             } else {
                 this.session.setUnauthenticatedSession(response);
-                return reject(response);
+                return reject(response.ReasonStr);
             }
         } catch (errors) {
-            return reject(errors);
+            if (guard<AuthError>(errors, 'payload')) {
+                return reject(htmlSafe(errors.payload?.ReasonStr ?? this.intl.t('login.error')));
+            } else {
+                return reject(this.intl.t('login.genericError'));
+            }
         }
     }
 

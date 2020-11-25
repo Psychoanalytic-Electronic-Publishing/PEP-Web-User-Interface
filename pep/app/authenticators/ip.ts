@@ -1,13 +1,12 @@
-import { inject as service } from '@ember/service';
-
 import { PepSecureAuthenticatedData } from 'pep/api';
-import CredentialsAuthenticator, { SessionType } from 'pep/authenticators/credentials';
+import CredentialsAuthenticator, { AuthError, SessionType } from 'pep/authenticators/credentials';
 import ENV from 'pep/config/environment';
-import PepSessionService from 'pep/services/pep-session';
+import htmlSafe from 'pep/helpers/html-safe';
+import { guard } from 'pep/utils/types';
 import { serializeQueryParams } from 'pep/utils/url';
+import { reject } from 'rsvp';
 
 export default class IpAuthenticator extends CredentialsAuthenticator {
-    @service('pep-session') session!: PepSessionService;
     /**
      * Authenticates and logs the user in using IP auth
      *
@@ -36,10 +35,14 @@ export default class IpAuthenticator extends CredentialsAuthenticator {
                 return updatedResponse;
             } else {
                 this.session.setUnauthenticatedSession(response);
-                return Promise.reject(response);
+                return reject(response.ReasonStr);
             }
         } catch (errors) {
-            return Promise.reject(errors);
+            if (guard<AuthError>(errors, 'payload')) {
+                return reject(htmlSafe(errors.payload?.ReasonStr ?? this.intl.t('login.error')));
+            } else {
+                return reject(this.intl.t('login.genericError'));
+            }
         }
     }
 }

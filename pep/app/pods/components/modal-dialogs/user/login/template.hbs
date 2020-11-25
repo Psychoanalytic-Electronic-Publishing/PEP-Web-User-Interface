@@ -7,7 +7,7 @@
             </p>
             <Alert
                 @isShown={{bool this.loginError}}
-                @message={{t "login.error"}}
+                @message={{this.loginError}}
                 @type="danger"
                 @icon="exclamation-circle"
             />
