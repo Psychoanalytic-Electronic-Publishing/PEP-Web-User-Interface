@@ -509,6 +509,12 @@
             }
         }
     },
+    "print": {
+        "author": "Author",
+        "year": "Year",
+        "title": "Title",
+        "source": "Source"
+    },
     "about": {
         "title": "About",
         "version": {

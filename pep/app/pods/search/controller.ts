@@ -15,8 +15,10 @@ import IntlService from 'ember-intl/services/intl';
 
 import { SearchMetadata } from 'pep/api';
 import { PreferenceKey } from 'pep/constants/preferences';
+import { TITLE_REGEX } from 'pep/constants/regex';
 import {
-    SEARCH_DEFAULT_VIEW_PERIOD, SearchFacetValue, SearchTermValue, SearchViews, SearchViewType, ViewPeriod
+    SEARCH_DEFAULT_VIEW_PERIOD, SEARCH_TYPE_ARTICLE, SearchFacetValue, SearchTermValue, SearchViews, SearchViewType,
+    ViewPeriod
 } from 'pep/constants/search';
 import { WIDGET } from 'pep/constants/sidebar';
 import { SearchPreviewMode } from 'pep/pods/components/search/preview/component';
@@ -34,9 +36,6 @@ import SidebarService from 'pep/services/sidebar';
 import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
 import { SearchSorts, SearchSortType, transformSearchSortsToTable, transformSearchSortToAPI } from 'pep/utils/sort';
 import { hash } from 'rsvp';
-
-import { TITLE_REGEX } from '../../constants/regex';
-import { SEARCH_TYPE_ARTICLE } from '../../constants/search';
 
 export default class Search extends Controller {
     @service ajax!: AjaxService;
@@ -694,24 +693,29 @@ export default class Search extends Controller {
     @action
     print() {
         const data = this.exportedData;
-        this.printer.print<Document>(data, [
-            {
-                field: 'authorMast',
-                displayName: 'Author'
-            },
-            {
-                field: 'year',
-                displayName: 'Year'
-            },
-            {
-                field: 'title',
-                displayName: 'Title'
-            },
-            {
-                field: 'documentRef',
-                displayName: 'Source'
-            }
-        ]);
+        if (this.selectedView.id === SearchViewType.BIBLIOGRAPHIC) {
+            const html = this.printer.dataToBibliographicHTML(data);
+            this.printer.printHTML(html);
+        } else {
+            this.printer.printJSON<Document>(data, [
+                {
+                    field: 'authorMast',
+                    displayName: this.intl.t('print.author')
+                },
+                {
+                    field: 'year',
+                    displayName: this.intl.t('print.year')
+                },
+                {
+                    field: 'title',
+                    displayName: this.intl.t('print.title')
+                },
+                {
+                    field: 'documentRef',
+                    displayName: this.intl.t('print.source')
+                }
+            ]);
+        }
     }
 }
 

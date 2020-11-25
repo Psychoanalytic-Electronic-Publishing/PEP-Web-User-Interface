@@ -192,24 +192,8 @@ export default class BrowseJournalVolume extends Controller {
     @action
     print() {
         const data = this.exportedData;
-        this.printer.print<Document>(data, [
-            {
-                field: 'authorMast',
-                displayName: 'Author'
-            },
-            {
-                field: 'year',
-                displayName: 'Year'
-            },
-            {
-                field: 'title',
-                displayName: 'Title'
-            },
-            {
-                field: 'documentRef',
-                displayName: 'Source'
-            }
-        ]);
+        const html = this.printer.dataToBibliographicHTML(data);
+        this.printer.printHTML(html);
     }
 
     @action
