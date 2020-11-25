@@ -267,11 +267,9 @@ export default class DocumentText extends Component<DocumentTextArgs> {
      */
     @action
     parseDocument() {
-        const target =
-            this.args.target ?? this.args.document.accessLimited
-                ? this.args.document.abstract
-                : this.args.document.document;
-        this.parseDocumentText(target);
+        const target = this.args.target ?? (this.args.document.accessLimited ? 'abstract' : 'document');
+        const text = this.args.document[target];
+        this.parseDocumentText(text);
     }
 
     /**
