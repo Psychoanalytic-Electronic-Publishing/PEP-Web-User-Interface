@@ -1,9 +1,11 @@
+import { computed } from '@ember/object';
+import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
+
 import { ColumnValue } from '@gavant/ember-table';
 import IntlService from 'ember-intl/services/intl';
-import { inject as service } from '@ember/service';
+
 import FastbootMediaService from 'pep/services/fastboot-media';
-import { computed } from '@ember/object';
 
 interface TablesMostCitedArgs {
     rows: Document[];
@@ -34,7 +36,7 @@ export default class TablesMostCited extends Component<TablesMostCitedArgs> {
                 width: 200,
                 staticWidth: 200,
                 cellComponent: 'tables/cell/most-viewed-publication',
-                isSortable: true
+                isSortable: false
             },
 
             {

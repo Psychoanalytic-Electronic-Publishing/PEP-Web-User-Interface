@@ -58,9 +58,11 @@ export default class MostCited extends PageNav(Route) {
             modelName: 'document',
             models: model?.toArray() ?? [],
             metadata: model?.meta,
-            filterList: ['author', 'title', 'sourcename', 'pubperiod', 'queryType'],
+            filterList: ['author', 'title', 'sourcename', 'pubperiod', 'queryType', 'citeperiod'],
             pagingRootKey: null,
             filterRootKey: null,
+            sorts: [''],
+            onChangeSorting: controller.onChangeSorting,
             processQueryParams: (params) => {
                 if (params.pubperiod === PUBPERIOD_ALL_YEARS.value) {
                     delete params.pubperiod;
@@ -70,7 +72,7 @@ export default class MostCited extends PageNav(Route) {
         });
         controller.searchQueryParams = useQueryParams({
             context: controller,
-            params: ['author', 'title', 'journal', 'pubperiod']
+            params: ['author', 'title', 'journal', 'pubperiod', 'citeperiod']
         });
     }
 }

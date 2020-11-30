@@ -26,13 +26,14 @@ export default class MostViewed extends Controller {
     @service configuration!: ConfigurationService;
     @service scrollable!: ScrollableService;
 
-    queryParams = ['author', 'title', 'sourcename', 'pubperiod'];
+    queryParams = ['author', 'title', 'sourcename', 'pubperiod', 'citeperiod'];
     @tracked searchQueryParams!: QueryParams;
     @tracked paginator!: Pagination<Document>;
     @tracked author = '';
     @tracked title = '';
     @tracked journal?: Journal;
     @tracked pubperiod: PossiblePubPeriodValues = PUBPERIOD_ALL_YEARS.value;
+    @tracked citeperiod?: PossiblePeriodValues;
     queryType = 'MostViewed';
 
     /**
@@ -57,6 +58,44 @@ export default class MostViewed extends Controller {
                 value: item.value
             };
         });
+    }
+
+    get tableSorts() {
+        const citePeriod = this.citeperiod;
+        if (citePeriod) {
+            return [
+                {
+                    isAscending: false,
+                    valuePath: `stat.art_views_${citePeriod}`
+                }
+            ];
+        }
+        return [];
+    }
+
+    /**
+     * Transform the sorting to a format the API can handle
+     *
+     * @param {string[]} sorts
+     * @returns
+     * @memberof Search
+     */
+    @action
+    async onChangeSorting(sorts: string[]) {
+        if (sorts?.length) {
+            const sort = sorts[0];
+            const splitSort = sort.split('_');
+            const newCitePeriod = splitSort[splitSort.length - 1] as PossiblePeriodValues;
+            if (newCitePeriod === this.citeperiod) {
+                this.citeperiod = undefined;
+                return [];
+            } else {
+                this.citeperiod = newCitePeriod;
+                return [this.citeperiod];
+            }
+        } else {
+            return [];
+        }
     }
 
     /**

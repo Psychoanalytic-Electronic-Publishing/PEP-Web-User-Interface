@@ -3,7 +3,7 @@ import { action, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 
-import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
+import { Pagination, Sorting } from '@gavant/ember-pagination/hooks/pagination';
 import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
 import IntlService from 'ember-intl/services/intl';
 
@@ -16,6 +16,7 @@ import FastbootMediaService from 'pep/services/fastboot-media';
 import LoadingBarService from 'pep/services/loading-bar';
 import ScrollableService from 'pep/services/scrollable';
 import SidebarService from 'pep/services/sidebar';
+import { transformSortDirectionToAPI, transformSortDirectionToTable } from 'pep/utils/sort';
 import { documentCSVUrl } from 'pep/utils/url';
 
 import { PUBPERIOD_ALL_YEARS } from '../../constants/sidebar';
@@ -28,13 +29,14 @@ export default class MostCited extends Controller {
     @service configuration!: ConfigurationService;
     @service scrollable!: ScrollableService;
 
-    queryParams = ['author', 'title', 'pubperiod', 'sourcename'];
+    queryParams = ['author', 'title', 'pubperiod', 'sourcename', 'citeperiod'];
     @tracked searchQueryParams!: QueryParams;
     @tracked paginator!: Pagination<Document>;
     @tracked author = '';
     @tracked title = '';
     @tracked journal?: Journal;
     @tracked pubperiod: PossiblePubPeriodValues = PUBPERIOD_ALL_YEARS.value;
+    @tracked citeperiod?: PossiblePeriodValues;
 
     /**
      * GET/SET for sourcename. Ember requires the set if we are using it as a query param.
@@ -60,6 +62,44 @@ export default class MostCited extends Controller {
                 value: item.value
             };
         });
+    }
+
+    get tableSorts() {
+        const citePeriod = this.citeperiod;
+        if (citePeriod) {
+            return [
+                {
+                    isAscending: false,
+                    valuePath: `stat.art_cited_${citePeriod}`
+                }
+            ];
+        }
+        return [];
+    }
+
+    /**
+     * Transform the sorting to a format the API can handle
+     *
+     * @param {string[]} sorts
+     * @returns
+     * @memberof Search
+     */
+    @action
+    async onChangeSorting(sorts: string[]) {
+        if (sorts?.length) {
+            const sort = sorts[0];
+            const splitSort = sort.split('_');
+            const newCitePeriod = splitSort[splitSort.length - 1] as PossiblePeriodValues;
+            if (newCitePeriod === this.citeperiod) {
+                this.citeperiod = undefined;
+                return [];
+            } else {
+                this.citeperiod = newCitePeriod;
+                return [this.citeperiod];
+            }
+        } else {
+            return [];
+        }
     }
 
     /**
