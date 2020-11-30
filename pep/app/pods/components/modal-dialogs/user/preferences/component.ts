@@ -1,12 +1,14 @@
-import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
+import Component from '@glimmer/component';
 
-import ThemeService from 'pep/services/theme';
-import CurrentUserService from 'pep/services/current-user';
 import IntlService from 'ember-intl/services/intl';
-import { ThemeId } from 'pep/constants/themes';
+
 import { PreferenceKey, UserPreferences } from 'pep/constants/preferences';
+import { ThemeId } from 'pep/constants/themes';
+import CurrentUserService from 'pep/services/current-user';
+import ThemeService from 'pep/services/theme';
+import { guard } from 'pep/utils/types';
 
 interface ModalDialogsUserPreferencesArgs {
     onClose: () => void;
@@ -18,6 +20,7 @@ export default class ModalDialogsUserPreferences extends Component<ModalDialogsU
     @service intl!: IntlService;
 
     searchEnabledKey = PreferenceKey.SEARCH_PREVIEW_ENABLED;
+    hicLimit = PreferenceKey.SEARCH_HIC_LIMIT;
 
     /**
      * Close the preferences modal dialog
@@ -42,7 +45,11 @@ export default class ModalDialogsUserPreferences extends Component<ModalDialogsU
      * @param {String} newThemeId
      */
     @action
-    updatePreference<K extends PreferenceKey>(key: K, value: UserPreferences[K]) {
-        this.currentUser.updatePrefs({ [key]: value });
+    updatePreference<K extends PreferenceKey>(key: K, value: UserPreferences[K] | InputEvent) {
+        let newValue = value;
+        if (guard<InputEvent>(newValue, 'data')) {
+            newValue = newValue.data as UserPreferences[K];
+        }
+        this.currentUser.updatePrefs({ [key]: newValue });
     }
 }
