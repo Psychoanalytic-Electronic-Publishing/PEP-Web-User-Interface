@@ -9,13 +9,16 @@ import ModalService from '@gavant/ember-modals/services/modal';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import { DS } from 'ember-data';
 import IntlService from 'ember-intl/services/intl';
+import session from '../../../../../types/ember-simple-auth/services/session';
 
+import ENV from 'pep/config/environment';
 import { DOCUMENT_IMG_BASE_URL } from 'pep/constants/documents';
 import { SearchTermId } from 'pep/constants/search';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import Document from 'pep/pods/document/model';
 import GlossaryTerm from 'pep/pods/glossary-term/model';
 import LoadingBarService from 'pep/services/loading-bar';
+import PepSessionService from 'pep/services/pep-session';
 import ThemeService from 'pep/services/theme';
 import { loadXSLT, parseXML } from 'pep/utils/dom';
 import tippy, { Instance, Props } from 'tippy.js';
@@ -74,6 +77,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
     @service intl!: IntlService;
     @service theme!: ThemeService;
     @service router!: RouterService;
+    @service('pep-session') session!: PepSessionService;
 
     @tracked xml?: XMLDocument;
     containerElement?: HTMLElement;
@@ -112,6 +116,11 @@ export default class DocumentText extends Component<DocumentTextArgs> {
                 const processor = new XSLTProcessor();
                 // TODO: Why does this break FF?
                 // processor.setParameter('', 'searchTerm', [this.args.searchTerm]);
+                if (this.session.isAuthenticated) {
+                    processor.setParameter('', 'sessionId', this.session.data.authenticated.SessionId);
+                }
+
+                processor.setParameter('', 'clientId', ENV.clientId);
                 processor.setParameter('', 'journalName', this.args.document.sourceTitle);
                 processor.setParameter('', 'imageUrl', DOCUMENT_IMG_BASE_URL);
                 processor.importStylesheet(xslt);
