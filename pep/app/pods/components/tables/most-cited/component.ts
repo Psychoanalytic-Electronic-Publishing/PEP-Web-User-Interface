@@ -36,7 +36,7 @@ export default class TablesMostCited extends Component<TablesMostCitedArgs> {
                 width: 200,
                 staticWidth: 200,
                 cellComponent: 'tables/cell/most-viewed-publication',
-                isSortable: true
+                isSortable: false
             },
 
             {

@@ -64,6 +64,19 @@ export default class MostCited extends Controller {
         });
     }
 
+    get tableSorts() {
+        const citePeriod = this.citeperiod;
+        if (citePeriod) {
+            return [
+                {
+                    isAscending: false,
+                    valuePath: `stat.art_cited_${citePeriod}`
+                }
+            ];
+        }
+        return [];
+    }
+
     /**
      * Transform the sorting to a format the API can handle
      *
@@ -87,19 +100,6 @@ export default class MostCited extends Controller {
         } else {
             return [];
         }
-    }
-
-    get tableSorts() {
-        const citePeriod = this.citeperiod;
-        if (citePeriod) {
-            return [
-                {
-                    isAscending: false,
-                    valuePath: `stat.art_cited_${citePeriod}`
-                }
-            ];
-        }
-        return [];
     }
 
     /**
