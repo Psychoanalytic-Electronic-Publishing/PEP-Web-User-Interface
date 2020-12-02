@@ -15,14 +15,5 @@ module('Integration | Component | image', function(hooks) {
         await render(hbs`{{image}}`);
 
         assert.equal(this.element.textContent?.trim(), '');
-
-        // Template block usage:
-        await render(hbs`
-      {{#image}}
-        template block text
-      {{/image}}
-    `);
-
-        assert.equal(this.element.textContent?.trim(), 'template block text');
     });
 });
