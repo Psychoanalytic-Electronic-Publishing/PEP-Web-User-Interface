@@ -104,22 +104,6 @@ export async function loadXSLT(this: any): Promise<Document | null> {
 }
 
 /**
- * Convert object to browser encoded string
- *
- * @export
- * @param {*} object
- * @return {*}
- */
-export function convertToBrowserQueryParamString(object: any) {
-    return Object.keys(object)
-        .reduce<string[]>(function(a, k) {
-            a.push(k + '=' + encodeURIComponent(object[k]));
-            return a;
-        }, [])
-        .join('&');
-}
-
-/**
  * Build the HTML to jump to search hits
  *
  * @export

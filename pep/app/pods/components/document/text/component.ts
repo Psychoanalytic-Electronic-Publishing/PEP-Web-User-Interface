@@ -85,7 +85,9 @@ export default class DocumentText extends Component<DocumentTextArgs> {
     @service('pep-session') session!: PepSessionService;
 
     @tracked xml?: XMLDocument;
+
     containerElement?: HTMLElement;
+    scrollableElement?: Element | null;
     defaultOffsetForScroll = -70;
 
     tippyOptions = {
@@ -341,7 +343,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
      * @memberof DocumentText
      */
     animateScrollToElement(element?: Element | null) {
-        const container = this.containerElement?.closest('.page-content-inner');
+        const container = this.scrollableElement;
         if (element && container) {
             return animateScrollTo(element, {
                 verticalOffset: this.scrollOffset,
@@ -394,6 +396,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
     @action
     setupListeners(element: HTMLElement) {
         this.containerElement = element;
+        this.scrollableElement = this.containerElement?.closest('.page-content-inner');
         scheduleOnce('afterRender', this, this.attachTooltips);
         if (this.args.page) {
             this.scrollToPage(parseInt(this.args.page, 10));
