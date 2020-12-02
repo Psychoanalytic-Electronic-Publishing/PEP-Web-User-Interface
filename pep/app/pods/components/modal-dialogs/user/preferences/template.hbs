@@ -33,6 +33,7 @@
                         @placeholder={{t "preferences.search.hic.limit"}}
                         @value={{this.currentUser.preferences.searchHICLimit}}
                         maxlength="2"
+                        {{on "input" (fn this.updatePreference this.hicLimit)}}
                     />
                 </div>
             </div>

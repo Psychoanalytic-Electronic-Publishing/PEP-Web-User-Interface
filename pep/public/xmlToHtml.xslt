@@ -66,6 +66,8 @@
     <xsl:param name="report-warnings" select="'no'"/>
     <xsl:param name="imageUrl"/>
     <xsl:param name="journalName"/>
+    <xsl:param name="clientId"/>
+    <xsl:param name="sessionId"/>
     <xsl:param name="searchTerm"/>
     <xsl:variable name="verbose" select="$report-warnings = 'yes'"/>
     <xsl:variable name="fa-right-arrow">
@@ -192,13 +194,12 @@
             <p class="banner">
                 <a class="anchor" name="{$document-id}" id="{$document-id}"/>
                 <a class="toc-link" href="/#/ArticleList/?journal={$journal-code}">
-                    <!--<img src="./images/banner{$journal-code}Logo.gif" alt=""/>-->
                     <img class="img-fluid">
                         <xsl:attribute name="src" >
-                            <xsl:value-of select="concat($imageUrl, '/banner', $journal-code, 'Logo.gif')"/>
+                            <xsl:value-of select="concat($imageUrl, '/banner', $journal-code, 'Logo.gif?client-id=', $clientId, '&#38;client-session=', $sessionId)"/>
                         </xsl:attribute>
                         <xsl:attribute name="data-image">
-                            <xsl:value-of select="concat('banner', $journal-code, 'Logo.gif')" />
+                            <xsl:value-of select="concat('banner', $journal-code, 'Logo.gif?client-id=', $clientId, '&#38;client-session=', $sessionId)" />
                         </xsl:attribute>
                         <xsl:attribute name="alt">Journal Logo</xsl:attribute>
                     </img>
@@ -755,7 +756,7 @@
                         <xsl:variable name="image">
                             <xsl:value-of select="."/>
                         </xsl:variable>
-                        <xsl:value-of select="concat($imageUrl, '/', $image)"/>
+                        <xsl:value-of select="concat($imageUrl, '/', $image, '?client-id=', $clientId, '&#38;client-session=', $sessionId)"/>
                     </xsl:attribute>
                 </xsl:for-each>
             </img>
@@ -776,7 +777,7 @@
                         <xsl:variable name="image">
                             <xsl:value-of select="."/>
                         </xsl:variable>
-                        <xsl:value-of select="concat($imageUrl, '/', $image)"/>
+                        <xsl:value-of select="concat($imageUrl, '/', $image, '?client-id=', $clientId, '&#38;client-session=', $sessionId)"/>
                     </xsl:attribute>
                 </xsl:for-each>
             </img>
