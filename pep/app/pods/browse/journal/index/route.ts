@@ -11,6 +11,8 @@ import Source from 'pep/pods/source/model';
 export default class BrowseJournalIndex extends Route {
     sourceCode?: string;
     journalInformation?: Journal;
+    // API removed paging - but Im leaving it in for now in case we change our minds
+    limit = 1000;
     /**
      * Loads the volumes for a specific source
      *
@@ -23,7 +25,8 @@ export default class BrowseJournalIndex extends Route {
         const apiQueryParams = buildQueryParams({
             context: this.controllerFor('browse.journal.index'),
             pagingRootKey: null,
-            filterRootKey: null
+            filterRootKey: null,
+            limit: this.limit
         });
 
         return this.store.query('volume', { ...apiQueryParams, sourcecode: this.sourceCode });
@@ -57,7 +60,8 @@ export default class BrowseJournalIndex extends Route {
             models: model.toArray() ?? [],
             metadata: model.meta,
             pagingRootKey: null,
-            filterRootKey: null
+            filterRootKey: null,
+            limit: this.limit
         });
     }
 }
