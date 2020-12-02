@@ -14,7 +14,8 @@ import animateScrollTo from 'animated-scroll-to';
 import ENV from 'pep/config/environment';
 import { DOCUMENT_IMG_BASE_URL } from 'pep/constants/documents';
 import {
-    HIT_MARKER_END, HIT_MARKER_END_OUTPUT_HTML, HIT_MARKER_START, HIT_MARKER_START_OUTPUT_HTML, SearchTermId
+    HIT_MARKER_END, HIT_MARKER_END_OUTPUT_HTML, HIT_MARKER_START, HIT_MARKER_START_OUTPUT_HTML, SEARCH_HIT_MARKER_REGEX,
+    SearchTermId
 } from 'pep/constants/search';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import Document from 'pep/pods/document/model';
@@ -24,8 +25,6 @@ import PepSessionService from 'pep/services/pep-session';
 import ThemeService from 'pep/services/theme';
 import { buildJumpToHitsHTML, loadXSLT, parseXML } from 'pep/utils/dom';
 import tippy, { Instance, Props } from 'tippy.js';
-
-import { SEARCH_HIT_MARKER_REGEX } from '../../../../constants/search';
 
 interface DocumentTextArgs {
     document: Document;
