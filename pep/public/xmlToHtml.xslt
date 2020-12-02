@@ -217,13 +217,16 @@
 
             <xsl:for-each select="artinfo">
                 <div id="{$this-article}-artinfo" class="artinfo" data-arttype="{@arttype}" data-journal="{@j}">
-                    <div class="art-title d-flex flex-column justify-content-center align-items-center flex-lg-row flex-wrap mt-3">
-                        <a href="/browse/{$journal-code}/volumes/{$artvol}?page={$artstartpg}">
-                            <xsl:apply-templates mode="metadata" select="arttitle" />
-                            <xsl:apply-templates mode="metadata" select="artsub"/>
-                        </a>
-                        <xsl:apply-templates select="arttitle/ftnx" />
-                        <xsl:apply-templates select="artsub/ftnx" />
+                    <div class="art-title mt-3 text-center">
+                        <span>
+                            <a href="/browse/{$journal-code}/volumes/{$artvol}?page={$artstartpg}">
+                                <xsl:apply-templates mode="metadata" select="arttitle" />
+                                <xsl:apply-templates mode="metadata" select="artsub"/>
+                            </a>
+                            <xsl:apply-templates select="arttitle/ftnx" />
+                            <xsl:apply-templates select="artsub/ftnx" />
+                        </span>
+
                     </div>
                     <xsl:apply-templates mode="metadata" select="artauth"/>
                     <xsl:apply-templates mode="metadata" select="artkwds"/>

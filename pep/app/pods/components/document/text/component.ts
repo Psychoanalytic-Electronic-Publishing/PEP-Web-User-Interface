@@ -13,15 +13,19 @@ import IntlService from 'ember-intl/services/intl';
 import animateScrollTo from 'animated-scroll-to';
 import ENV from 'pep/config/environment';
 import { DOCUMENT_IMG_BASE_URL } from 'pep/constants/documents';
-import { SearchTermId } from 'pep/constants/search';
+import {
+    HIT_MARKER_END, HIT_MARKER_END_OUTPUT_HTML, HIT_MARKER_START, HIT_MARKER_START_OUTPUT_HTML, SearchTermId
+} from 'pep/constants/search';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import Document from 'pep/pods/document/model';
 import GlossaryTerm from 'pep/pods/glossary-term/model';
 import LoadingBarService from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
 import ThemeService from 'pep/services/theme';
-import { loadXSLT, parseXML } from 'pep/utils/dom';
+import { buildJumpToHitsHTML, loadXSLT, parseXML } from 'pep/utils/dom';
 import tippy, { Instance, Props } from 'tippy.js';
+
+import { SEARCH_HIT_MARKER_REGEX } from '../../../../constants/search';
 
 interface DocumentTextArgs {
     document: Document;
@@ -71,10 +75,6 @@ export enum DocumentTooltipSelectors {
     NEW_AUTHOR = '.newauthortip',
     FOOTNOTE = '.ftnx'
 }
-const HIT_MARKER_START = '#@@@';
-const HIT_MARKER_END = '@@@#';
-const HIT_MARKER_START_OUTPUT_HTML = `<span class='searchhit' data-type='${DocumentLinkTypes.SEARCH_HIT_TEXT}'>`;
-const HIT_MARKER_END_OUTPUT_HTML = '</span>';
 export default class DocumentText extends Component<DocumentTextArgs> {
     @service store!: DS.Store;
     @service loadingBar!: LoadingBarService;
@@ -164,23 +164,20 @@ export default class DocumentText extends Component<DocumentTextArgs> {
      */
     replaceHitMarkerText(text: string) {
         let anchorCount = 0;
-        let re = new RegExp(`${HIT_MARKER_START}|${HIT_MARKER_END}`, 'g');
-        return text.replace(re, (match: string) => {
-            let jumpToPreviousHit = `<button data-target-search-hit="${anchorCount}" data-type="${DocumentLinkTypes.SEARCH_HIT_ARROW}" class="btn btn-link py-0 pr-1 pl-0">&#60;</button>`;
-            let jumpToNextHit = `<button data-target-search-hit="${anchorCount + 1}" data-type="${
-                DocumentLinkTypes.SEARCH_HIT_ARROW
-            }" class="btn btn-link py-0 pl-1 pr-0">&#62;</button>`;
+        let regex = SEARCH_HIT_MARKER_REGEX;
+        return text.replace(regex, (match: string) => {
+            const { previous, next } = buildJumpToHitsHTML(anchorCount);
             if (match === HIT_MARKER_START) {
                 anchorCount += 1;
                 if (anchorCount > 1) {
-                    return `<span data-hit-number='${anchorCount}' class='hit'>${jumpToPreviousHit}${HIT_MARKER_START_OUTPUT_HTML}`;
+                    return `<span data-hit-number='${anchorCount}' class='hit'>${previous}${HIT_MARKER_START_OUTPUT_HTML}`;
                 } else if (anchorCount <= 1) {
                     return `<span data-hit-number='${anchorCount}' class='hit'>${HIT_MARKER_START_OUTPUT_HTML}`;
                 } else {
                     return '';
                 }
             } else if (match === HIT_MARKER_END) {
-                return `${HIT_MARKER_END_OUTPUT_HTML}${jumpToNextHit}</span>`;
+                return `${HIT_MARKER_END_OUTPUT_HTML}${next}</span>`;
             } else {
                 return match;
             }
@@ -271,6 +268,10 @@ export default class DocumentText extends Component<DocumentTextArgs> {
                 }
             }
         } else if (type === DocumentLinkTypes.SEARCH_HIT_ARROW) {
+            const selectedNode = this.containerElement?.querySelector(`.search-hit-selected`);
+            if (selectedNode) {
+                selectedNode?.classList.remove('search-hit-selected');
+            }
             const targetSearchHit = attributes.getNamedItem('data-target-search-hit')?.nodeValue;
             if (targetSearchHit) {
                 this.scrollToSearchHit(targetSearchHit);
@@ -317,9 +318,10 @@ export default class DocumentText extends Component<DocumentTextArgs> {
      * @param {number} page
      * @memberof DocumentText
      */
-    scrollToSearchHit(hitNumber: string) {
+    async scrollToSearchHit(hitNumber: string) {
         const element = this.containerElement?.querySelector(`[data-hit-number='${hitNumber}']`);
-        this.animateScrollToElement(element);
+        await this.animateScrollToElement(element);
+        element?.classList.add('search-hit-selected');
     }
 
     /**
@@ -342,7 +344,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
     animateScrollToElement(element?: Element | null) {
         const container = this.containerElement?.closest('.page-content-inner');
         if (element && container) {
-            animateScrollTo(element, {
+            return animateScrollTo(element, {
                 verticalOffset: this.scrollOffset,
                 elementToScroll: container
             });

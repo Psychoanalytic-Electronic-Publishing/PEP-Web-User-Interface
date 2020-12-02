@@ -2,6 +2,22 @@ $document-font-size: 1rem;
 $document-paragraph-indent: 1.5rem;
 
 .document-text {
+    .search-hit-selected {
+        animation-name: flash-animation;
+        animation-duration: 0.75s;
+    }
+    @keyframes flash-animation {
+        0% {
+            background: default;
+        }
+        50% {
+            background: $primary;
+        }
+        100% {
+            background: default;
+        }
+    }
+
     h1 {
         font-weight: bold;
         margin-top: 1rem;

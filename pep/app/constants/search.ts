@@ -1,5 +1,6 @@
 import IntlService from 'ember-intl/services/intl';
 
+import { DocumentLinkTypes } from 'pep/pods/components/document/text/component';
 import { groupCountsByRange, SearchFacetCounts } from 'pep/utils/search';
 
 /**
@@ -629,3 +630,9 @@ export const SearchViews: SearchView[] = [
     { id: SearchViewType.BIBLIOGRAPHIC, label: 'Bibliographic' },
     { id: SearchViewType.TABLE, label: 'Table' }
 ];
+
+export const HIT_MARKER_START = '#@@@';
+export const HIT_MARKER_END = '@@@#';
+export const HIT_MARKER_START_OUTPUT_HTML = `<span class='searchhit' data-type='${DocumentLinkTypes.SEARCH_HIT_TEXT}'>`;
+export const HIT_MARKER_END_OUTPUT_HTML = '</span>';
+export const SEARCH_HIT_MARKER_REGEX = new RegExp(`${HIT_MARKER_START}|${HIT_MARKER_END}`, 'g');

@@ -1,6 +1,7 @@
 import { isNone } from '@ember/utils';
 
 import fetch from 'fetch';
+import { DocumentLinkTypes } from 'pep/pods/components/document/text/component';
 
 export interface ElementOffset {
     top: number;
@@ -116,4 +117,22 @@ export function convertToBrowserQueryParamString(object: any) {
             return a;
         }, [])
         .join('&');
+}
+
+/**
+ * Build the HTML to jump to search hits
+ *
+ * @export
+ * @param {number} anchorCount
+ * @return {object}
+ */
+export function buildJumpToHitsHTML(anchorCount: number) {
+    let previous = `<button data-target-search-hit="${anchorCount}" data-type="${DocumentLinkTypes.SEARCH_HIT_ARROW}" class="btn btn-link py-0 pr-1 pl-0">&#60;</button>`;
+    let next = `<button data-target-search-hit="${anchorCount + 1}" data-type="${
+        DocumentLinkTypes.SEARCH_HIT_ARROW
+    }" class="btn btn-link py-0 pl-1 pr-0">&#62;</button>`;
+    return {
+        previous,
+        next
+    };
 }
