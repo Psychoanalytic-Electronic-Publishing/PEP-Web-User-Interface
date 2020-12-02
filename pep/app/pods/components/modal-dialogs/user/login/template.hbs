@@ -1,4 +1,4 @@
-<ModalDialog @onClose={{@onClose}} @size="md" @closable={{false}} as |Modal|>
+<ModalDialog @onClose={{@onClose}} @size="md" @clickOutsideToClose={{false}} as |Modal|>
     <Modal.header @title={{t "login.title"}} />
     <FormValidator @changeset={{@options.changeset}} @submit={{this.login}} as |changeset validator|>
         <Modal.body>
