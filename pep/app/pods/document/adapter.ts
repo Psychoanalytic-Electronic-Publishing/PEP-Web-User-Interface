@@ -6,6 +6,7 @@ import { pluralize } from 'ember-inflector';
 import ENV from 'pep/config/environment';
 import ApplicationAdapter, { SnapshotWithQuery } from 'pep/pods/application/adapter';
 
+export type SnapshotWithSearchQuery = SnapshotWithQuery & { adapterOptions: { searchQuery: any } };
 export default class DocumentAdapter extends ApplicationAdapter {
     modelNameOverride?: string;
     origPathSegmentOverride?: string;
@@ -52,12 +53,16 @@ export default class DocumentAdapter extends ApplicationAdapter {
         const newPathSegment = `${origPathSegment}/${classify(modelNameStr)}`;
 
         // always return XML version of documents
-        const snapshotWithQuery = (snapshot as unknown) as SnapshotWithQuery;
+        const snapshotWithQuery = (snapshot as unknown) as SnapshotWithSearchQuery;
         const adapterOpts = snapshotWithQuery.adapterOptions ?? {};
         const query = adapterOpts.query ?? {};
         snapshotWithQuery.adapterOptions = { ...adapterOpts, query: { ...query, return_format: 'XML' } };
 
-        const url = super.urlForFindRecord(id, modelName, snapshotWithQuery);
+        let url = super.urlForFindRecord(id, modelName, snapshotWithQuery);
+        if (adapterOpts.searchQuery) {
+            url += `&${adapterOpts.searchQuery}`;
+        }
+
         return url.replace(`/${this.origPathSegmentOverride ?? origPathSegment}`, `/${newPathSegment}`);
     }
 }

@@ -69,14 +69,7 @@ $document-paragraph-indent: 1.5rem;
             margin-top: 0px;
             margin-bottom: 6px;
         }
-        &.artsub,
-        &.title {
-            font-size: 1.3rem;
-            font-weight: bold;
-            text-align: center;
-            margin-top: 0px;
-            margin-bottom: 3px;
-        }
+
         &.subtitle {
             font-size: 10px;
             font-weight: bold;
@@ -203,6 +196,14 @@ $document-paragraph-indent: 1.5rem;
             font-weight: bold;
             font-style: italic;
         }
+        &.artsub,
+        &.title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 0px;
+            margin-bottom: 3px;
+        }
     }
 
     div {
@@ -228,6 +229,15 @@ $document-paragraph-indent: 1.5rem;
             }
             .ftn {
                 .ftr.first {
+                    display: inline;
+                }
+            }
+        }
+        &.art-title {
+            font-size: 1.3rem;
+            a {
+                text-align: center;
+                p {
                     display: inline;
                 }
             }
