@@ -70,10 +70,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="d-flex justify-content-center align-items-center">
                                 {{#if this.sourcecode}}
-                                    <Image
-                                        @source="/assets/images/banner{{this.sourcecode}}Logo.gif"
-                                        alt="{{t "browse.alt"}}"
-                                    />
+                                    <Image @source="{{this.journalImageUrl}}" alt="{{t "browse.alt"}}" />
                                 {{/if}}
                             </div>
                         </div>
