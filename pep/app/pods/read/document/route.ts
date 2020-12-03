@@ -7,6 +7,8 @@ import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
 
 import { WIDGET } from 'pep/constants/sidebar';
 import { PageNav } from 'pep/mixins/page-layout';
+import BrowseController, { BrowseTabs } from 'pep/pods/browse/controller';
+import BrowseJournalVolumeController from 'pep/pods/browse/journal/volume/controller';
 import Document from 'pep/pods/document/model';
 import ReadDocumentController from 'pep/pods/read/document/controller';
 import SearchDocument from 'pep/pods/search-document/model';
@@ -36,6 +38,7 @@ export default class ReadDocument extends PageNav(Route) {
     searchResults?: Document[];
     searchResultsMeta?: any;
     searchParams?: ReadDocumentParams;
+    searchHasPaging = true;
 
     /**
      * Fetch the requested document
@@ -54,7 +57,6 @@ export default class ReadDocument extends PageNav(Route) {
      */
     async afterModel(model: Document, transition: Transition) {
         super.afterModel(model, transition);
-
         this.sidebar.update({
             [WIDGET.RELATED_DOCUMENTS]: model,
             [WIDGET.MORE_LIKE_THESE]: model,
@@ -74,6 +76,49 @@ export default class ReadDocument extends PageNav(Route) {
             pastParams = this.paramsFor(transition.from?.name) as ReadDocumentParams;
             results = controller?.paginator?.models;
             resultsMeta = controller?.paginator?.metadata;
+            this.searchHasPaging = true;
+        } else if (transition.from?.name === 'browse.index' || transition.from?.name.includes('browse.book')) {
+            const controller = this.controllerFor('browse') as BrowseController;
+            const tab = controller.tab;
+            if (tab === BrowseTabs.BOOKS || tab === BrowseTabs.VIDEOS) {
+                const smartSearchTerm = model.id.split('.');
+                const searchParams = buildSearchQueryParams({
+                    smartSearchTerm: `${smartSearchTerm[0]}.${smartSearchTerm[1]}.*`
+                });
+                const controller = this.controllerFor(this.routeName) as ReadDocumentController;
+                const queryParams = buildQueryParams({
+                    context: controller,
+                    pagingRootKey: null,
+                    filterRootKey: null,
+                    sorts:
+                        controller.selectedView.id === controller.tableView
+                            ? ['']
+                            : [this.currentUser.preferences?.searchSortType.id ?? ''],
+                    processQueryParams: (params) => ({ ...params, ...searchParams })
+                });
+                pastParams = queryParams;
+                const response = (await this.store.query('search-document', queryParams)) as RecordArrayWithMeta<
+                    SearchDocument
+                >;
+                results = response.toArray();
+                resultsMeta = response.meta;
+                this.searchHasPaging = true;
+            }
+        } else if (transition.from?.name === 'browse.journal.volume') {
+            const controller = this.controllerFor(transition.from?.name) as BrowseJournalVolumeController;
+            const readController = this.controllerFor(this.routeName) as ReadDocumentController;
+            const queryParams = buildQueryParams({
+                context: controller,
+                pagingRootKey: null,
+                filterRootKey: null,
+                sorts:
+                    readController.selectedView.id === readController.tableView
+                        ? ['']
+                        : [this.currentUser.preferences?.searchSortType.id ?? '']
+            });
+            pastParams = queryParams;
+            results = controller.model;
+            this.searchHasPaging = false;
         }
 
         if (!results) {
@@ -117,7 +162,10 @@ export default class ReadDocument extends PageNav(Route) {
                 >;
                 results = response.toArray();
                 resultsMeta = response.meta;
+                this.searchHasPaging = true;
             }
+        } else if (results && !resultsMeta) {
+            resultsMeta = { fullCount: results.length };
         }
 
         if (results && resultsMeta) {
@@ -153,7 +201,8 @@ export default class ReadDocument extends PageNav(Route) {
             pagingRootKey: null,
             filterRootKey: null,
             processQueryParams: controller.processQueryParams,
-            onChangeSorting: controller.onChangeSorting
+            onChangeSorting: controller.onChangeSorting,
+            limit: this.searchHasPaging ? 20 : 1000
         });
         this.currentUser.lastViewedDocumentId = model.id;
     }
