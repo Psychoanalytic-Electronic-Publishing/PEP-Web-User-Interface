@@ -67,6 +67,7 @@ export default class Application extends DS.RESTAdapter.extend(FastbootAdapter) 
      * When using ember-fetch with ember-simple-auth, authorization headers must be manually set
      * @returns Object
      */
+    //@ts-ignore
     get headers() {
         const headers = { 'client-id': ENV.clientId } as any;
         if (this.session.isAuthenticated) {

@@ -281,16 +281,6 @@ export default class Search extends Controller {
     }
 
     /**
-     * When facet option selections change, resubmits the search
-     * after a short debounce timeout
-     */
-    @restartableTask
-    *resubmitSearchOnFacetsChange() {
-        yield timeout(500);
-        yield this.resubmitSearchWithFacets();
-    }
-
-    /**
      * Updates the query params with the current search form values
      */
     @action
@@ -353,7 +343,6 @@ export default class Search extends Controller {
         }
 
         this.currentSearchTerms = searchTerms;
-        this.onSearchCriteriaChange();
         taskFor(this.updateSearchFormPrefs).perform();
     }
 
@@ -369,7 +358,6 @@ export default class Search extends Controller {
         //a brand new one like we normally would, so that it doesnt trigger an insert animation
         setProperties(oldTerm, newTerm);
         this.currentSearchTerms = searchTerms;
-        this.onSearchCriteriaChange();
         taskFor(this.updateSearchFormPrefs).perform();
     }
 
@@ -380,7 +368,6 @@ export default class Search extends Controller {
     @action
     updateMatchSynonyms(isChecked: boolean) {
         this.currentMatchSynonyms = isChecked;
-        this.onSearchCriteriaChange();
     }
 
     /**
@@ -390,7 +377,6 @@ export default class Search extends Controller {
     @action
     updateViewedPeriod(value: ViewPeriod) {
         this.currentViewedPeriod = value;
-        this.onSearchCriteriaChange();
     }
 
     /**
@@ -404,7 +390,6 @@ export default class Search extends Controller {
             this.currentCitedCount = '';
             this.currentViewedCount = '';
             this.currentViewedPeriod = SEARCH_DEFAULT_VIEW_PERIOD;
-            this.onSearchCriteriaChange();
         }
 
         taskFor(this.updateSearchFormPrefs).perform();
@@ -419,7 +404,6 @@ export default class Search extends Controller {
     @action
     updateSelectedFacets(newSelection: SearchFacetValue[]) {
         this.currentFacets = newSelection;
-        return taskFor(this.resubmitSearchOnFacetsChange).perform();
     }
 
     /**
@@ -429,17 +413,6 @@ export default class Search extends Controller {
     @action
     updateSmartSearchText(newText: string) {
         this.currentSmartSearchTerm = newText;
-        this.onSearchCriteriaChange();
-    }
-
-    /**
-     * Whenever the main search form criteria changes (smart search, terms, limits, synomyms)
-     * Clear any existing Refine facet settings and update the Refine options/counts
-     */
-    @action
-    onSearchCriteriaChange() {
-        this.currentFacets = [];
-        return taskFor(this.updateRefineMetadata).perform();
     }
 
     /**

@@ -1,6 +1,5 @@
 import Service from '@ember/service';
 
-import Document from 'pep/pods/document/model';
 import printJS from 'print-js';
 
 export default class PrinterService extends Service {
@@ -11,7 +10,7 @@ export default class PrinterService extends Service {
      * @return {*}
      * @memberof PrinterService
      */
-    dataToBibliographicHTML(data: Document[]) {
+    dataToBibliographicHTML(data: any[]) {
         const listItemsHtml = data.map((item) => {
             return `<li class="mb-3 print-item">${item.authorMast}, ${item.year}, ${item.title}, ${item.documentRef}</li>`;
         });

@@ -8,7 +8,7 @@ export default class SourceVolume extends Application {
      * The endpoint for journals is /v2/Metadata/Contents
      * @param {String} modelName
      */
-    pathForType<K extends string | number>(modelName: K) {
+    pathForType() {
         return 'Contents';
     }
 

@@ -4,5 +4,7 @@ import { PageNav } from 'pep/mixins/page-layout';
 
 export default class ReadLoading extends PageNav(Route) {
     navController = 'read';
-    navTemplate = 'read/nav';
+    get navTemplate() {
+        return 'read/nav';
+    }
 }

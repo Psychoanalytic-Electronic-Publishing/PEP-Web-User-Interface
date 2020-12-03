@@ -3,7 +3,7 @@ import { action, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 
-import { Pagination, Sorting } from '@gavant/ember-pagination/hooks/pagination';
+import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
 import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
 import IntlService from 'ember-intl/services/intl';
 
@@ -16,7 +16,6 @@ import FastbootMediaService from 'pep/services/fastboot-media';
 import LoadingBarService from 'pep/services/loading-bar';
 import ScrollableService from 'pep/services/scrollable';
 import SidebarService from 'pep/services/sidebar';
-import { transformSortDirectionToAPI, transformSortDirectionToTable } from 'pep/utils/sort';
 import { documentCSVUrl } from 'pep/utils/url';
 
 import { PUBPERIOD_ALL_YEARS } from '../../constants/sidebar';
