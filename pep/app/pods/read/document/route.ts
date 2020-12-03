@@ -141,7 +141,7 @@ export default class ReadDocument extends PageNav(Route) {
         //@ts-ignore
         super.setupController(controller, model);
         copyToController(this.searchParams, controller);
-        controller.paginator = usePagination<Document>({
+        controller.paginator = usePagination<Document, any>({
             context: controller,
             modelName: 'search-document',
             models: this.searchResults ?? [],

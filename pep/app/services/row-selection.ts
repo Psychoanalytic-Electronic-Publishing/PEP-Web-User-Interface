@@ -1,8 +1,6 @@
 import Service from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 
-import Document from 'pep/pods/document/model';
-
 export default class RowSelection<T> extends Service {
     @tracked allRecords: boolean = false;
     @tracked includedRecords: T[] = [];

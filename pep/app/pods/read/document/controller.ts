@@ -26,7 +26,7 @@ import PrinterService from 'pep/services/printer';
 import SearchSelection from 'pep/services/search-selection';
 import { buildSearchQueryParams, clearSearch } from 'pep/utils/search';
 import { SearchSorts, SearchSortType, transformSearchSortsToTable, transformSearchSortToAPI } from 'pep/utils/sort';
-import { reject } from 'rsvp';
+import { reject, resolve } from 'rsvp';
 
 export default class ReadDocument extends Controller {
     @service('pep-session') session!: PepSessionService;
@@ -151,7 +151,7 @@ export default class ReadDocument extends Controller {
      */
     @action
     onChangeSorting(sorts: string[]) {
-        return transformSearchSortToAPI(sorts);
+        return resolve(transformSearchSortToAPI(sorts));
     }
 
     get tableSorts() {

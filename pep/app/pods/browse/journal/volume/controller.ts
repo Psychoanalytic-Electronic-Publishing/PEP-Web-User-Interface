@@ -1,6 +1,5 @@
 import Controller from '@ember/controller';
 import { action } from '@ember/object';
-import RouterService from '@ember/routing/router-service';
 import { inject as service } from '@ember/service';
 import { cached, tracked } from '@glimmer/tracking';
 
@@ -11,7 +10,6 @@ import ENV from 'pep/config/environment';
 import { TITLE_REGEX } from 'pep/constants/regex';
 import Abstract from 'pep/pods/abstract/model';
 import { SearchPreviewMode } from 'pep/pods/components/search/preview/component';
-import Document from 'pep/pods/document/model';
 import SourceVolume from 'pep/pods/source-volume/model';
 import Volume from 'pep/pods/volume/model';
 import BrowseSelection from 'pep/services/browse-selection';
@@ -53,7 +51,9 @@ export default class BrowseJournalVolume extends Controller {
      * @memberof Search
      */
     get exportedData() {
-        return this.browseSelection.includedRecords.length ? this.browseSelection.includedRecords : this.model;
+        return this.browseSelection.includedRecords.length
+            ? this.browseSelection.includedRecords
+            : (this.model as SourceVolume[]);
     }
 
     queryParams = ['preview'];
