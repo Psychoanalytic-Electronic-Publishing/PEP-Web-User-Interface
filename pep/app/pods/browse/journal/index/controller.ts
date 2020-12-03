@@ -5,6 +5,7 @@ import { tracked } from '@glimmer/tracking';
 
 import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
 
+import ENV from 'pep/config/environment';
 import Journal from 'pep/pods/journal/model';
 import Source from 'pep/pods/source/model';
 import ConfigurationService from 'pep/services/configuration';
@@ -14,6 +15,12 @@ export default class BrowseJournalIndex extends Controller {
     @tracked paginator!: Pagination<Source>;
     @tracked sourcecode?: string;
     @tracked journal?: Journal;
+
+    assetBaseUrl = ENV.assetBaseUrl;
+
+    get journalImageUrl() {
+        return `${this.assetBaseUrl}assets/images/publisher-logos/banner${this.sourcecode}Logo.gif`;
+    }
 
     get publisherInformation() {
         const code = this.sourcecode;

@@ -6,7 +6,8 @@ module.exports = function(defaults) {
     let app = new EmberApp(defaults, {
         fingerprint: {
             prepend: process.env.ASSETS_BASE_URL,
-            extensions: ['js', 'css', 'png', 'jpg', 'gif', 'map', 'xslt']
+            extensions: ['js', 'css', 'png', 'jpg', 'gif', 'map', 'xslt'],
+            exclude: ['/images/publisher-logos']
         },
         outputPaths: {
             app: {
