@@ -166,6 +166,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
     replaceHitMarkerText(text: string) {
         let anchorCount = 0;
         let regex = SEARCH_HIT_MARKER_REGEX;
+        let totalAnchorCount = text.match(new RegExp(HIT_MARKER_START, 'g'))?.length ?? 1;
         return text.replace(regex, (match: string) => {
             const { previous, next } = buildJumpToHitsHTML(anchorCount);
             if (match === HIT_MARKER_START) {
@@ -178,7 +179,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
                     return '';
                 }
             } else if (match === HIT_MARKER_END) {
-                return `${HIT_MARKER_END_OUTPUT_HTML}${next}</span>`;
+                return `${HIT_MARKER_END_OUTPUT_HTML}${anchorCount < totalAnchorCount ? next : ''}</span>`;
             } else {
                 return match;
             }
