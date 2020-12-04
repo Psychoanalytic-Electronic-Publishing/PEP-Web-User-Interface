@@ -1,20 +1,17 @@
 import Service, { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import DS from 'ember-data';
-import { hash } from 'rsvp';
-import merge from 'lodash.merge';
 
+import DS from 'ember-data';
+
+import merge from 'lodash.merge';
 import ENV from 'pep/config/environment';
-import LangService from 'pep/services/lang';
-import { SEARCH_DEFAULT_VIEW_PERIOD, SEARCH_DEFAULT_FACETS } from 'pep/constants/search';
 import {
-    BaseConfiguration,
-    ContentConfiguration,
-    DEFAULT_BASE_CONFIGURATION,
-    DEFAULT_CONTENT_CONFIGURATION,
-    BASE_CONFIG_NAME,
-    CONTENT_CONFIG_NAME
+    BASE_CONFIG_NAME, BaseConfiguration, CONTENT_CONFIG_NAME, ContentConfiguration, DEFAULT_BASE_CONFIGURATION,
+    DEFAULT_CONTENT_CONFIGURATION
 } from 'pep/constants/configuration';
+import { SEARCH_DEFAULT_FACETS, SEARCH_DEFAULT_VIEW_PERIOD } from 'pep/constants/search';
+import LangService from 'pep/services/lang';
+import { hash } from 'rsvp';
 
 export default class ConfigurationService extends Service {
     @service store!: DS.Store;

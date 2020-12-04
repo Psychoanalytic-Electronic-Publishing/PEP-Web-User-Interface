@@ -3,10 +3,12 @@ import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 
 import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hooks/pagination';
-import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
+import { buildQueryParams, QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 
 import { WIDGET } from 'pep/constants/sidebar';
 import { PageNav } from 'pep/mixins/page-layout';
+import BrowseController, { BrowseTabs } from 'pep/pods/browse/controller';
+import BrowseJournalVolumeController from 'pep/pods/browse/journal/volume/controller';
 import Document from 'pep/pods/document/model';
 import ReadDocumentController from 'pep/pods/read/document/controller';
 import SearchDocument from 'pep/pods/search-document/model';
@@ -35,7 +37,9 @@ export default class ReadDocument extends PageNav(Route) {
 
     searchResults?: Document[];
     searchResultsMeta?: any;
-    searchParams?: ReadDocumentParams;
+    searchParams?: ReadDocumentParams | QueryParamsObj;
+    searchHasPaging = true;
+    showBackButton = true;
 
     /**
      * Fetch the requested document
@@ -54,7 +58,6 @@ export default class ReadDocument extends PageNav(Route) {
      */
     async afterModel(model: Document, transition: Transition) {
         super.afterModel(model, transition);
-
         this.sidebar.update({
             [WIDGET.RELATED_DOCUMENTS]: model,
             [WIDGET.MORE_LIKE_THESE]: model,
@@ -64,42 +67,77 @@ export default class ReadDocument extends PageNav(Route) {
 
         let results;
         let resultsMeta;
-        let pastParams;
+        let pastQueryParams = transition.from?.queryParams;
+        let queryParams = transition.to?.queryParams;
 
-        // if we are transitioning from either the search results page, or another read document page
-        // attempt to pull in the existing documents models for the results list, instead of making
-        // another search query request for the same data
-        if (transition.from?.name === 'read.document' || transition.from?.name === 'search') {
-            const controller = this.controllerFor(transition.from?.name) as ReadDocumentController;
-            pastParams = this.paramsFor(transition.from?.name) as ReadDocumentParams;
-            results = controller?.paginator?.models;
-            resultsMeta = controller?.paginator?.metadata;
-        }
+        // If your coming to the page fresh, or from another document or the search we want to try and re-use the search if possible
+        if (
+            !transition.from?.name ||
+            transition.from?.name === 'read.document' ||
+            transition.from?.name === 'search' ||
+            transition.from?.name === 'search.index'
+        ) {
+            if (transition.from?.name) {
+                const controller = this.controllerFor(transition.from?.name) as ReadDocumentController;
+                results = controller?.paginator?.models;
+                resultsMeta = controller?.paginator?.metadata;
+                this.searchHasPaging = true;
+                this.showBackButton = true;
+            }
 
-        if (!results) {
-            const params = this.paramsFor('read.document') as ReadDocumentParams;
-            pastParams = params;
-            //workaround for https://github.com/emberjs/ember.js/issues/18981
-            const searchTerms = params._searchTerms ? JSON.parse(params._searchTerms) : [];
-            const facets = params._facets ? JSON.parse(params._facets) : [];
-            const cfg = this.configuration.base.search;
-            const searchParams = buildSearchQueryParams({
-                smartSearchTerm: params.q,
-                searchTerms,
-                synonyms: params.matchSynonyms,
-                facetValues: facets,
-                citedCount: params.citedCount,
-                viewedCount: params.viewedCount,
-                viewedPeriod: params.viewedPeriod,
-                facetFields: cfg.facets.defaultFields,
-                joinOp: 'AND',
-                facetLimit: cfg.facets.valueLimit,
-                facetMinCount: cfg.facets.valueMinCount,
-                highlightlimit: this.currentUser.preferences?.searchHICLimit ?? cfg.hitsInContext.limit
-            });
+            // if the query params are different - load new items, otherwise reuse if possible
+            if (!pastQueryParams || JSON.stringify(pastQueryParams) !== JSON.stringify(queryParams)) {
+                const params = this.paramsFor('read.document') as ReadDocumentParams;
+                //workaround for https://github.com/emberjs/ember.js/issues/18981
+                const searchTerms = params._searchTerms ? JSON.parse(params._searchTerms) : [];
+                const facets = params._facets ? JSON.parse(params._facets) : [];
+                const cfg = this.configuration.base.search;
+                const searchParams = buildSearchQueryParams({
+                    smartSearchTerm: params.q,
+                    searchTerms,
+                    synonyms: params.matchSynonyms,
+                    facetValues: facets,
+                    citedCount: params.citedCount,
+                    viewedCount: params.viewedCount,
+                    viewedPeriod: params.viewedPeriod,
+                    facetFields: cfg.facets.defaultFields,
+                    joinOp: 'AND',
+                    facetLimit: cfg.facets.valueLimit,
+                    facetMinCount: cfg.facets.valueMinCount,
+                    highlightlimit: this.currentUser.preferences?.searchHICLimit ?? cfg.hitsInContext.limit
+                });
 
-            //if no search was submitted, don't fetch any results
-            if (hasSearchQuery(searchParams)) {
+                //if no search was submitted, don't fetch any results
+                if (hasSearchQuery(searchParams)) {
+                    const controller = this.controllerFor(this.routeName) as ReadDocumentController;
+                    const queryParams = buildQueryParams({
+                        context: controller,
+                        pagingRootKey: null,
+                        filterRootKey: null,
+                        sorts:
+                            controller.selectedView.id === controller.tableView
+                                ? ['']
+                                : [this.currentUser.preferences?.searchSortType.id ?? ''],
+                        processQueryParams: (params) => ({ ...params, ...searchParams })
+                    });
+
+                    const response = (await this.store.query('search-document', queryParams)) as RecordArrayWithMeta<
+                        SearchDocument
+                    >;
+                    results = response.toArray();
+                    resultsMeta = response.meta;
+                    this.searchHasPaging = true;
+                    this.showBackButton = true;
+                }
+            }
+        } else if (transition.from?.name === 'browse.index' || transition.from?.name.includes('browse.book')) {
+            const controller = this.controllerFor('browse') as BrowseController;
+            const tab = controller.tab;
+            if (tab === BrowseTabs.BOOKS || tab === BrowseTabs.VIDEOS) {
+                const smartSearchTerm = model.id.split('.');
+                const searchParams = buildSearchQueryParams({
+                    smartSearchTerm: `${smartSearchTerm[0]}.${smartSearchTerm[1]}.*`
+                });
                 const controller = this.controllerFor(this.routeName) as ReadDocumentController;
                 const queryParams = buildQueryParams({
                     context: controller,
@@ -111,19 +149,29 @@ export default class ReadDocument extends PageNav(Route) {
                             : [this.currentUser.preferences?.searchSortType.id ?? ''],
                     processQueryParams: (params) => ({ ...params, ...searchParams })
                 });
-
                 const response = (await this.store.query('search-document', queryParams)) as RecordArrayWithMeta<
                     SearchDocument
                 >;
                 results = response.toArray();
                 resultsMeta = response.meta;
+                this.searchHasPaging = true;
+                this.showBackButton = false;
             }
+        } else if (transition.from?.name === 'browse.journal.volume') {
+            const controller = this.controllerFor(transition.from?.name) as BrowseJournalVolumeController;
+            results = controller.model;
+            this.searchHasPaging = false;
+            this.showBackButton = false;
+        }
+
+        if (results && !resultsMeta) {
+            resultsMeta = { fullCount: results.length };
         }
 
         if (results && resultsMeta) {
             this.searchResults = results;
             this.searchResultsMeta = resultsMeta;
-            this.searchParams = pastParams;
+            this.searchParams = pastQueryParams;
         }
     }
 
@@ -153,9 +201,11 @@ export default class ReadDocument extends PageNav(Route) {
             pagingRootKey: null,
             filterRootKey: null,
             processQueryParams: controller.processQueryParams,
-            onChangeSorting: controller.onChangeSorting
+            onChangeSorting: controller.onChangeSorting,
+            limit: this.searchHasPaging ? 20 : 1000
         });
         this.currentUser.lastViewedDocumentId = model.id;
+        controller.showBackButton = this.showBackButton;
     }
 
     /**
@@ -173,5 +223,6 @@ export default class ReadDocument extends PageNav(Route) {
         //@ts-ignore
         super.resetController(controller, isExiting, transition);
         this.searchResults = undefined;
+        this.searchParams = undefined;
     }
 }
