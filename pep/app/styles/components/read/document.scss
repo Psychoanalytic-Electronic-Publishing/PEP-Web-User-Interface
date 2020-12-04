@@ -2,6 +2,22 @@ $document-font-size: 1rem;
 $document-paragraph-indent: 1.5rem;
 
 .document-text {
+    .search-hit-selected {
+        animation-name: flash-animation;
+        animation-duration: 0.75s;
+    }
+    @keyframes flash-animation {
+        0% {
+            background: default;
+        }
+        50% {
+            background: $primary;
+        }
+        100% {
+            background: default;
+        }
+    }
+
     h1 {
         font-weight: bold;
         margin-top: 1rem;
@@ -69,14 +85,7 @@ $document-paragraph-indent: 1.5rem;
             margin-top: 0px;
             margin-bottom: 6px;
         }
-        &.artsub,
-        &.title {
-            font-size: 1.3rem;
-            font-weight: bold;
-            text-align: center;
-            margin-top: 0px;
-            margin-bottom: 3px;
-        }
+
         &.subtitle {
             font-size: 10px;
             font-weight: bold;
@@ -203,6 +212,14 @@ $document-paragraph-indent: 1.5rem;
             font-weight: bold;
             font-style: italic;
         }
+        &.artsub,
+        &.title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 0px;
+            margin-bottom: 3px;
+        }
     }
 
     div {
@@ -228,6 +245,15 @@ $document-paragraph-indent: 1.5rem;
             }
             .ftn {
                 .ftr.first {
+                    display: inline;
+                }
+            }
+        }
+        &.art-title {
+            font-size: 1.3rem;
+            a {
+                text-align: center;
+                p {
                     display: inline;
                 }
             }

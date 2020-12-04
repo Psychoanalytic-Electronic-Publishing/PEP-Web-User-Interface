@@ -16,6 +16,7 @@ import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
 import SidebarService from 'pep/services/sidebar';
 import { buildSearchQueryParams, copyToController, hasSearchQuery } from 'pep/utils/search';
+import { serializeQueryParams } from 'pep/utils/url';
 
 export interface ReadDocumentParams {
     document_id: string;
@@ -46,8 +47,39 @@ export default class ReadDocument extends PageNav(Route) {
      * @param {ReadDocumentParams} params
      */
     model(params: ReadDocumentParams) {
+        let searchQueryString;
+        //workaround for https://github.com/emberjs/ember.js/issues/18981
+        const searchTerms = params._searchTerms ? JSON.parse(params._searchTerms) : [];
+        const facets = params._facets ? JSON.parse(params._facets) : [];
+        const cfg = this.configuration.base.search;
+        const searchParams = buildSearchQueryParams({
+            searchTerms,
+            synonyms: params.matchSynonyms,
+            facetValues: facets,
+            citedCount: params.citedCount,
+            viewedCount: params.viewedCount,
+            viewedPeriod: params.viewedPeriod,
+            facetFields: cfg.facets.defaultFields,
+            joinOp: 'AND',
+            facetLimit: cfg.facets.valueLimit,
+            facetMinCount: cfg.facets.valueMinCount,
+            highlightlimit: this.currentUser.preferences?.searchHICLimit ?? cfg.hitsInContext.limit
+        });
+        // API wants us to use fulltext1 here, not smartText which is why we are adding it after
+        searchParams.fulltext1 = params.q;
+        delete searchParams.abstract;
+        // We now want to take this object and convert it to a browser query param string to send to the server (as that is what they are expecting)
+        let queryString = serializeQueryParams(searchParams);
+        searchQueryString = encodeURIComponent(`?${queryString}`);
+        const adapterOptions = searchQueryString
+            ? {
+                  searchQuery: `search='${searchQueryString}'`
+              }
+            : null;
+
         return this.store.findRecord('document', params.document_id, {
-            reload: true
+            reload: true,
+            adapterOptions
         });
     }
 

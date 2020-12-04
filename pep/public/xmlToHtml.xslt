@@ -217,9 +217,16 @@
 
             <xsl:for-each select="artinfo">
                 <div id="{$this-article}-artinfo" class="artinfo" data-arttype="{@arttype}" data-journal="{@j}">
-                    <div class="art-title d-flex flex-column justify-content-center align-items-center flex-lg-row flex-wrap mt-3">
-                        <xsl:apply-templates mode="metadata" select="arttitle"/>
-                        <xsl:apply-templates mode="metadata" select="artsub"/>
+                    <div class="art-title mt-3 text-center">
+                        <span>
+                            <a href="/browse/{$journal-code}/volumes/{$artvol}?page={$artstartpg}">
+                                <xsl:apply-templates mode="metadata" select="arttitle" />
+                                <xsl:apply-templates mode="metadata" select="artsub"/>
+                            </a>
+                            <xsl:apply-templates select="arttitle/ftnx" />
+                            <xsl:apply-templates select="artsub/ftnx" />
+                        </span>
+
                     </div>
                     <xsl:apply-templates mode="metadata" select="artauth"/>
                     <xsl:apply-templates mode="metadata" select="artkwds"/>
@@ -402,25 +409,31 @@
     </xsl:template>
 
     <xsl:template match="arttitle" mode="metadata">
-        <p class="title">
-            <a href="/browse/{$journal-code}/volumes/{$artvol}?page={$artstartpg}">
-                <xsl:choose>
-                    <xsl:when test="text()">
-                        <xsl:apply-templates select="(node())[not(self::ftnx)]"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:apply-templates/>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </a>
-            <xsl:apply-templates select="ftnx"/>
-        </p>
+        <span class="title">
+            <xsl:choose>
+                <xsl:when test="text()">
+                    <xsl:apply-templates select="(node())[not(self::ftnx)]"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:apply-templates/>
+                </xsl:otherwise>
+            </xsl:choose>
+            <!-- <xsl:apply-templates select="ftnx" mode="title"/> -->
+        </span>
     </xsl:template>
 
     <xsl:template match="artsub" mode="metadata">
-        <p class="artsub">
-            &#58; <xsl:value-of select="."/>
-        </p>
+        <span class="artsub">&#58;
+            <xsl:choose>
+                <xsl:when test="text()">
+                    <xsl:apply-templates select="(node())[not(self::ftnx)]"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:apply-templates/>
+                </xsl:otherwise>
+            </xsl:choose>
+            <!-- <xsl:apply-templates select="ftnx" mode="title"/> -->
+        </span>
     </xsl:template>
 
     <xsl:template match="artkwds" mode="metadata">
@@ -612,6 +625,14 @@
             <a class="ftnx" data-type="{@type}" data-r="{@r}">
                 <xsl:value-of select="."/>
             </a>
+        </sup>
+    </xsl:template>
+
+    <xsl:template match="ftnx" mode="title">
+        <sup>
+            <span class="ftnx" data-type="{@type}" data-r="{@r}">
+                <xsl:value-of select="."/>
+            </span>
         </sup>
     </xsl:template>
 

@@ -10,21 +10,26 @@ import NotificationService from 'ember-cli-notifications/services/notifications'
 import { DS } from 'ember-data';
 import IntlService from 'ember-intl/services/intl';
 
+import animateScrollTo from 'animated-scroll-to';
 import ENV from 'pep/config/environment';
 import { DOCUMENT_IMG_BASE_URL } from 'pep/constants/documents';
-import { SearchTermId } from 'pep/constants/search';
+import {
+    HIT_MARKER_END, HIT_MARKER_END_OUTPUT_HTML, HIT_MARKER_START, HIT_MARKER_START_OUTPUT_HTML, SEARCH_HIT_MARKER_REGEX,
+    SearchTermId
+} from 'pep/constants/search';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import Document from 'pep/pods/document/model';
 import GlossaryTerm from 'pep/pods/glossary-term/model';
 import LoadingBarService from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
 import ThemeService from 'pep/services/theme';
-import { loadXSLT, parseXML } from 'pep/utils/dom';
+import { buildJumpToHitsHTML, loadXSLT, parseXML } from 'pep/utils/dom';
 import tippy, { Instance, Props } from 'tippy.js';
 
 interface DocumentTextArgs {
     document: Document;
     target?: 'abstract' | 'document';
+    offsetForScroll?: number;
     readQueryParams: {
         q: string;
         searchTerms: string | null;
@@ -52,7 +57,9 @@ export enum DocumentLinkTypes {
     FIGURE_WITH_ID = 'figure-id',
     AUTHOR_SEARCH = 'search-author',
     WEB = 'web-link',
-    DOI = 'doi'
+    DOI = 'doi',
+    SEARCH_HIT_ARROW = 'search-hit-arrow',
+    SEARCH_HIT_TEXT = 'search-hit-text'
 }
 
 /**
@@ -67,7 +74,6 @@ export enum DocumentTooltipSelectors {
     NEW_AUTHOR = '.newauthortip',
     FOOTNOTE = '.ftnx'
 }
-
 export default class DocumentText extends Component<DocumentTextArgs> {
     @service store!: DS.Store;
     @service loadingBar!: LoadingBarService;
@@ -79,7 +85,10 @@ export default class DocumentText extends Component<DocumentTextArgs> {
     @service('pep-session') session!: PepSessionService;
 
     @tracked xml?: XMLDocument;
+
     containerElement?: HTMLElement;
+    scrollableElement?: Element | null;
+    defaultOffsetForScroll = -70;
 
     tippyOptions = {
         theme: 'light',
@@ -98,6 +107,10 @@ export default class DocumentText extends Component<DocumentTextArgs> {
         this.parseDocumentText(text);
     }
 
+    private get scrollOffset() {
+        return this.args.offsetForScroll ?? this.defaultOffsetForScroll;
+    }
+
     /**
      * Parse the document text to transform it to an xml document
      *
@@ -113,12 +126,9 @@ export default class DocumentText extends Component<DocumentTextArgs> {
 
             if (xslt && document.implementation && document.implementation.createDocument) {
                 const processor = new XSLTProcessor();
-                // TODO: Why does this break FF?
-                // processor.setParameter('', 'searchTerm', [this.args.searchTerm]);
                 if (this.session.isAuthenticated) {
                     processor.setParameter('', 'sessionId', this.session.data.authenticated.SessionId);
                 }
-
                 processor.setParameter('', 'clientId', ENV.clientId);
                 processor.setParameter('', 'journalName', this.args.document.sourceTitle);
                 processor.setParameter('', 'imageUrl', DOCUMENT_IMG_BASE_URL);
@@ -140,10 +150,40 @@ export default class DocumentText extends Component<DocumentTextArgs> {
     get text() {
         if (this.xml) {
             var s = new XMLSerializer();
-            return s.serializeToString(this.xml);
+            return this.replaceHitMarkerText(s.serializeToString(this.xml));
         } else {
             return '';
         }
+    }
+
+    /**
+     * Find and replace all search hit marker text with the correct html
+     *
+     * @param {string} text
+     * @return {string}
+     * @memberof DocumentText
+     */
+    replaceHitMarkerText(text: string) {
+        let anchorCount = 0;
+        let regex = SEARCH_HIT_MARKER_REGEX;
+        let totalAnchorCount = text.match(new RegExp(HIT_MARKER_START, 'g'))?.length ?? 1;
+        return text.replace(regex, (match: string) => {
+            const { previous, next } = buildJumpToHitsHTML(anchorCount);
+            if (match === HIT_MARKER_START) {
+                anchorCount += 1;
+                if (anchorCount > 1) {
+                    return `<span data-hit-number='${anchorCount}' class='hit'>${previous}${HIT_MARKER_START_OUTPUT_HTML}`;
+                } else if (anchorCount <= 1) {
+                    return `<span data-hit-number='${anchorCount}' class='hit'>${HIT_MARKER_START_OUTPUT_HTML}`;
+                } else {
+                    return '';
+                }
+            } else if (match === HIT_MARKER_END) {
+                return `${HIT_MARKER_END_OUTPUT_HTML}${anchorCount < totalAnchorCount ? next : ''}</span>`;
+            } else {
+                return match;
+            }
+        });
     }
 
     /**
@@ -159,22 +199,12 @@ export default class DocumentText extends Component<DocumentTextArgs> {
     onDocumentClick(event: Event) {
         const target = event.target as HTMLElement;
         const attributes = target.attributes;
-        const type =
-            (attributes.getNamedItem('type')?.nodeValue as DocumentLinkTypes) ||
-            (attributes.getNamedItem('data-type')?.nodeValue as DocumentLinkTypes);
-
+        const type = this.getNodeType(target);
         if (target.tagName !== 'SUMMARY' && type !== DocumentLinkTypes.WEB && type !== DocumentLinkTypes.DOI) {
             event.preventDefault();
         }
         if (type === DocumentLinkTypes.GLOSSARY_TERM) {
-            const docId = attributes.getNamedItem('data-doc-id')?.nodeValue;
-            const groupName = attributes.getNamedItem('data-grpname')?.nodeValue;
-            if (docId) {
-                const id = docId.split('.');
-                this.viewGlossaryTerm(target.innerText, id[id.length - 1]);
-            } else if (groupName) {
-                this.viewGlossaryTerm(groupName);
-            }
+            this.viewGlossaryTermFromElement(target);
         } else if (type === DocumentLinkTypes.BIBLIOGRAPHY) {
             const id = attributes.getNamedItem('data-document-id')?.nodeValue;
             if (id) {
@@ -231,7 +261,69 @@ export default class DocumentText extends Component<DocumentTextArgs> {
             const lastName = target?.querySelector('.nlast')?.innerHTML;
             const name = `${firstName} ${lastName}`;
             this.args.viewSearch(JSON.stringify([{ term: name, type: SearchTermId.AUTHOR, value: name }]));
+        } else if (type === DocumentLinkTypes.SEARCH_HIT_TEXT) {
+            const possibleTermNode = target.parentElement?.parentElement;
+            if (possibleTermNode) {
+                const type = this.getNodeType(possibleTermNode);
+                if (type === DocumentLinkTypes.GLOSSARY_TERM) {
+                    this.viewGlossaryTermFromElement(possibleTermNode);
+                }
+            }
+        } else if (type === DocumentLinkTypes.SEARCH_HIT_ARROW) {
+            const selectedNode = this.containerElement?.querySelector(`.search-hit-selected`);
+            if (selectedNode) {
+                selectedNode?.classList.remove('search-hit-selected');
+            }
+            const targetSearchHit = attributes.getNamedItem('data-target-search-hit')?.nodeValue;
+            if (targetSearchHit) {
+                this.scrollToSearchHit(targetSearchHit);
+            }
         }
+    }
+
+    /**
+     * Try to get the target nodes type from either `type` or `data-type`
+     *
+     * @param {HTMLElement} target
+     * @return {*}
+     * @memberof DocumentText
+     */
+    getNodeType(target: HTMLElement) {
+        const attributes = target.attributes;
+        const type =
+            (attributes.getNamedItem('type')?.nodeValue as DocumentLinkTypes) ||
+            (attributes.getNamedItem('data-type')?.nodeValue as DocumentLinkTypes);
+        return type;
+    }
+
+    /**
+     * Hanlder for passing in an element and viewing a glossary term
+     *
+     * @param {HTMLElement} element
+     * @memberof DocumentText
+     */
+    viewGlossaryTermFromElement(element: HTMLElement) {
+        const attributes = element.attributes;
+        const docId = attributes.getNamedItem('data-doc-id')?.nodeValue;
+        const groupName = attributes.getNamedItem('data-grpname')?.nodeValue;
+        if (docId) {
+            const id = docId.split('.');
+            this.viewGlossaryTerm(element.innerText, id[id.length - 1]);
+        } else if (groupName) {
+            this.viewGlossaryTerm(groupName);
+        }
+    }
+
+    /**
+     * Scroll to a specific search hit in the document
+     *
+     * @param {number} page
+     * @memberof DocumentText
+     */
+    async scrollToSearchHit(hitNumber: string) {
+        const element = this.containerElement?.querySelector(`[data-hit-number='${hitNumber}']`);
+        await this.animateScrollToElement(element);
+        element?.classList.add('search-hit-selected');
     }
 
     /**
@@ -242,7 +334,23 @@ export default class DocumentText extends Component<DocumentTextArgs> {
      */
     scrollToPage(page: number) {
         const element = this.containerElement?.querySelector(`[data-page-start='${page}']`);
-        element?.scrollIntoView();
+        this.animateScrollToElement(element);
+    }
+
+    /**
+     * Animated the scroll to an element using a specified vertical offset
+     *
+     * @param {(Element | null)} [element]
+     * @memberof DocumentText
+     */
+    animateScrollToElement(element?: Element | null) {
+        const container = this.scrollableElement;
+        if (element && container) {
+            return animateScrollTo(element, {
+                verticalOffset: this.scrollOffset,
+                elementToScroll: container
+            });
+        }
     }
 
     /**
@@ -289,6 +397,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
     @action
     setupListeners(element: HTMLElement) {
         this.containerElement = element;
+        this.scrollableElement = this.containerElement?.closest('.page-content-inner');
         scheduleOnce('afterRender', this, this.attachTooltips);
         if (this.args.page) {
             this.scrollToPage(parseInt(this.args.page, 10));
