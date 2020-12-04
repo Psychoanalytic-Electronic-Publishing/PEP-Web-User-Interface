@@ -19,14 +19,16 @@
                             {{html-safe result.displayTitle}}
                         </div>
                         <div class="text-muted small">
-                            {{html-safe
-                                (t
-                                    "relatedInfo.widgets.whatsNew.issue"
-                                    issueNum=result.issue
-                                    volNum=result.volume
-                                    updatedDate=(moment-format result.updated "MMMM Do, YYYY")
-                                )
-                            }}
+                            <LinkTo @route="browse.journal.volume" @models={{array result.PEPCode result.volume}}>
+                                {{html-safe
+                                    (t
+                                        "relatedInfo.widgets.whatsNew.issue"
+                                        issueNum=result.issue
+                                        volNum=result.volume
+                                        updatedDate=(moment-format result.updated "MMMM Do, YYYY")
+                                    )
+                                }}
+                            </LinkTo>
                         </div>
                     </li>
                 {{else}}
