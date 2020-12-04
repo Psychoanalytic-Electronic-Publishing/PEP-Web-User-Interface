@@ -54,6 +54,7 @@ export default class ReadDocument extends Controller {
     @tracked paginator!: Pagination<Document>;
     @tracked showHitsInContext = false;
     @tracked page = null;
+    @tracked showBackButton = false;
 
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981

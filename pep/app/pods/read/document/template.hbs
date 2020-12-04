@@ -10,7 +10,7 @@
 
                      align-items-center mb-2"
             >
-                {{#if this.paginator.metadata.fullCount}}
+                {{#if (and this.showBackButton this.paginator.metadata.fullCount)}}
                     <LinkTo
                         @route="search"
                         @query={{hash

@@ -3,7 +3,7 @@ import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 
 import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hooks/pagination';
-import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
+import { buildQueryParams, QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 
 import { WIDGET } from 'pep/constants/sidebar';
 import { PageNav } from 'pep/mixins/page-layout';
@@ -37,8 +37,9 @@ export default class ReadDocument extends PageNav(Route) {
 
     searchResults?: Document[];
     searchResultsMeta?: any;
-    searchParams?: ReadDocumentParams;
+    searchParams?: ReadDocumentParams | QueryParamsObj;
     searchHasPaging = true;
+    showBackButton = true;
 
     /**
      * Fetch the requested document
@@ -77,6 +78,7 @@ export default class ReadDocument extends PageNav(Route) {
             results = controller?.paginator?.models;
             resultsMeta = controller?.paginator?.metadata;
             this.searchHasPaging = true;
+            this.showBackButton = true;
         } else if (transition.from?.name === 'browse.index' || transition.from?.name.includes('browse.book')) {
             const controller = this.controllerFor('browse') as BrowseController;
             const tab = controller.tab;
@@ -103,6 +105,7 @@ export default class ReadDocument extends PageNav(Route) {
                 results = response.toArray();
                 resultsMeta = response.meta;
                 this.searchHasPaging = true;
+                this.showBackButton = false;
             }
         } else if (transition.from?.name === 'browse.journal.volume') {
             const controller = this.controllerFor(transition.from?.name) as BrowseJournalVolumeController;
@@ -119,6 +122,7 @@ export default class ReadDocument extends PageNav(Route) {
             pastParams = queryParams;
             results = controller.model;
             this.searchHasPaging = false;
+            this.showBackButton = false;
         }
 
         if (!results) {
@@ -163,6 +167,7 @@ export default class ReadDocument extends PageNav(Route) {
                 results = response.toArray();
                 resultsMeta = response.meta;
                 this.searchHasPaging = true;
+                this.showBackButton = true;
             }
         } else if (results && !resultsMeta) {
             resultsMeta = { fullCount: results.length };
@@ -205,6 +210,7 @@ export default class ReadDocument extends PageNav(Route) {
             limit: this.searchHasPaging ? 20 : 1000
         });
         this.currentUser.lastViewedDocumentId = model.id;
+        controller.showBackButton = this.showBackButton;
     }
 
     /**
