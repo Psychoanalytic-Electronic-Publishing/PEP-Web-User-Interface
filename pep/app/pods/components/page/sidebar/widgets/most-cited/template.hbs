@@ -14,13 +14,7 @@
         <ContentWithPlaceholder @placeholderComponent="loading/widget" @isLoading={{this.loadResults.isRunning}}>
             <ul class="list-unstyled">
                 {{#each this.results as |result|}}
-                    <li class="mb-2">
-                        <div>
-                            <LinkTo @route="read.document" @model={{result.id}}>
-                                {{html-safe result.documentRef}}
-                            </LinkTo>
-                        </div>
-                    </li>
+                    <Page::Sidebar::Widgets::MostCited::Item @item={{result}} />
                 {{else}}
                     <li class="py-3 mb-0 text-center text-muted">
                         {{t "common.noResults"}}

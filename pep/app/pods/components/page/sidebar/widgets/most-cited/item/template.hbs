@@ -1,0 +1,7 @@
+<li class="mb-2">
+    <div>
+        <LinkTo @route="read.document" @model={{@item.id}} @query={{this.queryParams}}>
+            {{html-safe @item.documentRef}}
+        </LinkTo>
+    </div>
+</li>
