@@ -1,6 +1,7 @@
 import Service from '@ember/service';
 
 import Papa from 'papaparse';
+import { guard } from 'pep/utils/types';
 
 export enum ExportType {
     CSV = 'CSV',
@@ -87,17 +88,24 @@ export default class ExportsService extends Service {
             navigator.msSaveBlob(blob, filename);
             return;
         }
+        this._downloadItem(blob, filename, mimetype);
+    }
 
+    _downloadItem(urlOrBlob: string | Blob, filename: string, mimetype?: string) {
         const lnk = document.createElement('a'),
             url = window.URL;
-        let objectURL = url.createObjectURL(blob);
+
+        let objectURL = urlOrBlob;
+        if (guard<Blob>(urlOrBlob, 'size')) {
+            objectURL = url.createObjectURL(urlOrBlob);
+        }
 
         if (mimetype) {
             lnk.type = mimetype;
         }
 
         lnk.download = filename || 'untitled';
-        lnk.href = objectURL;
+        lnk.href = objectURL as string;
         lnk.dispatchEvent(new MouseEvent('click'));
         setTimeout(url.revokeObjectURL.bind(url, objectURL));
     }

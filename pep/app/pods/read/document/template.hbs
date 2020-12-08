@@ -24,6 +24,27 @@
                         {{t "read.document.backToSearch"}}
                     </LinkTo>
                 {{/if}}
+                <div>
+                    <Button
+                        @action={{this.downloadDocument}}
+                        @type="link"
+                        @icon="download"
+                        @iconPrefix="fas"
+                        @iconSize="lg"
+                        @tooltip={{t "common.download"}}
+                        class="p-1"
+                    />
+
+                    <Button
+                        @action={{this.printDocument}}
+                        @type="link"
+                        @icon="print"
+                        @iconPrefix="fas"
+                        @iconSize="lg"
+                        @tooltip={{t "common.print"}}
+                        class="p-1"
+                    />
+                </div>
                 {{! Removing paging for now }}
                 {{!-- <div class="ml-2 d-flex align-items-center">
                 <Button @type="link" @icon="chevron-left" @iconOnly={{true}} class="py-0 px-2 text-muted" />
@@ -69,7 +90,7 @@
                         </p>
                     {{/unless}}
                 </Alert>
-                <div class="pep-document-content">
+                <div class="pep-document-content" id="read-document">
                     <ContentWithPlaceholder @placeholderInFastboot={{true}}>
                         <Document::Text
                             @document={{this.model}}

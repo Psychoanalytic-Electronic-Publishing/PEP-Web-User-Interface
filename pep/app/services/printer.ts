@@ -46,6 +46,16 @@ export default class PrinterService extends Service {
             style: `.list-unstyled { padding-left: 0; list-style: none; font-size: 12px; } .mb-3 { margin-bottom: 1rem !important; }`
         });
     }
+
+    /**
+     * Print contents of an html element
+     *
+     * @param {HTMLElement} element
+     * @memberof PrinterService
+     */
+    printElement(element: string) {
+        printJS(element);
+    }
 }
 
 // DO NOT DELETE: this is how TypeScript knows how to look up your services.

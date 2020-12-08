@@ -11,11 +11,13 @@ import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import IntlService from 'ember-intl/services/intl';
 
+import ENV from 'pep/config/environment';
 import { PreferenceKey } from 'pep/constants/preferences';
 import { TITLE_REGEX } from 'pep/constants/regex';
 import { SEARCH_DEFAULT_VIEW_PERIOD, SearchViews, SearchViewType, ViewPeriod } from 'pep/constants/search';
 import Document from 'pep/pods/document/model';
 import GlossaryTerm from 'pep/pods/glossary-term/model';
+import AjaxService from 'pep/services/ajax';
 import AuthService from 'pep/services/auth';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
@@ -42,6 +44,7 @@ export default class ReadDocument extends Controller {
     @service intl!: IntlService;
     @service printer!: PrinterService;
     @service searchSelection!: SearchSelection;
+    @service ajax!: AjaxService;
 
     @tracked selectedView = SearchViews[0];
     @tracked selectedSort = SearchSorts[0];
@@ -406,6 +409,24 @@ export default class ReadDocument extends Controller {
                 searchTerms
             }
         });
+    }
+
+    @action
+    printDocument() {
+        let url = `${ENV.apiBaseUrl}/${ENV.apiNamespace}/Documents/Downloads/PDF/${this.model.id}?client-id=${ENV.clientId}`;
+        if (this.session.isAuthenticated && this.session.data.authenticated.SessionId) {
+            url += `&client-session=${this.session.data.authenticated.SessionId}`;
+        }
+        this.printer.printElement(url);
+    }
+
+    @action
+    async downloadDocument() {
+        let url = `${ENV.apiBaseUrl}/${ENV.apiNamespace}/Documents/Downloads/PDF/${this.model.id}?client-id=${ENV.clientId}`;
+        if (this.session.isAuthenticated && this.session.data.authenticated.SessionId) {
+            url += `&client-session=${this.session.data.authenticated.SessionId}`;
+        }
+        this.exports._downloadItem(url, 'Document.pdf');
     }
 }
 
