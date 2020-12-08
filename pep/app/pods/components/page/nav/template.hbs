@@ -68,6 +68,13 @@
                     </DropdownAction>
                     {{#if this.session.canLogOut}}
                         <div class="dropdown-divider"></div>
+                        <div class="py-1 px-4">
+                            {{this.currentUser.user.userName}}
+                        </div>
+                        <DropdownAction @dd={{DD}} @action={{this.openAccountInfoModal}}>
+                            <FaIcon @icon="info-circle" @fixedWidth={{true}} class="text-muted" />
+                            {{t "nav.user.accountInfo"}}
+                        </DropdownAction>
                         {{#if this.session.isAuthenticated}}
                             <DropdownAction @dd={{DD}} @action={{this.logout}}>
                                 <FaIcon @icon="sign-out" @fixedWidth={{true}} class="text-muted" />

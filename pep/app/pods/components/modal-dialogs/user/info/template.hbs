@@ -1,0 +1,16 @@
+<ModalDialog @onClose={{@onClose}} @size="md" @clickOutsideToClose={{false}} as |Modal|>
+    <Modal.header @title={{t "accountInfo.title"}} />
+    <Modal.body>
+        <div class="mb-2">
+            <h5>
+                {{t "accountInfo.registeredUser.title"}}
+            </h5>
+            <p class="text-muted font-size-secondary mb-0">
+                {{t "accountInfo.registeredUser.name" name=this.currentUser.user.userName}}
+            </p>
+        </div>
+    </Modal.body>
+    <Modal.footer>
+        <Button @type="primary" @label={{t "common.close"}} @action={{@onClose}} />
+    </Modal.footer>
+</ModalDialog>

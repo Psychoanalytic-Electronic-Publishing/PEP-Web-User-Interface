@@ -50,7 +50,8 @@
             "help": "Help",
             "reportProblem": "Report a problem",
             "login": "Login",
-            "logout": "Logout"
+            "logout": "Logout",
+            "accountInfo": "Account Info"
         }
     },
     "home": {
@@ -536,6 +537,13 @@
         "archive": {
             "title": "PEP Archive",
             "description": "PEP Web has been designed to provide a powerful rapid search of the entire psychoanalytic literature in English, French, German, Greek, Italian, Romanian, Spanish and Turkish. It is the result of an innovative, high quality series of technical developments and a considerable financial and scholarly investment. You can '<a href=\"http://support.pep-web.org/about-the-pep-archive/digitization-and-quality-control/\" target=\"_blank\">'read about the innovative developments required to produce and keep updating the PEP archive'</a>' and read '<a href=\"http://support.pep-web.org/about-pep/history-of-pep/\" target=\"_blank\">'about the history of the PEP archive'</a>'. You can even '<a href=\"http://support.pep-web.org/about-the-pep-archive/suggest-new-content/\" target=\"_blank\">'suggest new content'</a>' that you would like to see added to the PEP Archive. '<br><br>' For more information, see the '<a href=\"http://support.pep-web.org\" target=\"_blank\">'PEP Web support pages'</a>'"
+        }
+    },
+    "accountInfo": {
+        "title": "Account Info",
+        "registeredUser": {
+            "title": "Registered User",
+            "name": "Name: {name}"
         }
     },
     "exports": {
