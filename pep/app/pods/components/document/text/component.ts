@@ -12,7 +12,7 @@ import IntlService from 'ember-intl/services/intl';
 
 import animateScrollTo from 'animated-scroll-to';
 import ENV from 'pep/config/environment';
-import { DOCUMENT_IMG_BASE_URL } from 'pep/constants/documents';
+import { DOCUMENT_IMG_BASE_URL, DocumentLinkTypes } from 'pep/constants/documents';
 import {
     HIT_MARKER_END, HIT_MARKER_END_OUTPUT_HTML, HIT_MARKER_START, HIT_MARKER_START_OUTPUT_HTML, SEARCH_HIT_MARKER_REGEX,
     SearchTermId
@@ -39,27 +39,6 @@ interface DocumentTextArgs {
     page?: string;
     onGlossaryItemClick: (term: string, termResults: GlossaryTerm[]) => void;
     viewSearch: (searchTerms: string) => void;
-}
-
-/**
- *  The types of links in a document - these come from a type data attribute
- *
- * @export
- * @enum {number}
- */
-export enum DocumentLinkTypes {
-    GLOSSARY_TERM = 'TERM2',
-    BIBLIOGRAPHY = 'BIBX',
-    DOCUMENT = 'document-link',
-    PAGE = 'pagelink',
-    FIGURE = 'figure',
-    TABLE_FIGURE = 'table-figure',
-    FIGURE_WITH_ID = 'figure-id',
-    AUTHOR_SEARCH = 'search-author',
-    WEB = 'web-link',
-    DOI = 'doi',
-    SEARCH_HIT_ARROW = 'search-hit-arrow',
-    SEARCH_HIT_TEXT = 'search-hit-text'
 }
 
 /**

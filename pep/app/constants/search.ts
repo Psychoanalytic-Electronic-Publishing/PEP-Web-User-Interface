@@ -1,6 +1,6 @@
 import IntlService from 'ember-intl/services/intl';
 
-import { DocumentLinkTypes } from 'pep/pods/components/document/text/component';
+import { DocumentLinkTypes } from 'pep/constants/documents';
 import { groupCountsByRange, SearchFacetCounts } from 'pep/utils/search';
 
 /**
