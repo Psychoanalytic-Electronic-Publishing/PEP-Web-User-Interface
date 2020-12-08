@@ -1,7 +1,7 @@
 import { isNone } from '@ember/utils';
 
 import fetch from 'fetch';
-import { DocumentLinkTypes } from 'pep/pods/components/document/text/component';
+import { DocumentLinkTypes } from 'pep/constants/documents';
 
 export interface ElementOffset {
     top: number;
