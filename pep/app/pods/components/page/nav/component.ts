@@ -57,4 +57,12 @@ export default class PageNav extends Component<PageNavArgs> {
     toggleDrawer() {
         return this.drawer.toggle();
     }
+
+    /**
+     *  Open the account info modal.
+     */
+    @action
+    openAccountInfoModal() {
+        return this.modal.open('user/info', {});
+    }
 }
