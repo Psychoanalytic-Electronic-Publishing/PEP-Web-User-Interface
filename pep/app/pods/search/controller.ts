@@ -281,6 +281,16 @@ export default class Search extends Controller {
     }
 
     /**
+     * When facet option selections change, resubmits the search
+     * after a short debounce timeout
+     */
+    @restartableTask
+    *resubmitSearchOnFacetsChange() {
+        yield timeout(500);
+        yield this.resubmitSearchWithFacets();
+    }
+
+    /**
      * Updates the query params with the current search form values
      */
     @action
@@ -404,6 +414,7 @@ export default class Search extends Controller {
     @action
     updateSelectedFacets(newSelection: SearchFacetValue[]) {
         this.currentFacets = newSelection;
+        return taskFor(this.resubmitSearchOnFacetsChange).perform();
     }
 
     /**
