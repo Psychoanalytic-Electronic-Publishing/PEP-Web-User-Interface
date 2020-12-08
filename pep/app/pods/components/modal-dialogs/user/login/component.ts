@@ -20,7 +20,7 @@ interface ModalDialogsUserLoginArgs {
     };
 }
 
-const ForgotPasswordUrl = 'https://www.psychoanalystdatabase.com/Pages/pg100Home.asp';
+const ForgotPasswordUrl = 'https://stage-pads.pep-web.rocks/pages/pg070Logon.aspx?Action=RequestPassword';
 
 export default class ModalDialogsUserLogin extends Component<ModalDialogsUserLoginArgs> {
     @service('pep-session') session!: PepSessionService;
