@@ -61,7 +61,8 @@
         "expertPick": {
             "heading": "Expert Pick of the Day",
             "read": "Read",
-            "loginAndRead": "Login and read"
+            "loginAndRead": "Login and read",
+            "viewDocument": "View document"
         }
     },
     "search": {

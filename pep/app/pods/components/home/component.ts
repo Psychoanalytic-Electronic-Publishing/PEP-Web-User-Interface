@@ -38,6 +38,12 @@ export default class Home extends Component<HomeArgs> {
         return expertPicks[expertPicks.length - 1];
     }
 
+    get imageArticleId() {
+        const imageId = this.expertPick.imageId;
+        const lastPeriodInd = imageId.lastIndexOf('.');
+        return imageId.substring(0, lastPeriodInd);
+    }
+
     /**
      * Open the search form sidebar
      * @returns {void}

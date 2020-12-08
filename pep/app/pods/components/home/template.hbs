@@ -58,8 +58,10 @@
                             </h5>
                         </div>
                         <ContentWithPlaceholder @placeholderInFastboot={{true}}>
-                            <div class="float-xl-right mw-xl-50 ml-xl-2 mb-xl-2">
-                                <Document::Image @id={{this.expertPick.imageId}} class="rounded img-fluid" />
+                            <div class="float-xl-right mw-xl-50 ml-xl-3 pl-xl-3 mb-xl-2 d-flex flex-column border-divider-l">
+                                <LinkTo @route="read.document" @model={{this.imageArticleId}}>
+                                    <Document::Image @id={{this.expertPick.imageId}} class="rounded img-fluid" />
+                                </LinkTo>
                             </div>
                             <div class="card-text mb-3 pep-abstract-preview">
                                 {{#if this.model}}
