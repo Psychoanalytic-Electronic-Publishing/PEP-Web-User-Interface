@@ -1,7 +1,6 @@
 import DocumentAdapter from '../document/adapter';
 
 export default class Abstract extends DocumentAdapter {
-    // modelNameOverride = 'document';
     origPathSegmentOverride = 'Abstracts';
     newPathSegmentOverride = 'Documents/Abstracts';
 }
