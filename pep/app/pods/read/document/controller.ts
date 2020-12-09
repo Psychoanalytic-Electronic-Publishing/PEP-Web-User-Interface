@@ -12,6 +12,7 @@ import NotificationService from 'ember-cli-notifications/services/notifications'
 import IntlService from 'ember-intl/services/intl';
 
 import ENV from 'pep/config/environment';
+import { DOCUMENT_EPUB_BASE_URL, DOCUMENT_PDF_BASE_URL, DOCUMENT_PDFORIG_BASE_URL } from 'pep/constants/documents';
 import { PreferenceKey } from 'pep/constants/preferences';
 import { TITLE_REGEX } from 'pep/constants/regex';
 import { SEARCH_DEFAULT_VIEW_PERIOD, SearchViews, SearchViewType, ViewPeriod } from 'pep/constants/search';
@@ -28,6 +29,7 @@ import PrinterService from 'pep/services/printer';
 import SearchSelection from 'pep/services/search-selection';
 import { buildSearchQueryParams, clearSearch } from 'pep/utils/search';
 import { SearchSorts, SearchSortType, transformSearchSortsToTable, transformSearchSortToAPI } from 'pep/utils/sort';
+import { serializeQueryParams } from 'pep/utils/url';
 import { reject, resolve } from 'rsvp';
 
 export default class ReadDocument extends Controller {
@@ -94,6 +96,25 @@ export default class ReadDocument extends Controller {
 
     get defaultSearchParams() {
         return this.configuration.defaultSearchParams;
+    }
+
+    get downloadAuthParams() {
+        return serializeQueryParams({
+            'client-id': ENV.clientId,
+            'client-session': this.session.data.authenticated.SessionId
+        });
+    }
+
+    get downloadUrlEpub() {
+        return `${DOCUMENT_EPUB_BASE_URL}/${this.model.id}`;
+    }
+
+    get downloadUrlPdf() {
+        return `${DOCUMENT_PDF_BASE_URL}/${this.model.id}`;
+    }
+
+    get downloadUrlPdfOrig() {
+        return `${DOCUMENT_PDFORIG_BASE_URL}/${this.model.id}`;
     }
 
     //workaround for bug w/array-based query param values
@@ -412,21 +433,29 @@ export default class ReadDocument extends Controller {
     }
 
     @action
-    printDocument() {
+    async printDocument() {
         let url = `${ENV.apiBaseUrl}/${ENV.apiNamespace}/Documents/Downloads/PDF/${this.model.id}?client-id=${ENV.clientId}`;
         if (this.session.isAuthenticated && this.session.data.authenticated.SessionId) {
             url += `&client-session=${this.session.data.authenticated.SessionId}`;
         }
-        this.printer.printElement(url);
+        fetch(
+            'http://stage-api.pep-web.rocks/v2/Documents/Downloads/PDF/IJP.027.0099A/?client-id=2&client-session=29E7C852-009B-4956-B10E-A019578F074E',
+            {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/pdf'
+                }
+            }
+        ).then((response) => {
+            let localPdf = new window.Blob([response], { type: 'application/pdf' });
+            localPdf = window.URL.createObjectURL(localPdf);
+            printFrame.setAttribute('src', localPdf);
+        });
     }
 
     @action
-    async downloadDocument() {
-        let url = `${ENV.apiBaseUrl}/${ENV.apiNamespace}/Documents/Downloads/PDF/${this.model.id}?client-id=${ENV.clientId}`;
-        if (this.session.isAuthenticated && this.session.data.authenticated.SessionId) {
-            url += `&client-session=${this.session.data.authenticated.SessionId}`;
-        }
-        this.exports._downloadItem(url, 'Document.pdf');
+    async downloadDocument(url: string) {
+        this.exports._downloadItem(`${url}?${this.downloadAuthParams}`, 'Document');
     }
 }
 

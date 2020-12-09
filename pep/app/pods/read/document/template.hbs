@@ -5,7 +5,11 @@
                 class="d-flex
 
 
-                    {{if this.paginator.metadata.fullCount "justify-content-between" "justify-content-end"}}
+                    {{if
+                        (and this.showBackButton this.paginator.metadata.fullCount)
+                        "justify-content-between"
+                        "justify-content-end"
+                    }}
 
 
                      align-items-center mb-2"
@@ -24,16 +28,28 @@
                         {{t "read.document.backToSearch"}}
                     </LinkTo>
                 {{/if}}
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+                <p class="small text-muted mb-0">
+                    {{this.model.documentRef}}
+                </p>
                 <div>
-                    <Button
-                        @action={{this.downloadDocument}}
-                        @type="link"
-                        @icon="download"
-                        @iconPrefix="fas"
-                        @iconSize="lg"
-                        @tooltip={{t "common.download"}}
-                        class="p-1"
-                    />
+                    <DropdownMenu @horizontalPosition="auto-right" as |DD|>
+                        <DD.Trigger @htmlTag="button" class="btn btn-link px-2">
+                            <FaIcon @icon="download" @size="lg" @prefix="fas" />
+                        </DD.Trigger>
+                        <DD.Content class="dropdown-menu">
+                            <DropdownAction @dd={{DD}} @action={{fn this.downloadDocument this.downloadUrlEpub}}>
+                                {{t "search.preview.download.ePub"}}
+                            </DropdownAction>
+                            <DropdownAction @dd={{DD}} @action={{fn this.downloadDocument this.downloadUrlPdf}}>
+                                {{t "search.preview.download.pdf"}}
+                            </DropdownAction>
+                            <DropdownAction @dd={{DD}} @action={{fn this.downloadDocument this.downloadUrlPdfOrig}}>
+                                {{t "search.preview.download.pdfOrig"}}
+                            </DropdownAction>
+                        </DD.Content>
+                    </DropdownMenu>
 
                     <Button
                         @action={{this.printDocument}}
@@ -45,32 +61,7 @@
                         class="p-1"
                     />
                 </div>
-                {{! Removing paging for now }}
-                {{!-- <div class="ml-2 d-flex align-items-center">
-                <Button @type="link" @icon="chevron-left" @iconOnly={{true}} class="py-0 px-2 text-muted" />
-                <div class="input-group input-group-minimal mx-1">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="doc-page-control-label">
-                            {{t "read.document.page"}}
-                        </span>
-                    </div>
-                    <input
-                        type="number"
-                        min={{1}}
-                        max={{this.lastPage}}
-                        value={{this.currentPage}}
-                        class="form-control text-center"
-                        maxlength="255"
-                        aria-label={{t "read.document.page"}}
-                        aria-describedby="doc-page-control-label"
-                    />
-                </div>
-                <Button @type="link" @icon="chevron-right" @iconOnly={{true}} class="py-0 px-2 text-muted" />
-            </div> --}}
             </div>
-            <p class="small text-muted mb-0">
-                {{this.model.documentRef}}
-            </p>
         </div>
         <div class="card">
             <div class="card-body">
