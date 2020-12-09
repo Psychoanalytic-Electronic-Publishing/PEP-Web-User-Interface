@@ -438,19 +438,7 @@ export default class ReadDocument extends Controller {
         if (this.session.isAuthenticated && this.session.data.authenticated.SessionId) {
             url += `&client-session=${this.session.data.authenticated.SessionId}`;
         }
-        fetch(
-            'http://stage-api.pep-web.rocks/v2/Documents/Downloads/PDF/IJP.027.0099A/?client-id=2&client-session=29E7C852-009B-4956-B10E-A019578F074E',
-            {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/pdf'
-                }
-            }
-        ).then((response) => {
-            let localPdf = new window.Blob([response], { type: 'application/pdf' });
-            localPdf = window.URL.createObjectURL(localPdf);
-            printFrame.setAttribute('src', localPdf);
-        });
+        this.printer.printElement(url);
     }
 
     @action

@@ -54,7 +54,9 @@ export default class PrinterService extends Service {
      * @memberof PrinterService
      */
     printElement(element: string) {
-        printJS(element);
+        printJS({
+            printable: element
+        });
     }
 }
 
