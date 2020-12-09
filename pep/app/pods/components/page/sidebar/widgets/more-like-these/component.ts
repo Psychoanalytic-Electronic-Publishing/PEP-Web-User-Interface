@@ -1,3 +1,4 @@
+import { getOwner } from '@ember/application';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
@@ -9,14 +10,18 @@ import { DS } from 'ember-data';
 
 import { WIDGET } from 'pep/constants/sidebar';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
+import Abstract from 'pep/pods/abstract/model';
+import AbstractSerializer from 'pep/pods/abstract/serializer';
 import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
 import Document from 'pep/pods/document/model';
 import SimilarityMatch from 'pep/pods/similarity-match/model';
+import AjaxService from 'pep/services/ajax';
 
 interface PageSidebarWidgetsMoreLikeTheseArgs extends PageSidebarWidgetArgs {}
 
 export default class PageSidebarWidgetsMoreLikeThese extends Component<PageSidebarWidgetsMoreLikeTheseArgs> {
     @service store!: DS.Store;
+    @service ajax!: AjaxService;
     @tracked results?: SimilarityMatch;
     similarCount = 5;
 
@@ -31,24 +36,30 @@ export default class PageSidebarWidgetsMoreLikeThese extends Component<PageSideb
     widget = WIDGET.MORE_LIKE_THESE;
 
     /**
-     * Load the similar from the document they are reading
+     * Load the similar from the document they are reading. We are going around the store because we make other
+     * calls without similarity matches and this one keeps getting overridden
      */
     @restartableTask
     *loadSimilarFromDocument() {
         if (this.data?.id) {
-            const results = yield this.store.findRecord('abstract', this.data.id, {
-                reload: true,
-                adapterOptions: { query: { similarcount: this.similarCount } }
-            });
-            const matches = results.similarityMatch.similarDocuments.filter(
-                (item: Document) => item.id !== this.data.id
+            const results = yield this.ajax.request(
+                `/Documents/Abstracts/${this.data.id}?similarcount=${this.similarCount}`
             );
 
-            // TODO Right now the document that the find was called for is somehow being added into
-            // the array. We should figure out why and fix it
-            const similarityMatch = results.similarityMatch;
-            similarityMatch.similarDocuments = matches;
-            this.results = similarityMatch;
+            const serializer = this.store.serializerFor('abstract') as AbstractSerializer;
+            const modelClass = this.store.modelFor('abstract');
+
+            // @ts-ignore types are wrong here - this works
+            const normalizedResponse = serializer.normalizeSingleResponse(
+                this.store,
+                modelClass,
+                results,
+                this.data.id
+            ) as { included: any[] };
+
+            const response = this.store.push({ data: normalizedResponse.included });
+
+            this.results = (Array.isArray(response) ? response[0] : response) as SimilarityMatch;
         }
     }
 

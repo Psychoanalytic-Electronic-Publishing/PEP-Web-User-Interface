@@ -1,8 +1,9 @@
 import DocumentAdapter from '../document/adapter';
 
 export default class Abstract extends DocumentAdapter {
-    modelNameOverride = 'document';
+    // modelNameOverride = 'document';
     origPathSegmentOverride = 'Abstracts';
+    newPathSegmentOverride = 'Documents/Abstracts';
 }
 
 // DO NOT DELETE: this is how TypeScript knows how to look up your adapters.
