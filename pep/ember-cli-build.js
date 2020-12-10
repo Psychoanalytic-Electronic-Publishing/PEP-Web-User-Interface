@@ -13,7 +13,8 @@ module.exports = function(defaults) {
             app: {
                 css: {
                     app: '/assets/pep.css',
-                    'themes/tomato': '/assets/themes/tomato.css'
+                    'themes/tomato': '/assets/themes/tomato.css',
+                    'themes/dark': '/assets/themes/dark.css'
                 }
             }
         },

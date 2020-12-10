@@ -1,6 +1,7 @@
 export enum ThemeId {
     DEFAULT = 'default',
-    TOMATO = 'tomato'
+    TOMATO = 'tomato',
+    DARK = 'dark'
 }
 
 export interface Theme {
@@ -57,4 +58,22 @@ export const THEME_TOMATO: Theme = {
     }
 };
 
-export default [THEME_DEFAULT, THEME_TOMATO];
+export const THEME_DARK: Theme = {
+    id: ThemeId.DARK,
+    cssPath: '/assets/themes/dark.css',
+    label: 'theme.themes.dark',
+    colors: {
+        links: {
+            glossary: '#a4a29e',
+            bibliography: '#a4a29e',
+            pageReference: '#a4a29e',
+            external: '#a4a29e',
+            figure: '#a4a29e',
+            webExternal: '#a4a29e',
+            webInternal: '#a4a29e',
+            special: '#a4a29e'
+        }
+    }
+};
+
+export default [THEME_DEFAULT, THEME_TOMATO, THEME_DARK];
