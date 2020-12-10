@@ -58,4 +58,16 @@ declare const config: {
             api: boolean;
         };
     };
+    metricsAdapters: [
+        {
+            name: string;
+            environments: string[];
+            config: {
+                id: string;
+                debug: boolean;
+                trace: boolean;
+                sendHitTask: boolean;
+            };
+        }
+    ];
 };
