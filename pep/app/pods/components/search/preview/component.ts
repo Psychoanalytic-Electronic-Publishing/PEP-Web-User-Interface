@@ -1,26 +1,28 @@
+import { action } from '@ember/object';
+import { next, scheduleOnce } from '@ember/runloop';
+import { inject as service } from '@ember/service';
+import { htmlSafe } from '@ember/template';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import { action } from '@ember/object';
-import { htmlSafe } from '@ember/template';
-import { scheduleOnce, next } from '@ember/runloop';
-import { inject as service } from '@ember/service';
 
+import { DS } from 'ember-data';
+
+import ENV from 'pep/config/environment';
+import { DOCUMENT_EPUB_BASE_URL, DOCUMENT_PDF_BASE_URL, DOCUMENT_PDFORIG_BASE_URL } from 'pep/constants/documents';
+import { dontRunInFastboot } from 'pep/decorators/fastboot';
+import Abstract from 'pep/pods/abstract/model';
 import AuthService from 'pep/services/auth';
+import LoadingBarService from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
 import ScrollableService from 'pep/services/scrollable';
-import LoadingBarService from 'pep/services/loading-bar';
-import { dontRunInFastboot } from 'pep/decorators/fastboot';
-import Document from 'pep/pods/document/model';
-import { DOCUMENT_EPUB_BASE_URL, DOCUMENT_PDFORIG_BASE_URL, DOCUMENT_PDF_BASE_URL } from 'pep/constants/documents';
 import { serializeQueryParams } from 'pep/utils/url';
-import ENV from 'pep/config/environment';
 
 export type SearchPreviewMode = 'minimized' | 'maximized' | 'fit' | 'custom';
 
 interface SearchPreviewArgs {
     mode: SearchPreviewMode;
     maxHeight?: number;
-    result?: Document;
+    resultId?: string;
     setMode: (mode: SearchPreviewMode) => void;
     close: () => void;
 }
@@ -30,9 +32,11 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
     @service auth!: AuthService;
     @service scrollable!: ScrollableService;
     @service loadingBar!: LoadingBarService;
+    @service store!: DS.Store;
 
     @tracked fitHeight: number = 0;
     @tracked isDragResizing: boolean = false;
+    @tracked result?: Abstract;
 
     innerElement: HTMLElement | null = null;
     scrollableElement: HTMLElement | null = null;
@@ -56,7 +60,7 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
     }
 
     get styles() {
-        return (this.isFitMode || this.isCustomMode) && this.adjustedFitHeight && this.args.result
+        return (this.isFitMode || this.isCustomMode) && this.adjustedFitHeight && this.args.resultId
             ? htmlSafe(`height: ${this.adjustedFitHeight}px;`)
             : null;
     }
@@ -73,15 +77,15 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
     }
 
     get downloadUrlEpub() {
-        return `${DOCUMENT_EPUB_BASE_URL}/${this.args.result?.id}/?${this.downloadAuthParams}`;
+        return `${DOCUMENT_EPUB_BASE_URL}/${this.args.resultId}/?${this.downloadAuthParams}`;
     }
 
     get downloadUrlPdf() {
-        return `${DOCUMENT_PDF_BASE_URL}/${this.args.result?.id}/?${this.downloadAuthParams}`;
+        return `${DOCUMENT_PDF_BASE_URL}/${this.args.resultId}/?${this.downloadAuthParams}`;
     }
 
     get downloadUrlPdfOrig() {
-        return `${DOCUMENT_PDFORIG_BASE_URL}/${this.args.result?.id}/?${this.downloadAuthParams}`;
+        return `${DOCUMENT_PDFORIG_BASE_URL}/${this.args.resultId}/?${this.downloadAuthParams}`;
     }
 
     /**
@@ -108,7 +112,9 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
      */
     @action
     onAuthenticationSucceeded() {
-        this.args.result?.reload();
+        if (this.args.resultId) {
+            this.loadAbstract(this.args.resultId);
+        }
     }
 
     /**
@@ -129,6 +135,17 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
         this.scrollableElement = element;
     }
 
+    async loadAbstract(id: string) {
+        try {
+            this.loadingBar.show();
+            const abstract = await this.store.findRecord('abstract', id);
+            this.result = abstract;
+        } finally {
+            this.loadingBar.hide();
+            scheduleOnce('afterRender', this, this.updateFitHeight);
+        }
+    }
+
     /**
      * Calculate the content's "fit" height on render
      * @param {HTMLElement} element
@@ -138,12 +155,8 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
         this.innerElement = element;
         scheduleOnce('afterRender', this, this.updateFitHeight);
 
-        try {
-            this.loadingBar.show();
-            await this.args.result?.reload();
-        } finally {
-            this.loadingBar.hide();
-            scheduleOnce('afterRender', this, this.updateFitHeight);
+        if (this.args.resultId) {
+            this.loadAbstract(this.args.resultId);
         }
     }
 
@@ -158,14 +171,8 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
             scheduleOnce('afterRender', this, this.updateFitHeight);
         }
 
-        try {
-            this.loadingBar.show();
-            await this.args.result?.reload();
-        } finally {
-            this.loadingBar.hide();
-            if (this.isFitMode) {
-                scheduleOnce('afterRender', this, this.updateFitHeight);
-            }
+        if (this.args.resultId) {
+            this.loadAbstract(this.args.resultId);
         }
     }
 

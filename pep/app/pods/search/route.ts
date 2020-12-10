@@ -47,7 +47,7 @@ export default class Search extends PageNav(Route) {
             replace: true
         },
         preview: {
-            replace: true
+            replace: false
         },
         matchSynonyms: {
             replace: true

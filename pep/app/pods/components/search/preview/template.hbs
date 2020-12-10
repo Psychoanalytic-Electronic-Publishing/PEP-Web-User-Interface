@@ -1,9 +1,9 @@
-{{#if @result}}
+{{#if @resultId}}
     <div
-        class="search-preview search-preview-{{this.mode}} {{~if this.isDragResizing " is-drag-resizing"}}"
+        class="search-preview search-preview-{{this.mode}}{{if this.isDragResizing " is-drag-resizing"}}"
         style={{this.styles}}
-        {{did-update this.onResultUpdate @result}}
         ...attributes
+        {{did-update this.onResultUpdate @resultId}}
     >
         <DragBar
             @orientation="horizontal"
@@ -12,17 +12,12 @@
             @onDragMove={{this.onDragMove}}
             @onDragEnd={{this.onDragEnd}}
         />
-        <Scrollable
-            @namespace="search-preview"
-            @onInsert={{this.onScrollableInsert}}
-            class="page-content-inner"
-        >
-            <div
-                class="search-preview-inner"
-                {{did-insert this.onElementInsert}}
-            >
+        <Scrollable @namespace="search-preview" @onInsert={{this.onScrollableInsert}} class="page-content-inner">
+            <div class="search-preview-inner" {{did-insert this.onElementInsert}}>
                 <div class="d-flex justify-content-between align-items-start px-4 py-2">
-                    <div class="small text-muted mr-2">{{@result.documentRef}}</div>
+                    <div class="small text-muted mr-2">
+                        {{this.result.documentRef}}
+                    </div>
                     <div class="d-flex flex-nowrap">
                         <Button::WithTooltip
                             @type={{if this.isFitMode "primary" "link"}}
@@ -51,39 +46,34 @@
                 </div>
                 <div class="px-4 pb-3">
                     <h5>
-                        {{html-safe @result.title}}
-                        {{#if @result.authorMast}}
+                        {{html-safe this.result.title}}
+                        {{#if this.result.authorMast}}
                             <div class="small text-muted">
-                                {{@result.authorMast}}
+                                {{this.result.authorMast}}
                             </div>
                         {{/if}}
                     </h5>
                     <div class="pep-abstract-preview mb-2">
-                        {{html-safe @result.abstract}}
+                        {{html-safe this.result.abstract}}
                     </div>
                     <div>
-                        {{#if @result.accessLimited}}
-                            <Alert
-                                @isShown={{this.session.isAuthenticated}}
-                                @type="warning"
-                            >
-                                {{html-safe
-                                    (or
-                                        @result.noAccessMessage
-                                        (t "search.preview.accessLimited")
-                                    )
-                                }}
+                        {{#if this.result.accessLimited}}
+                            <Alert @isShown={{this.session.isAuthenticated}} @type="warning">
+                                {{html-safe (or this.result.noAccessMessage (t "search.preview.accessLimited"))}}
                             </Alert>
                             {{#unless this.session.isAuthenticated}}
                                 <p class="p-3 bg-light rounded">
                                     {{t "search.preview.mustBeLoggedIn"}}
-                                    <a href="" {{on "click" this.login}}>{{t "search.preview.login"}}</a>.
+                                    <a href="" {{on "click" this.login}}>
+                                        {{t "search.preview.login"}}
+                                    </a>
+                                    .
                                 </p>
                             {{/unless}}
                         {{else}}
                             <LinkTo
                                 @route="read.document"
-                                @model={{@result.id}}
+                                @model={{this.result.id}}
                                 @query={{@queryParams}}
                                 class="btn btn-primary btn-wide mr-2"
                             >
@@ -97,13 +87,19 @@
                                     <FaIcon @icon="angle-down" class="ml-1 text-muted" />
                                 </DD.Trigger>
                                 <DD.Content class="dropdown-menu">
-                                    <DropdownAction @dd={{DD}} @action={{fn this.downloadDocument this.downloadUrlEpub}}>
+                                    <DropdownAction
+                                        @dd={{DD}}
+                                        @action={{fn this.downloadDocument this.downloadUrlEpub}}
+                                    >
                                         {{t "search.preview.download.ePub"}}
                                     </DropdownAction>
                                     <DropdownAction @dd={{DD}} @action={{fn this.downloadDocument this.downloadUrlPdf}}>
                                         {{t "search.preview.download.pdf"}}
                                     </DropdownAction>
-                                    <DropdownAction @dd={{DD}} @action={{fn this.downloadDocument this.downloadUrlPdfOrig}}>
+                                    <DropdownAction
+                                        @dd={{DD}}
+                                        @action={{fn this.downloadDocument this.downloadUrlPdfOrig}}
+                                    >
                                         {{t "search.preview.download.pdfOrig"}}
                                     </DropdownAction>
                                 </DD.Content>
