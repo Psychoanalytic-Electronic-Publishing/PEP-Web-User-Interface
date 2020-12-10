@@ -434,7 +434,7 @@ export default class ReadDocument extends Controller {
 
     @action
     async printDocument() {
-        let url = `${ENV.apiBaseUrl}/${ENV.apiNamespace}/Documents/Downloads/PDF/${this.model.id}?client-id=${ENV.clientId}`;
+        let url = `${ENV.apiBaseUrl}/${ENV.apiNamespace}/Documents/Downloads/PDF/${this.model.id}/?client-id=${ENV.clientId}`;
         if (this.session.isAuthenticated && this.session.data.authenticated.SessionId) {
             url += `&client-session=${this.session.data.authenticated.SessionId}`;
         }
