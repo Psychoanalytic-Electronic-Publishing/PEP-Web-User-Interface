@@ -510,10 +510,6 @@ export default class Search extends Controller {
         if (this.currentUser.preferences?.searchPreviewEnabled) {
             this.previewedResult = result;
             this.preview = result.id;
-            this.sidebar.update({
-                [WIDGET.MORE_LIKE_THESE]: result,
-                [WIDGET.RELATED_DOCUMENTS]: result
-            });
         } else {
             this.transitionToRoute('read.document', result.id, {
                 queryParams: this.readQueryParams

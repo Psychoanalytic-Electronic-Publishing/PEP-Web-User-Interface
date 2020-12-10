@@ -2,38 +2,35 @@
     @scrollableNamespace="sidebar-right"
     @isOpen={{this.isOpen}}
     @toggle={{fn @toggleIsOpen this.widget}}
-    {{did-insert this.onElementChange}}
-    {{did-update this.onElementChange this.data}}
-    class="mb-2"
-as |Panel|>
+    class="mb-2" as |Panel|
+>
     <Panel.header @title={{t "relatedInfo.widgets.moreLikeThese.title"}} />
     <Panel.body>
-        <ContentWithPlaceholder
-            @placeholderComponent="loading/widget"
-            @isLoading={{this.loadSimilarFromDocument.isRunning}}
-        >
-            {{#if this.results.similarMaxScore}}
-                <h6>{{t "relatedInfo.widgets.moreLikeThese.confidence" number=(round this.results.similarMaxScore)}}</h6>
-            {{/if}}
-            <ul class="list-unstyled">
-                {{#each this.results.similarDocuments as |result|}}
-                    <li class="mb-2">
-                        <div>
-                            <LinkTo @route="read.document" @model={{result.id}}>
-                                {{html-safe result.title}}
-                            </LinkTo>
-                            <div class="text-muted small">
-                                {{html-safe result.sourceTitle}}
-                            </div>
+        {{#if this.data.similarityMatch.similarMaxScore}}
+            <h6>
+                {{t
+                    "relatedInfo.widgets.moreLikeThese.confidence"
+                    number=(round this.data.similarityMatch.similarMaxScore)
+                }}
+            </h6>
+        {{/if}}
+        <ul class="list-unstyled">
+            {{#each this.data.similarityMatch.similarDocuments as |result|}}
+                <li class="mb-2">
+                    <div>
+                        <LinkTo @route="read.document" @model={{result.id}}>
+                            {{html-safe result.title}}
+                        </LinkTo>
+                        <div class="text-muted small">
+                            {{html-safe result.sourceTitle}}
                         </div>
-                    </li>
-                {{else}}
-                    <li class="py-3 mb-0 text-center text-muted">
-                        {{t "relatedInfo.widgets.moreLikeThese.noResults"}}
-                    </li>
-                {{/each}}
-            </ul>
-        </ContentWithPlaceholder>
-
+                    </div>
+                </li>
+            {{else}}
+                <li class="py-3 mb-0 text-center text-muted">
+                    {{t "relatedInfo.widgets.moreLikeThese.noResults"}}
+                </li>
+            {{/each}}
+        </ul>
     </Panel.body>
 </CollapsiblePanel>

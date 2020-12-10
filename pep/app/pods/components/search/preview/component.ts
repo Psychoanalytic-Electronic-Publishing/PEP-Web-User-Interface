@@ -9,12 +9,14 @@ import { DS } from 'ember-data';
 
 import ENV from 'pep/config/environment';
 import { DOCUMENT_EPUB_BASE_URL, DOCUMENT_PDF_BASE_URL, DOCUMENT_PDFORIG_BASE_URL } from 'pep/constants/documents';
+import { SIDEBAR_SIMILAR_COUNT, WIDGET } from 'pep/constants/sidebar';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import Abstract from 'pep/pods/abstract/model';
 import AuthService from 'pep/services/auth';
 import LoadingBarService from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
 import ScrollableService from 'pep/services/scrollable';
+import SidebarService from 'pep/services/sidebar';
 import { serializeQueryParams } from 'pep/utils/url';
 
 export type SearchPreviewMode = 'minimized' | 'maximized' | 'fit' | 'custom';
@@ -33,6 +35,7 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
     @service scrollable!: ScrollableService;
     @service loadingBar!: LoadingBarService;
     @service store!: DS.Store;
+    @service sidebar!: SidebarService;
 
     @tracked fitHeight: number = 0;
     @tracked isDragResizing: boolean = false;
@@ -138,8 +141,14 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
     async loadAbstract(id: string) {
         try {
             this.loadingBar.show();
-            const abstract = await this.store.findRecord('abstract', id);
+            const abstract = await this.store.findRecord('abstract', id, {
+                adapterOptions: { query: { similarcount: SIDEBAR_SIMILAR_COUNT } }
+            });
             this.result = abstract;
+            this.sidebar.update({
+                [WIDGET.MORE_LIKE_THESE]: abstract,
+                [WIDGET.RELATED_DOCUMENTS]: abstract
+            });
         } finally {
             this.loadingBar.hide();
             scheduleOnce('afterRender', this, this.updateFitHeight);

@@ -5,7 +5,7 @@ import { inject as service } from '@ember/service';
 import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hooks/pagination';
 import { buildQueryParams, QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 
-import { WIDGET } from 'pep/constants/sidebar';
+import { SIDEBAR_SIMILAR_COUNT, WIDGET } from 'pep/constants/sidebar';
 import { PageNav } from 'pep/mixins/page-layout';
 import BrowseController, { BrowseTabs } from 'pep/pods/browse/controller';
 import BrowseJournalVolumeController from 'pep/pods/browse/journal/volume/controller';
@@ -28,6 +28,13 @@ export interface ReadDocumentParams {
     _searchTerms?: string;
     _facets?: string;
     page?: string;
+}
+
+export interface ReadAdapterOptions {
+    query: {
+        similarcount: number;
+    };
+    searchQuery?: string;
 }
 
 export default class ReadDocument extends PageNav(Route) {
@@ -71,11 +78,10 @@ export default class ReadDocument extends PageNav(Route) {
         // We now want to take this object and convert it to a browser query param string to send to the server (as that is what they are expecting)
         let queryString = serializeQueryParams(searchParams);
         searchQueryString = encodeURIComponent(`?${queryString}`);
-        const adapterOptions = searchQueryString
-            ? {
-                  searchQuery: `search='${searchQueryString}'`
-              }
-            : null;
+        let adapterOptions: ReadAdapterOptions = { query: { similarcount: SIDEBAR_SIMILAR_COUNT } };
+        if (searchQueryString) {
+            adapterOptions = { searchQuery: `search='${searchQueryString}'`, ...adapterOptions };
+        }
 
         return this.store.findRecord('document', params.document_id, {
             reload: true,

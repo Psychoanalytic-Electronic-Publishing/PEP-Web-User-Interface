@@ -36,3 +36,5 @@ export enum WIDGET {
 }
 
 export type WidgetData = Partial<Record<WIDGET, any>>;
+
+export const SIDEBAR_SIMILAR_COUNT = 5;
