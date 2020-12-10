@@ -1,11 +1,13 @@
 import { action } from '@ember/object';
 import Transition from '@ember/routing/-private/transition';
 import Route from '@ember/routing/route';
+import RouterService from '@ember/routing/router-service';
 import { inject as service } from '@ember/service';
 
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import IntlService from 'ember-intl/services/intl';
+import MetricService from 'ember-metrics/services/metrics';
 import MediaService from 'ember-responsive/services/media';
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 
@@ -23,6 +25,8 @@ import ThemeService from 'pep/services/theme';
 export default class Application extends PageLayout(Route.extend(ApplicationRouteMixin)) {
     routeAfterAuthentication = 'index';
 
+    @service router!: RouterService;
+    @service metrics!: MetricService;
     @service('pep-session') session!: PepSessionService;
     @service fastboot!: FastbootService;
     @service media!: MediaService;
@@ -35,6 +39,18 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
     @service lang!: LangService;
     @service loadingBar!: LoadingBarService;
     @service sidebar!: SidebarService;
+
+    constructor() {
+        super(...arguments);
+
+        let router = this.router;
+        router.on('routeDidChange', () => {
+            const page = router.currentURL;
+            const title = router.currentRouteName || 'unknown';
+
+            this.metrics.trackPage({ page, title });
+        });
+    }
 
     /**
      * App setup and configuration tasks
