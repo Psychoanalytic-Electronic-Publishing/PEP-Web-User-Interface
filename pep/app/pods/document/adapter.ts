@@ -9,6 +9,7 @@ import ApplicationAdapter, { SnapshotWithQuery } from 'pep/pods/application/adap
 export type SnapshotWithSearchQuery = SnapshotWithQuery & { adapterOptions: { searchQuery: any } };
 export default class DocumentAdapter extends ApplicationAdapter {
     modelNameOverride?: string;
+    newPathSegmentOverride?: string;
     origPathSegmentOverride?: string;
 
     /**
@@ -50,7 +51,7 @@ export default class DocumentAdapter extends ApplicationAdapter {
     urlForFindRecord<K extends string | number>(id: string, modelName: K, snapshot: DS.Snapshot<K>): string {
         const modelNameStr = this.modelNameOverride ?? modelName.toString();
         const origPathSegment = pluralize(classify(modelNameStr));
-        const newPathSegment = `${origPathSegment}/${classify(modelNameStr)}`;
+        const newPathSegment = this.newPathSegmentOverride ?? `${origPathSegment}/${classify(modelNameStr)}`;
 
         // always return XML version of documents
         const snapshotWithQuery = (snapshot as unknown) as SnapshotWithSearchQuery;
