@@ -2,11 +2,11 @@
     "brand": {
         "name": "PEP",
         "nameFull": {
-            "psychoanalytic": "Psychoanalytic",
-            "electronic": "Electronic",
-            "publishing": "Publishing"
+            "psychoanalytic": "Psychanalytique",
+            "electronic": "Électronique",
+            "publishing": "Édition"
         },
-        "copywrite": "&copy; Psychoanalytic Electronic Publishing (PEP)",
+        "copywrite": "&copy; Psychanalytique Électronique Édition (PEPe)",
         "slogan": "A Psychoanalytic Library at your fingertips"
     },
     "common": {

@@ -5,6 +5,7 @@ import { isEmpty } from '@ember/utils';
 import { tracked } from '@glimmer/tracking';
 
 import Modal from '@gavant/ember-modals/services/modal';
+import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import { timeout } from 'ember-concurrency';
 import { restartableTask } from 'ember-concurrency-decorators';
@@ -35,6 +36,7 @@ export default class Application extends Controller {
     @service configuration!: ConfigurationService;
     @service currentUser!: CurrentUserService;
     @service sidebar!: SidebarService;
+    @service fastboot!: FastbootService;
 
     @tracked isLimitOpen: boolean = false;
     @tracked smartSearchTerm: string = '';

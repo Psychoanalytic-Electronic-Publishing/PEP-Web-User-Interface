@@ -8,7 +8,7 @@
             <h6 class="mb-3">
                 {{t "preferences.general.heading"}}
             </h6>
-            <div class="form-row">
+            <div class="form-row mb-3">
                 <div class="col-6">
                     <FlSelect
                         @options={{this.theme.themeOptions}}
@@ -22,7 +22,22 @@
                     />
                 </div>
             </div>
+            <div class="form-row">
+                <div class="col-6">
+                    <FlSelect
+                        @options={{this.lang.availableLanguages}}
+                        @value={{this.lang.currentLanguage}}
+                        @valuePath="code"
+                        @labelPath="label"
+                        @placeholder={{t "preferences.general.lang.label"}}
+                        @emptyOptionText={{t "preferences.general.lang.select"}}
+                        @allowClear={{false}}
+                        @onChange={{this.updateLanguage}}
+                    />
+                </div>
+            </div>
         </div>
+
         <div class="mb-4">
             <h6 class="mb-3">
                 {{t "preferences.search.heading"}}

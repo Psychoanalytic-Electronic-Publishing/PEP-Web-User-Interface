@@ -9,6 +9,7 @@ module.exports = function(environment) {
         rootURL: '/',
         routerRootURL: process.env.ROOT_URL,
         locationType: 'auto',
+
         EmberENV: {
             LOG_STACKTRACE_ON_DEPRECATION: false,
             FEATURES: {
@@ -68,6 +69,10 @@ module.exports = function(environment) {
                 console: true,
                 api: false
             }
+        },
+
+        'ember-cli-head': {
+            suppressBrowserRender: true
         },
 
         fastboot: {

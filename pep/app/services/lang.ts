@@ -1,11 +1,13 @@
 import Service, { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
+
 import IntlService from 'ember-intl/services/intl';
 
+import fetch from 'fetch';
+import { LANG_EN_US, LanguageCode, Languages } from 'pep/constants/lang';
+import { PreferenceKey } from 'pep/constants/preferences';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
-import { LanguageCode, LANG_EN_US } from 'pep/constants/lang';
-import { PreferenceKey } from 'pep/constants/preferences';
 
 export default class LangService extends Service {
     @service intl!: IntlService;
@@ -14,13 +16,27 @@ export default class LangService extends Service {
 
     @tracked currentLanguage: LanguageCode = LanguageCode.enUS;
 
+    get availableLanguages() {
+        return Languages.map((lang) => ({
+            ...lang,
+            label: this.intl.t(lang.label)
+        }));
+    }
+
     /**
      * Initialize the app with the user's current language
      */
-    setup() {
+    async setup() {
         // TODO eventually possibly allow setting via ?lang={code} app-level query param
         this.currentLanguage = this.currentUser.preferences?.lang ?? LANG_EN_US.code;
+        await this.loadLanguage(this.currentLanguage);
         this.intl.setLocale(this.currentLanguage);
+    }
+
+    async loadLanguage(lang: LanguageCode) {
+        const translations = await fetch(`/translations/${lang}.json`);
+        const translationsAsJson = await translations.json();
+        this.intl.addTranslations(lang, translationsAsJson);
     }
 
     /**
@@ -28,7 +44,8 @@ export default class LangService extends Service {
      * @param {string} lang
      * @returns {Promise<void>}
      */
-    changeLanguage(lang: LanguageCode) {
+    async changeLanguage(lang: LanguageCode) {
+        await this.loadLanguage(lang);
         this.currentLanguage = lang;
         this.intl.setLocale(lang);
         this.currentUser.updatePrefs({ [PreferenceKey.LANG]: lang });

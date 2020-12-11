@@ -30,11 +30,10 @@ export default class ThemeService extends Service {
     }
 
     /**
-     * Sets the currently selected theme CSS in the page <head>
+     * Sets the currently selected theme CSS in the page <head>. Only gets run in fastboot
      */
     setup() {
         this.headData.set('themePath', this.currentTheme.cssPath);
-        this.injectLinkColors();
     }
 
     /**
@@ -43,7 +42,17 @@ export default class ThemeService extends Service {
      */
     updateTheme(newThemeId: ThemeId) {
         this.currentUser.updatePrefs({ [PreferenceKey.THEME]: newThemeId });
-        this.setup();
+        if (window.document.querySelector('#theme')) {
+            window.document.querySelector('#theme')?.setAttribute('href', this.currentTheme.cssPath);
+        } else {
+            const linkElement = window.document.createElement('link');
+            linkElement.setAttribute('rel', 'stylesheet');
+            linkElement.setAttribute('type', 'text/css');
+            linkElement.setAttribute('id', 'theme');
+            linkElement.setAttribute('href', this.currentTheme.cssPath);
+            window.document.head.appendChild(linkElement);
+        }
+        this.injectLinkColors();
     }
 
     @dontRunInFastboot
