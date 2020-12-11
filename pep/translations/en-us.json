@@ -568,7 +568,8 @@
         "themes": {
             "default": "Navy (default)",
             "tomato": "Tomato",
-            "dark": "Dark"
+            "dark": "Dark",
+            "highContrast": "High Contrast"
         }
     },
     "fourOhFour": {

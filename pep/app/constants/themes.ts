@@ -1,7 +1,8 @@
 export enum ThemeId {
     DEFAULT = 'default',
     TOMATO = 'tomato',
-    DARK = 'dark'
+    DARK = 'dark',
+    HIGH_CONTRAST = 'high-contrast'
 }
 
 export interface Theme {
@@ -76,4 +77,22 @@ export const THEME_DARK: Theme = {
     }
 };
 
-export default [THEME_DEFAULT, THEME_TOMATO, THEME_DARK];
+export const THEME_HIGH_CONTRAST: Theme = {
+    id: ThemeId.HIGH_CONTRAST,
+    cssPath: '/assets/themes/high-contrast.css',
+    label: 'theme.themes.highContrast',
+    colors: {
+        links: {
+            glossary: '#03a678',
+            bibliography: '#03a678',
+            pageReference: '#03a678',
+            external: '#03a678',
+            figure: '#03a678',
+            webExternal: '#03a678',
+            webInternal: '#03a678',
+            special: '#03a678'
+        }
+    }
+};
+
+export default [THEME_DEFAULT, THEME_TOMATO, THEME_DARK, THEME_HIGH_CONTRAST];

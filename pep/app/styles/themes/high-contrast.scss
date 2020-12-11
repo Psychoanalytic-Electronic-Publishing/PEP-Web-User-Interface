@@ -1,0 +1,62 @@
+// ---------------------------
+// Web Fonts
+// ---------------------------
+@import '../fonts';
+// ---------------------------
+// Global variables
+// ---------------------------
+@import '../variables';
+// ---------------------------
+// Theme variables
+// ---------------------------
+@import '../variables-theme';
+
+// Application variables
+// ---------------------------
+$logo-path: '/assets/images/logo-high-contrast.jpg';
+$color-brand-primary: #03a678;
+$color-primary-background: #fff;
+$color-backdrop: #fff;
+$color-backdrop-well: darken($color-backdrop, 2.5%);
+$color-progress-spinner-loading2: saturate(lighten($color-brand-primary, 35%), 45%);
+$color-focus-shadow: rgba($color-brand-primary, 0.25);
+// Bootstrap overrides
+// ---------------------------
+$font-size-base: 1.05rem;
+$font-size-secondary: 0.9rem;
+$font-size-app-base: 1.05rem;
+$font-size-normal: 1.05rem;
+
+$primary: $color-brand-primary;
+$link-color: $primary;
+$body-color: #000;
+$link-color: $color-brand-primary;
+$alert-bg-level: 10;
+$alert-border-level: 1;
+$alert-color-level: -10;
+$navbar-dark-color: #20603c;
+$navbar-dark-active-color: #000;
+$navbar-dark-hover-color: darken($color-brand-primary, 25%);
+$navbar-dark-disabled-color: #4d6066;
+
+// Addon overrides
+// ---------------------------
+$button-spinner-loading-color2: saturate(lighten($color-brand-primary, 35%), 45%);
+$ember-power-select-focus-border-color: lighten($primary, 25%);
+$ember-power-select-focus-box-shadow: 0 0 0 0.2rem rgba($primary, 0.25);
+
+// ---------------------------
+// Common app styles
+// ---------------------------
+@import '../common';
+.text-black-50 {
+    color: rgba(#000, 0.75) !important;
+}
+.text-white-50 {
+    color: rgba(#fff, 0.75) !important;
+}
+
+.glosstip {
+    background-color: transparent !important;
+    color: $color-brand-primary;
+}
