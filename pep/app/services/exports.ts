@@ -88,10 +88,18 @@ export default class ExportsService extends Service {
             navigator.msSaveBlob(blob, filename);
             return;
         }
-        this._downloadItem(blob, filename, mimetype);
+        this.downloadItem(blob, filename, mimetype);
     }
 
-    _downloadItem(urlOrBlob: string | Blob, filename: string, mimetype?: string) {
+    /**
+     * Download an item by passing in a string or a blob
+     *
+     * @param {(string | Blob)} urlOrBlob
+     * @param {string} filename
+     * @param {string} [mimetype]
+     * @memberof ExportsService
+     */
+    downloadItem(urlOrBlob: string | Blob, filename: string, mimetype?: string) {
         const lnk = document.createElement('a'),
             url = window.URL;
 

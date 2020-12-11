@@ -6,7 +6,7 @@ import { tracked } from '@glimmer/tracking';
 
 import ModalService from '@gavant/ember-modals/services/modal';
 import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
-import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
+import { QueryParamsObj, removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import IntlService from 'ember-intl/services/intl';
@@ -99,10 +99,12 @@ export default class ReadDocument extends Controller {
     }
 
     get downloadAuthParams() {
-        return serializeQueryParams({
+        const queryPrams = {
             'client-id': ENV.clientId,
-            'client-session': this.session.data.authenticated.SessionId
-        });
+            'client-session': this.session.data.authenticated.SessionId ?? ''
+        };
+        const normalizedParams = removeEmptyQueryParams(queryPrams);
+        return serializeQueryParams(normalizedParams);
     }
 
     get downloadUrlEpub() {
@@ -434,16 +436,13 @@ export default class ReadDocument extends Controller {
 
     @action
     async printDocument() {
-        let url = `${ENV.apiBaseUrl}/${ENV.apiNamespace}/Documents/Downloads/PDF/${this.model.id}/?client-id=${ENV.clientId}`;
-        if (this.session.isAuthenticated && this.session.data.authenticated.SessionId) {
-            url += `&client-session=${this.session.data.authenticated.SessionId}`;
-        }
+        let url = `${ENV.apiBaseUrl}/${ENV.apiNamespace}/Documents/Downloads/PDF/${this.model.id}/?${this.downloadAuthParams}`;
         this.printer.printElement(url);
     }
 
     @action
     async downloadDocument(url: string) {
-        this.exports._downloadItem(`${url}?${this.downloadAuthParams}`, 'Document');
+        this.exports.downloadItem(`${url}?${this.downloadAuthParams}`, 'Document');
     }
 }
 
