@@ -6,16 +6,19 @@ import { tracked } from '@glimmer/tracking';
 
 import ModalService from '@gavant/ember-modals/services/modal';
 import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
-import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
+import { QueryParamsObj, removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import IntlService from 'ember-intl/services/intl';
 
+import ENV from 'pep/config/environment';
+import { DOCUMENT_EPUB_BASE_URL, DOCUMENT_PDF_BASE_URL, DOCUMENT_PDFORIG_BASE_URL } from 'pep/constants/documents';
 import { PreferenceKey } from 'pep/constants/preferences';
 import { TITLE_REGEX } from 'pep/constants/regex';
 import { SEARCH_DEFAULT_VIEW_PERIOD, SearchViews, SearchViewType, ViewPeriod } from 'pep/constants/search';
 import Document from 'pep/pods/document/model';
 import GlossaryTerm from 'pep/pods/glossary-term/model';
+import AjaxService from 'pep/services/ajax';
 import AuthService from 'pep/services/auth';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
@@ -26,6 +29,7 @@ import PrinterService from 'pep/services/printer';
 import SearchSelection from 'pep/services/search-selection';
 import { buildSearchQueryParams, clearSearch } from 'pep/utils/search';
 import { SearchSorts, SearchSortType, transformSearchSortsToTable, transformSearchSortToAPI } from 'pep/utils/sort';
+import { serializeQueryParams } from 'pep/utils/url';
 import { reject, resolve } from 'rsvp';
 
 export default class ReadDocument extends Controller {
@@ -42,6 +46,7 @@ export default class ReadDocument extends Controller {
     @service intl!: IntlService;
     @service printer!: PrinterService;
     @service searchSelection!: SearchSelection;
+    @service ajax!: AjaxService;
 
     @tracked selectedView = SearchViews[0];
     @tracked selectedSort = SearchSorts[0];
@@ -91,6 +96,27 @@ export default class ReadDocument extends Controller {
 
     get defaultSearchParams() {
         return this.configuration.defaultSearchParams;
+    }
+
+    get downloadAuthParams() {
+        const queryPrams = {
+            'client-id': ENV.clientId,
+            'client-session': this.session.data.authenticated.SessionId ?? ''
+        };
+        const normalizedParams = removeEmptyQueryParams(queryPrams);
+        return serializeQueryParams(normalizedParams);
+    }
+
+    get downloadUrlEpub() {
+        return `${DOCUMENT_EPUB_BASE_URL}/${this.model.id}`;
+    }
+
+    get downloadUrlPdf() {
+        return `${DOCUMENT_PDF_BASE_URL}/${this.model.id}`;
+    }
+
+    get downloadUrlPdfOrig() {
+        return `${DOCUMENT_PDFORIG_BASE_URL}/${this.model.id}`;
     }
 
     //workaround for bug w/array-based query param values
@@ -406,6 +432,17 @@ export default class ReadDocument extends Controller {
                 searchTerms
             }
         });
+    }
+
+    @action
+    async printDocument() {
+        let url = `${ENV.apiBaseUrl}/${ENV.apiNamespace}/Documents/Downloads/PDF/${this.model.id}/?${this.downloadAuthParams}`;
+        this.printer.printElement(url);
+    }
+
+    @action
+    async downloadDocument(url: string) {
+        this.exports.downloadItem(`${url}?${this.downloadAuthParams}`, 'Document');
     }
 }
 
