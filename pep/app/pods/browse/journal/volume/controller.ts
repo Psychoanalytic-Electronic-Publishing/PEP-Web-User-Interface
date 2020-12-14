@@ -18,7 +18,7 @@ import ExportsService, { ExportType } from 'pep/services/exports';
 import PrinterService from 'pep/services/printer';
 
 interface Issue {
-    title: string;
+    title?: string;
     models: SourceVolume[];
 }
 
@@ -67,21 +67,31 @@ export default class BrowseJournalVolume extends Controller {
     @cached
     get sortedModels() {
         const model = this.model as SourceVolume[];
-
-        const models = model.reduce<{ [key: string]: Issue }>((sortedModels, sourceVolume) => {
-            const issue = sourceVolume.issue;
-            if (issue) {
-                if (!sortedModels[issue]) {
-                    sortedModels[issue] = {
-                        title: sourceVolume.issueTitle,
-                        models: [sourceVolume]
-                    };
+        const models = model.reduce<{
+            [key: string]: Issue;
+        }>(
+            (sortedModels, sourceVolume) => {
+                const issue = sourceVolume.issue;
+                if (issue) {
+                    if (!sortedModels[issue]) {
+                        sortedModels[issue] = {
+                            title: sourceVolume.issueTitle,
+                            models: [sourceVolume]
+                        };
+                    } else {
+                        sortedModels[issue].models.push(sourceVolume);
+                    }
                 } else {
-                    sortedModels[issue].models.push(sourceVolume);
+                    sortedModels.withoutIssues.models.push(sourceVolume);
+                }
+                return sortedModels;
+            },
+            {
+                withoutIssues: {
+                    models: []
                 }
             }
-            return sortedModels;
-        }, {});
+        );
         const result = Object.keys(models).map((key) => {
             return models[key];
         });
