@@ -14,6 +14,7 @@ import ConfigurationService from 'pep/services/configuration';
 import FastbootMediaService from 'pep/services/fastboot-media';
 import PepSessionService from 'pep/services/pep-session';
 import SidebarService from 'pep/services/sidebar';
+import { buildSearchQueryParams } from 'pep/utils/search';
 
 interface HomeArgs {}
 
@@ -62,6 +63,38 @@ export default class Home extends Component<HomeArgs> {
             });
         } else {
             return this.transitionToExpertPick();
+        }
+    }
+
+    @action
+    readImageDocument() {
+        if (!this.session.isAuthenticated) {
+            return this.auth.openLoginModal(true, {
+                actions: {
+                    onAuthenticated: this.transitionToImageDocument
+                }
+            });
+        } else {
+            return this.transitionToImageDocument();
+        }
+    }
+
+    /**
+     * Load the `Document` that contains the expert image
+     * of the day.
+     * Transition to this document's read page.
+     */
+    @action
+    async transitionToImageDocument() {
+        try {
+            const queryParams = buildSearchQueryParams({
+                smartSearchTerm: `art_graphic_list: ${this.expertPick.imageId}`
+            });
+            const results = await this.store.query('search-document', queryParams);
+            const matchingDocument = results.toArray()[0];
+            return this.router.transitionTo('read.document', matchingDocument.id);
+        } catch (errors) {
+            throw errors;
         }
     }
 

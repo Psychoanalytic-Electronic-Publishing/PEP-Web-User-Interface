@@ -59,9 +59,11 @@
                         </div>
                         <ContentWithPlaceholder @placeholderInFastboot={{true}}>
                             <div class="float-xl-right mw-xl-50 ml-xl-3 pl-xl-3 mb-xl-2 d-flex flex-column border-divider-l">
-                                <LinkTo @route="read.document" @model={{this.expertPick.articleId}}>
+                                <Button
+                                    @action={{this.readImageDocument}}
+                                >
                                     <Document::Image @id={{this.expertPick.imageId}} class="rounded img-fluid" />
-                                </LinkTo>
+                                </Button>
                             </div>
                             <div class="card-text mb-3 pep-abstract-preview">
                                 {{#if this.model}}
