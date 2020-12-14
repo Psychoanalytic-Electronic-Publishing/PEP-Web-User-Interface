@@ -77,6 +77,11 @@ export default class ThemeService extends Service {
         ];
     }
 
+    /**
+     * Inject link colors into the linkColors stylesheet. This happens to the administrators can control the colors of the links in the documents
+     *
+     * @memberof ThemeService
+     */
     @dontRunInFastboot
     injectLinkColors() {
         const node = (window.document.querySelector('#linkColors') as unknown) as LinkStyle;

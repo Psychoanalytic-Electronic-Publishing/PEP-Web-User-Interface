@@ -36,7 +36,6 @@ module.exports = function(/* environment */) {
          * @type {Boolean}
          * @default "false"
          */
-        //TODO we might want to do this eventually so we arent bundling ALL translation json files in the main app payload
         publicOnly: true,
 
         /**

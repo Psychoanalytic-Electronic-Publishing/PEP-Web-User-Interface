@@ -5,7 +5,6 @@ import { isEmpty } from '@ember/utils';
 import { tracked } from '@glimmer/tracking';
 
 import Modal from '@gavant/ember-modals/services/modal';
-import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import { timeout } from 'ember-concurrency';
 import { restartableTask } from 'ember-concurrency-decorators';
@@ -15,7 +14,7 @@ import IntlService from 'ember-intl/services/intl';
 import { ServerStatus } from 'pep/api';
 import ENV from 'pep/config/environment';
 import { PreferenceKey } from 'pep/constants/preferences';
-import { SEARCH_DEFAULT_VIEW_PERIOD, SearchTermValue, ViewPeriod } from 'pep/constants/search';
+import { SEARCH_DEFAULT_VIEW_PERIOD, SEARCH_TYPE_ARTICLE, SearchTermValue, ViewPeriod } from 'pep/constants/search';
 import AjaxService from 'pep/services/ajax';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
@@ -23,8 +22,6 @@ import LoadingBarService from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
 import SidebarService from 'pep/services/sidebar';
 import { clearSearch } from 'pep/utils/search';
-
-import { SEARCH_TYPE_ARTICLE } from '../../constants/search';
 
 export default class Application extends Controller {
     @service loadingBar!: LoadingBarService;
@@ -36,7 +33,6 @@ export default class Application extends Controller {
     @service configuration!: ConfigurationService;
     @service currentUser!: CurrentUserService;
     @service sidebar!: SidebarService;
-    @service fastboot!: FastbootService;
 
     @tracked isLimitOpen: boolean = false;
     @tracked smartSearchTerm: string = '';
