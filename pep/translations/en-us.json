@@ -52,7 +52,7 @@
             "login": "Login",
             "logout": "Logout",
             "accountInfo": "Account Info",
-            "loggedInVia": "Logged in via: {type}"
+            "loggedInViaIP": "Logged in via IP"
         }
     },
     "home": {
@@ -548,7 +548,7 @@
             "name": "Name: {name}",
             "email": "Email: {email}",
             "username": "Username: {username}",
-            "loginType": "Login Type: {type}"
+            "loggedInViaIP": "Logged in via IP"
         },
         "activeSubscriptions": {
             "title": "Active Subscriptions"

@@ -8,14 +8,16 @@
             <p class="text-muted font-size-secondary mb-0">
                 {{t "accountInfo.registeredUser.username" username=this.currentUser.user.userName}}
             </p>
+            {{#unless this.session.canLogOut}}
+                <p class="text-muted font-size-secondary mb-0">
+                    {{t "accountInfo.registeredUser.loggedInViaIP"}}
+                </p>
+            {{/unless}}
             <p class="text-muted font-size-secondary mb-0">
                 {{t "accountInfo.registeredUser.name" name=this.currentUser.user.userFullName}}
             </p>
-            <p class="text-muted font-size-secondary mb-0">
-                {{t "accountInfo.registeredUser.email" email=this.currentUser.user.emailAddress}}
-            </p>
             <p class="text-muted font-size-secondary">
-                {{t "accountInfo.registeredUser.loginType" type=this.currentUser.user.loggedInMethod}}
+                {{t "accountInfo.registeredUser.email" email=this.currentUser.user.emailAddress}}
             </p>
         </div>
         <div class="mb-2">

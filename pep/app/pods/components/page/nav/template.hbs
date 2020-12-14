@@ -72,7 +72,7 @@
                             {{#if this.session.canLogOut}}
                                 {{this.currentUser.user.userName}}
                             {{else}}
-                                {{t "nav.user.loggedInVia" type=this.currentUser.user.loggedInMethod}}
+                                {{t "nav.user.loggedInViaIP"}}
                             {{/if}}
                         </div>
                         <DropdownAction @dd={{DD}} @action={{this.openAccountInfoModal}}>
