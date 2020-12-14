@@ -1,6 +1,8 @@
 export enum ThemeId {
     DEFAULT = 'default',
-    TOMATO = 'tomato'
+    TOMATO = 'tomato',
+    DARK = 'dark',
+    HIGH_CONTRAST = 'high-contrast'
 }
 
 export interface Theme {
@@ -57,4 +59,40 @@ export const THEME_TOMATO: Theme = {
     }
 };
 
-export default [THEME_DEFAULT, THEME_TOMATO];
+export const THEME_DARK: Theme = {
+    id: ThemeId.DARK,
+    cssPath: '/assets/themes/dark.css',
+    label: 'theme.themes.dark',
+    colors: {
+        links: {
+            glossary: '#a4a29e',
+            bibliography: '#a4a29e',
+            pageReference: '#a4a29e',
+            external: '#a4a29e',
+            figure: '#a4a29e',
+            webExternal: '#a4a29e',
+            webInternal: '#a4a29e',
+            special: '#a4a29e'
+        }
+    }
+};
+
+export const THEME_HIGH_CONTRAST: Theme = {
+    id: ThemeId.HIGH_CONTRAST,
+    cssPath: '/assets/themes/high-contrast.css',
+    label: 'theme.themes.highContrast',
+    colors: {
+        links: {
+            glossary: '#03a678',
+            bibliography: '#03a678',
+            pageReference: '#03a678',
+            external: '#03a678',
+            figure: '#03a678',
+            webExternal: '#03a678',
+            webInternal: '#03a678',
+            special: '#03a678'
+        }
+    }
+};
+
+export default [THEME_DEFAULT, THEME_TOMATO, THEME_DARK, THEME_HIGH_CONTRAST];
