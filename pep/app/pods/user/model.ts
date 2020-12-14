@@ -11,9 +11,13 @@ export default class User extends DS.Model {
     @attr('boolean') branding!: boolean;
     @attr('string') brandingImgUrl!: string;
     @attr<any>('json', { defaultValue: () => ({ ...DEFAULT_USER_PREFERENCES }) }) clientSettings!: UserPreferences;
+    @attr('string') emailAddress!: string;
     @attr('boolean') hasArchiveAccess!: boolean;
     @attr('boolean') hasCurrentAccess!: boolean;
+    @attr('string') loggedInMethod!: string;
+    @attr('string') paDSHomeURL!: string;
     @attr('date') subscriptionEndDate!: Date;
+    @attr('string') userFullName!: string;
     @attr('string') userName!: string;
     @attr('string') userType!: UserType;
 }

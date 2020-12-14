@@ -6,11 +6,28 @@
                 {{t "accountInfo.registeredUser.title"}}
             </h5>
             <p class="text-muted font-size-secondary mb-0">
-                {{t "accountInfo.registeredUser.name" name=this.currentUser.user.userName}}
+                {{t "accountInfo.registeredUser.username" username=this.currentUser.user.userName}}
             </p>
+            <p class="text-muted font-size-secondary mb-0">
+                {{t "accountInfo.registeredUser.name" name=this.currentUser.user.userFullName}}
+            </p>
+            <p class="text-muted font-size-secondary mb-0">
+                {{t "accountInfo.registeredUser.email" email=this.currentUser.user.emailAddress}}
+            </p>
+            <p class="text-muted font-size-secondary">
+                {{t "accountInfo.registeredUser.loginType" type=this.currentUser.user.loggedInMethod}}
+            </p>
+        </div>
+        <div class="mb-2">
+            <h5>
+                {{t "accountInfo.activeSubscriptions.title"}}
+            </h5>
         </div>
     </Modal.body>
     <Modal.footer>
+        {{#if this.currentUser.user.paDSHomeURL}}
+            <Button @type="link" @label={{t "accountInfo.makeChangesOnPads"}} @action={{this.openPadsTab}} />
+        {{/if}}
         <Button @type="primary" @label={{t "common.close"}} @action={{@onClose}} />
     </Modal.footer>
 </ModalDialog>
