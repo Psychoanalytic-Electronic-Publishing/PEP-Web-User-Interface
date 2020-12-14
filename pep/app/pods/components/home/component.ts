@@ -66,6 +66,12 @@ export default class Home extends Component<HomeArgs> {
         }
     }
 
+    /**
+     * /**
+     * Opens login modal (if user is not logged in already)
+     * and then transitions to the document read page
+     * @returns {void | Promise<void>}
+     */
     @action
     readImageDocument() {
         if (!this.session.isAuthenticated) {
