@@ -87,11 +87,13 @@
                             <ContentWithPlaceholder @isLoading={{not this.model}}>
                                 <div class="container-fluid">
                                     {{#each this.sortedModels as |issue|}}
-                                        <h5>
-                                            <strong>
-                                                {{issue.title}}
-                                            </strong>
-                                        </h5>
+                                        {{#if issue.title}}
+                                            <h5>
+                                                <strong>
+                                                    {{issue.title}}
+                                                </strong>
+                                            </h5>
+                                        {{/if}}
                                         <ol class="list-unstyled">
                                             {{#each issue.models as |model|}}
                                                 {{#if model.newSectionName}}
