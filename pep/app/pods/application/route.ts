@@ -9,6 +9,7 @@ import NotificationService from 'ember-cli-notifications/services/notifications'
 import IntlService from 'ember-intl/services/intl';
 import MetricService from 'ember-metrics/services/metrics';
 import MediaService from 'ember-responsive/services/media';
+import TourService from 'ember-shepherd/services/tour';
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 
 import PageLayout from 'pep/mixins/page-layout';
@@ -39,6 +40,7 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
     @service lang!: LangService;
     @service loadingBar!: LoadingBarService;
     @service sidebar!: SidebarService;
+    @service tour!: TourService;
 
     constructor() {
         super(...arguments);
@@ -146,6 +148,71 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
             //@ts-ignore TODO we need a way to inform TS about class members coming from Ember-style mixins
             super.sessionAuthenticated(...arguments);
         }
+    }
+
+    async setupController(controller, model) {
+        super.setupController(controller, model);
+        this.tour.set('defaultStepOptions', {
+            cancelIcon: {
+                enabled: false
+            },
+            classes: 'class-1 class-2',
+            scrollTo: true
+        });
+        this.tour.set('disableScroll', true);
+        this.tour.set('modal', true);
+
+        await this.tour.addSteps([
+            {
+                id: 'home',
+                attachTo: {
+                    element: '.nav-item.home',
+                    on: 'bottom'
+                },
+                text: 'This button takes you home',
+                title: 'Home',
+                buttons: [
+                    {
+                        text: 'Next',
+                        type: 'next'
+                    }
+                ]
+            },
+            {
+                id: 'toggle-left',
+                attachTo: {
+                    element: '.sidebar-left .sidebar-toggle-handle',
+                    on: 'left'
+                },
+                classes: 'tour-left-sidebar-spacing',
+                text: 'This toggles the sidebar open or closed',
+                title: 'Left Sidebar Toggle',
+                buttons: [
+                    {
+                        text: 'Next',
+                        type: 'next'
+                    }
+                ],
+                scrollTo: true
+            },
+            {
+                id: 'toggle-right',
+                attachTo: {
+                    element: '.sidebar-right .sidebar-toggle-handle',
+                    on: 'left'
+                },
+                classes: 'tour-right-sidebar-spacing',
+                text: 'This toggles the sidebar open or closed',
+                title: 'Right Sidebar Toggle',
+                buttons: [
+                    {
+                        text: 'Close',
+                        type: 'next'
+                    }
+                ]
+            }
+        ]);
+        this.tour.start();
     }
 
     /**

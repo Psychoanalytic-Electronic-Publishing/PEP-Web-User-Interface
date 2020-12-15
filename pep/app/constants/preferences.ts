@@ -17,7 +17,8 @@ export enum PreferenceKey {
     SEARCH_TERM_FIELDS = 'searchTermFields',
     SEARCH_VIEW_TYPE = 'searchViewType',
     SEARCH_SORT_TYPE = 'searchSortType',
-    THEME = 'theme'
+    THEME = 'theme',
+    TOUR_ENABLED = 'tourEnabled'
 }
 
 export interface UserPreferences {
@@ -33,6 +34,7 @@ export interface UserPreferences {
     searchPreviewEnabled?: boolean;
     searchSortType: SearchSort;
     theme: ThemeId;
+    tourEnabled: boolean;
 }
 
 export type PreferenceChangeset = Partial<UserPreferences>;
@@ -68,7 +70,8 @@ export const COOKIE_PREFERENCES: PreferenceKey[] = [
 export const LOCALSTORAGE_PREFERENCES: PreferenceKey[] = [
     PreferenceKey.FAVORITES,
     PreferenceKey.READ_LATER,
-    PreferenceKey.SEARCH_PREVIEW_ENABLED
+    PreferenceKey.SEARCH_PREVIEW_ENABLED,
+    PreferenceKey.TOUR_ENABLED
 ];
 
 export const DEFAULT_USER_PREFERENCES: UserPreferences = {
@@ -81,5 +84,6 @@ export const DEFAULT_USER_PREFERENCES: UserPreferences = {
     readLater: [],
     theme: ThemeId.DEFAULT,
     searchViewType: SearchViews[0],
-    searchSortType: SearchSorts[0]
+    searchSortType: SearchSorts[0],
+    tourEnabled: true
 };
