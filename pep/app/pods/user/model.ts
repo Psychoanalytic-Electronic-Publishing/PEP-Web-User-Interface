@@ -33,13 +33,21 @@ export default class User extends DS.Model {
     @attr('string') userType!: UserType;
 
     get activeSubscriptionsJSON(): ActiveSubscription[] {
-        return JSON.parse(this.activeSubscriptions).map((subscription: ActiveSubscription) => {
-            return {
-                ...subscription,
-                RecurringSubscriptionStartDate: moment(subscription.RecurringSubscriptionStartDate, SERVER_DATE_FORMAT),
-                RecurringSubscriptionEndDate: moment(subscription.RecurringSubscriptionEndDate, SERVER_DATE_FORMAT)
-            };
-        });
+        return this.activeSubscriptions
+            ? JSON.parse(this.activeSubscriptions).map((subscription: ActiveSubscription) => {
+                  return {
+                      ...subscription,
+                      RecurringSubscriptionStartDate: moment(
+                          subscription.RecurringSubscriptionStartDate,
+                          SERVER_DATE_FORMAT
+                      ),
+                      RecurringSubscriptionEndDate: moment(
+                          subscription.RecurringSubscriptionEndDate,
+                          SERVER_DATE_FORMAT
+                      )
+                  };
+              })
+            : [];
     }
 }
 
