@@ -551,7 +551,8 @@
             "loggedInViaIP": "Logged in via IP"
         },
         "activeSubscriptions": {
-            "title": "Active Subscriptions"
+            "title": "Active Subscriptions",
+            "subscription": "{product} from {start, date, short} to {end, date, short}"
         }
     },
     "exports": {
