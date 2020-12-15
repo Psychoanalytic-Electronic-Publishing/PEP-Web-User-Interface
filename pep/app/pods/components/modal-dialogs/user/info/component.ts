@@ -19,6 +19,8 @@ export default class ModalDialogsUserInfo extends Component<ModalDialogsUserInfo
      */
     @action
     openPadsTab() {
-        window.open(this.currentUser.user!.paDSHomeURL, '_blank');
+        if (this.currentUser.user?.paDSHomeURL) {
+            window.open(this.currentUser.user.paDSHomeURL, '_blank');
+        }
     }
 }
