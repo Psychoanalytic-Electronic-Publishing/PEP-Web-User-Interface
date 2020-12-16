@@ -66,26 +66,30 @@
                         <FaIcon @icon="info-square" @fixedWidth={{true}} class="text-muted" />
                         {{t "nav.user.about"}}
                     </DropdownAction>
-                    {{#if this.session.canLogOut}}
-                        <div class="dropdown-divider"></div>
-                        {{#if this.session.isAuthenticated}}
-                            <div class="py-1 px-4">
+                    <div class="dropdown-divider"></div>
+                    {{#if this.session.isAuthenticated}}
+                        <div class="py-1 px-4">
+                            {{#if this.session.canLogOut}}
                                 {{this.currentUser.user.userName}}
-                            </div>
-                            <DropdownAction @dd={{DD}} @action={{this.openAccountInfoModal}}>
-                                <FaIcon @icon="info-circle" @fixedWidth={{true}} class="text-muted" />
-                                {{t "nav.user.accountInfo"}}
-                            </DropdownAction>
+                            {{else}}
+                                {{t "nav.user.loggedInViaIP"}}
+                            {{/if}}
+                        </div>
+                        <DropdownAction @dd={{DD}} @action={{this.openAccountInfoModal}}>
+                            <FaIcon @icon="info-circle" @fixedWidth={{true}} class="text-muted" />
+                            {{t "nav.user.accountInfo"}}
+                        </DropdownAction>
+                        {{#if this.session.canLogOut}}
                             <DropdownAction @dd={{DD}} @action={{this.logout}}>
                                 <FaIcon @icon="sign-out" @fixedWidth={{true}} class="text-muted" />
                                 {{t "nav.user.logout"}}
                             </DropdownAction>
-                        {{else}}
-                            <DropdownAction @dd={{DD}} @action={{this.openLoginModal}}>
-                                <FaIcon @icon="sign-in" @fixedWidth={{true}} class="text-muted" />
-                                {{t "nav.user.login"}}
-                            </DropdownAction>
                         {{/if}}
+                    {{else}}
+                        <DropdownAction @dd={{DD}} @action={{this.openLoginModal}}>
+                            <FaIcon @icon="sign-in" @fixedWidth={{true}} class="text-muted" />
+                            {{t "nav.user.login"}}
+                        </DropdownAction>
                     {{/if}}
                 </DD.Content>
             </DropdownMenu>

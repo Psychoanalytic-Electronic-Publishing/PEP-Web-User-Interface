@@ -51,7 +51,8 @@
             "reportProblem": "Report a problem",
             "login": "Login",
             "logout": "Logout",
-            "accountInfo": "Account Info"
+            "accountInfo": "Account Info",
+            "loggedInViaIP": "Logged in via IP"
         }
     },
     "home": {
@@ -545,9 +546,17 @@
     },
     "accountInfo": {
         "title": "Account Info",
+        "makeChangesOnPads": "Make changes (on PaDS)",
         "registeredUser": {
             "title": "Registered User",
-            "name": "Name: {name}"
+            "name": "Name: {name}",
+            "email": "Email: {email}",
+            "username": "Username: {username}",
+            "loggedInViaIP": "Logged in via IP"
+        },
+        "activeSubscriptions": {
+            "title": "Active Subscriptions",
+            "subscription": "{product} from {start, date, short} to {end, date, short}"
         }
     },
     "exports": {

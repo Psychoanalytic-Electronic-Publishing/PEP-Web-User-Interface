@@ -14,6 +14,8 @@ import ConfigurationService from 'pep/services/configuration';
 import FastbootMediaService from 'pep/services/fastboot-media';
 import PepSessionService from 'pep/services/pep-session';
 import SidebarService from 'pep/services/sidebar';
+import { buildSearchQueryParams } from 'pep/utils/search';
+import LoadingBarService from 'pep/services/loading-bar';
 
 interface HomeArgs {}
 
@@ -26,6 +28,7 @@ export default class Home extends Component<HomeArgs> {
     @service('pep-session') session!: PepSessionService;
     @service store!: DS.Store;
     @service router!: RouterService;
+    @service loadingBar!: LoadingBarService;
 
     @tracked model?: Abstract;
 
@@ -62,6 +65,47 @@ export default class Home extends Component<HomeArgs> {
             });
         } else {
             return this.transitionToExpertPick();
+        }
+    }
+
+    /**
+     * /**
+     * Opens login modal (if user is not logged in already)
+     * and then transitions to the document read page
+     * @returns {void | Promise<void>}
+     */
+    @action
+    readImageDocument() {
+        if (!this.session.isAuthenticated) {
+            return this.auth.openLoginModal(true, {
+                actions: {
+                    onAuthenticated: this.transitionToImageDocument
+                }
+            });
+        } else {
+            return this.transitionToImageDocument();
+        }
+    }
+
+    /**
+     * Load the `Document` that contains the expert image
+     * of the day.
+     * Transition to this document's read page.
+     */
+    @action
+    async transitionToImageDocument() {
+        try {
+            this.loadingBar.show();
+            const queryParams = buildSearchQueryParams({
+                smartSearchTerm: `art_graphic_list: ${this.expertPick.imageId}`
+            });
+            const results = await this.store.query('search-document', queryParams);
+            const matchingDocument = results.toArray()[0];
+            this.loadingBar.hide();
+            return this.router.transitionTo('read.document', matchingDocument.id);
+        } catch (errors) {
+            this.loadingBar.hide();
+            throw errors;
         }
     }
 

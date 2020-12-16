@@ -64,4 +64,12 @@ export default class PageDrawer extends Component<PageDrawerArgs> {
     logout() {
         return this.session.invalidate();
     }
+
+    /**
+     *  Open the account info modal.
+     */
+    @action
+    openAccountInfoModal() {
+        return this.modal.open('user/info', {});
+    }
 }
