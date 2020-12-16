@@ -43,8 +43,9 @@ export default class ThemeService extends Service {
      */
     updateTheme(newThemeId: ThemeId) {
         this.currentUser.updatePrefs({ [PreferenceKey.THEME]: newThemeId });
-        if (window.document.querySelector('#theme')) {
-            window.document.querySelector('#theme')?.setAttribute('href', this.currentTheme.cssPath);
+        const theme = window.document.querySelector('#theme');
+        if (theme) {
+            theme?.setAttribute('href', this.currentTheme.cssPath);
         } else {
             const linkElement = window.document.createElement('link');
             linkElement.setAttribute('rel', 'stylesheet');

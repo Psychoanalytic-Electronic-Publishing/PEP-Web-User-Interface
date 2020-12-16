@@ -14,7 +14,7 @@ export default class LangService extends Service {
     @service configuration!: ConfigurationService;
     @service currentUser!: CurrentUserService;
 
-    @tracked currentLanguage: LanguageCode = LanguageCode.enUS;
+    @tracked currentLanguage: LanguageCode = LanguageCode.EnUS;
 
     get availableLanguages() {
         return Languages.map((lang) => ({
@@ -34,9 +34,12 @@ export default class LangService extends Service {
     }
 
     async loadLanguage(lang: LanguageCode) {
-        const translations = await fetch(`/translations/${lang}.json`);
-        const translationsAsJson = await translations.json();
-        this.intl.addTranslations(lang, translationsAsJson);
+        const language = Languages.findBy('code', lang);
+        if (language) {
+            const translations = await fetch(language.path);
+            const translationsAsJson = await translations.json();
+            this.intl.addTranslations(lang, translationsAsJson);
+        }
     }
 
     /**

@@ -74,7 +74,7 @@ export const LOCALSTORAGE_PREFERENCES: PreferenceKey[] = [
 export const DEFAULT_USER_PREFERENCES: UserPreferences = {
     favorites: [],
     preferencesVersion: ENV.userPreferencesVersion,
-    lang: LanguageCode.enUS,
+    lang: LanguageCode.EnUS,
     searchPreviewEnabled: true,
     searchHICEnabled: true,
     searchHICLimit: 1,

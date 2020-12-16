@@ -1,21 +1,24 @@
 export enum LanguageCode {
-    enUS = 'en-us',
-    frFR = 'fr-fr'
+    EnUS = 'en-us',
+    FrFR = 'fr-fr'
 }
 
 export interface Language {
     code: LanguageCode;
     label: string;
+    path: string;
 }
 
 export const LANG_EN_US: Language = {
-    code: LanguageCode.enUS,
-    label: 'language.codes.enUS'
+    code: LanguageCode.EnUS,
+    label: 'language.codes.enUS',
+    path: '/translations/en-us.json'
 };
 
 export const LANG_FR_FR: Language = {
-    code: LanguageCode.frFR,
-    label: 'language.codes.frFR'
+    code: LanguageCode.FrFR,
+    label: 'language.codes.frFR',
+    path: '/translations/fr-fr.json'
 };
 
 export const Languages = [LANG_EN_US, LANG_FR_FR];
