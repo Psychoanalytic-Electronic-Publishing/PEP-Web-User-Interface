@@ -73,14 +73,13 @@ export default class BrowseJournalVolume extends Controller {
             (sortedModels, sourceVolume) => {
                 const issue = sourceVolume.issue;
                 if (issue) {
-                    let issueModel = sortedModels[issue];
-                    if (!issueModel) {
-                        issueModel = {
+                    if (!sortedModels[issue]) {
+                        sortedModels[issue] = {
                             title: sourceVolume.issueTitle,
                             models: [sourceVolume]
                         };
                     } else {
-                        issueModel.models.push(sourceVolume);
+                        sortedModels[issue].models.push(sourceVolume);
                     }
                 } else {
                     sortedModels.withoutIssues.models.push(sourceVolume);

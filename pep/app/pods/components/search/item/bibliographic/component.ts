@@ -10,6 +10,7 @@ import Document from 'pep/pods/document/model';
 import CurrentUserService from 'pep/services/current-user';
 import SearchSelection from 'pep/services/search-selection';
 import SidebarService from 'pep/services/sidebar';
+import RouterService from '@ember/routing/router-service';
 
 interface SearchItemBibliographicArgs {
     item: Document;
@@ -26,6 +27,7 @@ export default class SearchItemBibliographic extends Component<SearchItemBibliog
     @service notifications!: NotificationService;
     @service intl!: IntlService;
     @service searchSelection!: SearchSelection;
+    @service router!: RouterService;
 
     get showFavorites() {
         return typeof this.args.showFavorites === 'boolean' ? this.args.showFavorites : true;
@@ -33,6 +35,10 @@ export default class SearchItemBibliographic extends Component<SearchItemBibliog
 
     get showReadLater() {
         return typeof this.args.showReadLater === 'boolean' ? this.args.showReadLater : true;
+    }
+
+    get documentUrl() {
+        return this.router.urlFor('read.document', this.args.item.id);
     }
 
     /**
