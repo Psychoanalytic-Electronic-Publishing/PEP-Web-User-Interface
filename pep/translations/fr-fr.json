@@ -2,11 +2,11 @@
     "brand": {
         "name": "PEP",
         "nameFull": {
-            "psychoanalytic": "Psychoanalytic",
-            "electronic": "Electronic",
-            "publishing": "Publishing"
+            "psychoanalytic": "Psychanalytique",
+            "electronic": "Électronique",
+            "publishing": "Édition"
         },
-        "copywrite": "&copy; Psychoanalytic Electronic Publishing (PEP)",
+        "copywrite": "&copy; Psychanalytique Électronique Édition (PEPe)",
         "slogan": "A Psychoanalytic Library at your fingertips"
     },
     "common": {
@@ -127,7 +127,7 @@
                 "tip2": "Paste a reference from an article",
                 "tip3": "Use a Journal name or part of a journal name",
                 "tip4": "Search on author name (or multiple authors)",
-                "tip5": "A title or part of a title (five or more words)",
+                "tip5": "Use part of a title (two or more words)",
                 "tip6": "Search by Year / Vol / Page #"
             }
         },

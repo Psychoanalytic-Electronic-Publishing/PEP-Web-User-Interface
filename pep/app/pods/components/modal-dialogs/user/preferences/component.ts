@@ -7,9 +7,11 @@ import { restartableTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
 import IntlService from 'ember-intl/services/intl';
 
+import { LanguageCode } from 'pep/constants/lang';
 import { PreferenceKey, UserPreferences } from 'pep/constants/preferences';
 import { ThemeId } from 'pep/constants/themes';
 import CurrentUserService from 'pep/services/current-user';
+import LangService from 'pep/services/lang';
 import ThemeService from 'pep/services/theme';
 import { guard } from 'pep/utils/types';
 
@@ -21,6 +23,7 @@ export default class ModalDialogsUserPreferences extends Component<ModalDialogsU
     @service theme!: ThemeService;
     @service currentUser!: CurrentUserService;
     @service intl!: IntlService;
+    @service lang!: LangService;
 
     searchEnabledKey = PreferenceKey.SEARCH_PREVIEW_ENABLED;
     hicLimit = PreferenceKey.SEARCH_HIC_LIMIT;
@@ -40,6 +43,15 @@ export default class ModalDialogsUserPreferences extends Component<ModalDialogsU
     @action
     updateTheme(newThemeId: ThemeId) {
         this.theme.updateTheme(newThemeId);
+    }
+
+    /**
+     * Update the current theme
+     * @param {String} newThemeId
+     */
+    @action
+    updateLanguage(lang: LanguageCode) {
+        this.lang.changeLanguage(lang);
     }
 
     /**
