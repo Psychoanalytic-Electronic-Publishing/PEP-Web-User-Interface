@@ -47,11 +47,14 @@
             "about": "About",
             "account": "My account",
             "preferences": "Preferences",
-            "help": "Help",
-            "reportProblem": "Report a problem",
             "login": "Login",
             "logout": "Logout",
             "accountInfo": "Account Info"
+        },
+        "support": {
+            "link": "Support",
+            "reportProblem": "Report a problem",
+            "preferences": "Help Preferences"
         }
     },
     "home": {

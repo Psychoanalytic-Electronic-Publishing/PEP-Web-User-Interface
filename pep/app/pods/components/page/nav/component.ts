@@ -65,4 +65,9 @@ export default class PageNav extends Component<PageNavArgs> {
     openAccountInfoModal() {
         return this.modal.open('user/info', {});
     }
+
+    @action
+    openHelpModal() {
+        return this.modal.open('help/preferences', {});
+    }
 }

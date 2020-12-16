@@ -1,0 +1,38 @@
+<ModalDialog @onClose={{@onClose}} @size="md" @clickOutsideToClose={{false}} as |Modal|>
+    <Modal.header @title={{t "preferences.title"}} />
+    <Modal.body>
+        <p class="text-muted">
+            {{t "help.preferences.info"}}
+        </p>
+        <div class="mb-4">
+            <h6 class="mb-3">
+                {{t "help.preferences.general.heading"}}
+            </h6>
+            <div class="form-row">
+                <div class="col-sm-7">
+                    <p class="text-muted mb-2">
+                        {{t "preferences.search.preview.label"}}
+                    </p>
+                    <CheckboxInput
+                        @checked={{this.currentUser.preferences.tourEnabled}}
+                        @onChange={{fn this.updatePreference this.tourEnabled}}
+                        @label={{t "help.preferences.tour"}}
+                    />
+                    <CheckboxInput
+                        @checked={{this.currentUser.preferences.labelDescriptionsEnabled}}
+                        @onChange={{fn this.updatePreference this.tourEnabled}}
+                        @label={{t "help.preferences.tour"}}
+                    />
+                    <CheckboxInput
+                        @checked={{this.currentUser.preferences.helpIconsEnabled}}
+                        @onChange={{fn this.updatePreference this.tourEnabled}}
+                        @label={{t "help.preferences.tour"}}
+                    />
+                </div>
+            </div>
+        </div>
+    </Modal.body>
+    <Modal.footer>
+        <Button @type="primary" @label={{t "common.done"}} @wide={{true}} @action={{this.done}} />
+    </Modal.footer>
+</ModalDialog>

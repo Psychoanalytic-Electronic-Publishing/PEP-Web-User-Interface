@@ -10,7 +10,22 @@ declare module 'ember-shepherd/services/tour' {
     export interface Step {
         attachTo?: {
             element: string;
-            on: string;
+            on:
+                | 'auto'
+                | 'auto-start'
+                | 'auto-end'
+                | 'top'
+                | 'top-start'
+                | 'top-end'
+                | 'bottom'
+                | 'bottom-start'
+                | 'bottom-end'
+                | 'left'
+                | 'left-start'
+                | 'left-end'
+                | 'right'
+                | 'right-start'
+                | 'right-end';
         };
         beforeShowPromise?: () => Promise<void>;
         buttons?: StepButton[];
@@ -24,8 +39,14 @@ declare module 'ember-shepherd/services/tour' {
         title: string;
         text: string;
         when?: {
-            show: () => void;
-            hide: () => void;
+            show?: () => void;
+            hide?: () => void;
+        };
+        popperOptions?: {
+            modifiers?: {
+                name: string;
+                options: { offset: [number, number] };
+            }[];
         };
     }
     export default class TourService extends Service.extend(Evented) {

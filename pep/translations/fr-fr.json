@@ -52,6 +52,11 @@
             "login": "Login",
             "logout": "Logout",
             "accountInfo": "Account Info"
+        },
+        "support": {
+            "link": "Support",
+            "reportProblem": "Report a problem",
+            "preferences": "Help Preferences"
         }
     },
     "home": {

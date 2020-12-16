@@ -79,3 +79,23 @@ $ember-content-placeholders-secondary-color: $color-brand-primary;
 .text-dark {
     color: #fff !important;
 }
+
+.shepherd-element.dark {
+    background-color: $link-color !important;
+    color: $body-color !important;
+    .shepherd-text {
+        color: $body-color !important;
+    }
+    .shepherd-button {
+        background-color: $color-primary-background !important;
+    }
+    .shepherd-header {
+        background-color: $color-primary-background !important;
+        .shepherd-title {
+            color: $body-color !important;
+        }
+    }
+    .shepherd-arrow::before {
+        background-color: $link-color !important;
+    }
+}

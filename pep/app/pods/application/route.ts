@@ -9,11 +9,12 @@ import NotificationService from 'ember-cli-notifications/services/notifications'
 import IntlService from 'ember-intl/services/intl';
 import MetricService from 'ember-metrics/services/metrics';
 import MediaService from 'ember-responsive/services/media';
-import TourService from 'ember-shepherd/services/tour';
+import TourService, { Step } from 'ember-shepherd/services/tour';
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 
 import PageLayout from 'pep/mixins/page-layout';
 import { ApiServerErrorResponse } from 'pep/pods/application/adapter';
+import ApplicationController from 'pep/pods/application/controller';
 import AuthService from 'pep/services/auth';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
@@ -134,24 +135,44 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
         }
     }
 
-    async setupController(controller, model) {
-        super.setupController(controller, model);
+    async setupTour() {
+        const sizeClass = this.media.isMobile || this.media.isTablet ? 'mobile-tour' : 'desktop-tour';
         this.tour.set('defaultStepOptions', {
+            classes: `${sizeClass} ${this.theme.currentTheme.id}`,
             cancelIcon: {
                 enabled: false
             },
-            classes: 'class-1 class-2',
-            scrollTo: true
+            scrollTo: true,
+            popperOptions: {
+                modifiers: [{ name: 'offset', options: { offset: [0, 10] } }]
+            }
         });
         this.tour.set('disableScroll', true);
         this.tour.set('modal', true);
+        const steps: Step[] = [];
+        if (this.media.isMobile || this.media.isTablet) {
+            steps.push({
+                id: 'home',
+                attachTo: {
+                    element: '.navbar .navbar-toggler',
+                    on: 'bottom'
+                },
 
-        await this.tour.addSteps([
-            {
+                text: 'This button takes you home',
+                title: 'Home',
+                buttons: [
+                    {
+                        text: 'Next',
+                        type: 'next'
+                    }
+                ]
+            });
+        } else {
+            steps.push({
                 id: 'home',
                 attachTo: {
                     element: '.nav-item.home',
-                    on: 'bottom'
+                    on: 'auto'
                 },
                 text: 'This button takes you home',
                 title: 'Home',
@@ -161,16 +182,18 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
                         type: 'next'
                     }
                 ]
-            },
+            });
+        }
+        steps.push(
             {
                 id: 'toggle-left',
                 attachTo: {
                     element: '.sidebar-left .sidebar-toggle-handle',
-                    on: 'left'
+                    on: 'auto'
                 },
                 classes: 'tour-left-sidebar-spacing',
-                text: 'This toggles the sidebar open or closed',
-                title: 'Left Sidebar Toggle',
+                text: 'This button shows/hides the search',
+                title: 'Search',
                 buttons: [
                     {
                         text: 'Next',
@@ -186,8 +209,8 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
                     on: 'left'
                 },
                 classes: 'tour-right-sidebar-spacing',
-                text: 'This toggles the sidebar open or closed',
-                title: 'Right Sidebar Toggle',
+                text: 'This button shows/hides the widgets',
+                title: 'Widgets',
                 buttons: [
                     {
                         text: 'Close',
@@ -195,8 +218,17 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
                     }
                 ]
             }
-        ]);
+        );
+
+        await this.tour.addSteps(steps);
         this.tour.start();
+    }
+
+    async setupController(controller: ApplicationController, model: any) {
+        super.setupController(controller, model);
+        if (this.currentUser.preferences?.tourEnabled) {
+            this.setupTour();
+        }
     }
 
     /**
