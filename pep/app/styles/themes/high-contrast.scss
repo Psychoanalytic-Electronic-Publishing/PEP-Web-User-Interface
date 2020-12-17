@@ -20,6 +20,16 @@ $color-backdrop: #fff;
 $color-backdrop-well: darken($color-backdrop, 2.5%);
 $color-progress-spinner-loading2: saturate(lighten($color-brand-primary, 35%), 45%);
 $color-focus-shadow: rgba($color-brand-primary, 0.25);
+
+$document-link-glosstip-hover: #03a678;
+$document-link-glosstip-bg: rgba($document-link-glosstip-hover, 0.1);
+$document-link-bibliography: #12130f;
+$document-link-page: #1d84b5;
+$document-link-figure: #71697a;
+$document-link-external: #a98743;
+$document-link-webExternal: #f7c548;
+$document-link-webInternal: #305252;
+
 // Bootstrap overrides
 // ---------------------------
 $font-size-base: 1.05rem;

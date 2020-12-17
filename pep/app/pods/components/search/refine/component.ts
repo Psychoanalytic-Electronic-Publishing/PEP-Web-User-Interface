@@ -9,6 +9,7 @@ import IntlService from 'ember-intl/services/intl';
 import { SearchMetadata } from 'pep/api';
 import { SEARCH_FACETS, SearchFacetValue } from 'pep/constants/search';
 import ConfigurationService from 'pep/services/configuration';
+import CurrentUserService from 'pep/services/current-user';
 
 export interface RefineOption {
     id: string;
@@ -32,6 +33,7 @@ interface SearchRefineArgs {
 export default class SearchRefine extends Component<SearchRefineArgs> {
     @service intl!: IntlService;
     @service configuration!: ConfigurationService;
+    @service currentUser!: CurrentUserService;
 
     @tracked expandedGroups: string[] = [];
     visibleOptionsCount = 10;

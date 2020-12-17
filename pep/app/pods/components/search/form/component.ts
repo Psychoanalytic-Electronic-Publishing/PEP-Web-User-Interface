@@ -7,6 +7,7 @@ import IntlService from 'ember-intl/services/intl';
 
 import { SEARCH_TYPES, SearchTermId, SearchTermValue, VIEW_PERIODS, ViewPeriod } from 'pep/constants/search';
 import ConfigurationService from 'pep/services/configuration';
+import CurrentUserService from 'pep/services/current-user';
 import PepSessionService from 'pep/services/pep-session';
 import ScrollableService from 'pep/services/scrollable';
 import { fadeTransition } from 'pep/utils/animation';
@@ -36,6 +37,7 @@ export default class SearchForm extends Component<SearchFormArgs> {
     @service scrollable!: ScrollableService;
     @service intl!: IntlService;
     @service configuration!: ConfigurationService;
+    @service currentUser!: CurrentUserService;
     @service('pep-session') session!: PepSessionService;
 
     animateTransition = fadeTransition;

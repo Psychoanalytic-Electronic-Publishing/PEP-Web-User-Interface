@@ -3,17 +3,30 @@
     @isOpen={{this.isOpen}}
     @toggle={{fn @toggleIsOpen this.widget}}
     class="mb-2"
-    ...attributes
- as |Panel|>
-    <Panel.header @title={{t "relatedInfo.widgets.yourInterests.title"}} />
+    ...attributes as |Panel|
+>
+    <Panel.header
+        @title={{t "relatedInfo.widgets.yourInterests.title"}}
+        @tooltip={{t "relatedInfo.widgets.yourInterests.help"}}
+    />
     <Panel.body>
         <ul>
-            {{!-- template-lint-disable no-bare-strings --}}
-            <li>This is an interest</li>
-            <li>Here is another interest</li>
-            <li>Here's another thing I like</li>
-            <li>Something else</li>
-            <li>Yet another thing</li>
+            {{! template-lint-disable no-bare-strings }}
+            <li>
+                This is an interest
+            </li>
+            <li>
+                Here is another interest
+            </li>
+            <li>
+                Here's another thing I like
+            </li>
+            <li>
+                Something else
+            </li>
+            <li>
+                Yet another thing
+            </li>
         </ul>
     </Panel.body>
 </CollapsiblePanel>

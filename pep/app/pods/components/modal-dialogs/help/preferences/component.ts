@@ -5,14 +5,9 @@ import Component from '@glimmer/component';
 import { timeout } from 'ember-concurrency';
 import { restartableTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
-import IntlService from 'ember-intl/services/intl';
 
-import { LanguageCode } from 'pep/constants/lang';
 import { PreferenceKey, UserPreferences } from 'pep/constants/preferences';
-import { ThemeId } from 'pep/constants/themes';
 import CurrentUserService from 'pep/services/current-user';
-import LangService from 'pep/services/lang';
-import ThemeService from 'pep/services/theme';
 import { guard } from 'pep/utils/types';
 
 interface ModalDialogsHelpPreferencesArgs {
@@ -23,6 +18,8 @@ export default class ModalDialogsHelpPreferences extends Component<ModalDialogsH
     @service currentUser!: CurrentUserService;
 
     tourEnabled = PreferenceKey.TOUR_ENABLED;
+    helpDescriptionsEnabled = PreferenceKey.HELP_DESCRIPTIONS_ENABLED;
+    helpIconsEnabled = PreferenceKey.HELP_ICONS_ENABLED;
     /**
      * Close the preferences modal dialog
      */

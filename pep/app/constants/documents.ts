@@ -23,5 +23,7 @@ export enum DocumentLinkTypes {
     WEB = 'web-link',
     DOI = 'doi',
     SEARCH_HIT_ARROW = 'search-hit-arrow',
-    SEARCH_HIT_TEXT = 'search-hit-text'
+    SEARCH_HIT_TEXT = 'search-hit-text',
+    BANNER = 'document-banner',
+    TITLE = 'document-title'
 }

@@ -192,9 +192,9 @@
         <div id="front" class="frontmatter">
             <xsl:apply-templates select="front | front-stub" mode="metadata"/>
             <p class="banner">
-                <a class="anchor" name="{$document-id}" id="{$document-id}"/>
-                <a class="toc-link" href="/#/ArticleList/?journal={$journal-code}">
+                <a class="toc-link" href="/browse/{$journal-code}/volumes" data-journal-code="{$journal-code}">
                     <img class="img-fluid">
+                        <xsl:attribute name="data-type">document-banner</xsl:attribute>
                         <xsl:attribute name="src" >
                             <xsl:value-of select="concat($imageUrl, '/banner', $journal-code, 'Logo.gif?client-id=', $clientId, '&#38;client-session=', $sessionId)"/>
                         </xsl:attribute>
@@ -219,7 +219,11 @@
                 <div id="{$this-article}-artinfo" class="artinfo" data-arttype="{@arttype}" data-journal="{@j}">
                     <div class="art-title mt-3 text-center">
                         <span>
-                            <a href="/browse/{$journal-code}/volumes/{$artvol}?page={$artstartpg}">
+                            <a href="/browse/{$journal-code}/volumes/{$artvol}?page={$artstartpg}"
+                               data-journal-code="{$journal-code}"
+                               data-volume="{$artvol}"
+                               data-page="{$artstartpg}"
+                                >
                                 <xsl:apply-templates mode="metadata" select="arttitle" />
                                 <xsl:apply-templates mode="metadata" select="artsub"/>
                             </a>
@@ -409,7 +413,7 @@
     </xsl:template>
 
     <xsl:template match="arttitle" mode="metadata">
-        <span class="title">
+        <span class="title" data-type="document-title">
             <xsl:choose>
                 <xsl:when test="text()">
                     <xsl:apply-templates select="(node())[not(self::ftnx)]"/>
@@ -423,7 +427,7 @@
     </xsl:template>
 
     <xsl:template match="artsub" mode="metadata">
-        <span class="artsub">&#58;
+        <span class="artsub" data-type="document-title">&#58;
             <xsl:choose>
                 <xsl:when test="text()">
                     <xsl:apply-templates select="(node())[not(self::ftnx)]"/>
@@ -1060,7 +1064,7 @@
 
 
     <xsl:template match="bx">
-        <span class="peppopup bibtip" data-type="velcro" data-element="{@r}" data-maxwidth="300" data-direction="southeast">
+        <span class="peppopup bibtip text-nowrap" data-type="velcro" data-element="{@r}" data-maxwidth="300" data-direction="southeast">
             <xsl:call-template name="assign-id"/>
             <xsl:apply-templates select="@content-type"/>
             <xsl:apply-templates/>
@@ -1071,7 +1075,7 @@
     <xsl:template match="impx"> <!--when not in metadata mode -->
         <xsl:choose>
             <xsl:when test="@rx"> <!-- for the generated links -->
-                <span class="peppopup glosstip impx" data-type="{@type}" data-doc-id="{@rx}" data-grpname="{@grpname}">
+                <span class="peppopup glosstip impx text-nowrap" data-type="{@type}" data-doc-id="{@rx}" data-grpname="{@grpname}">
                     <xsl:value-of select="."/>
                 </span>
             </xsl:when>
@@ -1086,7 +1090,7 @@
     <xsl:template match="figx"> <!--when not in metadata mode -->
         <xsl:choose>
             <xsl:when test="@r"> <!-- for the generated links -->
-                <a class="peppopup figuretip figx" data-type="figure-id" data-figure-id="{@r}" data-grpname="{@grpname}">
+                <a class="peppopup figuretip figx text-nowrap" data-type="figure-id" data-figure-id="{@r}" data-grpname="{@grpname}">
                     <xsl:value-of select="."/>
                 </a>
             </xsl:when>

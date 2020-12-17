@@ -1,10 +1,12 @@
-import Component from '@glimmer/component';
-import { inject as service } from '@ember/service';
 import { action, computed } from '@ember/object';
 import { guidFor } from '@ember/object/internals';
+import { inject as service } from '@ember/service';
+import Component from '@glimmer/component';
+
 import ModalService from '@gavant/ember-modals/services/modal';
 import IntlService from 'ember-intl/services/intl';
 
+import CurrentUserService from 'pep/services/current-user';
 import FastbootMediaService from 'pep/services/fastboot-media';
 
 interface HelpTooltipArgs {
@@ -21,6 +23,7 @@ export default class HelpTooltip extends Component<HelpTooltipArgs> {
     @service fastbootMedia!: FastbootMediaService;
     @service modal!: ModalService;
     @service intl!: IntlService;
+    @service currentUser!: CurrentUserService;
 
     modalBodyId: string = `help-tooltip-modal-body-${guidFor(this)}`;
 

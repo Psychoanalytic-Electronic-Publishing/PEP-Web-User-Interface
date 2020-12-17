@@ -338,4 +338,19 @@ $document-paragraph-indent: 1.5rem;
             font-size: 1.2rem;
         }
     }
+    .glosstip {
+        background-color: $document-link-glosstip-bg;
+        &:hover {
+            color: $document-link-glosstip-hover;
+        }
+    }
+    .bibtip {
+        color: $document-link-bibliography;
+    }
+    .pgx {
+        color: $document-link-page;
+    }
+    .figuretip {
+        color: $document-link-figure;
+    }
 }

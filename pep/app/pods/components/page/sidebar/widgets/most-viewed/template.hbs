@@ -8,7 +8,7 @@
 >
     <Panel.header
         @title={{t "relatedInfo.widgets.mostViewed.title"}}
-        @secondaryAction={{hash action=this.viewTable label=(t "common.viewAll") icon="file-search"}}
+        @tooltip={{t "relatedInfo.widgets.mostViewed.help"}}
     />
     <Panel.body>
         <ContentWithPlaceholder @placeholderComponent="loading/widget" @isLoading={{this.loadResults.isRunning}}>

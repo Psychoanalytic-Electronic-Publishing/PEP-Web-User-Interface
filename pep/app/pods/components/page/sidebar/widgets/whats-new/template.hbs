@@ -9,6 +9,7 @@
     <Panel.header
         @title={{t "relatedInfo.widgets.whatsNew.title"}}
         @secondaryAction={{hash action=this.openModal label=(t "relatedInfo.widgets.whatsNew.update") icon="envelope"}}
+        @tooltip={{t "relatedInfo.widgets.whatsNew.help"}}
     />
     <Panel.body>
         <ContentWithPlaceholder @placeholderComponent="loading/widget" @isLoading={{this.loadResults.isRunning}}>
