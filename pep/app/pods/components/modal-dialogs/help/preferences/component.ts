@@ -29,9 +29,12 @@ export default class ModalDialogsHelpPreferences extends Component<ModalDialogsH
     }
 
     /**
-     * Updates and saves user preference fields
-     * @param {PreferenceKey} key
-     * @param {String} newThemeId
+     * Updates and saves user help preference fields
+     *
+     * @template K
+     * @param {K} key
+     * @param {UserPreferences[K]} value
+     * @memberof ModalDialogsHelpPreferences
      */
     @restartableTask
     *updatePreferenceTask<K extends PreferenceKey>(key: K, value: UserPreferences[K]) {
@@ -46,7 +49,7 @@ export default class ModalDialogsHelpPreferences extends Component<ModalDialogsH
      * @param {K} key
      * @param {(UserPreferences[K] | InputEvent)} value
      * @return {*}
-     * @memberof ModalDialogsUserPreferences
+     * @memberof ModalDialogsHelpPreferences
      */
     @action
     updatePreference<K extends PreferenceKey>(key: K, value: UserPreferences[K] | InputEvent) {

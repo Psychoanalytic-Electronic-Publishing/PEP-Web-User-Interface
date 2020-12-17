@@ -135,6 +135,11 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
         }
     }
 
+    /**
+     * Sets up the tour by providing options and steps to ember-shepherd
+     *
+     * @memberof Application
+     */
     async setupTour() {
         const sizeClass = this.media.isMobile || this.media.isTablet ? 'mobile-tour' : 'desktop-tour';
         this.tour.set('defaultStepOptions', {
@@ -224,6 +229,13 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
         this.tour.start();
     }
 
+    /**
+     * If the tour is enabled, show it
+     *
+     * @param {ApplicationController} controller
+     * @param {*} model
+     * @memberof Application
+     */
     async setupController(controller: ApplicationController, model: any) {
         super.setupController(controller, model);
         if (this.currentUser.preferences?.tourEnabled) {
