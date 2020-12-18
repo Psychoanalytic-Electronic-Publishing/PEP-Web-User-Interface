@@ -66,6 +66,12 @@ export default class PageNav extends Component<PageNavArgs> {
         return this.modal.open('user/info', {});
     }
 
+    /**
+     * Open Help Modal
+     *
+     * @return {*}
+     * @memberof PageNav
+     */
     @action
     openHelpModal() {
         return this.modal.open('help/preferences', {});

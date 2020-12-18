@@ -24,6 +24,7 @@ export default class PageDrawer extends Component<PageDrawerArgs> {
     @service currentUser!: CurrentUserService;
 
     @tracked isUserMenuOpen = false;
+    @tracked isHelpMenuOpen = false;
 
     get defaultSearchParams() {
         return this.configuration.defaultSearchParams;
@@ -71,5 +72,16 @@ export default class PageDrawer extends Component<PageDrawerArgs> {
     @action
     openAccountInfoModal() {
         return this.modal.open('user/info', {});
+    }
+
+    /**
+     * Open Help modal
+     *
+     * @return {*}
+     * @memberof PageDrawer
+     */
+    @action
+    openHelpModal() {
+        return this.modal.open('help/preferences', {});
     }
 }

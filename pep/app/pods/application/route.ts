@@ -12,6 +12,7 @@ import MediaService from 'ember-responsive/services/media';
 import TourService, { Step } from 'ember-shepherd/services/tour';
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 
+import { PreferenceKey } from 'pep/constants/preferences';
 import PageLayout from 'pep/mixins/page-layout';
 import { ApiServerErrorResponse } from 'pep/pods/application/adapter';
 import ApplicationController from 'pep/pods/application/controller';
@@ -219,9 +220,14 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
                 buttons: [
                     {
                         text: 'Close',
-                        type: 'next'
+                        type: 'cancel'
                     }
-                ]
+                ],
+                when: {
+                    show: () => {
+                        this.currentUser.updatePrefs({ [PreferenceKey.TOUR_ENABLED]: false });
+                    }
+                }
             }
         );
 
