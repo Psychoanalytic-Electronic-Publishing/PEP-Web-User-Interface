@@ -17,6 +17,7 @@ import SidebarService from 'pep/services/sidebar';
 import { buildSearchQueryParams } from 'pep/utils/search';
 import LoadingBarService from 'pep/services/loading-bar';
 import SearchDocument from 'pep/pods/search-document/model';
+import { getDistanceBetweenTopLeftCorners } from 'pep/utils/dom';
 
 interface HomeArgs {}
 
@@ -137,5 +138,21 @@ export default class Home extends Component<HomeArgs> {
             results,
             term
         });
+    }
+
+    /**
+     * Handle the resizing of the "Expert Pick of the Day" card.
+     * This does a more proper job of handling the resizing from the side-panels
+     * than bootstrap alone.
+     * @param el
+     */
+    @action
+    handleResize(el: HTMLElement) {
+        const parentCard = el.parentElement!;
+        if (parentCard.clientWidth < 870) {
+            el.className = 'mb-2 mb-md-3 d-flex flex-column';
+        } else {
+            el.className = 'float-right mw-40 ml-3 pl-3 mb-2 d-flex flex-column border-divider-l';
+        }
     }
 }

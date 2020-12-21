@@ -50,7 +50,7 @@
         </div>
         <div class="row">
             <div class="col">
-                <div class="card">
+                <div class="card expert-pick-card">
                     <div class="card-body">
                         <div class="border-divider-b mb-3">
                             <h5 class="card-title">
@@ -58,15 +58,19 @@
                             </h5>
                         </div>
                         <ContentWithPlaceholder @placeholderInFastboot={{true}}>
-                            <div class="float-xl-right mw-xl-50 ml-xl-3 pl-xl-3 mb-xl-2 d-flex flex-column {{~if (not (media "isMobile")) " border-divider-l"}}">
+                            <div
+                                class="float-right mw-40 ml-3 pl-4 mb-2 d-flex flex-column"
+                                {{did-resize this.handleResize debounce=200}}
+                                {{did-insert this.handleResize}}
+                            >
                                 <Button
                                     @action={{this.readImageDocument}}
                                     @type="none"
-                                    class="mb-2"
+                                    class="mb-1 px-0 mr-auto"
                                 >
                                     <Document::Image @id={{this.expertPick.imageId}} class="rounded img-fluid" />
                                 </Button>
-                                <LinkTo @route="read.document" @model={{this.imageArticle.id}} class="mb-4 mb-xl-0">
+                                <LinkTo @route="read.document" @model={{this.imageArticle.id}} class="mb-3 mb-xl-0">
                                     {{t "home.expertPick.graphicFromTheArticle" title=this.imageArticle.title}}
                                 </LinkTo>
                             </div>
