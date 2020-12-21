@@ -34,6 +34,7 @@ export default class Home extends Component<HomeArgs> {
 
     @tracked model?: Abstract;
     @tracked imageArticle?: SearchDocument;
+    @tracked imageArticleUrl?: string;
 
     get intro() {
         return this.configuration.content.home.intro;
@@ -78,7 +79,8 @@ export default class Home extends Component<HomeArgs> {
      * @returns {void | Promise<void>}
      */
     @action
-    readImageDocument() {
+    readImageDocument(event?: Event) {
+        event?.preventDefault();
         if (!this.session.isAuthenticated) {
             return this.auth.openLoginModal(true, {
                 actions: {
@@ -123,6 +125,7 @@ export default class Home extends Component<HomeArgs> {
         const imageArticleResults = await this.store.query('search-document', queryParams);
         const imageArticle = imageArticleResults.toArray()[0];
         this.imageArticle = imageArticle;
+        this.imageArticleUrl = this.router.urlFor('read.document', imageArticle.id);
     }
 
     /**
@@ -142,17 +145,24 @@ export default class Home extends Component<HomeArgs> {
 
     /**
      * Handle the resizing of the "Expert Pick of the Day" card.
+     *
      * This does a more proper job of handling the resizing from the side-panels
      * than bootstrap alone.
+     *
+     * This is also called on the insertion of the '.expert-pick-graphic-container' to ensure it's properly
+     * sized and spaced.
      * @param el
      */
     @action
     handleResize(el: HTMLElement) {
-        const parentCard = el.parentElement!;
-        if (parentCard.clientWidth < 870) {
-            el.className = 'mb-2 mb-md-3 d-flex flex-column';
-        } else {
-            el.className = 'float-right mw-40 ml-3 pl-3 mb-2 d-flex flex-column border-divider-l';
+        const graphicContainer = el.className === 'card-body' ? el.querySelector('.expert-pick-graphic-container') : el;
+        if (graphicContainer) {
+            if (el.clientWidth < 870) {
+                graphicContainer.className = 'expert-pick-graphic-container mb-2 mb-md-3 d-flex flex-column';
+            } else {
+                graphicContainer.className =
+                    'expert-pick-graphic-container float-right ml-3 pl-3 mb-2 d-flex flex-column border-divider-l';
+            }
         }
     }
 }
