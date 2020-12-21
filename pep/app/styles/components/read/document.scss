@@ -309,6 +309,8 @@ $document-paragraph-indent: 1.5rem;
 
     .bibentry {
         background-color: $color-primary-background;
+        margin-left: 1.5rem;
+        text-indent: -1.5rem;
     }
 
     li {
