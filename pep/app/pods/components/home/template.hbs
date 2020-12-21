@@ -58,12 +58,17 @@
                             </h5>
                         </div>
                         <ContentWithPlaceholder @placeholderInFastboot={{true}}>
-                            <div class="float-xl-right mw-xl-50 ml-xl-3 pl-xl-3 mb-xl-2 d-flex flex-column border-divider-l">
+                            <div class="float-xl-right mw-xl-50 ml-xl-3 pl-xl-3 mb-xl-2 d-flex flex-column {{~if (not (media "isMobile")) " border-divider-l"}}">
                                 <Button
                                     @action={{this.readImageDocument}}
+                                    @type="none"
+                                    class="mb-2"
                                 >
                                     <Document::Image @id={{this.expertPick.imageId}} class="rounded img-fluid" />
                                 </Button>
+                                <LinkTo @route="read.document" @model={{this.imageArticle.id}} class="mb-4 mb-xl-0">
+                                    {{t "home.expertPick.graphicFromTheArticle" title=this.imageArticle.title}}
+                                </LinkTo>
                             </div>
                             <div class="card-text mb-3">
                                 {{#if this.model}}

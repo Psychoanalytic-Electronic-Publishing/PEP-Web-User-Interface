@@ -16,6 +16,7 @@ import PepSessionService from 'pep/services/pep-session';
 import SidebarService from 'pep/services/sidebar';
 import { buildSearchQueryParams } from 'pep/utils/search';
 import LoadingBarService from 'pep/services/loading-bar';
+import SearchDocument from 'pep/pods/search-document/model';
 
 interface HomeArgs {}
 
@@ -31,6 +32,7 @@ export default class Home extends Component<HomeArgs> {
     @service loadingBar!: LoadingBarService;
 
     @tracked model?: Abstract;
+    @tracked imageArticle?: SearchDocument;
 
     get intro() {
         return this.configuration.content.home.intro;
@@ -94,19 +96,7 @@ export default class Home extends Component<HomeArgs> {
      */
     @action
     async transitionToImageDocument() {
-        try {
-            this.loadingBar.show();
-            const queryParams = buildSearchQueryParams({
-                smartSearchTerm: `art_graphic_list: ${this.expertPick.imageId}`
-            });
-            const results = await this.store.query('search-document', queryParams);
-            const matchingDocument = results.toArray()[0];
-            this.loadingBar.hide();
-            return this.router.transitionTo('read.document', matchingDocument.id);
-        } catch (errors) {
-            this.loadingBar.hide();
-            throw errors;
-        }
+        return this.router.transitionTo('read.document', this.imageArticle!.id);
     }
 
     /**
@@ -126,6 +116,12 @@ export default class Home extends Component<HomeArgs> {
         const expertPicks = this.configuration.base.home.expertPicks;
         const result = await this.store.findRecord('abstract', expertPicks[expertPicks.length - 1].articleId);
         this.model = result;
+        const queryParams = buildSearchQueryParams({
+            smartSearchTerm: `art_graphic_list: ${this.expertPick.imageId}`
+        });
+        const imageArticleResults = await this.store.query('search-document', queryParams);
+        const imageArticle = imageArticleResults.toArray()[0];
+        this.imageArticle = imageArticle;
     }
 
     /**
