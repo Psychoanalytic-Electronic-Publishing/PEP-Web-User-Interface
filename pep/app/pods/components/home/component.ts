@@ -17,7 +17,6 @@ import SidebarService from 'pep/services/sidebar';
 import { buildSearchQueryParams } from 'pep/utils/search';
 import LoadingBarService from 'pep/services/loading-bar';
 import SearchDocument from 'pep/pods/search-document/model';
-import { getDistanceBetweenTopLeftCorners } from 'pep/utils/dom';
 
 interface HomeArgs {}
 
