@@ -7,7 +7,7 @@ module.exports = function(defaults) {
         fingerprint: {
             prepend: process.env.ASSETS_BASE_URL,
             extensions: ['js', 'css', 'png', 'jpg', 'gif', 'map', 'xslt', 'json'],
-            exclude: ['/images/publisher-logos']
+            exclude: ['/images/publisher-logos', 'package.json']
         },
         outputPaths: {
             app: {
