@@ -1,0 +1,23 @@
+.mobile-tour {
+    max-width: 200px;
+}
+.shepherd-element {
+    background-color: $color-primary-background !important;
+    color: $body-color !important;
+    .shepherd-text {
+        color: $body-color !important;
+        padding: 1em;
+    }
+    .shepherd-button {
+        background-color: $link-color !important;
+    }
+    .shepherd-header {
+        background-color: $color-backdrop !important;
+        .shepherd-title {
+            color: $body-color !important;
+        }
+    }
+    .shepherd-arrow::before {
+        background-color: $color-primary-background !important;
+    }
+}

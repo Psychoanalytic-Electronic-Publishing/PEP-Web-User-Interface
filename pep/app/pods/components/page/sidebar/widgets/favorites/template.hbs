@@ -6,7 +6,10 @@
     {{did-insert this.onElementChange}}
     {{did-update this.onElementChange this.currentUser.preferences}} as |Panel|
 >
-    <Panel.header @title={{t "relatedInfo.widgets.favorites.title"}} />
+    <Panel.header
+        @title={{t "relatedInfo.widgets.favorites.title"}}
+        @tooltip={{t "relatedInfo.widgets.favorites.help"}}
+    />
     <Panel.body>
         <ContentWithPlaceholder
             @placeholderComponent="loading/widget"

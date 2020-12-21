@@ -10,34 +10,13 @@
             class="text-primary mr-1 d-inline-block"
         />
         {{#if @title}}
-            <h5 class="mb-0 text-dark">{{@title}}</h5>
+            <h5 class="mb-0 text-dark">
+                {{@title}}
+            </h5>
         {{/if}}
         {{yield}}
     </button>
-    {{#if @secondaryAction}}
-        <button
-            type="button"
-            class="p-3 collapsible-panel-action"
-            aria-label={{@secondaryAction.label}}
-            title={{unless this.fastbootMedia.isLargeDevice @secondaryAction.label}}
-            {{on "click" @secondaryAction.action}}
-        >
-            <FaIcon
-                @icon={{@secondaryAction.icon}}
-                @fixedWidth={{true}}
-                class="collapsible-panel-action-icon"
-                @size="lg"
-            />
-            {{#if this.fastbootMedia.isLargeDevice}}
-                <EmberTooltip
-                    @text={{@secondaryAction.label}}
-                    @popperContainer="body"
-                    @side="left"
-                    @spacing={{5}}
-                    @effect="slide"
-                    @innerClass=""
-                />
-            {{/if}}
-        </button>
+    {{#if @tooltip}}
+        <HelpTooltip @tooltip={{@tooltip}} class="widget-tooltip" />
     {{/if}}
 </div>

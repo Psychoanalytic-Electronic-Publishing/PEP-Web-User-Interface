@@ -9,10 +9,14 @@ import NotificationService from 'ember-cli-notifications/services/notifications'
 import IntlService from 'ember-intl/services/intl';
 import MetricService from 'ember-metrics/services/metrics';
 import MediaService from 'ember-responsive/services/media';
+import TourService, { Step } from 'ember-shepherd/services/tour';
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 
+import { PreferenceKey } from 'pep/constants/preferences';
+import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import PageLayout from 'pep/mixins/page-layout';
 import { ApiServerErrorResponse } from 'pep/pods/application/adapter';
+import ApplicationController from 'pep/pods/application/controller';
 import AuthService from 'pep/services/auth';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
@@ -39,6 +43,7 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
     @service lang!: LangService;
     @service loadingBar!: LoadingBarService;
     @service sidebar!: SidebarService;
+    @service tour!: TourService;
 
     constructor() {
         super(...arguments);
@@ -129,6 +134,120 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
         } else {
             //@ts-ignore TODO we need a way to inform TS about class members coming from Ember-style mixins
             super.sessionAuthenticated(...arguments);
+        }
+    }
+
+    /**
+     * Sets up the tour by providing options and steps to ember-shepherd
+     *
+     * @memberof Application
+     */
+    async setupTour() {
+        const sizeClass = this.media.isMobile || this.media.isTablet ? 'mobile-tour' : 'desktop-tour';
+        this.tour.set('defaultStepOptions', {
+            classes: `${sizeClass} ${this.theme.currentTheme.id}`,
+            cancelIcon: {
+                enabled: false
+            },
+            scrollTo: true,
+            popperOptions: {
+                modifiers: [{ name: 'offset', options: { offset: [0, 10] } }]
+            }
+        });
+        this.tour.set('disableScroll', true);
+        this.tour.set('modal', true);
+        const steps: Step[] = [];
+        if (this.media.isMobile || this.media.isTablet) {
+            steps.push({
+                id: 'home',
+                attachTo: {
+                    element: '.navbar .navbar-toggler',
+                    on: 'bottom'
+                },
+
+                text: this.intl.t('tour.home.text'),
+                title: this.intl.t('tour.home.title'),
+                buttons: [
+                    {
+                        text: this.intl.t('tour.home.buttons.next'),
+                        type: 'next'
+                    }
+                ]
+            });
+        } else {
+            steps.push({
+                id: 'home',
+                attachTo: {
+                    element: '.nav-item.home',
+                    on: 'auto'
+                },
+                text: this.intl.t('tour.home.text'),
+                title: this.intl.t('tour.home.title'),
+                buttons: [
+                    {
+                        text: this.intl.t('tour.home.buttons.next'),
+                        type: 'next'
+                    }
+                ]
+            });
+        }
+        steps.push(
+            {
+                id: 'toggle-left',
+                attachTo: {
+                    element: '.sidebar-left .sidebar-toggle-handle',
+                    on: 'auto'
+                },
+                classes: 'tour-left-sidebar-spacing',
+                text: this.intl.t('tour.leftSidebar.text'),
+                title: this.intl.t('tour.leftSidebar.title'),
+                buttons: [
+                    {
+                        text: this.intl.t('tour.leftSidebar.buttons.next'),
+                        type: 'next'
+                    }
+                ],
+                scrollTo: true
+            },
+            {
+                id: 'toggle-right',
+                attachTo: {
+                    element: '.sidebar-right .sidebar-toggle-handle',
+                    on: 'left'
+                },
+                classes: 'tour-right-sidebar-spacing',
+                text: this.intl.t('tour.rightSidebar.text'),
+                title: this.intl.t('tour.rightSidebar.title'),
+                buttons: [
+                    {
+                        text: this.intl.t('tour.rightSidebar.buttons.cancel'),
+                        type: 'cancel'
+                    }
+                ],
+                when: {
+                    show: () => {
+                        this.currentUser.updatePrefs({ [PreferenceKey.TOUR_ENABLED]: false });
+                    }
+                }
+            }
+        );
+
+        await this.tour.addSteps(steps);
+        this.tour.start();
+    }
+
+    /**
+     * If the tour is enabled, show it
+     *
+     * @param {ApplicationController} controller
+     * @param {*} model
+     * @memberof Application
+     */
+    @dontRunInFastboot
+    async setupController(controller: ApplicationController, model: any) {
+        super.setupController(controller, model);
+        if (this.currentUser.preferences?.tourEnabled) {
+            this.setupTour();
         }
     }
 

@@ -3,9 +3,12 @@
     @isOpen={{this.isOpen}}
     @toggle={{fn @toggleIsOpen this.widget}}
     class="mb-2"
-    ...attributes
-as |Panel|>
-    <Panel.header @title={{t "relatedInfo.widgets.publisherInfo.title"}} />
+    ...attributes as |Panel|
+>
+    <Panel.header
+        @title={{t "relatedInfo.widgets.publisherInfo.title"}}
+        @tooltip={{t "relatedInfo.widgets.publisherInfo.help"}}
+    />
     <Panel.body>
         {{#if this.data.PEPCode}}
             {{html-safe this.publisherInformation.fullHTML}}

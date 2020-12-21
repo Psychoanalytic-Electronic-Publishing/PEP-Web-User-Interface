@@ -24,6 +24,15 @@ $color-muted-select-background: $color-backdrop;
 $color-progress-spinner-loading1: $color-brand-primary;
 $color-progress-spinner-loading2: $color-backdrop;
 
+$document-link-glosstip-hover: #3e92cc;
+$document-link-glosstip-bg: rgba($document-link-glosstip-hover, 0.1);
+$document-link-bibliography: #b9c6ae;
+$document-link-page: #2a628f;
+$document-link-figure: #8a95a5;
+$document-link-external: #8a95a5;
+$document-link-web-external: #a4a29e;
+$document-link-web-internal: #a4a29e;
+
 // Bootstrap overrides
 // ---------------------------
 $primary: $color-brand-primary;
@@ -78,4 +87,24 @@ $ember-content-placeholders-secondary-color: $color-brand-primary;
 
 .text-dark {
     color: #fff !important;
+}
+
+.shepherd-element.dark {
+    background-color: $link-color !important;
+    color: $body-color !important;
+    .shepherd-text {
+        color: $body-color !important;
+    }
+    .shepherd-button {
+        background-color: $color-primary-background !important;
+    }
+    .shepherd-header {
+        background-color: $color-primary-background !important;
+        .shepherd-title {
+            color: $body-color !important;
+        }
+    }
+    .shepherd-arrow::before {
+        background-color: $link-color !important;
+    }
 }

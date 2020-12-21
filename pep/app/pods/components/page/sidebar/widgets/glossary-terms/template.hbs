@@ -3,16 +3,17 @@
     @isOpen={{this.isOpen}}
     @toggle={{fn @toggleIsOpen this.widget}}
     class="mb-2"
-    ...attributes
-as |Panel|>
-    <Panel.header @title={{t "relatedInfo.widgets.glossaryTerms.title"}} />
+    ...attributes as |Panel|
+>
+    <Panel.header
+        @title={{t "relatedInfo.widgets.glossaryTerms.title"}}
+        @tooltip={{t "relatedInfo.widgets.glossaryTerms.help"}}
+    />
     <Panel.body>
         {{#if this.data.length}}
             <ul class="word-cloud text-muted mb-3">
                 {{#each this.data as |item|}}
-                    <li
-                        style={{item.fontStyle}}
-                    >
+                    <li style={{item.fontStyle}}>
                         <Button
                             @label={{item.label}}
                             @action={{fn this.viewGlossaryTerm item.label}}

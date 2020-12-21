@@ -3666,6 +3666,11 @@
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.5.3.tgz#4982b0b66b7a4cf949b86f5d25a8cf757d3cfd9d"
   integrity sha512-RFwCobxsvZ6j7twS7dHIZQZituMIDJJNHS/qY6iuthVebxS3zhRY+jaC2roEKiAYaVuTcGmX6Luc6YBcf6zJVg==
 
+"@popperjs/core@^2.5.2":
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.6.0.tgz#f022195afdfc942e088ee2101285a1d31c7d727f"
+  integrity sha512-cPqjjzuFWNK3BSKLm0abspP0sp/IGOli4p5I5fKFAzdS8fvjdOwDCfZqAaIiXd9lPkOWi3SUUfZof3hEb7J/uw==
+
 "@simple-dom/document@^1.4.0":
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/@simple-dom/document/-/document-1.4.0.tgz#af60855f957f284d436983798ef1006cca1a1678"
@@ -4106,6 +4111,11 @@
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@types/symlink-or-copy/-/symlink-or-copy-1.2.0.tgz#4151a81b4052c80bc2becbae09f3a9ec010a9c7a"
   integrity sha512-Lja2xYuuf2B3knEsga8ShbOdsfNOtzT73GyJmZyY7eGl2+ajOqrs8yM5ze0fsSoYwvA6bw7/Qr7OZ7PEEmYwWg==
+
+"@types/tether-shepherd@^1.2.28":
+  version "1.2.28"
+  resolved "https://registry.yarnpkg.com/@types/tether-shepherd/-/tether-shepherd-1.2.28.tgz#3cbff8ccfcd65de05b1e532d6a8671de6b7fc5d9"
+  integrity sha512-ZgTh/Gki69wYIarxXCPPHKGDiieZCY5H2650/DNMblTLidpwM/t8jjtczwsLsteNFkA8RLrt2h1T3NTRugBqRA==
 
 "@webassemblyjs/ast@1.7.11":
   version "1.7.11"
@@ -5174,6 +5184,11 @@ babel-plugin-htmlbars-inline-precompile@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-htmlbars-inline-precompile/-/babel-plugin-htmlbars-inline-precompile-4.1.0.tgz#11796422e65d900a968481fa3fb37e0425c928dd"
   integrity sha512-gM+UP6HO5RlGiOQzJVGRUHgAsefJeOdh5Pn+rZRS6Tr1MnEqVgTJ2G2ywnl+G+Zcuec18fz7XA+O2tHhsmct6w==
+
+babel-plugin-htmlbars-inline-precompile@^4.2.0:
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/babel-plugin-htmlbars-inline-precompile/-/babel-plugin-htmlbars-inline-precompile-4.2.1.tgz#9a367f8d7ecb9fb2c2e886edfe285caf7cb9766d"
+  integrity sha512-MCJXk+1R0YjlF/F52eDbhJTpsnqRVYsPYVP9d0jEu7E46AcRPEWDL5tfSweiQWHLKG017BIedATb91KcIoT3zA==
 
 babel-plugin-module-resolver@^3.1.1:
   version "3.2.0"
@@ -7745,6 +7760,11 @@ deep-is@^0.1.3, deep-is@~0.1.3:
   resolved "https://registry.yarnpkg.com/deep-is/-/deep-is-0.1.3.tgz#b369d6fb5dbc13eecf524f91b070feedc357cf34"
   integrity sha1-s2nW+128E+7PUk+RsHD+7cNXzzQ=
 
+deepmerge@^4.2.2:
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/deepmerge/-/deepmerge-4.2.2.tgz#44d2ea3679b8f4d4ffba33f03d865fc1e7bf4955"
+  integrity sha512-FJ3UgI4gIl+PHZm53knsuSFpE+nESMr7M4v9QcgB7S63Kj/6WqMiFQJpBBYz1Pt+66bZpP3Q7Lye0Oo9MPKEdg==
+
 defaults@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/defaults/-/defaults-1.0.3.tgz#c656051e9817d9ff08ed881477f3fe4019f3ef7d"
@@ -8625,6 +8645,27 @@ ember-cli-htmlbars@^5.2.0:
     strip-bom "^4.0.0"
     walk-sync "^2.1.0"
 
+ember-cli-htmlbars@^5.3.1:
+  version "5.3.1"
+  resolved "https://registry.yarnpkg.com/ember-cli-htmlbars/-/ember-cli-htmlbars-5.3.1.tgz#61793964fc2599ce750db9e972ab55c6dd177c48"
+  integrity sha512-ZjQTt44euDoqLvUkWbt1svgNCXgLzOztEbc2qqYMQvhQig416LMrWK7l3SSbNU+BtLD5UIxmwvLfF1tsO2CVyA==
+  dependencies:
+    "@ember/edition-utils" "^1.2.0"
+    babel-plugin-htmlbars-inline-precompile "^4.2.0"
+    broccoli-debug "^0.6.5"
+    broccoli-persistent-filter "^3.1.0"
+    broccoli-plugin "^4.0.3"
+    common-tags "^1.8.0"
+    ember-cli-babel-plugin-helpers "^1.1.0"
+    fs-tree-diff "^2.0.1"
+    hash-for-dep "^1.5.1"
+    heimdalljs-logger "^0.1.10"
+    json-stable-stringify "^1.0.1"
+    semver "^7.3.2"
+    silent-error "^1.1.1"
+    strip-bom "^4.0.0"
+    walk-sync "^2.2.0"
+
 ember-cli-import-polyfill@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/ember-cli-import-polyfill/-/ember-cli-import-polyfill-0.2.0.tgz#c1a08a8affb45c97b675926272fe78cf4ca166f2"
@@ -9474,6 +9515,16 @@ ember-router-generator@^2.0.0:
     "@babel/parser" "^7.4.5"
     "@babel/traverse" "^7.4.5"
     recast "^0.18.1"
+
+ember-shepherd@^11.0.2:
+  version "11.0.2"
+  resolved "https://registry.yarnpkg.com/ember-shepherd/-/ember-shepherd-11.0.2.tgz#17c9f51107ff4de93cbede05ffcb0aabc103a093"
+  integrity sha512-Q5fhcF8UbJQWSLBurH98+QI534j+L21ambhBLX6TXmS2ZillLx1yBiyaKPPiTNZiXX4UFc6yOcqWWXhla47njw==
+  dependencies:
+    ember-auto-import "^1.6.0"
+    ember-cli-babel "^7.22.1"
+    ember-cli-htmlbars "^5.3.1"
+    shepherd.js "^8.0.1"
 
 ember-simple-auth@3.1.0-beta.1:
   version "3.1.0-beta.1"
@@ -15499,6 +15550,15 @@ shellwords@^0.1.1:
   resolved "https://registry.yarnpkg.com/shellwords/-/shellwords-0.1.1.tgz#d6b9181c1a48d397324c84871efbcfc73fc0654b"
   integrity sha512-vFwSUfQvqybiICwZY5+DAWIPLKsWO31Q91JSKl3UYv+K5c2QRPzn0qzec6QPu1Qc9eHYItiP3NdJqNVqetYAww==
 
+shepherd.js@^8.0.1:
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/shepherd.js/-/shepherd.js-8.1.0.tgz#810b72a6ddf16f6e953126a1315108cc5709f7ce"
+  integrity sha512-mWab5hn2cdSdv5XF3IbBYyT2wPejAjK0flycbkRxqS1c+4epkKRMhpW9Eco6swDCu65wUP7PcecdjayokwI+Vg==
+  dependencies:
+    "@popperjs/core" "^2.5.2"
+    deepmerge "^4.2.2"
+    smoothscroll-polyfill "^0.4.4"
+
 signal-exit@^3.0.0, signal-exit@^3.0.2:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.3.tgz#a1410c2edd8f077b08b4e253c8eacfcaf057461c"
@@ -15562,6 +15622,11 @@ slice-ansi@^2.1.0:
     ansi-styles "^3.2.0"
     astral-regex "^1.0.0"
     is-fullwidth-code-point "^2.0.0"
+
+smoothscroll-polyfill@^0.4.4:
+  version "0.4.4"
+  resolved "https://registry.yarnpkg.com/smoothscroll-polyfill/-/smoothscroll-polyfill-0.4.4.tgz#3a259131dc6930e6ca80003e1cb03b603b69abf8"
+  integrity sha512-TK5ZA9U5RqCwMpfoMq/l1mrH0JAR7y7KRvOBx0n2869aLxch+gT9GhN3yUfjiw+d/DiF1mKo14+hd62JyMmoBg==
 
 snake-case@^3.0.3:
   version "3.0.3"

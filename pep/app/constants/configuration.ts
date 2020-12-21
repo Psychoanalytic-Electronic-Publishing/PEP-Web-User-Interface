@@ -129,6 +129,12 @@ export interface ContentConfiguration {
         smartSearch: {
             help?: string;
         };
+        matchSynonyms: {
+            help?: string;
+        };
+        limitTo: {
+            help?: string;
+        };
         terms: {
             types: {
                 [K in SearchTermId]?: {
@@ -315,6 +321,12 @@ export const DEFAULT_CONTENT_CONFIGURATION: ContentConfiguration = {
         smartSearch: {
             help:
                 'This field performs a SmartSearch, a search based on the semantics of what you enter. It can recognize an article citation (author and year) or a reference in APA standard form, a DOI, a year or volume and page number, or a PEP Article ID (Locator). Or if you enter words or phrases, it performs a words within paragraph or phrase search anywhere in the document, other than in abstracts and references (equivalent to an Article search).'
+        },
+        matchSynonyms: {
+            help: 'Return results that contain synonyms or similar words for the entered search terms'
+        },
+        limitTo: {
+            help: 'Restrict the search results to documents with a specific number of citations or views'
         },
         terms: {
             types: {

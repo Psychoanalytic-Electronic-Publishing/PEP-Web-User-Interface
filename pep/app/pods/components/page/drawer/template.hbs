@@ -53,6 +53,41 @@
                         {{t "nav.browse"}}
                     </LinkTo>
                 </Page::Drawer::NavItem>
+
+                <Page::Drawer::NavMenu
+                    @title={{t "nav.help"}}
+                    @isOpen={{this.isHelpMenuOpen}}
+                    @toggle={{fn (mut this.isHelpMenuOpen)}}
+                    class="mt-1"
+                >
+                    <Page::Drawer::NavItem class="mt-1">
+                        <a
+                            href="https://support.pep-web.org"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="list-group-item list-group-item-action"
+                        >
+                            <FaIcon @icon="external-link" @fixedWidth={{true}} class="text-muted" />
+                            {{t "nav.support.link"}}
+                        </a>
+                    </Page::Drawer::NavItem>
+                    <Page::Drawer::NavItem class="mt-1">
+                        <button type="button" class="list-group-item list-group-item-action">
+                            <FaIcon @icon="comment-exclamation" @fixedWidth={{true}} class="text-muted" />
+                            {{t "nav.support.reportProblem"}}
+                        </button>
+                    </Page::Drawer::NavItem>
+                    <Page::Drawer::NavItem class="mt-1">
+                        <button
+                            type="button"
+                            class="list-group-item list-group-item-action"
+                            {{on "click" this.openHelpModal}}
+                        >
+                            <FaIcon @icon="hands-helping" @fixedWidth={{true}} class="text-muted" />
+                            {{t "nav.support.preferences"}}
+                        </button>
+                    </Page::Drawer::NavItem>
+                </Page::Drawer::NavMenu>
                 <Page::Drawer::NavMenu
                     @title={{t "nav.user.account"}}
                     @isOpen={{this.isUserMenuOpen}}
@@ -72,7 +107,7 @@
                     <Page::Drawer::NavItem class="mt-1">
                         <button type="button" class="list-group-item list-group-item-action">
                             <FaIcon @icon="question-square" @fixedWidth={{true}} class="mr-2" />
-                            {{t "nav.user.help"}}
+                            {{t "nav.help"}}
                         </button>
                     </Page::Drawer::NavItem>
                     <Page::Drawer::NavItem class="mt-1">

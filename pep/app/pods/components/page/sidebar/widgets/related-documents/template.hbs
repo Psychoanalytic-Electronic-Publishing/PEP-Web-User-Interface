@@ -6,7 +6,10 @@
     {{did-insert this.onElementInsert}}
     {{did-update this.onDataUpdate this.data}} as |Panel|
 >
-    <Panel.header @title={{t "relatedInfo.widgets.relatedDocuments.title"}} />
+    <Panel.header
+        @title={{t "relatedInfo.widgets.relatedDocuments.title"}}
+        @tooltip={{t "relatedInfo.widgets.relatedDocuments.help"}}
+    />
     <Panel.body>
         <ContentWithPlaceholder @placeholderComponent="loading/widget" @isLoading={{this.loadResults.isRunning}}>
             <ul class="list-unstyled">

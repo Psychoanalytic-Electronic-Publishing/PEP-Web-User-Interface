@@ -2,18 +2,23 @@
     @scrollableNamespace="sidebar-right"
     @isOpen={{this.isOpen}}
     @toggle={{fn @toggleIsOpen this.widget}}
-    {{did-insert this.onElementChange}}
-    {{did-update this.onElementChange this.data}}
     class="mb-2"
-as |Panel|>
-    <Panel.header @title={{t "relatedInfo.widgets.moreLikeThese.title"}} />
+    {{did-insert this.onElementChange}}
+    {{did-update this.onElementChange this.data}} as |Panel|
+>
+    <Panel.header
+        @title={{t "relatedInfo.widgets.moreLikeThese.title"}}
+        @tooltip={{t "relatedInfo.widgets.moreLikeThese.help"}}
+    />
     <Panel.body>
         <ContentWithPlaceholder
             @placeholderComponent="loading/widget"
             @isLoading={{this.loadSimilarFromDocument.isRunning}}
         >
             {{#if this.results.similarMaxScore}}
-                <h6>{{t "relatedInfo.widgets.moreLikeThese.confidence" number=(round this.results.similarMaxScore)}}</h6>
+                <h6>
+                    {{t "relatedInfo.widgets.moreLikeThese.confidence" number=(round this.results.similarMaxScore)}}
+                </h6>
             {{/if}}
             <ul class="list-unstyled">
                 {{#each this.results.similarDocuments as |result|}}
@@ -34,6 +39,5 @@ as |Panel|>
                 {{/each}}
             </ul>
         </ContentWithPlaceholder>
-
     </Panel.body>
 </CollapsiblePanel>
