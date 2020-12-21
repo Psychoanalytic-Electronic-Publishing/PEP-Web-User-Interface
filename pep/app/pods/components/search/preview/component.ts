@@ -1,5 +1,5 @@
 import { action } from '@ember/object';
-import { next, scheduleOnce } from '@ember/runloop';
+import { next, run, scheduleOnce } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 import { htmlSafe } from '@ember/template';
 import Component from '@glimmer/component';
@@ -60,13 +60,13 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
     }
 
     get styles() {
-        return (this.isFitMode || this.isCustomMode) && this.adjustedFitHeight && this.args.resultId
+        return (this.isFitMode || this.isCustomMode) && this.adjustedFitHeight
             ? htmlSafe(`height: ${this.adjustedFitHeight}px;`)
             : null;
     }
 
     get adjustedFitHeight() {
-        return Math.min(this.fitHeight, this.args.maxHeight || this.fitHeight);
+        return Math.min(this.fitHeight, this.args.maxHeight ?? this.fitHeight);
     }
 
     get downloadAuthParams() {
@@ -135,6 +135,12 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
         this.scrollableElement = element;
     }
 
+    /**
+     * Load the abstract and then update the height if fit mode is enabled
+     *
+     * @param {string} id
+     * @memberof SearchPreview
+     */
     async loadAbstract(id: string) {
         try {
             this.loadingBar.show();
@@ -142,18 +148,19 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
             this.result = abstract;
         } finally {
             this.loadingBar.hide();
-            scheduleOnce('afterRender', this, this.updateFitHeight);
+            if (this.isFitMode) {
+                next(this, this.updateFitHeight);
+            }
         }
     }
 
     /**
-     * Calculate the content's "fit" height on render
+     * Set inner element and load the abstract
      * @param {HTMLElement} element
      */
     @action
     async onElementInsert(element: HTMLElement) {
         this.innerElement = element;
-        scheduleOnce('afterRender', this, this.updateFitHeight);
 
         if (this.args.resultId) {
             this.loadAbstract(this.args.resultId);
@@ -162,15 +169,10 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
 
     /**
      * Reloads the previewed result on open/change, to ensure its displaying the
-     * correct content based on their current session/subscription/etc, and then
-     * recalculate the content's "fit" height
+     * correct content based on their current session/subscription/etc
      */
     @action
     async onResultUpdate() {
-        if (this.isFitMode) {
-            scheduleOnce('afterRender', this, this.updateFitHeight);
-        }
-
         if (this.args.resultId) {
             this.loadAbstract(this.args.resultId);
         }
