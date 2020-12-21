@@ -13,6 +13,7 @@ import TourService, { Step } from 'ember-shepherd/services/tour';
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 
 import { PreferenceKey } from 'pep/constants/preferences';
+import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import PageLayout from 'pep/mixins/page-layout';
 import { ApiServerErrorResponse } from 'pep/pods/application/adapter';
 import ApplicationController from 'pep/pods/application/controller';
@@ -164,11 +165,11 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
                     on: 'bottom'
                 },
 
-                text: 'This button takes you home',
-                title: 'Home',
+                text: this.intl.t('tour.home.text'),
+                title: this.intl.t('tour.home.title'),
                 buttons: [
                     {
-                        text: 'Next',
+                        text: this.intl.t('tour.home.buttons.next'),
                         type: 'next'
                     }
                 ]
@@ -180,11 +181,11 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
                     element: '.nav-item.home',
                     on: 'auto'
                 },
-                text: 'This button takes you home',
-                title: 'Home',
+                text: this.intl.t('tour.home.text'),
+                title: this.intl.t('tour.home.title'),
                 buttons: [
                     {
-                        text: 'Next',
+                        text: this.intl.t('tour.home.buttons.next'),
                         type: 'next'
                     }
                 ]
@@ -198,11 +199,11 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
                     on: 'auto'
                 },
                 classes: 'tour-left-sidebar-spacing',
-                text: 'This button shows/hides the search',
-                title: 'Search',
+                text: this.intl.t('tour.leftSidebar.text'),
+                title: this.intl.t('tour.leftSidebar.title'),
                 buttons: [
                     {
-                        text: 'Next',
+                        text: this.intl.t('tour.leftSidebar.buttons.next'),
                         type: 'next'
                     }
                 ],
@@ -215,11 +216,11 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
                     on: 'left'
                 },
                 classes: 'tour-right-sidebar-spacing',
-                text: 'This button shows/hides the widgets',
-                title: 'Widgets',
+                text: this.intl.t('tour.rightSidebar.text'),
+                title: this.intl.t('tour.rightSidebar.title'),
                 buttons: [
                     {
-                        text: 'Close',
+                        text: this.intl.t('tour.rightSidebar.buttons.cancel'),
                         type: 'cancel'
                     }
                 ],
@@ -242,6 +243,7 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
      * @param {*} model
      * @memberof Application
      */
+    @dontRunInFastboot
     async setupController(controller: ApplicationController, model: any) {
         super.setupController(controller, model);
         if (this.currentUser.preferences?.tourEnabled) {

@@ -584,6 +584,29 @@
             "description": "PEP Web has been designed to provide a powerful rapid search of the entire psychoanalytic literature in English, French, German, Greek, Italian, Romanian, Spanish and Turkish. It is the result of an innovative, high quality series of technical developments and a considerable financial and scholarly investment. You can '<a href=\"http://support.pep-web.org/about-the-pep-archive/digitization-and-quality-control/\" target=\"_blank\">'read about the innovative developments required to produce and keep updating the PEP archive'</a>' and read '<a href=\"http://support.pep-web.org/about-pep/history-of-pep/\" target=\"_blank\">'about the history of the PEP archive'</a>'. You can even '<a href=\"http://support.pep-web.org/about-the-pep-archive/suggest-new-content/\" target=\"_blank\">'suggest new content'</a>' that you would like to see added to the PEP Archive. '<br><br>' For more information, see the '<a href=\"http://support.pep-web.org\" target=\"_blank\">'PEP Web support pages'</a>'"
         }
     },
+    "tour": {
+        "home": {
+            "title": "Home",
+            "text": "This button takes you home",
+            "buttons": {
+                "next": "Next"
+            }
+        },
+        "leftSidebar": {
+            "title": "Search",
+            "text": "This button shows/hides the search",
+            "buttons": {
+                "next": "Next"
+            }
+        },
+        "rightSidebar": {
+            "title": "Widgets",
+            "text": "This button shows/hides the widgets",
+            "buttons": {
+                "cancel": "Close"
+            }
+        }
+    },
     "accountInfo": {
         "title": "Account Info",
         "makeChangesOnPads": "Make changes (on PaDS)",
