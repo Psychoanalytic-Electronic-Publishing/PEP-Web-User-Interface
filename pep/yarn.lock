@@ -3201,19 +3201,11 @@
     resolve "^1.8.1"
     semver "^5.6.0"
 
-"@formatjs/ecma402-abstract@1.4.0":
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/@formatjs/ecma402-abstract/-/ecma402-abstract-1.4.0.tgz#ac6c17a8fffac43c6d68c849a7b732626d32654c"
-  integrity sha512-Mv027hcLFjE45K8UJ8PjRpdDGfR0aManEFj1KzoN8zXNveHGEygpZGfFf/FTTMl+QEVSrPAUlyxaCApvmv47AQ==
+"@formatjs/ecma402-abstract@1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@formatjs/ecma402-abstract/-/ecma402-abstract-1.5.0.tgz#759c8f11ff45e96f8fb58741e7fbdb41096d5ddd"
+  integrity sha512-wXv36yo+mfWllweN0Fq7sUs7PUiNopn7I0JpLTe3hGu6ZMR4CV7LqK1llhB18pndwpKoafQKb1et2DCJAOW20Q==
   dependencies:
-    tslib "^2.0.1"
-
-"@formatjs/intl-numberformat@^5.5.2":
-  version "5.7.6"
-  resolved "https://registry.yarnpkg.com/@formatjs/intl-numberformat/-/intl-numberformat-5.7.6.tgz#630206bb0acefd2d508ccf4f82367c6875cad611"
-  integrity sha512-ZlZfYtvbVHYZY5OG3RXizoCwxKxEKOrzEe2YOw9wbzoxF3PmFn0SAgojCFGLyNXkkR6xVxlylhbuOPf1dkIVNg==
-  dependencies:
-    "@formatjs/ecma402-abstract" "1.4.0"
     tslib "^2.0.1"
 
 "@fortawesome/ember-fontawesome@^0.2.1":
@@ -3333,10 +3325,10 @@
     ember-cli-typescript "^3.1.4"
     moment "^2.24.0"
 
-"@gavant/ember-table@^0.6.5":
-  version "0.6.5"
-  resolved "https://registry.yarnpkg.com/@gavant/ember-table/-/ember-table-0.6.5.tgz#fe067ef408e2d4bcc693d9afdcbc76a37b16954b"
-  integrity sha512-lbmLwVsTkVVEEUXSetyVyKqLqOEpfkKQJcVjdva7PKrC4koO+IO2pPD12L+AfEVgdOMaVs0OSXp3S5Eerj83YQ==
+"@gavant/ember-table@0.6.6":
+  version "0.6.6"
+  resolved "https://registry.yarnpkg.com/@gavant/ember-table/-/ember-table-0.6.6.tgz#b883fecf1b4ad02a88ac65f356054ee0e965a0b5"
+  integrity sha512-/eQNk4JxlUsCf0n6WD+nlZcHJhOiHLRMigfUQW+y5AWwPruHXLumKDOAfqq/DvYEpjlseel/vZRYUwyGyFJvCQ==
   dependencies:
     "@ember/render-modifiers" "^1.0.2"
     "@glimmer/tracking" "^1.0.0"
@@ -6895,15 +6887,10 @@ caniuse-api@^3.0.0:
     lodash.memoize "^4.1.2"
     lodash.uniq "^4.5.0"
 
-caniuse-lite@^1.0.0, caniuse-lite@^1.0.30000792, caniuse-lite@^1.0.30000805, caniuse-lite@^1.0.30000844, caniuse-lite@^1.0.30000981, caniuse-lite@^1.0.30001043, caniuse-lite@^1.0.30001061:
-  version "1.0.30001081"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001081.tgz#40615a3c416a047c5a4d45673e5257bf128eb3b5"
-  integrity sha512-iZdh3lu09jsUtLE6Bp8NAbJskco4Y3UDtkR3GTCJGsbMowBU5IWDFF79sV2ws7lSqTzWyKazxam2thasHymENQ==
-
-caniuse-lite@^1.0.30001165:
-  version "1.0.30001165"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001165.tgz#32955490d2f60290bb186bb754f2981917fa744f"
-  integrity sha512-8cEsSMwXfx7lWSUMA2s08z9dIgsnR5NAqjXP23stdsU3AUWkCr/rr4s4OFtHXn5XXr6+7kam3QFVoYyXNPdJPA==
+caniuse-lite@^1.0.0, caniuse-lite@^1.0.30000792, caniuse-lite@^1.0.30000805, caniuse-lite@^1.0.30000844, caniuse-lite@^1.0.30000981, caniuse-lite@^1.0.30001043, caniuse-lite@^1.0.30001061, caniuse-lite@^1.0.30001165:
+  version "1.0.30001170"
+  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001170.tgz"
+  integrity sha512-Dd4d/+0tsK0UNLrZs3CvNukqalnVTRrxb5mcQm8rHL49t7V5ZaTygwXkrq+FB+dVDf++4ri8eJnFEJAB8332PA==
 
 capture-exit@^2.0.0:
   version "2.0.0"
@@ -8869,6 +8856,22 @@ ember-cli-typescript@^3.1.1, ember-cli-typescript@^3.1.2, ember-cli-typescript@^
     stagehand "^1.0.0"
     walk-sync "^2.0.0"
 
+ember-cli-typescript@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/ember-cli-typescript/-/ember-cli-typescript-4.0.0.tgz#690f0cd3d15f4a69ae6d89f25b70b5997ae59161"
+  integrity sha512-ZwnBbBJ0yAIKq4FVgNFkxfMwqJhw6PyT45Enp2RvWIgzgaYCId8brrSgg3tvVWWjA7N5hiT4Ilyz5jrQwrnU1Q==
+  dependencies:
+    ansi-to-html "^0.6.6"
+    broccoli-stew "^3.0.0"
+    debug "^4.0.0"
+    execa "^4.0.0"
+    fs-extra "^9.0.1"
+    resolve "^1.5.0"
+    rsvp "^4.8.1"
+    semver "^7.3.2"
+    stagehand "^1.0.0"
+    walk-sync "^2.2.0"
+
 ember-cli-uglify@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/ember-cli-uglify/-/ember-cli-uglify-3.0.0.tgz#8819665b2cc5fe70e3ba9fe7a94645209bc42fd6"
@@ -9229,10 +9232,10 @@ ember-inflector@^3.0.1:
   dependencies:
     ember-cli-babel "^6.6.0"
 
-ember-intl@5.3.1:
-  version "5.3.1"
-  resolved "https://registry.yarnpkg.com/ember-intl/-/ember-intl-5.3.1.tgz#d401de4c0851da96b25029c8049925df5cd78cff"
-  integrity sha512-JtYx+wuCqFT7a+nB44Z9nI255hpjYxtSxQkmuh5T1i4XbRyZsTWIrMs8xF+YWTjmELiQESsFkYejvkehUWJmaA==
+ember-intl@5.6.0:
+  version "5.6.0"
+  resolved "https://registry.yarnpkg.com/ember-intl/-/ember-intl-5.6.0.tgz#66837865f330a0c6057202904e0b11d449fb7b64"
+  integrity sha512-eyeijdGvUiZE6VAH22vuGAbG1OELvO9ZiuONANEETGvG7oSLzKfUkF88dZ2Ljkg1Geyct4EMO6xTi22oSvamTg==
   dependencies:
     broccoli-caching-writer "^3.0.3"
     broccoli-funnel "^3.0.3"
@@ -9243,12 +9246,13 @@ ember-intl@5.3.1:
     calculate-cache-key-for-tree "^2.0.0"
     cldr-core "^36.0.0"
     ember-auto-import "^1.5.3"
-    ember-cli-babel "^7.18.0"
+    ember-cli-babel "^7.23.0"
+    ember-cli-typescript "^4.0.0"
     extend "^3.0.2"
     fast-memoize "^2.5.2"
     has-unicode "^2.0.1"
-    intl-messageformat "^8.3.9"
-    intl-messageformat-parser "^5.0.2"
+    intl-messageformat "^9.3.6"
+    intl-messageformat-parser "^6.0.5"
     js-yaml "^3.13.1"
     json-stable-stringify "^1.0.1"
     locale-emoji "^0.3.0"
@@ -10248,6 +10252,21 @@ execa@^3.0.0:
     npm-run-path "^4.0.0"
     onetime "^5.1.0"
     p-finally "^2.0.0"
+    signal-exit "^3.0.2"
+    strip-final-newline "^2.0.0"
+
+execa@^4.0.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/execa/-/execa-4.1.0.tgz#4e5491ad1572f2f17a77d388c6c857135b22847a"
+  integrity sha512-j5W0//W7f8UxAn8hXVnwG8tLwdiUy4FJLcSupCg6maBYZDpyBvTApK7KyuI4bKj8KOh1r2YH+6ucuYtJv1bTZA==
+  dependencies:
+    cross-spawn "^7.0.0"
+    get-stream "^5.0.0"
+    human-signals "^1.1.1"
+    is-stream "^2.0.0"
+    merge-stream "^2.0.0"
+    npm-run-path "^4.0.0"
+    onetime "^5.1.0"
     signal-exit "^3.0.2"
     strip-final-newline "^2.0.0"
 
@@ -11720,25 +11739,22 @@ intersection-observer-admin@~0.2.12:
   resolved "https://registry.yarnpkg.com/intersection-observer-admin/-/intersection-observer-admin-0.2.12.tgz#046b208afc8cbf626943d61688d5a779c5831275"
   integrity sha512-97+A29MV0kp6Xzkb4CxBNxxDU4qldyVFNzvZIiLMYqIZFutT2DJCzE1TEv0hXdmFQfAIY4KhNhL6L1BEEU0J8w==
 
-intl-format-cache@^4.2.43:
-  version "4.3.1"
-  resolved "https://registry.yarnpkg.com/intl-format-cache/-/intl-format-cache-4.3.1.tgz#484d31a9872161e6c02139349b259a6229ade377"
-  integrity sha512-OEUYNA7D06agqPOYhbTkl0T8HA3QKSuwWh1HiClEnpd9vw7N+3XsQt5iZ0GUEchp5CW1fQk/tary+NsbF3yQ1Q==
-
-intl-messageformat-parser@^5.0.2, intl-messageformat-parser@^5.2.1:
-  version "5.5.1"
-  resolved "https://registry.yarnpkg.com/intl-messageformat-parser/-/intl-messageformat-parser-5.5.1.tgz#f09a692755813e6220081e3374df3fb1698bd0c6"
-  integrity sha512-TvB3LqF2VtP6yI6HXlRT5TxX98HKha6hCcrg9dwlPwNaedVNuQA9KgBdtWKgiyakyCTYHQ+KJeFEstNKfZr64w==
+intl-messageformat-parser@6.1.0, intl-messageformat-parser@^6.0.5:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/intl-messageformat-parser/-/intl-messageformat-parser-6.1.0.tgz#134328151c41592d9e1a61f5c6779c06c8eb3f08"
+  integrity sha512-nPPh2kOrKqlh4D9bCAetxkrUiq5/6S1exPQyg52Ihusy0ECNGhZ0Qmq8pFRK9gWIuiQPVmLA7eSNp8diC2tX3w==
   dependencies:
-    "@formatjs/intl-numberformat" "^5.5.2"
+    "@formatjs/ecma402-abstract" "1.5.0"
+    tslib "^2.0.1"
 
-intl-messageformat@^8.3.9:
-  version "8.4.1"
-  resolved "https://registry.yarnpkg.com/intl-messageformat/-/intl-messageformat-8.4.1.tgz#f31c811efc561700b61ab4ee4716b870787c0fe5"
-  integrity sha512-N4jLt0KebfqXZZZQRwBwZMrqwccHzZnN6KSeUsfidIoHMPIlLIgq08KcYsn7bZS6adh1KKH4/99VODWDDDu85Q==
+intl-messageformat@^9.3.6:
+  version "9.4.0"
+  resolved "https://registry.yarnpkg.com/intl-messageformat/-/intl-messageformat-9.4.0.tgz#b9c9c00a6e88a8f1ffd9ee3e54340c9dfb765d13"
+  integrity sha512-zcF8OWG52dCwwePkykqqv7F038vCaixPR14Lr3YUFc9jRdGoCazl2dTE3BwBaeHr3pG/qYb6A/mwMKrj4LFt9Q==
   dependencies:
-    intl-format-cache "^4.2.43"
-    intl-messageformat-parser "^5.2.1"
+    fast-memoize "^2.5.2"
+    intl-messageformat-parser "6.1.0"
+    tslib "^2.0.1"
 
 into-stream@^3.1.0:
   version "3.1.0"
