@@ -18,8 +18,6 @@ import SidebarService from 'pep/services/sidebar';
 import { buildSearchQueryParams, copyToController, hasSearchQuery } from 'pep/utils/search';
 import { serializeQueryParams } from 'pep/utils/url';
 
-import { copySearchToController } from '../../../utils/search';
-
 export interface ReadDocumentParams {
     document_id: string;
     q: string;
