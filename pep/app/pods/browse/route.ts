@@ -38,6 +38,6 @@ export default class Browse extends PageNav(Route) {
 
         controller.journals = browseResults.journals.toArray();
         controller.books = browseResults.books.toArray();
-        controller.videos = browseResults.videos.toArray().sortBy('id');
+        controller.videos = browseResults.videos.toArray();
     }
 }
