@@ -31,6 +31,13 @@ export default class Home extends Component<HomeArgs> {
     @service router!: RouterService;
     @service loadingBar!: LoadingBarService;
 
+    /**
+     * The approximate width where the graphic
+     * wraps above the expert-pick text.
+     *
+     */
+    graphicWrapWidth = 870;
+
     @tracked model?: Abstract;
     @tracked imageArticle?: SearchDocument;
     @tracked imageArticleUrl?: string;
@@ -156,7 +163,7 @@ export default class Home extends Component<HomeArgs> {
     handleResize(el: HTMLElement) {
         const graphicContainer = el.className === 'card-body' ? el.querySelector('.expert-pick-graphic-container') : el;
         if (graphicContainer) {
-            if (el.clientWidth < 870) {
+            if (el.clientWidth < this.graphicWrapWidth) {
                 graphicContainer.className = 'expert-pick-graphic-container mb-2 mb-md-3 d-flex flex-column';
             } else {
                 graphicContainer.className =
