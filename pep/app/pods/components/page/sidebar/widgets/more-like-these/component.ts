@@ -1,4 +1,3 @@
-import { getOwner } from '@ember/application';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
@@ -10,7 +9,6 @@ import { DS } from 'ember-data';
 
 import { WIDGET } from 'pep/constants/sidebar';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
-import Abstract from 'pep/pods/abstract/model';
 import AbstractSerializer from 'pep/pods/abstract/serializer';
 import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
 import Document from 'pep/pods/document/model';
@@ -57,7 +55,10 @@ export default class PageSidebarWidgetsMoreLikeThese extends Component<PageSideb
                 this.data.id
             ) as { included: any[] };
 
-            const response = this.store.push({ data: normalizedResponse.included });
+            const response = this.store.push({
+                data: normalizedResponse.included[0],
+                included: normalizedResponse.included
+            });
 
             this.results = (Array.isArray(response) ? response[0] : response) as SimilarityMatch;
         }
