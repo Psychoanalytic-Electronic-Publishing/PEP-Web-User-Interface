@@ -43,6 +43,7 @@
         "search": "Search",
         "browse": "Browse",
         "read": "Read",
+        "help": "Help",
         "user": {
             "about": "About",
             "account": "My account",
@@ -510,6 +511,23 @@
         "success": "You are now logged in.",
         "forgotPassword": "Forgot Password?",
         "genericError": "Unable to login. There is a problem behind the scenes, and we are looking into it. Please try again later."
+    },
+    "help": {
+        "preferences": {
+            "info": "Customize the help provide by the PEP system below.",
+            "tour": {
+                "title": "Intro tour",
+                "description": "Turning this on will show you the tour the next time you visit PEP."
+            },
+            "descriptions": {
+                "title": "Help descriptions",
+                "description": "Turning this on shows helpful descriptions when applicable."
+            },
+            "icons": {
+                "title": "Help icons",
+                "description": "Toggling this will show/hide the help icons throughout the site. These icons have helpful hints and descriptions of functionality that will make your life easier."
+            }
+        }
     },
     "preferences": {
         "title": "Preferences",
