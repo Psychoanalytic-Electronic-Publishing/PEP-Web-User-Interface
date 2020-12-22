@@ -14,9 +14,11 @@
 // Application variables
 // ---------------------------
 $logo-path: '/assets/images/logo-dark.jpg';
-$color-brand-primary: #161d20;
-$color-backdrop: #080b0c;
-$color-primary-background: #080b0c;
+$color-brand-primary: #2f3136;
+$color-backdrop: #36393f;
+// $color-backdrop: #474954;
+// $color-primary-background: #545763;
+$color-primary-background: #393c43;
 $color-backdrop-well: darken($color-backdrop, 2.5%);
 $color-progress-spinner-loading2: saturate(lighten($color-brand-primary, 35%), 45%);
 $color-focus-shadow: rgba($color-brand-primary, 0.25);
@@ -24,7 +26,7 @@ $color-muted-select-background: $color-backdrop;
 $color-progress-spinner-loading1: $color-brand-primary;
 $color-progress-spinner-loading2: $color-backdrop;
 
-$document-link-glosstip-hover: #3e92cc;
+$document-link-glosstip-hover: #00b1f1;
 $document-link-glosstip-bg: rgba($document-link-glosstip-hover, 0.1);
 $document-link-bibliography: #b9c6ae;
 $document-link-page: #2a628f;
@@ -37,10 +39,13 @@ $document-link-web-internal: #a4a29e;
 // ---------------------------
 $primary: $color-brand-primary;
 $body-bg: $color-primary-background;
-$body-color: #fff;
-$link-color: #638492;
-$custom-select-bg: $color-primary-background;
-$yiq-text-dark: #fff;
+$body-color: #dbdddc;
+$input-color: $body-color;
+$link-color: #00b1f1;
+$input-border-color: $color-brand-primary;
+$custom-select-bg: $color-brand-primary;
+$custom-select-color: $body-color;
+$custom-select-border-color: $color-brand-primary;
 $custom-control-indicator-bg: $color-brand-primary;
 $input-bg: $color-brand-primary;
 $modal-content-bg: $color-primary-background;
@@ -86,7 +91,7 @@ $ember-content-placeholders-secondary-color: $color-brand-primary;
 }
 
 .text-dark {
-    color: #fff !important;
+    color: $body-color !important;
 }
 
 .shepherd-element.dark {
@@ -106,5 +111,18 @@ $ember-content-placeholders-secondary-color: $color-brand-primary;
     }
     .shepherd-arrow::before {
         background-color: $link-color !important;
+    }
+}
+
+.svg-inline--fa {
+    color: $body-color;
+}
+
+.fa-stack {
+    .fa-stack-2x {
+        color: $body-color;
+    }
+    .fa-stack-1x {
+        color: $color-brand-primary;
     }
 }
