@@ -201,13 +201,20 @@ export default class DocumentText extends Component<DocumentTextArgs> {
         } else if (type === DocumentLinkTypes.PAGE) {
             const reference = attributes.getNamedItem('data-r')?.nodeValue;
             const referenceArray = reference?.split(/\.(?=[^\.]+$)/) ?? [];
-            const documentId = referenceArray[0];
+            let documentId = referenceArray[0];
             const apiPage = referenceArray[1];
-            const page = parseInt(apiPage.substring(1), 10);
-            if (documentId === this.args.document.id) {
+            let page;
+            // Some cases, these links have a page number. In some cases, they dont :(
+            if (apiPage[0].toLowerCase() === 'p') {
+                page = parseInt(apiPage.substring(1), 10);
+            } else {
+                documentId = reference ?? '';
+            }
+
+            if (documentId === this.args.document.id && page) {
                 //scroll to page number
                 this.scrollToPage(page);
-            } else {
+            } else if (documentId) {
                 //transition to a different document with a specific page
                 this.router.transitionTo('read.document', documentId, {
                     queryParams: {
