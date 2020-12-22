@@ -16,9 +16,9 @@
 $logo-path: '/assets/images/logo-dark.jpg';
 $color-brand-primary: #2f3136;
 $color-backdrop: #36393f;
-// $color-backdrop: #474954;
-// $color-primary-background: #545763;
 $color-primary-background: #393c43;
+$color-tooltip-background: darken($color-primary-background, 5%);
+$color-preview-background: $color-backdrop;
 $color-backdrop-well: darken($color-backdrop, 2.5%);
 $color-progress-spinner-loading2: saturate(lighten($color-brand-primary, 35%), 45%);
 $color-focus-shadow: rgba($color-brand-primary, 0.25);
@@ -54,6 +54,7 @@ $dropdown-border-color: lighten($color-primary-background, 10%);
 $dropdown-link-hover-bg: lighten($color-primary-background, 5%);
 $dropdown-link-hover-color: $body-color;
 $dropdown-link-active-bg: darken($color-primary-background, 20%);
+$dropdown-divider-bg: $color-brand-primary;
 // Darkens all alert colors
 $alert-bg-level: 10;
 $alert-border-level: 1;
@@ -86,10 +87,6 @@ $ember-content-placeholders-secondary-color: $color-brand-primary;
     background-image: none;
 }
 
-.ember-basic-dropdown-content {
-    background-color: $color-primary-background !important;
-}
-
 .text-dark {
     color: $body-color !important;
 }
@@ -111,40 +108,5 @@ $ember-content-placeholders-secondary-color: $color-brand-primary;
     }
     .shepherd-arrow::before {
         background-color: $link-color !important;
-    }
-}
-
-.svg-inline--fa {
-    color: $body-color;
-}
-
-.fa-stack {
-    .fa-stack-2x {
-        color: $color-primary-background;
-    }
-    .fa-stack-1x {
-        color: $body-color;
-    }
-}
-
-.tippy-box {
-    background-color: darken($color-primary-background, 5%) !important;
-    color: $body-color;
-    box-shadow: none !important;
-    .tippy-content {
-        background-color: darken($color-primary-background, 5%) !important;
-        color: $body-color;
-    }
-    &[data-placement^='right'] > .tippy-arrow::before {
-        border-right-color: darken($color-primary-background, 5%) !important;
-    }
-    &[data-placement^='top'] > .tippy-arrow::before {
-        border-top-color: darken($color-primary-background, 5%) !important;
-    }
-    &[data-placement^='left'] > .tippy-arrow::before {
-        border-left-color: darken($color-primary-background, 5%) !important;
-    }
-    &[data-placement^='bottom'] > .tippy-arrow::before {
-        border-bottom-color: darken($color-primary-background, 5%) !important;
     }
 }

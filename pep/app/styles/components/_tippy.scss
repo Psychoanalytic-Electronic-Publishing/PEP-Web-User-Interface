@@ -1,0 +1,20 @@
+.tippy-box {
+    background-color: $color-tooltip-background;
+    color: $body-color;
+    .tippy-content {
+        background-color: $color-tooltip-background;
+        color: $body-color;
+    }
+    &[data-placement^='right'] > .tippy-arrow::before {
+        border-right-color: $color-tooltip-background !important;
+    }
+    &[data-placement^='top'] > .tippy-arrow::before {
+        border-top-color: $color-tooltip-background !important;
+    }
+    &[data-placement^='left'] > .tippy-arrow::before {
+        border-left-color: $color-tooltip-background !important;
+    }
+    &[data-placement^='bottom'] > .tippy-arrow::before {
+        border-bottom-color: $color-tooltip-background !important;
+    }
+}

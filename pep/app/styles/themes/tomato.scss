@@ -17,6 +17,8 @@ $logo-path: '/assets/images/logo-tomato.jpg';
 $color-brand-primary: #bf3c30;
 $color-primary-background: #fff;
 $color-backdrop: #fbf5f2;
+$color-preview-background: $color-backdrop;
+$color-tooltip-background: $color-backdrop;
 $color-backdrop-well: darken($color-backdrop, 2.5%);
 $color-progress-spinner-loading2: saturate(lighten($color-brand-primary, 35%), 45%);
 $color-focus-shadow: rgba(#bf3c30, 0.25);
