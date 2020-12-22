@@ -17,6 +17,7 @@ $logo-path: '/assets/images/logo-high-contrast.jpg';
 $color-brand-primary: #03a678;
 $color-primary-background: #fff;
 $color-backdrop: #fff;
+$color-preview-background: $color-backdrop;
 $color-backdrop-well: darken($color-backdrop, 2.5%);
 $color-progress-spinner-loading2: saturate(lighten($color-brand-primary, 35%), 45%);
 $color-focus-shadow: rgba($color-brand-primary, 0.25);
