@@ -73,6 +73,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
         theme: 'light',
         allowHTML: true,
         interactive: true,
+        hideOnClick: false,
         trigger: 'mouseenter focus click',
         onClickOutside(instance: Instance<Props>) {
             instance.hide();

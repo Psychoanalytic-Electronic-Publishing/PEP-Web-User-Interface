@@ -120,9 +120,31 @@ $ember-content-placeholders-secondary-color: $color-brand-primary;
 
 .fa-stack {
     .fa-stack-2x {
-        color: $body-color;
+        color: $color-primary-background;
     }
     .fa-stack-1x {
-        color: $color-brand-primary;
+        color: $body-color;
+    }
+}
+
+.tippy-box {
+    background-color: darken($color-primary-background, 5%) !important;
+    color: $body-color;
+    box-shadow: none !important;
+    .tippy-content {
+        background-color: darken($color-primary-background, 5%) !important;
+        color: $body-color;
+    }
+    &[data-placement^='right'] > .tippy-arrow::before {
+        border-right-color: darken($color-primary-background, 5%) !important;
+    }
+    &[data-placement^='top'] > .tippy-arrow::before {
+        border-top-color: darken($color-primary-background, 5%) !important;
+    }
+    &[data-placement^='left'] > .tippy-arrow::before {
+        border-left-color: darken($color-primary-background, 5%) !important;
+    }
+    &[data-placement^='bottom'] > .tippy-arrow::before {
+        border-bottom-color: darken($color-primary-background, 5%) !important;
     }
 }
