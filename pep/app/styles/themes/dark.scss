@@ -54,6 +54,7 @@ $dropdown-border-color: lighten($color-primary-background, 10%);
 $dropdown-link-hover-bg: lighten($color-primary-background, 5%);
 $dropdown-link-hover-color: $body-color;
 $dropdown-link-active-bg: darken($color-primary-background, 20%);
+$dropdown-divider-bg: $color-brand-primary;
 // Darkens all alert colors
 $alert-bg-level: 10;
 $alert-border-level: 1;
