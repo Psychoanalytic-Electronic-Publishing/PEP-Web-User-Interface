@@ -16,6 +16,7 @@ import PepSessionService from 'pep/services/pep-session';
 import SidebarService from 'pep/services/sidebar';
 import { buildSearchQueryParams } from 'pep/utils/search';
 import LoadingBarService from 'pep/services/loading-bar';
+import SearchDocument from 'pep/pods/search-document/model';
 
 interface HomeArgs {}
 
@@ -30,7 +31,16 @@ export default class Home extends Component<HomeArgs> {
     @service router!: RouterService;
     @service loadingBar!: LoadingBarService;
 
+    /**
+     * The approximate width where the graphic
+     * wraps above the expert-pick text.
+     *
+     */
+    graphicWrapWidth = 870;
+
     @tracked model?: Abstract;
+    @tracked imageArticle?: SearchDocument;
+    @tracked imageArticleUrl?: string;
 
     get intro() {
         return this.configuration.content.home.intro;
@@ -75,7 +85,8 @@ export default class Home extends Component<HomeArgs> {
      * @returns {void | Promise<void>}
      */
     @action
-    readImageDocument() {
+    readImageDocument(event?: Event) {
+        event?.preventDefault();
         if (!this.session.isAuthenticated) {
             return this.auth.openLoginModal(true, {
                 actions: {
@@ -94,19 +105,7 @@ export default class Home extends Component<HomeArgs> {
      */
     @action
     async transitionToImageDocument() {
-        try {
-            this.loadingBar.show();
-            const queryParams = buildSearchQueryParams({
-                smartSearchTerm: `art_graphic_list: ${this.expertPick.imageId}`
-            });
-            const results = await this.store.query('search-document', queryParams);
-            const matchingDocument = results.toArray()[0];
-            this.loadingBar.hide();
-            return this.router.transitionTo('read.document', matchingDocument.id);
-        } catch (errors) {
-            this.loadingBar.hide();
-            throw errors;
-        }
+        return this.router.transitionTo('read.document', this.imageArticle!.id);
     }
 
     /**
@@ -126,6 +125,13 @@ export default class Home extends Component<HomeArgs> {
         const expertPicks = this.configuration.base.home.expertPicks;
         const result = await this.store.findRecord('abstract', expertPicks[expertPicks.length - 1].articleId);
         this.model = result;
+        const queryParams = buildSearchQueryParams({
+            smartSearchTerm: `art_graphic_list: ${this.expertPick.imageId}`
+        });
+        const imageArticleResults = await this.store.query('search-document', queryParams);
+        const imageArticle = imageArticleResults.toArray()[0];
+        this.imageArticle = imageArticle;
+        this.imageArticleUrl = this.router.urlFor('read.document', imageArticle.id);
     }
 
     /**
@@ -141,5 +147,28 @@ export default class Home extends Component<HomeArgs> {
             results,
             term
         });
+    }
+
+    /**
+     * Handle the resizing of the "Expert Pick of the Day" card.
+     *
+     * This does a more proper job of handling the resizing from the side-panels
+     * than bootstrap alone.
+     *
+     * This is also called on the insertion of the '.expert-pick-graphic-container' to ensure it's properly
+     * sized and spaced.
+     * @param el
+     */
+    @action
+    handleResize(el: HTMLElement) {
+        const graphicContainer = el.className === 'card-body' ? el.querySelector('.expert-pick-graphic-container') : el;
+        if (graphicContainer) {
+            if (el.clientWidth < this.graphicWrapWidth) {
+                graphicContainer.className = 'expert-pick-graphic-container mb-2 mb-md-3 d-flex flex-column';
+            } else {
+                graphicContainer.className =
+                    'expert-pick-graphic-container float-right ml-3 pl-3 mb-2 d-flex flex-column border-divider-l';
+            }
+        }
     }
 }

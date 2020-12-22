@@ -51,19 +51,31 @@
         <div class="row">
             <div class="col">
                 <div class="card">
-                    <div class="card-body">
+                    <div
+                        class="card-body"
+                        {{did-resize this.handleResize debounce=200}}
+                    >
                         <div class="border-divider-b mb-3">
                             <h5 class="card-title">
                                 {{t "home.expertPick.heading"}}
                             </h5>
                         </div>
                         <ContentWithPlaceholder @placeholderInFastboot={{true}}>
-                            <div class="float-xl-right mw-xl-50 ml-xl-3 pl-xl-3 mb-xl-2 d-flex flex-column border-divider-l">
+                            <div {{did-insert this.handleResize}} class="expert-pick-graphic-container">
                                 <Button
                                     @action={{this.readImageDocument}}
+                                    @type="none"
+                                    class="mb-1 px-0 mr-md-auto mr-0"
                                 >
                                     <Document::Image @id={{this.expertPick.imageId}} class="rounded img-fluid" />
                                 </Button>
+                                <a 
+                                    href={{this.imageArticleUrl}}
+                                    {{on "click" this.readImageDocument}}
+                                    class="mb-3 mb-xl-0"
+                                >
+                                    {{t "home.expertPick.graphicFromTheArticle" title=this.imageArticle.title}}
+                                </a>
                             </div>
                             <div class="card-text mb-3">
                                 {{#if this.model}}

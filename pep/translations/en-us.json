@@ -62,7 +62,8 @@
         "expertPick": {
             "heading": "Expert Pick of the Day",
             "read": "Read",
-            "loginAndRead": "Login and read"
+            "loginAndRead": "Login and read",
+            "graphicFromTheArticle": "Graphic from the article: {title}"
         }
     },
     "search": {
