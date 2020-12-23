@@ -90,6 +90,10 @@
         <svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg" role="img" focusable="false" aria-hidden="true" data-icon="robot" data-prefix="fal" id="ember313" class="pointer-events-none svg-inline--fa fa-robot fa-w-20 ember-view"><path fill="currentColor" d="M192,416h64V384H192ZM576,224H544V192a95.99975,95.99975,0,0,0-96-96H336V16a16,16,0,0,0-32,0V96H192a95.99975,95.99975,0,0,0-96,96v32H64a31.99908,31.99908,0,0,0-32,32V384a32.00033,32.00033,0,0,0,32,32H96a95.99975,95.99975,0,0,0,96,96H448a95.99975,95.99975,0,0,0,96-96h32a32.00033,32.00033,0,0,0,32-32V256A31.99908,31.99908,0,0,0,576,224ZM96,384H64V256H96Zm416,32a64.18916,64.18916,0,0,1-64,64H192a64.18916,64.18916,0,0,1-64-64V192a63.99942,63.99942,0,0,1,64-64H448a63.99942,63.99942,0,0,1,64,64Zm64-32H544V256h32ZM416,192a64,64,0,1,0,64,64A64.07333,64.07333,0,0,0,416,192Zm0,96a32,32,0,1,1,32-32A31.97162,31.97162,0,0,1,416,288ZM384,416h64V384H384Zm-96,0h64V384H288ZM224,192a64,64,0,1,0,64,64A64.07333,64.07333,0,0,0,224,192Zm0,96a32,32,0,1,1,32-32A31.97162,31.97162,0,0,1,224,288Z"></path>
         </svg>
     </xsl:variable>
+    <xsl:variable name="fa-language">
+        <svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg" role="img" focusable="false" aria-hidden="true" data-icon="language" data-prefix="fal" id="ember323" class="svg-inline--fa fa-language fa-w-20 ember-view"><path fill="currentColor" d="M616 96H24c-13.255 0-24 10.745-24 24v272c0 13.255 10.745 24 24 24h592c13.255 0 24-10.745 24-24V120c0-13.255-10.745-24-24-24zM304 384H32V128h272v256zm304 0H336V128h272v256zM91.088 352h10.34a12 12 0 0 0 11.397-8.243l13.508-40.973h67.335l13.508 40.973A12.001 12.001 0 0 0 218.573 352h10.339c8.276 0 14.067-8.18 11.319-15.985l-59.155-168A12 12 0 0 0 169.757 160h-19.513a12 12 0 0 0-11.319 8.014l-59.155 168C77.021 343.82 82.812 352 91.088 352zm60.663-128.991c3.787-10.818 8.113-29.747 8.113-29.747h.541s4.057 18.929 7.572 29.747l17.036 51.38h-50.298l17.036-51.38zM384 212v-8c0-6.627 5.373-12 12-12h68v-20c0-6.627 5.373-12 12-12h8c6.627 0 12 5.373 12 12v20h68c6.627 0 12 5.373 12 12v8c0 6.627-5.373 12-12 12h-15.699c-7.505 24.802-23.432 50.942-44.896 74.842 10.013 9.083 20.475 17.265 30.924 24.086 5.312 3.467 6.987 10.475 3.84 15.982l-3.987 6.976c-3.429 6.001-11.188 7.844-16.993 4.091-13.145-8.5-25.396-18.237-36.56-28.5-11.744 10.454-24.506 20.146-37.992 28.68-5.761 3.646-13.409 1.698-16.791-4.221l-3.972-6.95c-3.197-5.594-1.379-12.672 4.058-16.129 11.382-7.237 22.22-15.428 32.24-24.227-10.026-11.272-18.671-22.562-25.687-33.033-3.833-5.721-2.11-13.48 3.803-17.01l6.867-4.099c5.469-3.264 12.55-1.701 16.092 3.592 6.379 9.531 13.719 18.947 21.677 27.953 15.017-16.935 26.721-34.905 33.549-52.033H396c-6.627 0-12-5.373-12-12z"></path>
+        </svg>
+    </xsl:variable>
 
     <!-- Keys -->
 
@@ -1143,21 +1147,7 @@
             <xsl:call-template name="assign-lang"/>
             <xsl:call-template name="data-pagehelper"/>
 
-            <xsl:if test="@lgrid">
-                <xsl:attribute name="data-lgrid">
-                    <xsl:value-of select="@lgrid"/>
-                </xsl:attribute>
-            </xsl:if>
-            <xsl:if test="@lgrx">
-                <xsl:attribute name="data-lgrx">
-                    <xsl:value-of select="@lgrx"/>
-                </xsl:attribute>
-            </xsl:if>
-            <xsl:if test="@lgrtype">
-                <xsl:attribute name="data-lgrtype">
-                    <xsl:value-of select="@lgrtype"/>
-                </xsl:attribute>
-            </xsl:if>
+
             <xsl:choose>
                 <xsl:when test="ancestor::ftr and not(preceding-sibling::*)">
                     <xsl:attribute name="class">ftr first</xsl:attribute>
@@ -1175,11 +1165,28 @@
             <xsl:call-template name="assign-id"/>
             <xsl:apply-templates select="@content-type"/>
             <xsl:apply-templates />
-            <!-- <xsl:call-template name="highlight">
-                 <xsl:with-param name="string" select="."/>
-                 <xsl:with-param name="term" select="$searchTerm"/>
-                 </xsl:call-template> -->
-         </p>
+            <xsl:if test="@lgrid">
+                <span class="ml-2 translation">
+                    <xsl:if test="@lgrid">
+                        <xsl:attribute name="data-lgrid">
+                            <xsl:value-of select="@lgrid"/>
+                        </xsl:attribute>
+                    </xsl:if>
+                    <xsl:if test="@lgrx">
+                        <xsl:attribute name="data-lgrx">
+                            <xsl:value-of select="@lgrx"/>
+                        </xsl:attribute>
+                    </xsl:if>
+                    <xsl:if test="@lgrtype">
+                        <xsl:attribute name="data-type">
+                            <xsl:value-of select="@lgrtype"/>
+                        </xsl:attribute>
+                    </xsl:if>
+                    <xsl:copy-of select="$fa-language" />
+                </span>
+            </xsl:if>
+        </p>
+
     </xsl:template>
 
     <xsl:template match="note">

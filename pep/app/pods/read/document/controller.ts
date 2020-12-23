@@ -435,6 +435,13 @@ export default class ReadDocument extends Controller {
     }
 
     @action
+    loadTranslation(id: string) {
+        return this.ajax.request(`Documents/Concordance?paralangid=${id}&return_format=XML`, {
+            appendTrailingSlash: false
+        });
+    }
+
+    @action
     async printDocument() {
         let url = `${ENV.apiBaseUrl}/${ENV.apiNamespace}/Documents/Downloads/PDF/${this.model.id}/?${this.downloadAuthParams}`;
         this.printer.printElement(url);

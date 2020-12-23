@@ -1,8 +1,10 @@
+import { getOwner } from '@ember/application';
 import { action } from '@ember/object';
 import RouterService from '@ember/routing/router-service';
 import { scheduleOnce } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
+import { renderComponent } from '@glimmer/core';
 import { tracked } from '@glimmer/tracking';
 
 import ModalService from '@gavant/ember-modals/services/modal';
@@ -39,6 +41,7 @@ interface DocumentTextArgs {
     page?: string;
     onGlossaryItemClick: (term: string, termResults: GlossaryTerm[]) => void;
     viewSearch: (searchTerms: string) => void;
+    loadTranslation?: (id: string) => Promise<string>;
 }
 
 /**
@@ -51,7 +54,8 @@ export enum DocumentTooltipSelectors {
     BIBLIOGRAPHY = '.bibtip',
     BIBLIOGRAPHY_RELATED_INFO = '.bibx-related-info',
     NEW_AUTHOR = '.newauthortip',
-    FOOTNOTE = '.ftnx'
+    FOOTNOTE = '.ftnx',
+    TRANSLATION = '.translation'
 }
 export default class DocumentText extends Component<DocumentTextArgs> {
     @service store!: DS.Store;
@@ -461,6 +465,60 @@ export default class DocumentText extends Component<DocumentTextArgs> {
                     appendTo: supParent,
                     content: node.innerHTML,
                     ...this.tippyOptions
+                });
+            }
+        });
+
+        const translations = this.containerElement?.querySelectorAll(DocumentTooltipSelectors.TRANSLATION);
+        translations?.forEach((item) => {
+            const id = item.attributes.getNamedItem('data-lgrid')?.nodeValue;
+
+            const paragraph = item.parentElement;
+            if (id && paragraph) {
+                tippy(item, {
+                    appendTo: paragraph,
+                    content: 'Loading...',
+                    ...this.tippyOptions,
+                    onCreate(instance) {
+                        // Setup our own custom state properties
+                        instance._isFetching = false;
+                        instance._loaded = false;
+                    },
+                    onShow: (instance) => {
+                        if (instance._isFetching || instance._loaded) {
+                            return;
+                        }
+                        const container = document.createElement('div');
+                        this.args
+                            .loadTranslation?.(id)
+                            .then((text: string) => {
+                                renderComponent(DocumentText, {
+                                    element: container,
+                                    args: {
+                                        document:
+                                            '<artinfo arttype="ART" j="GW" ISBN="3100227034" newsecnm="EIN FALL VON HYPNOTISCHER HEILUNG" origrx="GW.001.0003A" id="GW.001.0003A">\n<artyear>1893</artyear>\n<artbkinfo prev="GW.001.R0005A" extract="GW.001.0000A" next="GW.001.0021A"/>\n<artvol>1</artvol>\n<artsectinfo><secttitle>EIN FALL VON HYPNOTISCHER HEILUNG</secttitle></artsectinfo><artpgrg style="arabic" prefixused="">3-17</artpgrg>\n<arttitle lgrid="GWA3a1" id="H0002" lgrx="SEA115a1" lgrtype="GroupIDTrans">EIN FALL VON HYPNOTISCHER HEILUNG</arttitle>\n<artsub lgrid="GWA3a2" lgrx="SEA115a2" lgrtype="GroupIDTrans">NEBST BEMERKUNGEN &#220;BER DIE ENTSTEHUNG HYSTERISCHER SYMPTOME DURCH DEN &#8220;GEGENWILLEN&#8221;</artsub>\n<artauth hidden="false">\n<aut alias="false" role="author" listed="true" asis="false" authindexid="Freud, Sigmund"><nfirst type="FIRST">Sigm.</nfirst> <nlast>Freud</nlast></aut>\n</artauth>\n</artinfo>\n'
+                                    }
+                                });
+                                instance._loaded = true;
+                                instance.setContent(container);
+                            })
+                            .finally(() => {
+                                instance._isFetching = false;
+                            });
+                        // const container = document.createElement('div');
+                        // renderComponent(DocumentText, {
+                        //     element: container,
+                        //     args: {
+                        //         document:
+                        //             '<artinfo arttype="ART" j="GW" ISBN="3100227034" newsecnm="EIN FALL VON HYPNOTISCHER HEILUNG" origrx="GW.001.0003A" id="GW.001.0003A">\n<artyear>1893</artyear>\n<artbkinfo prev="GW.001.R0005A" extract="GW.001.0000A" next="GW.001.0021A"/>\n<artvol>1</artvol>\n<artsectinfo><secttitle>EIN FALL VON HYPNOTISCHER HEILUNG</secttitle></artsectinfo><artpgrg style="arabic" prefixused="">3-17</artpgrg>\n<arttitle lgrid="GWA3a1" id="H0002" lgrx="SEA115a1" lgrtype="GroupIDTrans">EIN FALL VON HYPNOTISCHER HEILUNG</arttitle>\n<artsub lgrid="GWA3a2" lgrx="SEA115a2" lgrtype="GroupIDTrans">NEBST BEMERKUNGEN &#220;BER DIE ENTSTEHUNG HYSTERISCHER SYMPTOME DURCH DEN &#8220;GEGENWILLEN&#8221;</artsub>\n<artauth hidden="false">\n<aut alias="false" role="author" listed="true" asis="false" authindexid="Freud, Sigmund"><nfirst type="FIRST">Sigm.</nfirst> <nlast>Freud</nlast></aut>\n</artauth>\n</artinfo>\n'
+                        //     },
+                        //     owner: getOwner(this)
+                        // });
+                    },
+                    onHidden(instance) {
+                        instance.setContent('Loading...');
+                        instance._loaded = false;
+                    }
                 });
             }
         });
