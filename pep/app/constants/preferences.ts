@@ -20,7 +20,8 @@ export enum PreferenceKey {
     THEME = 'theme',
     TOUR_ENABLED = 'tourEnabled',
     HELP_DESCRIPTIONS_ENABLED = 'helpDescriptionsEnabled',
-    HELP_ICONS_ENABLED = 'helpIconsEnabled'
+    HELP_ICONS_ENABLED = 'helpIconsEnabled',
+    TRANSLATION_CONCORDANCE = 'translationConcordanceEnabled'
 }
 
 export interface UserPreferences {
@@ -39,6 +40,7 @@ export interface UserPreferences {
     tourEnabled: boolean;
     helpDescriptionsEnabled: boolean;
     helpIconsEnabled: boolean;
+    translationConcordanceEnabled: boolean;
 }
 
 export type PreferenceChangeset = Partial<UserPreferences>;
@@ -77,7 +79,8 @@ export const LOCALSTORAGE_PREFERENCES: PreferenceKey[] = [
     PreferenceKey.FAVORITES,
     PreferenceKey.READ_LATER,
     PreferenceKey.SEARCH_PREVIEW_ENABLED,
-    PreferenceKey.TOUR_ENABLED
+    PreferenceKey.TOUR_ENABLED,
+    PreferenceKey.TRANSLATION_CONCORDANCE
 ];
 
 export const DEFAULT_USER_PREFERENCES: UserPreferences = {
@@ -93,5 +96,6 @@ export const DEFAULT_USER_PREFERENCES: UserPreferences = {
     searchSortType: SearchSorts[0],
     tourEnabled: true,
     helpDescriptionsEnabled: true,
-    helpIconsEnabled: true
+    helpIconsEnabled: true,
+    translationConcordanceEnabled: true
 };

@@ -435,10 +435,13 @@ export default class ReadDocument extends Controller {
     }
 
     @action
-    loadTranslation(id: string) {
-        return this.ajax.request(`Documents/Concordance?paralangid=${id}&return_format=XML`, {
+    async loadTranslation(id: string) {
+        const results = await this.ajax.request<{
+            documents?: { responseSet?: Document[] };
+        }>(`Documents/Concordance?paralangid=${id}&return_format=XML`, {
             appendTrailingSlash: false
         });
+        return results.documents?.responseSet?.[0].document;
     }
 
     @action

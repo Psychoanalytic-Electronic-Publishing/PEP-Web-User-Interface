@@ -4,44 +4,68 @@
         <p class="text-muted">
             {{t "help.preferences.info"}}
         </p>
-        <div class="mb-2">
-            <div class="form-row">
-                <div class="col-sm-12">
-                    <CheckboxInput
-                        @checked={{this.currentUser.preferences.tourEnabled}}
-                        @onChange={{fn this.updatePreference this.tourEnabled}}
-                        @label={{t "help.preferences.tour.title"}}
-                    />
-                    <div class="small text-muted">
-                        {{t "help.preferences.tour.description"}}
+        <div class="mb-4">
+            <h6 class="mb-3">
+                {{t "help.preferences.general.heading"}}
+            </h6>
+            <div class="mb-2">
+                <div class="form-row">
+                    <div class="col-sm-12">
+                        <CheckboxInput
+                            @checked={{this.currentUser.preferences.tourEnabled}}
+                            @onChange={{fn this.updatePreference this.tourEnabled}}
+                            @label={{t "help.preferences.general.tour.title"}}
+                        />
+                        <div class="small text-muted">
+                            {{t "help.preferences.general.tour.description"}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-2">
+                <div class="form-row">
+                    <div class="col-sm-12">
+                        <CheckboxInput
+                            @checked={{this.currentUser.preferences.helpDescriptionsEnabled}}
+                            @onChange={{fn this.updatePreference this.helpDescriptionsEnabled}}
+                            @label={{t "help.preferences.general.descriptions.title"}}
+                        />
+                        <div class="small text-muted">
+                            {{t "help.preferences.general.descriptions.description"}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-2">
+                <div class="form-row">
+                    <div class="col-sm-12">
+                        <CheckboxInput
+                            @checked={{this.currentUser.preferences.helpIconsEnabled}}
+                            @onChange={{fn this.updatePreference this.helpIconsEnabled}}
+                            @label={{t "help.preferences.general.icons.title"}}
+                        />
+                        <div class="small text-muted">
+                            {{t "help.preferences.general.icons.description"}}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="mb-2">
-            <div class="form-row">
-                <div class="col-sm-12">
-                    <CheckboxInput
-                        @checked={{this.currentUser.preferences.helpDescriptionsEnabled}}
-                        @onChange={{fn this.updatePreference this.helpDescriptionsEnabled}}
-                        @label={{t "help.preferences.descriptions.title"}}
-                    />
-                    <div class="small text-muted">
-                        {{t "help.preferences.descriptions.description"}}
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="mb-2">
-            <div class="form-row">
-                <div class="col-sm-12">
-                    <CheckboxInput
-                        @checked={{this.currentUser.preferences.helpIconsEnabled}}
-                        @onChange={{fn this.updatePreference this.helpIconsEnabled}}
-                        @label={{t "help.preferences.icons.title"}}
-                    />
-                    <div class="small text-muted">
-                        {{t "help.preferences.icons.description"}}
+        <div class="mb-4">
+            <h6 class="mb-3">
+                {{t "help.preferences.translations.heading"}}
+            </h6>
+            <div class="mb-2">
+                <div class="form-row">
+                    <div class="col-sm-12">
+                        <CheckboxInput
+                            @checked={{this.currentUser.preferences.translationConcordanceEnabled}}
+                            @onChange={{fn this.updatePreference this.translationConcordanceEnabled}}
+                            @label={{t "help.preferences.translations.translate.title"}}
+                        />
+                        <div class="small text-muted">
+                            {{t "help.preferences.translations.translate.description"}}
+                        </div>
                     </div>
                 </div>
             </div>

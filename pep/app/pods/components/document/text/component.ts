@@ -22,6 +22,7 @@ import {
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import Document from 'pep/pods/document/model';
 import GlossaryTerm from 'pep/pods/glossary-term/model';
+import CurrentUserService from 'pep/services/current-user';
 import LoadingBarService from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
 import ThemeService from 'pep/services/theme';
@@ -65,6 +66,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
     @service intl!: IntlService;
     @service theme!: ThemeService;
     @service router!: RouterService;
+    @service currentUser!: CurrentUserService;
     @service('pep-session') session!: PepSessionService;
 
     @tracked xml?: XMLDocument;
@@ -88,11 +90,19 @@ export default class DocumentText extends Component<DocumentTextArgs> {
         super(owner, args);
         const target = args.target ?? (args.document.accessLimited ? 'abstract' : 'document');
         const text = args.document[target];
-        this.parseDocumentText(text);
+        this.generateDocument(text);
     }
 
     private get scrollOffset() {
         return this.args.offsetForScroll ?? this.defaultOffsetForScroll;
+    }
+
+    @dontRunInFastboot
+    async generateDocument(text: string) {
+        const document = await this.parseDocumentText(text);
+        if (document) {
+            this.xml = document;
+        }
     }
 
     /**
@@ -101,7 +111,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
      * @param {string} text
      * @memberof DocumentText
      */
-    @dontRunInFastboot
+
     async parseDocumentText(text: string) {
         const xml = parseXML(text);
 
@@ -118,7 +128,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
                 processor.setParameter('', 'imageUrl', DOCUMENT_IMG_BASE_URL);
                 processor.importStylesheet(xslt);
                 const transformedDocument = (processor.transformToFragment(xml, document) as unknown) as XMLDocument;
-                this.xml = transformedDocument;
+                return transformedDocument;
             }
         } else {
             this.notifications.error(this.intl.t('document.text.error'));
@@ -396,7 +406,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
     parseDocument() {
         const target = this.args.target ?? (this.args.document.accessLimited ? 'abstract' : 'document');
         const text = this.args.document[target];
-        this.parseDocumentText(text);
+        this.generateDocument(text);
     }
 
     /**
@@ -469,58 +479,51 @@ export default class DocumentText extends Component<DocumentTextArgs> {
             }
         });
 
-        const translations = this.containerElement?.querySelectorAll(DocumentTooltipSelectors.TRANSLATION);
-        translations?.forEach((item) => {
-            const id = item.attributes.getNamedItem('data-lgrid')?.nodeValue;
+        if (this.currentUser.preferences?.translationConcordanceEnabled) {
+            const translations = this.containerElement?.querySelectorAll(DocumentTooltipSelectors.TRANSLATION);
+            translations?.forEach((item) => {
+                const id =
+                    item.attributes.getNamedItem('data-lgrx')?.nodeValue ??
+                    item.attributes.getNamedItem('data-lgrid')?.nodeValue;
 
-            const paragraph = item.parentElement;
-            if (id && paragraph) {
-                tippy(item, {
-                    appendTo: paragraph,
-                    content: 'Loading...',
-                    ...this.tippyOptions,
-                    onCreate(instance) {
-                        // Setup our own custom state properties
-                        instance._isFetching = false;
-                        instance._loaded = false;
-                    },
-                    onShow: (instance) => {
-                        if (instance._isFetching || instance._loaded) {
-                            return;
-                        }
-                        const container = document.createElement('div');
-                        this.args
-                            .loadTranslation?.(id)
-                            .then((text: string) => {
-                                renderComponent(DocumentText, {
-                                    element: container,
-                                    args: {
-                                        document:
-                                            '<artinfo arttype="ART" j="GW" ISBN="3100227034" newsecnm="EIN FALL VON HYPNOTISCHER HEILUNG" origrx="GW.001.0003A" id="GW.001.0003A">\n<artyear>1893</artyear>\n<artbkinfo prev="GW.001.R0005A" extract="GW.001.0000A" next="GW.001.0021A"/>\n<artvol>1</artvol>\n<artsectinfo><secttitle>EIN FALL VON HYPNOTISCHER HEILUNG</secttitle></artsectinfo><artpgrg style="arabic" prefixused="">3-17</artpgrg>\n<arttitle lgrid="GWA3a1" id="H0002" lgrx="SEA115a1" lgrtype="GroupIDTrans">EIN FALL VON HYPNOTISCHER HEILUNG</arttitle>\n<artsub lgrid="GWA3a2" lgrx="SEA115a2" lgrtype="GroupIDTrans">NEBST BEMERKUNGEN &#220;BER DIE ENTSTEHUNG HYSTERISCHER SYMPTOME DURCH DEN &#8220;GEGENWILLEN&#8221;</artsub>\n<artauth hidden="false">\n<aut alias="false" role="author" listed="true" asis="false" authindexid="Freud, Sigmund"><nfirst type="FIRST">Sigm.</nfirst> <nlast>Freud</nlast></aut>\n</artauth>\n</artinfo>\n'
+                const paragraph = item.parentElement;
+                if (id && paragraph) {
+                    tippy(item, {
+                        appendTo: paragraph,
+                        content: 'Loading...',
+                        ...this.tippyOptions,
+                        onCreate(instance) {
+                            // Setup our own custom state properties
+                            instance._isFetching = false;
+                            instance._loaded = false;
+                        },
+                        onShow: (instance) => {
+                            if (instance._isFetching || instance._loaded) {
+                                return;
+                            }
+
+                            this.args
+                                .loadTranslation?.(id)
+                                .then(async (text: string) => {
+                                    const xml = await this.parseDocumentText(text);
+                                    if (xml) {
+                                        var s = new XMLSerializer();
+                                        const html = this.replaceHitMarkerText(s.serializeToString(xml));
+                                        instance._loaded = true;
+                                        instance.setContent(html);
                                     }
+                                })
+                                .finally(() => {
+                                    instance._isFetching = false;
                                 });
-                                instance._loaded = true;
-                                instance.setContent(container);
-                            })
-                            .finally(() => {
-                                instance._isFetching = false;
-                            });
-                        // const container = document.createElement('div');
-                        // renderComponent(DocumentText, {
-                        //     element: container,
-                        //     args: {
-                        //         document:
-                        //             '<artinfo arttype="ART" j="GW" ISBN="3100227034" newsecnm="EIN FALL VON HYPNOTISCHER HEILUNG" origrx="GW.001.0003A" id="GW.001.0003A">\n<artyear>1893</artyear>\n<artbkinfo prev="GW.001.R0005A" extract="GW.001.0000A" next="GW.001.0021A"/>\n<artvol>1</artvol>\n<artsectinfo><secttitle>EIN FALL VON HYPNOTISCHER HEILUNG</secttitle></artsectinfo><artpgrg style="arabic" prefixused="">3-17</artpgrg>\n<arttitle lgrid="GWA3a1" id="H0002" lgrx="SEA115a1" lgrtype="GroupIDTrans">EIN FALL VON HYPNOTISCHER HEILUNG</arttitle>\n<artsub lgrid="GWA3a2" lgrx="SEA115a2" lgrtype="GroupIDTrans">NEBST BEMERKUNGEN &#220;BER DIE ENTSTEHUNG HYSTERISCHER SYMPTOME DURCH DEN &#8220;GEGENWILLEN&#8221;</artsub>\n<artauth hidden="false">\n<aut alias="false" role="author" listed="true" asis="false" authindexid="Freud, Sigmund"><nfirst type="FIRST">Sigm.</nfirst> <nlast>Freud</nlast></aut>\n</artauth>\n</artinfo>\n'
-                        //     },
-                        //     owner: getOwner(this)
-                        // });
-                    },
-                    onHidden(instance) {
-                        instance.setContent('Loading...');
-                        instance._loaded = false;
-                    }
-                });
-            }
-        });
+                        },
+                        onHidden(instance) {
+                            instance.setContent('Loading...');
+                            instance._loaded = false;
+                        }
+                    });
+                }
+            });
+        }
     }
 }
