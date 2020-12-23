@@ -17,6 +17,8 @@ $logo-path: '/assets/images/logo-high-contrast.jpg';
 $color-brand-primary: #03a678;
 $color-primary-background: #fff;
 $color-backdrop: #fff;
+$color-tooltip-background: $color-backdrop;
+$color-preview-background: $color-backdrop;
 $color-backdrop-well: darken($color-backdrop, 2.5%);
 $color-progress-spinner-loading2: saturate(lighten($color-brand-primary, 35%), 45%);
 $color-focus-shadow: rgba($color-brand-primary, 0.25);
@@ -64,9 +66,4 @@ $ember-power-select-focus-box-shadow: 0 0 0 0.2rem rgba($primary, 0.25);
 }
 .text-white-50 {
     color: rgba(#fff, 0.75) !important;
-}
-
-.glosstip {
-    background-color: transparent !important;
-    color: $color-brand-primary;
 }

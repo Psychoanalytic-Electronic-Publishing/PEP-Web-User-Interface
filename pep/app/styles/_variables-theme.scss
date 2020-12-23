@@ -5,6 +5,8 @@ $logo-path: '/assets/images/logo.jpg' !default;
 $color-brand-primary: #313b46 !default;
 $color-backdrop: #e9eef1 !default;
 $color-primary-background: #fff !default;
+$color-preview-background: $color-primary-background !default;
+$color-tooltip-background: $color-backdrop !default;
 $color-backdrop-well: darken($color-backdrop, 2.5%) !default;
 $color-divider: rgba(#000, 0.06) !default;
 $color-progress-spinner-loading1: rgba(0, 0, 0, 0.25) !default;
