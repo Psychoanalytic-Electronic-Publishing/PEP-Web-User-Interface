@@ -3,7 +3,7 @@ import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
 
 import { timeout } from 'ember-concurrency';
-import { restartableTask } from 'ember-concurrency-decorators';
+import { enqueueTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
 import IntlService from 'ember-intl/services/intl';
 
@@ -59,7 +59,7 @@ export default class ModalDialogsUserPreferences extends Component<ModalDialogsU
      * @param {PreferenceKey} key
      * @param {String} newThemeId
      */
-    @restartableTask
+    @enqueueTask
     *updatePreferenceTask<K extends PreferenceKey>(key: K, value: UserPreferences[K]) {
         yield timeout(250);
         yield this.currentUser.updatePrefs({ [key]: value });

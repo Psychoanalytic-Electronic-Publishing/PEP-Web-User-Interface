@@ -76,6 +76,9 @@
         </div>
     </Modal.body>
     <Modal.footer>
-        <Button @type="primary" @label={{t "common.done"}} @wide={{true}} @action={{this.done}} />
+        {{#if this.updatePreferenceTask.isRunning}}
+            <small class="text-muted font-weight-bold mr-auto">{{t "common.saving"}}</small>
+        {{/if}}
+        <Button @type="primary" @label={{t "common.done"}} @wide={{true}} @action={{this.done}} @disabled={{this.updatePreferenceTask.isRunning}} />
     </Modal.footer>
 </ModalDialog>
