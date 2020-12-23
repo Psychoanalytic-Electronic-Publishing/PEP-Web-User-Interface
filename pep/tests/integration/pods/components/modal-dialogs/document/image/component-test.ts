@@ -14,15 +14,6 @@ module('Integration | Component | modal-dialogs/document/image', function(hooks)
 
         await render(hbs`{{modal-dialogs/document/image}}`);
 
-        assert.equal(this.element.textContent?.trim(), '');
-
-        // Template block usage:
-        await render(hbs`
-      {{#modal-dialogs/document/image}}
-        template block text
-      {{/modal-dialogs/document/image}}
-    `);
-
-        assert.equal(this.element.textContent?.trim(), 'template block text');
+        assert.ok(this.element.textContent);
     });
 });

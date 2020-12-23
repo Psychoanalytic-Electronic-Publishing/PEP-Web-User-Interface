@@ -12,15 +12,6 @@ module('Integration | Component | page/sidebar/widgets/favorites', function(hook
         this.set('openWidgets', []);
         await render(hbs`{{page/sidebar/widgets/favorites openWidgets=openWidgets}}`);
 
-        assert.equal(this.element.textContent?.trim(), 'Favorites');
-
-        // Template block usage:
-        await render(hbs`
-      {{#page/sidebar/widgets/favorites openWidgets=openWidgets}}
-        template block text
-      {{/page/sidebar/widgets/favorites}}
-    `);
-
-        assert.equal(this.element.textContent?.trim(), 'Favorites');
+        assert.ok(this.element.textContent);
     });
 });

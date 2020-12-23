@@ -12,14 +12,6 @@ module('Integration | Component | page/sidebar/widgets/video-preview', function(
         this.set('openWidgets', []);
         await render(hbs`<Page::Sidebar::Widgets::VideoPreview @openWidgets{{this.openWidgets}} />`);
 
-        assert.equal(this.element.textContent?.trim(), 'Latest Video');
-
-        // Template block usage:
-        await render(hbs`
-        <Page::Sidebar::Widgets::VideoPreview @openWidgets{{this.openWidgets}}>
-        </Page::Sidebar::Widgets::VideoPreview>
-    `);
-
-        assert.equal(this.element.textContent?.trim(), 'Latest Video');
+        assert.ok(this.element.textContent);
     });
 });

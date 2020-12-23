@@ -11,14 +11,14 @@ module('Integration | Component | tabs/tab', function(hooks) {
     test('it renders', async function(assert) {
         // Set any properties with this.set('myProperty', 'value');
         // Handle any actions with this.set('myAction', function(val) { ... });
-
-        await render(hbs`{{tabs/tab}}`);
+        this.set('onChange', () => {});
+        await render(hbs`{{tabs/tab onChange=onChange}}`);
 
         assert.equal(this.element.textContent?.trim(), '');
 
         // Template block usage:
         await render(hbs`
-      {{#tabs/tab}}
+      {{#tabs/tab onChange=onChange}}
         template block text
       {{/tabs/tab}}
     `);

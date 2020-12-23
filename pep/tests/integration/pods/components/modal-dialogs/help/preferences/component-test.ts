@@ -14,6 +14,6 @@ module('Integration | Component | modal-dialogs/help/preferences', function(hook
 
         await render(hbs`{{modal-dialogs/help/preferences}}`);
 
-        assert.equal(this.element.textContent?.trim(), '');
+        assert.ok(this.element.textContent);
     });
 });

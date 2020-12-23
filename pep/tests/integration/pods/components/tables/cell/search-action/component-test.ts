@@ -12,17 +12,8 @@ module('Integration | Component | tables/cell/search-action', function(hooks) {
         // Set any properties with this.set('myProperty', 'value');
         // Handle any actions with this.set('myAction', function(val) { ... });
 
-        await render(hbs`{{tables/cell/search-action}}`);
+        await render(hbs`{{tables/cell/search-action rowValue=(hash id="123")}}`);
 
         assert.equal(this.element.textContent?.trim(), '');
-
-        // Template block usage:
-        await render(hbs`
-      {{#tables/cell/search-action}}
-        template block text
-      {{/tables/cell/search-action}}
-    `);
-
-        assert.equal(this.element.textContent?.trim(), 'template block text');
     });
 });

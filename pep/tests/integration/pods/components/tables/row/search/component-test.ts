@@ -14,6 +14,6 @@ module('Integration | Component | tables/row/search', function(hooks) {
 
         await render(hbs`{{tables/row/search}}`);
 
-        assert.equal(this.element.textContent?.trim(), '');
+        assert.ok(this.element.textContent);
     });
 });

@@ -14,7 +14,11 @@ import animateScrollTo from 'animated-scroll-to';
 import ENV from 'pep/config/environment';
 import { DOCUMENT_IMG_BASE_URL, DocumentLinkTypes } from 'pep/constants/documents';
 import {
-    HIT_MARKER_END, HIT_MARKER_END_OUTPUT_HTML, HIT_MARKER_START, HIT_MARKER_START_OUTPUT_HTML, SEARCH_HIT_MARKER_REGEX,
+    HIT_MARKER_END,
+    HIT_MARKER_END_OUTPUT_HTML,
+    HIT_MARKER_START,
+    HIT_MARKER_START_OUTPUT_HTML,
+    SEARCH_HIT_MARKER_REGEX,
     SearchTermId
 } from 'pep/constants/search';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
@@ -278,7 +282,6 @@ export default class DocumentText extends Component<DocumentTextArgs> {
             if (parent) {
                 const sourceCode = parent.getAttribute('data-journal-code');
                 const volume = parent.getAttribute('data-volume');
-                const page = parent.getAttribute('data-page');
 
                 if (sourceCode && volume) {
                     this.router.transitionTo('browse.journal.volume', sourceCode, volume);
