@@ -1,6 +1,7 @@
 export enum LanguageCode {
     EnUS = 'en-us',
-    FrFR = 'fr-fr'
+    FrFR = 'fr-fr',
+    EsES = 'es-es'
 }
 
 export interface Language {
@@ -21,4 +22,10 @@ export const LANG_FR_FR: Language = {
     path: '/translations/fr-fr.json'
 };
 
-export const Languages = [LANG_EN_US, LANG_FR_FR];
+export const LANG_ES_ES: Language = {
+    code: LanguageCode.EsES,
+    label: 'language.codes.esES',
+    path: '/translations/es-es.json'
+};
+
+export const Languages = [LANG_EN_US, LANG_ES_ES];
