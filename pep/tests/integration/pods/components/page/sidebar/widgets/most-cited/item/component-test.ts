@@ -12,7 +12,7 @@ module('Integration | Component | page/sidebar/widgets/most-cited/item', functio
         // Set any properties with this.set('myProperty', 'value');
         // Handle any actions with this.set('myAction', function(val) { ... });
 
-        await render(hbs`{{page/sidebar/widgets/most-cited/item}}`);
+        await render(hbs`{{page/sidebar/widgets/most-cited/item item=(hash id="123")}}`);
 
         assert.equal(this.element.textContent?.trim(), '');
     });

@@ -1,5 +1,5 @@
 import { action } from '@ember/object';
-import { next, run, scheduleOnce } from '@ember/runloop';
+import { next } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 import { htmlSafe } from '@ember/template';
 import Component from '@glimmer/component';

@@ -41,21 +41,24 @@ export default class PageSidebarWidgetsMoreLikeThese extends Component<PageSideb
     *loadSimilarFromDocument() {
         if (this.data?.id) {
             const results = yield this.ajax.request(
-                `/Documents/Abstracts/${this.data.id}?similarcount=${this.similarCount}`
+                `/Database/MoreLikeThis?morelikethis=${this.data.id}&similarcount=${this.similarCount}`
             );
 
             const serializer = this.store.serializerFor('abstract') as AbstractSerializer;
             const modelClass = this.store.modelFor('abstract');
 
             // @ts-ignore types are wrong here - this works
-            const normalizedResponse = serializer.normalizeSingleResponse(
+            const normalizedResponse = serializer.normalizeArrayResponse(
                 this.store,
                 modelClass,
                 results,
                 this.data.id
             ) as { included: any[] };
 
-            const response = this.store.push({ data: normalizedResponse.included });
+            const response = this.store.push({
+                data: normalizedResponse.included[0],
+                included: normalizedResponse.included
+            });
 
             this.results = (Array.isArray(response) ? response[0] : response) as SimilarityMatch;
         }

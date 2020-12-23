@@ -9,8 +9,7 @@ module('Integration | Component | modal-dialogs/glossary', function(hooks) {
     test('it renders', async function(assert) {
         // Set any properties with this.set('myProperty', 'value');
         // Handle any actions with this.set('myAction', function(val) { ... });
-
-        await render(hbs`{{modal-dialogs/glossary}}`);
+        await render(hbs`{{modal-dialogs/glossary options=(hash term="")}}`);
 
         assert.ok(this.element.textContent);
     });

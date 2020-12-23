@@ -12,17 +12,8 @@ module('Integration | Component | tables/row/expandable-selected-row', function(
         // Set any properties with this.set('myProperty', 'value');
         // Handle any actions with this.set('myAction', function(val) { ... });
 
-        await render(hbs`{{tables/row/expandable-selected-row}}`);
+        await render(hbs`{{tables/row/expandable-selected-row api=(hash rowValue=(hash id="123"))}}`);
 
         assert.equal(this.element.textContent?.trim(), '');
-
-        // Template block usage:
-        await render(hbs`
-      {{#tables/row/expandable-selected-row}}
-        template block text
-      {{/tables/row/expandable-selected-row}}
-    `);
-
-        assert.equal(this.element.textContent?.trim(), 'template block text');
     });
 });
