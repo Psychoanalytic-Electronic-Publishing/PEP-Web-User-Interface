@@ -28,7 +28,8 @@
         "viewAll": "View all",
         "help": "Help",
         "find": "Find",
-        "more": "More"
+        "more": "More",
+        "saving": "Saving..."
     },
     "serverErrors": {
         "heading": "The following {count, plural, =1 {error} other {errors}} occurred while attempting to process your request.",

@@ -143,7 +143,7 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
      * @memberof Application
      */
     async setupTour() {
-        const sizeClass = this.media.isMobile || this.media.isTablet ? 'mobile-tour' : 'desktop-tour';
+        const sizeClass = this.media.isMobile ? 'mobile-tour' : 'desktop-tour';
         this.tour.set('defaultStepOptions', {
             classes: `${sizeClass} ${this.theme.currentTheme.id}`,
             cancelIcon: {
