@@ -33,7 +33,7 @@ export default class ModalDialogsUserPreferences extends Component<ModalDialogsU
      */
     @action
     done() {
-        this.args.onClose();
+        this.onClose();
     }
 
     /**
@@ -81,5 +81,13 @@ export default class ModalDialogsUserPreferences extends Component<ModalDialogsU
             newValue = newValue.data as UserPreferences[K];
         }
         return taskFor(this.updatePreferenceTask).perform(key, newValue);
+    }
+
+    @action
+    onClose() {
+        if (taskFor(this.updatePreferenceTask).isRunning) {
+            return;
+        }
+        return this.args.onClose();
     }
 }
