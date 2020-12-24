@@ -25,7 +25,7 @@ export default class ModalDialogsHelpPreferences extends Component<ModalDialogsH
      */
     @action
     done() {
-        this.onClose();
+        this.args.onClose();
     }
 
     /**
@@ -58,13 +58,5 @@ export default class ModalDialogsHelpPreferences extends Component<ModalDialogsH
             newValue = newValue.data as UserPreferences[K];
         }
         return taskFor(this.updatePreferenceTask).perform(key, newValue);
-    }
-
-    @action
-    onClose() {
-        if (taskFor(this.updatePreferenceTask).isRunning) {
-            return;
-        }
-        return this.args.onClose();
     }
 }

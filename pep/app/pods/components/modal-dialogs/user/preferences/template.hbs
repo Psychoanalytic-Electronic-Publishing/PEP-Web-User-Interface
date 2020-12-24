@@ -1,4 +1,4 @@
-<ModalDialog @onClose={{this.onClose}} @size="md" @clickOutsideToClose={{false}} as |Modal|>
+<ModalDialog @onClose={{@onClose}} @size="md" @clickOutsideToClose={{false}} @closable={{not this.updatePreferenceTask.isRunning}} as |Modal|>
     <Modal.header @title={{t "preferences.title"}} />
     <Modal.body>
         <p class="text-muted">
