@@ -1,0 +1,15 @@
+<ModalDialog @onClose={{@onClose}} @size="md" as |Modal|>
+    <Modal.header @title={{t "feedback.title"}} />
+    <FormValidator
+        @changeset={{this.changeset}}
+        @submit={{this.submit}}
+        as |changeset Validator|
+    >
+        <Modal.body>
+            <p class="text-muted">{{t "feedback.instructions"}}</p>
+        </Modal.body>
+        <Modal.footer>
+            <ButtonSpinner @type="primary" @label={{t "common.submit"}} @action={{Validator.submit}} />
+        </Modal.footer>
+    </FormValidator>
+</ModalDialog>

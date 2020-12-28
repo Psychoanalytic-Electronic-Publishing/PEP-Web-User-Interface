@@ -58,8 +58,9 @@
         },
         "support": {
             "link": "Support",
-            "reportDataError": "Report a data error",
-            "preferences": "Help Preferences"
+            "reportDataError": "Report a Data Error",
+            "preferences": "Help Preferences",
+            "provideFeedback": "Provide Feedback"
         }
     },
     "home": {
@@ -648,6 +649,10 @@
             "authorOrPublisherHelp": "In the case of errors in the original beyond typographical, we can apply publisher supplied changes.",
             "originalCopy": "Do you have a copy of the original paper?"
         }
+    },
+    "feedback": {
+        "title": "Send Feedback",
+        "instructions": "Thank you for providing feedback! Please describe any issues as detailed as possible."
     },
     "exports": {
         "clipboard": {

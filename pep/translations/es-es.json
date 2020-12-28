@@ -59,7 +59,8 @@
         "support": {
             "link": "Support",
             "reportDataError": "Report a data error",
-            "preferences": "Help Preferences"
+            "preferences": "Help Preferences",
+            "provideFeedback": "Provide Feedback"
         }
     },
     "home": {

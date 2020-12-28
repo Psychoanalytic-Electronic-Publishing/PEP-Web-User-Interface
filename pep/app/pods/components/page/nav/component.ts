@@ -86,4 +86,14 @@ export default class PageNav extends Component<PageNavArgs> {
     openReportDataErrorModal() {
         return this.modal.open('help/report-data-error', {});
     }
+
+    /**
+     * Open Feedback Modal
+     *
+     * @returns {void}
+     */
+    @action
+    openFeedbackModal() {
+        return this.modal.open('help/feedback', {});
+    }
 }
