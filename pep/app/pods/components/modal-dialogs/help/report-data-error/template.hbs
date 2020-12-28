@@ -1,0 +1,123 @@
+<ModalDialog @onClose={{@onClose}} @size="lg" @clickOutsideToClose={{false}} as |Modal|>
+    <Modal.header @title={{t "reportDataError.title"}} />
+    <FormValidator
+        @changeset={{this.changeset}}
+        @submit={{this.submit}}
+        class="report-data-error-form"
+        as |changeset Validator|
+    >
+        <Modal.body class="py-0">
+            <p class="text-muted font-size-secondary mb-2">
+                {{t "reportDataError.instructions1" htmlSafe=true}}
+            </p>
+            <p class="text-muted font-size-secondary mb-2">
+                {{t "reportDataError.instructions2" htmlSafe=true}}
+            </p>
+            <p class="text-muted font-size-secondary">
+                {{t "reportDataError.instructions3" htmlSafe=true}}
+            </p>
+            <div class="mb-2">
+                <h5 class="mb-0">
+                    {{t "reportDataError.form.title"}}
+                </h5>
+                <div class="small text-muted mb-4">
+                    {{t "reportDataError.form.errorVerification" htmlSafe=true}}
+                </div>
+                <div class="form-row">
+                    <div class="col-md-5">
+                        <Validator.input @errors={{changeset.error.username.validation}} class="input-validator-compact">
+                            <FlInput @value={{changeset.username}} @placeholder={{t "reportDataError.form.username"}} maxlength="128" />
+                        </Validator.input>
+                    </div>
+                    <div class="col-md-7">
+                        <Validator.input @errors={{changeset.error.fullName.validation}} class="input-validator-compact">
+                            <FlInput @value={{changeset.fullName}} @placeholder={{t "reportDataError.form.fullName"}} maxlength="128" />
+                        </Validator.input>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-5">
+                        <Validator.input @errors={{changeset.error.email.validation}} class="input-validator-compact">
+                            <FlInput @value={{changeset.email}} @placeholder={{t "reportDataError.form.email"}} maxlength="128" />
+                        </Validator.input>
+                    </div>
+                    <div class="col-md-7">
+                        <Validator.input @errors={{changeset.error.problemUrl.validation}} class="input-validator-compact">
+                            <FlInput @value={{changeset.problemUrl}} @placeholder={{t "reportDataError.form.urlOfProblem"}} maxlength="500" />
+                        </Validator.input>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-12">
+                        <Validator.input @errors={{changeset.error.problemText.validation}} class="input-validator-compact">
+                            <FlTextarea @value={{changeset.problemText}} @placeholder={{t "reportDataError.form.problemText"}} maxlength="500" />
+                        </Validator.input>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-12">
+                        <Validator.input @errors={{changeset.error.correctedText.validation}} class="input-validator-compact mb-2">
+                            <FlTextarea @value={{changeset.correctedText}} @placeholder={{t "reportDataError.form.correctedText"}} maxlength="500" />
+                            <div class="small text-muted">{{t "reportDataError.form.correctedTextHelp"}}</div>
+                        </Validator.input>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-12">
+                        <Validator.input @errors={{changeset.error.explanation.validation}} class="input-validator-compact mb-3">
+                            <FlTextarea @value={{changeset.explanation}} @placeholder={{t "reportDataError.form.explanation"}} maxlength="500" />
+                            <div class="small text-muted">{{t "reportDataError.form.explanationHelp"}}</div>
+                        </Validator.input>
+                    </div>
+                </div>
+                <div class="d-flex flex-column radio-input-group">
+                    <div class="form-row justify-content-between">
+                        <div class="pl-1">
+                            {{t "reportDataError.form.authorOrPublisher"}}
+                        </div>
+                        <div class="d-flex">
+                            <RadioInput
+                                @label={{t "common.yes"}}
+                                @value={{true}}
+                                @checked={{changeset.authorOrPublisher}}
+                                @onChange={{fn this.updateBoolean "authorOrPublisher" true}}
+                            />
+                            <RadioInput
+                                @label={{t "common.no"}}
+                                @value={{false}}
+                                @checked={{not changeset.authorOrPublisher}}
+                                @onChange={{fn this.updateBoolean "authorOrPublisher" false}}
+                                class="ml-md-3 ml-2 mr-md-2 mr-0"
+                            />
+                        </div>
+                    </div>
+                    <div class="small text-muted mb-2">{{t "reportDataError.form.authorOrPublisherHelp"}}</div>
+                    <div class="form-row justify-content-between">
+                        <div class="pl-1">
+                            {{t "reportDataError.form.originalCopy"}}
+                        </div>
+                        <div class="d-flex">
+                            <RadioInput
+                                @label={{t "common.yes"}}
+                                @value={{true}}
+                                @checked={{changeset.originalCopy}}
+                                @onChange={{fn this.updateBoolean "originalCopy" true}}
+                            />
+                            <RadioInput
+                                @label={{t "common.no"}}
+                                @value={{false}}
+                                @checked={{not changeset.originalCopy}}
+                                @onChange={{fn this.updateBoolean "originalCopy" false}}
+                                class="ml-md-3 ml-2 mr-md-2 mr-0"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </Modal.body>
+        <Modal.footer>
+            <Button @type="link" @label={{t "common.cancel"}} @action={{@onClose}} />
+            <ButtonSpinner @type="primary" @label={{t "common.submit"}} @wide={{true}} @action={{Validator.submit}} />
+        </Modal.footer>
+    </FormValidator>
+</ModalDialog>
