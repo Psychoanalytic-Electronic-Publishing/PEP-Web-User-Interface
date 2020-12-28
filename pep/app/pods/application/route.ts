@@ -157,7 +157,7 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
         this.tour.set('disableScroll', true);
         this.tour.set('modal', true);
         const steps: Step[] = [];
-        if (this.media.isMobile || this.media.isTablet) {
+        if (this.media.isMobile) {
             steps.push({
                 id: 'home',
                 attachTo: {
