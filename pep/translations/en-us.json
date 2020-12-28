@@ -628,8 +628,8 @@
     },
     "reportDataError": {
         "title": "Report a Data Error",
-        "instructions1": "Please do not use this form below to report access problems or for general support: instead use this '<a href=\"http://support.pep-web.org/helptoc/customer-service/\" target=\"_blank\">'customer service link'</a>'. Use this '<i>'Report a Data Error form'</i>' only to report DATA ERRORS (e.g. typing error, missing words, misspelled author name).",
-        "instructions2": "If you see an inconsistency in names in the Author index, especially with your own entries, use the '<a href=\"http://support.pep-web.org/helptoc/help/author-index/authorindex/\" target=\"_blank\">'Author Index Correction form'</a>' to request to harmonize the listings. If instead there's an error in author names in the article itself, such that it differs from the printed publication, report it as a data error below.",
+        "instructions1": "Use this form to report data errors only. This includes typing errors, misspelled words or author names, etc.",
+        "instructions2": "For other non-data related issues, please refer to the list of common help resources below:",
         "instructions3": "PEP is very grateful for reports that help us to improve the quality of PEP-web. And we welcome '<a href=\"http://support.pep-web.org/about-the-pep-archive/suggest-new-content/\" target=\"_blank\">'suggestions for new content'</a>'.",
         "reportSuccessful": "Your report was submitted successfully!",
         "form": {
@@ -637,15 +637,15 @@
             "username": "Username",
             "fullName": "Full Name",
             "email": "Email",
-            "problemText": "Problem Text",
-            "correctedText": "Corrected Text",
+            "problemText": "Please the describe the issue and/or problem text",
+            "correctedText": "Please describe the corrections",
             "correctedTextHelp": "You may also describe the problem and corrections.",
             "urlOfProblem": "URL of Problem",
-            "errorVerification": "When there is an error in the original, we can fix obvious typographical errors only.'<br>'Please let us know if you have checked it against the original to verify it's an error on PEP-Web only.",
+            "errorVerification": "Please verify that the issue is either PEP-Web only, or an obvious typographical issue in the original.",
             "explanation": "Explanation",
             "explanationHelp": "Please explain why you think this is an error on PEP-Web rather than the original.",
             "authorOrPublisher": "Are you the author or publisher?",
-            "authorOrPublisherHelp": "In the case of errors in the original beyond typographical, we can apply publisher supplied changes.",
+            "authorOrPublisherHelp": "Non-typographical issues in the original can be provided publisher changes.",
             "originalCopy": "Do you have a copy of the original paper?"
         }
     },

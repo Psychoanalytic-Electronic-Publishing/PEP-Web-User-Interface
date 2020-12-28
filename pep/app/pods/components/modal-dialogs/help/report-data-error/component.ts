@@ -22,6 +22,11 @@ interface ErrorReport {
     originalCopy: boolean;
 }
 
+interface CommonResource {
+    label: string;
+    href: string;
+}
+
 type ErrorReportChangeset = ModelChangeset<ErrorReport>;
 
 interface ModalDialogsHelpReportDataErrorArgs {}
@@ -33,6 +38,21 @@ export default class ModalDialogsHelpReportDataError extends Component<ModalDial
     @service notifications!: NotificationService;
     @service intl!: IntlService;
     validations = REPORT_DATA_ERROR_VALIDATIONS;
+
+    commonResources: CommonResource[] = [
+        {
+            label: 'Access problems or general support',
+            href: 'http://support.pep-web.org/helptoc/customer-service/'
+        },
+        {
+            label: 'Author index correction',
+            href: 'http://support.pep-web.org/helptoc/help/author-index/authorindex/'
+        },
+        {
+            label: 'New content suggestion',
+            href: 'http://support.pep-web.org/about-the-pep-archive/suggest-new-content/'
+        }
+    ];
 
     @tracked changeset!: ErrorReportChangeset;
 
