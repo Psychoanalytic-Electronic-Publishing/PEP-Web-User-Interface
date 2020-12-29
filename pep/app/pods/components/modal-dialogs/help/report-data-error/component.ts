@@ -16,10 +16,10 @@ interface ErrorReport {
     email: string;
     problemText: string;
     correctedText: string;
-    problemUrl: string;
-    explanation: string;
-    authorOrPublisher: boolean;
-    originalCopy: boolean;
+    urlProblemPage: string;
+    additionalInfo: string;
+    isAuthorPublisher: boolean;
+    hasOriginalCopy: boolean;
 }
 
 interface CommonResource {
@@ -71,10 +71,10 @@ export default class ModalDialogsHelpReportDataError extends Component<ModalDial
                 email: currentUser?.emailAddress ?? '',
                 problemText: '',
                 correctedText: '',
-                problemUrl: window.location.href,
-                explanation: '',
-                authorOrPublisher: false,
-                originalCopy: false
+                urlProblemPage: window.location.href,
+                additionalInfo: '',
+                isAuthorPublisher: false,
+                hasOriginalCopy: false
             },
             this.validations
         );
@@ -87,12 +87,17 @@ export default class ModalDialogsHelpReportDataError extends Component<ModalDial
      * @param {ErrorReportChangeset} changeset
      */
     @action
-    submit(changeset: ErrorReportChangeset) {
+    async submit(changeset: ErrorReportChangeset) {
         try {
             this.loadingBar.show();
-            // TODO: Call endpoint
+            changeset.execute();
+            const results = await this.ajax.request('', {
+                method: 'POST',
+                body: this.ajax.stringifyData(changeset.data)
+            });
             this.loadingBar.hide();
             this.notifications.success(this.intl.t('reportDataError.reportSuccessful'));
+            return results;
         } catch (errors) {
             this.loadingBar.hide();
             this.notifications.error(errors);
@@ -103,11 +108,11 @@ export default class ModalDialogsHelpReportDataError extends Component<ModalDial
      * Update the boolean property indicated by the `propKey`
      * to the `newValue`.
      *
-     * @param {('authorOrPublisher' | 'originalCopy')} propKey
+     * @param {('isAuthorPublisher' | 'hasOriginalCopy')} propKey
      * @param {boolean} newValue
      */
     @action
-    updateBoolean(propKey: 'authorOrPublisher' | 'originalCopy', newValue: boolean) {
+    updateBoolean(propKey: 'isAuthorPublisher' | 'hasOriginalCopy', newValue: boolean) {
         this.changeset[propKey] = newValue;
     }
 }
