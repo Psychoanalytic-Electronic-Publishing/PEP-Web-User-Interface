@@ -152,8 +152,8 @@
                 "save": "Guardar esta busqueda"
             },
             "terms": {
-                "heading""Busque terminos o frases"
-                "label": "Terminos y frases"
+                "heading": "Busque terminos o frases",
+                "label": "Terminos y frases",
                 "remove": "Borrar terminos",
                 "add": "Añadir terminos",
                 "synonyms": {
