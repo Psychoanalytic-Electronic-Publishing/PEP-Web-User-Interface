@@ -653,6 +653,7 @@
     "feedback": {
         "title": "Send Feedback",
         "instructions": "Thank you for providing feedback! Please describe any issues with as much detail as possible.",
+        "feedbackSuccessful": "Your feedback has been submitted successfully. Thank you!",
         "form": {
             "subject": "Subject",
             "description": "Description",

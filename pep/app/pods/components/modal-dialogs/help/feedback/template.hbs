@@ -3,6 +3,7 @@
     <FormValidator
         @changeset={{this.changeset}}
         @submit={{this.submit}}
+        class="feedback-form"
         as |changeset Validator|
     >
         <Modal.body>
@@ -12,6 +13,10 @@
                     <Validator.input @errors={{changeset.error.subject.validation}} class="input-validator-compact">
                         <FlInput @value={{changeset.subject}} @placeholder={{t "feedback.form.subject"}} maxlength="128" />
                     </Validator.input>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-12">
                     <Validator.input @errors={{changeset.error.description.validation}} class="input-validator-compact">
                         <FlTextarea @value={{changeset.description}} @placeholder={{t "feedback.form.description"}} maxlength="500" />
                     </Validator.input>
