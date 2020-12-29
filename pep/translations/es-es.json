@@ -10,26 +10,25 @@
         "slogan": "Una biblioteca psicoanalitica en la palma de su mano"
     },
     "common": {
-        "save": "guardar",
+        "save": "Guardar",
         "submit": "Subir",
-        "search": "buscar",
+        "search": "Buscar",
         "cancel": "Cancelar",
         "close": "Cerrar",
-        "remove": "borrar",
-        "goBack": "atras",
-        "done": "cerrar",
+        "remove": "Borrar",
+        "goBack": "Atras",
+        "done": "Cerrar",
         "export": "Exportar",
-        "print": "imprimir",
+        "print": "Imprimir",
         "numResults": "{count} {count, plural, =1 {'<span class=\"text-muted \">'result'</span>'} other {'<span class=\"text-muted\">'results'</span>'}}",
         "noResults": "No se encontraron resultados",
-        "loadingResults": "cargando resultados...",
-        "loading": "cargando...",
+        "loadingResults": "Cargando resultados...",
+        "loading": "Cargando...",
         "filter": "Filtrar",
-        "viewAll": "ver todos",
-        "help": "ayuda",
-        "find": "buscar",
-        "more": "Mas",
-        "saving": "Saving..."
+        "viewAll": "Ver todos",
+        "help": "Ayuda",
+        "find": "Buscar",
+        "more": "Mas"
     },
     "serverErrors": {
         "heading": "The following {count, plural, =1 {error} other {errors}} occurred while attempting to process your request.",
@@ -40,24 +39,24 @@
     },
     "nav": {
         "toggle": "Toggle navigation",
-        "home": "Home",
-        "search": "Search",
+        "home": "Inicio",
+        "search": "Buscar",
         "browse": "Browse",
-        "read": "Read",
-        "help": "Help",
+        "read": "Leer",
+        "help": "Ayuda",
         "user": {
-            "about": "About",
-            "account": "My account",
-            "preferences": "Preferences",
-            "login": "Login",
-            "logout": "Logout",
-            "accountInfo": "Account Info",
+            "about": "Acerca",
+            "account": "Mi cuenta",
+            "preferences": "Preferencias",
+            "login": "Iniciar sesion",
+            "logout": "Cerrar sesion",
+            "accountInfo": "Informacion de la cuenta",
             "loggedInViaIP": "Logged in via IP"
         },
         "support": {
-            "link": "Support",
-            "reportProblem": "Report a problem",
-            "preferences": "Help Preferences"
+            "link": "Soporte",
+            "reportProblem": "Reportar un problema",
+            "preferences": "Personalizar ayuda"
         }
     },
     "home": {
@@ -66,9 +65,9 @@
         "searchForDocs": "Search for documents",
         "expertPick": {
             "heading": "Recomendacion del dia",
-            "read": "Read",
+            "read": "Leer",
             "loginAndRead": "Login and read",
-            "graphicFromTheArticle": "Graphic from the article: {title}"
+            "graphicFromTheArticle": "Imagen del articulo: {title}"
         }
     },
     "search": {
@@ -125,7 +124,7 @@
             "biblio": "Bibliographic"
         },
         "empty": {
-            "heading": "su busqueda comienza aqui",
+            "heading": "Su busqueda comienza aqui",
             "instructions": "Use the form on the left to enter terms or phrases and search our publication database.",
             "tips": {
                 "heading": "Search tips",
@@ -145,20 +144,20 @@
             }
         },
         "form": {
-            "heading": "buscar documentos",
-            "smartSearch": "que está buscando?",
+            "heading": "Buscar documentos",
+            "smartSearch": "Que está buscando?",
             "savedSearch": {
-                "label": "guardar busqueda",
-                "mine": "My saved searches",
-                "save": "Save this search"
+                "label": "Guardar busqueda",
+                "mine": "Mis busquedas guardadas",
+                "save": "Guardar esta busqueda"
             },
             "terms": {
-                "heading": "busque terminos o frases",
-                "label": "Terms or phrase",
-                "remove": "Remove term",
-                "add": "Add term",
+                "heading""Busque terminos o frases"
+                "label": "Terminos y frases"
+                "remove": "Borrar terminos",
+                "add": "Añadir terminos",
                 "synonyms": {
-                    "title": "Match Synonyms"
+                    "title": "Incluir sinonimos"
                 }
             },
             "additional": {
@@ -166,10 +165,10 @@
                     "title": "Limitar a..."
                 },
                 "cited": {
-                    "times": "referencias en los ultimos cinco años"
+                    "times": "Referencias en los ultimos cinco años"
                 },
                 "viewed": {
-                    "times": "vistas en los ultimos "
+                    "times": "Vistas en los ultimos "
                 }
             },
             "tooManyResults": {
@@ -375,7 +374,7 @@
         }
     },
     "relatedInfo": {
-        "title": "informacion relacionada",
+        "title": "Informacion relacionada",
         "batchClose": "Cerrar todo",
         "batchOpen": "Mostrar todo",
         "widgets": {
@@ -413,7 +412,7 @@
                 "help": "Your past searches that you have made are saved here, for easy access."
             },
             "publisherInfo": {
-                "title": "Informacion del editorial",
+                "title": "Informacion de la editorial",
                 "view": "View information for {publisher}",
                 "noResults": "You must view a document to see the documents publisher information.",
                 "help": "Publisher information for the current document your viewing will appear here."
@@ -441,47 +440,47 @@
                 "issue": "Issue #{issueNum}, Vol {volNum} &bull; {updatedDate}",
                 "signUp": "You can now sign up to be notified when new content is added by entering your email below. When new content is added we will automatically send you an email with a list of what was added, with links to it on PEP-Web!",
                 "emailAddress": "Email Address",
-                "update": "Update subscriptions",
+                "update": "activar notificaciones",
                 "help": "The newest additions to our system can be viewed here.",
                 "alerts": {
-                    "journals": "PEP-Web Journals (does not include IJP Open)",
+                    "journals": "PEP-Web revista (does not include IJP Open)",
                     "videos": "PEP-Web Videos",
-                    "ijp": "IJP Open"
+                    "ijp": "IJP open"
                 }
             },
             "yourInterests": {
-                "title": "Your interests",
-                "help": "Your interests can be viewed here."
+                "title": "Sus preferencias",
+                "help": "Puede ver sus preferencias aqui."
             },
             "videoPreview": {
                 "title": "Video mas reciente",
-                "help": "Check out the latest video in our system here."
+                "help": "Mire aqui nuestro video mas reciente."
             }
         }
     },
     "mostCited": {
         "pageTitle": "Articulos mas citados",
-        "period": "Period",
-        "periodSelect": "Select a period",
-        "fiveYears": "5 years",
-        "tenYears": "10 years",
-        "twentyYears": "20 years",
-        "allYears": "All years",
-        "author": "Author",
-        "journal": "Journal",
-        "title": "Title",
+        "period": "Periodo",
+        "periodSelect": "Seleccione un periodo",
+        "fiveYears": "5 años",
+        "tenYears": "10 años",
+        "twentyYears": "20 años",
+        "allYears": "Todos los años",
+        "author": "Autor",
+        "journal": "Revista",
+        "title": "Titulo",
         "table": {
-            "title": "Title",
-            "citations": "Publication citations",
-            "fiveYears": "Cit. last 5 years",
-            "tenYears": "Cit. last 10 years",
-            "twentyYears": "Cit. last 20 years",
-            "allTime": "Cit. all time"
+            "title": "Titulo",
+            "citations": "Referencias de la publicacion",
+            "fiveYears": "Cit. Ultimos 5 años",
+            "tenYears": "Cit. ultimos 10 años",
+            "twentyYears": "Cit. last 20 años",
+            "allTime": "Cit. todos los años"
         }
     },
     "mostViewed": {
         "pageTitle": "Articulos mas vistos",
-        "period": "Period",
+        "period": "Periodo",
         "table": {
             "publication": "Publication",
             "popularity": "Popularity by requests",
@@ -504,7 +503,7 @@
     },
     "login": {
         "title": "Login",
-        "info": "Este es el Psychoanalytic Electronic Publishing Archive database de textos completos. Esta disponible gratuitamente para todos para buscar, ver la tabla de contenidos y mirar resumenes. sin embargoused ndebera suscribirse para tener acceso a los articulos y libros completos.",
+        "info": "Este es la database de textos completos, Psychoanalytic Electronic Publishing Archive. Disponible gratuitamente para buscar, ver la tabla de contenidos y mirar resumenes. Sin embargo used debera suscribirse para tener acceso a los articulos y libros completos.",
         "error": "Unable to login with the provided credentials.",
         "username": "Username",
         "password": "Password",
