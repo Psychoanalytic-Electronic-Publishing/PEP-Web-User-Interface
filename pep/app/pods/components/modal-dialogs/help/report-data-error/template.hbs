@@ -28,38 +28,38 @@
                 <div class="form-row">
                     <div class="col-md-4">
                         <Validator.input @errors={{changeset.error.username.validation}} class="input-validator-compact">
-                            <FlInput @value={{changeset.username}} @placeholder={{t "reportDataError.form.username"}} maxlength="128" />
+                            <FlInput @value={{changeset.username}} @placeholder={{t "reportDataError.form.username"}} maxlength="256" />
                         </Validator.input>
                     </div>
                     <div class="col-md-4">
                         <Validator.input @errors={{changeset.error.fullName.validation}} class="input-validator-compact">
-                            <FlInput @value={{changeset.fullName}} @placeholder={{t "reportDataError.form.fullName"}} maxlength="128" />
+                            <FlInput @value={{changeset.fullName}} @placeholder={{t "reportDataError.form.fullName"}} maxlength="256" />
                         </Validator.input>
                     </div>
                     <div class="col-md-4">
                         <Validator.input @errors={{changeset.error.email.validation}} class="input-validator-compact">
-                            <FlInput @value={{changeset.email}} @placeholder={{t "reportDataError.form.email"}} maxlength="128" />
+                            <FlInput @value={{changeset.email}} @placeholder={{t "reportDataError.form.email"}} maxlength="256" />
                         </Validator.input>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="col-12">
-                        <Validator.input @errors={{changeset.error.problemUrl.validation}} class="input-validator-compact">
-                            <FlInput @value={{changeset.problemUrl}} @placeholder={{t "reportDataError.form.urlOfProblem"}} maxlength="500" />
+                        <Validator.input @errors={{changeset.error.urlProblemPage.validation}} class="input-validator-compact">
+                            <FlInput @value={{changeset.urlProblemPage}} @placeholder={{t "reportDataError.form.urlOfProblem"}} maxlength="256" />
                         </Validator.input>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="col-12">
                         <Validator.input @errors={{changeset.error.problemText.validation}} class="input-validator-compact">
-                            <FlTextarea @value={{changeset.problemText}} @placeholder={{t "reportDataError.form.problemText"}} maxlength="500" />
+                            <FlTextarea @value={{changeset.problemText}} @placeholder={{t "reportDataError.form.problemText"}} maxlength="1024" />
                         </Validator.input>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="col-12">
                         <Validator.input @errors={{changeset.error.correctedText.validation}} class="input-validator-compact">
-                            <FlTextarea @value={{changeset.correctedText}} @placeholder={{t "reportDataError.form.correctedText"}} maxlength="500" />
+                            <FlTextarea @value={{changeset.correctedText}} @placeholder={{t "reportDataError.form.correctedText"}} maxlength="1024" />
                         </Validator.input>
                     </div>
                 </div>
@@ -72,14 +72,14 @@
                             <RadioInput
                                 @label={{t "common.yes"}}
                                 @value={{true}}
-                                @checked={{changeset.authorOrPublisher}}
-                                @onChange={{fn this.updateBoolean "authorOrPublisher" true}}
+                                @checked={{changeset.isAuthorPublisher}}
+                                @onChange={{fn this.updateBoolean "isAuthorPublisher" true}}
                             />
                             <RadioInput
                                 @label={{t "common.no"}}
                                 @value={{false}}
-                                @checked={{not changeset.authorOrPublisher}}
-                                @onChange={{fn this.updateBoolean "authorOrPublisher" false}}
+                                @checked={{not changeset.isAuthorPublisher}}
+                                @onChange={{fn this.updateBoolean "isAuthorPublisher" false}}
                                 class="ml-md-3 ml-2 mr-md-2 mr-0"
                             />
                         </div>
@@ -95,14 +95,14 @@
                             <RadioInput
                                 @label={{t "common.yes"}}
                                 @value={{true}}
-                                @checked={{changeset.originalCopy}}
-                                @onChange={{fn this.updateBoolean "originalCopy" true}}
+                                @checked={{changeset.hasOriginalCopy}}
+                                @onChange={{fn this.updateBoolean "hasOriginalCopy" true}}
                             />
                             <RadioInput
                                 @label={{t "common.no"}}
                                 @value={{false}}
-                                @checked={{not changeset.originalCopy}}
-                                @onChange={{fn this.updateBoolean "originalCopy" false}}
+                                @checked={{not changeset.hasOriginalCopy}}
+                                @onChange={{fn this.updateBoolean "hasOriginalCopy" false}}
                                 class="ml-md-3 ml-2 mr-md-2 mr-0"
                             />
                         </div>

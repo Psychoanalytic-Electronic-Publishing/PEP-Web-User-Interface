@@ -58,9 +58,9 @@
         },
         "support": {
             "link": "Soporte",
+            "preferences": "Personalizar ayuda",
             "reportDataError": "Report a data error",
-            "provideFeedback": "Provide Feedback",
-            "preferences": "Personalizar ayuda"
+            "provideFeedback": "Provide Feedback"
         }
     },
     "home": {
@@ -519,7 +519,7 @@
     },
     "help": {
         "preferences": {
-            "info": "Customize the help provide by the PEP system below.",
+            "info": "Customize the help provided by the PEP system below.",
             "tour": {
                 "title": "Intro tour",
                 "description": "Turning this on will show you the tour the next time you visit PEP."
