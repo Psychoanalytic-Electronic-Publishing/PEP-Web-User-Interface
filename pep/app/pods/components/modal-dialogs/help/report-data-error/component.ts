@@ -29,7 +29,9 @@ interface CommonResource {
 
 type ErrorReportChangeset = ModelChangeset<ErrorReport>;
 
-interface ModalDialogsHelpReportDataErrorArgs {}
+interface ModalDialogsHelpReportDataErrorArgs {
+    onClose: () => void;
+}
 
 export default class ModalDialogsHelpReportDataError extends Component<ModalDialogsHelpReportDataErrorArgs> {
     @service ajax!: AjaxService;
@@ -97,6 +99,7 @@ export default class ModalDialogsHelpReportDataError extends Component<ModalDial
             });
             this.loadingBar.hide();
             this.notifications.success(this.intl.t('reportDataError.reportSuccessful'));
+            this.args.onClose();
             return results;
         } catch (errors) {
             this.loadingBar.hide();
