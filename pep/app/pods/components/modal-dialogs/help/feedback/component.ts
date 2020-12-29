@@ -1,20 +1,20 @@
 import { ModelChangeset } from '@gavant/ember-validations/utilities/create-changeset';
 import Component from '@glimmer/component';
+import { inject as service } from '@ember/service';
+import UserAgentService from 'ember-useragent/services/user-agent';
 
 interface Feedback {
-    username: string;
-    fullName: string;
-    email: string;
-    problemText: string;
-    correctedText: string;
-    problemUrl: string;
-    explanation: string;
-    authorOrPublisher: boolean;
-    originalCopy: boolean;
+    subject: string;
+    description: string;
+    url: string;
+    type: string;
+    browser: string;
 }
 
 type FeedbackChangeset = ModelChangeset<Feedback>;
 
 interface ModalDialogsHelpFeedbackArgs {}
 
-export default class ModalDialogsHelpFeedback extends Component<ModalDialogsHelpFeedbackArgs> {}
+export default class ModalDialogsHelpFeedback extends Component<ModalDialogsHelpFeedbackArgs> {
+    @service userAgent!: UserAgentService;
+}

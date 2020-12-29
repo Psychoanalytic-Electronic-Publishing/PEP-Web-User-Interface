@@ -7,5 +7,14 @@ declare module 'ember-useragent/services/user-agent' {
             isTablet: boolean;
             isDesktop: boolean;
         };
+        browser: {
+            info: BrowserInfo;
+        };
+    }
+
+    export interface BrowserInfo {
+        name: string;
+        major: string;
+        version: string;
     }
 }

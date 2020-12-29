@@ -652,7 +652,13 @@
     },
     "feedback": {
         "title": "Send Feedback",
-        "instructions": "Thank you for providing feedback! Please describe any issues as detailed as possible."
+        "instructions": "Thank you for providing feedback! Please describe any issues with as much detail as possible.",
+        "form": {
+            "subject": "Subject",
+            "description": "Description",
+            "url": "URL",
+            "type": "Type"
+        }
     },
     "exports": {
         "clipboard": {

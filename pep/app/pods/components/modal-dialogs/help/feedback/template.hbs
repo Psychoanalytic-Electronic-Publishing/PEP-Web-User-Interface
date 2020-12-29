@@ -7,6 +7,19 @@
     >
         <Modal.body>
             <p class="text-muted">{{t "feedback.instructions"}}</p>
+            <div class="form-row">
+                <div class="col-sm-8">
+                    <Validator.input @errors={{changeset.error.subject.validation}} class="input-validator-compact">
+                        <FlInput @value={{changeset.subject}} @placeholder={{t "feedback.form.subject"}} maxlength="128" />
+                    </Validator.input>
+                    <Validator.input @errors={{changeset.error.description.validation}} class="input-validator-compact">
+                        <FlTextarea @value={{changeset.description}} @placeholder={{t "feedback.form.description"}} maxlength="500" />
+                    </Validator.input>
+                    <Validator.input @errors={{changeset.error.url.validation}} class="input-validator-compact">
+                        <FlInput @value={{changeset.url}} @placeholder={{t "feedback.form.url"}} maxlength="128" />
+                    </Validator.input>
+                </div>
+            </div>
         </Modal.body>
         <Modal.footer>
             <ButtonSpinner @type="primary" @label={{t "common.submit"}} @action={{Validator.submit}} />
