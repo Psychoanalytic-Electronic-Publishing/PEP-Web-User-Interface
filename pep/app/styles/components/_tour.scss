@@ -20,7 +20,7 @@
     .shepherd-arrow::before {
         background-color: $color-primary-background !important;
     }
-    .shepherd-enabled {
+    &.shepherd-enabled {
         &:focus {
             outline: none;
         }
