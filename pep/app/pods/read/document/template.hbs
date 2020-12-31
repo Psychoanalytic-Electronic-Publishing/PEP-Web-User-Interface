@@ -1,6 +1,6 @@
 <Page::Content>
     <div class="pb-3 px-4">
-        <div class="sticky-top bg-backdrop py-2">
+        <div class="sticky-top bg-body py-2">
             <div
                 class="d-flex
 
@@ -34,7 +34,7 @@
                     {{this.model.documentRef}}
                 </p>
                 {{#unless this.model.accessLimited}}
-                    <div>
+                    <div class="flex-shrink-0">
                         <DropdownMenu @horizontalPosition="auto-right" as |DD|>
                             <DD.Trigger @htmlTag="button" class="btn btn-link px-2">
                                 <FaIcon @icon="download" @size="lg" @prefix="fas" />

@@ -1,4 +1,4 @@
-<div class="primary-bg border-divider-b search-form" ...attributes>
+<div class="bg-primary border-divider-b search-form" ...attributes>
     <div class="p-3">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h5 class="mb-0">
@@ -41,7 +41,7 @@
             </div>
             <AnimatedContainer>
                 {{#animated-if @isLimitOpen use=this.animateTransition duration=this.animateDuration}}
-                    <div class="mb-2 p-2 bg-backdrop rounded">
+                    <div class="mb-2 p-2 bg-primary-well rounded">
                         <div class="mb-2 d-flex align-items-center">
                             <Input
                                 @value={{@citedCount}}

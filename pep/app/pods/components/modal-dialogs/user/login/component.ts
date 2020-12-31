@@ -11,6 +11,7 @@ import IntlService from 'ember-intl/services/intl';
 import LoadingBar from 'pep/services/loading-bar';
 import { LoginForm } from 'pep/services/auth';
 import PepSessionService from 'pep/services/pep-session';
+import { FORGOT_PW_URL } from 'pep/constants/urls';
 
 interface ModalDialogsUserLoginArgs {
     onClose: () => void;
@@ -19,8 +20,6 @@ interface ModalDialogsUserLoginArgs {
         onAuthenticated: (response: any) => void;
     };
 }
-
-const ForgotPasswordUrl = 'https://stage-pads.pep-web.rocks/pages/pg070Logon.aspx?Action=RequestPassword';
 
 export default class ModalDialogsUserLogin extends Component<ModalDialogsUserLoginArgs> {
     @service('pep-session') session!: PepSessionService;
@@ -31,7 +30,7 @@ export default class ModalDialogsUserLogin extends Component<ModalDialogsUserLog
 
     @tracked loginError = null;
 
-    forgotPasswordUrl = ForgotPasswordUrl;
+    forgotPasswordUrl = FORGOT_PW_URL;
     /**
      * Submits the login dialog form and logs the user in
      * @param {ModelChangeset<LoginForm>} changeset

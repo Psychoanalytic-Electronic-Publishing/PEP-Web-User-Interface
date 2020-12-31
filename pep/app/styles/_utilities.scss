@@ -20,6 +20,14 @@
 // ---------------------------
 // Backgrounds
 // ---------------------------
+.bg-primary {
+    background-color: $color-primary-background !important;
+}
+
+.bg-primary-well {
+    background-color: $color-primary-well;
+}
+
 .bg-gradient-primary {
     background-image: linear-gradient(
         to right,
@@ -34,6 +42,10 @@
 
 .bg-backdrop {
     background-color: $color-backdrop;
+}
+
+.bg-body {
+    background-color: $body-bg;
 }
 
 // ---------------------------
@@ -64,8 +76,4 @@
 
 .highlight-odd li:nth-child(odd) {
     background-color: $color-backdrop;
-}
-
-.primary-bg {
-    background-color: $color-primary-background !important;
 }
