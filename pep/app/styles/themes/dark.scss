@@ -84,8 +84,10 @@ $alert-color-level: -10;
 // Addon overrides
 // ---------------------------
 $button-spinner-loading-color2: saturate(lighten($color-input-bg, 35%), 45%);
-$ember-power-select-focus-border-color: lighten($primary, 25%);
-$ember-power-select-focus-box-shadow: 0 0 0 0.2rem rgba($primary, 0.25);
+$ember-power-select-background-color: $input-bg;
+$ember-power-select-border-color: $input-border-color;
+$ember-power-select-focus-border-color: $input-focus-border-color;
+$ember-power-select-focus-box-shadow: 0 0 0 0.2rem lighten($color-input-bg, 10%);
 $floating-label-control-focus-background: linear-gradient(
     to bottom,
     rgba(255, 255, 255, 0) 0%,
