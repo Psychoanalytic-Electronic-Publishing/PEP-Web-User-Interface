@@ -29,11 +29,7 @@
 }
 
 .bg-gradient-primary {
-    background-image: linear-gradient(
-        to right,
-        $color-brand-primary 0,
-        saturate(lighten($color-brand-primary, 20%), 20%) 100%
-    );
+    background: $gradient-primary;
 }
 
 .bg-backdrop-well {

@@ -22,6 +22,11 @@ $color-navbar-toggle: saturate(lighten($color-brand-primary, 20%), 20%) !default
 $color-drawer-bg: $color-brand-primary !default;
 $color-help-tooltip-foreground: #a2aeb9 !default;
 $color-help-tooltip-background: $color-primary-background !default;
+$gradient-primary: linear-gradient(
+    to right,
+    $color-brand-primary 0,
+    saturate(lighten($color-brand-primary, 20%), 20%) 100%
+) !default;
 
 $document-link-glosstip-hover: #28abb9 !default;
 $document-link-glosstip-bg: rgba($document-link-glosstip-hover, 0.1) !default;

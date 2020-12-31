@@ -29,6 +29,11 @@ $color-navbar-toggle: saturate(lighten($color-brand-primary, 20%), 20%);
 $color-drawer-bg: $color-brand-primary;
 $color-help-tooltip-foreground: #a2aeb9;
 $color-help-tooltip-background: $color-primary-background;
+$gradient-primary: linear-gradient(
+    to right,
+    $color-brand-primary 0,
+    saturate(lighten($color-brand-primary, 20%), 20%) 100%
+);
 
 $document-link-glosstip-hover: #03a678;
 $document-link-glosstip-bg: rgba($document-link-glosstip-hover, 0.1);
@@ -70,8 +75,8 @@ $ember-power-select-focus-box-shadow: 0 0 0 0.2rem rgba($primary, 0.25);
 // ---------------------------
 @import '../common';
 
-// TODO can we move these into core styles to make everything var-driven?
-
+// TODO eventually move these into core styles and make them var-driven
+// theme files should have no css rules of their own, only vars
 .text-black-50 {
     color: rgba(#000, 0.75) !important;
 }

@@ -30,10 +30,11 @@ $color-progress-spinner-loading1: $color-input-bg;
 $color-progress-spinner-loading2: $color-backdrop;
 $color-sidebar-bg: darken($color-backdrop, 1%);
 $color-footer-bg: darken($color-input-bg, 3%);
-$color-navbar-toggle: $color-brand-primary;
+$color-navbar-toggle: lighten($color-input-bg, 5%);
 $color-drawer-bg: $color-primary-background;
 $color-help-tooltip-foreground: #a6a6ab;
 $color-help-tooltip-background: $color-primary-background;
+$gradient-primary: linear-gradient(to right, $color-input-bg 0, lighten($color-input-bg, 2%) 100%);
 
 $document-link-glosstip-hover: #6a81ae;
 $document-link-glosstip-bg: rgba(saturate(lighten($document-link-glosstip-hover, 5%), 5%), 0.15);
@@ -49,6 +50,7 @@ $document-link-web-internal: #a4a29e;
 $primary: $color-brand-primary;
 $body-bg: darken($color-backdrop, 2%);
 $body-color: #dbdddc;
+$dark: $body-color;
 $input-color: $body-color;
 $link-color: saturate(lighten($color-brand-primary, 25%), 5%);
 $input-border-color: $color-input-bg;
@@ -100,34 +102,3 @@ $ember-content-placeholders-secondary-color: $color-input-bg;
 // ---------------------------
 
 @import '../common';
-
-// TODO can we move these into core styles to make everything var-driven?
-
-.bg-gradient-primary {
-    background-color: $color-input-bg !important;
-    background-image: none;
-}
-
-.text-dark {
-    color: $body-color !important;
-}
-
-.shepherd-element.dark {
-    background-color: $link-color !important;
-    color: $body-color !important;
-    .shepherd-text {
-        color: $body-color !important;
-    }
-    .shepherd-button {
-        background-color: $color-primary-background !important;
-    }
-    .shepherd-header {
-        background-color: $color-primary-background !important;
-        .shepherd-title {
-            color: $body-color !important;
-        }
-    }
-    .shepherd-arrow::before {
-        background-color: $link-color !important;
-    }
-}
