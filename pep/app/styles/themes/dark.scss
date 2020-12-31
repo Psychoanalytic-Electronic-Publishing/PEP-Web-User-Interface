@@ -32,6 +32,8 @@ $color-sidebar-bg: darken($color-backdrop, 1%);
 $color-footer-bg: darken($color-input-bg, 3%);
 $color-navbar-toggle: $color-brand-primary;
 $color-drawer-bg: $color-primary-background;
+$color-help-tooltip-foreground: #a6a6ab;
+$color-help-tooltip-background: $color-primary-background;
 
 $document-link-glosstip-hover: #6a81ae;
 $document-link-glosstip-bg: rgba(saturate(lighten($document-link-glosstip-hover, 5%), 5%), 0.15);
