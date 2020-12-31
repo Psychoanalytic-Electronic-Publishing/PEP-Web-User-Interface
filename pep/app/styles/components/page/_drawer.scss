@@ -6,7 +6,7 @@
     z-index: $z-drawer-content;
     width: $drawer-width;
     visibility: hidden;
-    background-color: $color-brand-primary;
+    background-color: $color-drawer-bg;
     box-shadow: -2px 0 14px rgba($black, 0.4);
     transition: transform 0.3s ease-in-out, visibility 0.3s ease-in-out;
 
@@ -34,7 +34,7 @@
 
     &-header {
         position: relative;
-        background-color: desaturate(darken($color-brand-primary, 2%), 2%);
+        background-color: desaturate(darken($color-drawer-bg, 2%), 2%);
         background-image: linear-gradient(to top, rgba($black, 0.075), transparent 10%);
         border-bottom: 1px solid rgba($white, 0.075);
     }

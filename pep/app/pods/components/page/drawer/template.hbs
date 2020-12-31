@@ -43,13 +43,13 @@
                         @disabled={{this.readDisabled}}
                         class="list-group-item list-group-item-action"
                     >
-                        <FaIcon @icon="list" @fixedWidth={{true}} class="mr-2" />
+                        <FaIcon @icon="book-reader" @fixedWidth={{true}} class="mr-2" />
                         {{t "nav.read"}}
                     </LinkTo>
                 </Page::Drawer::NavItem>
                 <Page::Drawer::NavItem class="mt-1">
                     <LinkTo @route="browse" class="list-group-item list-group-item-action">
-                        <FaIcon @icon="list" @fixedWidth={{true}} class="mr-2" />
+                        <FaIcon @icon="books" @fixedWidth={{true}} class="mr-2" />
                         {{t "nav.browse"}}
                     </LinkTo>
                 </Page::Drawer::NavItem>
@@ -62,7 +62,7 @@
                 >
                     <Page::Drawer::NavItem class="mt-1">
                         <a
-                            href="https://support.pep-web.org"
+                            href={{this.supportUrl}}
                             target="_blank"
                             rel="noopener noreferrer"
                             class="list-group-item list-group-item-action"

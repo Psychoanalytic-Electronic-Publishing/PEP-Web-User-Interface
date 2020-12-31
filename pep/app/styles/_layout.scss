@@ -2,7 +2,6 @@ html,
 body {
     height: 100%;
     min-height: 100%;
-    background-color: $color-backdrop;
     overflow: hidden;
 }
 
@@ -63,7 +62,7 @@ body {
 
 .footer {
     min-height: $footer-height;
-    background-color: $color-brand-primary;
+    background-color: $color-footer-bg;
 
     &-branding-img {
         height: $footer-brand-img-height;

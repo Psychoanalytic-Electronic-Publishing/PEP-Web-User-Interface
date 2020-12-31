@@ -9,7 +9,7 @@
                 {{t "preferences.general.heading"}}
             </h6>
             <div class="form-row mb-3">
-                <div class="col-6">
+                <div class="col-sm-7">
                     <FlSelect
                         @options={{this.theme.themeOptions}}
                         @value={{this.theme.currentTheme.id}}
@@ -23,7 +23,7 @@
                 </div>
             </div>
             <div class="form-row">
-                <div class="col-6">
+                <div class="col-sm-7">
                     <FlSelect
                         @options={{this.lang.availableLanguages}}
                         @value={{this.lang.currentLanguage}}
@@ -42,8 +42,8 @@
             <h6 class="mb-3">
                 {{t "preferences.search.heading"}}
             </h6>
-            <div class="form-row">
-                <div class="col-6">
+            <div class="form-row mb-3">
+                <div class="col-sm-7">
                     <FlInput
                         @placeholder={{t "preferences.search.hic.limit"}}
                         @value={{this.currentUser.preferences.searchHICLimit}}

@@ -40,7 +40,6 @@ export default class Home extends Component<HomeArgs> {
 
     @tracked model?: Abstract;
     @tracked imageArticle?: SearchDocument;
-    @tracked imageArticleUrl?: string;
 
     get intro() {
         return this.configuration.content.home.intro;
@@ -49,6 +48,10 @@ export default class Home extends Component<HomeArgs> {
     get expertPick() {
         const expertPicks = this.configuration.base.home.expertPicks;
         return expertPicks[expertPicks.length - 1];
+    }
+
+    get imageArticleUrl() {
+        return this.imageArticle?.id ? this.router.urlFor('read.document', this.imageArticle?.id) : '';
     }
 
     /**
@@ -131,7 +134,6 @@ export default class Home extends Component<HomeArgs> {
         const imageArticleResults = await this.store.query('search-document', queryParams);
         const imageArticle = imageArticleResults.toArray()[0];
         this.imageArticle = imageArticle;
-        this.imageArticleUrl = this.router.urlFor('read.document', imageArticle.id);
     }
 
     /**
