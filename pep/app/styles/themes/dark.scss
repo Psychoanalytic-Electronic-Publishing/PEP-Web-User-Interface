@@ -76,6 +76,7 @@ $nav-tabs-border-color: lighten($color-primary-background, 6%);
 $nav-tabs-link-hover-border-color: darken($nav-tabs-border-color, 2%) darken($nav-tabs-border-color, 2%)
     $nav-tabs-border-color;
 $nav-tabs-link-active-border-color: $nav-tabs-border-color $nav-tabs-border-color $nav-tabs-link-active-bg;
+$table-border-color: lighten($color-primary-background, 8%);
 // Darkens all alert colors
 $alert-bg-level: 10;
 $alert-border-level: 1;
@@ -95,9 +96,10 @@ $floating-label-control-focus-background: linear-gradient(
 ) !default;
 // Why is there a duplicate overriding this?
 $ember-basic-dropdown-content-background-color: $color-backdrop;
-
 $ember-content-placeholders-primary-color: $color-backdrop;
 $ember-content-placeholders-secondary-color: $color-input-bg;
+$gvnt-tbl-fixed-cell-bg: $color-primary-background;
+$gvnt-tbl-border-color: $table-border-color;
 
 // ---------------------------
 // Common app styles
