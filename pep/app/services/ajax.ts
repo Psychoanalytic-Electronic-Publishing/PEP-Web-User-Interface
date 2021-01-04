@@ -10,6 +10,8 @@ import { guard } from 'pep/utils/types';
 import { appendTrailingSlash } from 'pep/utils/url';
 import { reject } from 'rsvp';
 
+export type RequestInitWithSlash = RequestInit & { appendTrailingSlash: boolean };
+
 export default class AjaxService extends Service {
     @service('pep-session') session!: PepSessionService;
     @service fastboot!: FastbootService;
@@ -63,14 +65,18 @@ export default class AjaxService extends Service {
      * @param  {RequestInit}  [options={}]
      * @returns {Promise}
      */
-    async request<T>(url: string, options: RequestInit = {}): Promise<T> {
+    async request<T>(url: string, options: RequestInitWithSlash = { appendTrailingSlash: true }): Promise<T> {
         setProperties(options, {
             credentials: 'include',
             headers: { ...this.headers, ...(options.headers || {}) }
         });
 
         const baseUrl = /^https?\:\/\//.test(url) ? '' : `${this.host}/${this.namespace}/`;
-        const requestUrl = appendTrailingSlash(`${baseUrl}${url.replace(/^\//, '')}`);
+        let requestUrl = `${baseUrl}${url.replace(/^\//, '')}`;
+        if (options.appendTrailingSlash) {
+            requestUrl = appendTrailingSlash(requestUrl);
+        }
+
         const response = await fetch(requestUrl, options);
         const responseHeaders = this.parseHeaders(response.headers);
         const result = await this.handleResponse(response.status, responseHeaders, response);
