@@ -435,23 +435,6 @@ export default class ReadDocument extends Controller {
     }
 
     @action
-    async loadTranslation(paraLangId: string, paraLangRx: string) {
-        let url = `Documents/Concordance?return_format=XML`;
-        if (paraLangId) {
-            url += `&paralangid=${paraLangId}`;
-        }
-        if (paraLangRx) {
-            url += `&paralangrx=${paraLangRx}`;
-        }
-        const results = await this.ajax.request<{
-            documents?: { responseSet?: Document[] };
-        }>(url, {
-            appendTrailingSlash: false
-        });
-        return results.documents?.responseSet?.[0].document;
-    }
-
-    @action
     async printDocument() {
         let url = `${ENV.apiBaseUrl}/${ENV.apiNamespace}/Documents/Downloads/PDF/${this.model.id}/?${this.downloadAuthParams}`;
         this.printer.printElement(url);

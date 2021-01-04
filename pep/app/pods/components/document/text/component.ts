@@ -24,6 +24,7 @@ import {
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import Document from 'pep/pods/document/model';
 import GlossaryTerm from 'pep/pods/glossary-term/model';
+import AjaxService from 'pep/services/ajax';
 import CurrentUserService from 'pep/services/current-user';
 import LoadingBarService from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
@@ -44,7 +45,6 @@ interface DocumentTextArgs {
     page?: string;
     onGlossaryItemClick: (term: string, termResults: GlossaryTerm[]) => void;
     viewSearch: (searchTerms: string) => void;
-    loadTranslation?: (paraLangId?: string | null, paraLangRx?: string | null) => Promise<string>;
 }
 
 /**
@@ -75,6 +75,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
     @service router!: RouterService;
     @service currentUser!: CurrentUserService;
     @service('pep-session') session!: PepSessionService;
+    @service ajax!: AjaxService;
 
     @tracked xml?: XMLDocument;
 
@@ -513,8 +514,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
                                 return;
                             }
 
-                            this.args
-                                .loadTranslation?.(paraLangId, paraLangRx)
+                            this.loadTranslation?.(paraLangId, paraLangRx)
                                 .then(async (text: string) => {
                                     const xml = await this.parseDocumentText(text);
                                     if (xml) {
@@ -536,5 +536,30 @@ export default class DocumentText extends Component<DocumentTextArgs> {
                 }
             });
         }
+    }
+
+    /**
+     *
+     *
+     * @param {string} paraLangId
+     * @param {string} paraLangRx
+     * @return {*}
+     * @memberof DocumentText
+     */
+    @action
+    async loadTranslation(paraLangId?: string | null, paraLangRx?: string | null) {
+        let url = `Documents/Concordance?return_format=XML`;
+        if (paraLangId) {
+            url += `&paralangid=${paraLangId}`;
+        }
+        if (paraLangRx) {
+            url += `&paralangrx=${paraLangRx}`;
+        }
+        const results = await this.ajax.request<{
+            documents?: { responseSet?: Document[] };
+        }>(url, {
+            appendTrailingSlash: false
+        });
+        return results.documents?.responseSet?.[0].document;
     }
 }
