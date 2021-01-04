@@ -68,6 +68,7 @@
     <xsl:param name="journalName"/>
     <xsl:param name="clientId"/>
     <xsl:param name="sessionId"/>
+    <xsl:param name="translationConcordanceEnabled" />
     <xsl:param name="searchTerm"/>
     <xsl:variable name="verbose" select="$report-warnings = 'yes'"/>
     <xsl:variable name="fa-right-arrow">
@@ -1165,26 +1166,28 @@
             <xsl:call-template name="assign-id"/>
             <xsl:apply-templates select="@content-type"/>
             <xsl:apply-templates />
-            <xsl:if test="@lgrid or @lgrx">
-                <span class="ml-2 translation">
-                    <xsl:if test="@lgrid">
-                        <xsl:attribute name="data-lgrid">
-                            <xsl:value-of select="@lgrid"/>
-                        </xsl:attribute>
-                    </xsl:if>
-                    <xsl:if test="@lgrx">
-                        <xsl:attribute name="data-lgrx">
-                            <xsl:value-of select="@lgrx"/>
-                        </xsl:attribute>
-                    </xsl:if>
-                    
-                    <xsl:if test="@lgrtype">
-                        <xsl:attribute name="data-type">
-                            <xsl:value-of select="@lgrtype"/>
-                        </xsl:attribute>
-                    </xsl:if>
-                    <xsl:copy-of select="$fa-language" />
-                </span>
+            <xsl:if test="$translationConcordanceEnabled = 'true'">
+                <xsl:if test="@lgrid or @lgrx">
+                    <span class="ml-2 translation">
+                        <xsl:if test="@lgrid">
+                            <xsl:attribute name="data-lgrid">
+                                <xsl:value-of select="@lgrid"/>
+                            </xsl:attribute>
+                        </xsl:if>
+                        <xsl:if test="@lgrx">
+                            <xsl:attribute name="data-lgrx">
+                                <xsl:value-of select="@lgrx"/>
+                            </xsl:attribute>
+                        </xsl:if>
+                        
+                        <xsl:if test="@lgrtype">
+                            <xsl:attribute name="data-type">
+                                <xsl:value-of select="@lgrtype"/>
+                            </xsl:attribute>
+                        </xsl:if>
+                        <xsl:copy-of select="$fa-language" />
+                    </span>
+                </xsl:if>
             </xsl:if>
         </p>
         

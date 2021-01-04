@@ -61,11 +61,6 @@ export enum DocumentTooltipSelectors {
     TRANSLATION = '.translation'
 }
 
-export enum ConcordanceType {
-    PARALANGID = 'paralangid',
-    PARALANGRX = 'paralangrx'
-}
-
 export type DocumentTippyInstance = Instance & {
     _isFetching: boolean;
     _loaded: boolean;
@@ -135,6 +130,11 @@ export default class DocumentText extends Component<DocumentTextArgs> {
                 if (this.session.isAuthenticated) {
                     processor.setParameter('', 'sessionId', this.session.data.authenticated.SessionId);
                 }
+                processor.setParameter(
+                    '',
+                    'translationConcordanceEnabled',
+                    this.currentUser.preferences?.translationConcordanceEnabled
+                );
                 processor.setParameter('', 'clientId', ENV.clientId);
                 processor.setParameter('', 'journalName', this.args.document.sourceTitle);
                 processor.setParameter('', 'imageUrl', DOCUMENT_IMG_BASE_URL);
