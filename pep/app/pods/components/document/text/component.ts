@@ -29,7 +29,7 @@ import LoadingBarService from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
 import ThemeService from 'pep/services/theme';
 import { buildJumpToHitsHTML, loadXSLT, parseXML } from 'pep/utils/dom';
-import tippy, { Instance, Props } from 'tippy.js';
+import tippy, { Instance, Props, Tippy } from 'tippy.js';
 
 interface DocumentTextArgs {
     document: Document;
@@ -44,7 +44,7 @@ interface DocumentTextArgs {
     page?: string;
     onGlossaryItemClick: (term: string, termResults: GlossaryTerm[]) => void;
     viewSearch: (searchTerms: string) => void;
-    loadTranslation?: (paraLangId: string, paraLangRx: string) => Promise<string>;
+    loadTranslation?: (paraLangId?: string | null, paraLangRx?: string | null) => Promise<string>;
 }
 
 /**
@@ -65,6 +65,11 @@ export enum ConcordanceType {
     PARALANGID = 'paralangid',
     PARALANGRX = 'paralangrx'
 }
+
+export type DocumentTippyInstance = Instance & {
+    _isFetching: boolean;
+    _loaded: boolean;
+};
 export default class DocumentText extends Component<DocumentTextArgs> {
     @service store!: DS.Store;
     @service loadingBar!: LoadingBarService;
@@ -487,6 +492,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
 
         if (this.currentUser.preferences?.translationConcordanceEnabled) {
             const translations = this.containerElement?.querySelectorAll(DocumentTooltipSelectors.TRANSLATION);
+            const loadingTranslation = this.intl.t('common.loading');
             translations?.forEach((item) => {
                 const paraLangId = item.attributes.getNamedItem('data-lgrid')?.nodeValue;
                 const paraLangRx = item.attributes.getNamedItem('data-lgrx')?.nodeValue;
@@ -495,14 +501,14 @@ export default class DocumentText extends Component<DocumentTextArgs> {
                 if ((paraLangId || paraLangRx) && paragraph) {
                     tippy(item, {
                         appendTo: paragraph,
-                        content: 'Loading...',
+                        content: loadingTranslation,
                         ...this.tippyOptions,
-                        onCreate(instance) {
-                            // Setup our own custom state properties
+                        onCreate(instance: DocumentTippyInstance) {
+                            // Setup our own custom state properties - from DOCS
                             instance._isFetching = false;
                             instance._loaded = false;
                         },
-                        onShow: (instance) => {
+                        onShow: (instance: DocumentTippyInstance) => {
                             if (instance._isFetching || instance._loaded) {
                                 return;
                             }
@@ -522,8 +528,8 @@ export default class DocumentText extends Component<DocumentTextArgs> {
                                     instance._isFetching = false;
                                 });
                         },
-                        onHidden(instance) {
-                            instance.setContent('Loading...');
+                        onHidden(instance: DocumentTippyInstance) {
+                            instance.setContent(loadingTranslation);
                             instance._loaded = false;
                         }
                     });
