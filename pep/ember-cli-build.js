@@ -6,14 +6,16 @@ module.exports = function(defaults) {
     let app = new EmberApp(defaults, {
         fingerprint: {
             prepend: process.env.ASSETS_BASE_URL,
-            extensions: ['js', 'css', 'png', 'jpg', 'gif', 'map', 'xslt'],
-            exclude: ['/images/publisher-logos']
+            extensions: ['js', 'css', 'png', 'jpg', 'gif', 'map', 'xslt', 'json'],
+            exclude: ['/images/publisher-logos', 'package.json']
         },
         outputPaths: {
             app: {
                 css: {
                     app: '/assets/pep.css',
-                    'themes/tomato': '/assets/themes/tomato.css'
+                    'themes/tomato': '/assets/themes/tomato.css',
+                    'themes/dark': '/assets/themes/dark.css',
+                    'themes/high-contrast': '/assets/themes/high-contrast.css'
                 }
             }
         },

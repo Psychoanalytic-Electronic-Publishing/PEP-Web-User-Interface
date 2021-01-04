@@ -39,10 +39,37 @@
                 {{t "nav.browse"}}
             </LinkTo>
         </li>
-        <li class="nav-item">
+        <li class="nav-item home">
             <LinkTo @route="index" class="nav-link">
                 <FaIcon @icon="home" @size="lg" />
             </LinkTo>
+        </li>
+        <li class="nav-item">
+            <DropdownMenu @horizontalPosition="auto-right" as |DD|>
+                <DD.Trigger @htmlTag="a" class="nav-link">
+                    <FaIcon @icon="question" @size="lg" />
+                </DD.Trigger>
+                <DD.Content class="dropdown-menu">
+                    <a
+                        href={{this.supportUrl}}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="dropdown-action dropdown-item"
+                        {{on "click" DD.actions.close}}
+                    >
+                        <FaIcon @icon="external-link" @fixedWidth={{true}} class="text-muted" />
+                        {{t "nav.support.link"}}
+                    </a>
+                    <DropdownAction @dd={{DD}}>
+                        <FaIcon @icon="comment-exclamation" @fixedWidth={{true}} class="text-muted" />
+                        {{t "nav.support.reportProblem"}}
+                    </DropdownAction>
+                    <DropdownAction @dd={{DD}} @action={{this.openHelpModal}}>
+                        <FaIcon @icon="hands-helping" @fixedWidth={{true}} class="text-muted" />
+                        {{t "nav.support.preferences"}}
+                    </DropdownAction>
+                </DD.Content>
+            </DropdownMenu>
         </li>
         <li class="nav-item">
             <DropdownMenu @horizontalPosition="auto-right" as |DD|>
@@ -53,14 +80,6 @@
                     <DropdownAction @dd={{DD}} @action={{this.openPreferencesModal}}>
                         <FaIcon @icon="cog" @fixedWidth={{true}} class="text-muted" />
                         {{t "nav.user.preferences"}}
-                    </DropdownAction>
-                    <DropdownAction @dd={{DD}}>
-                        <FaIcon @icon="question-square" @fixedWidth={{true}} class="text-muted" />
-                        {{t "nav.user.help"}}
-                    </DropdownAction>
-                    <DropdownAction @dd={{DD}}>
-                        <FaIcon @icon="comment-exclamation" @fixedWidth={{true}} class="text-muted" />
-                        {{t "nav.user.reportProblem"}}
                     </DropdownAction>
                     <DropdownAction @dd={{DD}} @action={{@openAboutModal}}>
                         <FaIcon @icon="info-square" @fixedWidth={{true}} class="text-muted" />

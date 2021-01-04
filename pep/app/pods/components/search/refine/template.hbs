@@ -1,11 +1,15 @@
-<div class="bg-white border-divider-b border-divider-t p-3" ...attributes>
-    <h5>
-        {{t "search.refine.heading"}}
-    </h5>
+<div class="bg-primary border-divider-b border-divider-t p-3" ...attributes>
+    {{#if this.currentUser.preferences.helpDescriptionsEnabled}}
+        <h5>
+            {{t "search.refine.heading"}}
+        </h5>
+    {{/if}}
     {{#if this.groups}}
-        <p class="text-muted">
-            {{t "search.refine.instructions"}}
-        </p>
+        {{#if this.currentUser.preferences.helpDescriptionsEnabled}}
+            <p class="text-muted">
+                {{t "search.refine.instructions"}}
+            </p>
+        {{/if}}
         <ul class="list-unstyled">
             {{#each this.groups as |group|}}
                 <li>

@@ -14,7 +14,7 @@ import IntlService from 'ember-intl/services/intl';
 import { ServerStatus } from 'pep/api';
 import ENV from 'pep/config/environment';
 import { PreferenceKey } from 'pep/constants/preferences';
-import { SEARCH_DEFAULT_VIEW_PERIOD, SearchTermValue, ViewPeriod } from 'pep/constants/search';
+import { SEARCH_DEFAULT_VIEW_PERIOD, SEARCH_TYPE_ARTICLE, SearchTermValue, ViewPeriod } from 'pep/constants/search';
 import AjaxService from 'pep/services/ajax';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
@@ -22,8 +22,6 @@ import LoadingBarService from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
 import SidebarService from 'pep/services/sidebar';
 import { clearSearch } from 'pep/utils/search';
-
-import { SEARCH_TYPE_ARTICLE } from '../../constants/search';
 
 export default class Application extends Controller {
     @service loadingBar!: LoadingBarService;

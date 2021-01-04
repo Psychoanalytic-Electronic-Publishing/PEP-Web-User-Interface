@@ -1,4 +1,4 @@
-<div class="bg-white border-divider-b search-form" ...attributes>
+<div class="bg-primary border-divider-b search-form" ...attributes>
     <div class="p-3">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h5 class="mb-0">
@@ -26,17 +26,22 @@
                 <p class="text-muted mb-0">
                     {{t "search.form.terms.heading"}}
                 </p>
-                <Button
-                    @label={{t "search.form.additional.limitTo"}}
-                    @icon={{if @isLimitOpen "chevron-up" "chevron-down"}}
-                    @type="link"
-                    @action={{this.toggleLimitFields}}
-                    class="p-0 font-size-secondary"
-                />
+                <div class="d-flex align-items-center">
+                    <Button
+                        @label={{t "search.form.additional.limitTo.title"}}
+                        @icon={{if @isLimitOpen "chevron-up" "chevron-down"}}
+                        @type="link"
+                        @action={{this.toggleLimitFields}}
+                        class="p-0 font-size-secondary"
+                    />
+                    {{#if this.configuration.content.search.limitTo.help}}
+                        <HelpTooltip @tooltip={{this.configuration.content.search.limitTo.help}} />
+                    {{/if}}
+                </div>
             </div>
             <AnimatedContainer>
                 {{#animated-if @isLimitOpen use=this.animateTransition duration=this.animateDuration}}
-                    <div class="mb-2 p-2 bg-light rounded">
+                    <div class="mb-2 p-2 bg-primary-well rounded">
                         <div class="mb-2 d-flex align-items-center">
                             <Input
                                 @value={{@citedCount}}
@@ -97,11 +102,16 @@
                     @disabled={{not this.canAddSearchTerm}}
                     class="p-0"
                 />
-                <CheckboxInput
-                    @checked={{@matchSynonyms}}
-                    @onChange={{@matchSynonymsChange}}
-                    @label={{t "search.form.terms.synonyms"}}
-                />
+                <div class="d-flex align-items-center">
+                    <CheckboxInput
+                        @checked={{@matchSynonyms}}
+                        @onChange={{@matchSynonymsChange}}
+                        @label={{t "search.form.terms.synonyms.title"}}
+                    />
+                    {{#if this.configuration.content.search.matchSynonyms.help}}
+                        <HelpTooltip @tooltip={{this.configuration.content.search.matchSynonyms.help}} />
+                    {{/if}}
+                </div>
             </div>
             <div class="d-flex justify-content-end">
                 <Button @type="link" @label="Clear" @action={{@resetForm}} class="mr-1" />

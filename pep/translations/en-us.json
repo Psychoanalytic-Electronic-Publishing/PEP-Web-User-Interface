@@ -28,7 +28,8 @@
         "viewAll": "View all",
         "help": "Help",
         "find": "Find",
-        "more": "More"
+        "more": "More",
+        "saving": "Saving..."
     },
     "serverErrors": {
         "heading": "The following {count, plural, =1 {error} other {errors}} occurred while attempting to process your request.",
@@ -43,16 +44,20 @@
         "search": "Search",
         "browse": "Browse",
         "read": "Read",
+        "help": "Help",
         "user": {
             "about": "About",
             "account": "My account",
             "preferences": "Preferences",
-            "help": "Help",
-            "reportProblem": "Report a problem",
             "login": "Login",
             "logout": "Logout",
             "accountInfo": "Account Info",
             "loggedInViaIP": "Logged in via IP"
+        },
+        "support": {
+            "link": "Support",
+            "reportProblem": "Report a problem",
+            "preferences": "Help Preferences"
         }
     },
     "home": {
@@ -152,10 +157,14 @@
                 "label": "Terms or phrase",
                 "remove": "Remove term",
                 "add": "Add term",
-                "synonyms": "Match Synonyms"
+                "synonyms": {
+                    "title": "Match Synonyms"
+                }
             },
             "additional": {
-                "limitTo": "Limit to...",
+                "limitTo": {
+                    "title": "Limit to..."
+                },
                 "cited": {
                     "times": "citations in the past 5 years"
                 },
@@ -371,49 +380,61 @@
         "batchOpen": "Show all",
         "widgets": {
             "expertPicks": {
-                "title": "Expert picks"
+                "title": "Expert picks",
+                "help": "Expert picks ...picked expertly for you."
             },
             "favorites": {
                 "title": "Favorites",
-                "noResults": "You don't have any favorites. Add documents that you frequently view to your favorites for quick access"
+                "noResults": "You don't have any favorites. Add documents that you frequently view to your favorites for quick access",
+                "help": "You can save your favorite documents for easy access here."
             },
             "glossaryTerms": {
                 "title": "Glossary terms",
                 "view": "View complete glossary",
-                "noResults": "You must perform a search or view a document to see the glossary terms"
+                "noResults": "You must perform a search or view a document to see the glossary terms",
+                "help": "When reading a document, a word cloud of glossary terms will appear here."
             },
             "moreLikeThese": {
                 "title": "More like these",
                 "confidence": "Similarity Confidence: {number}%",
-                "noResults": "You must view a document to see the similar documents"
+                "noResults": "You must view a document to see the similar documents",
+                "help": "Using AI, we recommend documents that we think are similar to the current document your reading."
             },
             "mostCited": {
-                "title": "Most cited"
+                "title": "Most cited",
+                "help": "The most cited documents throughout our system can be viewed here."
             },
             "mostViewed": {
-                "title": "Most viewed"
+                "title": "Most viewed",
+                "help": "The most viewed documents throughout our system can be viewed here."
             },
             "pastSearches": {
-                "title": "Your past searches"
+                "title": "Your past searches",
+                "help": "Your past searches that you have made are saved here, for easy access."
             },
             "publisherInfo": {
                 "title": "Publisher Info",
                 "view": "View information for {publisher}",
-                "noResults": "You must view a document to see the documents publisher information."
+                "noResults": "You must view a document to see the documents publisher information.",
+                "help": "Publisher information for the current document your viewing will appear here."
             },
             "readLater": {
                 "title": "Read later",
-                "noResults": "You don't have any documents saved for later. Add documents that you want to view for quick access."
+                "noResults": "You don't have any documents saved for later. Add documents that you want to view for quick access.",
+                "help": "Save items you want to read later and view them here."
             },
             "relatedDocuments": {
                 "title": "Related Documents",
-                "noResults": "You must view a document to see the documents related to it. If you are already viewing one, this means no results have been found."
+                "noResults": "You must view a document to see the documents related to it. If you are already viewing one, this means no results have been found.",
+                "help": "Related documents to the document you are reading will show up here."
             },
             "relevantSearches": {
-                "title": "Relevant searches"
+                "title": "Relevant searches",
+                "help": "Related searches to the current document/search will go here."
             },
             "seminalPapers": {
-                "title": "Seminal papers"
+                "title": "Seminal papers",
+                "help": "Seminal papers can be viewed here."
             },
             "whatsNew": {
                 "title": "What's new?",
@@ -421,6 +442,7 @@
                 "signUp": "You can now sign up to be notified when new content is added by entering your email below. When new content is added we will automatically send you an email with a list of what was added, with links to it on PEP-Web!",
                 "emailAddress": "Email Address",
                 "update": "Update subscriptions",
+                "help": "The newest additions to our system can be viewed here.",
                 "alerts": {
                     "journals": "PEP-Web Journals (does not include IJP Open)",
                     "videos": "PEP-Web Videos",
@@ -428,10 +450,12 @@
                 }
             },
             "yourInterests": {
-                "title": "Your interests"
+                "title": "Your interests",
+                "help": "Your interests can be viewed here."
             },
             "videoPreview": {
-                "title": "Latest Video"
+                "title": "Latest Video",
+                "help": "Check out the latest video in our system here."
             }
         }
     },
@@ -490,6 +514,23 @@
         "forgotPassword": "Forgot Password?",
         "genericError": "Unable to login. There is a problem behind the scenes, and we are looking into it. Please try again later."
     },
+    "help": {
+        "preferences": {
+            "info": "Customize the help provide by the PEP system below.",
+            "tour": {
+                "title": "Intro tour",
+                "description": "Turning this on will show you the tour the next time you visit PEP."
+            },
+            "descriptions": {
+                "title": "Help descriptions",
+                "description": "Turning this on shows helpful descriptions when applicable."
+            },
+            "icons": {
+                "title": "Help icons",
+                "description": "Toggling this will show/hide the help icons throughout the site. These icons have helpful hints and descriptions of functionality that will make your life easier."
+            }
+        }
+    },
     "preferences": {
         "title": "Preferences",
         "info": "Customize and personalize your PEP experience using the settings below.",
@@ -498,6 +539,10 @@
             "theme": {
                 "label": "Color theme",
                 "select": "Select a theme"
+            },
+            "lang": {
+                "label": "Language",
+                "select": "Select your language"
             }
         },
         "search": {
@@ -541,6 +586,29 @@
             "description": "PEP Web has been designed to provide a powerful rapid search of the entire psychoanalytic literature in English, French, German, Greek, Italian, Romanian, Spanish and Turkish. It is the result of an innovative, high quality series of technical developments and a considerable financial and scholarly investment. You can '<a href=\"http://support.pep-web.org/about-the-pep-archive/digitization-and-quality-control/\" target=\"_blank\">'read about the innovative developments required to produce and keep updating the PEP archive'</a>' and read '<a href=\"http://support.pep-web.org/about-pep/history-of-pep/\" target=\"_blank\">'about the history of the PEP archive'</a>'. You can even '<a href=\"http://support.pep-web.org/about-the-pep-archive/suggest-new-content/\" target=\"_blank\">'suggest new content'</a>' that you would like to see added to the PEP Archive. '<br><br>' For more information, see the '<a href=\"http://support.pep-web.org\" target=\"_blank\">'PEP Web support pages'</a>'"
         }
     },
+    "tour": {
+        "home": {
+            "title": "Home",
+            "text": "This button takes you home",
+            "buttons": {
+                "next": "Next"
+            }
+        },
+        "leftSidebar": {
+            "title": "Search",
+            "text": "This button shows/hides the search",
+            "buttons": {
+                "next": "Next"
+            }
+        },
+        "rightSidebar": {
+            "title": "Widgets",
+            "text": "This button shows/hides the widgets",
+            "buttons": {
+                "cancel": "Close"
+            }
+        }
+    },
     "accountInfo": {
         "title": "Account Info",
         "makeChangesOnPads": "Make changes (on PaDS)",
@@ -571,13 +639,16 @@
     "language": {
         "codes": {
             "enUS": "English",
-            "esES": "Spanish"
+            "esES": "Spanish",
+            "frFR": "French"
         }
     },
     "theme": {
         "themes": {
             "default": "Navy (default)",
-            "tomato": "Tomato"
+            "tomato": "Tomato",
+            "dark": "Dark",
+            "highContrast": "High Contrast"
         }
     },
     "fourOhFour": {

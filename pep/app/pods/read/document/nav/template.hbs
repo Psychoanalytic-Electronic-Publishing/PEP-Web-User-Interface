@@ -1,7 +1,7 @@
 <Page::Sidebar::Left as |Sidebar|>
     <Sidebar.content>
         {{#if (or this.paginator.metadata.fullCount this.isLoadingRoute)}}
-            <div class="bg-white border-divider-b p-3">
+            <div class="bg-primary border-divider-b p-3">
                 {{#if (and this.isLoadingRoute (not this.paginator.models))}}
                     <Loading::Read::Results />
                 {{else}}
@@ -13,9 +13,9 @@
                                 htmlSafe=true
                             }}
                             {{#if this.paginator.metadata.description}}
-                                <span class="text-muted">
-                                    {{t "search.description" description=this.paginator.metadata.description}}
-                                </span>
+                                <div class="text-muted small">
+                                    {{this.paginator.metadata.description}}
+                                </div>
                             {{/if}}
                         </h5>
                     </div>
@@ -136,7 +136,7 @@
                 {{/if}}
             </div>
         {{else}}
-            <div class="bg-white border-divider-b px-3 py-4 mb-2">
+            <div class="bg-primary border-divider-b px-3 py-4 mb-2">
                 <p class="text-muted">
                     {{t "read.document.findMore"}}
                 </p>

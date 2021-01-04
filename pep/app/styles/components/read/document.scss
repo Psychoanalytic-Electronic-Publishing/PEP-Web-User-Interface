@@ -124,7 +124,7 @@ $document-paragraph-indent: 1.5rem;
         }
         &.ftr,
         &.ftn {
-            font-size: 0.7rem;
+            font-size: $font-size-secondary;
             margin-left: 0px;
             margin-bottom: 0px;
             margin-right: 0px;
@@ -308,7 +308,9 @@ $document-paragraph-indent: 1.5rem;
     }
 
     .bibentry {
-        background-color: white;
+        background-color: $color-primary-background;
+        margin-left: 1.5rem;
+        text-indent: -1.5rem;
     }
 
     li {
@@ -337,5 +339,20 @@ $document-paragraph-indent: 1.5rem;
         h1 {
             font-size: 1.2rem;
         }
+    }
+    .glosstip {
+        background-color: $document-link-glosstip-bg;
+        &:hover {
+            color: $document-link-glosstip-hover;
+        }
+    }
+    .bibtip {
+        color: $document-link-bibliography;
+    }
+    .pgx {
+        color: $document-link-page;
+    }
+    .figuretip {
+        color: $document-link-figure;
     }
 }

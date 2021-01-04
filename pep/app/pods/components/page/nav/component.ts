@@ -9,6 +9,7 @@ import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
 import DrawerService from 'pep/services/drawer';
 import PepSessionService from 'pep/services/pep-session';
+import { SUPPORT_URL } from 'pep/constants/urls';
 
 interface PageNavArgs {
     openAboutModal: () => Promise<void>;
@@ -21,6 +22,8 @@ export default class PageNav extends Component<PageNavArgs> {
     @service drawer!: DrawerService;
     @service configuration!: ConfigurationService;
     @service currentUser!: CurrentUserService;
+
+    supportUrl = SUPPORT_URL;
 
     get readDisabled() {
         return !this.currentUser.lastViewedDocumentId;
@@ -64,5 +67,16 @@ export default class PageNav extends Component<PageNavArgs> {
     @action
     openAccountInfoModal() {
         return this.modal.open('user/info', {});
+    }
+
+    /**
+     * Open Help Modal
+     *
+     * @return {*}
+     * @memberof PageNav
+     */
+    @action
+    openHelpModal() {
+        return this.modal.open('help/preferences', {});
     }
 }

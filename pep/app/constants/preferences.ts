@@ -17,7 +17,10 @@ export enum PreferenceKey {
     SEARCH_TERM_FIELDS = 'searchTermFields',
     SEARCH_VIEW_TYPE = 'searchViewType',
     SEARCH_SORT_TYPE = 'searchSortType',
-    THEME = 'theme'
+    THEME = 'theme',
+    TOUR_ENABLED = 'tourEnabled',
+    HELP_DESCRIPTIONS_ENABLED = 'helpDescriptionsEnabled',
+    HELP_ICONS_ENABLED = 'helpIconsEnabled'
 }
 
 export interface UserPreferences {
@@ -33,6 +36,9 @@ export interface UserPreferences {
     searchPreviewEnabled?: boolean;
     searchSortType: SearchSort;
     theme: ThemeId;
+    tourEnabled: boolean;
+    helpDescriptionsEnabled: boolean;
+    helpIconsEnabled: boolean;
 }
 
 export type PreferenceChangeset = Partial<UserPreferences>;
@@ -57,7 +63,9 @@ export const COOKIE_PREFERENCES: PreferenceKey[] = [
     PreferenceKey.SEARCH_HIC_ENABLED,
     PreferenceKey.SEARCH_HIC_LIMIT,
     PreferenceKey.SEARCH_VIEW_TYPE,
-    PreferenceKey.SEARCH_SORT_TYPE
+    PreferenceKey.SEARCH_SORT_TYPE,
+    PreferenceKey.HELP_DESCRIPTIONS_ENABLED,
+    PreferenceKey.HELP_ICONS_ENABLED
 ];
 
 /**
@@ -68,18 +76,22 @@ export const COOKIE_PREFERENCES: PreferenceKey[] = [
 export const LOCALSTORAGE_PREFERENCES: PreferenceKey[] = [
     PreferenceKey.FAVORITES,
     PreferenceKey.READ_LATER,
-    PreferenceKey.SEARCH_PREVIEW_ENABLED
+    PreferenceKey.SEARCH_PREVIEW_ENABLED,
+    PreferenceKey.TOUR_ENABLED
 ];
 
 export const DEFAULT_USER_PREFERENCES: UserPreferences = {
     favorites: [],
     preferencesVersion: ENV.userPreferencesVersion,
-    lang: LanguageCode.enUS,
+    lang: LanguageCode.EnUS,
     searchPreviewEnabled: true,
     searchHICEnabled: true,
     searchHICLimit: 1,
     readLater: [],
     theme: ThemeId.DEFAULT,
     searchViewType: SearchViews[0],
-    searchSortType: SearchSorts[0]
+    searchSortType: SearchSorts[0],
+    tourEnabled: true,
+    helpDescriptionsEnabled: true,
+    helpIconsEnabled: true
 };

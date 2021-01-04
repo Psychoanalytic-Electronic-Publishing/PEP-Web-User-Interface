@@ -1,0 +1,668 @@
+{
+    "brand": {
+        "name": "PEP",
+        "nameFull": {
+            "psychoanalytic": "Psychoanalytic",
+            "electronic": "Electronic",
+            "publishing": "Publishing"
+        },
+        "copywrite": "&copy; Psychoanalytic Electronic Publishing (PEP)",
+        "slogan": "Una biblioteca psicoanalitica en la palma de su mano"
+    },
+    "common": {
+        "save": "Guardar",
+        "submit": "Subir",
+        "search": "Buscar",
+        "cancel": "Cancelar",
+        "close": "Cerrar",
+        "remove": "Borrar",
+        "goBack": "Atras",
+        "done": "Cerrar",
+        "export": "Exportar",
+        "print": "Imprimir",
+        "numResults": "{count} {count, plural, =1 {'<span class=\"text-muted \">'result'</span>'} other {'<span class=\"text-muted\">'results'</span>'}}",
+        "noResults": "No se encontraron resultados",
+        "loadingResults": "Cargando resultados...",
+        "loading": "Cargando...",
+        "filter": "Filtrar",
+        "viewAll": "Ver todos",
+        "help": "Ayuda",
+        "find": "Buscar",
+        "more": "Mas"
+    },
+    "serverErrors": {
+        "heading": "The following {count, plural, =1 {error} other {errors}} occurred while attempting to process your request.",
+        "undefined": "Sorry, an unexpected error has occurred.",
+        "unknown": {
+            "unexpected": "Sorry, an unexpected error has occurred."
+        }
+    },
+    "nav": {
+        "toggle": "Toggle navigation",
+        "home": "Inicio",
+        "search": "Buscar",
+        "browse": "Browse",
+        "read": "Leer",
+        "help": "Ayuda",
+        "user": {
+            "about": "Acerca",
+            "account": "Mi cuenta",
+            "preferences": "Preferencias",
+            "login": "Iniciar sesion",
+            "logout": "Cerrar sesion",
+            "accountInfo": "Informacion de la cuenta",
+            "loggedInViaIP": "Logged in via IP"
+        },
+        "support": {
+            "link": "Soporte",
+            "reportProblem": "Reportar un problema",
+            "preferences": "Personalizar ayuda"
+        }
+    },
+    "home": {
+        "title": "Psychoanalytic Electronic Publishing",
+        "heading": "PEP - Psychoanalytic Electronic Publishing",
+        "searchForDocs": "Search for documents",
+        "expertPick": {
+            "heading": "Recomendacion del dia",
+            "read": "Leer",
+            "loginAndRead": "Login and read",
+            "graphicFromTheArticle": "Imagen del articulo: {title}"
+        }
+    },
+    "search": {
+        "title": "Search",
+        "new": "Start a new search",
+        "description": "- {description}",
+        "exports": {
+            "csv": "Comma Separated Values (CSV)",
+            "ris": "Standard Tagged Format (RIS)",
+            "clipboard": "Clipboard",
+            "title": "Export"
+        },
+        "table": {
+            "author": "Author",
+            "year": "Year",
+            "title": "Title",
+            "source": "Source",
+            "kwicList": {
+                "empty": "No hits in context items found"
+            }
+        },
+        "hitsInContext": {
+            "label": {
+                "short": "Hits",
+                "full": "Hits in context"
+            },
+            "help": "Hits in context explanation goes here"
+        },
+        "sort": {
+            "label": "Sort:",
+            "year": "Year"
+        },
+        "item": {
+            "relatedDocuments": "This document has related documents",
+            "addToFavorites": "Add to favorites",
+            "removeFromFavorites": "Remove from favorites",
+            "addToReadLater": "Add to read later",
+            "removeFromReadLater": "Remove from read later",
+            "notifications": {
+                "success": {
+                    "addToFavorites": "Document added to favorites",
+                    "removeFromFavorites": "Document removed from favorites",
+                    "addToReadLater": "Document added to read later list",
+                    "removeFromReadLater": "Document removed from read later list"
+                },
+                "failure": {
+                    "favorites": "There was an error updating your favorites",
+                    "readLater": "There was an error updating your read later list"
+                }
+            }
+        },
+        "view": {
+            "label": "View:",
+            "biblio": "Bibliographic"
+        },
+        "empty": {
+            "heading": "Su busqueda comienza aqui",
+            "instructions": "Use the form on the left to enter terms or phrases and search our publication database.",
+            "tips": {
+                "heading": "Search tips",
+                "instructions": "Smart Search takes all kinds of search inputs:",
+                "tip1": "Find terms or keywords - to get the best search results, '<strong>'enter at least two terms at a time.'</strong>''<br>'This will make the search more precise, returning only the most relevant results.",
+                "tip2": "Paste a reference from an article",
+                "tip3": "Use a Journal name or part of a journal name",
+                "tip4": "Search on author name (or multiple authors)",
+                "tip5": "A title or part of a title (five or more words)",
+                "tip6": "Search by Year / Vol / Page #"
+            }
+        },
+        "results": {
+            "none": "No results found. Try using different search terms or phrases to find what you're looking for.",
+            "sidebar": {
+                "title": "{title} ({year})"
+            }
+        },
+        "form": {
+            "heading": "Buscar documentos",
+            "smartSearch": "Que está buscando?",
+            "savedSearch": {
+                "label": "Guardar busqueda",
+                "mine": "Mis busquedas guardadas",
+                "save": "Guardar esta busqueda"
+            },
+            "terms": {
+                "heading": "Busque terminos o frases",
+                "label": "Terminos y frases",
+                "remove": "Borrar terminos",
+                "add": "Añadir terminos",
+                "synonyms": {
+                    "title": "Incluir sinonimos"
+                }
+            },
+            "additional": {
+                "limitTo": {
+                    "title": "Limitar a..."
+                },
+                "cited": {
+                    "times": "Referencias en los ultimos cinco años"
+                },
+                "viewed": {
+                    "times": "Vistas en los ultimos "
+                }
+            },
+            "tooManyResults": {
+                "heading": "Try refining your search",
+                "numResults": "There are '<strong>'{count}'</strong>' {count, plural, =1 {result} other {results}} that match your criteria."
+            }
+        },
+        "refine": {
+            "heading": "Refine",
+            "instructions": "Check to limit results to only matching articles.",
+            "showLess": "Show less",
+            "showAll": "Show more",
+            "none": "No refine options available",
+            "apply": {
+                "label": "Refine search"
+            },
+            "option": {
+                "numResults": "({count})"
+            }
+        },
+        "preview": {
+            "maximize": "Maximize",
+            "minimize": "Minimize",
+            "fit": {
+                "on": "Enable resize to fit",
+                "off": "Disable resize to fit"
+            },
+            "read": "Read",
+            "mustBeLoggedIn": "You must be logged in to read or download this document.",
+            "accessLimited": "The full content of this document is not available. This may be due to your current subscription or publisher restrictions.",
+            "login": "Click here to login",
+            "download": {
+                "label": "Download",
+                "ePub": "ePub document",
+                "pdf": "PDF document",
+                "pdfOrig": "PDF (original) document"
+            }
+        },
+        "terms": {
+            "everywhere": {
+                "label": "Everywhere"
+            },
+            "author": {
+                "label": "Author"
+            },
+            "title": {
+                "label": "Title"
+            },
+            "dream": {
+                "label": "Dreams"
+            },
+            "quote": {
+                "label": "Quotes"
+            },
+            "reference": {
+                "label": "References"
+            },
+            "dialog": {
+                "label": "Dialogs"
+            },
+            "article": {
+                "label": "Article"
+            },
+            "startYear": {
+                "label": "Year"
+            },
+            "endYear": {
+                "label": "End Year"
+            },
+            "bibliography": {
+                "label": "Bilbiographies"
+            },
+            "cited": {
+                "label": "Cited this many times",
+                "shortLabel": "Cited #"
+            },
+            "viewed": {
+                "label": "Viewed this many times",
+                "shortLabel": "Viewed #"
+            }
+        },
+        "facets": {
+            "art_sourcetype": {
+                "label": "Source Type",
+                "values": {
+                    "book": "Book",
+                    "journal": "Journal",
+                    "videostream": "Video",
+                    "special": "Special"
+                }
+            },
+            "art_type": {
+                "label": "Article Type",
+                "values": {
+                    "ABS": "Abstract",
+                    "ANN": "Announcement",
+                    "ART": "Article",
+                    "COM": "Commentary",
+                    "ERA": "Errata",
+                    "PRO": "Profile",
+                    "REP": "Report",
+                    "REV": "Review",
+                    "SUP": "SUP",
+                    "TOC": "TOC",
+                    "VID": "Video"
+                }
+            },
+            "art_lang": {
+                "label": "Language",
+                "values": {
+                    "cs": "Czech",
+                    "de": "German",
+                    "el": "Greek",
+                    "en": "English",
+                    "es": "Spanish",
+                    "fr": "French",
+                    "he": "Hebrew",
+                    "it": "Italian",
+                    "ko": "Korean",
+                    "nl": "Dutch",
+                    "tr": "Turkish",
+                    "zh": "Chinese"
+                }
+            },
+            "art_kwds_str": {
+                "label": "Keywords"
+            },
+            "art_sourcetitleabbr": {
+                "label": "Source"
+            },
+            "glossary_terms": {
+                "label": "Glossary Terms"
+            },
+            "glossary_group_terms": {
+                "label": "Glossary Groups"
+            },
+            "art_year_int": {
+                "label": "Decade",
+                "option": "{year}'s"
+            },
+            "art_cited_5": {
+                "label": "Citation Count",
+                "option": "{range} citations"
+            },
+            "art_views_last12mos": {
+                "label": "View Count",
+                "option": "{range} views"
+            },
+            "art_authors": {
+                "label": "Author"
+            }
+        },
+        "viewPeriod": {
+            "week": "week",
+            "month": "month",
+            "6months": " 6 months",
+            "12months": "12 months",
+            "calYear": "calendar year"
+        }
+    },
+    "browse": {
+        "title": "Browse",
+        "selection": {
+            "journals": "Journals",
+            "books": {
+                "title": "Books",
+                "freud": "Freud's Collected Works",
+                "glossaries": "Glossaries and Dictionaries",
+                "other": "Other Classic Books"
+            },
+            "videos": "Videos",
+
+            "search": {
+                "noResults": "No results found for \"{term}\""
+            }
+        },
+        "alt": "Journal Banner",
+        "availableVolumes": "Available Volumes",
+        "journal": {
+            "volume": {
+                "title": "Volume {number} ({year})"
+            }
+        },
+        "gw": {
+            "volumes": "Freud, S. (1991). GESAMMELTE WERKE: CHRONOLOGISCH GEORDNET. Imago Publishing Co., Ltd., London."
+        },
+        "se": {
+            "volumes": "Strachey, J. (Ed.) The Standard Edition of the Complete Psychological Works of Sigmund Freud"
+        }
+    },
+    "read": {
+        "title": "Read",
+        "document": {
+            "page": "Page",
+            "findMore": "Want to find more articles and resources?",
+            "newSearch": "Start a new search",
+            "backToSearch": "Back to search",
+            "loginToRead": "You must be logged in to read the full document.",
+            "login": "Click here to login",
+            "image": {
+                "alt": "Article image {id}"
+            }
+        }
+    },
+    "relatedInfo": {
+        "title": "Informacion relacionada",
+        "batchClose": "Cerrar todo",
+        "batchOpen": "Mostrar todo",
+        "widgets": {
+            "expertPicks": {
+                "title": "Elecciones de los expertos",
+                "help": "Expert picks ...picked expertly for you."
+            },
+            "favorites": {
+                "title": "Favoritos",
+                "noResults": "You don't have any favorites. Add documents that you frequently view to your favorites for quick access",
+                "help": "You can save your favorite documents for easy access here."
+            },
+            "glossaryTerms": {
+                "title": "Palabras claves",
+                "view": "View complete glossary",
+                "noResults": "You must perform a search or view a document to see the glossary terms",
+                "help": "When reading a document, a word cloud of glossary terms will appear here."
+            },
+            "moreLikeThese": {
+                "title": "Más como esto",
+                "confidence": "Similarity Confidence: {number}%",
+                "noResults": "You must view a document to see the similar documents",
+                "help": "Using AI, we recommend documents that we think are similar to the current document your reading."
+            },
+            "mostCited": {
+                "title": "Más citados",
+                "help": "The most cited documents throughout our system can be viewed here."
+            },
+            "mostViewed": {
+                "title": "Más vistos",
+                "help": "The most viewed documents throughout our system can be viewed here."
+            },
+            "pastSearches": {
+                "title": "Busquedas anteriores",
+                "help": "Your past searches that you have made are saved here, for easy access."
+            },
+            "publisherInfo": {
+                "title": "Informacion de la editorial",
+                "view": "View information for {publisher}",
+                "noResults": "You must view a document to see the documents publisher information.",
+                "help": "Publisher information for the current document your viewing will appear here."
+            },
+            "readLater": {
+                "title": "Leer mas tarde",
+                "noResults": "You don't have any documents saved for later. Add documents that you want to view for quick access.",
+                "help": "Save items you want to read later and view them here."
+            },
+            "relatedDocuments": {
+                "title": "Documentos relacionados",
+                "noResults": "You must view a document to see the documents related to it. If you are already viewing one, this means no results have been found.",
+                "help": "Related documents to the document you are reading will show up here."
+            },
+            "relevantSearches": {
+                "title": "Relevant searches",
+                "help": "Related searches to the current document/search will go here."
+            },
+            "seminalPapers": {
+                "title": "Seminal papers",
+                "help": "Seminal papers can be viewed here."
+            },
+            "whatsNew": {
+                "title": "Que hay de nuevo?",
+                "issue": "Issue #{issueNum}, Vol {volNum} &bull; {updatedDate}",
+                "signUp": "You can now sign up to be notified when new content is added by entering your email below. When new content is added we will automatically send you an email with a list of what was added, with links to it on PEP-Web!",
+                "emailAddress": "Email Address",
+                "update": "activar notificaciones",
+                "help": "The newest additions to our system can be viewed here.",
+                "alerts": {
+                    "journals": "PEP-Web revista (does not include IJP Open)",
+                    "videos": "PEP-Web Videos",
+                    "ijp": "IJP open"
+                }
+            },
+            "yourInterests": {
+                "title": "Sus preferencias",
+                "help": "Puede ver sus preferencias aqui."
+            },
+            "videoPreview": {
+                "title": "Video mas reciente",
+                "help": "Mire aqui nuestro video mas reciente."
+            }
+        }
+    },
+    "mostCited": {
+        "pageTitle": "Articulos mas citados",
+        "period": "Periodo",
+        "periodSelect": "Seleccione un periodo",
+        "fiveYears": "5 años",
+        "tenYears": "10 años",
+        "twentyYears": "20 años",
+        "allYears": "Todos los años",
+        "author": "Autor",
+        "journal": "Revista",
+        "title": "Titulo",
+        "table": {
+            "title": "Titulo",
+            "citations": "Referencias de la publicacion",
+            "fiveYears": "Cit. Ultimos 5 años",
+            "tenYears": "Cit. ultimos 10 años",
+            "twentyYears": "Cit. last 20 años",
+            "allTime": "Cit. todos los años"
+        }
+    },
+    "mostViewed": {
+        "pageTitle": "Articulos mas vistos",
+        "period": "Periodo",
+        "table": {
+            "publication": "Publication",
+            "popularity": "Popularity by requests",
+            "week": "Req. last week",
+            "month": "Req. last month",
+            "sixMonths": "Req. last 6 months",
+            "twelveMonths": "Req. last 12 months",
+            "calendarYear": "Req. last calendar year"
+        }
+    },
+    "publisherInfo": {
+        "title": "Publisher Information"
+    },
+    "glossary": {
+        "title": "Glossary",
+        "searchForTerm": "Buscar esta palabra"
+    },
+    "figure": {
+        "title": "Figure {id}"
+    },
+    "login": {
+        "title": "Login",
+        "info": "Este es la database de textos completos, Psychoanalytic Electronic Publishing Archive. Disponible gratuitamente para buscar, ver la tabla de contenidos y mirar resumenes. Sin embargo used debera suscribirse para tener acceso a los articulos y libros completos.",
+        "error": "Unable to login with the provided credentials.",
+        "username": "Username",
+        "password": "Password",
+        "notAMember": "Not a member?",
+        "clickToSubscribe": "Click here to subscribe",
+        "success": "You are now logged in.",
+        "forgotPassword": "Forgot Password?",
+        "genericError": "Unable to login. There is a problem behind the scenes, and we are looking into it. Please try again later."
+    },
+    "help": {
+        "preferences": {
+            "info": "Customize the help provide by the PEP system below.",
+            "tour": {
+                "title": "Intro tour",
+                "description": "Turning this on will show you the tour the next time you visit PEP."
+            },
+            "descriptions": {
+                "title": "Help descriptions",
+                "description": "Turning this on shows helpful descriptions when applicable."
+            },
+            "icons": {
+                "title": "Help icons",
+                "description": "Toggling this will show/hide the help icons throughout the site. These icons have helpful hints and descriptions of functionality that will make your life easier."
+            }
+        }
+    },
+    "preferences": {
+        "title": "Preferencias",
+        "info": "Customize and personalize your PEP experience using the settings below.",
+        "general": {
+            "heading": "General settings",
+            "theme": {
+                "label": "Color theme",
+                "select": "Select a theme"
+            },
+            "lang": {
+                "label": "Language",
+                "select": "Select your language"
+            }
+        },
+        "search": {
+            "heading": "Buscar",
+            "hic": {
+                "limit": "Hits in context limit"
+            },
+            "preview": {
+                "label": "On search result selection",
+                "select": "Select your desired behavior",
+                "enabled": "Display a preview pane",
+                "disabled": "Open the full document"
+            }
+        }
+    },
+    "print": {
+        "author": "Author",
+        "year": "Year",
+        "title": "Title",
+        "source": "Source"
+    },
+    "about": {
+        "title": "Acerca",
+        "version": {
+            "title": "Version",
+            "client": "Client: {versionNumber}",
+            "server": "Server: {versionNumber}",
+            "data": "DataSource: {versionNumber}"
+        },
+        "status": {
+            "title": "Status",
+            "ok": "All systems operational",
+            "down": "Database maintenance is in progress"
+        },
+        "web": {
+            "title": "PEP Web",
+            "description": " This new PEP Web user interface has been designed to make it easier to search the PEP Archive more efficiently and effectively with maximum accessibility in mind, and to take advantage of the latest technology to personalize your user experience. This is just the first phase of an ongoing re-envisioning of the PEP Web system.. In the near future, we will use advanced AI techniques to help find information in the archive and take your research to new levels.."
+        },
+        "archive": {
+            "title": "PEP Archive",
+            "description": "PEP Web has been designed to provide a powerful rapid search of the entire psychoanalytic literature in English, French, German, Greek, Italian, Romanian, Spanish and Turkish. It is the result of an innovative, high quality series of technical developments and a considerable financial and scholarly investment. You can '<a href=\"http://support.pep-web.org/about-the-pep-archive/digitization-and-quality-control/\" target=\"_blank\">'read about the innovative developments required to produce and keep updating the PEP archive'</a>' and read '<a href=\"http://support.pep-web.org/about-pep/history-of-pep/\" target=\"_blank\">'about the history of the PEP archive'</a>'. You can even '<a href=\"http://support.pep-web.org/about-the-pep-archive/suggest-new-content/\" target=\"_blank\">'suggest new content'</a>' that you would like to see added to the PEP Archive. '<br><br>' For more information, see the '<a href=\"http://support.pep-web.org\" target=\"_blank\">'PEP Web support pages'</a>'"
+        }
+    },
+    "tour": {
+        "home": {
+            "title": "Home",
+            "text": "This button takes you home",
+            "buttons": {
+                "next": "Next"
+            }
+        },
+        "leftSidebar": {
+            "title": "Search",
+            "text": "This button shows/hides the search",
+            "buttons": {
+                "next": "Next"
+            }
+        },
+        "rightSidebar": {
+            "title": "Widgets",
+            "text": "This button shows/hides the widgets",
+            "buttons": {
+                "cancel": "Close"
+            }
+        }
+    },
+    "accountInfo": {
+        "title": "Account Info",
+        "makeChangesOnPads": "Make changes (on PaDS)",
+        "registeredUser": {
+            "title": "Registered User",
+            "name": "Name: {name}",
+            "email": "Email: {email}",
+            "username": "Username: {username}",
+            "loggedInViaIP": "Logged in via IP"
+        },
+        "activeSubscriptions": {
+            "title": "Active Subscriptions",
+            "subscription": "{product} from {start, date, short} to {end, date, short}"
+        }
+    },
+    "exports": {
+        "clipboard": {
+            "success": "Copied to the clipboard",
+            "failure": "There was an issue copying to the clipboard. Please try again later."
+        }
+    },
+    "document": {
+        "text": {
+            "relatedBibliography": "This specific reference was not found to match any articles on PEP. However, using artificial intelligence, our software has found a reference which appears related, or may in some cases be a republication of the same article. '<div class=\"text-muted small mt-2\">'Disclaimer: This link is provided with the intent of possibly providing a relevant match where none would otherwise be provided. As it is by nature imprecise, and we are still refining the matching methods, not all references may actually be a close enough match to meet your needs'</div>'",
+            "error": "Failed to load the document. Please contact a PEP administrator for assistance."
+        }
+    },
+    "language": {
+        "codes": {
+            "enUS": "English",
+            "esES": "Spanish",
+            "frFR": "French"
+        }
+    },
+    "theme": {
+        "themes": {
+            "default": "Navy (default)",
+            "tomato": "Tomato",
+            "dark": "Dark",
+            "highContrast": "High Contrast"
+        }
+    },
+    "fourOhFour": {
+        "title": "404",
+        "subtitle": "Page not found.",
+        "message": "The page you are looking for might have been removed, or is temporarily unavailable. ☹ Please try again later, or contact an administrator if the problem persists."
+    },
+    "fourOhThree": {
+        "title": "403",
+        "subtitle": "Access forbidden.",
+        "message": "Sorry, you do not have permission to access this page. ☹ Please contact an administrator if you think this is an error."
+    },
+    "fiveHundred": {
+        "title": "500",
+        "subtitle": "Something went wrong.",
+        "message": "It seems an unexpected error has occurred... we're really sorry about that! ☹ Please try again later, or contact an administrator if the problem persists."
+    }
+}

@@ -3,11 +3,11 @@
     font-size: 0.65rem;
 
     &-icon-background {
-        color: $white;
+        color: $color-help-tooltip-background;
     }
 
     &-icon-foreground {
-        color: darken($input-border-color, 15%);
+        color: $color-help-tooltip-foreground;
     }
 
     .svg-inline--fa.fa-stack-1x {

@@ -12,15 +12,6 @@ module('Integration | Component | page/sidebar/widgets/relevant-searches', funct
         this.set('openWidgets', []);
         await render(hbs`<Page::Sidebar::Widgets::RelevantSearches @openWidgets{{this.openWidgets}} />`);
 
-        assert.equal(this.element.textContent?.trim(), 'Relevant searches');
-
-        // Template block usage:
-        await render(hbs`
-        <Page::Sidebar::Widgets::RelevantSearches @openWidgets{{this.openWidgets}} >
-        template block text
-        </Page::Sidebar::Widgets::RelevantSearches>
-    `);
-
-        assert.equal(this.element.textContent?.trim(), 'Relevant searches');
+        assert.ok(this.element.textContent);
     });
 });

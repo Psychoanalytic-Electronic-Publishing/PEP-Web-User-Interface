@@ -43,16 +43,51 @@
                         @disabled={{this.readDisabled}}
                         class="list-group-item list-group-item-action"
                     >
-                        <FaIcon @icon="list" @fixedWidth={{true}} class="mr-2" />
+                        <FaIcon @icon="book-reader" @fixedWidth={{true}} class="mr-2" />
                         {{t "nav.read"}}
                     </LinkTo>
                 </Page::Drawer::NavItem>
                 <Page::Drawer::NavItem class="mt-1">
                     <LinkTo @route="browse" class="list-group-item list-group-item-action">
-                        <FaIcon @icon="list" @fixedWidth={{true}} class="mr-2" />
+                        <FaIcon @icon="books" @fixedWidth={{true}} class="mr-2" />
                         {{t "nav.browse"}}
                     </LinkTo>
                 </Page::Drawer::NavItem>
+
+                <Page::Drawer::NavMenu
+                    @title={{t "nav.help"}}
+                    @isOpen={{this.isHelpMenuOpen}}
+                    @toggle={{fn (mut this.isHelpMenuOpen)}}
+                    class="mt-1"
+                >
+                    <Page::Drawer::NavItem class="mt-1">
+                        <a
+                            href={{this.supportUrl}}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="list-group-item list-group-item-action"
+                        >
+                            <FaIcon @icon="external-link" @fixedWidth={{true}} class="text-muted" />
+                            {{t "nav.support.link"}}
+                        </a>
+                    </Page::Drawer::NavItem>
+                    <Page::Drawer::NavItem class="mt-1">
+                        <button type="button" class="list-group-item list-group-item-action">
+                            <FaIcon @icon="comment-exclamation" @fixedWidth={{true}} class="text-muted" />
+                            {{t "nav.support.reportProblem"}}
+                        </button>
+                    </Page::Drawer::NavItem>
+                    <Page::Drawer::NavItem class="mt-1">
+                        <button
+                            type="button"
+                            class="list-group-item list-group-item-action"
+                            {{on "click" this.openHelpModal}}
+                        >
+                            <FaIcon @icon="hands-helping" @fixedWidth={{true}} class="text-muted" />
+                            {{t "nav.support.preferences"}}
+                        </button>
+                    </Page::Drawer::NavItem>
+                </Page::Drawer::NavMenu>
                 <Page::Drawer::NavMenu
                     @title={{t "nav.user.account"}}
                     @isOpen={{this.isUserMenuOpen}}
@@ -67,18 +102,6 @@
                         >
                             <FaIcon @icon="cog" @fixedWidth={{true}} class="mr-2" />
                             {{t "nav.user.preferences"}}
-                        </button>
-                    </Page::Drawer::NavItem>
-                    <Page::Drawer::NavItem class="mt-1">
-                        <button type="button" class="list-group-item list-group-item-action">
-                            <FaIcon @icon="question-square" @fixedWidth={{true}} class="mr-2" />
-                            {{t "nav.user.help"}}
-                        </button>
-                    </Page::Drawer::NavItem>
-                    <Page::Drawer::NavItem class="mt-1">
-                        <button type="button" class="list-group-item list-group-item-action">
-                            <FaIcon @icon="comment-exclamation" @fixedWidth={{true}} class="mr-2" />
-                            {{t "nav.user.reportProblem"}}
                         </button>
                     </Page::Drawer::NavItem>
                     <Page::Drawer::NavItem class="mt-1">

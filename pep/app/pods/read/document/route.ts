@@ -203,7 +203,17 @@ export default class ReadDocument extends PageNav(Route) {
         if (results && resultsMeta) {
             this.searchResults = results;
             this.searchResultsMeta = resultsMeta;
-            this.searchParams = pastQueryParams;
+
+            const searchParams = pastQueryParams ?? {};
+            // If either search terms or facets exists, parse the json as they are coming from the query params
+            if (pastQueryParams?.searchTerms) {
+                searchParams.searchTerms = JSON.parse(pastQueryParams.searchTerms);
+            }
+            if (pastQueryParams?.facets) {
+                searchParams.facets = JSON.parse(pastQueryParams.facets);
+            }
+
+            this.searchParams = searchParams;
         }
     }
 
@@ -220,6 +230,7 @@ export default class ReadDocument extends PageNav(Route) {
         //@see https://github.com/emberjs/ember.js/issues/18981
         //@ts-ignore
         super.setupController(controller, model);
+
         copyToController(this.searchParams, controller);
         controller.paginator = usePagination<Document, any>({
             context: controller,

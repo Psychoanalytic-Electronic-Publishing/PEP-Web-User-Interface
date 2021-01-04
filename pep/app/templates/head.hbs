@@ -3,13 +3,7 @@ Add content you wish automatically added to the documents head
 here. The 'model' available in this template can be populated by
 setting values on the 'head-data' service.
 }}
-<title>
-    {{this.model.title}}
-</title>
+
 <meta name="description" content="A Psychoanalytic Library at your fingertips" />
-{{#if this.model.themePath}}
-    <link integrity="" rel="stylesheet" href={{this.model.themePath}} />
-    <style integrity="" rel="stylesheet" id="linkColors">
-        {{this.model.linkColors}}
-    </style>
-{{/if}}
+<link integrity="" rel="stylesheet" href={{this.model.themePath}} />
+<style integrity="" rel="stylesheet" id="linkColors"></style>

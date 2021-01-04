@@ -22,7 +22,9 @@ module.exports = function(env) {
             'CLIENT_ID',
             'COOKIE_DOMAIN',
             'COOKIE_SECURE',
-            'COOKIE_SAME_SITE'
+            'COOKIE_SAME_SITE',
+            'GOOGLE_ANALYTICS_ID',
+            'GOOGLE_ANALYTICS_ENVIRONMENT'
         ],
         fastbootAllowedKeys: [
             'BUILD_VERSION',
@@ -40,7 +42,9 @@ module.exports = function(env) {
             'CLIENT_ID',
             'COOKIE_DOMAIN',
             'COOKIE_SECURE',
-            'COOKIE_SAME_SITE'
+            'COOKIE_SAME_SITE',
+            'GOOGLE_ANALYTICS_ID',
+            'GOOGLE_ANALYTICS_ENVIRONMENT'
         ],
         failOnMissingKey: false,
         path: path.join(path.dirname(__dirname), `../.env-${process.env.DEPLOY_TYPE || env}`)

@@ -20,12 +20,16 @@
 // ---------------------------
 // Backgrounds
 // ---------------------------
+.bg-primary {
+    background-color: $color-primary-background !important;
+}
+
+.bg-primary-well {
+    background-color: $color-primary-well;
+}
+
 .bg-gradient-primary {
-    background-image: linear-gradient(
-        to right,
-        $color-brand-primary 0,
-        saturate(lighten($color-brand-primary, 20%), 20%) 100%
-    );
+    background: $gradient-primary;
 }
 
 .bg-backdrop-well {
@@ -34,6 +38,10 @@
 
 .bg-backdrop {
     background-color: $color-backdrop;
+}
+
+.bg-body {
+    background-color: $body-bg;
 }
 
 // ---------------------------

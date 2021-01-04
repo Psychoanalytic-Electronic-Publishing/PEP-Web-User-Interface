@@ -1,5 +1,7 @@
-import Service from '@ember/service';
 import Evented from '@ember/object/evented';
+import Service from '@ember/service';
+
+import { LanguageCode } from 'pep/constants/lang';
 
 interface Data {
     authenticated: {
@@ -8,6 +10,7 @@ interface Data {
 }
 declare module 'ember-intl/services/intl' {
     export default class IntlService extends Service.extend(Evented) {
+        addTranslations(lang: LanguageCode, translationsAsJson: any): void;
         locale: any;
         primaryLocale: any;
 

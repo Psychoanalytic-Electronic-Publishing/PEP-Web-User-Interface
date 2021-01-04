@@ -9,6 +9,7 @@ module.exports = function(environment) {
         rootURL: '/',
         routerRootURL: process.env.ROOT_URL,
         locationType: 'auto',
+
         EmberENV: {
             LOG_STACKTRACE_ON_DEPRECATION: false,
             FEATURES: {
@@ -25,6 +26,24 @@ module.exports = function(environment) {
             // Here you can pass flags/options to your application instance
             // when it is created
         },
+
+        metricsAdapters: [
+            {
+                name: 'GoogleAnalytics',
+                environments: ['development', 'production'],
+                config: {
+                    id: process.env.GOOGLE_ANALYTICS_ID,
+                    // Use `analytics_debug.js` in development
+                    debug: process.env.GOOGLE_ANALYTICS_ENVIRONMENT === 'development',
+                    // Use verbose tracing of GA events
+                    trace: process.env.GOOGLE_ANALYTICS_ENVIRONMENT === 'development',
+                    // Ensure development env hits aren't sent to GA
+                    sendHitTask: process.env.GOOGLE_ANALYTICS_ENVIRONMENT !== 'development'
+                    // Specify Google Analytics plugins
+                    // require: ['ecommerce']
+                }
+            }
+        ],
 
         fontawesome: {
             defaultPrefix: 'fal'
@@ -50,6 +69,10 @@ module.exports = function(environment) {
                 console: true,
                 api: false
             }
+        },
+
+        'ember-cli-head': {
+            suppressBrowserRender: true
         },
 
         fastboot: {

@@ -1,16 +1,22 @@
 import { action } from '@ember/object';
 import Transition from '@ember/routing/-private/transition';
 import Route from '@ember/routing/route';
+import RouterService from '@ember/routing/router-service';
 import { inject as service } from '@ember/service';
 
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import IntlService from 'ember-intl/services/intl';
+import MetricService from 'ember-metrics/services/metrics';
 import MediaService from 'ember-responsive/services/media';
+import TourService, { Step } from 'ember-shepherd/services/tour';
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 
+import { PreferenceKey } from 'pep/constants/preferences';
+import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import PageLayout from 'pep/mixins/page-layout';
 import { ApiServerErrorResponse } from 'pep/pods/application/adapter';
+import ApplicationController from 'pep/pods/application/controller';
 import AuthService from 'pep/services/auth';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
@@ -23,6 +29,8 @@ import ThemeService from 'pep/services/theme';
 export default class Application extends PageLayout(Route.extend(ApplicationRouteMixin)) {
     routeAfterAuthentication = 'index';
 
+    @service router!: RouterService;
+    @service metrics!: MetricService;
     @service('pep-session') session!: PepSessionService;
     @service fastboot!: FastbootService;
     @service media!: MediaService;
@@ -35,6 +43,19 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
     @service lang!: LangService;
     @service loadingBar!: LoadingBarService;
     @service sidebar!: SidebarService;
+    @service tour!: TourService;
+
+    constructor() {
+        super(...arguments);
+
+        let router = this.router;
+        router.on('routeDidChange', () => {
+            const page = router.currentURL;
+            const title = router.currentRouteName || 'unknown';
+
+            this.metrics.trackPage({ page, title });
+        });
+    }
 
     /**
      * App setup and configuration tasks
@@ -42,10 +63,10 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
      * So that any user session-specific preferences are applied
      * @returns {Promise<void>}
      */
-    appSetup() {
+    async appSetup() {
         this.currentUser.setup();
-        this.theme.setup();
-        this.lang.setup();
+        await this.theme.setup();
+        await this.lang.setup();
         return this.configuration.setup();
     }
 
@@ -64,22 +85,6 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
         // since we do not currently cache ajax service requests
         // in the fastboot shoebox (like ember-data does)
 
-        // if (this.fastboot.isFastBoot) {
-        //     // If your not logged in yet - give IP auth a try
-        //     if (!this.session.isAuthenticated) {
-        //         try {
-        //             await this.session.authenticate('authenticator:ip');
-        //         } catch (errors) {
-        //             this.session.invalidate();
-        //         }
-        //         // If you are logged in, but your currently authenticated using IP - try again to ensure you didn't change locations
-        //         // But here we don't wait for the promise to return as that would cause a FOUC
-        //     } else if (this.session?.data?.authenticated?.SessionType === SessionType.IP) {
-        //         this.session.authenticate('authenticator:ip').catch(() => {
-        //             this.session.invalidate();
-        //         });
-        //     }
-        // }
         if (this.fastboot.isFastBoot && !this.session.isAuthenticated) {
             try {
                 await this.session.authenticate('authenticator:ip');
@@ -129,6 +134,120 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
         } else {
             //@ts-ignore TODO we need a way to inform TS about class members coming from Ember-style mixins
             super.sessionAuthenticated(...arguments);
+        }
+    }
+
+    /**
+     * Sets up the tour by providing options and steps to ember-shepherd
+     *
+     * @memberof Application
+     */
+    async setupTour() {
+        const sizeClass = this.media.isMobile ? 'mobile-tour' : 'desktop-tour';
+        this.tour.set('defaultStepOptions', {
+            classes: `${sizeClass} ${this.theme.currentTheme.id}`,
+            cancelIcon: {
+                enabled: false
+            },
+            scrollTo: true,
+            popperOptions: {
+                modifiers: [{ name: 'offset', options: { offset: [0, 10] } }]
+            }
+        });
+        this.tour.set('disableScroll', true);
+        this.tour.set('modal', true);
+        const steps: Step[] = [];
+        if (this.media.isMobile) {
+            steps.push({
+                id: 'home',
+                attachTo: {
+                    element: '.navbar .navbar-toggler',
+                    on: 'bottom'
+                },
+
+                text: this.intl.t('tour.home.text'),
+                title: this.intl.t('tour.home.title'),
+                buttons: [
+                    {
+                        text: this.intl.t('tour.home.buttons.next'),
+                        type: 'next'
+                    }
+                ]
+            });
+        } else {
+            steps.push({
+                id: 'home',
+                attachTo: {
+                    element: '.nav-item.home',
+                    on: 'auto'
+                },
+                text: this.intl.t('tour.home.text'),
+                title: this.intl.t('tour.home.title'),
+                buttons: [
+                    {
+                        text: this.intl.t('tour.home.buttons.next'),
+                        type: 'next'
+                    }
+                ]
+            });
+        }
+        steps.push(
+            {
+                id: 'toggle-left',
+                attachTo: {
+                    element: '.sidebar-left .sidebar-toggle-handle',
+                    on: 'auto'
+                },
+                classes: 'tour-left-sidebar-spacing',
+                text: this.intl.t('tour.leftSidebar.text'),
+                title: this.intl.t('tour.leftSidebar.title'),
+                buttons: [
+                    {
+                        text: this.intl.t('tour.leftSidebar.buttons.next'),
+                        type: 'next'
+                    }
+                ],
+                scrollTo: true
+            },
+            {
+                id: 'toggle-right',
+                attachTo: {
+                    element: '.sidebar-right .sidebar-toggle-handle',
+                    on: 'left'
+                },
+                classes: 'tour-right-sidebar-spacing',
+                text: this.intl.t('tour.rightSidebar.text'),
+                title: this.intl.t('tour.rightSidebar.title'),
+                buttons: [
+                    {
+                        text: this.intl.t('tour.rightSidebar.buttons.cancel'),
+                        type: 'cancel'
+                    }
+                ],
+                when: {
+                    show: () => {
+                        this.currentUser.updatePrefs({ [PreferenceKey.TOUR_ENABLED]: false });
+                    }
+                }
+            }
+        );
+
+        await this.tour.addSteps(steps);
+        this.tour.start();
+    }
+
+    /**
+     * If the tour is enabled, show it
+     *
+     * @param {ApplicationController} controller
+     * @param {*} model
+     * @memberof Application
+     */
+    @dontRunInFastboot
+    async setupController(controller: ApplicationController, model: any) {
+        super.setupController(controller, model);
+        if (this.currentUser.preferences?.tourEnabled) {
+            this.setupTour();
         }
     }
 

@@ -77,6 +77,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
         theme: 'light',
         allowHTML: true,
         interactive: true,
+        hideOnClick: false,
         trigger: 'mouseenter focus click',
         onClickOutside(instance: Instance<Props>) {
             instance.hide();
@@ -205,13 +206,20 @@ export default class DocumentText extends Component<DocumentTextArgs> {
         } else if (type === DocumentLinkTypes.PAGE) {
             const reference = attributes.getNamedItem('data-r')?.nodeValue;
             const referenceArray = reference?.split(/\.(?=[^\.]+$)/) ?? [];
-            const documentId = referenceArray[0];
+            let documentId = referenceArray[0];
             const apiPage = referenceArray[1];
-            const page = parseInt(apiPage.substring(1), 10);
-            if (documentId === this.args.document.id) {
+            let page;
+            // Some cases, these links have a page number. In some cases, they dont :(
+            if (apiPage[0].toLowerCase() === 'p') {
+                page = parseInt(apiPage.substring(1), 10);
+            } else {
+                documentId = reference ?? '';
+            }
+
+            if (documentId === this.args.document.id && page) {
                 //scroll to page number
                 this.scrollToPage(page);
-            } else {
+            } else if (documentId) {
                 //transition to a different document with a specific page
                 this.router.transitionTo('read.document', documentId, {
                     queryParams: {
@@ -260,6 +268,24 @@ export default class DocumentText extends Component<DocumentTextArgs> {
             const targetSearchHit = attributes.getNamedItem('data-target-search-hit')?.nodeValue;
             if (targetSearchHit) {
                 this.scrollToSearchHit(targetSearchHit);
+            }
+        } else if (type === DocumentLinkTypes.BANNER) {
+            const parent = target.parentElement;
+            if (parent) {
+                const sourceCode = parent.getAttribute('data-journal-code');
+                if (sourceCode) {
+                    this.router.transitionTo('browse.journal', sourceCode);
+                }
+            }
+        } else if (type === DocumentLinkTypes.TITLE) {
+            const parent = target.parentElement;
+            if (parent) {
+                const sourceCode = parent.getAttribute('data-journal-code');
+                const volume = parent.getAttribute('data-volume');
+
+                if (sourceCode && volume) {
+                    this.router.transitionTo('browse.journal.volume', sourceCode, volume);
+                }
             }
         }
     }

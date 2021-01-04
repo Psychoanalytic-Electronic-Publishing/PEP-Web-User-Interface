@@ -23,4 +23,9 @@
     &-status-icon {
         right: 1rem;
     }
+
+    &-search-input {
+        background-color: $ember-power-select-background-color;
+        color: $input-color;
+    }
 }

@@ -3,17 +3,40 @@
     @isOpen={{this.isOpen}}
     @toggle={{fn @toggleIsOpen this.widget}}
     class="mb-2"
-    ...attributes
-as |Panel|>
-    <Panel.header @title={{t "relatedInfo.widgets.pastSearches.title"}} />
+    ...attributes as |Panel|
+>
+    <Panel.header
+        @title={{t "relatedInfo.widgets.pastSearches.title"}}
+        @tooltip={{t "relatedInfo.widgets.pastSearches.help"}}
+    />
     <Panel.body>
         <ol>
-            {{!-- template-lint-disable no-bare-strings --}}
-            <li><a href="#">Freud and Lacan</a></li>
-            <li><a href="#">emotional distress</a></li>
-            <li><a href="#">family discord</a></li>
-            <li><a href="#">separation and anxiety</a></li>
-            <li><a href="#">fear and loathing</a></li>
+            {{! template-lint-disable no-bare-strings }}
+            <li>
+                <a href="#">
+                    Freud and Lacan
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    emotional distress
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    family discord
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    separation and anxiety
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    fear and loathing
+                </a>
+            </li>
         </ol>
     </Panel.body>
 </CollapsiblePanel>

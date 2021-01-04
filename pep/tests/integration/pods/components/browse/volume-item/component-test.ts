@@ -11,18 +11,9 @@ module('Integration | Component | browse/volume-item', function(hooks) {
     test('it renders', async function(assert) {
         // Set any properties with this.set('myProperty', 'value');
         // Handle any actions with this.set('myAction', function(val) { ... });
-
-        await render(hbs`{{browse/volume-item}}`);
+        this.set('openResult', () => {});
+        await render(hbs`{{browse/volume-item openResult=openResult}}`);
 
         assert.equal(this.element.textContent?.trim(), '');
-
-        // Template block usage:
-        await render(hbs`
-      {{#browse/volume-item}}
-        template block text
-      {{/browse/volume-item}}
-    `);
-
-        assert.equal(this.element.textContent?.trim(), 'template block text');
     });
 });
