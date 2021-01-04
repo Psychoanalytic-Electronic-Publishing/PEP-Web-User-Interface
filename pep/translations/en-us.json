@@ -543,6 +543,10 @@
             "lang": {
                 "label": "Language",
                 "select": "Select your language"
+            },
+            "fontSize": {
+                "label": "Font Size",
+                "select": "Select your preferred font size"
             }
         },
         "search": {

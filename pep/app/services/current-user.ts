@@ -1,12 +1,15 @@
 import Service, { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 
+import Body from 'ember-body-class2';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import CookiesService from 'ember-cookies/services/cookies';
 import DS from 'ember-data';
+import IntlService from 'ember-intl/services/intl';
 
 import ENV from 'pep/config/environment';
 import { DATE_FOREVER } from 'pep/constants/dates';
+import { AvailableFontSizes, FONT_SIZE_DEFAULT, FontSizes } from 'pep/constants/fonts';
 import {
     COOKIE_PREFERENCES,
     DEFAULT_USER_PREFERENCES,
@@ -27,6 +30,9 @@ export default class CurrentUserService extends Service {
     @service('pep-session') session!: PepSessionService;
     @service fastboot!: FastbootService;
     @service cookies!: CookiesService;
+    @service intl!: IntlService;
+    // @ts-ignore this does exist
+    @service('-document') document!: any;
 
     @tracked user: User | null = null;
     @tracked preferences?: UserPreferences;
@@ -255,4 +261,39 @@ export default class CurrentUserService extends Service {
         const prefs = this.preferences;
         return prefs?.[key] ?? [];
     }
+
+    setFontSize(size: FontSizes) {
+        const document = this.document;
+        let target = document.body;
+        Body.addClass(target, 'font-xs');
+        this.updatePrefs({ [PreferenceKey.FONT_SIZE]: size });
+    }
+    get availableFontSizes() {
+        return AvailableFontSizes.map((size) => ({
+            ...size,
+            label: this.intl.t(size.label)
+        }));
+    }
+
+    get fontSize() {
+        const fontSizes = AvailableFontSizes;
+        const size = fontSizes.find((item) => item.id === this.preferences?.fontSize) ?? FONT_SIZE_DEFAULT;
+        return size;
+    }
+
+    // addClass(element, className) {
+    //     let existingClass = element.getAttribute('class');
+
+    //     if (existingClass) {
+    //         let classes = existingClass.split(' ');
+
+    //         if (~classes.indexOf(className)) {
+    //             return;
+    //         }
+
+    //         element.setAttribute('class', `${existingClass} ${className}`);
+    //     } else {
+    //         element.setAttribute('class', className);
+    //     }
+    // }
 }

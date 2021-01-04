@@ -3,6 +3,7 @@ import Transition from '@ember/routing/-private/transition';
 import Route from '@ember/routing/route';
 import RouterService from '@ember/routing/router-service';
 import { inject as service } from '@ember/service';
+import { tracked } from '@glimmer/tracking';
 
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import NotificationService from 'ember-cli-notifications/services/notifications';

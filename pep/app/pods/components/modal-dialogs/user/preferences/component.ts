@@ -7,6 +7,7 @@ import { enqueueTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
 import IntlService from 'ember-intl/services/intl';
 
+import { FontSize, FontSizes } from 'pep/constants/fonts';
 import { LanguageCode } from 'pep/constants/lang';
 import { PreferenceKey, UserPreferences } from 'pep/constants/preferences';
 import { ThemeId } from 'pep/constants/themes';
@@ -34,6 +35,17 @@ export default class ModalDialogsUserPreferences extends Component<ModalDialogsU
     @action
     done() {
         this.args.onClose();
+    }
+
+    /**
+     * Update font size
+     *
+     * @param {FontSize} size
+     * @memberof ModalDialogsUserPreferences
+     */
+    @action
+    updateFontSize(size: FontSizes) {
+        this.currentUser.setFontSize(size);
     }
 
     /**

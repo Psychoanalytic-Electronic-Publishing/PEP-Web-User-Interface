@@ -1,4 +1,9 @@
-<ModalDialog @onClose={{@onClose}} @size="md" @clickOutsideToClose={{false}} @closable={{not this.updatePreferenceTask.isRunning}} as |Modal|>
+<ModalDialog
+    @onClose={{@onClose}}
+    @size="md"
+    @clickOutsideToClose={{false}}
+    @closable={{not this.updatePreferenceTask.isRunning}} as |Modal|
+>
     <Modal.header @title={{t "preferences.title"}} />
     <Modal.body>
         <p class="text-muted">
@@ -22,7 +27,7 @@
                     />
                 </div>
             </div>
-            <div class="form-row">
+            <div class="form-row mb-3">
                 <div class="col-sm-7">
                     <FlSelect
                         @options={{this.lang.availableLanguages}}
@@ -33,6 +38,20 @@
                         @emptyOptionText={{t "preferences.general.lang.select"}}
                         @allowClear={{false}}
                         @onChange={{this.updateLanguage}}
+                    />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-sm-7">
+                    <FlSelect
+                        @options={{this.currentUser.availableFontSizes}}
+                        @value={{this.currentUser.fontSize.id}}
+                        @valuePath="id"
+                        @labelPath="label"
+                        @placeholder={{t "preferences.general.fontSize.label"}}
+                        @emptyOptionText={{t "preferences.general.fontSize.select"}}
+                        @allowClear={{false}}
+                        @onChange={{this.updateFontSize}}
                     />
                 </div>
             </div>
@@ -77,8 +96,16 @@
     </Modal.body>
     <Modal.footer>
         {{#if this.updatePreferenceTask.isRunning}}
-            <small class="text-muted font-weight-bold mr-auto">{{t "common.saving"}}</small>
+            <small class="text-muted font-weight-bold mr-auto">
+                {{t "common.saving"}}
+            </small>
         {{/if}}
-        <Button @type="primary" @label={{t "common.done"}} @wide={{true}} @action={{this.done}} @disabled={{this.updatePreferenceTask.isRunning}} />
+        <Button
+            @type="primary"
+            @label={{t "common.done"}}
+            @wide={{true}}
+            @action={{this.done}}
+            @disabled={{this.updatePreferenceTask.isRunning}}
+        />
     </Modal.footer>
 </ModalDialog>

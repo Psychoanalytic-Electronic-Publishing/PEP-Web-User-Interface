@@ -1,4 +1,5 @@
 import ENV from 'pep/config/environment';
+import { FontSizes } from 'pep/constants/fonts';
 import { LanguageCode } from 'pep/constants/lang';
 import { SearchTermId } from 'pep/constants/search';
 import { ThemeId } from 'pep/constants/themes';
@@ -20,7 +21,8 @@ export enum PreferenceKey {
     THEME = 'theme',
     TOUR_ENABLED = 'tourEnabled',
     HELP_DESCRIPTIONS_ENABLED = 'helpDescriptionsEnabled',
-    HELP_ICONS_ENABLED = 'helpIconsEnabled'
+    HELP_ICONS_ENABLED = 'helpIconsEnabled',
+    FONT_SIZE = 'fontSize'
 }
 
 export interface UserPreferences {
@@ -39,6 +41,7 @@ export interface UserPreferences {
     tourEnabled: boolean;
     helpDescriptionsEnabled: boolean;
     helpIconsEnabled: boolean;
+    fontSize: FontSizes;
 }
 
 export type PreferenceChangeset = Partial<UserPreferences>;
@@ -65,7 +68,8 @@ export const COOKIE_PREFERENCES: PreferenceKey[] = [
     PreferenceKey.SEARCH_VIEW_TYPE,
     PreferenceKey.SEARCH_SORT_TYPE,
     PreferenceKey.HELP_DESCRIPTIONS_ENABLED,
-    PreferenceKey.HELP_ICONS_ENABLED
+    PreferenceKey.HELP_ICONS_ENABLED,
+    PreferenceKey.FONT_SIZE
 ];
 
 /**
@@ -93,5 +97,6 @@ export const DEFAULT_USER_PREFERENCES: UserPreferences = {
     searchSortType: SearchSorts[0],
     tourEnabled: true,
     helpDescriptionsEnabled: true,
-    helpIconsEnabled: true
+    helpIconsEnabled: true,
+    fontSize: FontSizes.DEFAULT
 };
