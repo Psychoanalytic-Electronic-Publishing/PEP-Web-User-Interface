@@ -14,7 +14,11 @@ import animateScrollTo from 'animated-scroll-to';
 import ENV from 'pep/config/environment';
 import { DOCUMENT_IMG_BASE_URL, DocumentLinkTypes } from 'pep/constants/documents';
 import {
-    HIT_MARKER_END, HIT_MARKER_END_OUTPUT_HTML, HIT_MARKER_START, HIT_MARKER_START_OUTPUT_HTML, SEARCH_HIT_MARKER_REGEX,
+    HIT_MARKER_END,
+    HIT_MARKER_END_OUTPUT_HTML,
+    HIT_MARKER_START,
+    HIT_MARKER_START_OUTPUT_HTML,
+    SEARCH_HIT_MARKER_REGEX,
     SearchTermId
 } from 'pep/constants/search';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
@@ -40,7 +44,7 @@ interface DocumentTextArgs {
     page?: string;
     onGlossaryItemClick: (term: string, termResults: GlossaryTerm[]) => void;
     viewSearch: (searchTerms: string) => void;
-    loadTranslation?: (id: string) => Promise<string>;
+    loadTranslation?: (paraLangId: string, paraLangRx: string) => Promise<string>;
 }
 
 /**
@@ -55,6 +59,11 @@ export enum DocumentTooltipSelectors {
     NEW_AUTHOR = '.newauthortip',
     FOOTNOTE = '.ftnx',
     TRANSLATION = '.translation'
+}
+
+export enum ConcordanceType {
+    PARALANGID = 'paralangid',
+    PARALANGRX = 'paralangrx'
 }
 export default class DocumentText extends Component<DocumentTextArgs> {
     @service store!: DS.Store;
@@ -479,12 +488,11 @@ export default class DocumentText extends Component<DocumentTextArgs> {
         if (this.currentUser.preferences?.translationConcordanceEnabled) {
             const translations = this.containerElement?.querySelectorAll(DocumentTooltipSelectors.TRANSLATION);
             translations?.forEach((item) => {
-                const id =
-                    item.attributes.getNamedItem('data-lgrx')?.nodeValue ??
-                    item.attributes.getNamedItem('data-lgrid')?.nodeValue;
+                const paraLangId = item.attributes.getNamedItem('data-lgrid')?.nodeValue;
+                const paraLangRx = item.attributes.getNamedItem('data-lgrx')?.nodeValue;
 
                 const paragraph = item.parentElement;
-                if (id && paragraph) {
+                if ((paraLangId || paraLangRx) && paragraph) {
                     tippy(item, {
                         appendTo: paragraph,
                         content: 'Loading...',
@@ -500,7 +508,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
                             }
 
                             this.args
-                                .loadTranslation?.(id)
+                                .loadTranslation?.(paraLangId, paraLangRx)
                                 .then(async (text: string) => {
                                     const xml = await this.parseDocumentText(text);
                                     if (xml) {
