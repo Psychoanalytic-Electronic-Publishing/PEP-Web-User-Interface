@@ -24,7 +24,8 @@ export enum PreferenceKey {
     HELP_DESCRIPTIONS_ENABLED = 'helpDescriptionsEnabled',
     HELP_ICONS_ENABLED = 'helpIconsEnabled',
     FONT_SIZE = 'fontSize',
-    VISIBLE_WIDGETS = 'visibleWidgets'
+    VISIBLE_WIDGETS = 'visibleWidgets',
+    TRANSLATION_CONCORDANCE = 'translationConcordanceEnabled'
 }
 
 export interface UserPreferences {
@@ -45,6 +46,7 @@ export interface UserPreferences {
     helpIconsEnabled: boolean;
     fontSize: FontSizes;
     visibleWidgets: WIDGET[];
+    translationConcordanceEnabled: boolean;
 }
 
 export type PreferenceChangeset = Partial<UserPreferences>;
@@ -85,7 +87,8 @@ export const LOCALSTORAGE_PREFERENCES: PreferenceKey[] = [
     PreferenceKey.FAVORITES,
     PreferenceKey.READ_LATER,
     PreferenceKey.SEARCH_PREVIEW_ENABLED,
-    PreferenceKey.TOUR_ENABLED
+    PreferenceKey.TOUR_ENABLED,
+    PreferenceKey.TRANSLATION_CONCORDANCE
 ];
 
 export const DEFAULT_USER_PREFERENCES: UserPreferences = {
@@ -103,5 +106,6 @@ export const DEFAULT_USER_PREFERENCES: UserPreferences = {
     helpDescriptionsEnabled: true,
     helpIconsEnabled: true,
     fontSize: FontSizes.DEFAULT,
-    visibleWidgets: Object.values(WIDGET).filter((value) => typeof value === 'string')
+    visibleWidgets: Object.values(WIDGET).filter((value) => typeof value === 'string'),
+    translationConcordanceEnabled: true
 };
