@@ -20,6 +20,7 @@ export default class ModalDialogsHelpPreferences extends Component<ModalDialogsH
     tourEnabled = PreferenceKey.TOUR_ENABLED;
     helpDescriptionsEnabled = PreferenceKey.HELP_DESCRIPTIONS_ENABLED;
     helpIconsEnabled = PreferenceKey.HELP_ICONS_ENABLED;
+    translationConcordanceEnabled = PreferenceKey.TRANSLATION_CONCORDANCE;
     /**
      * Close the preferences modal dialog
      */

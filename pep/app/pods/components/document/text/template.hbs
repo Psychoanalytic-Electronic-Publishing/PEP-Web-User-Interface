@@ -3,6 +3,7 @@
     {{on "click" this.onDocumentClick}}
     {{did-update this.setupListeners this.text}}
     {{did-update this.parseDocument @text}}
+    {{did-update this.parseDocument this.currentUser.preferences.translationConcordanceEnabled}}
 >
     {{html-safe this.text}}
 </div>

@@ -24,11 +24,13 @@ import {
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import Document from 'pep/pods/document/model';
 import GlossaryTerm from 'pep/pods/glossary-term/model';
+import AjaxService from 'pep/services/ajax';
+import CurrentUserService from 'pep/services/current-user';
 import LoadingBarService from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
 import ThemeService from 'pep/services/theme';
 import { buildJumpToHitsHTML, loadXSLT, parseXML } from 'pep/utils/dom';
-import tippy, { Instance, Props } from 'tippy.js';
+import tippy, { Instance, Props, Tippy } from 'tippy.js';
 
 interface DocumentTextArgs {
     document: Document;
@@ -55,8 +57,14 @@ export enum DocumentTooltipSelectors {
     BIBLIOGRAPHY = '.bibtip',
     BIBLIOGRAPHY_RELATED_INFO = '.bibx-related-info',
     NEW_AUTHOR = '.newauthortip',
-    FOOTNOTE = '.ftnx'
+    FOOTNOTE = '.ftnx',
+    TRANSLATION = '.translation'
 }
+
+export type DocumentTippyInstance = Instance & {
+    _isFetching: boolean;
+    _loaded: boolean;
+};
 export default class DocumentText extends Component<DocumentTextArgs> {
     @service store!: DS.Store;
     @service loadingBar!: LoadingBarService;
@@ -65,7 +73,9 @@ export default class DocumentText extends Component<DocumentTextArgs> {
     @service intl!: IntlService;
     @service theme!: ThemeService;
     @service router!: RouterService;
+    @service currentUser!: CurrentUserService;
     @service('pep-session') session!: PepSessionService;
+    @service ajax!: AjaxService;
 
     @tracked xml?: XMLDocument;
 
@@ -88,11 +98,19 @@ export default class DocumentText extends Component<DocumentTextArgs> {
         super(owner, args);
         const target = args.target ?? (args.document.accessLimited ? 'abstract' : 'document');
         const text = args.document[target];
-        this.parseDocumentText(text);
+        this.generateDocument(text);
     }
 
     private get scrollOffset() {
         return this.args.offsetForScroll ?? this.defaultOffsetForScroll;
+    }
+
+    @dontRunInFastboot
+    async generateDocument(text: string) {
+        const document = await this.parseDocumentText(text);
+        if (document) {
+            this.xml = document;
+        }
     }
 
     /**
@@ -101,7 +119,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
      * @param {string} text
      * @memberof DocumentText
      */
-    @dontRunInFastboot
+
     async parseDocumentText(text: string) {
         const xml = parseXML(text);
 
@@ -113,12 +131,17 @@ export default class DocumentText extends Component<DocumentTextArgs> {
                 if (this.session.isAuthenticated) {
                     processor.setParameter('', 'sessionId', this.session.data.authenticated.SessionId);
                 }
+                processor.setParameter(
+                    '',
+                    'translationConcordanceEnabled',
+                    this.currentUser.preferences?.translationConcordanceEnabled
+                );
                 processor.setParameter('', 'clientId', ENV.clientId);
                 processor.setParameter('', 'journalName', this.args.document.sourceTitle);
                 processor.setParameter('', 'imageUrl', DOCUMENT_IMG_BASE_URL);
                 processor.importStylesheet(xslt);
                 const transformedDocument = (processor.transformToFragment(xml, document) as unknown) as XMLDocument;
-                this.xml = transformedDocument;
+                return transformedDocument;
             }
         } else {
             this.notifications.error(this.intl.t('document.text.error'));
@@ -395,7 +418,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
     parseDocument() {
         const target = this.args.target ?? (this.args.document.accessLimited ? 'abstract' : 'document');
         const text = this.args.document[target];
-        this.parseDocumentText(text);
+        this.generateDocument(text);
     }
 
     /**
@@ -467,5 +490,76 @@ export default class DocumentText extends Component<DocumentTextArgs> {
                 });
             }
         });
+
+        if (this.currentUser.preferences?.translationConcordanceEnabled) {
+            const translations = this.containerElement?.querySelectorAll(DocumentTooltipSelectors.TRANSLATION);
+            const loadingTranslation = this.intl.t('common.loading');
+            translations?.forEach((item) => {
+                const paraLangId = item.attributes.getNamedItem('data-lgrid')?.nodeValue;
+                const paraLangRx = item.attributes.getNamedItem('data-lgrx')?.nodeValue;
+
+                const paragraph = item.parentElement;
+                if ((paraLangId || paraLangRx) && paragraph) {
+                    tippy(item, {
+                        appendTo: paragraph,
+                        content: loadingTranslation,
+                        ...this.tippyOptions,
+                        onCreate(instance: DocumentTippyInstance) {
+                            // Setup our own custom state properties - from DOCS
+                            instance._isFetching = false;
+                            instance._loaded = false;
+                        },
+                        onShow: (instance: DocumentTippyInstance) => {
+                            if (instance._isFetching || instance._loaded) {
+                                return;
+                            }
+
+                            this.loadTranslation?.(paraLangId, paraLangRx)
+                                .then(async (text: string) => {
+                                    const xml = await this.parseDocumentText(text);
+                                    if (xml) {
+                                        var s = new XMLSerializer();
+                                        const html = this.replaceHitMarkerText(s.serializeToString(xml));
+                                        instance._loaded = true;
+                                        instance.setContent(html);
+                                    }
+                                })
+                                .finally(() => {
+                                    instance._isFetching = false;
+                                });
+                        },
+                        onHidden(instance: DocumentTippyInstance) {
+                            instance.setContent(loadingTranslation);
+                            instance._loaded = false;
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    /**
+     *
+     *
+     * @param {string} paraLangId
+     * @param {string} paraLangRx
+     * @return {*}
+     * @memberof DocumentText
+     */
+    @action
+    async loadTranslation(paraLangId?: string | null, paraLangRx?: string | null) {
+        let url = `Documents/Concordance?return_format=XML`;
+        if (paraLangId) {
+            url += `&paralangid=${paraLangId}`;
+        }
+        if (paraLangRx) {
+            url += `&paralangrx=${paraLangRx}`;
+        }
+        const results = await this.ajax.request<{
+            documents?: { responseSet?: Document[] };
+        }>(url, {
+            appendTrailingSlash: false
+        });
+        return results.documents?.responseSet?.[0].document;
     }
 }
