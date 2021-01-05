@@ -561,6 +561,15 @@
             }
         }
     },
+    "fonts": {
+        "sizes": {
+            "xs": "Extra Small",
+            "sm": "Small",
+            "default": "Default",
+            "lg": "Large",
+            "xlarge": "Extra Large"
+        }
+    },
     "print": {
         "author": "Author",
         "year": "Year",

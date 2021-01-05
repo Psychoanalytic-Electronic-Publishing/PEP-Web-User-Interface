@@ -66,6 +66,7 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
      */
     async appSetup() {
         this.currentUser.setup();
+        this.currentUser.setFontSize(this.currentUser.fontSize.id);
         await this.theme.setup();
         await this.lang.setup();
         return this.configuration.setup();

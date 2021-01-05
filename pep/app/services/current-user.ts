@@ -1,7 +1,6 @@
 import Service, { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 
-import Body from 'ember-body-class2';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import CookiesService from 'ember-cookies/services/cookies';
 import DS from 'ember-data';
@@ -23,6 +22,7 @@ import {
 } from 'pep/constants/preferences';
 import User, { UserType } from 'pep/pods/user/model';
 import PepSessionService from 'pep/services/pep-session';
+import { addClass, removeClass } from 'pep/utils/dom';
 import { reject } from 'rsvp';
 
 export default class CurrentUserService extends Service {
@@ -262,12 +262,18 @@ export default class CurrentUserService extends Service {
         return prefs?.[key] ?? [];
     }
 
-    setFontSize(size: FontSizes) {
+    setFontSize(newSize: FontSizes) {
         const document = this.document;
-        let target = document.body;
-        Body.addClass(target, 'font-xs');
-        this.updatePrefs({ [PreferenceKey.FONT_SIZE]: size });
+        let target = document.documentElement;
+        const size = AvailableFontSizes.find((item) => item.id === newSize) ?? FONT_SIZE_DEFAULT;
+        AvailableFontSizes.map((item) => item.class).forEach((item) => {
+            removeClass(target, item);
+        });
+
+        addClass(target, size.class);
+        this.updatePrefs({ [PreferenceKey.FONT_SIZE]: newSize });
     }
+
     get availableFontSizes() {
         return AvailableFontSizes.map((size) => ({
             ...size,
@@ -280,20 +286,4 @@ export default class CurrentUserService extends Service {
         const size = fontSizes.find((item) => item.id === this.preferences?.fontSize) ?? FONT_SIZE_DEFAULT;
         return size;
     }
-
-    // addClass(element, className) {
-    //     let existingClass = element.getAttribute('class');
-
-    //     if (existingClass) {
-    //         let classes = existingClass.split(' ');
-
-    //         if (~classes.indexOf(className)) {
-    //             return;
-    //         }
-
-    //         element.setAttribute('class', `${existingClass} ${className}`);
-    //     } else {
-    //         element.setAttribute('class', className);
-    //     }
-    // }
 }
