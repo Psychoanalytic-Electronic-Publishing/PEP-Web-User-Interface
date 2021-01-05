@@ -560,6 +560,12 @@
                 "enabled": "Display a preview pane",
                 "disabled": "Open the full document"
             }
+        },
+        "sidebar": {
+            "heading": "Sidebar",
+            "widgets": {
+                "label": "Show/hide widgets"
+            }
         }
     },
     "fonts": {

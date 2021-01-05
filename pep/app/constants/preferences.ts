@@ -2,6 +2,7 @@ import ENV from 'pep/config/environment';
 import { FontSizes } from 'pep/constants/fonts';
 import { LanguageCode } from 'pep/constants/lang';
 import { SearchTermId } from 'pep/constants/search';
+import { WIDGET } from 'pep/constants/sidebar';
 import { ThemeId } from 'pep/constants/themes';
 import { SearchSort, SearchSorts } from 'pep/utils/sort';
 
@@ -22,7 +23,8 @@ export enum PreferenceKey {
     TOUR_ENABLED = 'tourEnabled',
     HELP_DESCRIPTIONS_ENABLED = 'helpDescriptionsEnabled',
     HELP_ICONS_ENABLED = 'helpIconsEnabled',
-    FONT_SIZE = 'fontSize'
+    FONT_SIZE = 'fontSize',
+    VISIBLE_WIDGETS = 'visibleWidgets'
 }
 
 export interface UserPreferences {
@@ -42,6 +44,7 @@ export interface UserPreferences {
     helpDescriptionsEnabled: boolean;
     helpIconsEnabled: boolean;
     fontSize: FontSizes;
+    visibleWidgets: WIDGET[];
 }
 
 export type PreferenceChangeset = Partial<UserPreferences>;
@@ -69,7 +72,8 @@ export const COOKIE_PREFERENCES: PreferenceKey[] = [
     PreferenceKey.SEARCH_SORT_TYPE,
     PreferenceKey.HELP_DESCRIPTIONS_ENABLED,
     PreferenceKey.HELP_ICONS_ENABLED,
-    PreferenceKey.FONT_SIZE
+    PreferenceKey.FONT_SIZE,
+    PreferenceKey.VISIBLE_WIDGETS
 ];
 
 /**
@@ -98,5 +102,6 @@ export const DEFAULT_USER_PREFERENCES: UserPreferences = {
     tourEnabled: true,
     helpDescriptionsEnabled: true,
     helpIconsEnabled: true,
-    fontSize: FontSizes.DEFAULT
+    fontSize: FontSizes.DEFAULT,
+    visibleWidgets: Object.values(WIDGET).filter((value) => typeof value === 'string')
 };

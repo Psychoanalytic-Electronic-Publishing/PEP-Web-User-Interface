@@ -10,6 +10,7 @@ import IntlService from 'ember-intl/services/intl';
 import { FontSize, FontSizes } from 'pep/constants/fonts';
 import { LanguageCode } from 'pep/constants/lang';
 import { PreferenceKey, UserPreferences } from 'pep/constants/preferences';
+import { WIDGET, WIDGETS } from 'pep/constants/sidebar';
 import { ThemeId } from 'pep/constants/themes';
 import CurrentUserService from 'pep/services/current-user';
 import LangService from 'pep/services/lang';
@@ -46,6 +47,7 @@ export default class ModalDialogsUserPreferences extends Component<ModalDialogsU
     @action
     updateFontSize(size: FontSizes) {
         this.currentUser.setFontSize(size);
+        this.currentUser.saveFontSize(size);
     }
 
     /**
@@ -93,5 +95,28 @@ export default class ModalDialogsUserPreferences extends Component<ModalDialogsU
             newValue = newValue.data as UserPreferences[K];
         }
         return taskFor(this.updatePreferenceTask).perform(key, newValue);
+    }
+
+    get widgets() {
+        return WIDGETS.map((widget) => ({
+            ...widget,
+            label: this.intl.t(widget.label)
+        }));
+    }
+
+    @action
+    updateWidgetsList(widget: WIDGET, selected: boolean) {
+        if (selected) {
+            const widgets = this.currentUser.preferences?.visibleWidgets;
+            widgets?.push(widget);
+            this.currentUser.updatePrefs({ [PreferenceKey.VISIBLE_WIDGETS]: widgets });
+        } else {
+            const index = this.currentUser.preferences?.visibleWidgets.indexOf(widget);
+            const widgets = this.currentUser.preferences?.visibleWidgets;
+            if (widgets && index !== undefined) {
+                widgets.removeAt(index);
+                this.currentUser.updatePrefs({ [PreferenceKey.VISIBLE_WIDGETS]: widgets });
+            }
+        }
     }
 }

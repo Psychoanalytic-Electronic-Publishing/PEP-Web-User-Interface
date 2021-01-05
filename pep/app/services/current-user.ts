@@ -262,6 +262,12 @@ export default class CurrentUserService extends Service {
         return prefs?.[key] ?? [];
     }
 
+    /**
+     * Set new font size on html element
+     *
+     * @param {FontSizes} newSize
+     * @memberof CurrentUserService
+     */
     setFontSize(newSize: FontSizes) {
         const document = this.document;
         let target = document.documentElement;
@@ -271,9 +277,18 @@ export default class CurrentUserService extends Service {
         });
 
         addClass(target, size.class);
+    }
+
+    saveFontSize(newSize: FontSizes) {
         this.updatePrefs({ [PreferenceKey.FONT_SIZE]: newSize });
     }
 
+    /**
+     * Available font sizes transformed with internationalization
+     *
+     * @readonly
+     * @memberof CurrentUserService
+     */
     get availableFontSizes() {
         return AvailableFontSizes.map((size) => ({
             ...size,
@@ -281,6 +296,12 @@ export default class CurrentUserService extends Service {
         }));
     }
 
+    /**
+     * Get the current font size
+     *
+     * @readonly
+     * @memberof CurrentUserService
+     */
     get fontSize() {
         const fontSizes = AvailableFontSizes;
         const size = fontSizes.find((item) => item.id === this.preferences?.fontSize) ?? FONT_SIZE_DEFAULT;
