@@ -7,10 +7,10 @@ import { enqueueTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
 import IntlService from 'ember-intl/services/intl';
 
-import { FontSize, FontSizes } from 'pep/constants/fonts';
 import { LanguageCode } from 'pep/constants/lang';
 import { PreferenceKey, UserPreferences } from 'pep/constants/preferences';
 import { WIDGET, WIDGETS } from 'pep/constants/sidebar';
+import { FontSizes, TextJustificationId } from 'pep/constants/text';
 import { ThemeId } from 'pep/constants/themes';
 import CurrentUserService from 'pep/services/current-user';
 import LangService from 'pep/services/lang';
@@ -29,6 +29,7 @@ export default class ModalDialogsUserPreferences extends Component<ModalDialogsU
 
     searchEnabledKey = PreferenceKey.SEARCH_PREVIEW_ENABLED;
     hicLimit = PreferenceKey.SEARCH_HIC_LIMIT;
+    glossaryFormattingEnabledKey = PreferenceKey.GLOSSARY_FORMATTING_ENABLED;
 
     /**
      * Close the preferences modal dialog
@@ -47,7 +48,12 @@ export default class ModalDialogsUserPreferences extends Component<ModalDialogsU
     @action
     updateFontSize(size: FontSizes) {
         this.currentUser.setFontSize(size);
-        this.currentUser.saveFontSize(size);
+        this.currentUser.updateFontSize(size);
+    }
+
+    @action
+    updateTextJustification(justification: TextJustificationId) {
+        this.currentUser.updateTextJustification(justification);
     }
 
     /**
@@ -104,6 +110,13 @@ export default class ModalDialogsUserPreferences extends Component<ModalDialogsU
         }));
     }
 
+    /**
+     * Update visible widget list
+     *
+     * @param {WIDGET} widget
+     * @param {boolean} selected
+     * @memberof ModalDialogsUserPreferences
+     */
     @action
     updateWidgetsList(widget: WIDGET, selected: boolean) {
         if (selected) {

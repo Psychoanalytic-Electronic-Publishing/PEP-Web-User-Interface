@@ -557,6 +557,13 @@
             "fontSize": {
                 "label": "Font Size",
                 "select": "Select your preferred font size"
+            },
+            "glossaryFormatting": {
+                "label": "Glossary Term Formatting"
+            },
+            "textAlignment": {
+                "label": "Document text alignment",
+                "select": "Select your preferred alignment"
             }
         },
         "search": {
@@ -570,15 +577,26 @@
                 "enabled": "Display a preview pane",
                 "disabled": "Open the full document"
             }
+        },
+        "sidebar": {
+            "heading": "Sidebar",
+            "widgets": {
+                "label": "Show/hide widgets"
+            }
         }
     },
-    "fonts": {
+    "text": {
         "sizes": {
             "xs": "Extra Small",
             "sm": "Small",
             "default": "Default",
             "lg": "Large",
             "xlarge": "Extra Large"
+        },
+        "justification": {
+            "left": "Left",
+            "center": "Center",
+            "right": "right"
         }
     },
     "print": {

@@ -1,8 +1,8 @@
 import ENV from 'pep/config/environment';
-import { FontSizes } from 'pep/constants/fonts';
 import { LanguageCode } from 'pep/constants/lang';
 import { SearchTermId } from 'pep/constants/search';
 import { WIDGET } from 'pep/constants/sidebar';
+import { FontSizes, TextJustificationId } from 'pep/constants/text';
 import { ThemeId } from 'pep/constants/themes';
 import { SearchSort, SearchSorts } from 'pep/utils/sort';
 
@@ -25,7 +25,9 @@ export enum PreferenceKey {
     HELP_ICONS_ENABLED = 'helpIconsEnabled',
     FONT_SIZE = 'fontSize',
     VISIBLE_WIDGETS = 'visibleWidgets',
-    TRANSLATION_CONCORDANCE = 'translationConcordanceEnabled'
+    TRANSLATION_CONCORDANCE = 'translationConcordanceEnabled',
+    GLOSSARY_FORMATTING_ENABLED = 'glossaryFormattingEnabled',
+    TEXT_JUSTIFICATION = 'textJustification'
 }
 
 export interface UserPreferences {
@@ -47,6 +49,8 @@ export interface UserPreferences {
     fontSize: FontSizes;
     visibleWidgets: WIDGET[];
     translationConcordanceEnabled: boolean;
+    glossaryFormattingEnabled: boolean;
+    textJustification: TextJustificationId;
 }
 
 export type PreferenceChangeset = Partial<UserPreferences>;
@@ -107,5 +111,7 @@ export const DEFAULT_USER_PREFERENCES: UserPreferences = {
     helpIconsEnabled: true,
     fontSize: FontSizes.DEFAULT,
     visibleWidgets: Object.values(WIDGET).filter((value) => typeof value === 'string'),
-    translationConcordanceEnabled: true
+    translationConcordanceEnabled: true,
+    glossaryFormattingEnabled: true,
+    textJustification: TextJustificationId.LEFT
 };

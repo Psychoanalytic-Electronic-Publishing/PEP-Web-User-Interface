@@ -8,7 +8,6 @@ import IntlService from 'ember-intl/services/intl';
 
 import ENV from 'pep/config/environment';
 import { DATE_FOREVER } from 'pep/constants/dates';
-import { AvailableFontSizes, FONT_SIZE_DEFAULT, FontSizes } from 'pep/constants/fonts';
 import {
     COOKIE_PREFERENCES,
     DEFAULT_USER_PREFERENCES,
@@ -20,6 +19,14 @@ import {
     USER_PREFERENCES_LS_PREFIX,
     UserPreferences
 } from 'pep/constants/preferences';
+import {
+    AvailableFontSizes,
+    FONT_SIZE_DEFAULT,
+    FontSizes,
+    TEXT_LEFT,
+    TextJustificationId,
+    TextJustifications
+} from 'pep/constants/text';
 import User, { UserType } from 'pep/pods/user/model';
 import PepSessionService from 'pep/services/pep-session';
 import { addClass, removeClass } from 'pep/utils/dom';
@@ -279,8 +286,41 @@ export default class CurrentUserService extends Service {
         addClass(target, size.class);
     }
 
-    saveFontSize(newSize: FontSizes) {
+    /**
+     * Update the font size by saving to the user preferences
+     *
+     * @param {FontSizes} newSize
+     * @memberof CurrentUserService
+     */
+    updateFontSize(newSize: FontSizes) {
         this.updatePrefs({ [PreferenceKey.FONT_SIZE]: newSize });
+    }
+
+    /**
+     * Update the text justification by saving to the user preferences
+     *
+     * @param {TextJustificationId} textJustification
+     * @memberof CurrentUserService
+     */
+    updateTextJustification(textJustification: TextJustificationId) {
+        this.updatePrefs({ [PreferenceKey.TEXT_JUSTIFICATION]: textJustification });
+    }
+
+    /**
+     * Available text justification options
+     *
+     * @readonly
+     * @memberof CurrentUserService
+     */
+    get availableTextJustifications() {
+        return TextJustifications.map((direction) => ({
+            ...direction,
+            label: this.intl.t(direction.label)
+        }));
+    }
+
+    get textJustification() {
+        return TextJustifications.find((item) => item.id === this.preferences?.textJustification) ?? TEXT_LEFT;
     }
 
     /**
@@ -303,8 +343,6 @@ export default class CurrentUserService extends Service {
      * @memberof CurrentUserService
      */
     get fontSize() {
-        const fontSizes = AvailableFontSizes;
-        const size = fontSizes.find((item) => item.id === this.preferences?.fontSize) ?? FONT_SIZE_DEFAULT;
-        return size;
+        return AvailableFontSizes.find((item) => item.id === this.preferences?.fontSize) ?? FONT_SIZE_DEFAULT;
     }
 }

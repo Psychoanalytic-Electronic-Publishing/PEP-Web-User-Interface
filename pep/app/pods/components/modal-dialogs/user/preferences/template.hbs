@@ -43,7 +43,7 @@
                             />
                         </div>
                     </div>
-                    <div class="form-row">
+                    <div class="form-row mb-3">
                         <div class="col-sm-8">
                             <FlSelect
                                 @options={{this.currentUser.availableFontSizes}}
@@ -54,6 +54,29 @@
                                 @emptyOptionText={{t "preferences.general.fontSize.select"}}
                                 @allowClear={{false}}
                                 @onChange={{this.updateFontSize}}
+                            />
+                        </div>
+                    </div>
+                    <div class="form-row mb-3">
+                        <div class="col-sm-8">
+                            <FlSelect
+                                @options={{this.currentUser.availableTextJustifications}}
+                                @value={{this.currentUser.textJustification.id}}
+                                @valuePath="id"
+                                @labelPath="label"
+                                @placeholder={{t "preferences.general.textAlignment.label"}}
+                                @emptyOptionText={{t "preferences.general.textAlignment.select"}}
+                                @allowClear={{false}}
+                                @onChange={{this.updateTextJustification}}
+                            />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-sm-8">
+                            <CheckboxInput
+                                @checked={{this.currentUser.preferences.glossaryFormattingEnabled}}
+                                @onChange={{fn this.updatePreference this.glossaryFormattingEnabledKey}}
+                                @label={{t "preferences.general.glossaryFormatting.label"}}
                             />
                         </div>
                     </div>

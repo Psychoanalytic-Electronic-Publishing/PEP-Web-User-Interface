@@ -557,6 +557,13 @@
             "fontSize": {
                 "label": "Font Size",
                 "select": "Select your preferred font size"
+            },
+            "glossaryFormatting": {
+                "label": "Glossary Term Formatting"
+            },
+            "textAlignment": {
+                "label": "Document text alignment",
+                "select": "Select your preferred alignment"
             }
         },
         "search": {
@@ -578,13 +585,18 @@
             }
         }
     },
-    "fonts": {
+    "text": {
         "sizes": {
             "xs": "Extra Small",
             "sm": "Small",
             "default": "Default",
             "lg": "Large",
             "xlarge": "Extra Large"
+        },
+        "justification": {
+            "left": "Left",
+            "center": "Center",
+            "right": "right"
         }
     },
     "print": {

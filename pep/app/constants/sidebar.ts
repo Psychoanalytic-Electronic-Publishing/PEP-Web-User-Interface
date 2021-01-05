@@ -112,10 +112,10 @@ export const WIDGETS = [
     MORE_LIKE_THESE,
     MOST_CITED,
     MOST_VIEWED,
+    PUBLISHER_INFO,
     READ_LATER,
     RELATED_DOCUMENTS,
     VIDEO_PREVIEW,
-    WHATS_NEW,
-    PUBLISHER_INFO
+    WHATS_NEW
 ];
 export type WidgetData = Partial<Record<WIDGET, any>>;
