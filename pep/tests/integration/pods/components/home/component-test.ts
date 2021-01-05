@@ -8,8 +8,9 @@ import { module, test } from 'qunit';
 module('Integration | Component | home', function(hooks) {
     setupRenderingTest(hooks);
 
-    hooks.beforeEach(function(assert) {
+    hooks.beforeEach(function() {
         // fixes issue with the component accessing router.urlFor() in its did-insert
+        //@ts-ignore implicit any for `this` is needed here
         this.owner.lookup('router:main').setupRouter();
     });
 
