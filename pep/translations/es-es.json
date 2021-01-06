@@ -28,7 +28,8 @@
         "viewAll": "Ver todos",
         "help": "Ayuda",
         "find": "Buscar",
-        "more": "Mas"
+        "more": "Mas",
+        "saving": "Saving ..."
     },
     "serverErrors": {
         "heading": "The following {count, plural, =1 {error} other {errors}} occurred while attempting to process your request.",
@@ -595,7 +596,7 @@
         "justification": {
             "left": "Left",
             "center": "Center",
-            "right": "right"
+            "right": "Right"
         }
     },
     "print": {

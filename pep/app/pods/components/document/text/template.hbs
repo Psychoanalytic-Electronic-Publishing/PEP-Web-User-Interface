@@ -1,8 +1,11 @@
 <div
     class="document-text
+
+
         {{if this.currentUser.preferences.glossaryFormattingEnabled "glossary-highlight"}}
 
-        {{this.current.user.preferences.textJustification.class}}"
+
+        {{this.currentUser.textJustification.class}}"
     {{on "click" this.onDocumentClick}}
     {{did-update this.setupListeners this.text}}
     {{did-update this.parseDocument @text}}
