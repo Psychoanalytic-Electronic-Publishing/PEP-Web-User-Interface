@@ -2,7 +2,7 @@ import ENV from 'pep/config/environment';
 import { LanguageCode } from 'pep/constants/lang';
 import { SearchTermId } from 'pep/constants/search';
 import { WIDGET } from 'pep/constants/sidebar';
-import { FontSizes, TextJustificationId } from 'pep/constants/text';
+import { FontSize, TextJustificationId } from 'pep/constants/text';
 import { ThemeId } from 'pep/constants/themes';
 import { SearchSort, SearchSorts } from 'pep/utils/sort';
 import { flattenEnum } from 'pep/utils/types';
@@ -47,7 +47,7 @@ export interface UserPreferences {
     tourEnabled: boolean;
     helpDescriptionsEnabled: boolean;
     helpIconsEnabled: boolean;
-    fontSize: FontSizes;
+    fontSize: FontSize;
     visibleWidgets: WIDGET[];
     translationConcordanceEnabled: boolean;
     glossaryFormattingEnabled: boolean;
@@ -110,7 +110,7 @@ export const DEFAULT_USER_PREFERENCES: UserPreferences = {
     tourEnabled: true,
     helpDescriptionsEnabled: true,
     helpIconsEnabled: true,
-    fontSize: FontSizes.DEFAULT,
+    fontSize: FontSize.DEFAULT,
     visibleWidgets: flattenEnum(WIDGET),
     translationConcordanceEnabled: true,
     glossaryFormattingEnabled: true,

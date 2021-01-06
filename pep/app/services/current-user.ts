@@ -22,7 +22,7 @@ import {
 import {
     AvailableFontSizes,
     FONT_SIZE_DEFAULT,
-    FontSizes,
+    FontSize,
     TEXT_LEFT,
     TextJustificationId,
     TextJustifications
@@ -44,6 +44,52 @@ export default class CurrentUserService extends Service {
     @tracked user: User | null = null;
     @tracked preferences?: UserPreferences;
     @tracked lastViewedDocumentId?: string;
+
+    /**
+     * Available text justification options
+     *
+     * @readonly
+     * @memberof CurrentUserService
+     */
+    get availableTextJustifications() {
+        return TextJustifications.map((direction) => ({
+            ...direction,
+            label: this.intl.t(direction.label)
+        }));
+    }
+
+    /**
+     * Get the current text justification value
+     *
+     * @readonly
+     * @memberof CurrentUserService
+     */
+    get textJustification() {
+        return TextJustifications.find((item) => item.id === this.preferences?.textJustification) ?? TEXT_LEFT;
+    }
+
+    /**
+     * Available font sizes transformed with internationalization
+     *
+     * @readonly
+     * @memberof CurrentUserService
+     */
+    get availableFontSizes() {
+        return AvailableFontSizes.map((size) => ({
+            ...size,
+            label: this.intl.t(size.label)
+        }));
+    }
+
+    /**
+     * Get the current font size
+     *
+     * @readonly
+     * @memberof CurrentUserService
+     */
+    get fontSize() {
+        return AvailableFontSizes.find((item) => item.id === this.preferences?.fontSize) ?? FONT_SIZE_DEFAULT;
+    }
 
     /**
      * Loads the current user from the API
@@ -272,10 +318,10 @@ export default class CurrentUserService extends Service {
     /**
      * Set new font size on html element
      *
-     * @param {FontSizes} newSize
+     * @param {FontSize} newSize
      * @memberof CurrentUserService
      */
-    setFontSize(newSize: FontSizes) {
+    setFontSize(newSize: FontSize) {
         const document = this.document;
         let target = document.documentElement;
         const size = AvailableFontSizes.find((item) => item.id === newSize) ?? FONT_SIZE_DEFAULT;
@@ -289,10 +335,10 @@ export default class CurrentUserService extends Service {
     /**
      * Update the font size by saving to the user preferences
      *
-     * @param {FontSizes} newSize
+     * @param {FontSize} newSize
      * @memberof CurrentUserService
      */
-    updateFontSize(newSize: FontSizes) {
+    updateFontSize(newSize: FontSize) {
         this.updatePrefs({ [PreferenceKey.FONT_SIZE]: newSize });
     }
 
@@ -304,51 +350,5 @@ export default class CurrentUserService extends Service {
      */
     updateTextJustification(textJustification: TextJustificationId) {
         this.updatePrefs({ [PreferenceKey.TEXT_JUSTIFICATION]: textJustification });
-    }
-
-    /**
-     * Available text justification options
-     *
-     * @readonly
-     * @memberof CurrentUserService
-     */
-    get availableTextJustifications() {
-        return TextJustifications.map((direction) => ({
-            ...direction,
-            label: this.intl.t(direction.label)
-        }));
-    }
-
-    /**
-     * Get the current text justification value
-     *
-     * @readonly
-     * @memberof CurrentUserService
-     */
-    get textJustification() {
-        return TextJustifications.find((item) => item.id === this.preferences?.textJustification) ?? TEXT_LEFT;
-    }
-
-    /**
-     * Available font sizes transformed with internationalization
-     *
-     * @readonly
-     * @memberof CurrentUserService
-     */
-    get availableFontSizes() {
-        return AvailableFontSizes.map((size) => ({
-            ...size,
-            label: this.intl.t(size.label)
-        }));
-    }
-
-    /**
-     * Get the current font size
-     *
-     * @readonly
-     * @memberof CurrentUserService
-     */
-    get fontSize() {
-        return AvailableFontSizes.find((item) => item.id === this.preferences?.fontSize) ?? FONT_SIZE_DEFAULT;
     }
 }

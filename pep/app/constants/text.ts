@@ -1,4 +1,4 @@
-export enum FontSizes {
+export enum FontSize {
     XS = 'xs',
     SMALL = 'small',
     DEFAULT = 'default',
@@ -6,38 +6,38 @@ export enum FontSizes {
     XLARGE = 'xlarge'
 }
 
-export interface FontSize {
-    id: FontSizes;
+export interface FontSizeItem {
+    id: FontSize;
     label: string;
     class: string;
 }
 
-export const FONT_SIZE_XS: FontSize = {
-    id: FontSizes.XS,
+export const FONT_SIZE_XS: FontSizeItem = {
+    id: FontSize.XS,
     label: 'text.sizes.xs',
     class: 'font-xs'
 };
 
-export const FONT_SIZE_SMALL: FontSize = {
-    id: FontSizes.SMALL,
+export const FONT_SIZE_SMALL: FontSizeItem = {
+    id: FontSize.SMALL,
     label: 'text.sizes.sm',
     class: 'font-sm'
 };
 
-export const FONT_SIZE_DEFAULT: FontSize = {
-    id: FontSizes.DEFAULT,
+export const FONT_SIZE_DEFAULT: FontSizeItem = {
+    id: FontSize.DEFAULT,
     label: 'text.sizes.default',
     class: ''
 };
 
-export const FONT_SIZE_LARGE: FontSize = {
-    id: FontSizes.LARGE,
+export const FONT_SIZE_LARGE: FontSizeItem = {
+    id: FontSize.LARGE,
     label: 'text.sizes.lg',
     class: 'font-lg'
 };
 
-export const FONT_SIZE_XLARGE: FontSize = {
-    id: FontSizes.XLARGE,
+export const FONT_SIZE_XLARGE: FontSizeItem = {
+    id: FontSize.XLARGE,
     label: 'text.sizes.xlarge',
     class: 'font-xlarge'
 };

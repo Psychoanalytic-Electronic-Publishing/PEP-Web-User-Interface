@@ -10,7 +10,7 @@ import IntlService from 'ember-intl/services/intl';
 import { LanguageCode } from 'pep/constants/lang';
 import { PreferenceKey, UserPreferences } from 'pep/constants/preferences';
 import { WIDGET, WIDGETS } from 'pep/constants/sidebar';
-import { FontSizes, TextJustificationId } from 'pep/constants/text';
+import { FontSize, TextJustificationId } from 'pep/constants/text';
 import { ThemeId } from 'pep/constants/themes';
 import CurrentUserService from 'pep/services/current-user';
 import LangService from 'pep/services/lang';
@@ -46,7 +46,7 @@ export default class ModalDialogsUserPreferences extends Component<ModalDialogsU
      * @memberof ModalDialogsUserPreferences
      */
     @action
-    updateFontSize(size: FontSizes) {
+    updateFontSize(size: FontSize) {
         this.currentUser.setFontSize(size);
         this.currentUser.updateFontSize(size);
     }

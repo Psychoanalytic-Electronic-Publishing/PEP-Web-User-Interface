@@ -1,6 +1,6 @@
 import { action } from '@ember/object';
 import RouterService from '@ember/routing/router-service';
-import { scheduleOnce } from '@ember/runloop';
+import { next, scheduleOnce } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -46,6 +46,7 @@ interface DocumentTextArgs {
     page?: string;
     onGlossaryItemClick: (term: string, termResults: GlossaryTerm[]) => void;
     viewSearch: (searchTerms: string) => void;
+    documentRendered: () => void;
 }
 
 /**
@@ -111,6 +112,9 @@ export default class DocumentText extends Component<DocumentTextArgs> {
         const document = await this.parseDocumentText(text);
         if (document) {
             this.xml = document;
+            if (this.args.documentRendered) {
+                next(this, this.args.documentRendered);
+            }
         }
     }
 
