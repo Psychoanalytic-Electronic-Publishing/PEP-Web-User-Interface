@@ -14,7 +14,7 @@
 // Application variables
 // ---------------------------
 $logo-path: '/assets/images/logo-dark.jpg';
-$color-brand-primary: #56698f;
+$color-brand-primary: #5c74a2;
 $color-input-bg: #2f3136;
 $color-backdrop: #36393f;
 $color-primary-background: #393c43;
@@ -52,7 +52,7 @@ $body-bg: darken($color-backdrop, 2%);
 $body-color: #dbdddc;
 $dark: $body-color;
 $input-color: $body-color;
-$link-color: saturate(lighten($color-brand-primary, 25%), 5%);
+$link-color: saturate(lighten($color-brand-primary, 24%), 22%);
 $input-border-color: $color-input-bg;
 $input-bg: $color-input-bg;
 $input-focus-border-color: lighten($color-input-bg, 20%);
