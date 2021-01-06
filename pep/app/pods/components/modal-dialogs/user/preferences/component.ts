@@ -51,6 +51,12 @@ export default class ModalDialogsUserPreferences extends Component<ModalDialogsU
         this.currentUser.updateFontSize(size);
     }
 
+    /**
+     * Update the text justification for the document
+     *
+     * @param {TextJustificationId} justification
+     * @memberof ModalDialogsUserPreferences
+     */
     @action
     updateTextJustification(justification: TextJustificationId) {
         this.currentUser.updateTextJustification(justification);

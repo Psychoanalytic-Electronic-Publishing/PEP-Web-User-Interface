@@ -5,6 +5,7 @@ import { WIDGET } from 'pep/constants/sidebar';
 import { FontSizes, TextJustificationId } from 'pep/constants/text';
 import { ThemeId } from 'pep/constants/themes';
 import { SearchSort, SearchSorts } from 'pep/utils/sort';
+import { flattenEnum } from 'pep/utils/types';
 
 import { SearchView, SearchViews } from './search';
 
@@ -110,7 +111,7 @@ export const DEFAULT_USER_PREFERENCES: UserPreferences = {
     helpDescriptionsEnabled: true,
     helpIconsEnabled: true,
     fontSize: FontSizes.DEFAULT,
-    visibleWidgets: Object.values(WIDGET).filter((value) => typeof value === 'string'),
+    visibleWidgets: flattenEnum(WIDGET),
     translationConcordanceEnabled: true,
     glossaryFormattingEnabled: true,
     textJustification: TextJustificationId.LEFT

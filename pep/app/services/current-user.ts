@@ -319,6 +319,12 @@ export default class CurrentUserService extends Service {
         }));
     }
 
+    /**
+     * Get the current text justification value
+     *
+     * @readonly
+     * @memberof CurrentUserService
+     */
     get textJustification() {
         return TextJustifications.find((item) => item.id === this.preferences?.textJustification) ?? TEXT_LEFT;
     }
