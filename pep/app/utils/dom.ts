@@ -123,7 +123,7 @@ export function buildJumpToHitsHTML(anchorCount: number) {
 
 // Hoisted from removeClass, doesn't need to be defined multiple times.
 // Identifies the whitespace that should be used for replacement.
-function replacer(match: string, leading: string, trailing: string) {
+function replacer(_match: string, leading: string, trailing: string) {
     if (leading && trailing) {
         // We're in the middle of the class string.
         // The portions on either side of us still need space separation.

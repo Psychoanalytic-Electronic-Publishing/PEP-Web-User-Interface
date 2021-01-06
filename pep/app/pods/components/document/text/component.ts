@@ -30,7 +30,8 @@ import LoadingBarService from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
 import ThemeService from 'pep/services/theme';
 import { buildJumpToHitsHTML, loadXSLT, parseXML } from 'pep/utils/dom';
-import tippy, { Instance, Props, Tippy } from 'tippy.js';
+import { reject } from 'rsvp';
+import tippy, { Instance, Props } from 'tippy.js';
 
 interface DocumentTextArgs {
     document: Document;
@@ -143,8 +144,9 @@ export default class DocumentText extends Component<DocumentTextArgs> {
                 const transformedDocument = (processor.transformToFragment(xml, document) as unknown) as XMLDocument;
                 return transformedDocument;
             }
+            return reject(this.notifications.error(this.intl.t('document.text.error')));
         } else {
-            this.notifications.error(this.intl.t('document.text.error'));
+            return reject(this.notifications.error(this.intl.t('document.text.error')));
         }
     }
 
