@@ -131,7 +131,7 @@
                             </p>
                             {{#each this.widgets as |widget|}}
                                 <CheckboxInput
-                                    @checked={{array-contains this.currentUser.preferences.visibleWidgets widget.id}}
+                                    @checked={{contains widget.id this.currentUser.preferences.visibleWidgets}}
                                     @onChange={{fn this.updateWidgetsList widget.id}}
                                     @label={{widget.label}}
                                 />
