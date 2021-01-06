@@ -1167,7 +1167,7 @@
             <xsl:apply-templates select="@content-type"/>
             <xsl:apply-templates />
             <xsl:if test="$translationConcordanceEnabled = 'true'">
-                <xsl:if test="@lgrid or @lgrx">
+                <xsl:if test="@lgrx">
                     <span class="ml-2 translation">
                         <xsl:if test="@lgrid">
                             <xsl:attribute name="data-lgrid">
