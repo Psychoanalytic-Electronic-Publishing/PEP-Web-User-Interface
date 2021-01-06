@@ -120,7 +120,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
      * @memberof DocumentText
      */
 
-    async parseDocumentText(text: string) {
+    async parseDocumentText(text: string, options?: { translationEnabled?: boolean }) {
         const xml = parseXML(text);
 
         if (!(xml instanceof Error)) {
@@ -134,7 +134,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
                 processor.setParameter(
                     '',
                     'translationConcordanceEnabled',
-                    this.currentUser.preferences?.translationConcordanceEnabled
+                    options?.translationEnabled ?? this.currentUser.preferences?.translationConcordanceEnabled
                 );
                 processor.setParameter('', 'clientId', ENV.clientId);
                 processor.setParameter('', 'journalName', this.args.document.sourceTitle);
@@ -516,7 +516,9 @@ export default class DocumentText extends Component<DocumentTextArgs> {
 
                             this.loadTranslation?.(paraLangId, paraLangRx)
                                 .then(async (text: string) => {
-                                    const xml = await this.parseDocumentText(text);
+                                    const xml = await this.parseDocumentText(text, {
+                                        translationEnabled: false
+                                    });
                                     if (xml) {
                                         var s = new XMLSerializer();
                                         const html = this.replaceHitMarkerText(s.serializeToString(xml));
