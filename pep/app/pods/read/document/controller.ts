@@ -180,6 +180,12 @@ export default class ReadDocument extends Controller {
         return this.searchHitNumber && this.searchHitNumber > 1;
     }
 
+    /**
+     * Show or hide right arrow for search hits
+     *
+     * @readonly
+     * @memberof ReadDocument
+     */
     get showNextSearchHitButton() {
         return this.searchHitNumber === undefined || this.searchHitNumber < this.model.termCount;
     }
@@ -449,22 +455,43 @@ export default class ReadDocument extends Controller {
         });
     }
 
+    /**
+     * Print the document
+     *
+     * @memberof ReadDocument
+     */
     @action
     async printDocument() {
         let url = `${ENV.apiBaseUrl}/${ENV.apiNamespace}/Documents/Downloads/PDF/${this.model.id}/?${this.downloadAuthParams}`;
         this.printer.printElement(url);
     }
 
+    /**
+     * Download the document
+     *
+     * @param {string} url
+     * @memberof ReadDocument
+     */
     @action
     async downloadDocument(url: string) {
         this.exports.downloadItem(`${url}?${this.downloadAuthParams}`, 'Document');
     }
 
+    /**
+     * View next search hit item
+     *
+     * @memberof ReadDocument
+     */
     @action
     viewNextSearchHit() {
         this.searchHitNumber = this.searchHitNumber ? this.searchHitNumber + 1 : 1;
     }
 
+    /**
+     * View previous search hit item
+     *
+     * @memberof ReadDocument
+     */
     @action
     viewPreviousSearchHit() {
         if (this.searchHitNumber === 1) {
