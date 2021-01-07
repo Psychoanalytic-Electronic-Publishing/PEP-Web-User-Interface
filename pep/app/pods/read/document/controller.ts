@@ -60,6 +60,7 @@ export default class ReadDocument extends Controller {
     @tracked showHitsInContext = false;
     @tracked page = null;
     @tracked showBackButton = false;
+    @tracked searchHitNumber?: number;
 
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
@@ -167,6 +168,20 @@ export default class ReadDocument extends Controller {
         return this.searchSelection.includedRecords.length
             ? this.searchSelection.includedRecords
             : this.paginator.models;
+    }
+
+    /**
+     * Show or hide left arrow for search hits
+     *
+     * @readonly
+     * @memberof ReadDocument
+     */
+    get showPreviousSearchHitButton() {
+        return this.searchHitNumber && this.searchHitNumber > 1;
+    }
+
+    get showNextSearchHitButton() {
+        return this.searchHitNumber === undefined || this.searchHitNumber < this.model.termCount;
     }
 
     /**
@@ -443,6 +458,20 @@ export default class ReadDocument extends Controller {
     @action
     async downloadDocument(url: string) {
         this.exports.downloadItem(`${url}?${this.downloadAuthParams}`, 'Document');
+    }
+
+    @action
+    viewNextSearchHit() {
+        this.searchHitNumber = this.searchHitNumber ? this.searchHitNumber + 1 : 1;
+    }
+
+    @action
+    viewPreviousSearchHit() {
+        if (this.searchHitNumber === 1) {
+            this.searchHitNumber = undefined;
+        } else if (this.searchHitNumber) {
+            this.searchHitNumber = this.searchHitNumber - 1;
+        }
     }
 }
 

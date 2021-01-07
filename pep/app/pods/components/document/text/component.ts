@@ -43,6 +43,7 @@ interface DocumentTextArgs {
         matchSynonyms: boolean;
     };
     page?: string;
+    searchHitNumber?: number;
     onGlossaryItemClick: (term: string, termResults: GlossaryTerm[]) => void;
     viewSearch: (searchTerms: string) => void;
 }
@@ -81,7 +82,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
 
     containerElement?: HTMLElement;
     scrollableElement?: Element | null;
-    defaultOffsetForScroll = -70;
+    defaultOffsetForScroll = -85;
 
     tippyOptions = {
         theme: 'light',
@@ -352,6 +353,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
      * @param {number} page
      * @memberof DocumentText
      */
+    @action
     async scrollToSearchHit(hitNumber: string) {
         const element = this.containerElement?.querySelector(`[data-hit-number='${hitNumber}']`);
         await this.animateScrollToElement(element);

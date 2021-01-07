@@ -42,6 +42,7 @@ export default class Document extends DS.Model {
     @attr('string') sourceTitle!: string;
     @attr('string') sourceType!: string;
     @attr() stat!: object;
+    @attr('number') termCount!: number;
     @attr('string') title!: string;
     @attr('date') updated!: Date;
     @attr('string') vol!: string;

@@ -33,36 +33,79 @@
                 <p class="small text-muted {{if this.model.accessLimited " mb-2" " mb-0"}}">
                     {{this.model.documentRef}}
                 </p>
-                {{#unless this.model.accessLimited}}
-                    <div class="flex-shrink-0">
-                        <DropdownMenu @horizontalPosition="auto-right" as |DD|>
-                            <DD.Trigger @htmlTag="button" class="btn btn-link px-2">
-                                <FaIcon @icon="download" @size="lg" @prefix="fas" />
-                            </DD.Trigger>
-                            <DD.Content class="dropdown-menu">
-                                <DropdownAction @dd={{DD}} @action={{fn this.downloadDocument this.downloadUrlEpub}}>
-                                    {{t "search.preview.download.ePub"}}
-                                </DropdownAction>
-                                <DropdownAction @dd={{DD}} @action={{fn this.downloadDocument this.downloadUrlPdf}}>
-                                    {{t "search.preview.download.pdf"}}
-                                </DropdownAction>
-                                <DropdownAction @dd={{DD}} @action={{fn this.downloadDocument this.downloadUrlPdfOrig}}>
-                                    {{t "search.preview.download.pdfOrig"}}
-                                </DropdownAction>
-                            </DD.Content>
-                        </DropdownMenu>
+                <div class="d-flex align-items-center">
+                    <span class="p-1 d-flex align-items-center">
+                        {{#if this.showPreviousSearchHitButton}}
+                            <Button
+                                @action={{this.viewPreviousSearchHit}}
+                                @type="link"
+                                @icon="chevron-left"
+                                @iconPrefix="fas"
+                                @iconSize="lg"
+                                @tooltip={{t "common.previous"}}
+                                class="p-0"
+                            />
+                        {{/if}}
+                        {{this.q}}
+                        {{#if this.searchHitNumber}}
+                            <span class="ml-1">
+                                {{t
+                                    "read.document.searchHits"
+                                    current=this.searchHitNumber
+                                    total=this.model.termCount
+                                    htmlSafe=true
+                                }}
+                            </span>
+                        {{/if}}
+                        {{#if this.showNextSearchHitButton}}
+                            <Button
+                                @action={{this.viewNextSearchHit}}
+                                @type="link"
+                                @icon="chevron-right"
+                                @iconPrefix="fas"
+                                @iconSize="lg"
+                                @tooltip={{t "common.next"}}
+                                class="p-0"
+                            />
+                        {{/if}}
+                    </span>
+                    {{#unless this.model.accessLimited}}
+                        <div class="flex-shrink-0">
+                            <DropdownMenu @horizontalPosition="auto-right" as |DD|>
+                                <DD.Trigger @htmlTag="button" class="btn btn-link px-2">
+                                    <FaIcon @icon="download" @size="lg" @prefix="fas" />
+                                </DD.Trigger>
+                                <DD.Content class="dropdown-menu">
+                                    <DropdownAction
+                                        @dd={{DD}}
+                                        @action={{fn this.downloadDocument this.downloadUrlEpub}}
+                                    >
+                                        {{t "search.preview.download.ePub"}}
+                                    </DropdownAction>
+                                    <DropdownAction @dd={{DD}} @action={{fn this.downloadDocument this.downloadUrlPdf}}>
+                                        {{t "search.preview.download.pdf"}}
+                                    </DropdownAction>
+                                    <DropdownAction
+                                        @dd={{DD}}
+                                        @action={{fn this.downloadDocument this.downloadUrlPdfOrig}}
+                                    >
+                                        {{t "search.preview.download.pdfOrig"}}
+                                    </DropdownAction>
+                                </DD.Content>
+                            </DropdownMenu>
 
-                        <Button
-                            @action={{this.printDocument}}
-                            @type="link"
-                            @icon="print"
-                            @iconPrefix="fas"
-                            @iconSize="lg"
-                            @tooltip={{t "common.print"}}
-                            class="p-1"
-                        />
-                    </div>
-                {{/unless}}
+                            <Button
+                                @action={{this.printDocument}}
+                                @type="link"
+                                @icon="print"
+                                @iconPrefix="fas"
+                                @iconSize="lg"
+                                @tooltip={{t "common.print"}}
+                                class="p-1"
+                            />
+                        </div>
+                    {{/unless}}
+                </div>
             </div>
         </div>
         <div class="card">
@@ -91,6 +134,7 @@
                             @page={{this.page}}
                             @readQueryParams={{this.readQueryParams}}
                             @viewSearch={{this.viewSearch}}
+                            @searchHitNumber={{this.searchHitNumber}}
                         />
                     </ContentWithPlaceholder>
                 </div>
