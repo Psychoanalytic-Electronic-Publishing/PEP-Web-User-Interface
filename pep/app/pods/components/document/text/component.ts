@@ -1,6 +1,6 @@
 import { action } from '@ember/object';
 import RouterService from '@ember/routing/router-service';
-import { scheduleOnce } from '@ember/runloop';
+import { next, scheduleOnce } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -30,7 +30,8 @@ import LoadingBarService from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
 import ThemeService from 'pep/services/theme';
 import { buildJumpToHitsHTML, loadXSLT, parseXML } from 'pep/utils/dom';
-import tippy, { Instance, Props, Tippy } from 'tippy.js';
+import { reject } from 'rsvp';
+import tippy, { Instance, Props } from 'tippy.js';
 
 interface DocumentTextArgs {
     document: Document;
@@ -46,6 +47,7 @@ interface DocumentTextArgs {
     searchHitNumber?: number;
     onGlossaryItemClick: (term: string, termResults: GlossaryTerm[]) => void;
     viewSearch: (searchTerms: string) => void;
+    documentRendered: () => void;
 }
 
 /**
@@ -111,6 +113,9 @@ export default class DocumentText extends Component<DocumentTextArgs> {
         const document = await this.parseDocumentText(text);
         if (document) {
             this.xml = document;
+            if (this.args.documentRendered) {
+                next(this, this.args.documentRendered);
+            }
         }
     }
 
@@ -144,8 +149,9 @@ export default class DocumentText extends Component<DocumentTextArgs> {
                 const transformedDocument = (processor.transformToFragment(xml, document) as unknown) as XMLDocument;
                 return transformedDocument;
             }
+            return reject(this.notifications.error(this.intl.t('document.text.error')));
         } else {
-            this.notifications.error(this.intl.t('document.text.error'));
+            return reject(this.notifications.error(this.intl.t('document.text.error')));
         }
     }
 
