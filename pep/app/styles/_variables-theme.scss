@@ -22,6 +22,7 @@ $color-navbar-toggle: saturate(lighten($color-brand-primary, 20%), 20%) !default
 $color-drawer-bg: $color-brand-primary !default;
 $color-help-tooltip-foreground: #a2aeb9 !default;
 $color-help-tooltip-background: $color-primary-background !default;
+$color-search-item-bg: $color-backdrop !default;
 $gradient-primary: linear-gradient(
     to right,
     $color-brand-primary 0,
