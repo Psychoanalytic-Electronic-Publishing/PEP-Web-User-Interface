@@ -4,14 +4,11 @@ import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
-import Modal from '@gavant/ember-modals/services/modal';
 import { ModelChangeset } from '@gavant/ember-validations/utilities/create-changeset';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import IntlService from 'ember-intl/services/intl';
 
-import ENV from 'pep/config/environment';
 import { FORGOT_PW_URL } from 'pep/constants/urls';
-import AjaxService from 'pep/services/ajax';
 import { LoginForm } from 'pep/services/auth';
 import LoadingBar from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
@@ -31,8 +28,6 @@ export default class ModalDialogsUserLogin extends Component<ModalDialogsUserLog
     @service loadingBar!: LoadingBar;
     @service notifications!: NotificationService;
     @service intl!: IntlService;
-    @service modal!: Modal;
-    @service ajax!: AjaxService;
 
     @tracked loginError = null;
 
@@ -72,14 +67,5 @@ export default class ModalDialogsUserLogin extends Component<ModalDialogsUserLog
         await this.args.onClose();
         //TODO go to real subscribe page
         return this.router.transitionTo('index');
-    }
-
-    @action
-    async showFederatedLogins() {
-        const federatedLogins = await this.ajax.request(ENV.federatedLoginUrl);
-        this.modal.open('user/federated-login', {
-            logins: federatedLogins.FederatedLinks
-        });
-        this.args.onClose();
     }
 }

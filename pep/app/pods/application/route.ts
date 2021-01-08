@@ -6,6 +6,7 @@ import { inject as service } from '@ember/service';
 
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import NotificationService from 'ember-cli-notifications/services/notifications';
+import CookiesService from 'ember-cookies/services/cookies';
 import IntlService from 'ember-intl/services/intl';
 import MetricService from 'ember-metrics/services/metrics';
 import MediaService from 'ember-responsive/services/media';
@@ -44,6 +45,7 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
     @service loadingBar!: LoadingBarService;
     @service sidebar!: SidebarService;
     @service tour!: TourService;
+    @service cookies!: CookiesService;
 
     constructor() {
         super(...arguments);
@@ -85,16 +87,21 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
         // since we do not currently cache ajax service requests
         // in the fastboot shoebox (like ember-data does)
 
+        if (this.fastboot.isFastBoot) {
+            this.auth.dontRedirectOnLogin = true;
+        }
+
         if (this.fastboot.isFastBoot && !this.session.isAuthenticated) {
             try {
                 await this.session.authenticate('authenticator:ip');
+                this.fastboot.request.cookies.pep_session = this.cookies.read('pep_session');
+                this.cookies.write('pep_session_fastboot', this.cookies.read('pep_session'), {});
             } catch (errors) {
                 this.session.invalidate();
             }
-        }
-
-        if (this.fastboot.isFastBoot) {
-            this.auth.dontRedirectOnLogin = true;
+        } else if (!this.session.isAuthenticated) {
+            this.cookies.write('pep_session', this.cookies.read('pep_session_fastboot'), {});
+            this.cookies.clear('pep_session_fastboot', {});
         }
 
         try {
@@ -249,6 +256,8 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
         if (this.currentUser.preferences?.tourEnabled) {
             this.setupTour();
         }
+
+        console.log(`FASTBOOT COOKIES: ${this.fastboot.request.cookies}`);
     }
 
     /**
