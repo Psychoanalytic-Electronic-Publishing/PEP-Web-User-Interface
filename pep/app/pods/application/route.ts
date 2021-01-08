@@ -256,8 +256,6 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
         if (this.currentUser.preferences?.tourEnabled) {
             this.setupTour();
         }
-
-        console.log(`FASTBOOT COOKIES: ${this.fastboot.request.cookies}`);
     }
 
     /**
