@@ -1,8 +1,15 @@
 <div
-    class="document-text"
+    class="document-text
+
+
+        {{if this.currentUser.preferences.glossaryFormattingEnabled "glossary-highlight"}}
+
+
+
+        {{this.currentUser.textJustification.class}}"
     {{on "click" this.onDocumentClick}}
     {{did-update this.setupListeners this.text}}
-    {{did-update this.parseDocument @text}}
+    {{did-update this.parseDocument @document}}
     {{did-update this.parseDocument this.currentUser.preferences.translationConcordanceEnabled}}
 >
     {{html-safe this.text}}

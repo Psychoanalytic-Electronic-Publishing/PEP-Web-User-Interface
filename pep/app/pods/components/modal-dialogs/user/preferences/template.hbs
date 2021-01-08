@@ -1,84 +1,159 @@
-<ModalDialog @onClose={{@onClose}} @size="md" @clickOutsideToClose={{false}} @closable={{not this.updatePreferenceTask.isRunning}} as |Modal|>
+<ModalDialog
+    @onClose={{@onClose}}
+    @size="lg"
+    @clickOutsideToClose={{false}}
+    @closable={{not this.updatePreferenceTask.isRunning}} as |Modal|
+>
     <Modal.header @title={{t "preferences.title"}} />
     <Modal.body>
         <p class="text-muted">
             {{t "preferences.info"}}
         </p>
-        <div class="mb-4">
-            <h6 class="mb-3">
-                {{t "preferences.general.heading"}}
-            </h6>
-            <div class="form-row mb-3">
-                <div class="col-sm-7">
-                    <FlSelect
-                        @options={{this.theme.themeOptions}}
-                        @value={{this.theme.currentTheme.id}}
-                        @valuePath="id"
-                        @labelPath="label"
-                        @placeholder={{t "preferences.general.theme.label"}}
-                        @emptyOptionText={{t "preferences.general.theme.select"}}
-                        @allowClear={{false}}
-                        @onChange={{this.updateTheme}}
-                    />
+        <div class="row">
+            <div class="col-sm-6 col-lg-8">
+                <div class="mb-4">
+                    <h6 class="mb-3">
+                        {{t "preferences.general.heading"}}
+                    </h6>
+                    <div class="form-row mb-3">
+                        <div class="col-sm-8">
+                            <FlSelect
+                                @options={{this.theme.themeOptions}}
+                                @value={{this.theme.currentTheme.id}}
+                                @valuePath="id"
+                                @labelPath="label"
+                                @placeholder={{t "preferences.general.theme.label"}}
+                                @emptyOptionText={{t "preferences.general.theme.select"}}
+                                @allowClear={{false}}
+                                @onChange={{this.updateTheme}}
+                            />
+                        </div>
+                    </div>
+                    <div class="form-row mb-3">
+                        <div class="col-sm-8">
+                            <FlSelect
+                                @options={{this.lang.availableLanguages}}
+                                @value={{this.lang.currentLanguage}}
+                                @valuePath="code"
+                                @labelPath="label"
+                                @placeholder={{t "preferences.general.lang.label"}}
+                                @emptyOptionText={{t "preferences.general.lang.select"}}
+                                @allowClear={{false}}
+                                @onChange={{this.updateLanguage}}
+                            />
+                        </div>
+                    </div>
+                    <div class="form-row mb-3">
+                        <div class="col-sm-8">
+                            <FlSelect
+                                @options={{this.currentUser.availableFontSizes}}
+                                @value={{this.currentUser.fontSize.id}}
+                                @valuePath="id"
+                                @labelPath="label"
+                                @placeholder={{t "preferences.general.fontSize.label"}}
+                                @emptyOptionText={{t "preferences.general.fontSize.select"}}
+                                @allowClear={{false}}
+                                @onChange={{this.updateFontSize}}
+                            />
+                        </div>
+                    </div>
+                    <div class="form-row mb-3">
+                        <div class="col-sm-8">
+                            <FlSelect
+                                @options={{this.currentUser.availableTextJustifications}}
+                                @value={{this.currentUser.textJustification.id}}
+                                @valuePath="id"
+                                @labelPath="label"
+                                @placeholder={{t "preferences.general.textAlignment.label"}}
+                                @emptyOptionText={{t "preferences.general.textAlignment.select"}}
+                                @allowClear={{false}}
+                                @onChange={{this.updateTextJustification}}
+                            />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-sm-8">
+                            <CheckboxInput
+                                @checked={{this.currentUser.preferences.glossaryFormattingEnabled}}
+                                @onChange={{fn this.updatePreference this.glossaryFormattingEnabledKey}}
+                                @label={{t "preferences.general.glossaryFormatting.label"}}
+                            />
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="form-row">
-                <div class="col-sm-7">
-                    <FlSelect
-                        @options={{this.lang.availableLanguages}}
-                        @value={{this.lang.currentLanguage}}
-                        @valuePath="code"
-                        @labelPath="label"
-                        @placeholder={{t "preferences.general.lang.label"}}
-                        @emptyOptionText={{t "preferences.general.lang.select"}}
-                        @allowClear={{false}}
-                        @onChange={{this.updateLanguage}}
-                    />
-                </div>
-            </div>
-        </div>
 
-        <div class="mb-4">
-            <h6 class="mb-3">
-                {{t "preferences.search.heading"}}
-            </h6>
-            <div class="form-row mb-3">
-                <div class="col-sm-7">
-                    <FlInput
-                        @placeholder={{t "preferences.search.hic.limit"}}
-                        @value={{this.currentUser.preferences.searchHICLimit}}
-                        maxlength="2"
-                        {{on "input" (fn this.updatePreference this.hicLimit)}}
-                    />
+                <div class="mb-4">
+                    <h6 class="mb-3">
+                        {{t "preferences.search.heading"}}
+                    </h6>
+                    <div class="form-row mb-3">
+                        <div class="col-sm-8">
+                            <FlInput
+                                @placeholder={{t "preferences.search.hic.limit"}}
+                                @value={{this.currentUser.preferences.searchHICLimit}}
+                                maxlength="2"
+                                {{on "input" (fn this.updatePreference this.hicLimit)}}
+                            />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-sm-8">
+                            <p class="text-muted mb-2">
+                                {{t "preferences.search.preview.label"}}
+                            </p>
+                            <RadioInput
+                                @label={{t "preferences.search.preview.enabled"}}
+                                @value={{true}}
+                                @checked={{this.currentUser.preferences.searchPreviewEnabled}}
+                                @onChange={{fn this.updatePreference this.searchEnabledKey}}
+                                class="mb-1"
+                            />
+                            <RadioInput
+                                @label={{t "preferences.search.preview.disabled"}}
+                                @value={{false}}
+                                @checked={{not this.currentUser.preferences.searchPreviewEnabled}}
+                                @onChange={{fn this.updatePreference this.searchEnabledKey}}
+                                class="mb-1"
+                            />
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="form-row">
-                <div class="col-sm-7">
-                    <p class="text-muted mb-2">
-                        {{t "preferences.search.preview.label"}}
-                    </p>
-                    <RadioInput
-                        @label={{t "preferences.search.preview.enabled"}}
-                        @value={{true}}
-                        @checked={{this.currentUser.preferences.searchPreviewEnabled}}
-                        @onChange={{fn this.updatePreference this.searchEnabledKey}}
-                        class="mb-1"
-                    />
-                    <RadioInput
-                        @label={{t "preferences.search.preview.disabled"}}
-                        @value={{false}}
-                        @checked={{not this.currentUser.preferences.searchPreviewEnabled}}
-                        @onChange={{fn this.updatePreference this.searchEnabledKey}}
-                        class="mb-1"
-                    />
+            <div class="col-sm-6 col-lg-4 border-left">
+                <div class="mb-4">
+                    <h6 class="mb-3">
+                        {{t "preferences.sidebar.heading"}}
+                    </h6>
+                    <div class="form-row">
+                        <div class="col-sm-7">
+                            <p class="text-muted mb-2">
+                                {{t "preferences.sidebar.widgets.label"}}
+                            </p>
+                            {{#each this.widgets as |widget|}}
+                                <CheckboxInput
+                                    @checked={{contains widget.id this.currentUser.preferences.visibleWidgets}}
+                                    @onChange={{fn this.updateWidgetsList widget.id}}
+                                    @label={{widget.label}}
+                                />
+                            {{/each}}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </Modal.body>
     <Modal.footer>
         {{#if this.updatePreferenceTask.isRunning}}
-            <small class="text-muted font-weight-bold mr-auto">{{t "common.saving"}}</small>
+            <small class="text-muted font-weight-bold mr-auto">
+                {{t "common.saving"}}
+            </small>
         {{/if}}
-        <Button @type="primary" @label={{t "common.done"}} @wide={{true}} @action={{this.done}} @disabled={{this.updatePreferenceTask.isRunning}} />
+        <Button
+            @type="primary"
+            @label={{t "common.done"}}
+            @wide={{true}}
+            @action={{this.done}}
+            @disabled={{this.updatePreferenceTask.isRunning}}
+        />
     </Modal.footer>
 </ModalDialog>

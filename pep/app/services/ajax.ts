@@ -10,7 +10,7 @@ import { guard } from 'pep/utils/types';
 import { appendTrailingSlash } from 'pep/utils/url';
 import { reject } from 'rsvp';
 
-export type RequestInitWithSlash = RequestInit & { appendTrailingSlash: boolean };
+export type RequestInitWithSlash = RequestInit & { appendTrailingSlash?: boolean };
 
 export default class AjaxService extends Service {
     @service('pep-session') session!: PepSessionService;

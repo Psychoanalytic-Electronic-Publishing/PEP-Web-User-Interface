@@ -4,6 +4,7 @@ import { tracked } from '@glimmer/tracking';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import CookiesService from 'ember-cookies/services/cookies';
 import DS from 'ember-data';
+import IntlService from 'ember-intl/services/intl';
 
 import ENV from 'pep/config/environment';
 import { DATE_FOREVER } from 'pep/constants/dates';
@@ -18,8 +19,17 @@ import {
     USER_PREFERENCES_LS_PREFIX,
     UserPreferences
 } from 'pep/constants/preferences';
+import {
+    AvailableFontSizes,
+    FONT_SIZE_DEFAULT,
+    FontSize,
+    TEXT_LEFT,
+    TextJustificationId,
+    TextJustifications
+} from 'pep/constants/text';
 import User, { UserType } from 'pep/pods/user/model';
 import PepSessionService from 'pep/services/pep-session';
+import { addClass, removeClass } from 'pep/utils/dom';
 import { reject } from 'rsvp';
 
 export default class CurrentUserService extends Service {
@@ -27,10 +37,59 @@ export default class CurrentUserService extends Service {
     @service('pep-session') session!: PepSessionService;
     @service fastboot!: FastbootService;
     @service cookies!: CookiesService;
+    @service intl!: IntlService;
+    // @ts-ignore this does exist
+    @service('-document') document!: any;
 
     @tracked user: User | null = null;
     @tracked preferences?: UserPreferences;
     @tracked lastViewedDocumentId?: string;
+
+    /**
+     * Available text justification options
+     *
+     * @readonly
+     * @memberof CurrentUserService
+     */
+    get availableTextJustifications() {
+        return TextJustifications.map((direction) => ({
+            ...direction,
+            label: this.intl.t(direction.label)
+        }));
+    }
+
+    /**
+     * Get the current text justification value
+     *
+     * @readonly
+     * @memberof CurrentUserService
+     */
+    get textJustification() {
+        return TextJustifications.find((item) => item.id === this.preferences?.textJustification) ?? TEXT_LEFT;
+    }
+
+    /**
+     * Available font sizes transformed with internationalization
+     *
+     * @readonly
+     * @memberof CurrentUserService
+     */
+    get availableFontSizes() {
+        return AvailableFontSizes.map((size) => ({
+            ...size,
+            label: this.intl.t(size.label)
+        }));
+    }
+
+    /**
+     * Get the current font size
+     *
+     * @readonly
+     * @memberof CurrentUserService
+     */
+    get fontSize() {
+        return AvailableFontSizes.find((item) => item.id === this.preferences?.fontSize) ?? FONT_SIZE_DEFAULT;
+    }
 
     /**
      * Loads the current user from the API
@@ -254,5 +313,42 @@ export default class CurrentUserService extends Service {
     getPreferenceDocuments(key: PreferenceDocumentsKey): string[] {
         const prefs = this.preferences;
         return prefs?.[key] ?? [];
+    }
+
+    /**
+     * Set new font size on html element
+     *
+     * @param {FontSize} newSize
+     * @memberof CurrentUserService
+     */
+    setFontSize(newSize: FontSize) {
+        const document = this.document;
+        let target = document.documentElement;
+        const size = AvailableFontSizes.find((item) => item.id === newSize) ?? FONT_SIZE_DEFAULT;
+        AvailableFontSizes.map((item) => item.class).forEach((item) => {
+            removeClass(target, item);
+        });
+
+        addClass(target, size.class);
+    }
+
+    /**
+     * Update the font size by saving to the user preferences
+     *
+     * @param {FontSize} newSize
+     * @memberof CurrentUserService
+     */
+    updateFontSize(newSize: FontSize) {
+        this.updatePrefs({ [PreferenceKey.FONT_SIZE]: newSize });
+    }
+
+    /**
+     * Update the text justification by saving to the user preferences
+     *
+     * @param {TextJustificationId} textJustification
+     * @memberof CurrentUserService
+     */
+    updateTextJustification(textJustification: TextJustificationId) {
+        this.updatePrefs({ [PreferenceKey.TEXT_JUSTIFICATION]: textJustification });
     }
 }

@@ -33,3 +33,14 @@ export const isArrayOf = <T>(itemToCheck: any[], propertyNames: Array<keyof T> |
 export const pluck = <T, K extends keyof T>(o: T, propertyNames: K[] | K): T[K][] | T[K] => {
     return Array.isArray(propertyNames) ? propertyNames.map((n) => o[n]) : o[propertyNames];
 };
+
+/**
+ * Flatten enum to get array of enum values
+ *
+ * @template T
+ * @param {T} e
+ * @return {*}  {T[]}
+ */
+export const flattenEnum = <T>(e: any): T[] => {
+    return Object.values(e).filter((value) => typeof value === 'string') as T[];
+};
