@@ -37,7 +37,7 @@ import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
 import { SearchSorts, SearchSortType, transformSearchSortsToTable, transformSearchSortToAPI } from 'pep/utils/sort';
 import { hash } from 'rsvp';
 
-export default class Search extends Controller {
+export default class SearchIndex extends Controller {
     @service ajax!: AjaxService;
     @service sidebar!: SidebarService;
     @service loadingBar!: LoadingBarService;
@@ -515,7 +515,7 @@ export default class Search extends Controller {
                 [WIDGET.RELATED_DOCUMENTS]: result
             });
         } else {
-            this.transitionToRoute('read.document', result.id, {
+            this.transitionToRoute('search.read', result.id, {
                 queryParams: this.readQueryParams
             });
         }
@@ -706,6 +706,6 @@ export default class Search extends Controller {
 // DO NOT DELETE: this is how TypeScript knows how to look up your controllers.
 declare module '@ember/controller' {
     interface Registry {
-        search: Search;
+        'search/index': SearchIndex;
     }
 }

@@ -9,14 +9,14 @@ import { DS } from 'ember-data';
 
 import Abstract from 'pep/pods/abstract/model';
 import GlossaryTerm from 'pep/pods/glossary-term/model';
+import SearchDocument from 'pep/pods/search-document/model';
 import AuthService from 'pep/services/auth';
 import ConfigurationService from 'pep/services/configuration';
 import FastbootMediaService from 'pep/services/fastboot-media';
+import LoadingBarService from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
 import SidebarService from 'pep/services/sidebar';
 import { buildSearchQueryParams } from 'pep/utils/search';
-import LoadingBarService from 'pep/services/loading-bar';
-import SearchDocument from 'pep/pods/search-document/model';
 
 interface HomeArgs {}
 
@@ -51,7 +51,7 @@ export default class Home extends Component<HomeArgs> {
     }
 
     get imageArticleUrl() {
-        return this.imageArticle?.id ? this.router.urlFor('read.document', this.imageArticle?.id) : '';
+        return this.imageArticle?.id ? this.router.urlFor('browse.read', this.imageArticle?.id) : '';
     }
 
     /**
@@ -108,7 +108,7 @@ export default class Home extends Component<HomeArgs> {
      */
     @action
     async transitionToImageDocument() {
-        return this.router.transitionTo('read.document', this.imageArticle!.id);
+        return this.router.transitionTo('browse.read', this.imageArticle!.id);
     }
 
     /**
@@ -117,7 +117,7 @@ export default class Home extends Component<HomeArgs> {
      */
     @action
     async transitionToExpertPick() {
-        return this.router.transitionTo('read.document', this.expertPick.articleId);
+        return this.router.transitionTo('browse.read', this.expertPick.articleId);
     }
 
     /**

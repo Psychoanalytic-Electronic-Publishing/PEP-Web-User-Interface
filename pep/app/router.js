@@ -9,28 +9,33 @@ export default class Router extends EmberRouter {
 }
 
 Router.map(function() {
-    this.route('login');
-    this.route('search', function() {});
-    this.route('browse', function() {
-        this.route('videos');
-        this.route('journal', { path: '/:pep_code/volumes' }, function() {
-            this.route('volume', { path: '/:volume_number' });
-        });
+  this.route('login');
+  this.route('search', function() {
+    this.route('read', { path: '/read/:document_id' });
+    this.route('read-loading');
+  });
+  this.route('browse', function() {
+      this.route('videos');
+      this.route('journal', { path: '/:pep_code/volumes' }, function() {
+          this.route('volume', { path: '/:volume_number' });
+      });
 
-        this.route('book', function() {
-            this.route('gw');
-            this.route('se');
-        });
-    });
-    this.route('read', function() {
-        this.route('document', { path: '/:document_id' });
-    });
+      this.route('book', function() {
+          this.route('gw');
+          this.route('se');
+      });
+      this.route('read', { path: '/read/:document_id' });
+  });
+  this.route('read', function() {
+      this.route('document', { path: '/:document_id' });
+  });
 
-    this.route('most-cited');
-    this.route('most-viewed');
+  this.route('most-cited');
+  this.route('most-viewed');
 
-    //make sure these routes are always defined last!
-    this.route('five-hundred', { path: '/500' });
-    this.route('four-oh-three', { path: '/403' });
-    this.route('four-oh-four', { path: '/*path' });
+  //make sure these routes are always defined last!
+  this.route('five-hundred', { path: '/500' });
+  this.route('four-oh-three', { path: '/403' });
+  this.route('four-oh-four', { path: '/*path' });
+  this.route('search-loading');
 });

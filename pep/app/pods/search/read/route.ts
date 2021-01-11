@@ -7,18 +7,16 @@ import { buildQueryParams, QueryParamsObj } from '@gavant/ember-pagination/utils
 
 import { WIDGET } from 'pep/constants/sidebar';
 import { PageNav } from 'pep/mixins/page-layout';
-import BrowseController, { BrowseTabs } from 'pep/pods/browse/controller';
-import BrowseJournalVolumeController from 'pep/pods/browse/journal/volume/controller';
 import Document from 'pep/pods/document/model';
-import ReadDocumentController from 'pep/pods/read/document/controller';
 import SearchDocument from 'pep/pods/search-document/model';
+import SearchReadController from 'pep/pods/search/read/controller';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
 import SidebarService from 'pep/services/sidebar';
 import { buildSearchQueryParams, copyToController, hasSearchQuery } from 'pep/utils/search';
 import { serializeQueryParams } from 'pep/utils/url';
 
-export interface ReadDocumentParams {
+export interface SearchReadParams {
     document_id: string;
     q: string;
     matchSynonyms: boolean;
@@ -30,15 +28,15 @@ export interface ReadDocumentParams {
     page?: string;
 }
 
-export default class ReadDocument extends PageNav(Route) {
+export default class SearchRead extends PageNav(Route) {
     @service configuration!: ConfigurationService;
     @service sidebar!: SidebarService;
     @service currentUser!: CurrentUserService;
-    navController = 'read/document';
 
+    navController = 'search.read';
     searchResults?: Document[];
     searchResultsMeta?: any;
-    searchParams?: ReadDocumentParams | QueryParamsObj;
+    searchParams?: SearchReadParams | QueryParamsObj;
     searchHasPaging = true;
     showBackButton = true;
 
@@ -46,7 +44,7 @@ export default class ReadDocument extends PageNav(Route) {
      * Fetch the requested document
      * @param {ReadDocumentParams} params
      */
-    model(params: ReadDocumentParams) {
+    model(params: SearchReadParams) {
         let searchQueryString;
         //workaround for https://github.com/emberjs/ember.js/issues/18981
         const searchTerms = params._searchTerms ? JSON.parse(params._searchTerms) : [];
@@ -105,13 +103,11 @@ export default class ReadDocument extends PageNav(Route) {
         // If your coming to the page fresh, or from another document or the search we want to try and re-use the search if possible
         if (
             !transition.from?.name ||
-            transition.from?.name === 'read.document' ||
-            transition.from?.name === 'search' ||
+            transition.from?.name === 'search.read' ||
             transition.from?.name === 'search.index'
         ) {
             if (transition.from?.name) {
-                const name = transition.from?.name.replace('.index', '');
-                const controller = this.controllerFor(name) as ReadDocumentController;
+                const controller = this.controllerFor(transition.from.name) as SearchReadController;
                 results = controller?.paginator?.models;
                 resultsMeta = controller?.paginator?.metadata;
                 this.searchHasPaging = true;
@@ -120,7 +116,7 @@ export default class ReadDocument extends PageNav(Route) {
 
             // if the query params are different - load new items, otherwise reuse if possible
             if (!pastQueryParams || JSON.stringify(pastQueryParams) !== JSON.stringify(queryParams)) {
-                const params = this.paramsFor('read.document') as ReadDocumentParams;
+                const params = this.paramsFor('search.read') as SearchReadParams;
                 //workaround for https://github.com/emberjs/ember.js/issues/18981
                 const searchTerms = params._searchTerms ? JSON.parse(params._searchTerms) : [];
                 const facets = params._facets ? JSON.parse(params._facets) : [];
@@ -142,7 +138,7 @@ export default class ReadDocument extends PageNav(Route) {
 
                 //if no search was submitted, don't fetch any results
                 if (hasSearchQuery(searchParams)) {
-                    const controller = this.controllerFor(this.routeName) as ReadDocumentController;
+                    const controller = this.controllerFor(this.routeName) as SearchReadController;
                     const queryParams = buildQueryParams({
                         context: controller,
                         pagingRootKey: null,
@@ -163,38 +159,6 @@ export default class ReadDocument extends PageNav(Route) {
                     this.showBackButton = true;
                 }
             }
-        } else if (transition.from?.name === 'browse.index' || transition.from?.name.includes('browse.book')) {
-            const controller = this.controllerFor('browse') as BrowseController;
-            const tab = controller.tab;
-            if (tab === BrowseTabs.BOOKS || tab === BrowseTabs.VIDEOS) {
-                const smartSearchTerm = model.id.split('.');
-                const searchParams = buildSearchQueryParams({
-                    smartSearchTerm: `${smartSearchTerm[0]}.${smartSearchTerm[1]}.*`
-                });
-                const controller = this.controllerFor(this.routeName) as ReadDocumentController;
-                const queryParams = buildQueryParams({
-                    context: controller,
-                    pagingRootKey: null,
-                    filterRootKey: null,
-                    sorts:
-                        controller.selectedView.id === controller.tableView
-                            ? ['']
-                            : [this.currentUser.preferences?.searchSortType.id ?? ''],
-                    processQueryParams: (params) => ({ ...params, ...searchParams })
-                });
-                const response = (await this.store.query('search-document', queryParams)) as RecordArrayWithMeta<
-                    SearchDocument
-                >;
-                results = response.toArray();
-                resultsMeta = response.meta;
-                this.searchHasPaging = true;
-                this.showBackButton = false;
-            }
-        } else if (transition.from?.name === 'browse.journal.volume') {
-            const controller = this.controllerFor(transition.from?.name) as BrowseJournalVolumeController;
-            results = controller.model;
-            this.searchHasPaging = false;
-            this.showBackButton = false;
         }
 
         if (results && !resultsMeta) {
@@ -220,13 +184,13 @@ export default class ReadDocument extends PageNav(Route) {
 
     /**
      * Set the search results data on the controller
-     * @param {ReadDocumentController} controller
+     * @param {SearchReadController} controller
      * @param {object} model
      */
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
     //@ts-ignore
-    setupController(controller: ReadDocumentController, model: RecordArrayWithMeta<Document>) {
+    setupController(controller: SearchReadController, model: RecordArrayWithMeta<Document>) {
         //workaround for bug w/array-based query param values
         //@see https://github.com/emberjs/ember.js/issues/18981
         //@ts-ignore
@@ -255,14 +219,14 @@ export default class ReadDocument extends PageNav(Route) {
 
     /**
      * Clear any existing search results data when leaving the page
-     * @param {ReadDocumentController} controller
+     * @param {SearchReadController} controller
      * @param {boolean} isExiting
      * @param {Transition} transition
      */
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
     //@ts-ignore
-    resetController(controller: ReadDocumentController, isExiting: boolean, transition: Transition) {
+    resetController(controller: SearchReadController, isExiting: boolean, transition: Transition) {
         //workaround for bug w/array-based query param values
         //@see https://github.com/emberjs/ember.js/issues/18981
         //@ts-ignore

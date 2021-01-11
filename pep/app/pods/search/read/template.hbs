@@ -1,0 +1,144 @@
+<Page::Content>
+    <div class="pb-3 px-4">
+        <div class="sticky-top bg-body py-2">
+            <div
+                class="d-flex
+
+
+                    {{if
+                        (and this.showBackButton this.paginator.metadata.fullCount)
+                        "justify-content-between"
+                        "justify-content-end"
+                    }}
+
+
+                     align-items-center mb-2"
+            >
+                {{#if (and this.showBackButton this.paginator.metadata.fullCount)}}
+                    <LinkTo
+                        @route="search"
+                        @query={{hash
+                            q=this.q
+                            matchSynonyms=this.matchSynonyms
+                            searchTerms=this._searchTerms
+                            facets=this._facets
+                        }}
+                    >
+                        <FaIcon @icon="arrow-left" />
+                        {{t "read.document.backToSearch"}}
+                    </LinkTo>
+                {{/if}}
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+                <p class="small text-muted {{if this.model.accessLimited " mb-2" " mb-0"}}">
+                    {{this.model.documentRef}}
+                </p>
+                <div class="d-flex align-items-center">
+                    <span class="p-1 d-flex align-items-center">
+                        {{#if this.showPreviousSearchHitButton}}
+                            <Button
+                                @action={{this.viewPreviousSearchHit}}
+                                @type="link"
+                                @icon="chevron-left"
+                                @iconPrefix="fas"
+                                @iconSize="lg"
+                                @tooltip={{t "common.previous"}}
+                                class="py-0 px-1 mx-1"
+                            />
+                        {{/if}}
+                        {{this.model.searchTerm}}
+                        {{#if this.searchHitNumber}}
+                            <span class="ml-1">
+                                {{t
+                                    "read.document.searchHits"
+                                    current=this.searchHitNumber
+                                    total=this.model.termCount
+                                    htmlSafe=true
+                                }}
+                            </span>
+                        {{/if}}
+                        {{#if this.showNextSearchHitButton}}
+                            <Button
+                                @action={{this.viewNextSearchHit}}
+                                @type="link"
+                                @icon="chevron-right"
+                                @iconPrefix="fas"
+                                @iconSize="lg"
+                                @tooltip={{t "common.next"}}
+                                class="py-0 px-1 mx-1"
+                            />
+                        {{/if}}
+                    </span>
+                    {{#unless this.model.accessLimited}}
+                        <div class="flex-shrink-0">
+                            <DropdownMenu @horizontalPosition="auto-right" as |DD|>
+                                <DD.Trigger @htmlTag="button" class="btn btn-link px-2">
+                                    <FaIcon @icon="download" @size="lg" @prefix="fas" />
+                                </DD.Trigger>
+                                <DD.Content class="dropdown-menu">
+                                    <DropdownAction
+                                        @dd={{DD}}
+                                        @action={{fn this.downloadDocument this.downloadUrlEpub}}
+                                    >
+                                        {{t "search.preview.download.ePub"}}
+                                    </DropdownAction>
+                                    <DropdownAction @dd={{DD}} @action={{fn this.downloadDocument this.downloadUrlPdf}}>
+                                        {{t "search.preview.download.pdf"}}
+                                    </DropdownAction>
+                                    <DropdownAction
+                                        @dd={{DD}}
+                                        @action={{fn this.downloadDocument this.downloadUrlPdfOrig}}
+                                    >
+                                        {{t "search.preview.download.pdfOrig"}}
+                                    </DropdownAction>
+                                </DD.Content>
+                            </DropdownMenu>
+
+                            <Button
+                                @action={{this.printDocument}}
+                                @type="link"
+                                @icon="print"
+                                @iconPrefix="fas"
+                                @iconSize="lg"
+                                @tooltip={{t "common.print"}}
+                                class="p-1"
+                            />
+                        </div>
+                    {{/unless}}
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <Alert @isShown={{this.model.accessLimited}} @type="warning">
+                    {{#if this.model.noAccessMessage}}
+                        <p class={{if this.session.isAuthenticated "mb-0"}}>
+                            {{html-safe this.model.noAccessMessage}}
+                        </p>
+                    {{/if}}
+                    {{#unless this.session.isAuthenticated}}
+                        <p class="mb-0">
+                            {{t "read.document.loginToRead"}}
+                            <a href="" {{on "click" this.login}}>
+                                {{t "read.document.login"}}
+                            </a>
+                            .
+                        </p>
+                    {{/unless}}
+                </Alert>
+                <div class="pep-document-content" id="read-document">
+                    <ContentWithPlaceholder @placeholderInFastboot={{true}}>
+                        <Document::Text
+                            @document={{this.model}}
+                            @onGlossaryItemClick={{this.viewGlossaryTerm}}
+                            @page={{this.page}}
+                            @readQueryParams={{this.readQueryParams}}
+                            @viewSearch={{this.viewSearch}}
+                            @searchHitNumber={{this.searchHitNumber}}
+                        />
+                    </ContentWithPlaceholder>
+                </div>
+            </div>
+        </div>
+    </div>
+</Page::Content>

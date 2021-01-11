@@ -140,7 +140,7 @@ export default class BrowseJournalVolume extends Controller {
             this.previewedResult = abstract;
             this.preview = documentId;
         } else {
-            this.transitionToRoute('read.document', documentId);
+            this.transitionToRoute('browse.read', documentId);
         }
     }
 

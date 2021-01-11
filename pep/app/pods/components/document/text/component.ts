@@ -14,11 +14,7 @@ import animateScrollTo from 'animated-scroll-to';
 import ENV from 'pep/config/environment';
 import { DOCUMENT_IMG_BASE_URL, DocumentLinkTypes } from 'pep/constants/documents';
 import {
-    HIT_MARKER_END,
-    HIT_MARKER_END_OUTPUT_HTML,
-    HIT_MARKER_START,
-    HIT_MARKER_START_OUTPUT_HTML,
-    SEARCH_HIT_MARKER_REGEX,
+    HIT_MARKER_END, HIT_MARKER_END_OUTPUT_HTML, HIT_MARKER_START, HIT_MARKER_START_OUTPUT_HTML, SEARCH_HIT_MARKER_REGEX,
     SearchTermId
 } from 'pep/constants/search';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
@@ -222,14 +218,14 @@ export default class DocumentText extends Component<DocumentTextArgs> {
         } else if (type === DocumentLinkTypes.BIBLIOGRAPHY) {
             const id = attributes.getNamedItem('data-document-id')?.nodeValue;
             if (id) {
-                this.router.transitionTo('read.document', id, {
+                this.router.transitionTo('browse.read', id, {
                     queryParams: this.args.readQueryParams
                 });
             }
         } else if (type === DocumentLinkTypes.DOCUMENT) {
             const id = attributes.getNamedItem('data-document-id')?.nodeValue;
             if (id) {
-                this.router.transitionTo('read.document', id, {
+                this.router.transitionTo('browse.read', id, {
                     queryParams: this.args.readQueryParams
                 });
             }
@@ -251,7 +247,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
                 this.scrollToPage(page);
             } else if (documentId) {
                 //transition to a different document with a specific page
-                this.router.transitionTo('read.document', documentId, {
+                this.router.transitionTo('browse.read', documentId, {
                     queryParams: {
                         ...this.args.readQueryParams,
                         page

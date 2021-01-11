@@ -261,7 +261,7 @@ export function groupCountsByRange(
  * @param {Search} searchController
  */
 export function copySearchToController(toController: Controller & SearchController) {
-    const searchController = getOwner(toController).lookup(`controller:search`);
+    const searchController = getOwner(toController).lookup(`controller:search.index`);
     const config: ConfigurationService = getOwner(toController).lookup('service:configuration');
     const user: CurrentUserService = getOwner(toController).lookup('service:currentUser');
     const preferences = user.preferences;
@@ -291,7 +291,7 @@ export function clearSearch(
     configuration: ConfigurationService,
     user: CurrentUserService
 ) {
-    const searchController = getOwner(controller).lookup(`controller:search`);
+    const searchController = getOwner(controller).lookup(`controller:search.index`);
     const cfg = configuration.base.search;
     const preferences = user.preferences;
     const terms = preferences?.searchTermFields ?? cfg.terms.defaultFields;

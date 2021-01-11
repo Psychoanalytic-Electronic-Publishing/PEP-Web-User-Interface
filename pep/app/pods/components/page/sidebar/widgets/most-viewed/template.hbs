@@ -16,7 +16,7 @@
                 {{#each this.results as |result|}}
                     <li class="mb-2">
                         <div>
-                            <LinkTo @route="read.document" @model={{result.id}}>
+                            <LinkTo @route="browse.read" @model={{result.id}}>
                                 {{html-safe result.documentRef}}
                             </LinkTo>
                         </div>

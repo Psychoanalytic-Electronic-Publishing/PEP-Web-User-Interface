@@ -24,7 +24,7 @@
                 {{#each this.results.similarDocuments as |result|}}
                     <li class="mb-2">
                         <div>
-                            <LinkTo @route="read.document" @model={{result.id}}>
+                            <LinkTo @route="browse.read" @model={{result.id}}>
                                 {{html-safe result.title}}
                             </LinkTo>
                             <div class="text-muted small">
