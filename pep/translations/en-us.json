@@ -58,7 +58,7 @@
         },
         "support": {
             "link": "Support",
-            "reportDataError": "Report a data error",
+            "reportDataError": "Report a Data Error",
             "preferences": "Help Preferences"
         }
     },
@@ -628,7 +628,7 @@
     },
     "reportDataError": {
         "title": "Report a Data Error",
-        "instructions1": "Use this form to report data errors only. This includes typing errors, misspelled words or author names, etc.",
+        "instructions1": "Only use this form to report data errors. This includes typing errors, misspelled words or author names, etc.",
         "instructions2": "For other non-data related issues, please refer to the list of common help resources below:",
         "instructions3": "PEP is very grateful for reports that help us to improve the quality of PEP-web. And we welcome '<a href=\"http://support.pep-web.org/about-the-pep-archive/suggest-new-content/\" target=\"_blank\">'suggestions for new content'</a>'.",
         "reportSuccessful": "Your report was submitted successfully!",

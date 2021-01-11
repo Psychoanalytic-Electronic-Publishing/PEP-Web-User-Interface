@@ -1,14 +1,16 @@
-import Component from '@glimmer/component';
-import { action } from '@ember/object';
-import { tracked } from '@glimmer/tracking';
-import { inject as service } from '@ember/service';
-import createChangeset, { ModelChangeset } from '@gavant/ember-validations/utilities/create-changeset';
-import CurrentUserService from 'pep/services/current-user';
-import REPORT_DATA_ERROR_VALIDATIONS from 'pep/validations/help/report-data-error';
-import AjaxService from 'pep/services/ajax';
-import LoadingBarService from 'pep/services/loading-bar';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import IntlService from 'ember-intl/services/intl';
+import ENV from 'pep/config/environment';
+import AjaxService from 'pep/services/ajax';
+import CurrentUserService from 'pep/services/current-user';
+import LoadingBarService from 'pep/services/loading-bar';
+import REPORT_DATA_ERROR_VALIDATIONS from 'pep/validations/help/report-data-error';
+
+import { action } from '@ember/object';
+import { inject as service } from '@ember/service';
+import createChangeset, { ModelChangeset } from '@gavant/ember-validations/utilities/create-changeset';
+import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
 
 interface ErrorReport {
     username: string;
@@ -40,6 +42,7 @@ export default class ModalDialogsHelpReportDataError extends Component<ModalDial
     @service notifications!: NotificationService;
     @service intl!: IntlService;
     validations = REPORT_DATA_ERROR_VALIDATIONS;
+    dataErrorUrl = `${ENV.reportsBaseUrl}/data-errors`;
 
     commonResources: CommonResource[] = [
         {
@@ -93,9 +96,10 @@ export default class ModalDialogsHelpReportDataError extends Component<ModalDial
         try {
             this.loadingBar.show();
             changeset.execute();
-            const results = await this.ajax.request('', {
+            const requestData = { data: { attributes: changeset.data, type: 'dataErrors' } };
+            const results = await this.ajax.request(this.dataErrorUrl, {
                 method: 'POST',
-                body: this.ajax.stringifyData(changeset.data)
+                body: this.ajax.stringifyData(requestData)
             });
             this.loadingBar.hide();
             this.notifications.success(this.intl.t('reportDataError.reportSuccessful'));

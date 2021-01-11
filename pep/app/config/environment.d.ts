@@ -26,6 +26,7 @@ declare const config: {
     cookieDomain: string;
     cookieSecure: boolean;
     cookieSameSite: string;
+    reportsBaseUrl: string;
     fastboot: {
         hostWhitelist: Array<string | RegExp>;
     };
