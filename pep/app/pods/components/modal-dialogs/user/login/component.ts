@@ -35,6 +35,12 @@ export default class ModalDialogsUserLogin extends Component<ModalDialogsUserLog
 
     @tracked loginError = null;
 
+    /**
+     * Forgot password url. We use the FP URL from the api, and then the hardcoded one as a backup
+     *
+     * @readonly
+     * @memberof ModalDialogsUserLogin
+     */
     get forgotPasswordUrl() {
         return this.args.options.padsForgotPasswordUrl ?? FORGOT_PW_URL;
     }
@@ -76,6 +82,11 @@ export default class ModalDialogsUserLogin extends Component<ModalDialogsUserLog
         return this.router.transitionTo('index');
     }
 
+    /**
+     * Show the federated login modal
+     *
+     * @memberof ModalDialogsUserLogin
+     */
     @action
     async showFederatedLogins() {
         this.modal.open('user/federated-login', {

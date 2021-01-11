@@ -42,7 +42,7 @@ export default class AuthService extends Service {
     dontRedirectOnLogin = false;
 
     /**
-     * Opens the login modal dialog
+     * Opens the login modal dialog and loads the forgot password URL (along with federated login information)
      * @param {Boolean} dontRedirectOnLogin
      * @param {Object} modalOptions
      */
