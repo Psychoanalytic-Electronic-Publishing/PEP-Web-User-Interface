@@ -1,9 +1,11 @@
+import { action } from '@ember/object';
+import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import { action } from '@ember/object';
 
-import { WIDGET, WidgetData } from 'pep/constants/sidebar';
 import { WidgetConfiguration } from 'pep/constants/configuration';
+import { WIDGET, WidgetData } from 'pep/constants/sidebar';
+import CurrentUserService from 'pep/services/current-user';
 
 export interface PageSidebarWidgetsArgs {
     widgets: WidgetConfiguration[];
@@ -16,8 +18,10 @@ export interface PageSidebarWidgetArgs extends PageSidebarWidgetsArgs {
 }
 
 export default class PageSidebarWidgets extends Component<PageSidebarWidgetsArgs> {
-    @tracked openWidgets: WIDGET[] =
-        this.args.widgets?.filter((widget) => widget.open).map((widget) => widget.widget) ?? [];
+    @service currentUser!: CurrentUserService;
+
+    @tracked
+    openWidgets: WIDGET[] = this.args.widgets?.filter((widget) => widget.open).map((widget) => widget.widget) ?? [];
 
     /**
      * Getter that decides when we show close all

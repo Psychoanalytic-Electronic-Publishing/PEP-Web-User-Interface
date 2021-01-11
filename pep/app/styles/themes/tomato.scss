@@ -20,8 +20,20 @@ $color-backdrop: #fbf5f2;
 $color-preview-background: $color-backdrop;
 $color-tooltip-background: $color-backdrop;
 $color-backdrop-well: darken($color-backdrop, 2.5%);
+$color-primary-well: $color-backdrop;
 $color-progress-spinner-loading2: saturate(lighten($color-brand-primary, 35%), 45%);
 $color-focus-shadow: rgba(#bf3c30, 0.25);
+$color-sidebar-bg: lighten($color-backdrop, 2%);
+$color-footer-bg: $color-brand-primary;
+$color-navbar-toggle: saturate(lighten($color-brand-primary, 20%), 20%);
+$color-drawer-bg: $color-brand-primary;
+$color-help-tooltip-foreground: #a2aeb9;
+$color-help-tooltip-background: $color-primary-background;
+$gradient-primary: linear-gradient(
+    to right,
+    $color-brand-primary 0,
+    saturate(lighten($color-brand-primary, 20%), 20%) 100%
+);
 
 $document-link-glosstip-hover: $color-brand-primary;
 $document-link-glosstip-bg: rgba($color-brand-primary, 0.1);
@@ -34,6 +46,7 @@ $document-link-web-internal: #84a9ac;
 // Bootstrap overrides
 // ---------------------------
 $primary: #bf3c30;
+$body-bg: $color-backdrop;
 $link-color: saturate(lighten($primary, 10%), 20%);
 // Addon overrides
 // ---------------------------

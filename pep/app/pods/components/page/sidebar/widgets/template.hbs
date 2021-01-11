@@ -1,6 +1,8 @@
 {{#if @widgets}}
     <div class="px-2 pb-1 d-flex justify-content-between align-items-center" ...attributes>
-        <h5 class="m-0">{{t "relatedInfo.title"}}</h5>
+        <h5 class="m-0">
+            {{t "relatedInfo.title"}}
+        </h5>
         <Button
             @type="link"
             @action={{this.toggleAll}}
@@ -11,12 +13,14 @@
     </div>
     <div class="p-2">
         {{#each @widgets as |widget|}}
-            {{component
-                (concat "page/sidebar/widgets/" widget.widget)
-                toggleIsOpen=this.toggleIsOpen
-                openWidgets=this.openWidgets
-                data=@data
-            }}
+            {{#if (contains widget.widget this.currentUser.preferences.visibleWidgets)}}
+                {{component
+                    (concat "page/sidebar/widgets/" widget.widget)
+                    toggleIsOpen=this.toggleIsOpen
+                    openWidgets=this.openWidgets
+                    data=@data
+                }}
+            {{/if}}
         {{/each}}
     </div>
 {{/if}}

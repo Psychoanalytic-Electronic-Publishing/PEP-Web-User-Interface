@@ -14,22 +14,32 @@
 // Application variables
 // ---------------------------
 $logo-path: '/assets/images/logo-dark.jpg';
-$color-brand-primary: #2f3136;
+$color-brand-primary: #5c74a2;
+$color-input-bg: #2f3136;
 $color-backdrop: #36393f;
 $color-primary-background: #393c43;
 $color-tooltip-background: darken($color-primary-background, 5%);
 $color-preview-background: $color-backdrop;
 $color-backdrop-well: darken($color-backdrop, 2.5%);
-$color-progress-spinner-loading2: saturate(lighten($color-brand-primary, 35%), 45%);
-$color-focus-shadow: rgba($color-brand-primary, 0.25);
+$color-primary-well: lighten($color-primary-background, 2.5%);
+$color-divider: rgba(#fff, 0.02);
+$color-progress-spinner-loading2: saturate(lighten($color-input-bg, 35%), 45%);
+$color-focus-shadow: rgba($color-input-bg, 0.25);
 $color-muted-select-background: $color-backdrop;
-$color-progress-spinner-loading1: $color-brand-primary;
+$color-progress-spinner-loading1: $color-input-bg;
 $color-progress-spinner-loading2: $color-backdrop;
+$color-sidebar-bg: darken($color-backdrop, 1%);
+$color-footer-bg: darken($color-input-bg, 3%);
+$color-navbar-toggle: lighten($color-input-bg, 5%);
+$color-drawer-bg: $color-primary-background;
+$color-help-tooltip-foreground: #a6a6ab;
+$color-help-tooltip-background: $color-primary-background;
+$gradient-primary: linear-gradient(to right, $color-input-bg 0, lighten($color-input-bg, 2%) 100%);
 
-$document-link-glosstip-hover: #00b1f1;
-$document-link-glosstip-bg: rgba($document-link-glosstip-hover, 0.1);
+$document-link-glosstip-hover: #6a81ae;
+$document-link-glosstip-bg: rgba(saturate(lighten($document-link-glosstip-hover, 5%), 5%), 0.15);
 $document-link-bibliography: #b9c6ae;
-$document-link-page: #2a628f;
+$document-link-page: saturate(lighten($color-brand-primary, 25%), 5%);
 $document-link-figure: #8a95a5;
 $document-link-external: #8a95a5;
 $document-link-web-external: #a4a29e;
@@ -38,23 +48,35 @@ $document-link-web-internal: #a4a29e;
 // Bootstrap overrides
 // ---------------------------
 $primary: $color-brand-primary;
-$body-bg: $color-primary-background;
+$body-bg: darken($color-backdrop, 2%);
 $body-color: #dbdddc;
+$dark: $body-color;
 $input-color: $body-color;
-$link-color: #00b1f1;
-$input-border-color: $color-brand-primary;
-$custom-select-bg: $color-brand-primary;
+$link-color: saturate(lighten($color-brand-primary, 24%), 22%);
+$input-border-color: $color-input-bg;
+$input-bg: $color-input-bg;
+$input-focus-border-color: lighten($color-input-bg, 20%);
+$input-btn-focus-color: lighten($color-input-bg, 10%);
+$custom-select-bg: $color-input-bg;
 $custom-select-color: $body-color;
-$custom-select-border-color: $color-brand-primary;
-$custom-control-indicator-bg: $color-brand-primary;
-$input-bg: $color-brand-primary;
+$custom-select-border-color: $color-input-bg;
+$custom-control-indicator-bg: $color-input-bg;
+$color-muted-select-text: darken($input-color, 10%);
 $modal-content-bg: $color-primary-background;
 $dropdown-link-color: $body-color;
 $dropdown-border-color: lighten($color-primary-background, 10%);
 $dropdown-link-hover-bg: lighten($color-primary-background, 5%);
 $dropdown-link-hover-color: $body-color;
-$dropdown-link-active-bg: darken($color-primary-background, 20%);
-$dropdown-divider-bg: $color-brand-primary;
+$dropdown-link-active-bg: $color-brand-primary;
+$dropdown-divider-bg: lighten($color-primary-background, 4%);
+$close-text-shadow: none;
+$nav-tabs-link-active-bg: $color-primary-background;
+$nav-tabs-link-active-color: $body-color;
+$nav-tabs-border-color: lighten($color-primary-background, 6%);
+$nav-tabs-link-hover-border-color: darken($nav-tabs-border-color, 2%) darken($nav-tabs-border-color, 2%)
+    $nav-tabs-border-color;
+$nav-tabs-link-active-border-color: $nav-tabs-border-color $nav-tabs-border-color $nav-tabs-link-active-bg;
+$table-border-color: lighten($color-primary-background, 8%);
 // Darkens all alert colors
 $alert-bg-level: 10;
 $alert-border-level: 1;
@@ -62,51 +84,25 @@ $alert-color-level: -10;
 
 // Addon overrides
 // ---------------------------
-$button-spinner-loading-color2: saturate(lighten($color-brand-primary, 35%), 45%);
-$ember-power-select-focus-border-color: lighten($primary, 25%);
-$ember-power-select-focus-box-shadow: 0 0 0 0.2rem rgba($primary, 0.25);
+$button-spinner-loading-color2: saturate(lighten($color-input-bg, 35%), 45%);
+$ember-power-select-background-color: $input-bg;
+$ember-power-select-border-color: $input-border-color;
+$ember-power-select-focus-border-color: $input-focus-border-color;
+$ember-power-select-focus-box-shadow: 0 0 0 0.2rem lighten($color-input-bg, 10%);
 $floating-label-control-focus-background: linear-gradient(
     to bottom,
     rgba(255, 255, 255, 0) 0%,
-    $color-brand-primary 48%
+    $color-input-bg 48%
 ) !default;
 // Why is there a duplicate overriding this?
 $ember-basic-dropdown-content-background-color: $color-backdrop;
-
 $ember-content-placeholders-primary-color: $color-backdrop;
-$ember-content-placeholders-secondary-color: $color-brand-primary;
+$ember-content-placeholders-secondary-color: $color-input-bg;
+$gvnt-tbl-fixed-cell-bg: $color-primary-background;
+$gvnt-tbl-border-color: $table-border-color;
 
 // ---------------------------
 // Common app styles
 // ---------------------------
 
 @import '../common';
-
-.bg-gradient-primary {
-    background-color: $color-brand-primary !important;
-    background-image: none;
-}
-
-.text-dark {
-    color: $body-color !important;
-}
-
-.shepherd-element.dark {
-    background-color: $link-color !important;
-    color: $body-color !important;
-    .shepherd-text {
-        color: $body-color !important;
-    }
-    .shepherd-button {
-        background-color: $color-primary-background !important;
-    }
-    .shepherd-header {
-        background-color: $color-primary-background !important;
-        .shepherd-title {
-            color: $body-color !important;
-        }
-    }
-    .shepherd-arrow::before {
-        background-color: $link-color !important;
-    }
-}

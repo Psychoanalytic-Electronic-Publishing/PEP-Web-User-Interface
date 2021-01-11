@@ -9,6 +9,8 @@ import IntlService from 'ember-intl/services/intl';
 
 import { LanguageCode } from 'pep/constants/lang';
 import { PreferenceKey, UserPreferences } from 'pep/constants/preferences';
+import { WIDGET, WIDGETS } from 'pep/constants/sidebar';
+import { FontSize, TextJustificationId } from 'pep/constants/text';
 import { ThemeId } from 'pep/constants/themes';
 import CurrentUserService from 'pep/services/current-user';
 import LangService from 'pep/services/lang';
@@ -27,6 +29,7 @@ export default class ModalDialogsUserPreferences extends Component<ModalDialogsU
 
     searchEnabledKey = PreferenceKey.SEARCH_PREVIEW_ENABLED;
     hicLimit = PreferenceKey.SEARCH_HIC_LIMIT;
+    glossaryFormattingEnabledKey = PreferenceKey.GLOSSARY_FORMATTING_ENABLED;
 
     /**
      * Close the preferences modal dialog
@@ -34,6 +37,29 @@ export default class ModalDialogsUserPreferences extends Component<ModalDialogsU
     @action
     done() {
         this.args.onClose();
+    }
+
+    /**
+     * Update font size
+     *
+     * @param {FontSize} size
+     * @memberof ModalDialogsUserPreferences
+     */
+    @action
+    updateFontSize(size: FontSize) {
+        this.currentUser.setFontSize(size);
+        this.currentUser.updateFontSize(size);
+    }
+
+    /**
+     * Update the text justification for the document
+     *
+     * @param {TextJustificationId} justification
+     * @memberof ModalDialogsUserPreferences
+     */
+    @action
+    updateTextJustification(justification: TextJustificationId) {
+        this.currentUser.updateTextJustification(justification);
     }
 
     /**
@@ -81,5 +107,35 @@ export default class ModalDialogsUserPreferences extends Component<ModalDialogsU
             newValue = newValue.data as UserPreferences[K];
         }
         return taskFor(this.updatePreferenceTask).perform(key, newValue);
+    }
+
+    get widgets() {
+        return WIDGETS.map((widget) => ({
+            ...widget,
+            label: this.intl.t(widget.label)
+        }));
+    }
+
+    /**
+     * Update visible widget list
+     *
+     * @param {WIDGET} widget
+     * @param {boolean} selected
+     * @memberof ModalDialogsUserPreferences
+     */
+    @action
+    updateWidgetsList(widget: WIDGET, selected: boolean) {
+        if (selected) {
+            const widgets = this.currentUser.preferences?.visibleWidgets;
+            widgets?.push(widget);
+            this.currentUser.updatePrefs({ [PreferenceKey.VISIBLE_WIDGETS]: widgets });
+        } else {
+            const index = this.currentUser.preferences?.visibleWidgets.indexOf(widget);
+            const widgets = this.currentUser.preferences?.visibleWidgets;
+            if (widgets && index !== undefined) {
+                widgets.removeAt(index);
+                this.currentUser.updatePrefs({ [PreferenceKey.VISIBLE_WIDGETS]: widgets });
+            }
+        }
     }
 }

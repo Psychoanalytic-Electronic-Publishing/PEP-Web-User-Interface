@@ -1,8 +1,11 @@
 import ENV from 'pep/config/environment';
 import { LanguageCode } from 'pep/constants/lang';
 import { SearchTermId } from 'pep/constants/search';
+import { WIDGET } from 'pep/constants/sidebar';
+import { FontSize, TextJustificationId } from 'pep/constants/text';
 import { ThemeId } from 'pep/constants/themes';
 import { SearchSort, SearchSorts } from 'pep/utils/sort';
+import { flattenEnum } from 'pep/utils/types';
 
 import { SearchView, SearchViews } from './search';
 
@@ -20,7 +23,12 @@ export enum PreferenceKey {
     THEME = 'theme',
     TOUR_ENABLED = 'tourEnabled',
     HELP_DESCRIPTIONS_ENABLED = 'helpDescriptionsEnabled',
-    HELP_ICONS_ENABLED = 'helpIconsEnabled'
+    HELP_ICONS_ENABLED = 'helpIconsEnabled',
+    FONT_SIZE = 'fontSize',
+    VISIBLE_WIDGETS = 'visibleWidgets',
+    TRANSLATION_CONCORDANCE = 'translationConcordanceEnabled',
+    GLOSSARY_FORMATTING_ENABLED = 'glossaryFormattingEnabled',
+    TEXT_JUSTIFICATION = 'textJustification'
 }
 
 export interface UserPreferences {
@@ -39,6 +47,11 @@ export interface UserPreferences {
     tourEnabled: boolean;
     helpDescriptionsEnabled: boolean;
     helpIconsEnabled: boolean;
+    fontSize: FontSize;
+    visibleWidgets: WIDGET[];
+    translationConcordanceEnabled: boolean;
+    glossaryFormattingEnabled: boolean;
+    textJustification: TextJustificationId;
 }
 
 export type PreferenceChangeset = Partial<UserPreferences>;
@@ -65,7 +78,9 @@ export const COOKIE_PREFERENCES: PreferenceKey[] = [
     PreferenceKey.SEARCH_VIEW_TYPE,
     PreferenceKey.SEARCH_SORT_TYPE,
     PreferenceKey.HELP_DESCRIPTIONS_ENABLED,
-    PreferenceKey.HELP_ICONS_ENABLED
+    PreferenceKey.HELP_ICONS_ENABLED,
+    PreferenceKey.FONT_SIZE,
+    PreferenceKey.VISIBLE_WIDGETS
 ];
 
 /**
@@ -77,7 +92,8 @@ export const LOCALSTORAGE_PREFERENCES: PreferenceKey[] = [
     PreferenceKey.FAVORITES,
     PreferenceKey.READ_LATER,
     PreferenceKey.SEARCH_PREVIEW_ENABLED,
-    PreferenceKey.TOUR_ENABLED
+    PreferenceKey.TOUR_ENABLED,
+    PreferenceKey.TRANSLATION_CONCORDANCE
 ];
 
 export const DEFAULT_USER_PREFERENCES: UserPreferences = {
@@ -93,5 +109,10 @@ export const DEFAULT_USER_PREFERENCES: UserPreferences = {
     searchSortType: SearchSorts[0],
     tourEnabled: true,
     helpDescriptionsEnabled: true,
-    helpIconsEnabled: true
+    helpIconsEnabled: true,
+    fontSize: FontSize.DEFAULT,
+    visibleWidgets: flattenEnum(WIDGET),
+    translationConcordanceEnabled: true,
+    glossaryFormattingEnabled: true,
+    textJustification: TextJustificationId.LEFT
 };

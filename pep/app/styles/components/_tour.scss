@@ -1,28 +1,65 @@
 .mobile-tour {
     max-width: 200px;
 }
+
 .shepherd-element {
     background-color: $color-primary-background !important;
     color: $body-color !important;
+
     .shepherd-text {
         color: $body-color !important;
         padding: 1em;
     }
+
     .shepherd-button {
         background-color: $link-color !important;
     }
+
     .shepherd-header {
         background-color: $color-backdrop !important;
         .shepherd-title {
             color: $body-color !important;
         }
     }
+
     .shepherd-arrow::before {
         background-color: $color-primary-background !important;
     }
-    .shepherd-enabled {
+
+    &.shepherd-enabled {
         &:focus {
             outline: none;
+        }
+    }
+
+    &.dark {
+        background-color: lighten($color-primary-background, 5%) !important;
+        color: $body-color !important;
+
+        .shepherd-text {
+            color: $body-color !important;
+        }
+
+        .shepherd-button {
+            background-color: $color-brand-primary !important;
+        }
+
+        .shepherd-header {
+            background-color: $color-primary-background !important;
+
+            .shepherd-title {
+                color: $body-color !important;
+            }
+        }
+
+        .shepherd-arrow::before {
+            background-color: lighten($color-primary-background, 5%) !important;
+        }
+
+        &[data-popper-placement='bottom'] {
+            .shepherd-arrow::before {
+                background-color: $color-primary-background !important;
+            }
         }
     }
 }
