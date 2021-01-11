@@ -1,49 +1,33 @@
 <ModalDialog @onClose={{@onClose}} @size="md" @clickOutsideToClose={{false}} as |Modal|>
-    <Modal.header @title={{t "login.title"}} />
-    <FormValidator @changeset={{@options.changeset}} @submit={{this.login}} as |changeset validator|>
-        <Modal.body>
-            <p class="text-muted">
-                {{t "login.info"}}
-            </p>
-            <Alert
-                @isShown={{bool this.loginError}}
-                @message={{this.loginError}}
-                @type="danger"
-                @icon="exclamation-circle"
-            />
-            <div class="form-row">
-                <div class="col-sm-8">
-                    <validator.input @errors={{changeset.error.username.validation}} class="input-validator-compact">
-                        <FlInput @value={{changeset.username}} @placeholder={{t "login.username"}} maxlength="128" />
-                    </validator.input>
-                    <validator.input @errors={{changeset.error.password.validation}} class="input-validator-compact">
-                        <FlInput
-                            @value={{changeset.password}}
-                            @placeholder={{t "login.password"}}
-                            maxlength="128"
-                            type="password"
-                        />
-                    </validator.input>
-                    {{! TODO no subscribe link yet, hiding for now }}
-                    {{!--
-                    <p class="mb-0 text-muted">
-                        {{t "login.notAMember"}}
-                        <a href="" {{on "click" this.transitionToSubscribe}}>
-                            {{t "login.clickToSubscribe"}}
-                        </a>.
-                    </p>
-                    --}}
-                    <p class="mb-0 text-muted">
-                        <a href="{{this.forgotPasswordUrl}}" target="_blank" rel="noopener noreferrer">
-                            {{t "login.forgotPassword"}}
+    <Modal.header @title={{t "federatedLogin.title"}} />
+    <Modal.body>
+        <p class="text-muted">
+            {{t "federatedLogin.info"}}
+        </p>
+        <Alert
+            @isShown={{bool this.loginError}}
+            @message={{this.loginError}}
+            @type="danger"
+            @icon="exclamation-circle"
+        />
+        <div class="form-row">
+            <ul class="col-sm-8 list-unstyled">
+                <li>
+                    <a href="{{@options.genericLoginUrl}}" target="_blank" rel="noopener noreferrer">
+                        {{t "federatedLogin.openAthens"}}
+                    </a>
+                </li>
+                {{#each @options.logins as |login|}}
+                    <li>
+                        <a href="{{login.URL}}" target="_blank" rel="noopener noreferrer">
+                            {{login.Name}}
                         </a>
-                    </p>
-                </div>
-            </div>
-        </Modal.body>
-        <Modal.footer>
-            <Button @type="link" @label={{t "common.cancel"}} @action={{@onClose}} />
-            <ButtonSpinner @type="primary" @label={{t "login.title"}} @wide={{true}} @action={{validator.submit}} />
-        </Modal.footer>
-    </FormValidator>
+                    </li>
+                {{/each}}
+            </ul>
+        </div>
+    </Modal.body>
+    <Modal.footer>
+        <Button @type="link" @label={{t "common.cancel"}} @action={{@onClose}} />
+    </Modal.footer>
 </ModalDialog>

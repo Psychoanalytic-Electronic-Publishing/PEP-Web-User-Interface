@@ -9,10 +9,9 @@ import { ModelChangeset } from '@gavant/ember-validations/utilities/create-chang
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import IntlService from 'ember-intl/services/intl';
 
-import ENV from 'pep/config/environment';
 import { FORGOT_PW_URL } from 'pep/constants/urls';
 import AjaxService from 'pep/services/ajax';
-import { LoginForm } from 'pep/services/auth';
+import { FederatedLoginArgs, LoginForm } from 'pep/services/auth';
 import LoadingBar from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
 import { reject } from 'rsvp';
@@ -22,7 +21,7 @@ interface ModalDialogsUserLoginArgs {
     options: {
         changeset: any;
         onAuthenticated: (response: any) => void;
-    };
+    } & FederatedLoginArgs;
 }
 
 export default class ModalDialogsUserLogin extends Component<ModalDialogsUserLoginArgs> {
@@ -36,7 +35,10 @@ export default class ModalDialogsUserLogin extends Component<ModalDialogsUserLog
 
     @tracked loginError = null;
 
-    forgotPasswordUrl = FORGOT_PW_URL;
+    get forgotPasswordUrl() {
+        return this.args.options.padsForgotPasswordUrl ?? FORGOT_PW_URL;
+    }
+
     /**
      * Submits the login dialog form and logs the user in
      * @param {ModelChangeset<LoginForm>} changeset
@@ -76,9 +78,11 @@ export default class ModalDialogsUserLogin extends Component<ModalDialogsUserLog
 
     @action
     async showFederatedLogins() {
-        const federatedLogins = await this.ajax.request(ENV.federatedLoginUrl);
         this.modal.open('user/federated-login', {
-            logins: federatedLogins.FederatedLinks
+            logins: this.args.options.logins,
+            genericLoginUrl: this.args.options.genericLoginUrl,
+            padsLoginUrl: this.args.options.padsLoginUrl,
+            padsForgotPasswordUrl: this.args.options.padsForgotPasswordUrl
         });
         this.args.onClose();
     }
