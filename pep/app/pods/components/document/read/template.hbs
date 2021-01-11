@@ -6,7 +6,7 @@
 
 
                     {{if
-                        (and this.showBackButton this.paginator.metadata.fullCount)
+                        (and @showBackButton @paginator.metadata.fullCount)
                         "justify-content-between"
                         "justify-content-end"
                     }}
@@ -14,7 +14,7 @@
 
                      align-items-center mb-2"
             >
-                {{#if (and this.showBackButton this.paginator.metadata.fullCount)}}
+                {{#if (and @showBackButton @paginator.metadata.fullCount)}}
                     <LinkTo
                         @route="search"
                         @query={{hash
@@ -71,8 +71,38 @@
                     </span>
                     {{#unless this.model.accessLimited}}
                         <div class="flex-shrink-0">
-                            <Document::Actions::Download @id={{this.model.id}} />
-                            <Document::Actions::Print @id={{this.model.id}} />
+                            <DropdownMenu @horizontalPosition="auto-right" as |DD|>
+                                <DD.Trigger @htmlTag="button" class="btn btn-link px-2">
+                                    <FaIcon @icon="download" @size="lg" @prefix="fas" />
+                                </DD.Trigger>
+                                <DD.Content class="dropdown-menu">
+                                    <DropdownAction
+                                        @dd={{DD}}
+                                        @action={{fn this.downloadDocument this.downloadUrlEpub}}
+                                    >
+                                        {{t "search.preview.download.ePub"}}
+                                    </DropdownAction>
+                                    <DropdownAction @dd={{DD}} @action={{fn this.downloadDocument this.downloadUrlPdf}}>
+                                        {{t "search.preview.download.pdf"}}
+                                    </DropdownAction>
+                                    <DropdownAction
+                                        @dd={{DD}}
+                                        @action={{fn this.downloadDocument this.downloadUrlPdfOrig}}
+                                    >
+                                        {{t "search.preview.download.pdfOrig"}}
+                                    </DropdownAction>
+                                </DD.Content>
+                            </DropdownMenu>
+
+                            <Button
+                                @action={{this.printDocument}}
+                                @type="link"
+                                @icon="print"
+                                @iconPrefix="fas"
+                                @iconSize="lg"
+                                @tooltip={{t "common.print"}}
+                                class="p-1"
+                            />
                         </div>
                     {{/unless}}
                 </div>

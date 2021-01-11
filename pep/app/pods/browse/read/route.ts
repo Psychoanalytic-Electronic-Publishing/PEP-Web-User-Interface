@@ -107,22 +107,4 @@ export default class BrowseRead extends PageNav(Route) {
         });
         this.currentUser.lastViewedDocumentId = model.id;
     }
-
-    /**
-     * Clear any existing search results data when leaving the page
-     * @param {SearchReadController} controller
-     * @param {boolean} isExiting
-     * @param {Transition} transition
-     */
-    //workaround for bug w/array-based query param values
-    //@see https://github.com/emberjs/ember.js/issues/18981
-    //@ts-ignore
-    resetController(controller: SearchReadController, isExiting: boolean, transition: Transition) {
-        //workaround for bug w/array-based query param values
-        //@see https://github.com/emberjs/ember.js/issues/18981
-        //@ts-ignore
-        super.resetController(controller, isExiting, transition);
-        this.relatedDocuments = undefined;
-        this.relatedDocumentsMeta = undefined;
-    }
 }
