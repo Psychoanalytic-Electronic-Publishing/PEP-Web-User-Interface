@@ -94,6 +94,10 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
         if (this.fastboot.isFastBoot && !this.session.isAuthenticated) {
             try {
                 await this.session.authenticate('authenticator:ip');
+                // We are doing this to work around a strange cookie issue seen from what we think is Ember Simple Auth.
+                // The fastboot session would authenticate through IP, we would write to the cookie and save everything but when the app
+                // loaded back up, we would be logged out and the cookie would mysteriously be removed. We work around this by writing the our own cookie
+                // and then getting that cookie and setting it as the simple auth cookie to force auth state.
                 this.fastboot.request.cookies.pep_session = this.cookies.read('pep_session');
                 this.cookies.write('pep_session_fastboot', this.cookies.read('pep_session'), {});
             } catch (errors) {

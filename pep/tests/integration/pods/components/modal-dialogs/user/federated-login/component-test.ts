@@ -14,6 +14,6 @@ module('Integration | Component | modal-dialogs/user/federated-login', function(
 
         await render(hbs`{{modal-dialogs/user/federated-login}}`);
 
-        assert.equal(this.element.textContent?.trim(), '');
+        assert.ok(this.element.textContent);
     });
 });

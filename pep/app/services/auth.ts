@@ -8,6 +8,7 @@ import ENV from 'pep/config/environment';
 import AjaxService from 'pep/services/ajax';
 import LoadingBarService from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
+import { serializeQueryParams } from 'pep/utils/url';
 import LoginValidations from 'pep/validations/user/login';
 
 export interface FederatedLoginResponse {
@@ -53,8 +54,11 @@ export default class AuthService extends Service {
             const changeset = createChangeset<LoginForm>(model, LoginValidations);
             this.dontRedirectOnLogin = dontRedirectOnLogin;
             const session = this.session.getUnauthenticatedSession();
+            const params = serializeQueryParams({
+                sessionId: session?.SessionId ?? ''
+            });
             const federatedLogins = await this.ajax.request<FederatedLoginResponse>(
-                `${ENV.federatedLoginUrl}?sessionId=${session?.SessionId ?? ''}`,
+                `${ENV.federatedLoginUrl}?${params}`,
                 {
                     appendTrailingSlash: false
                 }

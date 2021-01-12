@@ -4,12 +4,6 @@
         <p class="text-muted">
             {{t "federatedLogin.info"}}
         </p>
-        <Alert
-            @isShown={{bool this.loginError}}
-            @message={{this.loginError}}
-            @type="danger"
-            @icon="exclamation-circle"
-        />
         <div class="form-row">
             <ul class="col-sm-8 list-unstyled">
                 <li>
