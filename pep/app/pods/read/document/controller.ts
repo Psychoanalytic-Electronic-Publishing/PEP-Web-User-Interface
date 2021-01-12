@@ -59,7 +59,7 @@ export default class ReadDocument extends Controller {
     @tracked paginator!: Pagination<Document>;
     @tracked showHitsInContext = false;
     @tracked page = null;
-    @tracked showBackButton = false;
+
     @tracked searchHitNumber?: number;
 
     //workaround for bug w/array-based query param values

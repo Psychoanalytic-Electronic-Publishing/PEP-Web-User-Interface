@@ -320,6 +320,26 @@ export function clearSearch(
     });
 }
 
+/**
+ * Copy any object to a controller
+ *
+ * @export
+ * @template ControllerInstance
+ * @param {*} object
+ * @param {ControllerInstance} controller
+ */
 export function copyToController<ControllerInstance>(object: any, controller: ControllerInstance) {
     Object.assign(controller, object);
+}
+
+/**
+ * Get query params from the `search.index` controller
+ *
+ * @export
+ * @param {Controller} toController
+ * @return {*}
+ */
+export function getSearchQueryParams(toController: Controller) {
+    const searchController = getOwner(toController).lookup(`controller:search.index`) as Controller & SearchController;
+    return searchController.queryParams;
 }

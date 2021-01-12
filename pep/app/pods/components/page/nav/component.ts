@@ -1,15 +1,16 @@
 import { action } from '@ember/object';
+import RouterService from '@ember/routing/router-service';
 import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
 
 import ModalService from '@gavant/ember-modals/services/modal';
 
+import { SUPPORT_URL } from 'pep/constants/urls';
 import AuthService from 'pep/services/auth';
 import ConfigurationService from 'pep/services/configuration';
-import CurrentUserService from 'pep/services/current-user';
+import CurrentUserService, { VIEW_DOCUMENT_FROM } from 'pep/services/current-user';
 import DrawerService from 'pep/services/drawer';
 import PepSessionService from 'pep/services/pep-session';
-import { SUPPORT_URL } from 'pep/constants/urls';
 
 interface PageNavArgs {
     openAboutModal: () => Promise<void>;
@@ -22,6 +23,7 @@ export default class PageNav extends Component<PageNavArgs> {
     @service drawer!: DrawerService;
     @service configuration!: ConfigurationService;
     @service currentUser!: CurrentUserService;
+    @service router!: RouterService;
 
     supportUrl = SUPPORT_URL;
 
@@ -78,5 +80,21 @@ export default class PageNav extends Component<PageNavArgs> {
     @action
     openHelpModal() {
         return this.modal.open('help/preferences', {});
+    }
+
+    /**
+     *
+     *
+     * @memberof PageNav
+     */
+    @action
+    viewRead() {
+        if (this.currentUser.lastViewedDocumentId) {
+            if (this.currentUser.lastViewedDocumentFrom === VIEW_DOCUMENT_FROM.SEARCH) {
+                this.router.transitionTo('search.read', this.currentUser.lastViewedDocumentId);
+            } else {
+                this.router.transitionTo('browse.read', this.currentUser.lastViewedDocumentId);
+            }
+        }
     }
 }

@@ -3,7 +3,7 @@ import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 
 import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hooks/pagination';
-import { buildQueryParams, QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
+import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
 
 import { WIDGET } from 'pep/constants/sidebar';
 import { PageNav } from 'pep/mixins/page-layout';
@@ -11,10 +11,9 @@ import BrowseReadController from 'pep/pods/browse/read/controller';
 import Document from 'pep/pods/document/model';
 import SearchDocument from 'pep/pods/search-document/model';
 import ConfigurationService from 'pep/services/configuration';
-import CurrentUserService from 'pep/services/current-user';
+import CurrentUserService, { VIEW_DOCUMENT_FROM } from 'pep/services/current-user';
 import SidebarService from 'pep/services/sidebar';
-import { buildSearchQueryParams, copyToController } from 'pep/utils/search';
-import { serializeQueryParams } from 'pep/utils/url';
+import { buildSearchQueryParams } from 'pep/utils/search';
 
 export interface BrowseReadParams {
     document_id: string;
@@ -67,6 +66,7 @@ export default class BrowseRead extends PageNav(Route) {
                 controller.selectedView.id === controller.tableView
                     ? ['']
                     : [this.currentUser.preferences?.searchSortType.id ?? ''],
+
             processQueryParams: (params) => ({ ...params, ...searchParams })
         });
         const response = (await this.store.query('search-document', queryParams)) as RecordArrayWithMeta<
@@ -87,7 +87,7 @@ export default class BrowseRead extends PageNav(Route) {
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
     //@ts-ignore
-    setupController(controller: SearchReadController, model: RecordArrayWithMeta<Document>) {
+    setupController(controller: BrowseReadController, model: RecordArrayWithMeta<Document>) {
         super.setupController(controller, model);
 
         controller.paginator = usePagination<Document, any>({
@@ -106,5 +106,6 @@ export default class BrowseRead extends PageNav(Route) {
             limit: 20
         });
         this.currentUser.lastViewedDocumentId = model.id;
+        this.currentUser.lastViewedDocumentFrom = VIEW_DOCUMENT_FROM.OTHER;
     }
 }

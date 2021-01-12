@@ -15,37 +15,6 @@
                 </div>
             </div>
         </div>
-        <div class="card">
-            <div class="card-body">
-                <Alert @isShown={{this.model.accessLimited}} @type="warning">
-                    {{#if this.model.noAccessMessage}}
-                        <p class={{if this.session.isAuthenticated "mb-0"}}>
-                            {{html-safe this.model.noAccessMessage}}
-                        </p>
-                    {{/if}}
-                    {{#unless this.session.isAuthenticated}}
-                        <p class="mb-0">
-                            {{t "read.document.loginToRead"}}
-                            <a href="" {{on "click" this.login}}>
-                                {{t "read.document.login"}}
-                            </a>
-                            .
-                        </p>
-                    {{/unless}}
-                </Alert>
-                <div class="pep-document-content" id="read-document">
-                    <ContentWithPlaceholder @placeholderInFastboot={{true}}>
-                        <Document::Text
-                            @document={{this.model}}
-                            @onGlossaryItemClick={{this.viewGlossaryTerm}}
-                            @page={{this.page}}
-                            @readQueryParams={{this.readQueryParams}}
-                            @viewSearch={{this.viewSearch}}
-                            @searchHitNumber={{this.searchHitNumber}}
-                        />
-                    </ContentWithPlaceholder>
-                </div>
-            </div>
-        </div>
+        <Document::Read @model={{this.model}} @page={{this.page}} @onAuthenticated={{this.onAuthenticated}} />
     </div>
 </Page::Content>

@@ -11,7 +11,7 @@ import Document from 'pep/pods/document/model';
 import SearchDocument from 'pep/pods/search-document/model';
 import SearchReadController from 'pep/pods/search/read/controller';
 import ConfigurationService from 'pep/services/configuration';
-import CurrentUserService from 'pep/services/current-user';
+import CurrentUserService, { VIEW_DOCUMENT_FROM } from 'pep/services/current-user';
 import SidebarService from 'pep/services/sidebar';
 import { buildSearchQueryParams, copyToController, hasSearchQuery } from 'pep/utils/search';
 import { serializeQueryParams } from 'pep/utils/url';
@@ -38,7 +38,6 @@ export default class SearchRead extends PageNav(Route) {
     searchResultsMeta?: any;
     searchParams?: SearchReadParams | QueryParamsObj;
     searchHasPaging = true;
-    showBackButton = true;
 
     /**
      * Fetch the requested document
@@ -111,7 +110,6 @@ export default class SearchRead extends PageNav(Route) {
                 results = controller?.paginator?.models;
                 resultsMeta = controller?.paginator?.metadata;
                 this.searchHasPaging = true;
-                this.showBackButton = true;
             }
 
             // if the query params are different - load new items, otherwise reuse if possible
@@ -156,7 +154,6 @@ export default class SearchRead extends PageNav(Route) {
                     results = response.toArray();
                     resultsMeta = response.meta;
                     this.searchHasPaging = true;
-                    this.showBackButton = true;
                 }
             }
         }
@@ -213,7 +210,7 @@ export default class SearchRead extends PageNav(Route) {
             limit: this.searchHasPaging ? 20 : 1000
         });
         this.currentUser.lastViewedDocumentId = model.id;
-        controller.showBackButton = this.showBackButton;
+        this.currentUser.lastViewedDocumentFrom = VIEW_DOCUMENT_FROM.SEARCH;
         controller.searchHitNumber = undefined;
     }
 

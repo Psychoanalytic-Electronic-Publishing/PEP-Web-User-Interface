@@ -75,7 +75,7 @@ export default class PepSessionService extends SessionService.extend({
     get downloadAuthParams() {
         const queryPrams = {
             'client-id': ENV.clientId,
-            'client-session': this.session.data.authenticated.SessionId ?? ''
+            'client-session': this.data.authenticated.SessionId ?? ''
         };
         const normalizedParams = removeEmptyQueryParams(queryPrams);
         return serializeQueryParams(normalizedParams);
