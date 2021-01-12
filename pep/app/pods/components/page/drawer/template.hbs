@@ -85,6 +85,16 @@
                         <button
                             type="button"
                             class="list-group-item list-group-item-action"
+                            {{on "click" this.openFeedbackModal}}
+                        >
+                            <FaIcon @icon="comment-lines" @fixedWidth={{true}} class="text-muted" />
+                            {{t "nav.support.provideFeedback"}}
+                        </button>
+                    </Page::Drawer::NavItem>
+                    <Page::Drawer::NavItem class="mt-1">
+                        <button
+                            type="button"
+                            class="list-group-item list-group-item-action"
                             {{on "click" this.openHelpModal}}
                         >
                             <FaIcon @icon="hands-helping" @fixedWidth={{true}} class="text-muted" />

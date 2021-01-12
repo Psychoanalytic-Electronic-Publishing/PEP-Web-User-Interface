@@ -1,6 +1,7 @@
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import IntlService from 'ember-intl/services/intl';
 import UserAgentService from 'ember-useragent/services/user-agent';
+import ENV from 'pep/config/environment';
 import AjaxService from 'pep/services/ajax';
 import LoadingBarService from 'pep/services/loading-bar';
 
@@ -9,6 +10,8 @@ import { inject as service } from '@ember/service';
 import createChangeset, { ModelChangeset } from '@gavant/ember-validations/utilities/create-changeset';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
+import FEEDBACK_TYPES, { FeedbackType, FeedbackTypeId, FEEDBACK_TYPE_FEEDBACK } from 'pep/constants/feedback-types';
+import FEEDBACK_VALIDATIONS from 'pep/validations/help/feedback';
 
 interface Feedback {
     subject: string;
@@ -30,32 +33,54 @@ export default class ModalDialogsHelpFeedback extends Component<ModalDialogsHelp
     @service notifications!: NotificationService;
     @service intl!: IntlService;
     @service ajax!: AjaxService;
+    validations = FEEDBACK_VALIDATIONS;
+    feedbackUrl = `${ENV.reportsBaseUrl}/feedback`;
+    feedbackTypes = FEEDBACK_TYPES;
+
+    get feedbackOptions() {
+        return this.feedbackTypes.map((feedbackType: FeedbackType) => ({
+            ...feedbackType,
+            label: this.intl.t(feedbackType.label)
+        }));
+    }
 
     @tracked changeset!: FeedbackChangeset;
 
+    /**
+     * Instantiate the FeedbackChangeset.
+     * @param {unknown} owner
+     * @param {ModalDialogsHelpFeedbackArgs} args
+     */
     constructor(owner: unknown, args: ModalDialogsHelpFeedbackArgs) {
         super(owner, args);
+        const { name, version } = this.userAgent.browser.info;
         const feedbackChangeset = createChangeset<Feedback>(
             {
                 subject: '',
                 description: '',
                 url: window.location.href,
-                type: '',
-                browser: this.userAgent.browser.info
+                feedbackType: FEEDBACK_TYPE_FEEDBACK.id,
+                browser: `${name} ${version}`
             },
-            {}
+            this.validations
         );
         this.changeset = feedbackChangeset;
     }
 
+    /**
+     * Submit the feedback form.
+     *
+     * @param {FeedbackChangeset} changeset
+     */
     @action
-    submit(changeset: FeedbackChangeset) {
+    async submit(changeset: FeedbackChangeset) {
         try {
             this.loadingBar.show();
             changeset.execute();
-            const results = this.ajax.request('', {
+            const requestData = { data: { attributes: changeset.data, type: 'feedbacks' } };
+            const results = await this.ajax.request(this.feedbackUrl, {
                 method: 'POST',
-                body: this.ajax.stringifyData(changeset.data)
+                body: this.ajax.stringifyData(requestData)
             });
             this.notifications.success(this.intl.t('feedback.feedbackSuccessful'));
             this.loadingBar.hide();
@@ -66,5 +91,15 @@ export default class ModalDialogsHelpFeedback extends Component<ModalDialogsHelp
             this.notifications.error(errors);
             throw errors;
         }
+    }
+
+    /**
+     * Update the changeset's `feedbackType`.
+     *
+     * @param {FeedbackTypeId} feedbackType
+     */
+    @action
+    updateFeedbackType(feedbackType: FeedbackTypeId) {
+        this.changeset.feedbackType = feedbackType;
     }
 }

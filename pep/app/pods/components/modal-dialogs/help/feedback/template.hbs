@@ -1,4 +1,8 @@
-<ModalDialog @onClose={{@onClose}} @size="md" as |Modal|>
+<ModalDialog
+    @onClose={{@onClose}}
+    @size="md"
+    @clickOutsideToClose={{false}} as |Modal|
+>
     <Modal.header @title={{t "feedback.title"}} />
     <FormValidator
         @changeset={{this.changeset}}
@@ -9,24 +13,39 @@
         <Modal.body>
             <p class="text-muted">{{t "feedback.instructions"}}</p>
             <div class="form-row">
-                <div class="col-sm-8">
+                <div class="col-sm-6">
                     <Validator.input @errors={{changeset.error.subject.validation}} class="input-validator-compact">
                         <FlInput @value={{changeset.subject}} @placeholder={{t "feedback.form.subject"}} maxlength="128" />
+                    </Validator.input>
+                </div>
+                <div class="col-sm-6">
+                    <Validator.input @errors={{changeset.error.feedbackType.validation}} class="input-validator-compact">
+                        <FlSelect
+                            @options={{this.feedbackOptions}}
+                            @value={{changeset.feedbackType}}
+                            @valuePath="id"
+                            @labelPath="label"
+                            @placeholder={{t "feedback.form.type"}}
+                            @emptyOptionText={{t "feedback.form.selectFeedbackType"}}
+                            @allowClear={{false}}
+                            @onChange={{this.updateFeedbackType}}
+                        />
                     </Validator.input>
                 </div>
             </div>
             <div class="form-row">
                 <div class="col-12">
                     <Validator.input @errors={{changeset.error.description.validation}} class="input-validator-compact">
-                        <FlTextarea @value={{changeset.description}} @placeholder={{t "feedback.form.description"}} maxlength="500" />
+                        <FlTextarea @value={{changeset.description}} @placeholder={{t "feedback.form.description"}} maxlength="1024" />
                     </Validator.input>
                     <Validator.input @errors={{changeset.error.url.validation}} class="input-validator-compact">
-                        <FlInput @value={{changeset.url}} @placeholder={{t "feedback.form.url"}} maxlength="128" />
+                        <FlInput @value={{changeset.url}} @placeholder={{t "feedback.form.url"}} maxlength="256" />
                     </Validator.input>
                 </div>
             </div>
         </Modal.body>
         <Modal.footer>
+            <Button @type="link" @label={{t "common.cancel"}} @action={{@onClose}} />
             <ButtonSpinner @type="primary" @label={{t "common.submit"}} @action={{Validator.submit}} />
         </Modal.footer>
     </FormValidator>

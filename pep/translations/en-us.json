@@ -707,7 +707,12 @@
             "subject": "Subject",
             "description": "Description",
             "url": "URL",
+            "selectFeedbackType": "Select a feedback type",
             "type": "Type"
+        },
+        "feedbackTypes": {
+            "feedback": "Feedback",
+            "issue": "Issue"
         }
     },
     "exports": {
