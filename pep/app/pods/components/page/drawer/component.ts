@@ -10,6 +10,7 @@ import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
 import DrawerService from 'pep/services/drawer';
 import PepSessionService from 'pep/services/pep-session';
+import { SUPPORT_URL } from 'pep/constants/urls';
 
 interface PageDrawerArgs {
     openAboutModal: () => Promise<void>;
@@ -25,6 +26,8 @@ export default class PageDrawer extends Component<PageDrawerArgs> {
 
     @tracked isUserMenuOpen = false;
     @tracked isHelpMenuOpen = false;
+
+    supportUrl = SUPPORT_URL;
 
     get defaultSearchParams() {
         return this.configuration.defaultSearchParams;

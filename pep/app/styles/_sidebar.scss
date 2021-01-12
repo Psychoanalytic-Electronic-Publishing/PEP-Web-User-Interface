@@ -28,7 +28,7 @@
         position: relative;
         width: $sidebar-width;
         height: 100%;
-        background-color: lighten($color-backdrop, 2%);
+        background-color: $color-sidebar-bg;
         transition: $duration-sidebar-toggle ease transform;
     }
 
@@ -125,6 +125,12 @@
 
         &.other-sidebar-is-open {
             z-index: $z-sidebar-mask - 1;
+        }
+    }
+
+    .search-item {
+        &.bg-backdrop {
+            background-color: $color-search-item-bg;
         }
     }
 }

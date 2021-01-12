@@ -374,7 +374,8 @@
             "login": "Click here to login",
             "image": {
                 "alt": "Article image {id}"
-            }
+            },
+            "searchHits": " &middot; {current} of {total}"
         }
     },
     "relatedInfo": {
@@ -528,9 +529,27 @@
                 "title": "Help descriptions",
                 "description": "Turning this on shows helpful descriptions when applicable."
             },
-            "icons": {
-                "title": "Help icons",
-                "description": "Toggling this will show/hide the help icons throughout the site. These icons have helpful hints and descriptions of functionality that will make your life easier."
+            "general": {
+                "heading": "General",
+                "tour": {
+                    "title": "Intro tour",
+                    "description": "Turning this on will show you the tour the next time you visit PEP."
+                },
+                "descriptions": {
+                    "title": "Help descriptions",
+                    "description": "Turning this on shows helpful descriptions when applicable."
+                },
+                "icons": {
+                    "title": "Help icons",
+                    "description": "Toggling this will show/hide the help icons throughout the site. These icons have helpful hints and descriptions of functionality that will make your life easier."
+                }
+            },
+            "translations": {
+                "heading": "Document Translation",
+                "translate": {
+                    "title": "Translation Concordance",
+                    "description": "Translate between SE and GW"
+                }
             }
         }
     },
@@ -546,6 +565,17 @@
             "lang": {
                 "label": "Language",
                 "select": "Select your language"
+            },
+            "fontSize": {
+                "label": "Font Size",
+                "select": "Select your preferred font size"
+            },
+            "glossaryFormatting": {
+                "label": "Glossary Term Formatting"
+            },
+            "textAlignment": {
+                "label": "Document text alignment",
+                "select": "Select your preferred alignment"
             }
         },
         "search": {
@@ -559,6 +589,26 @@
                 "enabled": "Display a preview pane",
                 "disabled": "Open the full document"
             }
+        },
+        "sidebar": {
+            "heading": "Sidebar",
+            "widgets": {
+                "label": "Show/hide widgets"
+            }
+        }
+    },
+    "text": {
+        "sizes": {
+            "xs": "Extra Small",
+            "sm": "Small",
+            "default": "Default",
+            "lg": "Large",
+            "xlarge": "Extra Large"
+        },
+        "justification": {
+            "left": "Left",
+            "center": "Center",
+            "right": "Right"
         }
     },
     "print": {
@@ -629,9 +679,8 @@
     },
     "reportDataError": {
         "title": "Report a Data Error",
-        "instructions1": "Use this form to report data errors only. This includes typing errors, misspelled words or author names, etc.",
+        "instructions1": "Use this form only to report data errors. This includes typing errors, misspelled words or author names, etc.",
         "instructions2": "For other non-data related issues, please refer to the list of common help resources below:",
-        "instructions3": "PEP is very grateful for reports that help us to improve the quality of PEP-web. And we welcome '<a href=\"http://support.pep-web.org/about-the-pep-archive/suggest-new-content/\" target=\"_blank\">'suggestions for new content'</a>'.",
         "reportSuccessful": "Your report was submitted successfully!",
         "form": {
             "title": "Error Report",

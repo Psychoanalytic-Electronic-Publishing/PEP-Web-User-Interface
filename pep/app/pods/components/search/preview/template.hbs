@@ -60,7 +60,15 @@
                             {{/if}}
                         </h5>
                         <div class="pep-abstract-preview mb-2">
-                            {{html-safe this.result.abstract}}
+                            {{#if this.result}}
+                                <Document::Text
+                                    @document={{this.result}}
+                                    @target="abstract"
+                                    @onGlossaryItemClick={{this.viewGlossaryTerm}}
+                                    @documentRendered={{this.documentRendered}}
+                                />
+                            {{/if}}
+                            {{!-- {{html-safe this.result.abstract}} --}}
                         </div>
                         <div>
                             {{#if this.result.accessLimited}}
@@ -68,7 +76,7 @@
                                     {{html-safe (or this.result.noAccessMessage (t "search.preview.accessLimited"))}}
                                 </Alert>
                                 {{#unless this.session.isAuthenticated}}
-                                    <p class="p-3 bg-backdrop rounded">
+                                    <p class="p-3 bg-primary-well rounded">
                                         {{t "search.preview.mustBeLoggedIn"}}
                                         <a href="" {{on "click" this.login}}>
                                             {{t "search.preview.login"}}

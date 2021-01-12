@@ -8,17 +8,17 @@
     >
         <Modal.body class="py-0">
             <p class="font-size-secondary mb-0">
-                {{t "reportDataError.instructions1" htmlSafe=true}}
+                {{t "reportDataError.instructions1"}}
             </p>
             <div class="small text-muted mb-3">
-                {{t "reportDataError.form.errorVerification" htmlSafe=true}}
+                {{t "reportDataError.form.errorVerification"}}
             </div>
             <p class="font-size-secondary mb-1">
-                {{t "reportDataError.instructions2" htmlSafe=true}}
+                {{t "reportDataError.instructions2"}}
             </p>
             <ul class="list-unstyled font-size-secondary">
-                {{#each this.commonResources as |commonResource|}}
-                    <li><a href={{commonResource.href}} target="_blank" rel="noopener noreferrer">{{commonResource.label}}</a></li>
+                {{#each this.supportResources as |supportResource|}}
+                    <li><a href={{supportResource.href}} target="_blank" rel="noopener noreferrer">{{supportResource.label}}</a></li>
                 {{/each}}
             </ul>
             <div class="mb-2">

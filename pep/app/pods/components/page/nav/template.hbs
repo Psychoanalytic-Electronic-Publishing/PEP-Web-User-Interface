@@ -50,12 +50,16 @@
                     <FaIcon @icon="question" @size="lg" />
                 </DD.Trigger>
                 <DD.Content class="dropdown-menu">
-                    <DropdownAction @dd={{DD}}>
-                        <a href="https://support.pep-web.org" target="_blank" rel="noopener noreferrer">
-                            <FaIcon @icon="external-link" @fixedWidth={{true}} class="text-muted" />
-                            {{t "nav.support.link"}}
-                        </a>
-                    </DropdownAction>
+                    <a
+                        href={{this.supportUrl}}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="dropdown-action dropdown-item"
+                        {{on "click" DD.actions.close}}
+                    >
+                        <FaIcon @icon="external-link" @fixedWidth={{true}} class="text-muted" />
+                        {{t "nav.support.link"}}
+                    </a>
                     <DropdownAction @dd={{DD}} @action={{this.openReportDataErrorModal}}>
                         <FaIcon @icon="comment-exclamation" @fixedWidth={{true}} class="text-muted" />
                         {{t "nav.support.reportDataError"}}

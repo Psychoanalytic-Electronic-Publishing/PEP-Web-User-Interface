@@ -249,6 +249,7 @@ export default class ReadDocument extends PageNav(Route) {
         });
         this.currentUser.lastViewedDocumentId = model.id;
         controller.showBackButton = this.showBackButton;
+        controller.searchHitNumber = undefined;
     }
 
     /**
