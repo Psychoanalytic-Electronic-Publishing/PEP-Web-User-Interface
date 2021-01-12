@@ -1,6 +1,7 @@
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import IntlService from 'ember-intl/services/intl';
 import ENV from 'pep/config/environment';
+import { AUTHOR_INDEX_SUPPORT_URL, CUSTOMER_SERVICE_URL, SUGGEST_NEW_CONTENT_URL } from 'pep/constants/urls';
 import AjaxService from 'pep/services/ajax';
 import CurrentUserService from 'pep/services/current-user';
 import LoadingBarService from 'pep/services/loading-bar';
@@ -24,7 +25,7 @@ interface ErrorReport {
     hasOriginalCopy: boolean;
 }
 
-interface CommonResource {
+interface SupportResource {
     label: string;
     href: string;
 }
@@ -44,18 +45,18 @@ export default class ModalDialogsHelpReportDataError extends Component<ModalDial
     validations = REPORT_DATA_ERROR_VALIDATIONS;
     dataErrorUrl = `${ENV.reportsBaseUrl}/data-errors`;
 
-    commonResources: CommonResource[] = [
+    supportResources: SupportResource[] = [
         {
             label: 'Access problems or general support',
-            href: 'http://support.pep-web.org/helptoc/customer-service/'
+            href: CUSTOMER_SERVICE_URL
         },
         {
             label: 'Author index correction',
-            href: 'http://support.pep-web.org/helptoc/help/author-index/authorindex/'
+            href: AUTHOR_INDEX_SUPPORT_URL
         },
         {
             label: 'New content suggestion',
-            href: 'http://support.pep-web.org/about-the-pep-archive/suggest-new-content/'
+            href: SUGGEST_NEW_CONTENT_URL
         }
     ];
 

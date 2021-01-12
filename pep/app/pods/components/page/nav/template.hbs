@@ -60,7 +60,7 @@
                         <FaIcon @icon="external-link" @fixedWidth={{true}} class="text-muted" />
                         {{t "nav.support.link"}}
                     </a>
-                    <DropdownAction @dd={{DD}}>
+                    <DropdownAction @dd={{DD}} @action={{this.openReportDataErrorModal}}>
                         <FaIcon @icon="comment-exclamation" @fixedWidth={{true}} class="text-muted" />
                         {{t "nav.support.reportDataError"}}
                     </DropdownAction>
