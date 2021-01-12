@@ -127,4 +127,10 @@
             z-index: $z-sidebar-mask - 1;
         }
     }
+
+    .search-item {
+        &.bg-backdrop {
+            background-color: $color-search-item-bg;
+        }
+    }
 }
