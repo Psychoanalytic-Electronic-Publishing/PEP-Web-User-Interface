@@ -695,6 +695,11 @@
             "authorOrPublisher": "Are you the author or publisher?",
             "authorOrPublisherHelp": "Non-typographical issues in the original can be provided publisher changes.",
             "originalCopy": "Do you have a copy of the original paper?"
+        },
+        "supportResource": {
+            "customerService": "Access problems or general support",
+            "authorIndex": "Author index correction",
+            "newContent": "New content suggestion"
         }
     },
     "exports": {

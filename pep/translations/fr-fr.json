@@ -701,6 +701,11 @@
         "clipboard": {
             "success": "Copied to the clipboard",
             "failure": "There was an issue copying to the clipboard. Please try again later."
+        },
+        "supportResource": {
+            "customerService": "Access problems or general support",
+            "authorIndex": "Author index correction",
+            "newContent": "New content suggestion"
         }
     },
     "document": {
