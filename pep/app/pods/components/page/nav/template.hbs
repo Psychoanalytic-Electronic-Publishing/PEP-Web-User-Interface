@@ -25,17 +25,23 @@
     </button>
     <ul class="navbar-nav d-none d-md-flex">
         <li class="nav-item">
-            <LinkTo @route="search" class="nav-link">
+            <LinkTo @route="search" @active={{this.searchActive}} class="nav-link">
                 {{t "nav.search"}}
             </LinkTo>
         </li>
         <li class="nav-item">
-            <Button @action={{this.viewRead}} @type="link" class="nav-link" @disabled={{this.readDisabled}}>
+            <Button
+                @action={{this.viewRead}}
+                @type="link"
+                class="nav-link"
+                @disabled={{this.readDisabled}}
+                @active={{this.readActive}}
+            >
                 {{t "nav.read"}}
             </Button>
         </li>
         <li class="nav-item">
-            <LinkTo @route="browse" class="nav-link">
+            <LinkTo @route="browse" @active={{this.browseActive}} class="nav-link">
                 {{t "nav.browse"}}
             </LinkTo>
         </li>
