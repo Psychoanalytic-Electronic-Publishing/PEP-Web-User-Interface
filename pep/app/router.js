@@ -26,9 +26,6 @@ Router.map(function() {
         });
         this.route('read', { path: '/read/:document_id' });
     });
-    this.route('read', function() {
-        this.route('document', { path: '/:document_id' });
-    });
 
     this.route('most-cited');
     this.route('most-viewed');

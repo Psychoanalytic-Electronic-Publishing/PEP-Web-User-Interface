@@ -33,12 +33,6 @@
             <Button @action={{this.viewRead}} @type="link" class="nav-link" @disabled={{this.readDisabled}}>
                 {{t "nav.read"}}
             </Button>
-            {{!-- <a href="/read" class="nav-link" disabled={{this.readDisabled}} {{on "click" }}>
-                {{t "nav.read"}}
-            </a> --}}
-            {{!-- <LinkTo @route="read" @disabled={{this.readDisabled}} class="nav-link">
-                {{t "nav.read"}}
-            </LinkTo> --}}
         </li>
         <li class="nav-item">
             <LinkTo @route="browse" class="nav-link">

@@ -17,7 +17,7 @@ export default class DocumentActionsPrint extends Component<DocumentActionsPrint
     /**
      * Print the document
      *
-     * @memberof ReadDocument
+     * @memberof DocumentActionsPrint
      */
     @action
     print() {

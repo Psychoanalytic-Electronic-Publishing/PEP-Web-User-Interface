@@ -17,7 +17,6 @@ import { buildSearchQueryParams } from 'pep/utils/search';
 
 export interface BrowseReadParams {
     document_id: string;
-    page?: string;
 }
 
 export default class BrowseRead extends PageNav(Route) {

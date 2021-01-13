@@ -58,7 +58,7 @@ export default class DocumentReadSidebar extends Component<DocumentReadSidebarAr
      * If items are selected, use that for the export/print data. Otherwise use the paginator
      *
      * @readonly
-     * @memberof Search
+     * @memberof DocumentReadSidebar
      */
     get exportedData() {
         return this.searchSelection.includedRecords.length
@@ -66,10 +66,22 @@ export default class DocumentReadSidebar extends Component<DocumentReadSidebarAr
             : this.args.paginator.models;
     }
 
+    /**
+     * Gets sorts for table
+     *
+     * @readonly
+     * @memberof DocumentReadSidebar
+     */
     get tableSorts() {
         return transformSearchSortsToTable(this.args.paginator.sorts);
     }
 
+    /**
+     * Get the default search params from the configuration class
+     *
+     * @readonly
+     * @memberof DocumentReadSidebar
+     */
     get defaultSearchParams() {
         return this.configuration.defaultSearchParams;
     }
@@ -78,7 +90,7 @@ export default class DocumentReadSidebar extends Component<DocumentReadSidebarAr
      * Update whether to show hits in context or not
      *
      * @param {boolean} value
-     * @memberof Search
+     * @memberof DocumentReadSidebar
      */
     @action
     async updateHitsInContext(value: boolean) {
@@ -93,7 +105,7 @@ export default class DocumentReadSidebar extends Component<DocumentReadSidebarAr
     /**
      * Export a CSV
      *
-     * @memberof Search
+     * @memberof DocumentReadSidebar
      */
     @action
     exportCSV() {
@@ -113,7 +125,7 @@ export default class DocumentReadSidebar extends Component<DocumentReadSidebarAr
     /**
      * Show success message for clipboard
      *
-     * @memberof Search
+     * @memberof DocumentReadSidebar
      */
     @action
     clipboardSuccess() {
@@ -125,7 +137,7 @@ export default class DocumentReadSidebar extends Component<DocumentReadSidebarAr
     /**
      * Show failure message for clipboard
      *
-     * @memberof Search
+     * @memberof DocumentReadSidebar
      */
     @action
     clipboardFailure() {
@@ -136,7 +148,7 @@ export default class DocumentReadSidebar extends Component<DocumentReadSidebarAr
      * Get the correctly formatted data for the clipboard and return it
      *
      * @returns
-     * @memberof Search
+     * @memberof DocumentReadSidebar
      */
     @action
     exportClipboard() {
@@ -150,7 +162,7 @@ export default class DocumentReadSidebar extends Component<DocumentReadSidebarAr
     /**
      * Print the current selected items or whats loaded into the paginator
      *
-     * @memberof Search
+     * @memberof DocumentReadSidebar
      */
     @action
     print() {
@@ -184,7 +196,7 @@ export default class DocumentReadSidebar extends Component<DocumentReadSidebarAr
      * Update the sort for the list
      *
      * @param {HTMLElementEvent<HTMLSelectElement>} event
-     * @memberof Search
+     * @memberof DocumentReadSidebar
      */
     @action
     updateSort(event: HTMLElementEvent<HTMLSelectElement>) {
@@ -205,7 +217,7 @@ export default class DocumentReadSidebar extends Component<DocumentReadSidebarAr
      * Update which view to show - table or list
      *
      * @param {HTMLElementEvent<HTMLSelectElement>} event
-     * @memberof Search
+     * @memberof DocumentReadSidebar
      */
     @action
     updateSelectedView(event: HTMLElementEvent<HTMLSelectElement>) {
@@ -219,7 +231,7 @@ export default class DocumentReadSidebar extends Component<DocumentReadSidebarAr
      *
      * @param {string[]} sorts
      * @returns
-     * @memberof Search
+     * @memberof DocumentReadSidebar
      */
     @action
     onChangeSorting(sorts: string[]) {

@@ -30,7 +30,7 @@ export default class DocumentActionsDownload extends Component<DocumentActionsDo
      * Download the document
      *
      * @param {string} url
-     * @memberof ReadDocument
+     * @memberof DocumentActionsDownload
      */
     @action
     async downloadDocument(url: string) {
