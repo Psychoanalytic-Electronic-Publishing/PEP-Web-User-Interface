@@ -29,7 +29,9 @@
         "help": "Ayuda",
         "find": "Buscar",
         "more": "Mas",
-        "saving": "Saving ..."
+        "saving": "Saving ...",
+        "yes": "Yes",
+        "no": "No"
     },
     "serverErrors": {
         "heading": "The following {count, plural, =1 {error} other {errors}} occurred while attempting to process your request.",
@@ -56,8 +58,8 @@
         },
         "support": {
             "link": "Soporte",
-            "reportProblem": "Reportar un problema",
-            "preferences": "Personalizar ayuda"
+            "preferences": "Personalizar ayuda",
+            "reportDataError": "Report a data error"
         }
     },
     "home": {
@@ -525,7 +527,15 @@
     },
     "help": {
         "preferences": {
-            "info": "Customize the help provide by the PEP system below.",
+            "info": "Customize the help provided by the PEP system below.",
+            "tour": {
+                "title": "Intro tour",
+                "description": "Turning this on will show you the tour the next time you visit PEP."
+            },
+            "descriptions": {
+                "title": "Help descriptions",
+                "description": "Turning this on shows helpful descriptions when applicable."
+            },
             "general": {
                 "heading": "General",
                 "tour": {
@@ -672,6 +682,33 @@
         "activeSubscriptions": {
             "title": "Active Subscriptions",
             "subscription": "{product} from {start, date, short} to {end, date, short}"
+        }
+    },
+    "reportDataError": {
+        "title": "Report a Data Error",
+        "instructions1": "Use this form only to report data errors. This includes typing errors, misspelled words or author names, etc.",
+        "instructions2": "For other non-data related issues, please refer to the list of common help resources below:",
+        "reportSuccessful": "Your report was submitted successfully!",
+        "form": {
+            "title": "Error Report",
+            "username": "Username",
+            "fullName": "Full Name",
+            "email": "Email",
+            "problemText": "Please the describe the issue and/or problem text",
+            "correctedText": "Please describe the corrections",
+            "correctedTextHelp": "You may also describe the problem and corrections.",
+            "urlOfProblem": "URL of Problem",
+            "errorVerification": "Please verify that the issue is either PEP-Web only, or an obvious typographical issue in the original.",
+            "explanation": "Explanation",
+            "explanationHelp": "Please explain why you think this is an error on PEP-Web rather than the original.",
+            "authorOrPublisher": "Are you the author or publisher?",
+            "authorOrPublisherHelp": "Non-typographical issues in the original can be provided publisher changes.",
+            "originalCopy": "Do you have a copy of the original paper?"
+        },
+        "supportResource": {
+            "customerService": "Access problems or general support",
+            "authorIndex": "Author index correction",
+            "newContent": "New content suggestion"
         }
     },
     "exports": {

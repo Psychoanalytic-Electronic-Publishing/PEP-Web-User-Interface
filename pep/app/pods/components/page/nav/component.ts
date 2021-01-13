@@ -79,4 +79,14 @@ export default class PageNav extends Component<PageNavArgs> {
     openHelpModal() {
         return this.modal.open('help/preferences', {});
     }
+
+    /**
+     * Open Report Data Error Modal
+     *
+     * @returns {void}
+     */
+    @action
+    openReportDataErrorModal() {
+        return this.modal.open('help/report-data-error', {});
+    }
 }

@@ -72,9 +72,13 @@
                         </a>
                     </Page::Drawer::NavItem>
                     <Page::Drawer::NavItem class="mt-1">
-                        <button type="button" class="list-group-item list-group-item-action">
+                        <button
+                            type="button"
+                            class="list-group-item list-group-item-action"
+                            {{on "click" this.openReportDataErrorModal}}
+                        >
                             <FaIcon @icon="comment-exclamation" @fixedWidth={{true}} class="text-muted" />
-                            {{t "nav.support.reportProblem"}}
+                            {{t "nav.support.reportDataError"}}
                         </button>
                     </Page::Drawer::NavItem>
                     <Page::Drawer::NavItem class="mt-1">
