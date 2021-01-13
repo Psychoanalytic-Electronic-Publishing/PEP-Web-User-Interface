@@ -56,7 +56,9 @@ export default class SearchRead extends Controller {
             q: this.q,
             searchTerms: this._searchTerms,
             facets: this._facets,
-            matchSynonyms: this.matchSynonyms
+            matchSynonyms: this.matchSynonyms,
+            citedCount: this.citedCount,
+            viewedCount: this.viewedCount
         };
     }
 

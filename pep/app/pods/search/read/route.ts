@@ -37,7 +37,6 @@ export default class SearchRead extends PageNav(Route) {
     searchResults?: Document[];
     searchResultsMeta?: any;
     searchParams?: SearchReadParams | QueryParamsObj;
-    searchHasPaging = true;
 
     /**
      * Fetch the requested document
@@ -103,7 +102,6 @@ export default class SearchRead extends PageNav(Route) {
             const controller = this.controllerFor(transition.from.name) as SearchReadController;
             results = controller?.paginator?.models;
             resultsMeta = controller?.paginator?.metadata;
-            this.searchHasPaging = true;
         }
 
         // if the query params are different - load new items, otherwise reuse if possible
@@ -147,7 +145,6 @@ export default class SearchRead extends PageNav(Route) {
                 >;
                 results = response.toArray();
                 resultsMeta = response.meta;
-                this.searchHasPaging = true;
             }
         }
 
@@ -200,7 +197,7 @@ export default class SearchRead extends PageNav(Route) {
             filterRootKey: null,
             processQueryParams: controller.processQueryParams,
             onChangeSorting: controller.onChangeSorting,
-            limit: this.searchHasPaging ? 20 : 1000
+            limit: 20
         });
         this.currentUser.lastViewedDocumentId = model.id;
         this.currentUser.lastViewedDocumentFrom = VIEW_DOCUMENT_FROM.SEARCH;
