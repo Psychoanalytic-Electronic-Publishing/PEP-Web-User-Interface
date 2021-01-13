@@ -1,7 +1,7 @@
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import IntlService from 'ember-intl/services/intl';
 import ENV from 'pep/config/environment';
-import { AUTHOR_INDEX_SUPPORT_URL, CUSTOMER_SERVICE_URL, SUGGEST_NEW_CONTENT_URL } from 'pep/constants/urls';
+import { DATA_ERROR_SUPPORT_RESOURCES, SupportResource } from 'pep/constants/urls';
 import AjaxService from 'pep/services/ajax';
 import CurrentUserService from 'pep/services/current-user';
 import LoadingBarService from 'pep/services/loading-bar';
@@ -25,11 +25,6 @@ interface ErrorReport {
     hasOriginalCopy: boolean;
 }
 
-interface SupportResource {
-    label: string;
-    href: string;
-}
-
 type ErrorReportChangeset = ModelChangeset<ErrorReport>;
 
 interface ModalDialogsHelpReportDataErrorArgs {
@@ -43,22 +38,11 @@ export default class ModalDialogsHelpReportDataError extends Component<ModalDial
     @service notifications!: NotificationService;
     @service intl!: IntlService;
     validations = REPORT_DATA_ERROR_VALIDATIONS;
+    supportResources: SupportResource[] = DATA_ERROR_SUPPORT_RESOURCES.map((supportResource: SupportResource) => ({
+        ...supportResource,
+        label: this.intl.t(supportResource.label)
+    }));
     dataErrorUrl = `${ENV.reportsBaseUrl}/data-errors`;
-
-    supportResources: SupportResource[] = [
-        {
-            label: 'Access problems or general support',
-            href: CUSTOMER_SERVICE_URL
-        },
-        {
-            label: 'Author index correction',
-            href: AUTHOR_INDEX_SUPPORT_URL
-        },
-        {
-            label: 'New content suggestion',
-            href: SUGGEST_NEW_CONTENT_URL
-        }
-    ];
 
     @tracked changeset!: ErrorReportChangeset;
 
