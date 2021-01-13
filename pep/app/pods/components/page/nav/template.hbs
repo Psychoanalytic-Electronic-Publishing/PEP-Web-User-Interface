@@ -66,9 +66,13 @@
                         <FaIcon @icon="external-link" @fixedWidth={{true}} class="text-muted" />
                         {{t "nav.support.link"}}
                     </a>
-                    <DropdownAction @dd={{DD}}>
+                    <DropdownAction @dd={{DD}} @action={{this.openReportDataErrorModal}}>
                         <FaIcon @icon="comment-exclamation" @fixedWidth={{true}} class="text-muted" />
-                        {{t "nav.support.reportProblem"}}
+                        {{t "nav.support.reportDataError"}}
+                    </DropdownAction>
+                    <DropdownAction @dd={{DD}} @action={{this.openFeedbackModal}}>
+                        <FaIcon @icon="comment-lines" @fixedWidth={{true}} class="text-muted" />
+                        {{t "nav.support.provideFeedback"}}
                     </DropdownAction>
                     <DropdownAction @dd={{DD}} @action={{this.openHelpModal}}>
                         <FaIcon @icon="hands-helping" @fixedWidth={{true}} class="text-muted" />

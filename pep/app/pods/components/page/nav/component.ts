@@ -83,7 +83,7 @@ export default class PageNav extends Component<PageNavArgs> {
     }
 
     /**
-     *
+     *  View last read document
      *
      * @memberof PageNav
      */
@@ -96,5 +96,25 @@ export default class PageNav extends Component<PageNavArgs> {
                 this.router.transitionTo('browse.read', this.currentUser.lastViewedDocumentId);
             }
         }
+    }
+
+    /**
+     * Open Report Data Error Modal
+     *
+     * @returns {void}
+     */
+    @action
+    openReportDataErrorModal() {
+        return this.modal.open('help/report-data-error', {});
+    }
+
+    /**
+     * Open Feedback Modal
+     *
+     * @returns {void}
+     */
+    @action
+    openFeedbackModal() {
+        return this.modal.open('help/feedback', {});
     }
 }

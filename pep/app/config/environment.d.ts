@@ -22,10 +22,12 @@ declare const config: {
     apiAdminNamespace: string;
     assetBaseUrl: string;
     authBaseUrl: string;
+    federatedLoginUrl: string;
     clientId: number;
     cookieDomain: string;
     cookieSecure: boolean;
     cookieSameSite: string;
+    reportsBaseUrl: string;
     fastboot: {
         hostWhitelist: Array<string | RegExp>;
     };
