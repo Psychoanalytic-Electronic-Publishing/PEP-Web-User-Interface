@@ -1,5 +1,6 @@
-import ApplicationInstance from '@ember/application/instance';
 import Messages from 'ember-changeset-validations/utils/messages';
+
+import ApplicationInstance from '@ember/application/instance';
 import { isNone } from '@ember/utils';
 
 /**
