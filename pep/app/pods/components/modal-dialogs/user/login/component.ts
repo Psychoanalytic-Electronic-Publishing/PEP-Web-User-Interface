@@ -1,24 +1,27 @@
+import { action } from '@ember/object';
+import RouterService from '@ember/routing/router-service';
+import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import { action } from '@ember/object';
-import { inject as service } from '@ember/service';
-import { reject } from 'rsvp';
-import RouterService from '@ember/routing/router-service';
-import NotificationService from 'ember-cli-notifications/services/notifications';
+
+import Modal from '@gavant/ember-modals/services/modal';
 import { ModelChangeset } from '@gavant/ember-validations/utilities/create-changeset';
+import NotificationService from 'ember-cli-notifications/services/notifications';
 import IntlService from 'ember-intl/services/intl';
 
-import LoadingBar from 'pep/services/loading-bar';
-import { LoginForm } from 'pep/services/auth';
-import PepSessionService from 'pep/services/pep-session';
 import { FORGOT_PW_URL } from 'pep/constants/urls';
+import AjaxService from 'pep/services/ajax';
+import { FederatedLoginArgs, LoginForm } from 'pep/services/auth';
+import LoadingBar from 'pep/services/loading-bar';
+import PepSessionService from 'pep/services/pep-session';
+import { reject } from 'rsvp';
 
 interface ModalDialogsUserLoginArgs {
     onClose: () => void;
     options: {
         changeset: any;
         onAuthenticated: (response: any) => void;
-    };
+    } & FederatedLoginArgs;
 }
 
 export default class ModalDialogsUserLogin extends Component<ModalDialogsUserLoginArgs> {
@@ -27,10 +30,21 @@ export default class ModalDialogsUserLogin extends Component<ModalDialogsUserLog
     @service loadingBar!: LoadingBar;
     @service notifications!: NotificationService;
     @service intl!: IntlService;
+    @service modal!: Modal;
+    @service ajax!: AjaxService;
 
     @tracked loginError = null;
 
-    forgotPasswordUrl = FORGOT_PW_URL;
+    /**
+     * Forgot password url. We use the FP URL from the api, and then the hardcoded one as a backup
+     *
+     * @readonly
+     * @memberof ModalDialogsUserLogin
+     */
+    get forgotPasswordUrl() {
+        return this.args.options.padsForgotPasswordUrl ?? FORGOT_PW_URL;
+    }
+
     /**
      * Submits the login dialog form and logs the user in
      * @param {ModelChangeset<LoginForm>} changeset
@@ -66,5 +80,21 @@ export default class ModalDialogsUserLogin extends Component<ModalDialogsUserLog
         await this.args.onClose();
         //TODO go to real subscribe page
         return this.router.transitionTo('index');
+    }
+
+    /**
+     * Show the federated login modal
+     *
+     * @memberof ModalDialogsUserLogin
+     */
+    @action
+    async showFederatedLogins() {
+        this.modal.open('user/federated-login', {
+            logins: this.args.options.logins,
+            genericLoginUrl: this.args.options.genericLoginUrl,
+            padsLoginUrl: this.args.options.padsLoginUrl,
+            padsForgotPasswordUrl: this.args.options.padsForgotPasswordUrl
+        });
+        this.args.onClose();
     }
 }

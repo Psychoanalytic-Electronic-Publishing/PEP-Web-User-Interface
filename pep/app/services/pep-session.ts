@@ -1,11 +1,12 @@
-import ENV from 'pep/config/environment';
-import SessionService from 'ember-simple-auth/services/session';
 import { oneWay } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
 
 import CookiesService from 'ember-cookies/services/cookies';
-import { inject as service } from '@ember/service';
+import SessionService from 'ember-simple-auth/services/session';
+
 import { PepSecureAuthenticatedData } from 'pep/api';
 import { SessionType } from 'pep/authenticators/credentials';
+import ENV from 'pep/config/environment';
 import { DATE_FOREVER } from 'pep/constants/dates';
 
 export interface AuthenticatedData {

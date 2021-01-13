@@ -6,6 +6,7 @@ import { inject as service } from '@ember/service';
 
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import NotificationService from 'ember-cli-notifications/services/notifications';
+import CookiesService from 'ember-cookies/services/cookies';
 import IntlService from 'ember-intl/services/intl';
 import MetricService from 'ember-metrics/services/metrics';
 import MediaService from 'ember-responsive/services/media';
@@ -44,6 +45,7 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
     @service loadingBar!: LoadingBarService;
     @service sidebar!: SidebarService;
     @service tour!: TourService;
+    @service cookies!: CookiesService;
 
     constructor() {
         super(...arguments);
@@ -86,16 +88,25 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
         // since we do not currently cache ajax service requests
         // in the fastboot shoebox (like ember-data does)
 
+        if (this.fastboot.isFastBoot) {
+            this.auth.dontRedirectOnLogin = true;
+        }
+
         if (this.fastboot.isFastBoot && !this.session.isAuthenticated) {
             try {
                 await this.session.authenticate('authenticator:ip');
+                // We are doing this to work around a strange cookie issue seen from what we think is Ember Simple Auth.
+                // The fastboot session would authenticate through IP, we would write to the cookie and save everything but when the app
+                // loaded back up, we would be logged out and the cookie would mysteriously be removed. We work around this by writing the our own cookie
+                // and then getting that cookie and setting it as the simple auth cookie to force auth state.
+                this.fastboot.request.cookies.pep_session = this.cookies.read('pep_session');
+                this.cookies.write('pep_session_fastboot', this.cookies.read('pep_session'), {});
             } catch (errors) {
                 this.session.invalidate();
             }
-        }
-
-        if (this.fastboot.isFastBoot) {
-            this.auth.dontRedirectOnLogin = true;
+        } else if (!this.session.isAuthenticated) {
+            this.cookies.write('pep_session', this.cookies.read('pep_session_fastboot'), {});
+            this.cookies.clear('pep_session_fastboot', {});
         }
 
         try {

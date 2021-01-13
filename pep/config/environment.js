@@ -100,6 +100,7 @@ module.exports = function(environment) {
         cookieDomain: process.env.COOKIE_DOMAIN,
         cookieSecure: Number(process.env.COOKIE_SECURE) === 1,
         cookieSameSite: process.env.COOKIE_SAME_SITE,
+        federatedLoginUrl: process.env.FEDERATED_LOGIN_URL,
         reportsBaseUrl: process.env.REPORTS_API
     };
 
