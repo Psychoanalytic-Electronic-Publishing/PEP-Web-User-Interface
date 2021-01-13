@@ -42,8 +42,25 @@
             </div>
         </Modal.body>
         <Modal.footer>
-            <Button @type="link" @label={{t "common.cancel"}} @action={{@onClose}} />
-            <ButtonSpinner @type="primary" @label={{t "login.title"}} @wide={{true}} @action={{validator.submit}} />
+            <div class="d-flex w-100 justify-content-between align-items-center">
+                <p class="mb-0 text-muted">
+                    <Button
+                        @type="link"
+                        @label={{t "login.federatedLogin"}}
+                        @action={{this.showFederatedLogins}}
+                        class="pl-0"
+                    />
+                </p>
+                <div>
+                    <Button @type="link" @label={{t "common.cancel"}} @action={{@onClose}} />
+                    <ButtonSpinner
+                        @type="primary"
+                        @label={{t "login.title"}}
+                        @wide={{true}}
+                        @action={{validator.submit}}
+                    />
+                </div>
+            </div>
         </Modal.footer>
     </FormValidator>
 </ModalDialog>

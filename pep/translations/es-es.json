@@ -512,7 +512,16 @@
         "clickToSubscribe": "Click here to subscribe",
         "success": "You are now logged in.",
         "forgotPassword": "Forgot Password?",
-        "genericError": "Unable to login. There is a problem behind the scenes, and we are looking into it. Please try again later."
+        "genericError": "Unable to login. There is a problem behind the scenes, and we are looking into it. Please try again later.",
+        "federatedLogin": "Federated Login"
+    },
+    "federatedLogin": {
+        "title": "Federated Login",
+        "info": "Psychoanalytic Electronic Publishing supports logins from the following federations and institutions. If you have a login through one of these services, please click on the link to gain access to your subscription",
+        "forgotPassword": "Forgot Password?",
+        "genericError": "Unable to login. There is a problem behind the scenes, and we are looking into it. Please try again later.",
+        "federatedLogin": "Federated Login",
+        "openAthens": "OpenAthens"
     },
     "help": {
         "preferences": {

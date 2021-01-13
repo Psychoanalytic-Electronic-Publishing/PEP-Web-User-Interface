@@ -1,0 +1,27 @@
+<ModalDialog @onClose={{@onClose}} @size="md" @clickOutsideToClose={{false}} as |Modal|>
+    <Modal.header @title={{t "federatedLogin.title"}} />
+    <Modal.body>
+        <p class="text-muted">
+            {{t "federatedLogin.info"}}
+        </p>
+        <div class="form-row">
+            <ul class="col-sm-8 list-unstyled">
+                <li>
+                    <a href="{{@options.genericLoginUrl}}" target="_blank" rel="noopener noreferrer">
+                        {{t "federatedLogin.openAthens"}}
+                    </a>
+                </li>
+                {{#each @options.logins as |login|}}
+                    <li>
+                        <a href="{{login.URL}}" target="_blank" rel="noopener noreferrer">
+                            {{login.Name}}
+                        </a>
+                    </li>
+                {{/each}}
+            </ul>
+        </div>
+    </Modal.body>
+    <Modal.footer>
+        <Button @type="link" @label={{t "common.cancel"}} @action={{@onClose}} />
+    </Modal.footer>
+</ModalDialog>
