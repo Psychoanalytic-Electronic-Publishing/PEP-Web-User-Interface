@@ -20,6 +20,8 @@ export default class BrowseRead extends Controller {
     @tracked paginator!: Pagination<Document>;
     @tracked page = null;
 
+    queryParams = ['page'];
+
     tableView = SearchViewType.TABLE;
     searchViews = SearchViews;
     sorts = SearchSorts;

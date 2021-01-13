@@ -30,41 +30,43 @@
                     {{this.model.documentRef}}
                 </p>
                 <div class="d-flex align-items-center">
-                    <span class="p-1 d-flex align-items-center">
-                        {{#if this.showPreviousSearchHitButton}}
-                            <Button
-                                @action={{this.viewPreviousSearchHit}}
-                                @type="link"
-                                @icon="chevron-left"
-                                @iconPrefix="fas"
-                                @iconSize="lg"
-                                @tooltip={{t "common.previous"}}
-                                class="py-0 px-1 mx-1"
-                            />
-                        {{/if}}
-                        {{this.model.searchTerm}}
-                        {{#if this.searchHitNumber}}
-                            <span class="ml-1">
-                                {{t
-                                    "read.document.searchHits"
-                                    current=this.searchHitNumber
-                                    total=this.model.termCount
-                                    htmlSafe=true
-                                }}
-                            </span>
-                        {{/if}}
-                        {{#if this.showNextSearchHitButton}}
-                            <Button
-                                @action={{this.viewNextSearchHit}}
-                                @type="link"
-                                @icon="chevron-right"
-                                @iconPrefix="fas"
-                                @iconSize="lg"
-                                @tooltip={{t "common.next"}}
-                                class="py-0 px-1 mx-1"
-                            />
-                        {{/if}}
-                    </span>
+                    {{#if this.model.termCount}}
+                        <span class="p-1 d-flex align-items-center">
+                            {{#if this.showPreviousSearchHitButton}}
+                                <Button
+                                    @action={{this.viewPreviousSearchHit}}
+                                    @type="link"
+                                    @icon="chevron-left"
+                                    @iconPrefix="fas"
+                                    @iconSize="lg"
+                                    @tooltip={{t "common.previous"}}
+                                    class="py-0 px-1 mx-1"
+                                />
+                            {{/if}}
+                            {{this.model.searchTerm}}
+                            {{#if this.searchHitNumber}}
+                                <span class="ml-1">
+                                    {{t
+                                        "read.document.searchHits"
+                                        current=this.searchHitNumber
+                                        total=this.model.termCount
+                                        htmlSafe=true
+                                    }}
+                                </span>
+                            {{/if}}
+                            {{#if this.showNextSearchHitButton}}
+                                <Button
+                                    @action={{this.viewNextSearchHit}}
+                                    @type="link"
+                                    @icon="chevron-right"
+                                    @iconPrefix="fas"
+                                    @iconSize="lg"
+                                    @tooltip={{t "common.next"}}
+                                    class="py-0 px-1 mx-1"
+                                />
+                            {{/if}}
+                        </span>
+                    {{/if}}
                     {{#unless this.model.accessLimited}}
                         <div class="flex-shrink-0">
                             <Document::Actions::Download @id={{this.model.id}} />

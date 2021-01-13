@@ -249,7 +249,6 @@ export default class DocumentText extends Component<DocumentTextArgs> {
                 //transition to a different document with a specific page
                 this.router.transitionTo('browse.read', documentId, {
                     queryParams: {
-                        ...this.args.readQueryParams,
                         page
                     }
                 });

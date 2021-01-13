@@ -14,6 +14,7 @@ import { TITLE_REGEX } from 'pep/constants/regex';
 import { SearchView, SearchViews, SearchViewType } from 'pep/constants/search';
 import Document from 'pep/pods/document/model';
 import ConfigurationService from 'pep/services/configuration';
+import CurrentUserService from 'pep/services/current-user';
 import ExportsService, { ExportType } from 'pep/services/exports';
 import PrinterService from 'pep/services/printer';
 import SearchSelection from 'pep/services/search-selection';
@@ -38,8 +39,9 @@ export default class DocumentReadSidebar extends Component<DocumentReadSidebarAr
     @service printer!: PrinterService;
     @service fastboot!: FastbootService;
     @service configuration!: ConfigurationService;
+    @service currentUser!: CurrentUserService;
 
-    @tracked showHitsInContext = false;
+    @tracked showHitsInContext = this.currentUser.preferences?.searchHICEnabled;
     @tracked selectedSort = SearchSorts[0];
 
     readLaterKey = PreferenceKey.READ_LATER;

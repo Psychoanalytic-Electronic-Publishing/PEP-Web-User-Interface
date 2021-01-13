@@ -41,6 +41,7 @@ export default class SearchRead extends Controller {
     //@ts-ignore
     queryParams = [
         'q',
+        'page',
         { _searchTerms: 'searchTerms' },
         'matchSynonyms',
         'citedCount',
@@ -195,7 +196,7 @@ export default class SearchRead extends Controller {
      */
     @action
     loadDocument(document: Document) {
-        this.transitionToRoute('read.document', document.id, {
+        this.transitionToRoute('search.read', document.id, {
             queryParams: {
                 q: this.q,
                 matchSynonyms: this.matchSynonyms,

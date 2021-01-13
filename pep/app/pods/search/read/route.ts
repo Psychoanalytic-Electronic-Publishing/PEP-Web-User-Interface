@@ -99,62 +99,55 @@ export default class SearchRead extends PageNav(Route) {
         let pastQueryParams = transition.from?.queryParams;
         let queryParams = transition.to?.queryParams;
 
-        // If your coming to the page fresh, or from another document or the search we want to try and re-use the search if possible
-        if (
-            !transition.from?.name ||
-            transition.from?.name === 'search.read' ||
-            transition.from?.name === 'search.index'
-        ) {
-            if (transition.from?.name) {
-                const controller = this.controllerFor(transition.from.name) as SearchReadController;
-                results = controller?.paginator?.models;
-                resultsMeta = controller?.paginator?.metadata;
-                this.searchHasPaging = true;
-            }
+        if (transition.from?.name) {
+            const controller = this.controllerFor(transition.from.name) as SearchReadController;
+            results = controller?.paginator?.models;
+            resultsMeta = controller?.paginator?.metadata;
+            this.searchHasPaging = true;
+        }
 
-            // if the query params are different - load new items, otherwise reuse if possible
-            if (!pastQueryParams || JSON.stringify(pastQueryParams) !== JSON.stringify(queryParams)) {
-                const params = this.paramsFor('search.read') as SearchReadParams;
-                //workaround for https://github.com/emberjs/ember.js/issues/18981
-                const searchTerms = params._searchTerms ? JSON.parse(params._searchTerms) : [];
-                const facets = params._facets ? JSON.parse(params._facets) : [];
-                const cfg = this.configuration.base.search;
-                const searchParams = buildSearchQueryParams({
-                    smartSearchTerm: params.q,
-                    searchTerms,
-                    synonyms: params.matchSynonyms,
-                    facetValues: facets,
-                    citedCount: params.citedCount,
-                    viewedCount: params.viewedCount,
-                    viewedPeriod: params.viewedPeriod,
-                    facetFields: cfg.facets.defaultFields,
-                    joinOp: 'AND',
-                    facetLimit: cfg.facets.valueLimit,
-                    facetMinCount: cfg.facets.valueMinCount,
-                    highlightlimit: this.currentUser.preferences?.searchHICLimit ?? cfg.hitsInContext.limit
+        // if the query params are different - load new items, otherwise reuse if possible
+        if (!pastQueryParams || JSON.stringify(pastQueryParams) !== JSON.stringify(queryParams)) {
+            const params = this.paramsFor('search.read') as SearchReadParams;
+            //workaround for https://github.com/emberjs/ember.js/issues/18981
+            const searchTerms = params._searchTerms ? JSON.parse(params._searchTerms) : [];
+            const facets = params._facets ? JSON.parse(params._facets) : [];
+            const cfg = this.configuration.base.search;
+            const searchParams = buildSearchQueryParams({
+                smartSearchTerm: params.q,
+                searchTerms,
+                synonyms: params.matchSynonyms,
+                facetValues: facets,
+                citedCount: params.citedCount,
+                viewedCount: params.viewedCount,
+                viewedPeriod: params.viewedPeriod,
+                facetFields: cfg.facets.defaultFields,
+                joinOp: 'AND',
+                facetLimit: cfg.facets.valueLimit,
+                facetMinCount: cfg.facets.valueMinCount,
+                highlightlimit: this.currentUser.preferences?.searchHICLimit ?? cfg.hitsInContext.limit
+            });
+
+            //if no search was submitted, don't fetch any results
+            if (hasSearchQuery(searchParams)) {
+                const controller = this.controllerFor(this.routeName) as SearchReadController;
+                const queryParams = buildQueryParams({
+                    context: controller,
+                    pagingRootKey: null,
+                    filterRootKey: null,
+                    sorts:
+                        controller.selectedView.id === controller.tableView
+                            ? ['']
+                            : [this.currentUser.preferences?.searchSortType.id ?? ''],
+                    processQueryParams: (params) => ({ ...params, ...searchParams })
                 });
 
-                //if no search was submitted, don't fetch any results
-                if (hasSearchQuery(searchParams)) {
-                    const controller = this.controllerFor(this.routeName) as SearchReadController;
-                    const queryParams = buildQueryParams({
-                        context: controller,
-                        pagingRootKey: null,
-                        filterRootKey: null,
-                        sorts:
-                            controller.selectedView.id === controller.tableView
-                                ? ['']
-                                : [this.currentUser.preferences?.searchSortType.id ?? ''],
-                        processQueryParams: (params) => ({ ...params, ...searchParams })
-                    });
-
-                    const response = (await this.store.query('search-document', queryParams)) as RecordArrayWithMeta<
-                        SearchDocument
-                    >;
-                    results = response.toArray();
-                    resultsMeta = response.meta;
-                    this.searchHasPaging = true;
-                }
+                const response = (await this.store.query('search-document', queryParams)) as RecordArrayWithMeta<
+                    SearchDocument
+                >;
+                results = response.toArray();
+                resultsMeta = response.meta;
+                this.searchHasPaging = true;
             }
         }
 
