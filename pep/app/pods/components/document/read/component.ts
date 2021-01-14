@@ -1,38 +1,19 @@
-import { action, set } from '@ember/object';
+import { action } from '@ember/object';
 import RouterService from '@ember/routing/router-service';
 import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
-import { tracked } from '@glimmer/tracking';
 
 import ModalService from '@gavant/ember-modals/services/modal';
-import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
-import { QueryParamsObj, removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
-import FastbootService from 'ember-cli-fastboot/services/fastboot';
-import NotificationService from 'ember-cli-notifications/services/notifications';
 import DS from 'ember-data';
-import IntlService from 'ember-intl/services/intl';
 
-import ENV from 'pep/config/environment';
-import { DOCUMENT_EPUB_BASE_URL, DOCUMENT_PDF_BASE_URL, DOCUMENT_PDFORIG_BASE_URL } from 'pep/constants/documents';
-import { PreferenceKey } from 'pep/constants/preferences';
-import { TITLE_REGEX } from 'pep/constants/regex';
-import { SEARCH_DEFAULT_VIEW_PERIOD, SearchViews, SearchViewType, ViewPeriod } from 'pep/constants/search';
 import Document from 'pep/pods/document/model';
 import GlossaryTerm from 'pep/pods/glossary-term/model';
 import { SearchReadParams } from 'pep/pods/search/read/route';
-import AjaxService from 'pep/services/ajax';
 import AuthService from 'pep/services/auth';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
-import ExportsService, { ExportType } from 'pep/services/exports';
 import LoadingBarService from 'pep/services/loading-bar';
-import PepSessionService from 'pep/services/pep-session';
-import PrinterService from 'pep/services/printer';
-import SearchSelection from 'pep/services/search-selection';
-import { buildSearchQueryParams, clearSearch } from 'pep/utils/search';
-import { SearchSorts, SearchSortType, transformSearchSortsToTable, transformSearchSortToAPI } from 'pep/utils/sort';
-import { serializeQueryParams } from 'pep/utils/url';
-import { reject, resolve } from 'rsvp';
+import { clearSearch } from 'pep/utils/search';
 
 interface DocumentReadArgs {
     model: Document;

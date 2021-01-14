@@ -9,7 +9,7 @@ export default class GlossaryTerm extends Document {
     @attr('string') groupTermCount!: string;
     @attr('string') referenceCount!: string;
     @attr('string') term!: string;
-    @attr('string') termCount!: string;
+    @attr('string') termCount!: number;
     @attr('string') termDefPartXML!: string;
     @attr('string') termDefRefXML!: string;
     @attr('string') termID!: string;

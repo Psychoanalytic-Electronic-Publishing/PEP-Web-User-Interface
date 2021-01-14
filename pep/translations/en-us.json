@@ -616,7 +616,7 @@
         },
         "justification": {
             "left": "Left",
-            "justify": "Left-Right Justified"
+            "justify": "Justified"
         }
     },
     "print": {

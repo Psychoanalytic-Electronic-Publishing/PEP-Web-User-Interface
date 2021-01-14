@@ -12,7 +12,7 @@ import { SearchMetadata } from 'pep/api';
 import { WIDGET } from 'pep/constants/sidebar';
 import { PageNav } from 'pep/mixins/page-layout';
 import Document from 'pep/pods/document/model';
-import SearchController from 'pep/pods/search/controller';
+import SearchController from 'pep/pods/search/index/controller';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
 import SidebarService from 'pep/services/sidebar';
