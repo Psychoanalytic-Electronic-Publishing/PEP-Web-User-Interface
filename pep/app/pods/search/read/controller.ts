@@ -31,6 +31,7 @@ export default class SearchRead extends Controller {
     @tracked paginator!: Pagination<Document>;
     @tracked page = null;
     @tracked searchHitNumber?: number;
+    @tracked document?: Document;
 
     tableView = SearchViewType.TABLE;
     searchViews = SearchViews;
@@ -117,7 +118,7 @@ export default class SearchRead extends Controller {
      * @memberof ReadDocument
      */
     get showNextSearchHitButton() {
-        return this.searchHitNumber === undefined || this.searchHitNumber < this.model.termCount;
+        return this.searchHitNumber === undefined || this.searchHitNumber < this.document.termCount;
     }
 
     /**
@@ -167,10 +168,10 @@ export default class SearchRead extends Controller {
     async onAuthenticated() {
         try {
             this.loadingBar.show();
-            const model = await this.store.findRecord('document', this.model.id, { reload: true });
-            set(this, 'model', model);
+            const document = await this.store.findRecord('document', this.document.id, { reload: true });
+            this.document = document;
             this.loadingBar.hide();
-            return model;
+            return document;
         } catch (err) {
             this.loadingBar.hide();
             return reject(err);

@@ -177,7 +177,7 @@ export default class SearchRead extends PageNav(Route) {
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
     //@ts-ignore
-    setupController(controller: SearchReadController, model: RecordArrayWithMeta<Document>) {
+    setupController(controller: SearchReadController, model: Document) {
         //workaround for bug w/array-based query param values
         //@see https://github.com/emberjs/ember.js/issues/18981
         //@ts-ignore
@@ -202,6 +202,7 @@ export default class SearchRead extends PageNav(Route) {
         this.currentUser.lastViewedDocumentId = model.id;
         this.currentUser.lastViewedDocumentFrom = VIEW_DOCUMENT_FROM.SEARCH;
         controller.searchHitNumber = undefined;
+        controller.document = model;
     }
 
     /**
