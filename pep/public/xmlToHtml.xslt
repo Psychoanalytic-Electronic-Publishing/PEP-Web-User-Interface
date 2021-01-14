@@ -290,6 +290,12 @@
             </div>
         </xsl:for-each>
 
+        <xsl:for-each select="idx">
+            <div id="{$this-article}-idx" class="idx">
+                <xsl:apply-templates/>
+            </div>
+        </xsl:for-each>
+
     </xsl:template>
 
     <!-- ============================================================= -->
@@ -940,6 +946,26 @@
     <!-- ============================================================= -->
     <!--  Figures, lists and block-level objectS                       -->
     <!-- ============================================================= -->
+
+    <xsl:template match="idxdiv">
+        <div class="index-div mb-3">
+            <xsl:apply-templates/>
+        </div>
+    </xsl:template>
+
+    <xsl:template match="idxent">
+        <div class="index-item">
+            <xsl:apply-templates/>
+        </div>
+    </xsl:template>
+
+    <xsl:template match="idxent/idxent">
+        <div class="index-item ml-4">
+            <xsl:apply-templates/>
+        </div>
+    </xsl:template>
+
+
 
     <!-- abs -->
     <xsl:template match="abs">
@@ -2314,6 +2340,7 @@
             <!--      <xsl:value-of select="."/>-->
         </xsl:for-each>
     </xsl:template>
+
 
 
     <!-- ============================================================= -->
