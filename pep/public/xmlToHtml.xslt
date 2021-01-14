@@ -296,6 +296,14 @@
             </div>
         </xsl:for-each>
 
+
+        <xsl:for-each select="appxs">
+            <div id="{$this-article}-appendix" class="appendix">
+                <xsl:apply-templates/>
+            </div>
+        </xsl:for-each>
+
+
     </xsl:template>
 
     <!-- ============================================================= -->
@@ -646,6 +654,16 @@
             </a>
         </span>
     </xsl:template>
+
+
+    <xsl:template match="bxe">
+        <span class="bxe" data-type="pagelink" data-r="{@rx}">
+            <a class="bxe" href="#/Document/{@rx}" data-type="pagelink" data-r="{@rx}">
+                <xsl:value-of select="."/>
+            </a>
+        </span>
+    </xsl:template>
+
 
     <xsl:template match="xref" mode="metadata-inline">
         <!-- These are not expected to appear in mixed content, so
