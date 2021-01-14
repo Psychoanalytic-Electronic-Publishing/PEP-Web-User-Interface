@@ -63,7 +63,7 @@ export const TEXT_LEFT: TextJustification = {
 export const TEXT_JUSTIFY: TextJustification = {
     id: TextJustificationId.JUSTIFY,
     label: 'text.justification.justify',
-    class: 'text-justify text-indent-none'
+    class: 'text-justify'
 };
 
 export const TextJustifications = [TEXT_LEFT, TEXT_JUSTIFY];

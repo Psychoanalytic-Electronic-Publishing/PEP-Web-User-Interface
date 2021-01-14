@@ -7,7 +7,6 @@ $document-paragraph-indent: 1.5rem;
         animation-duration: 0.75s;
     }
     &.text-indent-none p {
-        text-indent: 0 !important;
         margin-bottom: 0.5rem !important;
     }
     @keyframes flash-animation {
