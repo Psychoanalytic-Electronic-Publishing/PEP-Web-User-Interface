@@ -19,7 +19,7 @@
                 {{#each this.results as |result|}}
                     <li class="mb-2 d-flex justify-content-between align-items-start">
                         <div>
-                            <LinkTo @route="read.document" @model={{result.id}}>
+                            <LinkTo @route="browse.read" @model={{result.id}}>
                                 {{html-safe result.documentRef}}
                             </LinkTo>
                         </div>

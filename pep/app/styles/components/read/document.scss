@@ -6,6 +6,9 @@ $document-paragraph-indent: 1.5rem;
         animation-name: flash-animation;
         animation-duration: 0.75s;
     }
+    &.text-indent-none p {
+        margin-bottom: 0.5rem !important;
+    }
     @keyframes flash-animation {
         0% {
             background: default;

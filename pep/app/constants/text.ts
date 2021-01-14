@@ -46,8 +46,7 @@ export const AvailableFontSizes = [FONT_SIZE_XS, FONT_SIZE_SMALL, FONT_SIZE_DEFA
 
 export enum TextJustificationId {
     LEFT = 'left',
-    CENTER = 'center',
-    RIGHT = 'right'
+    JUSTIFY = 'justify'
 }
 export interface TextJustification {
     id: TextJustificationId;
@@ -61,16 +60,10 @@ export const TEXT_LEFT: TextJustification = {
     class: 'text-left'
 };
 
-export const TEXT_CENTER: TextJustification = {
-    id: TextJustificationId.CENTER,
-    label: 'text.justification.center',
-    class: 'text-center'
+export const TEXT_JUSTIFY: TextJustification = {
+    id: TextJustificationId.JUSTIFY,
+    label: 'text.justification.justify',
+    class: 'text-justify'
 };
 
-export const TEXT_RIGHT: TextJustification = {
-    id: TextJustificationId.RIGHT,
-    label: 'text.justification.right',
-    class: 'text-right'
-};
-
-export const TextJustifications = [TEXT_LEFT, TEXT_CENTER, TEXT_RIGHT];
+export const TextJustifications = [TEXT_LEFT, TEXT_JUSTIFY];

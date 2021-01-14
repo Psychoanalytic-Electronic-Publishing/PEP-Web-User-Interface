@@ -1,16 +1,17 @@
 import { action } from '@ember/object';
+import RouterService from '@ember/routing/router-service';
 import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
 import ModalService from '@gavant/ember-modals/services/modal';
 
+import { SUPPORT_URL } from 'pep/constants/urls';
 import AuthService from 'pep/services/auth';
 import ConfigurationService from 'pep/services/configuration';
-import CurrentUserService from 'pep/services/current-user';
+import CurrentUserService, { VIEW_DOCUMENT_FROM } from 'pep/services/current-user';
 import DrawerService from 'pep/services/drawer';
 import PepSessionService from 'pep/services/pep-session';
-import { SUPPORT_URL } from 'pep/constants/urls';
 
 interface PageDrawerArgs {
     openAboutModal: () => Promise<void>;
@@ -23,6 +24,7 @@ export default class PageDrawer extends Component<PageDrawerArgs> {
     @service modal!: ModalService;
     @service configuration!: ConfigurationService;
     @service currentUser!: CurrentUserService;
+    @service router!: RouterService;
 
     @tracked isUserMenuOpen = false;
     @tracked isHelpMenuOpen = false;
@@ -106,5 +108,21 @@ export default class PageDrawer extends Component<PageDrawerArgs> {
     @action
     openFeedbackModal() {
         return this.modal.open('help/feedback', {});
+    }
+
+    /**
+     * View the last read document
+     *
+     * @memberof PageDrawer
+     */
+    @action
+    viewRead() {
+        if (this.currentUser.lastViewedDocumentId) {
+            if (this.currentUser.lastViewedDocumentFrom === VIEW_DOCUMENT_FROM.SEARCH) {
+                this.router.transitionTo('search.read', this.currentUser.lastViewedDocumentId);
+            } else {
+                this.router.transitionTo('browse.read', this.currentUser.lastViewedDocumentId);
+            }
+        }
     }
 }

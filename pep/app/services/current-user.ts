@@ -9,28 +9,21 @@ import IntlService from 'ember-intl/services/intl';
 import ENV from 'pep/config/environment';
 import { DATE_FOREVER } from 'pep/constants/dates';
 import {
-    COOKIE_PREFERENCES,
-    DEFAULT_USER_PREFERENCES,
-    LOCALSTORAGE_PREFERENCES,
-    PreferenceChangeset,
-    PreferenceDocumentsKey,
-    PreferenceKey,
-    USER_PREFERENCES_COOKIE_NAME,
-    USER_PREFERENCES_LS_PREFIX,
-    UserPreferences
+    COOKIE_PREFERENCES, DEFAULT_USER_PREFERENCES, LOCALSTORAGE_PREFERENCES, PreferenceChangeset, PreferenceDocumentsKey,
+    PreferenceKey, USER_PREFERENCES_COOKIE_NAME, USER_PREFERENCES_LS_PREFIX, UserPreferences
 } from 'pep/constants/preferences';
 import {
-    AvailableFontSizes,
-    FONT_SIZE_DEFAULT,
-    FontSize,
-    TEXT_LEFT,
-    TextJustificationId,
-    TextJustifications
+    AvailableFontSizes, FONT_SIZE_DEFAULT, FontSize, TEXT_LEFT, TextJustificationId, TextJustifications
 } from 'pep/constants/text';
 import User, { UserType } from 'pep/pods/user/model';
 import PepSessionService from 'pep/services/pep-session';
 import { addClass, removeClass } from 'pep/utils/dom';
 import { reject } from 'rsvp';
+
+export enum VIEW_DOCUMENT_FROM {
+    SEARCH = 'search',
+    OTHER = 'other'
+}
 
 export default class CurrentUserService extends Service {
     @service store!: DS.Store;
@@ -44,6 +37,7 @@ export default class CurrentUserService extends Service {
     @tracked user: User | null = null;
     @tracked preferences?: UserPreferences;
     @tracked lastViewedDocumentId?: string;
+    @tracked lastViewedDocumentFrom?: VIEW_DOCUMENT_FROM;
 
     /**
      * Available text justification options

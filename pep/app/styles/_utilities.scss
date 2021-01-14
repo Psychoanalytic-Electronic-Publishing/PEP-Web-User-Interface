@@ -73,3 +73,10 @@
 .highlight-odd li:nth-child(odd) {
     background-color: $color-backdrop;
 }
+
+// ---------------------------
+// Text / Font
+// ---------------------------
+.text-justify {
+    text-align: justify !important;
+}

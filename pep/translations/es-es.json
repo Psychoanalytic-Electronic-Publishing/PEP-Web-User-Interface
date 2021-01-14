@@ -616,8 +616,7 @@
         },
         "justification": {
             "left": "Left",
-            "center": "Center",
-            "right": "Right"
+            "justify": "Justified"
         }
     },
     "print": {
