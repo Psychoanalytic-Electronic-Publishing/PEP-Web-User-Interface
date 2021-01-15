@@ -86,7 +86,7 @@ export default class BrowseRead extends PageNav(Route) {
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
     //@ts-ignore
-    setupController(controller: BrowseReadController, model: RecordArrayWithMeta<Document>) {
+    setupController(controller: BrowseReadController, model: Document) {
         super.setupController(controller, model);
 
         controller.paginator = usePagination<Document, any>({
@@ -106,5 +106,6 @@ export default class BrowseRead extends PageNav(Route) {
         });
         this.currentUser.lastViewedDocumentId = model.id;
         this.currentUser.lastViewedDocumentFrom = VIEW_DOCUMENT_FROM.OTHER;
+        controller.document = model;
     }
 }

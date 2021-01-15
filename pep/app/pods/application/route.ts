@@ -90,7 +90,9 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
 
         if (this.fastboot.isFastBoot) {
             this.auth.dontRedirectOnLogin = true;
+            this.fastboot.request.cookies.pep_session = '';
         }
+        console.log('session id:' + this.session.data.authenticated.SessionId);
 
         if (this.fastboot.isFastBoot && !this.session.isAuthenticated) {
             try {
@@ -99,14 +101,14 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
                 // The fastboot session would authenticate through IP, we would write to the cookie and save everything but when the app
                 // loaded back up, we would be logged out and the cookie would mysteriously be removed. We work around this by writing the our own cookie
                 // and then getting that cookie and setting it as the simple auth cookie to force auth state.
-                this.fastboot.request.cookies.pep_session = this.cookies.read('pep_session');
-                this.cookies.write('pep_session_fastboot', this.cookies.read('pep_session'), {});
+                // this.fastboot.request.cookies.pep_session = this.cookies.read('pep_session');
+                // this.cookies.write('pep_session_fastboot', this.cookies.read('pep_session'), {});
             } catch (errors) {
                 this.session.invalidate();
             }
         } else if (!this.session.isAuthenticated) {
-            this.cookies.write('pep_session', this.cookies.read('pep_session_fastboot'), {});
-            this.cookies.clear('pep_session_fastboot', {});
+            // this.cookies.write('pep_session', this.cookies.read('pep_session_fastboot'), {});
+            // this.cookies.clear('pep_session_fastboot', {});
         }
 
         try {
@@ -298,6 +300,7 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
      */
     @action
     error(error?: ApiServerErrorResponse) {
+        console.log(error);
         if (this.fastboot.isFastBoot) {
             this.fastboot.response.statusCode = error?.errors?.[0]?.status ?? 200;
         }

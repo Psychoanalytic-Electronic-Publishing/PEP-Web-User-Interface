@@ -21,6 +21,7 @@ import {
     ViewPeriod
 } from 'pep/constants/search';
 import { WIDGET } from 'pep/constants/sidebar';
+import Abstract from 'pep/pods/abstract/model';
 import { SearchPreviewMode } from 'pep/pods/components/search/preview/component';
 import Document from 'pep/pods/document/model';
 import AjaxService from 'pep/services/ajax';
@@ -702,6 +703,19 @@ export default class SearchIndex extends Controller {
                 }
             ]);
         }
+    }
+
+    /**
+     * Navigate to the passed in document
+     *
+     * @param {Document} document
+     * @memberof ReadDocument
+     */
+    @action
+    loadDocument(abstract: Abstract) {
+        this.transitionToRoute('search.read', abstract.id, {
+            queryParams: this.readQueryParams
+        });
     }
 }
 

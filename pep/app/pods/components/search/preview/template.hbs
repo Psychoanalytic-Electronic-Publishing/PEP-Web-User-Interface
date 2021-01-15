@@ -68,7 +68,6 @@
                                     @documentRendered={{this.documentRendered}}
                                 />
                             {{/if}}
-                            {{!-- {{html-safe this.result.abstract}} --}}
                         </div>
                         <div>
                             {{#if this.result.accessLimited}}
@@ -85,7 +84,15 @@
                                     </p>
                                 {{/unless}}
                             {{else}}
-                                <LinkTo
+                                <Button
+                                    @label={{t "search.preview.read"}}
+                                    @icon="book-open"
+                                    @type="primary"
+                                    @wide={{true}}
+                                    @action={{this.viewDocument}}
+                                    class="mr-2"
+                                />
+                                {{!-- <LinkTo
                                     @route="search.read"
                                     @model={{this.result.id}}
                                     @query={{@queryParams}}
@@ -93,7 +100,7 @@
                                 >
                                     <FaIcon @icon="book-open" />
                                     {{t "search.preview.read"}}
-                                </LinkTo>
+                                </LinkTo> --}}
                                 <DropdownMenu @horizontalPosition="auto-left" as |DD|>
                                     <DD.Trigger @htmlTag="button" class="btn btn-link px-2">
                                         <FaIcon @icon="download" />

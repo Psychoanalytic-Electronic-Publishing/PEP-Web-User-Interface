@@ -10,6 +10,7 @@ import ENV from 'pep/config/environment';
 import { TITLE_REGEX } from 'pep/constants/regex';
 import Abstract from 'pep/pods/abstract/model';
 import { SearchPreviewMode } from 'pep/pods/components/search/preview/component';
+import Document from 'pep/pods/document/model';
 import SourceVolume from 'pep/pods/source-volume/model';
 import Volume from 'pep/pods/volume/model';
 import BrowseSelection from 'pep/services/browse-selection';
@@ -216,6 +217,17 @@ export default class BrowseJournalVolume extends Controller {
     @action
     navigateToVolume(volume: string) {
         this.transitionToRoute('browse.journal.volume', volume);
+    }
+
+    /**
+     * Navigate to the passed in document
+     *
+     * @param {Document} document
+     * @memberof ReadDocument
+     */
+    @action
+    loadDocument(abstract: Abstract) {
+        this.transitionToRoute('browse.read', abstract.id);
     }
 }
 

@@ -1,5 +1,5 @@
 import Controller from '@ember/controller';
-import { action, set } from '@ember/object';
+import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 
@@ -7,6 +7,7 @@ import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
 import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 
 import { SEARCH_DEFAULT_VIEW_PERIOD, SearchViews, SearchViewType, ViewPeriod } from 'pep/constants/search';
+import Abstract from 'pep/pods/abstract/model';
 import Document from 'pep/pods/document/model';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
@@ -31,6 +32,8 @@ export default class SearchRead extends Controller {
     @tracked paginator!: Pagination<Document>;
     @tracked page = null;
     @tracked searchHitNumber?: number;
+
+    // This becomes our model as the template wasn't updating when we changed the default model
     @tracked document?: Document;
 
     tableView = SearchViewType.TABLE;
@@ -118,7 +121,7 @@ export default class SearchRead extends Controller {
      * @memberof ReadDocument
      */
     get showNextSearchHitButton() {
-        return this.searchHitNumber === undefined || this.searchHitNumber < this.document.termCount;
+        return this.searchHitNumber === undefined || this.searchHitNumber < (this.document?.termCount ?? 0);
     }
 
     /**
@@ -166,15 +169,19 @@ export default class SearchRead extends Controller {
      */
     @action
     async onAuthenticated() {
-        try {
-            this.loadingBar.show();
-            const document = await this.store.findRecord('document', this.document.id, { reload: true });
-            this.document = document;
-            this.loadingBar.hide();
-            return document;
-        } catch (err) {
-            this.loadingBar.hide();
-            return reject(err);
+        if (this.document?.id) {
+            try {
+                this.loadingBar.show();
+                const document = await this.store.findRecord('document', this.document?.id, { reload: true });
+                this.document = document;
+                this.loadingBar.hide();
+                return document;
+            } catch (err) {
+                this.loadingBar.hide();
+                return reject(err);
+            }
+        } else {
+            return reject();
         }
     }
 
@@ -198,8 +205,8 @@ export default class SearchRead extends Controller {
      * @memberof ReadDocument
      */
     @action
-    loadDocument(document: Document) {
-        this.transitionToRoute('search.read', document.id, {
+    loadDocument(abstract: Abstract) {
+        this.transitionToRoute('search.read', abstract.id, {
             queryParams: {
                 q: this.q,
                 matchSynonyms: this.matchSynonyms,

@@ -1,5 +1,5 @@
 import Controller from '@ember/controller';
-import { action, set } from '@ember/object';
+import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 
@@ -19,6 +19,9 @@ export default class BrowseRead extends Controller {
     @tracked selectedView = SearchViews[0];
     @tracked paginator!: Pagination<Document>;
     @tracked page = null;
+
+    // This becomes our model as the template wasn't updating when we changed the default model
+    @tracked document?: Document;
 
     queryParams = ['page'];
 
@@ -63,15 +66,19 @@ export default class BrowseRead extends Controller {
      */
     @action
     async onAuthenticated() {
-        try {
-            this.loadingBar.show();
-            const model = await this.store.findRecord('document', this.model.id, { reload: true });
-            set(this, 'model', model);
-            this.loadingBar.hide();
-            return model;
-        } catch (err) {
-            this.loadingBar.hide();
-            return reject(err);
+        if (this.document?.id) {
+            try {
+                this.loadingBar.show();
+                const document = await this.store.findRecord('document', this.document?.id, { reload: true });
+                this.document = document;
+                this.loadingBar.hide();
+                return document;
+            } catch (err) {
+                this.loadingBar.hide();
+                return reject(err);
+            }
+        } else {
+            return reject();
         }
     }
 
