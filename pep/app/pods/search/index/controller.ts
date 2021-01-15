@@ -708,8 +708,8 @@ export default class SearchIndex extends Controller {
     /**
      * Navigate to the passed in document
      *
-     * @param {Document} document
-     * @memberof ReadDocument
+     * @param {Abstract} Abstract
+     * @memberof SearchIndex
      */
     @action
     loadDocument(abstract: Abstract) {

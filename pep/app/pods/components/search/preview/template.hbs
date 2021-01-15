@@ -92,15 +92,6 @@
                                     @action={{this.viewDocument}}
                                     class="mr-2"
                                 />
-                                {{!-- <LinkTo
-                                    @route="search.read"
-                                    @model={{this.result.id}}
-                                    @query={{@queryParams}}
-                                    class="btn btn-primary btn-wide mr-2"
-                                >
-                                    <FaIcon @icon="book-open" />
-                                    {{t "search.preview.read"}}
-                                </LinkTo> --}}
                                 <DropdownMenu @horizontalPosition="auto-left" as |DD|>
                                     <DD.Trigger @htmlTag="button" class="btn btn-link px-2">
                                         <FaIcon @icon="download" />
