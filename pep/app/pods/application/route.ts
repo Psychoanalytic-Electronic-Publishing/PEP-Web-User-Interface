@@ -90,7 +90,6 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
 
         if (this.fastboot.isFastBoot) {
             this.auth.dontRedirectOnLogin = true;
-            this.fastboot.request.cookies.pep_session = '';
         }
 
         if (this.fastboot.isFastBoot && !this.session.isAuthenticated) {
