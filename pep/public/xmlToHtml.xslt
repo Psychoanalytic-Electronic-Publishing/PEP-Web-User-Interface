@@ -59,6 +59,7 @@
               group
               p
               h1 h2 h3 h4 h5
+              binc
               "/>
 
     <xsl:strip-space elements="*"/>
@@ -1448,7 +1449,6 @@
             <xsl:apply-templates/>
         </span>
     </xsl:template>
-
 
     <xsl:template match="p/label">
         <span class="label">

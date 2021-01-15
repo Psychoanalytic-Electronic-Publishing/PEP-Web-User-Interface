@@ -27,6 +27,7 @@ interface SearchPreviewArgs {
     resultId?: string;
     setMode: (mode: SearchPreviewMode) => void;
     close: () => void;
+    loadDocument?: (abstract: Abstract) => void;
 }
 
 export default class SearchPreview extends Component<SearchPreviewArgs> {
@@ -281,10 +282,27 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
         });
     }
 
+    /**
+     * when the document is rendered - if we are in fit mode update the height
+     *
+     * @memberof SearchPreview
+     */
     @action
     documentRendered() {
         if (this.isFitMode) {
             this.updateFitHeight();
+        }
+    }
+
+    /**
+     * View the document
+     *
+     * @memberof SearchPreview
+     */
+    @action
+    viewDocument() {
+        if (this.result) {
+            this.args.loadDocument?.(this.result);
         }
     }
 }

@@ -10,6 +10,7 @@ import ENV from 'pep/config/environment';
 import { TITLE_REGEX } from 'pep/constants/regex';
 import Abstract from 'pep/pods/abstract/model';
 import { SearchPreviewMode } from 'pep/pods/components/search/preview/component';
+import Document from 'pep/pods/document/model';
 import SourceVolume from 'pep/pods/source-volume/model';
 import Volume from 'pep/pods/volume/model';
 import BrowseSelection from 'pep/services/browse-selection';
@@ -48,7 +49,7 @@ export default class BrowseJournalVolume extends Controller {
      * If items are selected, use that for the export/print data. Otherwise use the paginator
      *
      * @readonly
-     * @memberof Search
+     * @memberof BrowseJournalVolume
      */
     get exportedData() {
         return this.browseSelection.includedRecords.length
@@ -102,6 +103,7 @@ export default class BrowseJournalVolume extends Controller {
     /**
      * Sets the max height of the search preview pane
      * @param {HTMLElement} element
+     * @memberof BrowseJournalVolume
      */
     @action
     updateContainerMaxHeight(element: HTMLElement) {
@@ -111,6 +113,7 @@ export default class BrowseJournalVolume extends Controller {
     /**
      * Set the current preview mode
      * @param {String} mode
+     * @memberof BrowseJournalVolume
      */
     @action
     setPreviewMode(mode: SearchPreviewMode) {
@@ -119,6 +122,7 @@ export default class BrowseJournalVolume extends Controller {
 
     /**
      * Close the preview pane
+     * @memberof BrowseJournalVolume
      */
     @action
     closeResultPreview() {
@@ -131,6 +135,7 @@ export default class BrowseJournalVolume extends Controller {
      * depending on the user's preferences
      * @param {Object} result
      * @param {Event} event
+     * @memberof BrowseJournalVolume
      */
     @action
     async openResult(documentId: string, event?: Event) {
@@ -147,7 +152,7 @@ export default class BrowseJournalVolume extends Controller {
     /**
      * Export a CSV
      *
-     * @memberof Search
+     * @memberof BrowseJournalVolume
      */
     @action
     exportCSV() {
@@ -168,7 +173,7 @@ export default class BrowseJournalVolume extends Controller {
      * Get the correctly formatted data for the clipboard and return it
      *
      * @returns
-     * @memberof Search
+     * @memberof BrowseJournalVolume
      */
     @action
     exportClipboard() {
@@ -182,7 +187,7 @@ export default class BrowseJournalVolume extends Controller {
     /**
      * Show success message for clipboard
      *
-     * @memberof Search
+     * @memberof BrowseJournalVolume
      */
     @action
     clipboardSuccess() {
@@ -194,7 +199,7 @@ export default class BrowseJournalVolume extends Controller {
     /**
      * Show failure message for clipboard
      *
-     * @memberof Search
+     * @memberof BrowseJournalVolume
      */
     @action
     clipboardFailure() {
@@ -204,7 +209,7 @@ export default class BrowseJournalVolume extends Controller {
     /**
      * Print the current selected items or whats loaded into the paginator
      *
-     * @memberof Search
+     * @memberof BrowseJournalVolume
      */
     @action
     print() {
@@ -213,9 +218,26 @@ export default class BrowseJournalVolume extends Controller {
         this.printer.printHTML(html);
     }
 
+    /**
+     * Navigate to the specific volume
+     *
+     * @param {string} volume
+     * @memberof BrowseJournalVolume
+     */
     @action
     navigateToVolume(volume: string) {
         this.transitionToRoute('browse.journal.volume', volume);
+    }
+
+    /**
+     * Navigate to the passed in document
+     *
+     * @param {Abstract} Abstract
+     * @memberof BrowseJournalVolume
+     */
+    @action
+    loadDocument(abstract: Abstract) {
+        this.transitionToRoute('browse.read', abstract.id);
     }
 }
 
