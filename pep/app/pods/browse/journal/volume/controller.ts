@@ -6,11 +6,9 @@ import { cached, tracked } from '@glimmer/tracking';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import IntlService from 'ember-intl/services/intl';
 
-import ENV from 'pep/config/environment';
 import { TITLE_REGEX } from 'pep/constants/regex';
 import Abstract from 'pep/pods/abstract/model';
 import { SearchPreviewMode } from 'pep/pods/components/search/preview/component';
-import Document from 'pep/pods/document/model';
 import SourceVolume from 'pep/pods/source-volume/model';
 import Volume from 'pep/pods/volume/model';
 import BrowseSelection from 'pep/services/browse-selection';
@@ -38,12 +36,7 @@ export default class BrowseJournalVolume extends Controller {
     @tracked containerMaxHeight = 0;
     @tracked meta?: { next_vol: string; prev_vol: string };
     @tracked sourcecode?: string;
-
-    assetBaseUrl = ENV.assetBaseUrl;
-
-    get journalImageUrl() {
-        return `${this.assetBaseUrl}assets/images/publisher-logos/banner${this.sourcecode}Logo.gif`;
-    }
+    @tracked journalBannerUrl?: string;
 
     /**
      * If items are selected, use that for the export/print data. Otherwise use the paginator
