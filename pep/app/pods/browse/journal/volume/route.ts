@@ -11,8 +11,6 @@ export interface BrowseJournalVolumeParams {
     volume_number: string;
 }
 export default class BrowseJournalVolume extends Route {
-    journalInformation?: Journal;
-
     model(params: BrowseJournalVolumeParams) {
         const journalParams = this.paramsFor('browse.journal') as BrowseJournalParams;
 
@@ -24,24 +22,14 @@ export default class BrowseJournalVolume extends Route {
         });
     }
 
-    /**
-     * Load the first journal for a specific source for information
-     *
-     * @memberof BrowseJournalIndex
-     */
-    async afterModel() {
-        const journalParams = this.paramsFor('browse.journal') as BrowseJournalParams;
-        const journal = await this.store.query('journal', { sourcecode: journalParams.pep_code });
-        this.journalInformation = journal.firstObject;
-    }
-
     async setupController(controller: BrowseJournalVolumeController, model: RecordArrayWithMeta<SourceVolume[]>) {
         super.setupController(controller, model);
         const journalParams = this.paramsFor('browse.journal') as BrowseJournalParams;
         const routeParams = this.paramsFor(this.routeName) as BrowseJournalVolumeParams;
+        const journal = this.modelFor('browse.journal') as Journal;
 
         const volumes = await this.store.query('volume', { sourcecode: journalParams.pep_code });
-        controller.journalBannerUrl = this.journalInformation?.bannerURL;
+        controller.journalBannerUrl = journal.bannerURL;
         controller.sourcecode = journalParams.pep_code;
         controller.meta = model.meta;
         controller.volumeInformation = volumes.findBy('id', routeParams.volume_number);
