@@ -10,7 +10,6 @@ import Source from 'pep/pods/source/model';
 
 export default class BrowseJournalIndex extends Route {
     sourceCode?: string;
-    journalInformation?: Journal;
     // API removed paging - but Im leaving it in for now in case we change our minds
     limit = 1000;
     /**
@@ -33,16 +32,6 @@ export default class BrowseJournalIndex extends Route {
     }
 
     /**
-     * Load the first journal for a specific source for information
-     *
-     * @memberof BrowseJournalIndex
-     */
-    async afterModel() {
-        const journal = await this.store.query('journal', { sourcecode: this.sourceCode });
-        this.journalInformation = journal.firstObject;
-    }
-
-    /**
      * Set up Paging
      *
      * @param {BrowseJournalIndexController} controller
@@ -51,8 +40,9 @@ export default class BrowseJournalIndex extends Route {
      */
     setupController(controller: BrowseJournalIndexController, model: RecordArrayWithMeta<Source>) {
         super.setupController(controller, model);
+
         controller.sourcecode = this.sourceCode;
-        controller.journal = this.journalInformation;
+        controller.journal = this.modelFor('browse.journal') as Journal;
         controller.paginator = usePagination<Source>({
             context: controller,
             modelName: 'volume',
