@@ -56,6 +56,7 @@ export enum DocumentTooltipSelectors {
     BIBLIOGRAPHY = '.bibtip',
     BIBLIOGRAPHY_RELATED_INFO = '.bibx-related-info',
     NEW_AUTHOR = '.newauthortip',
+    H_AUTHOR_TIP = '.hauthortip',
     FOOTNOTE = '.ftnx',
     TRANSLATION = '.translation'
 }
@@ -458,9 +459,21 @@ export default class DocumentText extends Component<DocumentTextArgs> {
             }
         });
 
-        const authorTooltips = this.containerElement?.querySelectorAll(DocumentTooltipSelectors.NEW_AUTHOR);
-        authorTooltips?.forEach((item) => {
+        const newAuthorTooltips = this.containerElement?.querySelectorAll(DocumentTooltipSelectors.NEW_AUTHOR);
+        newAuthorTooltips?.forEach((item) => {
             const node = this.containerElement?.querySelector(`.peppopuptext`);
+            if (node) {
+                tippy(item, {
+                    content: node.innerHTML,
+                    placement: 'right',
+                    ...this.tippyOptions
+                });
+            }
+        });
+
+        const hAuthorTooltips = this.containerElement?.querySelectorAll(DocumentTooltipSelectors.H_AUTHOR_TIP);
+        hAuthorTooltips?.forEach((item) => {
+            const node = this.containerElement?.querySelector(`.hautcontent`);
             if (node) {
                 tippy(item, {
                     content: node.innerHTML,
