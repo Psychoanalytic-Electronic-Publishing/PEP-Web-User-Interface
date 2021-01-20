@@ -116,13 +116,51 @@
         <!-- If the previous element is a page break, add the data attribute page-start and give it a value of the next page break  -->
         <xsl:if test="name(preceding-sibling::*[1])='pb'">
             <xsl:attribute name="data-page-start">
-                <xsl:value-of select="following-sibling::pb/n"/>
+                <!-- For padding the numbers - pick a string that is large enough that we will never need to pad that much (I think 5 characters would have been fine, but it doesn't hurt to have more) -->
+                <xsl:variable name="zero-string" select="'00000000000000000000000000000000000'" />
+                <!-- Select the next page number for the current page -->
+                <xsl:variable name="next-page-number-string" select="following-sibling::pb/n/@nextpgnum" />
+                <!-- Remove the numbers from it -ex. PR0004 becomes PR -->
+                <xsl:variable name="next-page-number-letters" select="translate($next-page-number-string, '0123456789', '')" />
+                <!-- Remove the letters from the next page string -ex. PR0004 becomes 0004 -->
+                <xsl:variable name="next-page-number-string-translated" select="translate($next-page-number-string, $next-page-number-letters, '')" />
+                <!-- Get the length of that string - so 4 -->
+                <xsl:variable name="next-page-number-string-length" select="string-length($next-page-number-string-translated)" />
+                <!-- Generate a string of padded zeros however long the next-page-number-string is i.e 4 -->
+                <xsl:variable name="padded-zeros" select="substring($zero-string, 0, $next-page-number-string-length + 1)"/>
+                <!-- Translate next-page-number-string-translated to a number ex. 0004 now becomes 4 -->
+                <xsl:variable name="next-page-number-value" select="number($next-page-number-string-translated)" />
+                <!-- Subtract 1 to get the current page number (in this example it would be 3) -->
+                <xsl:variable name="page-number-value" select="number($next-page-number-value - 1)" />
+                <!-- Padd the current page number with the appropriate number of zeros (in this example 0003)  -->
+                <xsl:variable name="page-number-string" select="substring(concat($padded-zeros, $page-number-value), string-length($page-number-value) + 1, string-length($padded-zeros))" />
+                <!-- Combine the letters from before with the new page number PR0003 and that is our correct current page value -->
+                <xsl:value-of select="concat($next-page-number-letters, $page-number-string)" />
             </xsl:attribute>
         </xsl:if>
         <!-- If there is no preceding sibling i.e. its the first element, grab the first page break value and put it into the data attribute -->
         <xsl:if test="not(preceding-sibling::*)">
             <xsl:attribute name="data-page-start">
-                <xsl:value-of select="../following-sibling::pb/n"/>
+                <!-- For padding the numbers - pick a string that is large enough that we will never need to pad that much (I think 5 characters would have been fine, but it doesn't hurt to have more) -->
+                <xsl:variable name="zero-string" select="'00000000000000000000000000000000000'" />
+                <!-- Select the next page number for the current page -->
+                <xsl:variable name="next-page-number-string" select="../following-sibling::pb/n/@nextpgnum" />
+                <!-- Remove the numbers from it -ex. PR0004 becomes PR -->
+                <xsl:variable name="next-page-number-letters" select="translate($next-page-number-string, '0123456789', '')" />
+                <!-- Remove the letters from the next page string -ex. PR0004 becomes 0004 -->
+                <xsl:variable name="next-page-number-string-translated" select="translate($next-page-number-string, $next-page-number-letters, '')" />
+                <!-- Get the length of that string - so 4 -->
+                <xsl:variable name="next-page-number-string-length" select="string-length($next-page-number-string-translated)" />
+                <!-- Generate a string of padded zeros however long the next-page-number-string is i.e 4 -->
+                <xsl:variable name="padded-zeros" select="substring($zero-string, 0, $next-page-number-string-length + 1)"/>
+                <!-- Translate next-page-number-string-translated to a number ex. 0004 now becomes 4 -->
+                <xsl:variable name="next-page-number-value" select="number($next-page-number-string-translated)" />
+                <!-- Subtract 1 to get the current page number (in this example it would be 3) -->
+                <xsl:variable name="page-number-value" select="number($next-page-number-value - 1)" />
+                <!-- Padd the current page number with the appropriate number of zeros (in this example 0003)  -->
+                <xsl:variable name="page-number-string" select="substring(concat($padded-zeros, $page-number-value), string-length($page-number-value) + 1, string-length($padded-zeros))" />
+                <!-- Combine the letters from before with the new page number PR0003 and that is our correct current page value -->
+                <xsl:value-of select="concat($next-page-number-letters, $page-number-string)" />
             </xsl:attribute>
         </xsl:if>
     </xsl:template>
@@ -508,7 +546,7 @@
                         </xsl:when>
                         <xsl:when test="position() = last()">
                             <xsl:text> </xsl:text>
-                            <xsl:if test="@role = 'author'">
+                            <xsl:if test="@role = 'author' or @role = 'intro'">
                                 <span class="peppopup newauthortip">
                                     <xsl:copy-of select="$fa-information" />
                                     <br></br>
@@ -539,6 +577,31 @@
                     </xsl:choose>
                 </span>
                 <xsl:text>&#13;</xsl:text>
+                <xsl:if test="nbio and position() != last()">
+                    <xsl:text> </xsl:text>
+                    <span class="peppopup authortip">
+                        <xsl:copy-of select="$fa-information" />
+                        <xsl:text></xsl:text>
+                        <br></br>
+                        <div class="peppopuptext" id="autaffinfo" hidden="True">
+                            <div id="hautcontent" class="hautcontent">
+                                <p class="autaffname">
+                                    <xsl:apply-templates mode="metadata" select="nfirst"/>
+                                    <xsl:apply-templates mode="metadata" select="nlast"/>
+                                </p>
+                                <xsl:apply-templates mode="metadata" select="../autaff"/>
+                                <p class="autaffbio">
+                                    <span class="autaffname" data-class="nbio">
+                                        <xsl:apply-templates mode="metadata" select="nfirst"/>
+                                        <xsl:apply-templates mode="metadata" select="nlast"/>
+                                    </span>
+                                    &#160; <!--&nbsp;-->
+                                    <xsl:apply-templates mode="metadata" select="nbio"/>
+                                </p>
+                            </div>
+                        </div>
+                    </span>
+                </xsl:if>
             </xsl:for-each>
         </div>
     </xsl:template>
@@ -574,6 +637,12 @@
                 </a>
             </xsl:otherwise>
         </xsl:choose>
+    </xsl:template>
+
+    <xsl:template match="hdix">
+        <a class="hdix" data-type="pagelink" target="_blank" href="?target={@r}" data-r="{@r}">
+            <xsl:apply-templates/>
+        </a>
     </xsl:template>
 
     <xsl:template match="cr">
@@ -1087,15 +1156,18 @@
         <p class="pagenumber text-center text-muted small">
             <xsl:attribute name="data-pgnum">
                 <xsl:apply-templates/>
+                <!-- <xsl:value-of select=
+                     "number(translate(@nextpgnum,translate(@nextpgnum, '0123456789', ''), '')) - 1"/> -->
+                <!-- <xsl:value-of select="number(@nextpgnum)" /> -->
             </xsl:attribute>
             <xsl:if test="@nextpgnum">
                 <xsl:attribute name="data-nextpgnum">
                     <xsl:value-of select="@nextpgnum"/>
                 </xsl:attribute>
             </xsl:if>
-            <xsl:if test="@prefxused">
-                <xsl:attribute name="data-prefxused">
-                    <xsl:value-of select="@prefxused"/>
+            <xsl:if test="@prefixused">
+                <xsl:attribute name="data-prefixused">
+                    <xsl:value-of select="@prefixused"/>
                 </xsl:attribute>
             </xsl:if>
             <xsl:apply-templates select="@content-type"/>
@@ -1106,7 +1178,26 @@
     <xsl:template match="pb">
         <div class="pagebreak" data-class="pb">
             <xsl:attribute name="data-page-end">
-                <xsl:value-of select="n"/>
+                <!-- For padding the numbers - pick a string that is large enough that we will never need to pad that much (I think 5 characters would have been fine, but it doesn't hurt to have more) -->
+                <xsl:variable name="zero-string" select="'00000000000000000000000000000000000'" />
+                <!-- Select the next page number for the current page -->
+                <xsl:variable name="next-page-number-string" select="n/@nextpgnum" />
+                <!-- Remove the numbers from it -ex. PR0004 becomes PR -->
+                <xsl:variable name="next-page-number-letters" select="translate($next-page-number-string, '0123456789', '')" />
+                <!-- Remove the letters from the next page string -ex. PR0004 becomes 0004 -->
+                <xsl:variable name="next-page-number-string-translated" select="translate($next-page-number-string, $next-page-number-letters, '')" />
+                <!-- Get the length of that string - so 4 -->
+                <xsl:variable name="next-page-number-string-length" select="string-length($next-page-number-string-translated)" />
+                <!-- Generate a string of padded zeros however long the next-page-number-string is i.e 4 -->
+                <xsl:variable name="padded-zeros" select="substring($zero-string, 0, $next-page-number-string-length + 1)"/>
+                <!-- Translate next-page-number-string-translated to a number ex. 0004 now becomes 4 -->
+                <xsl:variable name="next-page-number-value" select="number($next-page-number-string-translated)" />
+                <!-- Subtract 1 to get the current page number (in this example it would be 3) -->
+                <xsl:variable name="page-number-value" select="number($next-page-number-value - 1)" />
+                <!-- Padd the current page number with the appropriate number of zeros (in this example 0003)  -->
+                <xsl:variable name="page-number-string" select="substring(concat($padded-zeros, $page-number-value), string-length($page-number-value) + 1, string-length($padded-zeros))" />
+                <!-- Combine the letters from before with the new page number PR0003 and that is our correct current page value -->
+                <xsl:value-of select="concat($next-page-number-letters, $page-number-string)" />
             </xsl:attribute>
             <xsl:call-template name="named-anchor"/>
             <xsl:apply-templates select="@content-type"/>
