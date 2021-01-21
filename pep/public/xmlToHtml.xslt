@@ -107,6 +107,8 @@
 
     <xsl:key name="role" match="artauth/aut" use="@role" />
 
+    <xsl:key name="affid" match="artauth/aut" use="@affid" />
+
     <!-- ============================================================= -->
     <!--  ROOT TEMPLATE - HANDLES HTML FRAMEWORK                       -->
     <!-- ============================================================= -->
@@ -511,7 +513,14 @@
     <xsl:template match="artauth" mode="metadata">
         <div class="artauth">
             <div class="authorwrapper title-author text-center" data-class="artauth">
-                <xsl:apply-templates select="aut[generate-id(.)=generate-id(key('role',@role)[1])]" mode="metadata"/>
+                <xsl:variable name="by-role" select="aut[generate-id(.)=generate-id(key('role',@role)[1])]"/>
+                <xsl:variable name="by-affid" select="aut[generate-id(.)=generate-id(key('affid',@affid)[1])]"/>
+                <xsl:value-of select="count($by-affid)" />
+                <xsl:apply-templates select="$by-role" mode="metadata">
+                    <!-- <xsl:with-param name="by-role" select="$by-role" /> -->
+                    <xsl:with-param name="by-affid" select="$by-affid" />
+                </xsl:apply-templates>
+                <!-- <xsl:apply-templates select="aut[generate-id(.)=generate-id(key('role',@role)[1])]" mode="metadata"/> -->
             </div>
         </div>
     </xsl:template>
@@ -529,10 +538,26 @@
 
     <!--PEPKBD3 Author Information-->
     <xsl:template match="artauth/aut" mode="metadata">
+        <xsl:param name="by-role" />
+        <xsl:param name="by-affid" />
         <div class="author-grouping" data-grouping="{@role}">
             <xsl:if test="@role != 'author'">
-                <div><xsl:value-of select="@role"/></div>
+                <div>
+                    <xsl:choose>
+                        <xsl:when test="@role = 'in-collaboration'">
+                            In Collaboration with:
+                        </xsl:when>
+                        <xsl:when test="@role = 'translator'">
+                            Translated by:
+                        </xsl:when>
+                        <xsl:when test="@role = 'intro'">
+                            Introduction by:
+                        </xsl:when>
+                    </xsl:choose>
+                </div>
             </xsl:if>
+            <xsl:variable name="test" select="$by-affid" />
+
             <xsl:for-each select="key('role', @role)">
                 <span class="title-author" data-listed="{@listed}" data-authindexid="{@authindexid}" data-role="{@role}" data-alias="{@alias}" data-asis="{@asis}">
                     <a class="author" href="#/Search/?author={@authindexid}" data-type="search-author">
@@ -546,7 +571,7 @@
                         </xsl:when>
                         <xsl:when test="position() = last()">
                             <xsl:text> </xsl:text>
-                            <xsl:if test="@role = 'author' or @role = 'intro'">
+                            <xsl:if test="@role = 'author'">
                                 <span class="peppopup newauthortip">
                                     <xsl:copy-of select="$fa-information" />
                                     <br></br>
@@ -603,6 +628,33 @@
                     </span>
                 </xsl:if>
             </xsl:for-each>
+
+            <xsl:value-of select="count($test)" />
+            <xsl:if test="count($test)">
+                <xsl:text> </xsl:text>
+                <span class="peppopup authortip">
+                    <xsl:copy-of select="$fa-information" />
+                    <xsl:text></xsl:text>
+                    <br></br>
+                    <div class="peppopuptext" id="autaffinfo" hidden="True">
+                        <div id="hautcontent" class="hautcontent">
+                            <p class="autaffname">
+                                <xsl:apply-templates mode="metadata" select="nfirst"/>
+                                <xsl:apply-templates mode="metadata" select="nlast"/>
+                            </p>
+                            <xsl:apply-templates mode="metadata" select="../autaff"/>
+                            <p class="autaffbio">
+                                <span class="autaffname" data-class="nbio">
+                                    <xsl:apply-templates mode="metadata" select="nfirst"/>
+                                    <xsl:apply-templates mode="metadata" select="nlast"/>
+                                </span>
+                                &#160; <!--&nbsp;-->
+                                <xsl:apply-templates mode="metadata" select="nbio"/>
+                            </p>
+                        </div>
+                    </div>
+                </span>
+            </xsl:if>
         </div>
     </xsl:template>
 

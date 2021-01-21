@@ -24,49 +24,32 @@
                         {{t "read.document.backToSearch"}}
                     </LinkTo>
                 {{/if}}
+                <div class="align-items-center d-flex d-lg-none d-xl-none">
+                    <Document::SearchHits
+                        @document={{this.document}}
+                        @searchHitNumber={{this.searchHitNumber}}
+                        @viewPreviousSearchHit={{this.viewPreviousSearchHit}}
+                        @viewNextSearchHit={{this.viewNextSearchHit}}
+                    />
+                    {{#unless this.document.accessLimited}}
+                        <div class="flex-shrink-0">
+                            <Document::Actions::Download @id={{this.document.id}} />
+                            <Document::Actions::Print @id={{this.document.id}} />
+                        </div>
+                    {{/unless}}
+                </div>
             </div>
             <div class="d-flex justify-content-between align-items-center">
                 <p class="document-nav-ref small text-muted {{if this.document.accessLimited " mb-2" " mb-0"}}">
                     {{this.document.documentRef}}
                 </p>
-                <div class="d-flex align-items-center">
-                    {{#if this.document.termCount}}
-                        <span class="p-1 d-flex align-items-center">
-                            {{#if this.showPreviousSearchHitButton}}
-                                <Button
-                                    @action={{this.viewPreviousSearchHit}}
-                                    @type="link"
-                                    @icon="chevron-left"
-                                    @iconPrefix="fas"
-                                    @iconSize="lg"
-                                    @tooltip={{t "common.previous"}}
-                                    class="py-0 px-1 mx-1"
-                                />
-                            {{/if}}
-                            {{this.document.searchTerm}}
-                            {{#if this.searchHitNumber}}
-                                <span class="ml-1">
-                                    {{t
-                                        "read.document.searchHits"
-                                        current=this.searchHitNumber
-                                        total=this.document.termCount
-                                        htmlSafe=true
-                                    }}
-                                </span>
-                            {{/if}}
-                            {{#if this.showNextSearchHitButton}}
-                                <Button
-                                    @action={{this.viewNextSearchHit}}
-                                    @type="link"
-                                    @icon="chevron-right"
-                                    @iconPrefix="fas"
-                                    @iconSize="lg"
-                                    @tooltip={{t "common.next"}}
-                                    class="py-0 px-1 mx-1"
-                                />
-                            {{/if}}
-                        </span>
-                    {{/if}}
+                <div class="align-items-center d-none d-lg-flex d-xl-flex">
+                    <Document::SearchHits
+                        @document={{this.document}}
+                        @searchHitNumber={{this.searchHitNumber}}
+                        @viewPreviousSearchHit={{this.viewPreviousSearchHit}}
+                        @viewNextSearchHit={{this.viewNextSearchHit}}
+                    />
                     {{#unless this.document.accessLimited}}
                         <div class="flex-shrink-0">
                             <Document::Actions::Download @id={{this.document.id}} />

@@ -5,6 +5,7 @@ import { tracked } from '@glimmer/tracking';
 
 import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
 import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
+import MediaService from 'ember-responsive/services/media';
 
 import { SEARCH_DEFAULT_VIEW_PERIOD, SearchViews, SearchViewType, ViewPeriod } from 'pep/constants/search';
 import Abstract from 'pep/pods/abstract/model';
@@ -20,6 +21,7 @@ export default class SearchRead extends Controller {
     @service loadingBar!: LoadingBarService;
     @service configuration!: ConfigurationService;
     @service currentUser!: CurrentUserService;
+    @service media!: MediaService;
 
     @tracked selectedView = SearchViews[0];
     @tracked selectedSort = SearchSorts[0];
@@ -102,26 +104,6 @@ export default class SearchRead extends Controller {
         } else {
             this._searchTerms = null;
         }
-    }
-
-    /**
-     * Show or hide left arrow for search hits
-     *
-     * @readonly
-     * @memberof ReadDocument
-     */
-    get showPreviousSearchHitButton() {
-        return this.searchHitNumber && this.searchHitNumber > 1;
-    }
-
-    /**
-     * Show or hide right arrow for search hits
-     *
-     * @readonly
-     * @memberof ReadDocument
-     */
-    get showNextSearchHitButton() {
-        return this.searchHitNumber === undefined || this.searchHitNumber < (this.document?.termCount ?? 0);
     }
 
     /**
