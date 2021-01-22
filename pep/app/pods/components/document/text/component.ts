@@ -57,7 +57,7 @@ export enum DocumentTooltipSelectors {
     BIBLIOGRAPHY = '.bibtip',
     BIBLIOGRAPHY_RELATED_INFO = '.bibx-related-info',
     NEW_AUTHOR = '.newauthortip',
-    H_AUTHOR_TIP = '.hauthortip',
+    AUTHOR_TIP = '.authortip',
     FOOTNOTE = '.ftnx',
     TRANSLATION = '.translation'
 }
@@ -444,7 +444,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
         this.scrollableElement = this.containerElement?.closest('.page-content-inner');
         scheduleOnce('afterRender', this, this.attachTooltips);
         if (this.args.page) {
-            this.scrollToPageOrTarget(parseInt(this.args.page, 10));
+            this.scrollToPageOrTarget(this.args.page);
         }
     }
 
@@ -478,9 +478,9 @@ export default class DocumentText extends Component<DocumentTextArgs> {
             }
         });
 
-        const hAuthorTooltips = this.containerElement?.querySelectorAll(DocumentTooltipSelectors.H_AUTHOR_TIP);
-        hAuthorTooltips?.forEach((item) => {
-            const node = this.containerElement?.querySelector(`.hautcontent`);
+        const authorTooltips = this.containerElement?.querySelectorAll(DocumentTooltipSelectors.AUTHOR_TIP);
+        authorTooltips?.forEach((item) => {
+            const node = this.containerElement?.querySelector(`.autcontent`);
             if (node) {
                 tippy(item, {
                     content: node.innerHTML,

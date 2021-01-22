@@ -515,9 +515,9 @@
             <div class="authorwrapper title-author text-center" data-class="artauth">
                 <xsl:variable name="by-role" select="aut[generate-id(.)=generate-id(key('role',@role)[1])]"/>
                 <xsl:variable name="by-affid" select="aut[generate-id(.)=generate-id(key('affid',@affid)[1])]"/>
-                <xsl:value-of select="count($by-affid)" />
+                <!-- <xsl:value-of select="count($by-affid)" /> -->
                 <xsl:apply-templates select="$by-role" mode="metadata">
-                    <!-- <xsl:with-param name="by-role" select="$by-role" /> -->
+                    <xsl:with-param name="by-role" select="$by-role" />
                     <xsl:with-param name="by-affid" select="$by-affid" />
                 </xsl:apply-templates>
                 <!-- <xsl:apply-templates select="aut[generate-id(.)=generate-id(key('role',@role)[1])]" mode="metadata"/> -->
@@ -540,6 +540,7 @@
     <xsl:template match="artauth/aut" mode="metadata">
         <xsl:param name="by-role" />
         <xsl:param name="by-affid" />
+        <xsl:param name="intersection" select="key('affid', @affid)"/>
         <div class="author-grouping" data-grouping="{@role}">
             <xsl:if test="@role != 'author'">
                 <div>
@@ -553,6 +554,22 @@
                         <xsl:when test="@role = 'intro'">
                             Introduction by:
                         </xsl:when>
+                        <xsl:when test="@role = 'edited-by'">
+                            Edited by:
+                        </xsl:when>
+                        <xsl:when test="@role = 'reviewer'">
+                            Reviewed by:
+                        </xsl:when>
+                        <xsl:when test="@role = 'coordinator'">
+                            Coordinated by:
+                        </xsl:when>
+                        <xsl:when test="@role = 'moderator'">
+                            Moderated by:
+                        </xsl:when>
+                        <xsl:when test="@role = 'reporter'">
+                            Reported by:
+                        </xsl:when>
+
                     </xsl:choose>
                 </div>
             </xsl:if>
@@ -627,17 +644,17 @@
                         </div>
                     </span>
                 </xsl:if>
-            </xsl:for-each>
 
-            <xsl:value-of select="count($test)" />
-            <xsl:if test="count($test)">
+
+            </xsl:for-each>
+            <xsl:for-each select="key('affid', @affid)">
                 <xsl:text> </xsl:text>
                 <span class="peppopup authortip">
                     <xsl:copy-of select="$fa-information" />
                     <xsl:text></xsl:text>
                     <br></br>
                     <div class="peppopuptext" id="autaffinfo" hidden="True">
-                        <div id="hautcontent" class="hautcontent">
+                        <div id="hautcontent" class="autcontent">
                             <p class="autaffname">
                                 <xsl:apply-templates mode="metadata" select="nfirst"/>
                                 <xsl:apply-templates mode="metadata" select="nlast"/>
@@ -654,7 +671,35 @@
                         </div>
                     </div>
                 </span>
-            </xsl:if>
+            </xsl:for-each>
+            <!-- <xsl:value-of select="count($intersection)" />
+                 <xsl:for-each select="$intersection">
+                 <xsl:text> </xsl:text>
+                 <span class="peppopup authortip">
+                 <xsl:copy-of select="$fa-information" />
+                 <xsl:text></xsl:text>
+                 <br></br>
+                 <div class="peppopuptext" id="autaffinfo" hidden="True">
+                 <div id="hautcontent" class="autcontent">
+                 <p class="autaffname">
+                 <xsl:apply-templates mode="metadata" select="nfirst"/>
+                 <xsl:apply-templates mode="metadata" select="nlast"/>
+                 </p>
+                 <xsl:apply-templates mode="metadata" select="../autaff"/>
+                 <p class="autaffbio">
+                 <span class="autaffname" data-class="nbio">
+                 <xsl:apply-templates mode="metadata" select="nfirst"/>
+                 <xsl:apply-templates mode="metadata" select="nlast"/>
+                 </span>
+                 &#160;
+                 <xsl:apply-templates mode="metadata" select="nbio"/>
+                 </p>
+                 </div>
+                 </div>
+                 </span>
+                 </xsl:for-each>
+            -->
+
         </div>
     </xsl:template>
 
@@ -855,12 +900,12 @@
                 </xsl:choose>
                 <xsl:if test="nbio">
                     <xsl:text> </xsl:text>
-                    <span class="peppopup hauthortip">
+                    <span class="peppopup authortip">
                         <xsl:copy-of select="$fa-information" />
                         <xsl:text></xsl:text>
                         <br></br>
-                        <div class="peppopuptext" id="hautaffinfo" hidden="True">
-                            <div id="hautcontent" class="hautcontent">
+                        <div class="peppopuptext" id="autaffinfo" hidden="True">
+                            <div id="autcontent" class="autcontent">
                                 <p class="autaffname">
                                     <xsl:apply-templates mode="metadata" select="nfirst"/>
                                     <xsl:apply-templates mode="metadata" select="nlast"/>
