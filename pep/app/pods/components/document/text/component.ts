@@ -13,7 +13,6 @@ import IntlService from 'ember-intl/services/intl';
 import animateScrollTo from 'animated-scroll-to';
 import ENV from 'pep/config/environment';
 import { DOCUMENT_IMG_BASE_URL, DocumentLinkTypes } from 'pep/constants/documents';
-import { NON_DIGIT_REGEX } from 'pep/constants/regex';
 import {
     HIT_MARKER_END, HIT_MARKER_END_OUTPUT_HTML, HIT_MARKER_START, HIT_MARKER_START_OUTPUT_HTML, SEARCH_HIT_MARKER_REGEX,
     SearchTermId
@@ -468,7 +467,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
 
         const newAuthorTooltips = this.containerElement?.querySelectorAll(DocumentTooltipSelectors.NEW_AUTHOR);
         newAuthorTooltips?.forEach((item) => {
-            const node = this.containerElement?.querySelector(`.peppopuptext`);
+            const node = item?.querySelector(`.peppopuptext`);
             if (node) {
                 tippy(item, {
                     content: node.innerHTML,
@@ -480,7 +479,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
 
         const authorTooltips = this.containerElement?.querySelectorAll(DocumentTooltipSelectors.AUTHOR_TIP);
         authorTooltips?.forEach((item) => {
-            const node = this.containerElement?.querySelector(`.autcontent`);
+            const node = item?.querySelector(`.autcontent`);
             if (node) {
                 tippy(item, {
                     content: node.innerHTML,
