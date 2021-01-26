@@ -56,6 +56,7 @@ export enum DocumentTooltipSelectors {
     BIBLIOGRAPHY = '.bibtip',
     BIBLIOGRAPHY_RELATED_INFO = '.bibx-related-info',
     NEW_AUTHOR = '.newauthortip',
+    AUTHOR_TIP = '.authortip',
     FOOTNOTE = '.ftnx',
     TRANSLATION = '.translation'
 }
@@ -230,26 +231,28 @@ export default class DocumentText extends Component<DocumentTextArgs> {
                 });
             }
         } else if (type === DocumentLinkTypes.PAGE) {
+            let documentId = null;
+            let pageOrTarget = null;
             const reference = attributes.getNamedItem('data-r')?.nodeValue;
-            const referenceArray = reference?.split(/\.(?=[^\.]+$)/) ?? [];
-            let documentId = referenceArray[0];
-            const apiPage = referenceArray[1];
-            let page;
-            // Some cases, these links have a page number. In some cases, they dont :(
-            if (apiPage[0].toLowerCase() === 'p') {
-                page = parseInt(apiPage.substring(1), 10);
+            // If reference does not include a period, its a local link inside that document
+            // Otherwise it must include some sort of document ID and a possible page
+            if (!reference?.includes('.')) {
+                documentId = this.args.document.id;
+                pageOrTarget = reference;
             } else {
-                documentId = reference ?? '';
+                const referenceArray = reference?.split(/\.(?=[^\.]+$)/) ?? [];
+                documentId = referenceArray[0];
+                pageOrTarget = referenceArray[1];
             }
 
-            if (documentId === this.args.document.id && page) {
+            if (documentId === this.args.document.id && pageOrTarget) {
                 //scroll to page number
-                this.scrollToPage(page);
+                this.scrollToPageOrTarget(pageOrTarget);
             } else if (documentId) {
                 //transition to a different document with a specific page
                 this.router.transitionTo('browse.read', documentId, {
                     queryParams: {
-                        page
+                        page: pageOrTarget
                     }
                 });
             }
@@ -364,12 +367,16 @@ export default class DocumentText extends Component<DocumentTextArgs> {
     /**
      * Scroll to a specific page in the document (by scrolling to a specific page element)
      *
-     * @param {number} page
+     * @param {number} pageOrTarget
      * @memberof DocumentText
      */
-    scrollToPage(page: number) {
-        const element = this.containerElement?.querySelector(`[data-page-start='${page}']`);
-        this.animateScrollToElement(element);
+    scrollToPageOrTarget(pageOrTarget: string) {
+        const element =
+            this.containerElement?.querySelector(`[data-page-start='${pageOrTarget}']`) ??
+            this.containerElement?.querySelector(`#${pageOrTarget}`);
+        if (element) {
+            this.animateScrollToElement(element);
+        }
     }
 
     /**
@@ -436,7 +443,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
         this.scrollableElement = this.containerElement?.closest('.page-content-inner');
         scheduleOnce('afterRender', this, this.attachTooltips);
         if (this.args.page) {
-            this.scrollToPage(parseInt(this.args.page, 10));
+            this.scrollToPageOrTarget(this.args.page);
         }
     }
 
@@ -458,9 +465,21 @@ export default class DocumentText extends Component<DocumentTextArgs> {
             }
         });
 
-        const authorTooltips = this.containerElement?.querySelectorAll(DocumentTooltipSelectors.NEW_AUTHOR);
+        const newAuthorTooltips = this.containerElement?.querySelectorAll(DocumentTooltipSelectors.NEW_AUTHOR);
+        newAuthorTooltips?.forEach((item) => {
+            const node = item?.querySelector(`.peppopuptext`);
+            if (node) {
+                tippy(item, {
+                    content: node.innerHTML,
+                    placement: 'right',
+                    ...this.tippyOptions
+                });
+            }
+        });
+
+        const authorTooltips = this.containerElement?.querySelectorAll(DocumentTooltipSelectors.AUTHOR_TIP);
         authorTooltips?.forEach((item) => {
-            const node = this.containerElement?.querySelector(`.peppopuptext`);
+            const node = item?.querySelector(`.autcontent`);
             if (node) {
                 tippy(item, {
                     content: node.innerHTML,

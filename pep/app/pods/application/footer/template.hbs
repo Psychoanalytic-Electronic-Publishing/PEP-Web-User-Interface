@@ -1,6 +1,6 @@
 <footer class="footer mt-auto p-2 d-flex align-items-center justify-content-between small text-center text-white-50">
     <span class="d-none d-md-inline">
-        {{t "brand.copywrite" htmlSafe=true}}
+        {{t "brand.copyWrite" year=(current-year) htmlSafe=true}}
     </span>
     {{#if this.currentUser.user.brandingImgUrl}}
         <Image

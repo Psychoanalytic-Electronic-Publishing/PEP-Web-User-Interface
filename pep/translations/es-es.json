@@ -6,7 +6,7 @@
             "electronic": "Electronic",
             "publishing": "Publishing"
         },
-        "copywrite": "&copy; Psychoanalytic Electronic Publishing (PEP)",
+        "copyWrite": "Copyright &copy; {year}, Psychoanalytic Electronic Publishing, ISSN 2472-6982",
         "slogan": "Una biblioteca psicoanalitica en la palma de su mano"
     },
     "common": {

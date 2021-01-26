@@ -70,8 +70,7 @@
     <xsl:param name="clientId"/>
     <xsl:param name="sessionId"/>
     <xsl:param name="translationConcordanceEnabled" />
-    <xsl:param name="searchTerm"/>
-    <xsl:variable name="verbose" select="$report-warnings = 'yes'"/>
+
     <xsl:variable name="fa-right-arrow">
         <svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" role="img" focusable="false" aria-hidden="true" data-icon="arrow-right" data-prefix="fal" id="ember488" class="pointer-events-none svg-inline--fa fa-arrow-right fa-w-14 ember-view"><path fill="currentColor" d="M216.464 36.465l-7.071 7.07c-4.686 4.686-4.686 12.284 0 16.971L387.887 239H12c-6.627 0-12 5.373-12 12v10c0 6.627 5.373 12 12 12h375.887L209.393 451.494c-4.686 4.686-4.686 12.284 0 16.971l7.071 7.07c4.686 4.686 12.284 4.686 16.97 0l211.051-211.05c4.686-4.686 4.686-12.284 0-16.971L233.434 36.465c-4.686-4.687-12.284-4.687-16.97 0z"></path>
         </svg>
@@ -106,37 +105,64 @@
     <!-- Enabling retrieval of cross-references to objects -->
     <xsl:key name="xref-by-rid" match="xref" use="@rid"/>
 
+    <xsl:key name="role" match="artauth/aut" use="@role" />
+
+    <xsl:key name="affid" match="artauth/aut" use="@affid" />
+
     <!-- ============================================================= -->
     <!--  ROOT TEMPLATE - HANDLES HTML FRAMEWORK                       -->
     <!-- ============================================================= -->
-
-
-
-    <xsl:template name="make-html-header">
-        <head>
-            <title class="head title">
-                <xsl:variable name="authors">
-                    <xsl:call-template name="author-string"/>
-                </xsl:variable>
-                <xsl:value-of select="normalize-space(string($authors))"/>
-                <xsl:if test="normalize-space(string($authors))">: </xsl:if>
-                <xsl:value-of select="pepkbd3/artinfo/arttitle"/>
-            </title>
-        </head>
-    </xsl:template>
 
 
     <xsl:template name="data-pagehelper">
         <!-- If the previous element is a page break, add the data attribute page-start and give it a value of the next page break  -->
         <xsl:if test="name(preceding-sibling::*[1])='pb'">
             <xsl:attribute name="data-page-start">
-                <xsl:value-of select="following-sibling::pb/n"/>
+                <!-- For padding the numbers - pick a string that is large enough that we will never need to pad that much (I think 5 characters would have been fine, but it doesn't hurt to have more) -->
+                <xsl:variable name="zero-string" select="'00000000000000000000000000000000000'" />
+                <!-- Select the next page number for the current page -->
+                <xsl:variable name="next-page-number-string" select="following-sibling::pb/n/@nextpgnum" />
+                <!-- Remove the numbers from it -ex. PR0004 becomes PR -->
+                <xsl:variable name="next-page-number-letters" select="translate($next-page-number-string, '0123456789', '')" />
+                <!-- Remove the letters from the next page string -ex. PR0004 becomes 0004 -->
+                <xsl:variable name="next-page-number-string-translated" select="translate($next-page-number-string, $next-page-number-letters, '')" />
+                <!-- Get the length of that string - so 4 -->
+                <xsl:variable name="next-page-number-string-length" select="string-length($next-page-number-string-translated)" />
+                <!-- Generate a string of padded zeros however long the next-page-number-string is i.e 4 -->
+                <xsl:variable name="padded-zeros" select="substring($zero-string, 0, $next-page-number-string-length + 1)"/>
+                <!-- Translate next-page-number-string-translated to a number ex. 0004 now becomes 4 -->
+                <xsl:variable name="next-page-number-value" select="number($next-page-number-string-translated)" />
+                <!-- Subtract 1 to get the current page number (in this example it would be 3) -->
+                <xsl:variable name="page-number-value" select="number($next-page-number-value - 1)" />
+                <!-- Padd the current page number with the appropriate number of zeros (in this example 0003)  -->
+                <xsl:variable name="page-number-string" select="substring(concat($padded-zeros, $page-number-value), string-length($page-number-value) + 1, string-length($padded-zeros))" />
+                <!-- Combine the letters from before with the new page number PR0003 and that is our correct current page value -->
+                <xsl:value-of select="concat($next-page-number-letters, $page-number-string)" />
             </xsl:attribute>
         </xsl:if>
         <!-- If there is no preceding sibling i.e. its the first element, grab the first page break value and put it into the data attribute -->
         <xsl:if test="not(preceding-sibling::*)">
             <xsl:attribute name="data-page-start">
-                <xsl:value-of select="../following-sibling::pb/n"/>
+                <!-- For padding the numbers - pick a string that is large enough that we will never need to pad that much (I think 5 characters would have been fine, but it doesn't hurt to have more) -->
+                <xsl:variable name="zero-string" select="'00000000000000000000000000000000000'" />
+                <!-- Select the next page number for the current page -->
+                <xsl:variable name="next-page-number-string" select="../following-sibling::pb/n/@nextpgnum" />
+                <!-- Remove the numbers from it -ex. PR0004 becomes PR -->
+                <xsl:variable name="next-page-number-letters" select="translate($next-page-number-string, '0123456789', '')" />
+                <!-- Remove the letters from the next page string -ex. PR0004 becomes 0004 -->
+                <xsl:variable name="next-page-number-string-translated" select="translate($next-page-number-string, $next-page-number-letters, '')" />
+                <!-- Get the length of that string - so 4 -->
+                <xsl:variable name="next-page-number-string-length" select="string-length($next-page-number-string-translated)" />
+                <!-- Generate a string of padded zeros however long the next-page-number-string is i.e 4 -->
+                <xsl:variable name="padded-zeros" select="substring($zero-string, 0, $next-page-number-string-length + 1)"/>
+                <!-- Translate next-page-number-string-translated to a number ex. 0004 now becomes 4 -->
+                <xsl:variable name="next-page-number-value" select="number($next-page-number-string-translated)" />
+                <!-- Subtract 1 to get the current page number (in this example it would be 3) -->
+                <xsl:variable name="page-number-value" select="number($next-page-number-value - 1)" />
+                <!-- Padd the current page number with the appropriate number of zeros (in this example 0003)  -->
+                <xsl:variable name="page-number-string" select="substring(concat($padded-zeros, $page-number-value), string-length($page-number-value) + 1, string-length($padded-zeros))" />
+                <!-- Combine the letters from before with the new page number PR0003 and that is our correct current page value -->
+                <xsl:value-of select="concat($next-page-number-letters, $page-number-string)" />
             </xsl:attribute>
         </xsl:if>
     </xsl:template>
@@ -158,17 +184,8 @@
     <xsl:variable name="journal-code">
         <xsl:apply-templates select="//artinfo/@j"/>
     </xsl:variable>
-    <xsl:variable name="authors">
-        <xsl:apply-templates select="//aut/@authindexid"/>
-    </xsl:variable>
     <xsl:variable name="artvol">
         <xsl:apply-templates select="//artinfo/artvol"/>
-    </xsl:variable>
-    <xsl:variable name="artiss">
-        <xsl:apply-templates select="//artinfo/artiss"/>
-    </xsl:variable>
-    <xsl:variable name="artyear">
-        <xsl:apply-templates select="//artinfo/artyear"/>
     </xsl:variable>
     <xsl:variable name="artpgrg">
         <xsl:apply-templates select="//artinfo/artpgrg"/>
@@ -244,6 +261,7 @@
                         </span>
 
                     </div>
+
                     <xsl:apply-templates mode="metadata" select="artauth"/>
                     <xsl:apply-templates mode="metadata" select="artkwds"/>
 
@@ -494,49 +512,11 @@
 
     <xsl:template match="artauth" mode="metadata">
         <div class="artauth">
-            <div class="authorwrapper title-author" data-class="artauth">
-                <xsl:for-each select="aut">
+            <div class="authorwrapper title-author text-center" data-class="artauth">
+                <xsl:variable name="by-role" select="aut[generate-id(.)=generate-id(key('role',@role)[1])]"/>
 
-                    <xsl:if test="@role='reviewer'">
-                        <xsl:text>Review by </xsl:text>
-                    </xsl:if>
-                    <span>
-                        <xsl:apply-templates mode="metadata" select="."/>
-                    </span>
-                    <xsl:choose>
-                        <xsl:when test="position() = last() -1 ">
-                            <xsl:text> and </xsl:text>
-                        </xsl:when>
-                        <xsl:when test="position() = last()">
-                            <xsl:text> </xsl:text>
-                            <span class="peppopup newauthortip">
-                                <xsl:copy-of select="$fa-information" />
-                                <br></br>
-                                <xsl:text>&#xa;</xsl:text>
-                                <div class="peppopuptext" id="autaffinfo" hidden="True">
-                                    <div id="autcontent" class="autcontent">
-                                        <p class="autaffname">
-                                            <xsl:apply-templates mode="metadata" select="nfirst"/>
-                                            <xsl:apply-templates mode="metadata" select="nlast"/>
-                                        </p>
-                                        <xsl:apply-templates mode="metadata" select="../autaff"/>
-                                        <p class="autaffbio">
-                                            <span class="autaffname" data-class="nbio">
-                                                <xsl:apply-templates mode="metadata" select="nfirst"/>
-                                                <xsl:apply-templates mode="metadata" select="nlast"/>
-                                            </span>
-                                            &#160; <!--&nbsp;-->
-                                            <xsl:apply-templates mode="metadata" select="nbio"/>
-                                        </p>
-                                    </div>
-                                </div>
-                            </span>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:text>, </xsl:text>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </xsl:for-each>
+                <xsl:apply-templates select="$by-role" mode="metadata" />
+
             </div>
         </div>
     </xsl:template>
@@ -553,15 +533,222 @@
     </xsl:template>
 
     <!--PEPKBD3 Author Information-->
-    <xsl:template match="aut" mode="metadata">
-        <span class="title-author" data-listed="{@listed}" data-authindexid="{@authindexid}" data-role="{@role}" data-alias="{@alias}" data-asis="{@asis}">
-            <a class="author" href="#/Search/?author={@authindexid}" data-type="search-author">
-                <xsl:apply-templates mode="metadata" select="nfirst"/>
-                <xsl:apply-templates mode="metadata" select="nlast"/>
-            </a>
-            <xsl:apply-templates mode="metadata" select="ndeg"/>
-        </span>
-        <xsl:text>&#13;</xsl:text>
+    <xsl:template match="artauth/aut" mode="metadata">
+
+        <div class="author-grouping" data-grouping="{@role}">
+            <xsl:if test="@role != 'author'">
+                <div>
+                    <xsl:choose>
+                        <xsl:when test="@role = 'additional-cinematography-by'" >
+                            Additional Cinematography by:
+                        </xsl:when>
+                        <xsl:when test="@role = 'assisted-by'" >
+                            Assisted by:
+                        </xsl:when>
+                        <xsl:when test="@role = 'coordinator'">
+                            Coordinated by:
+                        </xsl:when>
+                        <xsl:when test="@role = 'chaired-by'" >
+                            Chaired by:
+                        </xsl:when>
+                        <xsl:when test="@role = 'compiled-by'" >
+                            Compiled by:
+                        </xsl:when>
+                        <xsl:when test="@role = 'commentary-by'" >
+                            Commentary by:
+                        </xsl:when>
+                        <xsl:when test="@role = 'director'" >
+                            Directed by:
+                        </xsl:when>
+                        <xsl:when test="@role = 'director-and-producer'" >
+                            Directed and produced by:
+                        </xsl:when>
+                        <xsl:when test="@role = 'director-assistant'" >
+                            Director's Assistants:
+                        </xsl:when>
+                        <xsl:when test="@role = 'deputy-editor'" >
+                            Deputy Editor:
+                        </xsl:when>
+                        <xsl:when test="@role = 'editorial-assistant'" >
+                            Editorial assistance by:
+                        </xsl:when>
+
+                        <xsl:when test="@role = 'editor-in-chief'" >
+                            Editor in chief:
+                        </xsl:when>
+                        <xsl:when test="@role = 'edited-by'">
+                            Edited by:
+                        </xsl:when>
+                        <xsl:when test="@role = 'excerpted-by'">
+                            Excerpt by:
+                        </xsl:when>
+                        <xsl:when test="@role = 'executive-producer'">
+                            Executive Producer:
+                        </xsl:when>
+                        <xsl:when test="@role = 'assistant-producer'">
+                            Assistant Producer:
+                        </xsl:when>
+                        <xsl:when test="@role = 'associate-producer'">
+                            Associate Producer:
+                        </xsl:when>
+
+                        <xsl:when test="@role = 'in-collaboration'">
+                            In Collaboration with:
+                        </xsl:when>
+                        <xsl:when test="@role = 'interviewer'">
+                            Interviewer:
+                        </xsl:when>
+                        <xsl:when test="@role = 'interviewee'">
+                            Interviewee:
+                        </xsl:when>
+                        <xsl:when test="@role = 'intro'">
+                            Introduction by:
+                        </xsl:when>
+                        <xsl:when test="@role = 'issue-editor'">
+                            Issue editor:
+                        </xsl:when>
+                        <xsl:when test="@role = 'line-producer'">
+                            Line producer:
+                        </xsl:when>
+
+                        <xsl:when test="@role = 'moderator'">
+                            Moderated by:
+                        </xsl:when>
+                        <xsl:when test="@role = 'narrated-by'">
+                            Narrated by:
+                        </xsl:when>
+                        <xsl:when test="@role = 'panelist'">
+                            Panelist:
+                        </xsl:when>
+                        <xsl:when test="@role = 'preface'">
+                            Preface:
+                        </xsl:when>
+
+                        <xsl:when test="@role = 'presenter'">
+                            Presented by:
+                        </xsl:when>
+                        <xsl:when test="@role = 'published-by'">
+                            Published by:
+                        </xsl:when>
+                        <xsl:when test="@role = 'produced-by'">
+                            Produced by:
+                        </xsl:when>
+                        <xsl:when test="@role = 'reporter'">
+                            Reported by:
+                        </xsl:when>
+
+                        <xsl:when test="@role = 'reviewer'">
+                            Reviewed by:
+                        </xsl:when>
+                        <xsl:when test="@role = 'series-editor'">
+                            Series edited by:
+                        </xsl:when>
+                        <xsl:when test="@role = 'translator'">
+                            Translated by:
+                        </xsl:when>
+                        <xsl:when test="@role = 'transcribed-by'">
+                            Transcribed by:
+                        </xsl:when>
+                        <xsl:when test="@role = 'under-supervision-of'">
+                            Under supervision of:
+                        </xsl:when>
+                        <xsl:when test="@role = 'other'">
+                            <xsl:value-of select="@other" />:
+                        </xsl:when>
+
+                    </xsl:choose>
+                </div>
+            </xsl:if>
+
+            <xsl:for-each select="key('role', @role)">
+                <span class="title-author" data-listed="{@listed}" data-authindexid="{@authindexid}" data-role="{@role}" data-alias="{@alias}" data-asis="{@asis}">
+                    <a class="author" href="#/Search/?author={@authindexid}" data-type="search-author">
+                        <xsl:apply-templates mode="metadata" select="nfirst"/>
+                        <xsl:apply-templates mode="metadata" select="nlast"/>
+                    </a>
+                    <xsl:apply-templates mode="metadata" select="ndeg"/>
+                    <xsl:choose>
+                        <xsl:when test="position() = last() -1 ">
+                            <xsl:text> and </xsl:text>
+                        </xsl:when>
+                        <xsl:when test="position() = last()">
+                            <xsl:text></xsl:text>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:text>, </xsl:text>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </span>
+                <xsl:text>&#13;</xsl:text>
+            </xsl:for-each>
+
+            <xsl:choose>
+                <xsl:when test="current()[@affid!=''] or current()/nbio" >
+                    <xsl:text> </xsl:text>
+                    <span class="peppopup authortip">
+                        <xsl:copy-of select="$fa-information" />
+                        <xsl:text></xsl:text>
+                        <br></br>
+                        <div class="peppopuptext" hidden="True">
+                            <div class="autcontent">
+                                <xsl:for-each select="key('role', @role)">
+                                    <div class="author-information">
+                                        <p class="autaffname">
+                                            <xsl:apply-templates mode="metadata" select="nfirst"/>
+                                            <xsl:apply-templates mode="metadata" select="nlast"/>
+                                        </p>
+                                        <xsl:apply-templates mode="metadata" select="../autaff[@affid=current()/@affid]"/>
+                                        <xsl:apply-templates mode="metadata" select="nbio"/>
+                                    </div>
+                                </xsl:for-each>
+                            </div>
+                        </div>
+                    </span>
+                </xsl:when>
+                <xsl:when test="count(key('role', @role)) = 1 and count(../autaff) = 1">
+                    <xsl:text> </xsl:text>
+                    <span class="peppopup authortip">
+                        <xsl:copy-of select="$fa-information" />
+                        <xsl:text></xsl:text>
+                        <br></br>
+
+                        <div class="peppopuptext" hidden="True">
+
+                            <div class="autcontent">
+                                <xsl:for-each select="key('role', @role)">
+                                    <div class="author-information">
+                                        <p class="autaffname">
+                                            <xsl:apply-templates mode="metadata" select="nfirst"/>
+                                            <xsl:apply-templates mode="metadata" select="nlast"/>
+                                        </p>
+                                        <xsl:apply-templates mode="metadata" select="../autaff"/>
+                                        <xsl:apply-templates mode="metadata" select="nbio"/>
+                                    </div>
+
+                                </xsl:for-each>
+                            </div>
+                        </div>
+                    </span>
+                </xsl:when>
+                <xsl:when test="@role = 'author'">
+                    <xsl:text> </xsl:text>
+                    <span class="peppopup newauthortip">
+                        <xsl:copy-of select="$fa-information" />
+                        <br></br>
+                        <xsl:text>&#xa;</xsl:text>
+                        <div class="peppopuptext" id="autaffinfo" hidden="True">
+                            <div id="autcontent" class="autcontent">
+                                <p class="autaffname">
+                                    <xsl:apply-templates mode="metadata" select="nfirst"/>
+                                    <xsl:apply-templates mode="metadata" select="nlast"/>
+                                </p>
+                                <xsl:apply-templates mode="metadata" select="nbio"/>
+                            </div>
+                        </div>
+                    </span>
+                </xsl:when>
+            </xsl:choose>
+        </div>
     </xsl:template>
 
     <xsl:template match="ln" mode="metadata">
@@ -595,6 +782,12 @@
                 </a>
             </xsl:otherwise>
         </xsl:choose>
+    </xsl:template>
+
+    <xsl:template match="hdix">
+        <a class="hdix" data-type="pagelink" target="_blank" href="?target={@r}" data-r="{@r}">
+            <xsl:apply-templates/>
+        </a>
     </xsl:template>
 
     <xsl:template match="cr">
@@ -738,43 +931,46 @@
          the
     -->
     <xsl:template match="hauth">
-        <div data-class="hauth">
+        <div data-class="hauth" class="text-center">
             <xsl:for-each select="aut">
-                <span>
-                    <xsl:apply-templates mode="metadata" select="."/>
-                </span>
+                <a class="author" href="#/Search/?author={@authindexid}" data-type="search-author">
+                    <xsl:apply-templates mode="metadata" select="nfirst"/>
+                    <xsl:apply-templates mode="metadata" select="nlast"/>
+                </a>
+                <xsl:apply-templates mode="metadata" select="ndeg"/>
                 <xsl:choose>
                     <xsl:when test="position() = last() -1 ">
                         <xsl:text> and </xsl:text>
                     </xsl:when>
-                    <xsl:when test="position() = last()">
-                        <span class="peppopup hauthortip">
-                            <xsl:copy-of select="$fa-information" />
-                            <xsl:text></xsl:text>
-                            <br></br>
-                            <div class="peppopuptext" id="hautaffinfo" hidden="True">
-                                <div id="hautcontent" class="hautcontent">
-                                    <p class="autaffname">
+                    <xsl:when test="position() != last()">
+                        <xsl:text>, </xsl:text>
+                    </xsl:when>
+                </xsl:choose>
+                <xsl:if test="nbio">
+                    <xsl:text> </xsl:text>
+                    <span class="peppopup authortip">
+                        <xsl:copy-of select="$fa-information" />
+                        <xsl:text></xsl:text>
+                        <br></br>
+                        <div class="peppopuptext" id="autaffinfo" hidden="True">
+                            <div id="autcontent" class="autcontent">
+                                <p class="autaffname">
+                                    <xsl:apply-templates mode="metadata" select="nfirst"/>
+                                    <xsl:apply-templates mode="metadata" select="nlast"/>
+                                </p>
+                                <xsl:apply-templates mode="metadata" select="autaff"/>
+                                <p class="autaffbio">
+                                    <span class="autaffname" data-class="nbio">
                                         <xsl:apply-templates mode="metadata" select="nfirst"/>
                                         <xsl:apply-templates mode="metadata" select="nlast"/>
-                                    </p>
-                                    <xsl:apply-templates mode="metadata" select="autaff"/>
-                                    <p class="autaffbio">
-                                        <span class="autaffname" data-class="nbio">
-                                            <xsl:apply-templates mode="metadata" select="nfirst"/>
-                                            <xsl:apply-templates mode="metadata" select="nlast"/>
-                                        </span>
-                                        &#160; <!--&nbsp;-->
-                                        <xsl:apply-templates mode="metadata" select="nbio"/>
-                                    </p>
-                                </div>
+                                    </span>
+                                    &#160; <!--&nbsp;-->
+                                    <xsl:apply-templates mode="metadata" select="nbio"/>
+                                </p>
                             </div>
-                        </span>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:text>, </xsl:text>
-                    </xsl:otherwise>
-                </xsl:choose>
+                        </div>
+                    </span>
+                </xsl:if>
             </xsl:for-each>
         </div>
     </xsl:template>
@@ -1105,15 +1301,18 @@
         <p class="pagenumber text-center text-muted small">
             <xsl:attribute name="data-pgnum">
                 <xsl:apply-templates/>
+                <!-- <xsl:value-of select=
+                     "number(translate(@nextpgnum,translate(@nextpgnum, '0123456789', ''), '')) - 1"/> -->
+                <!-- <xsl:value-of select="number(@nextpgnum)" /> -->
             </xsl:attribute>
             <xsl:if test="@nextpgnum">
                 <xsl:attribute name="data-nextpgnum">
                     <xsl:value-of select="@nextpgnum"/>
                 </xsl:attribute>
             </xsl:if>
-            <xsl:if test="@prefxused">
-                <xsl:attribute name="data-prefxused">
-                    <xsl:value-of select="@prefxused"/>
+            <xsl:if test="@prefixused">
+                <xsl:attribute name="data-prefixused">
+                    <xsl:value-of select="@prefixused"/>
                 </xsl:attribute>
             </xsl:if>
             <xsl:apply-templates select="@content-type"/>
@@ -1124,7 +1323,26 @@
     <xsl:template match="pb">
         <div class="pagebreak" data-class="pb">
             <xsl:attribute name="data-page-end">
-                <xsl:value-of select="n"/>
+                <!-- For padding the numbers - pick a string that is large enough that we will never need to pad that much (I think 5 characters would have been fine, but it doesn't hurt to have more) -->
+                <xsl:variable name="zero-string" select="'00000000000000000000000000000000000'" />
+                <!-- Select the next page number for the current page -->
+                <xsl:variable name="next-page-number-string" select="n/@nextpgnum" />
+                <!-- Remove the numbers from it -ex. PR0004 becomes PR -->
+                <xsl:variable name="next-page-number-letters" select="translate($next-page-number-string, '0123456789', '')" />
+                <!-- Remove the letters from the next page string -ex. PR0004 becomes 0004 -->
+                <xsl:variable name="next-page-number-string-translated" select="translate($next-page-number-string, $next-page-number-letters, '')" />
+                <!-- Get the length of that string - so 4 -->
+                <xsl:variable name="next-page-number-string-length" select="string-length($next-page-number-string-translated)" />
+                <!-- Generate a string of padded zeros however long the next-page-number-string is i.e 4 -->
+                <xsl:variable name="padded-zeros" select="substring($zero-string, 0, $next-page-number-string-length + 1)"/>
+                <!-- Translate next-page-number-string-translated to a number ex. 0004 now becomes 4 -->
+                <xsl:variable name="next-page-number-value" select="number($next-page-number-string-translated)" />
+                <!-- Subtract 1 to get the current page number (in this example it would be 3) -->
+                <xsl:variable name="page-number-value" select="number($next-page-number-value - 1)" />
+                <!-- Padd the current page number with the appropriate number of zeros (in this example 0003)  -->
+                <xsl:variable name="page-number-string" select="substring(concat($padded-zeros, $page-number-value), string-length($page-number-value) + 1, string-length($padded-zeros))" />
+                <!-- Combine the letters from before with the new page number PR0003 and that is our correct current page value -->
+                <xsl:value-of select="concat($next-page-number-letters, $page-number-string)" />
             </xsl:attribute>
             <xsl:call-template name="named-anchor"/>
             <xsl:apply-templates select="@content-type"/>

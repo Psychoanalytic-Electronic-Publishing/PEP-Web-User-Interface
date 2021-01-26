@@ -1,0 +1,32 @@
+{{#if @document.termCount}}
+    <span class="p-1 d-flex align-items-center">
+        {{#if this.showPreviousSearchHitButton}}
+            <Button
+                @action={{@viewPreviousSearchHit}}
+                @type="link"
+                @icon="chevron-left"
+                @iconPrefix="fas"
+                @iconSize="lg"
+                @tooltip={{t "common.previous"}}
+                class="py-0 px-1 mx-1"
+            />
+        {{/if}}
+        {{@document.searchTerm}}
+        {{#if @searchHitNumber}}
+            <span class="ml-1">
+                {{t "read.document.searchHits" current=@searchHitNumber total=@document.termCount htmlSafe=true}}
+            </span>
+        {{/if}}
+        {{#if this.showNextSearchHitButton}}
+            <Button
+                @action={{@viewNextSearchHit}}
+                @type="link"
+                @icon="chevron-right"
+                @iconPrefix="fas"
+                @iconSize="lg"
+                @tooltip={{t "common.next"}}
+                class="py-0 px-1 mx-1"
+            />
+        {{/if}}
+    </span>
+{{/if}}

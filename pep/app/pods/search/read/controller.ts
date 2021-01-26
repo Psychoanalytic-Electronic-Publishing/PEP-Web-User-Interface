@@ -105,26 +105,6 @@ export default class SearchRead extends Controller {
     }
 
     /**
-     * Show or hide left arrow for search hits
-     *
-     * @readonly
-     * @memberof ReadDocument
-     */
-    get showPreviousSearchHitButton() {
-        return this.searchHitNumber && this.searchHitNumber > 1;
-    }
-
-    /**
-     * Show or hide right arrow for search hits
-     *
-     * @readonly
-     * @memberof ReadDocument
-     */
-    get showNextSearchHitButton() {
-        return this.searchHitNumber === undefined || this.searchHitNumber < (this.document?.termCount ?? 0);
-    }
-
-    /**
      * Transform the sorting to a format the API can handle
      *
      * @param {string[]} sorts

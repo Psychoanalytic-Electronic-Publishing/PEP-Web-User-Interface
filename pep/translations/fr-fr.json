@@ -6,7 +6,7 @@
             "electronic": "Électronique",
             "publishing": "Édition"
         },
-        "copywrite": "&copy; Psychanalytique Électronique Édition (PEPe)",
+        "copyWrite": "Copyright &copy; {year}, Psychoanalytic Electronic Publishing, ISSN 2472-6982",
         "slogan": "A Psychoanalytic Library at your fingertips"
     },
     "common": {
