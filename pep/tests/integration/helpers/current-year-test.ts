@@ -10,10 +10,8 @@ module('Integration | Helper | current-year', function(hooks) {
 
     // Replace this with your real tests.
     test('it renders', async function(assert) {
-        this.set('inputValue', '1234');
+        await render(hbs`{{current-year}}`);
 
-        await render(hbs`{{current-year inputValue}}`);
-
-        assert.equal(this.element.textContent?.trim(), '1234');
+        assert.equal(this.element.textContent?.trim(), `${new Date().getFullYear()}`);
     });
 });

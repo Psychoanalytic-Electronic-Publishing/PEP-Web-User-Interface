@@ -32,15 +32,15 @@ export default class PageNav extends Component<PageNavArgs> {
     }
 
     get readActive() {
-        return this.router.currentRouteName.includes('read');
+        return this.router.currentRouteName?.includes('read');
     }
 
     get browseActive() {
-        return this.router.currentRouteName.includes('browse') && !this.readActive;
+        return this.router.currentRouteName?.includes('browse') && !this.readActive;
     }
 
     get searchActive() {
-        return this.router.currentRouteName.includes('search') && !this.readActive;
+        return this.router.currentRouteName?.includes('search') && !this.readActive;
     }
 
     /**
