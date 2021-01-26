@@ -16,6 +16,7 @@ module.exports = function(env) {
             'API_ADMIN_NAMESPACE',
             'API_ERRORS_ENDPOINT',
             'AUTH_BASE_URL',
+            'FEDERATED_LOGIN_URL',
             'ASSETS_BASE_URL',
             'FASTBOOT_WHITELIST_DOMAIN',
             'ROBOTS_DIST_PATH',
@@ -24,7 +25,8 @@ module.exports = function(env) {
             'COOKIE_SECURE',
             'COOKIE_SAME_SITE',
             'GOOGLE_ANALYTICS_ID',
-            'GOOGLE_ANALYTICS_ENVIRONMENT'
+            'GOOGLE_ANALYTICS_ENVIRONMENT',
+            'REPORTS_API'
         ],
         fastbootAllowedKeys: [
             'BUILD_VERSION',
@@ -36,6 +38,7 @@ module.exports = function(env) {
             'API_ADMIN_NAMESPACE',
             'API_ERRORS_ENDPOINT',
             'AUTH_BASE_URL',
+            'FEDERATED_LOGIN_URL',
             'ASSETS_BASE_URL',
             'FASTBOOT_WHITELIST_DOMAIN',
             'ROBOTS_DIST_PATH',
@@ -44,7 +47,8 @@ module.exports = function(env) {
             'COOKIE_SECURE',
             'COOKIE_SAME_SITE',
             'GOOGLE_ANALYTICS_ID',
-            'GOOGLE_ANALYTICS_ENVIRONMENT'
+            'GOOGLE_ANALYTICS_ENVIRONMENT',
+            'REPORTS_API'
         ],
         failOnMissingKey: false,
         path: path.join(path.dirname(__dirname), `../.env-${process.env.DEPLOY_TYPE || env}`)

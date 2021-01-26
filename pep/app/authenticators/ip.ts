@@ -19,7 +19,11 @@ export default class IpAuthenticator extends CredentialsAuthenticator {
             const sessionData = this.session.getUnauthenticatedSession();
             let url = `${ENV.authBaseUrl}/Authenticate/ip`;
 
-            if (sessionData?.SessionId) {
+            // check for session id in query params
+            if (this.fastboot.isFastBoot && this.fastboot.request.queryParams.sessionId) {
+                const params = serializeQueryParams({ SessionId: this.fastboot.request.queryParams.sessionId });
+                url = `${url}?${params}`;
+            } else if (sessionData?.SessionId) {
                 const params = serializeQueryParams({ SessionId: sessionData.SessionId });
                 url = `${url}?${params}`;
             }

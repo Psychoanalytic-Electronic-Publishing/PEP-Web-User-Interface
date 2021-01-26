@@ -14,7 +14,7 @@
 // Application variables
 // ---------------------------
 $logo-path: '/assets/images/logo-dark.jpg';
-$color-brand-primary: #56698f;
+$color-brand-primary: #5c74a2;
 $color-input-bg: #2f3136;
 $color-backdrop: #36393f;
 $color-primary-background: #393c43;
@@ -34,6 +34,7 @@ $color-navbar-toggle: lighten($color-input-bg, 5%);
 $color-drawer-bg: $color-primary-background;
 $color-help-tooltip-foreground: #a6a6ab;
 $color-help-tooltip-background: $color-primary-background;
+$color-search-item-bg: $color-input-bg;
 $gradient-primary: linear-gradient(to right, $color-input-bg 0, lighten($color-input-bg, 2%) 100%);
 
 $document-link-glosstip-hover: #6a81ae;
@@ -52,7 +53,7 @@ $body-bg: darken($color-backdrop, 2%);
 $body-color: #dbdddc;
 $dark: $body-color;
 $input-color: $body-color;
-$link-color: saturate(lighten($color-brand-primary, 25%), 5%);
+$link-color: saturate(lighten($color-brand-primary, 24%), 22%);
 $input-border-color: $color-input-bg;
 $input-bg: $color-input-bg;
 $input-focus-border-color: lighten($color-input-bg, 20%);

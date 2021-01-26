@@ -4,6 +4,7 @@ import { RecordArrayWithMeta } from '@gavant/ember-pagination/hooks/pagination';
 
 import { BrowseJournalParams } from 'pep/pods/browse/journal/route';
 import BrowseJournalVolumeController from 'pep/pods/browse/journal/volume/controller';
+import Journal from 'pep/pods/journal/model';
 import SourceVolume from 'pep/pods/source-volume/model';
 
 export interface BrowseJournalVolumeParams {
@@ -25,8 +26,10 @@ export default class BrowseJournalVolume extends Route {
         super.setupController(controller, model);
         const journalParams = this.paramsFor('browse.journal') as BrowseJournalParams;
         const routeParams = this.paramsFor(this.routeName) as BrowseJournalVolumeParams;
+        const journal = this.modelFor('browse.journal') as Journal;
 
         const volumes = await this.store.query('volume', { sourcecode: journalParams.pep_code });
+        controller.journalBannerUrl = journal.bannerURL;
         controller.sourcecode = journalParams.pep_code;
         controller.meta = model.meta;
         controller.volumeInformation = volumes.findBy('id', routeParams.volume_number);
@@ -35,6 +38,7 @@ export default class BrowseJournalVolume extends Route {
     resetController(controller: BrowseJournalVolumeController, isExiting: boolean) {
         if (isExiting) {
             controller.sourcecode = undefined;
+            controller.journalBannerUrl = undefined;
         }
     }
 }

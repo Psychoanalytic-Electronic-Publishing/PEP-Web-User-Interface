@@ -111,12 +111,69 @@ export async function loadXSLT(this: any): Promise<Document | null> {
  * @return {object}
  */
 export function buildJumpToHitsHTML(anchorCount: number) {
-    let previous = `<button data-target-search-hit="${anchorCount}" data-type="${DocumentLinkTypes.SEARCH_HIT_ARROW}" class="btn btn-link py-0 pr-1 pl-0">&#60;</button>`;
+    let previous = `<button data-target-search-hit="${anchorCount}" data-type="${DocumentLinkTypes.SEARCH_HIT_ARROW}" class="btn btn-link py-0 pr-1 pl-0">&#171;&#171;</button>`;
     let next = `<button data-target-search-hit="${anchorCount + 1}" data-type="${
         DocumentLinkTypes.SEARCH_HIT_ARROW
-    }" class="btn btn-link py-0 pl-1 pr-0">&#62;</button>`;
+    }" class="btn btn-link py-0 pl-1 pr-0">&#187;&#187;</button>`;
     return {
         previous,
         next
     };
+}
+
+// Hoisted from removeClass, doesn't need to be defined multiple times.
+// Identifies the whitespace that should be used for replacement.
+function replacer(_match: string, leading: string, trailing: string) {
+    if (leading && trailing) {
+        // We're in the middle of the class string.
+        // The portions on either side of us still need space separation.
+        return ' ';
+    } else {
+        return '';
+    }
+}
+
+/**
+ * Implements a simple class name removal algorithm.
+ * Does not use built-ins to enable working in both FastBoot and older browsers.
+ * Removes all copies of the class name from the element.
+ *
+ * @method removeClass
+ * @param {Element} element A DOM element.
+ * @param {String} className The className to add to the element.
+ * @public
+ */
+export function removeClass(element: HTMLElement, className: string) {
+    let existingClass = element.getAttribute('class');
+
+    if (existingClass) {
+        let classNameRegExp = new RegExp(`(^|\\s+)${className}(?:\\s+${className})*(\\s+|$)`, 'g');
+        let newClassName = existingClass.replace(classNameRegExp, replacer);
+        element.setAttribute('class', newClassName);
+    }
+}
+
+/**
+ * Implements a simple class name addition algorithm.
+ * Does not use built-ins to enable working in both FastBoot and older browsers.
+ *
+ * @method addClass
+ * @param {Element} element A DOM element.
+ * @param {String} className The className to add to the element.
+ * @public
+ */
+export function addClass(element: HTMLElement, className: string) {
+    let existingClass = element.getAttribute('class');
+
+    if (existingClass) {
+        let classes = existingClass.split(' ');
+
+        if (~classes.indexOf(className)) {
+            return;
+        }
+
+        element.setAttribute('class', `${existingClass} ${className}`);
+    } else {
+        element.setAttribute('class', className);
+    }
 }

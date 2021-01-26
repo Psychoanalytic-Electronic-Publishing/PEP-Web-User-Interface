@@ -6,6 +6,9 @@ $document-paragraph-indent: 1.5rem;
         animation-name: flash-animation;
         animation-duration: 0.75s;
     }
+    &.text-indent-none p {
+        margin-bottom: 0.5rem !important;
+    }
     @keyframes flash-animation {
         0% {
             background: default;
@@ -340,12 +343,16 @@ $document-paragraph-indent: 1.5rem;
             font-size: 1.2rem;
         }
     }
-    .glosstip {
-        background-color: $document-link-glosstip-bg;
-        &:hover {
-            color: $document-link-glosstip-hover;
+
+    &.glossary-highlight {
+        .glosstip {
+            background-color: $document-link-glosstip-bg;
+            &:hover {
+                color: $document-link-glosstip-hover;
+            }
         }
     }
+
     .bibtip {
         color: $document-link-bibliography;
     }

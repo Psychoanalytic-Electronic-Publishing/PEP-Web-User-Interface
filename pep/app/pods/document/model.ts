@@ -4,7 +4,10 @@ import DS from 'ember-data';
 import attr from 'ember-data/attr';
 import { belongsTo } from 'ember-data/relationships';
 
-import { HTML_BODY_REGEX, INVALID_ABSTRACT_PREVIEW_TAGS, INVALID_ABSTRACT_TAGS } from 'pep/constants/regex';
+import {
+    HTML_BODY_REGEX, INVALID_ABSTRACT_PREVIEW_TAGS, INVALID_ABSTRACT_TAGS, SEARCH_STRING_REGEX,
+    SEARCH_STRING_TERMS_REGEX
+} from 'pep/constants/regex';
 import SimilarityMatch from 'pep/pods/similarity-match/model';
 
 export default class Document extends DS.Model {
@@ -42,6 +45,8 @@ export default class Document extends DS.Model {
     @attr('string') sourceTitle!: string;
     @attr('string') sourceType!: string;
     @attr() stat!: object;
+    @attr('string') term!: string;
+    @attr('number') termCount!: number;
     @attr('string') title!: string;
     @attr('date') updated!: Date;
     @attr('string') vol!: string;
@@ -84,6 +89,22 @@ export default class Document extends DS.Model {
 
     get noAccessMessage() {
         return this.accessLimitedReason || this.accessLimitedDescription;
+    }
+
+    get searchTerm() {
+        const terms = this.term.match(SEARCH_STRING_REGEX);
+        const term = terms?.reduce((prev, next) => {
+            if (next) {
+                const term = next.replace(SEARCH_STRING_TERMS_REGEX, '');
+                if (prev) {
+                    prev += `/${term}`;
+                } else {
+                    prev = term;
+                }
+            }
+            return prev;
+        }, '');
+        return term;
     }
 
     /**

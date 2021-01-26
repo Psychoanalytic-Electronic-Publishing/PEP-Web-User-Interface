@@ -60,7 +60,14 @@
                             {{/if}}
                         </h5>
                         <div class="pep-abstract-preview mb-2">
-                            {{html-safe this.result.abstract}}
+                            {{#if this.result}}
+                                <Document::Text
+                                    @document={{this.result}}
+                                    @target="abstract"
+                                    @onGlossaryItemClick={{this.viewGlossaryTerm}}
+                                    @documentRendered={{this.documentRendered}}
+                                />
+                            {{/if}}
                         </div>
                         <div>
                             {{#if this.result.accessLimited}}
@@ -77,15 +84,14 @@
                                     </p>
                                 {{/unless}}
                             {{else}}
-                                <LinkTo
-                                    @route="read.document"
-                                    @model={{this.result.id}}
-                                    @query={{@queryParams}}
-                                    class="btn btn-primary btn-wide mr-2"
-                                >
-                                    <FaIcon @icon="book-open" />
-                                    {{t "search.preview.read"}}
-                                </LinkTo>
+                                <Button
+                                    @label={{t "search.preview.read"}}
+                                    @icon="book-open"
+                                    @type="primary"
+                                    @wide={{true}}
+                                    @action={{this.viewDocument}}
+                                    class="mr-2"
+                                />
                                 <DropdownMenu @horizontalPosition="auto-left" as |DD|>
                                     <DD.Trigger @htmlTag="button" class="btn btn-link px-2">
                                         <FaIcon @icon="download" />

@@ -1,0 +1,11 @@
+.report-data-error {
+    &-form {
+        textarea {
+            min-height: 5rem;
+        }
+
+        .input-validator-error {
+            padding-top: 0;
+        }
+    }
+}

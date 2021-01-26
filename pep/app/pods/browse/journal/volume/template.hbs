@@ -69,8 +69,8 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="d-flex justify-content-center align-items-center">
-                                {{#if this.sourcecode}}
-                                    <Image @source="{{this.journalImageUrl}}" alt="{{t "browse.alt"}}" />
+                                {{#if this.journalBannerUrl}}
+                                    <Image @source="{{this.journalBannerUrl}}" alt="{{t "browse.alt"}}" />
                                 {{/if}}
                             </div>
                         </div>
@@ -119,6 +119,7 @@
         @setMode={{this.setPreviewMode}}
         @close={{this.closeResultPreview}}
         @maxHeight={{this.containerMaxHeight}}
+        @loadDocument={{this.loadDocument}}
         class="page-content-section"
     />
 </div>

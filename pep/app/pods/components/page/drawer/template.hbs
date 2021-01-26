@@ -38,14 +38,16 @@
                     </LinkTo>
                 </Page::Drawer::NavItem>
                 <Page::Drawer::NavItem class="mt-1">
-                    <LinkTo
-                        @route="read"
-                        @disabled={{this.readDisabled}}
+                    <Button
+                        @action={{this.viewRead}}
+                        @type="link"
                         class="list-group-item list-group-item-action"
+                        @disabled={{this.readDisabled}}
+                        @icon="book-reader"
+                        @iconClass="mr-2"
                     >
-                        <FaIcon @icon="book-reader" @fixedWidth={{true}} class="mr-2" />
                         {{t "nav.read"}}
-                    </LinkTo>
+                    </Button>
                 </Page::Drawer::NavItem>
                 <Page::Drawer::NavItem class="mt-1">
                     <LinkTo @route="browse" class="list-group-item list-group-item-action">
@@ -72,9 +74,23 @@
                         </a>
                     </Page::Drawer::NavItem>
                     <Page::Drawer::NavItem class="mt-1">
-                        <button type="button" class="list-group-item list-group-item-action">
+                        <button
+                            type="button"
+                            class="list-group-item list-group-item-action"
+                            {{on "click" this.openReportDataErrorModal}}
+                        >
                             <FaIcon @icon="comment-exclamation" @fixedWidth={{true}} class="text-muted" />
-                            {{t "nav.support.reportProblem"}}
+                            {{t "nav.support.reportDataError"}}
+                        </button>
+                    </Page::Drawer::NavItem>
+                    <Page::Drawer::NavItem class="mt-1">
+                        <button
+                            type="button"
+                            class="list-group-item list-group-item-action"
+                            {{on "click" this.openFeedbackModal}}
+                        >
+                            <FaIcon @icon="comment-lines" @fixedWidth={{true}} class="text-muted" />
+                            {{t "nav.support.provideFeedback"}}
                         </button>
                     </Page::Drawer::NavItem>
                     <Page::Drawer::NavItem class="mt-1">
@@ -163,7 +179,7 @@
             </div>
         </div>
         <div class="page-drawer-footer mt-auto p-2 small text-center text-white-50">
-            {{t "brand.copywrite" htmlSafe=true}}
+            {{t "brand.copyWrite" year=(current-year) htmlSafe=true}}
         </div>
     </Scrollable>
 </div>

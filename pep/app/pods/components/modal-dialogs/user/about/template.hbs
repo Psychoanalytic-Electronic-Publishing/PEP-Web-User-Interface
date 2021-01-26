@@ -47,7 +47,7 @@
     </Modal.body>
     <Modal.footer class="justify-content-between align-items-center">
         <span class="font-size-secondary">
-            {{t "brand.copywrite" htmlSafe=true}}
+            {{t "brand.copyWrite" year=(current-year) htmlSafe=true}}
         </span>
         <Button @type="primary" @label={{t "common.close"}} @action={{@onClose}} />
     </Modal.footer>

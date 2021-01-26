@@ -1,4 +1,5 @@
 import { action, computed } from '@ember/object';
+import RouterService from '@ember/routing/router-service';
 import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
 
@@ -10,7 +11,6 @@ import Document from 'pep/pods/document/model';
 import CurrentUserService from 'pep/services/current-user';
 import SearchSelection from 'pep/services/search-selection';
 import SidebarService from 'pep/services/sidebar';
-import RouterService from '@ember/routing/router-service';
 
 interface SearchItemBibliographicArgs {
     item: Document;
@@ -38,7 +38,7 @@ export default class SearchItemBibliographic extends Component<SearchItemBibliog
     }
 
     get documentUrl() {
-        return this.router.urlFor('read.document', this.args.item.id);
+        return this.router.urlFor('search.read', this.args.item.id);
     }
 
     /**

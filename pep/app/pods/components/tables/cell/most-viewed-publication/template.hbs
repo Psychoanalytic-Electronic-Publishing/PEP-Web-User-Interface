@@ -1,5 +1,8 @@
-<LinkTo @route="read.document" @model={{@rowValue.id}}>
-    <div>{{html-safe @cellValue}}</div>
-    <div class="text-muted small">{{html-safe @rowValue.authorMast}} ({{html-safe @rowValue.year}}) - {{html-safe @rowValue.sourceTitle}}</div>
+<LinkTo @route="browse.read" @model={{@rowValue.id}}>
+    <div>
+        {{html-safe @cellValue}}
+    </div>
+    <div class="text-muted small">
+        {{html-safe @rowValue.authorMast}} ({{html-safe @rowValue.year}}) - {{html-safe @rowValue.sourceTitle}}
+    </div>
 </LinkTo>
-

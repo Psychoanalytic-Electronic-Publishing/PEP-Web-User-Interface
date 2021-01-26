@@ -5,12 +5,14 @@ import { htmlSafe } from '@ember/template';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
+import ModalService from '@gavant/ember-modals/services/modal';
 import { DS } from 'ember-data';
 
 import ENV from 'pep/config/environment';
 import { DOCUMENT_EPUB_BASE_URL, DOCUMENT_PDF_BASE_URL, DOCUMENT_PDFORIG_BASE_URL } from 'pep/constants/documents';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import Abstract from 'pep/pods/abstract/model';
+import GlossaryTerm from 'pep/pods/glossary-term/model';
 import AuthService from 'pep/services/auth';
 import LoadingBarService from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
@@ -25,6 +27,7 @@ interface SearchPreviewArgs {
     resultId?: string;
     setMode: (mode: SearchPreviewMode) => void;
     close: () => void;
+    loadDocument?: (abstract: Abstract) => void;
 }
 
 export default class SearchPreview extends Component<SearchPreviewArgs> {
@@ -33,6 +36,7 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
     @service scrollable!: ScrollableService;
     @service loadingBar!: LoadingBarService;
     @service store!: DS.Store;
+    @service modal!: ModalService;
 
     @tracked fitHeight: number = 0;
     @tracked isDragResizing: boolean = false;
@@ -136,7 +140,7 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
     }
 
     /**
-     * Load the abstract and then update the height if fit mode is enabled
+     * Load the abstract
      *
      * @param {string} id
      * @memberof SearchPreview
@@ -148,9 +152,6 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
             this.result = abstract;
         } finally {
             this.loadingBar.hide();
-            if (this.isFitMode) {
-                next(this, this.updateFitHeight);
-            }
         }
     }
 
@@ -264,5 +265,44 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
         this.fitHeight = Math.max(this.minFitHeight, this.startingDragHeight - position);
         this.startingDragHeight = 0;
         next(this, () => (this.isDragResizing = false));
+    }
+
+    /**
+     * Open the glossary modal to view the term
+     *
+     * @param {string} term
+     * @param {GlossaryTerm} results
+     * @memberof ReadDocument
+     */
+    @action
+    viewGlossaryTerm(term: string, results: GlossaryTerm) {
+        this.modal.open('glossary', {
+            results,
+            term
+        });
+    }
+
+    /**
+     * when the document is rendered - if we are in fit mode update the height
+     *
+     * @memberof SearchPreview
+     */
+    @action
+    documentRendered() {
+        if (this.isFitMode) {
+            this.updateFitHeight();
+        }
+    }
+
+    /**
+     * View the document
+     *
+     * @memberof SearchPreview
+     */
+    @action
+    viewDocument() {
+        if (this.result) {
+            this.args.loadDocument?.(this.result);
+        }
     }
 }

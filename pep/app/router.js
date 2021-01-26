@@ -10,7 +10,9 @@ export default class Router extends EmberRouter {
 
 Router.map(function() {
     this.route('login');
-    this.route('search', function() {});
+    this.route('search', function() {
+        this.route('read', { path: '/document/:document_id' });
+    });
     this.route('browse', function() {
         this.route('videos');
         this.route('journal', { path: '/:pep_code/volumes' }, function() {
@@ -21,9 +23,7 @@ Router.map(function() {
             this.route('gw');
             this.route('se');
         });
-    });
-    this.route('read', function() {
-        this.route('document', { path: '/:document_id' });
+        this.route('read', { path: '/document/:document_id' });
     });
 
     this.route('most-cited');

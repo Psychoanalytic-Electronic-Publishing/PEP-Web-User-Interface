@@ -6,7 +6,6 @@ import { cached, tracked } from '@glimmer/tracking';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import IntlService from 'ember-intl/services/intl';
 
-import ENV from 'pep/config/environment';
 import { TITLE_REGEX } from 'pep/constants/regex';
 import Abstract from 'pep/pods/abstract/model';
 import { SearchPreviewMode } from 'pep/pods/components/search/preview/component';
@@ -37,18 +36,13 @@ export default class BrowseJournalVolume extends Controller {
     @tracked containerMaxHeight = 0;
     @tracked meta?: { next_vol: string; prev_vol: string };
     @tracked sourcecode?: string;
-
-    assetBaseUrl = ENV.assetBaseUrl;
-
-    get journalImageUrl() {
-        return `${this.assetBaseUrl}assets/images/publisher-logos/banner${this.sourcecode}Logo.gif`;
-    }
+    @tracked journalBannerUrl?: string;
 
     /**
      * If items are selected, use that for the export/print data. Otherwise use the paginator
      *
      * @readonly
-     * @memberof Search
+     * @memberof BrowseJournalVolume
      */
     get exportedData() {
         return this.browseSelection.includedRecords.length
@@ -102,6 +96,7 @@ export default class BrowseJournalVolume extends Controller {
     /**
      * Sets the max height of the search preview pane
      * @param {HTMLElement} element
+     * @memberof BrowseJournalVolume
      */
     @action
     updateContainerMaxHeight(element: HTMLElement) {
@@ -111,6 +106,7 @@ export default class BrowseJournalVolume extends Controller {
     /**
      * Set the current preview mode
      * @param {String} mode
+     * @memberof BrowseJournalVolume
      */
     @action
     setPreviewMode(mode: SearchPreviewMode) {
@@ -119,6 +115,7 @@ export default class BrowseJournalVolume extends Controller {
 
     /**
      * Close the preview pane
+     * @memberof BrowseJournalVolume
      */
     @action
     closeResultPreview() {
@@ -131,6 +128,7 @@ export default class BrowseJournalVolume extends Controller {
      * depending on the user's preferences
      * @param {Object} result
      * @param {Event} event
+     * @memberof BrowseJournalVolume
      */
     @action
     async openResult(documentId: string, event?: Event) {
@@ -140,14 +138,14 @@ export default class BrowseJournalVolume extends Controller {
             this.previewedResult = abstract;
             this.preview = documentId;
         } else {
-            this.transitionToRoute('read.document', documentId);
+            this.transitionToRoute('browse.read', documentId);
         }
     }
 
     /**
      * Export a CSV
      *
-     * @memberof Search
+     * @memberof BrowseJournalVolume
      */
     @action
     exportCSV() {
@@ -168,7 +166,7 @@ export default class BrowseJournalVolume extends Controller {
      * Get the correctly formatted data for the clipboard and return it
      *
      * @returns
-     * @memberof Search
+     * @memberof BrowseJournalVolume
      */
     @action
     exportClipboard() {
@@ -182,7 +180,7 @@ export default class BrowseJournalVolume extends Controller {
     /**
      * Show success message for clipboard
      *
-     * @memberof Search
+     * @memberof BrowseJournalVolume
      */
     @action
     clipboardSuccess() {
@@ -194,7 +192,7 @@ export default class BrowseJournalVolume extends Controller {
     /**
      * Show failure message for clipboard
      *
-     * @memberof Search
+     * @memberof BrowseJournalVolume
      */
     @action
     clipboardFailure() {
@@ -204,7 +202,7 @@ export default class BrowseJournalVolume extends Controller {
     /**
      * Print the current selected items or whats loaded into the paginator
      *
-     * @memberof Search
+     * @memberof BrowseJournalVolume
      */
     @action
     print() {
@@ -213,9 +211,26 @@ export default class BrowseJournalVolume extends Controller {
         this.printer.printHTML(html);
     }
 
+    /**
+     * Navigate to the specific volume
+     *
+     * @param {string} volume
+     * @memberof BrowseJournalVolume
+     */
     @action
     navigateToVolume(volume: string) {
         this.transitionToRoute('browse.journal.volume', volume);
+    }
+
+    /**
+     * Navigate to the passed in document
+     *
+     * @param {Abstract} Abstract
+     * @memberof BrowseJournalVolume
+     */
+    @action
+    loadDocument(abstract: Abstract) {
+        this.transitionToRoute('browse.read', abstract.id);
     }
 }
 
