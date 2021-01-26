@@ -5,10 +5,8 @@ import attr from 'ember-data/attr';
 import { belongsTo } from 'ember-data/relationships';
 
 import {
-    HTML_BODY_REGEX,
-    INVALID_ABSTRACT_PREVIEW_TAGS,
-    INVALID_ABSTRACT_TAGS,
-    PARENTHESIS_REGEX
+    HTML_BODY_REGEX, INVALID_ABSTRACT_PREVIEW_TAGS, INVALID_ABSTRACT_TAGS, SEARCH_STRING_REGEX,
+    SEARCH_STRING_TERMS_REGEX
 } from 'pep/constants/regex';
 import SimilarityMatch from 'pep/pods/similarity-match/model';
 
@@ -94,8 +92,19 @@ export default class Document extends DS.Model {
     }
 
     get searchTerm() {
-        const term = this.term.match(PARENTHESIS_REGEX)?.pop() ?? '';
-        return term.split(':')[1];
+        const terms = this.term.match(SEARCH_STRING_REGEX);
+        const term = terms?.reduce((prev, next) => {
+            if (next) {
+                const term = next.replace(SEARCH_STRING_TERMS_REGEX, '');
+                if (prev) {
+                    prev += `/${term}`;
+                } else {
+                    prev = term;
+                }
+            }
+            return prev;
+        }, '');
+        return term;
     }
 
     /**

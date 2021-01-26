@@ -55,14 +55,13 @@ export default class SearchRead extends PageNav(Route) {
             citedCount: params.citedCount,
             viewedCount: params.viewedCount,
             viewedPeriod: params.viewedPeriod,
-            facetFields: cfg.facets.defaultFields,
+            // facetFields: cfg.facets.defaultFields, From Neil - turn this off to make query shorter - and its not needed
             joinOp: 'AND',
             facetLimit: cfg.facets.valueLimit,
             facetMinCount: cfg.facets.valueMinCount,
-            highlightlimit: this.currentUser.preferences?.searchHICLimit ?? cfg.hitsInContext.limit
+            highlightlimit: this.currentUser.preferences?.searchHICLimit ?? cfg.hitsInContext.limit,
+            smartSearchTerm: params.q
         });
-        // API wants us to use fulltext1 here, not smartText which is why we are adding it after
-        searchParams.fulltext1 = params.q;
         delete searchParams.abstract;
         // We now want to take this object and convert it to a browser query param string to send to the server (as that is what they are expecting)
         let queryString = serializeQueryParams(searchParams);

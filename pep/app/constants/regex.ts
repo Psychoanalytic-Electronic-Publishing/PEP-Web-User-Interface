@@ -8,3 +8,5 @@ export const TITLE_REGEX = /^.*?<arttitle[^>]*>(.*?)<\/arttitle>.*?$/i;
 export const SORT_DASH_REGEX = /-/g;
 export const PARENTHESIS_REGEX = /\((.*)\)/;
 export const NON_DIGIT_REGEX = /\D/g;
+export const SEARCH_STRING_REGEX = /\(([^()]+)\)/g;
+export const SEARCH_STRING_TERMS_REGEX = /[^a-zA-Z]+/g;
