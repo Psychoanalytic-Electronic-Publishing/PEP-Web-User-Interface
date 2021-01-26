@@ -5,7 +5,6 @@ import { tracked } from '@glimmer/tracking';
 
 import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
 import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
-import MediaService from 'ember-responsive/services/media';
 
 import { SEARCH_DEFAULT_VIEW_PERIOD, SearchViews, SearchViewType, ViewPeriod } from 'pep/constants/search';
 import Abstract from 'pep/pods/abstract/model';
@@ -21,7 +20,6 @@ export default class SearchRead extends Controller {
     @service loadingBar!: LoadingBarService;
     @service configuration!: ConfigurationService;
     @service currentUser!: CurrentUserService;
-    @service media!: MediaService;
 
     @tracked selectedView = SearchViews[0];
     @tracked selectedSort = SearchSorts[0];
