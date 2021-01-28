@@ -1495,7 +1495,7 @@
     </xsl:template>
 
     <xsl:template match="dictalso">
-        <p class="dictentrygrp-dictalso">
+        <p class="dictentrygrp-dictalso d-flex flex-wrap">
             <xsl:copy-of select="$fa-flag" />
             <xsl:text> </xsl:text>
             <xsl:apply-templates/>

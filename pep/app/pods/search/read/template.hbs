@@ -8,7 +8,7 @@
                     {{if this.paginator.metadata.fullCount "justify-content-between" "justify-content-end"}}
 
 
-                     align-items-center mb-2"
+                     align-items-center"
             >
                 {{#if this.paginator.metadata.fullCount}}
                     <LinkTo
@@ -30,6 +30,7 @@
                         @searchHitNumber={{this.searchHitNumber}}
                         @viewPreviousSearchHit={{this.viewPreviousSearchHit}}
                         @viewNextSearchHit={{this.viewNextSearchHit}}
+                        @viewHitNumber={{this.viewSearchHitNumber}}
                     />
                 </div>
             </div>

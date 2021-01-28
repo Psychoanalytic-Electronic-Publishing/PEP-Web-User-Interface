@@ -27,7 +27,7 @@ import PepSessionService from 'pep/services/pep-session';
 import ThemeService from 'pep/services/theme';
 import { buildJumpToHitsHTML, loadXSLT, parseXML } from 'pep/utils/dom';
 import { reject } from 'rsvp';
-import tippy, { Instance, Props } from 'tippy.js';
+import tippy, { inlinePositioning, Instance, Props } from 'tippy.js';
 
 interface DocumentTextArgs {
     document: Document;
@@ -81,7 +81,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
 
     containerElement?: HTMLElement;
     scrollableElement?: Element | null;
-    defaultOffsetForScroll = -85;
+    defaultOffsetForScroll = -95;
 
     tippyOptions = {
         theme: 'light',
@@ -525,6 +525,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
                     tippy(item, {
                         appendTo: paragraph,
                         content: loadingTranslation,
+                        maxWidth: 'none',
                         ...this.tippyOptions,
                         onCreate(instance: DocumentTippyInstance) {
                             // Setup our own custom state properties - from DOCS

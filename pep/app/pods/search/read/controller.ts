@@ -218,6 +218,18 @@ export default class SearchRead extends Controller {
             this.searchHitNumber = this.searchHitNumber - 1;
         }
     }
+
+    /**
+     * Set the search hit number to the next number. Most likely its the same number they were on, so make it undefined first
+     *
+     * @param {number} number
+     * @memberof SearchRead
+     */
+    @action
+    viewSearchHitNumber(number: number) {
+        this.searchHitNumber = undefined;
+        this.searchHitNumber = number;
+    }
 }
 
 // DO NOT DELETE: this is how TypeScript knows how to look up your controllers.
