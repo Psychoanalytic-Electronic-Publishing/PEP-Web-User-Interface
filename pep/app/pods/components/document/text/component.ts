@@ -81,7 +81,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
 
     containerElement?: HTMLElement;
     scrollableElement?: Element | null;
-    defaultOffsetForScroll = -85;
+    defaultOffsetForScroll = -95;
 
     tippyOptions = {
         theme: 'light',
@@ -525,6 +525,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
                     tippy(item, {
                         appendTo: paragraph,
                         content: loadingTranslation,
+                        maxWidth: 'none',
                         ...this.tippyOptions,
                         onCreate(instance: DocumentTippyInstance) {
                             // Setup our own custom state properties - from DOCS

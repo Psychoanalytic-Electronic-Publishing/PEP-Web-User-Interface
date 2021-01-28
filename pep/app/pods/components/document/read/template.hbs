@@ -18,7 +18,7 @@
                 {{/unless}}
             </Alert>
             <div class="pep-document-content" id="read-document">
-                <ContentWithPlaceholder @placeholderInFastboot={{true}}>
+                <ContentWithPlaceholder @placeholderInFastboot={{true}} @isLoading={{not @model}}>
                     <Document::Text
                         @document={{@model}}
                         @onGlossaryItemClick={{this.viewGlossaryTerm}}

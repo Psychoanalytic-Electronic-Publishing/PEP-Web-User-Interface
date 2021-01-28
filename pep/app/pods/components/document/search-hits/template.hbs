@@ -1,5 +1,5 @@
 {{#if @document.termCount}}
-    <span class="p-1 d-flex align-items-center">
+    <span class="d-flex align-items-center">
         {{#if this.showPreviousSearchHitButton}}
             <Button
                 @action={{@viewPreviousSearchHit}}
@@ -13,9 +13,12 @@
         {{/if}}
         {{@document.searchTerm}}
         {{#if @searchHitNumber}}
-            <span class="ml-1">
-                {{t "read.document.searchHits" current=@searchHitNumber total=@document.termCount htmlSafe=true}}
+            <span class="x-small ml-2">
+                <FaIcon @icon="circle" @prefix="fas" @size="xs" />
             </span>
+            <Button @action={{fn @viewHitNumber @searchHitNumber}} @type="link" class="p-1">
+                {{t "read.document.searchHits" current=@searchHitNumber total=@document.termCount htmlSafe=true}}
+            </Button>
         {{/if}}
         {{#if this.showNextSearchHitButton}}
             <Button

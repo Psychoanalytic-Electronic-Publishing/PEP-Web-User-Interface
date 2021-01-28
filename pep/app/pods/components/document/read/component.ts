@@ -13,6 +13,7 @@ import AuthService from 'pep/services/auth';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
 import LoadingBarService from 'pep/services/loading-bar';
+import PepSessionService from 'pep/services/pep-session';
 import { clearSearch } from 'pep/utils/search';
 
 interface DocumentReadArgs {
@@ -31,6 +32,7 @@ export default class DocumentRead extends Component<DocumentReadArgs> {
     @service auth!: AuthService;
     @service loadingBar!: LoadingBarService;
     @service store!: DS.Store;
+    @service('pep-session') session!: PepSessionService;
 
     /**
      * Opens the login modal dialog

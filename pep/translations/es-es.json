@@ -375,7 +375,7 @@
             "image": {
                 "alt": "Article image {id}"
             },
-            "searchHits": " &middot; {current} of {total}"
+            "searchHits": " {current} of {total}"
         }
     },
     "relatedInfo": {
