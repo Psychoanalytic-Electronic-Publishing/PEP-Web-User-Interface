@@ -79,7 +79,7 @@ export default class PageSidebarWidgetsGlossaryTerms extends Component<PageSideb
         try {
             this.loadingBar.show();
             const results = await this.store.query('glossary-term', {
-                termidtype: 'Name',
+                termidtype: 'Group',
                 termIdentifier: term
             });
             this.modal.open('glossary', {

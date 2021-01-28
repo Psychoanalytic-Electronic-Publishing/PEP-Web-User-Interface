@@ -27,7 +27,7 @@ import PepSessionService from 'pep/services/pep-session';
 import ThemeService from 'pep/services/theme';
 import { buildJumpToHitsHTML, loadXSLT, parseXML } from 'pep/utils/dom';
 import { reject } from 'rsvp';
-import tippy, { inlinePositioning, Instance, Props } from 'tippy.js';
+import tippy, { Instance, Props } from 'tippy.js';
 
 interface DocumentTextArgs {
     document: Document;
