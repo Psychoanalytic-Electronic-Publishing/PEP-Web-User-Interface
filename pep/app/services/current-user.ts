@@ -16,6 +16,8 @@ import {
     AvailableFontSizes, FONT_SIZE_DEFAULT, FontSize, TEXT_LEFT, TextJustificationId, TextJustifications
 } from 'pep/constants/text';
 import User, { UserType } from 'pep/pods/user/model';
+import AuthService from 'pep/services/auth';
+import InformationBarService from 'pep/services/information-bar';
 import PepSessionService from 'pep/services/pep-session';
 import { addClass, removeClass } from 'pep/utils/dom';
 import { reject } from 'rsvp';
@@ -31,6 +33,8 @@ export default class CurrentUserService extends Service {
     @service fastboot!: FastbootService;
     @service cookies!: CookiesService;
     @service intl!: IntlService;
+    @service auth!: AuthService;
+    @service informationBar!: InformationBarService;
     // @ts-ignore this does exist
     @service('-document') document!: any;
 
@@ -205,49 +209,56 @@ export default class CurrentUserService extends Service {
      * @returns Promise<UserPreferences>
      */
     async updatePrefs(prefValues: PreferenceChangeset) {
-        const keys = Object.keys(prefValues) as PreferenceKey[];
-        const cookie = this.cookies.read(USER_PREFERENCES_COOKIE_NAME);
-        const cookieValues = cookie ? JSON.parse(cookie) : {};
-        let updatedCookie = false;
-
-        keys.forEach((key) => {
-            if (COOKIE_PREFERENCES.includes(key)) {
-                updatedCookie = true;
-                cookieValues[key] = prefValues[key];
-            } else if (LOCALSTORAGE_PREFERENCES.includes(key)) {
-                const value = JSON.stringify(prefValues[key]);
-                if (!this.fastboot.isFastBoot) {
-                    localStorage.setItem(`${USER_PREFERENCES_LS_PREFIX}_${key}`, value);
-                }
-            }
-        });
-
-        if (updatedCookie) {
-            const newCookie = JSON.stringify(cookieValues);
-            this.cookies.write(USER_PREFERENCES_COOKIE_NAME, newCookie, {
-                secure: ENV.cookieSecure,
-                sameSite: ENV.cookieSameSite,
-                expires: DATE_FOREVER
-            });
-        }
-
-        // if the user is logged in, apply the new prefs locally, then save the user
-        if (this.session.isAuthenticated && this.user && this.user.userType !== UserType.GROUP) {
-            const oldUserPrefs = this.user?.clientSettings ?? {};
-            const newUserPrefs = Object.assign(
-                {},
-                DEFAULT_USER_PREFERENCES,
-                oldUserPrefs,
-                prefValues
-            ) as UserPreferences;
-            this.user.clientSettings = newUserPrefs;
-            this.setup();
-            await this.user.save();
-            return this.preferences;
-            // otherwise, just apply the prefs locally (cookies/localstorage)
+        if (this.user?.userType === UserType.GROUP) {
+            return reject(this.informationBar.show('settings-auth'));
+            // return this.auth.openLoginModal(true, {
+            //     closeOpenModal: true
+            // });
         } else {
-            this.setup();
-            return this.preferences;
+            const keys = Object.keys(prefValues) as PreferenceKey[];
+            const cookie = this.cookies.read(USER_PREFERENCES_COOKIE_NAME);
+            const cookieValues = cookie ? JSON.parse(cookie) : {};
+            let updatedCookie = false;
+
+            keys.forEach((key) => {
+                if (COOKIE_PREFERENCES.includes(key)) {
+                    updatedCookie = true;
+                    cookieValues[key] = prefValues[key];
+                } else if (LOCALSTORAGE_PREFERENCES.includes(key)) {
+                    const value = JSON.stringify(prefValues[key]);
+                    if (!this.fastboot.isFastBoot) {
+                        localStorage.setItem(`${USER_PREFERENCES_LS_PREFIX}_${key}`, value);
+                    }
+                }
+            });
+
+            if (updatedCookie) {
+                const newCookie = JSON.stringify(cookieValues);
+                this.cookies.write(USER_PREFERENCES_COOKIE_NAME, newCookie, {
+                    secure: ENV.cookieSecure,
+                    sameSite: ENV.cookieSameSite,
+                    expires: DATE_FOREVER
+                });
+            }
+
+            // if the user is logged in, apply the new prefs locally, then save the user
+            if (this.session.isAuthenticated && this.user) {
+                const oldUserPrefs = this.user?.clientSettings ?? {};
+                const newUserPrefs = Object.assign(
+                    {},
+                    DEFAULT_USER_PREFERENCES,
+                    oldUserPrefs,
+                    prefValues
+                ) as UserPreferences;
+                this.user.clientSettings = newUserPrefs;
+                this.setup();
+                await this.user.save();
+                return this.preferences;
+                // otherwise, just apply the prefs locally (cookies/localstorage)
+            } else {
+                this.setup();
+                return this.preferences;
+            }
         }
     }
 

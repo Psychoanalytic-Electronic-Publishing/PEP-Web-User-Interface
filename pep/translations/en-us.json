@@ -755,6 +755,14 @@
             "highContrast": "High Contrast"
         }
     },
+    "informationBars": {
+        "settingsAuth": {
+            "title": "Sign in is required in order to change settings",
+            "buttons": {
+                "signIn": "Sign in"
+            }
+        }
+    },
     "validations": {
         "inclusion": "{description} is not included in the list",
         "exclusion": "{description} is reserved",

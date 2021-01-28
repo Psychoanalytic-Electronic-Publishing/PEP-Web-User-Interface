@@ -1,0 +1,7 @@
+{{#animated-if this.informationBar.messageComponent use=this.transition}}
+    <div class="information-bar">
+        <div class="inner d-flex justify-content-center align-items-center p-1">
+            <InformationBar::Message @message={{this.informationBar.messageComponent}} @close={{this.close}} />
+        </div>
+    </div>
+{{/animated-if}}
