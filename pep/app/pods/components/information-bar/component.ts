@@ -11,6 +11,11 @@ export default class InformationBar extends Component<InformationBarArgs> {
     @service informationBar!: InformationBarService;
     transition = slideDown;
 
+    /**
+     * Hide information bar
+     *
+     * @memberof InformationBar
+     */
     @action
     close() {
         this.informationBar.hide();

@@ -8,5 +8,5 @@
     background-clip: padding-box;
     overflow: hidden;
     will-change: opacity;
-    z-index: $information-bar-zindex; // kt-aside + kt-header have z-index of 97 & 98 respectively
+    z-index: $z-information-bar;
 }

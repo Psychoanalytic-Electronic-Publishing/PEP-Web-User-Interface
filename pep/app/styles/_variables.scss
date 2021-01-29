@@ -15,7 +15,6 @@ $progress-spinner-loading-size: 15px;
 $progress-spinner-loading-border-width-lg: 4px;
 $progress-spinner-loading-size-lg: 50px;
 $drag-bar-thickness: 5px;
-$information-bar-zindex: 99999999;
 
 //Z-INDICES / LAYERING
 $z-page-content: 2;
@@ -26,6 +25,7 @@ $z-drawer-mask: 1035;
 $z-drawer-content: 1036;
 $z-drag-bar-mask: 2000;
 $z-notifications: 9999999;
+$z-information-bar: 99999999;
 
 //TIMING
 $duration-sidebar-toggle: 0.3s;

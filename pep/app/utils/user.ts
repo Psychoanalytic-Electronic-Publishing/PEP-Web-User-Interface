@@ -1,12 +1,20 @@
 import { getOwner } from '@ember/application';
 
+/**
+ * Functionality for loading user and configs after authentication
+ *
+ * @export
+ * @param {*} owner
+ * @return {Promise<any>}
+ */
 export async function onAuthenticated(owner: any) {
-    const currentUserService = getOwner(owner).lookup(`service:current-user`);
-    const notificationsService = getOwner(owner).lookup(`service:notifications`);
-    const intlService = getOwner(owner).lookup(`service:intl`);
-    const themeService = getOwner(owner).lookup(`service:theme`);
-    const langService = getOwner(owner).lookup(`service:lang`);
-    const configurationService = getOwner(owner).lookup(`service:configuration`);
+    const currentOwner = getOwner(owner);
+    const currentUserService = currentOwner.lookup(`service:current-user`);
+    const notificationsService = currentOwner.lookup(`service:notifications`);
+    const intlService = currentOwner.lookup(`service:intl`);
+    const themeService = currentOwner.lookup(`service:theme`);
+    const langService = currentOwner.lookup(`service:lang`);
+    const configurationService = currentOwner.lookup(`service:configuration`);
 
     try {
         // get the current user's model before transitioning from the login page
