@@ -9,8 +9,10 @@
         <DropdownAction @dd={{DD}} @action={{fn this.downloadDocument this.downloadUrlPdf}}>
             {{t "search.preview.download.pdf"}}
         </DropdownAction>
-        <DropdownAction @dd={{DD}} @action={{fn this.downloadDocument this.downloadUrlPdfOrig}}>
-            {{t "search.preview.download.pdfOrig"}}
-        </DropdownAction>
+        {{#if @document.pdfOriginalAvailable}}
+            <DropdownAction @dd={{DD}} @action={{fn this.downloadDocument this.downloadUrlPdfOrig}}>
+                {{t "search.preview.download.pdfOrig"}}
+            </DropdownAction>
+        {{/if}}
     </DD.Content>
 </DropdownMenu>
