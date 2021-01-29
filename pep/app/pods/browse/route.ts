@@ -1,3 +1,4 @@
+import ArrayProxy from '@ember/array/proxy';
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 
@@ -6,10 +7,21 @@ import MediaService from 'ember-responsive/services/media';
 
 import { GW_VOLUME_DOCUMENT_ID, SE_VOLUME_DOCUMENT_ID } from 'pep/constants/books';
 import { PageNav } from 'pep/mixins/page-layout';
+import Book from 'pep/pods/book/model';
 import BrowseController from 'pep/pods/browse/controller';
 import Document from 'pep/pods/document/model';
+import Journal from 'pep/pods/journal/model';
+import Video from 'pep/pods/video/model';
 import SidebarService from 'pep/services/sidebar';
 import { hash } from 'rsvp';
+
+export interface BrowseModel {
+    gw: Document;
+    se: Document;
+    videos: ArrayProxy<Video>;
+    books: ArrayProxy<Book>;
+    journals: ArrayProxy<Journal>;
+}
 
 export default class Browse extends PageNav(Route) {
     @service sidebar!: SidebarService;
@@ -17,22 +29,15 @@ export default class Browse extends PageNav(Route) {
     navController = 'browse';
 
     model() {
-        return hash({
-            gw: this.store.findRecord('document', GW_VOLUME_DOCUMENT_ID),
-            se: this.store.findRecord('document', SE_VOLUME_DOCUMENT_ID)
-        });
-    }
-
-    async setupController(controller: BrowseController, model: { gw: Document; se: Document }) {
-        super.setupController(controller, model);
         const apiQueryParams = buildQueryParams({
             context: this.controllerFor('browse'),
             pagingRootKey: null,
             filterRootKey: null,
             limit: 1000
         });
-
-        const browseResults = await hash({
+        return hash({
+            gw: this.store.findRecord('document', GW_VOLUME_DOCUMENT_ID),
+            se: this.store.findRecord('document', SE_VOLUME_DOCUMENT_ID),
             videos: this.store.query('video', {
                 ...removeEmptyQueryParams(apiQueryParams),
                 streams: false
@@ -40,10 +45,14 @@ export default class Browse extends PageNav(Route) {
             books: this.store.query('book', removeEmptyQueryParams(apiQueryParams)),
             journals: this.store.query('journal', removeEmptyQueryParams(apiQueryParams))
         });
+    }
 
-        controller.journals = browseResults.journals.toArray();
-        controller.books = browseResults.books.toArray();
-        controller.videos = browseResults.videos.toArray();
+    async setupController(controller: BrowseController, model: BrowseModel) {
+        super.setupController(controller, model);
+
+        controller.journals = model.journals.toArray() ?? [];
+        controller.books = model.books.toArray() ?? [];
+        controller.videos = model.videos.toArray() ?? [];
 
         if (this.media.isMobile) {
             this.sidebar.toggleLeftSidebar();

@@ -364,7 +364,7 @@
         }
     },
     "read": {
-        "title": "Read",
+        "title": "Read - {title}",
         "document": {
             "page": "Page",
             "findMore": "Want to find more articles and resources?",
