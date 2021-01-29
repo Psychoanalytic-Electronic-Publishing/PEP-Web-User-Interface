@@ -124,17 +124,19 @@ export default class ModalDialogsUserPreferences extends Component<ModalDialogsU
      * @memberof ModalDialogsUserPreferences
      */
     @action
-    updateWidgetsList(widget: WIDGET, selected: boolean) {
+    async updateWidgetsList(widget: WIDGET, selected: boolean) {
         if (selected) {
-            const widgets = this.currentUser.preferences?.visibleWidgets;
-            widgets?.push(widget);
-            this.currentUser.updatePrefs({ [PreferenceKey.VISIBLE_WIDGETS]: widgets });
+            const widgets = [...(this.currentUser.preferences?.visibleWidgets ?? [])];
+            widgets.push(widget);
+            await this.currentUser.updatePrefs({ [PreferenceKey.VISIBLE_WIDGETS]: widgets });
+            this.currentUser.preferences?.visibleWidgets?.push(widget);
         } else {
             const index = this.currentUser.preferences?.visibleWidgets.indexOf(widget);
-            const widgets = this.currentUser.preferences?.visibleWidgets;
+            const widgets = [...(this.currentUser.preferences?.visibleWidgets ?? [])];
             if (widgets && index !== undefined) {
                 widgets.removeAt(index);
-                this.currentUser.updatePrefs({ [PreferenceKey.VISIBLE_WIDGETS]: widgets });
+                await this.currentUser.updatePrefs({ [PreferenceKey.VISIBLE_WIDGETS]: widgets });
+                this.currentUser.preferences?.visibleWidgets.removeAt(index);
             }
         }
     }

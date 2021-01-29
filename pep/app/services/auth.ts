@@ -33,6 +33,13 @@ export interface LoginForm {
     password: string | null;
 }
 
+interface ModalOptions {
+    closeOpenModal?: boolean;
+    actions?: {
+        onAuthenticated?: () => void;
+    };
+}
+
 export default class AuthService extends Service {
     @service('pep-session') session!: PepSessionService;
     @service ajax!: AjaxService;
@@ -47,7 +54,7 @@ export default class AuthService extends Service {
      * @param {Boolean} dontRedirectOnLogin
      * @param {Object} modalOptions
      */
-    async openLoginModal(dontRedirectOnLogin = false, modalOptions = {}) {
+    async openLoginModal(dontRedirectOnLogin = false, modalOptions: ModalOptions = {}) {
         try {
             this.loadingBar.show();
             const model: LoginForm = { username: null, password: null };
@@ -63,6 +70,9 @@ export default class AuthService extends Service {
                     appendTrailingSlash: false
                 }
             );
+            if (modalOptions.closeOpenModal) {
+                this.modal.close();
+            }
             this.modal.open('user/login', {
                 ...modalOptions,
                 changeset,

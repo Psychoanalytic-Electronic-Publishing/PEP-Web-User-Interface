@@ -38,8 +38,8 @@ export default class ThemeService extends Service {
      * Updates the user's selected theme
      * @param {ThemeId} newThemeId
      */
-    updateTheme(newThemeId: ThemeId) {
-        this.currentUser.updatePrefs({ [PreferenceKey.THEME]: newThemeId });
+    async updateTheme(newThemeId: ThemeId) {
+        await this.currentUser.updatePrefs({ [PreferenceKey.THEME]: newThemeId });
         const theme = window.document.querySelector('#theme');
         if (theme) {
             theme?.setAttribute('href', this.currentTheme.cssPath);

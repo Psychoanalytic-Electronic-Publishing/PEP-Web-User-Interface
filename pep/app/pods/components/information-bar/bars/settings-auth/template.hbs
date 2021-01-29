@@ -1,0 +1,10 @@
+<span class="mr-5">
+    {{t "informationBars.settingsAuth.title"}}
+</span>
+<Button
+    @type="primary"
+    @wide={{true}}
+    @action={{this.login}}
+    @label={{t "informationBars.settingsAuth.buttons.signIn"}}
+/>
+<Button @type="link" @action={{@close}} @label={{t "common.cancel"}} />
