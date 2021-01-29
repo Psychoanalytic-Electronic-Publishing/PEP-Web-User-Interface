@@ -211,9 +211,6 @@ export default class CurrentUserService extends Service {
     async updatePrefs(prefValues: PreferenceChangeset) {
         if (this.user?.userType === UserType.GROUP) {
             return reject(this.informationBar.show('settings-auth'));
-            // return this.auth.openLoginModal(true, {
-            //     closeOpenModal: true
-            // });
         } else {
             const keys = Object.keys(prefValues) as PreferenceKey[];
             const cookie = this.cookies.read(USER_PREFERENCES_COOKIE_NAME);

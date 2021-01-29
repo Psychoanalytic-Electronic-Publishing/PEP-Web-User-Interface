@@ -26,6 +26,7 @@ import LoadingBarService from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
 import SidebarService from 'pep/services/sidebar';
 import ThemeService from 'pep/services/theme';
+import { onAuthenticated } from 'pep/utils/user';
 
 export default class Application extends PageLayout(Route.extend(ApplicationRouteMixin)) {
     routeAfterAuthentication = 'index';
@@ -123,16 +124,7 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
      * Handler called by ember-simple-auth upon successful login
      */
     async sessionAuthenticated() {
-        try {
-            // get the current user's model before transitioning from the login page
-            await this.currentUser.load();
-        } catch (err) {
-            this.notifications.error(this.intl.t('login.error'));
-            throw err;
-        }
-
-        // update configurations based on the newly logged in user session
-        await this.appSetup();
+        onAuthenticated(this);
 
         // trigger a custom event on the session that tells us when the user is logged in
         // and all other post-login tasks (loading user record, prefs/configs setup, etc) is complete
