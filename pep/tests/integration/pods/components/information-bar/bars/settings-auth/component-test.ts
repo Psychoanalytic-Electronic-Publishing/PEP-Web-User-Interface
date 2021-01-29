@@ -14,6 +14,6 @@ module('Integration | Component | information-bar/bars/settings-auth', function(
 
         await render(hbs`{{information-bar/bars/settings-auth}}`);
 
-        assert.equal(this.element.textContent?.trim(), '');
+        assert.ok(this.element.textContent?.trim());
     });
 });
