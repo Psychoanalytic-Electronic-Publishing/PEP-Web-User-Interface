@@ -1,6 +1,10 @@
 <DropdownMenu @horizontalPosition="auto-right" as |DD|>
     <DD.Trigger @htmlTag="button" class="btn btn-link px-2">
         <FaIcon @icon="download" @size="lg" @prefix="fas" />
+        {{#unless this.iconOnly}}
+            {{t "search.preview.download.label"}}
+            <FaIcon @icon="angle-down" class="ml-1 text-muted" />
+        {{/unless}}
     </DD.Trigger>
     <DD.Content class="dropdown-menu">
         <DropdownAction @dd={{DD}} @action={{fn this.downloadDocument this.downloadUrlEpub}}>

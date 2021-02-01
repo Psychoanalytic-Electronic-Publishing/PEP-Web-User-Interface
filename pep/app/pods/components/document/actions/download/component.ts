@@ -9,6 +9,7 @@ import PepSessionService from 'pep/services/pep-session';
 
 interface DocumentActionsDownloadArgs {
     document: Document;
+    iconOnly: boolean;
 }
 
 export default class DocumentActionsDownload extends Component<DocumentActionsDownloadArgs> {
@@ -25,6 +26,10 @@ export default class DocumentActionsDownload extends Component<DocumentActionsDo
 
     get downloadUrlPdfOrig() {
         return `${DOCUMENT_PDFORIG_BASE_URL}/${this.args.document.id}`;
+    }
+
+    get iconOnly() {
+        return this.args.iconOnly ?? false;
     }
 
     /**
