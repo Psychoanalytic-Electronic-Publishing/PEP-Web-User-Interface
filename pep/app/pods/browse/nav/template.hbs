@@ -45,17 +45,9 @@
                                 @estimateHeight={{100}}
                                 @renderAll={{this.fastboot.isFastBoot}} as |result|
                             >
-                                <li class="p-1">
-                                    <LinkTo
-                                        @route="browse.journal"
-                                        @model={{result.id}}
-                                        class="d-flex align-items-center justify-content-between"
-                                    >
-                                        <span class="small w-90">
-                                            {{result.srcTitle}}
-                                        </span>
-                                    </LinkTo>
-                                </li>
+                                <Browse::SidebarItem @item={{result}} @route="browse.journal">
+                                    {{result.srcTitle}}
+                                </Browse::SidebarItem>
                             </VerticalCollection>
                         {{else}}
                             <div class="text-muted small">
@@ -81,42 +73,41 @@
                             )
                         }}
                             {{#if this.filteredBooks.freudsCollectedWorks.GW.books}}
-                                <div class="small w-90 p-1">
-                                    <LinkTo @route="browse.book.gw">
+                                <LinkTo
+                                    @route="browse.book.gw"
+                                    @activeClass="bg-backdrop"
+                                    @class="d-flex align-items-center justify-content-between p-1"
+                                >
+                                    <span class="small w-90">
                                         {{this.filteredBooks.freudsCollectedWorks.GW.title}}
-                                    </LinkTo>
-                                </div>
+                                    </span>
+                                </LinkTo>
                             {{/if}}
                             {{#if this.filteredBooks.freudsCollectedWorks.SE.books}}
-                                <div class="small w-90 p-1">
-                                    <LinkTo @route="browse.book.se">
+                                <LinkTo
+                                    @route="browse.book.se"
+                                    @activeClass="bg-backdrop"
+                                    @class="d-flex align-items-center justify-content-between p-1"
+                                >
+                                    <span class="small w-90">
                                         {{this.filteredBooks.freudsCollectedWorks.SE.title}}
-                                    </LinkTo>
-                                </div>
+                                    </span>
+                                </LinkTo>
                             {{/if}}
                         {{else}}
                             <div class="text-muted small">
                                 {{t "browse.selection.search.noResults" term=this.filter}}
                             </div>
                         {{/if}}
-
                         <h5>
                             {{t "browse.selection.books.glossaries"}}
                         </h5>
                         {{#if this.filteredBooks.glossaries}}
                             <ul class="list-unstyled">
                                 {{#each this.filteredBooks.glossaries as |result|}}
-                                    <li class="p-1">
-                                        <LinkTo
-                                            @route="browse.read"
-                                            @model={{result.id}}
-                                            class="d-flex align-items-center justify-content-between"
-                                        >
-                                            <span class="small w-90">
-                                                {{result.title}}
-                                            </span>
-                                        </LinkTo>
-                                    </li>
+                                    <Browse::SidebarItem @item={{result}} @route="browse.read">
+                                        {{result.title}}
+                                    </Browse::SidebarItem>
                                 {{/each}}
                             </ul>
                         {{else}}
@@ -137,15 +128,9 @@
                                 @renderAll={{this.fastboot.isFastBoot}} as |result|
                             >
                                 <li class="p-1">
-                                    <LinkTo
-                                        @route="browse.read"
-                                        @model={{result.id}}
-                                        class="d-flex align-items-center justify-content-between"
-                                    >
-                                        <span class="small w-90">
-                                            {{result.authors}} ({{result.pub_year}}) {{result.title}}
-                                        </span>
-                                    </LinkTo>
+                                    <Browse::SidebarItem @item={{result}} @route="browse.read">
+                                        {{result.authors}} ({{result.pub_year}}) {{result.title}}
+                                    </Browse::SidebarItem>
                                 </li>
                             </VerticalCollection>
                         {{else}}
@@ -171,17 +156,9 @@
                                 @estimateHeight={{100}}
                                 @renderAll={{this.fastboot.isFastBoot}} as |result|
                             >
-                                <li class="p-1">
-                                    <LinkTo
-                                        @route="browse.read"
-                                        @model={{result.id}}
-                                        class="d-flex align-items-center justify-content-between"
-                                    >
-                                        <span class="small w-90">
-                                            {{result.title}}
-                                        </span>
-                                    </LinkTo>
-                                </li>
+                                <Browse::SidebarItem @item={{result}} @route="browse.read">
+                                    {{result.title}}
+                                </Browse::SidebarItem>
                             </VerticalCollection>
                         {{else}}
                             <div class="text-muted small">

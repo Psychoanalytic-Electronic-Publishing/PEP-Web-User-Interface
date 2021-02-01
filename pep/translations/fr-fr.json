@@ -352,6 +352,7 @@
         "alt": "Journal Banner",
         "availableVolumes": "Available Volumes",
         "journal": {
+            "title": "{name}",
             "volume": {
                 "title": "Volume {number} ({year})"
             }
@@ -364,7 +365,7 @@
         }
     },
     "read": {
-        "title": "Read",
+        "title": "Read - {title}",
         "document": {
             "page": "Page",
             "findMore": "Want to find more articles and resources?",
