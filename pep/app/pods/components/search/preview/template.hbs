@@ -92,33 +92,7 @@
                                     @action={{this.viewDocument}}
                                     class="mr-2"
                                 />
-                                <DropdownMenu @horizontalPosition="auto-left" as |DD|>
-                                    <DD.Trigger @htmlTag="button" class="btn btn-link px-2">
-                                        <FaIcon @icon="download" />
-                                        {{t "search.preview.download.label"}}
-                                        <FaIcon @icon="angle-down" class="ml-1 text-muted" />
-                                    </DD.Trigger>
-                                    <DD.Content class="dropdown-menu">
-                                        <DropdownAction
-                                            @dd={{DD}}
-                                            @action={{fn this.downloadDocument this.downloadUrlEpub}}
-                                        >
-                                            {{t "search.preview.download.ePub"}}
-                                        </DropdownAction>
-                                        <DropdownAction
-                                            @dd={{DD}}
-                                            @action={{fn this.downloadDocument this.downloadUrlPdf}}
-                                        >
-                                            {{t "search.preview.download.pdf"}}
-                                        </DropdownAction>
-                                        <DropdownAction
-                                            @dd={{DD}}
-                                            @action={{fn this.downloadDocument this.downloadUrlPdfOrig}}
-                                        >
-                                            {{t "search.preview.download.pdfOrig"}}
-                                        </DropdownAction>
-                                    </DD.Content>
-                                </DropdownMenu>
+                                <Document::Actions::Download @document={{this.result}} />
                             {{/if}}
                         </div>
                     </div>

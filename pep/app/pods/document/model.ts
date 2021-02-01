@@ -35,6 +35,7 @@ export default class Document extends DS.Model {
     @attr('string') newSectionName!: string;
     @attr('string') origrx!: string;
     @attr('string') PEPCode!: string;
+    @attr('boolean') pdfOriginalAvailable!: boolean;
     @attr('string') pgEnd!: string;
     @attr('string') pgRg!: string;
     @attr('string') pgStart!: string;
