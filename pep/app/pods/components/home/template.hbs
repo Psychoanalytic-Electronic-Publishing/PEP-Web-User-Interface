@@ -51,54 +51,53 @@
         <div class="row">
             <div class="col">
                 <div class="card">
-                    <div
-                        class="card-body"
-                        {{did-resize this.handleResize debounce=200}}
-                    >
+                    <div class="card-body" {{did-resize this.handleResize debounce=200}}>
                         <div class="border-divider-b mb-3">
                             <h5 class="card-title">
                                 {{t "home.expertPick.heading"}}
                             </h5>
                         </div>
                         <ContentWithPlaceholder @placeholderInFastboot={{true}}>
-                            <div {{did-insert this.handleResize}} class="expert-pick-graphic-container">
-                                <Button
-                                    @action={{this.readImageDocument}}
-                                    @type="none"
-                                    class="mb-1 px-0 mr-md-auto mr-0"
-                                >
-                                    <Document::Image @id={{this.expertPick.imageId}} class="rounded img-fluid" />
-                                </Button>
-                                <a 
-                                    href={{this.imageArticleUrl}}
-                                    {{on "click" this.readImageDocument}}
-                                    class="mb-3 mb-xl-0"
-                                >
-                                    {{t "home.expertPick.graphicFromTheArticle" title=this.imageArticle.title}}
-                                </a>
-                            </div>
-                            <div class="card-text mb-3">
-                                {{#if this.model}}
-                                    <Document::Text
-                                        @document={{this.model}}
-                                        @target="abstract"
-                                        @onGlossaryItemClick={{this.viewGlossaryTerm}}
-                                    />
-                                {{/if}}
-                            </div>
-                            <div class="card-text mb-3">
-                                <Button
-                                    @type="primary"
-                                    @wide={{true}}
-                                    @action={{this.readExpertPick}}
-                                    @label={{t
-                                        (if
-                                            this.session.isAuthenticated
-                                            "home.expertPick.read"
-                                            "home.expertPick.loginAndRead"
-                                        )
-                                    }}
-                                />
+                            <div class="card-text-container d-flex">
+                                <div class="card-text mb-3">
+                                    {{#if this.model}}
+                                        <Document::Text
+                                            @document={{this.model}}
+                                            @target="abstract"
+                                            @onGlossaryItemClick={{this.viewGlossaryTerm}}
+                                        />
+                                        <div class="card-text mb-3">
+                                            <Button
+                                                @type="primary"
+                                                @wide={{true}}
+                                                @action={{this.readExpertPick}}
+                                                @label={{t
+                                                    (if
+                                                        this.session.isAuthenticated
+                                                        "home.expertPick.read"
+                                                        "home.expertPick.loginAndRead"
+                                                    )
+                                                }}
+                                            />
+                                        </div>
+                                    {{/if}}
+                                </div>
+                                <div class="expert-pick-graphic-container d-flex flex-column">
+                                    <Button
+                                        @action={{this.readImageDocument}}
+                                        @type="none"
+                                        class="mb-1 px-0 mr-md-auto mr-0"
+                                    >
+                                        <Document::Image @id={{this.expertPick.imageId}} class="rounded img-fluid" />
+                                    </Button>
+                                    <a
+                                        href={{this.imageArticleUrl}}
+                                        class="mb-3 mb-xl-0"
+                                        {{on "click" this.readImageDocument}}
+                                    >
+                                        {{t "home.expertPick.graphicFromTheArticle" title=this.imageArticle.title}}
+                                    </a>
+                                </div>
                             </div>
                         </ContentWithPlaceholder>
                     </div>
