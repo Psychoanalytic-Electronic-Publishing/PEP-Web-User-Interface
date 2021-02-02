@@ -5,6 +5,7 @@ import { inject as service } from '@ember/service';
 import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hooks/pagination';
 import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
 
+import { SearchFacetId } from 'pep/constants/search';
 import { WIDGET } from 'pep/constants/sidebar';
 import { PageNav } from 'pep/mixins/page-layout';
 import BrowseReadController from 'pep/pods/browse/read/controller';
@@ -55,7 +56,18 @@ export default class BrowseRead extends PageNav(Route) {
         const controller = this.controllerFor(this.routeName) as BrowseReadController;
         const smartSearchTerm = model.id.split('.');
         const searchParams = buildSearchQueryParams({
-            smartSearchTerm: `${smartSearchTerm[0]}.${smartSearchTerm[1]}.*`
+            // smartSearchTerm: `${smartSearchTerm[0]}.${smartSearchTerm[1]}.*`
+            facetValues: [
+                {
+                    id: SearchFacetId.ART_SOURCECODE,
+                    value: smartSearchTerm[0]
+                },
+                {
+                    id: SearchFacetId.ART_VOL,
+                    value: Number(smartSearchTerm[1]).toString()
+                }
+            ],
+            abstract: false
         });
         const queryParams = buildQueryParams({
             context: controller,

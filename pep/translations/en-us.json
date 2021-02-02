@@ -430,8 +430,8 @@
             },
             "relatedDocuments": {
                 "title": "Related Documents",
-                "noResults": "You must view a document to see the documents related to it. If you are already viewing one, this means no results have been found.",
-                "help": "Related documents to the document you are reading will show up here."
+                "noResults": "This infocard shows articles directly related to the one you are reading. For example, follow up commentaries or responses. Or other parts in a related issue series. If there are none, you will see this message.",
+                "help": "For documents which have related articles, the {faIcon} icon will show up next to listing, indicating that the article is part of a series or has follow up commentary in the journal."
             },
             "relevantSearches": {
                 "title": "Relevant searches",

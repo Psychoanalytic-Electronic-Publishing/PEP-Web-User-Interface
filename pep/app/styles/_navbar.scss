@@ -2,6 +2,9 @@
     &.fixed-top {
         box-shadow: 0 2px 4px rgba($black, 0.25);
     }
+    .font-xlarge & {
+        padding: 0 1rem;
+    }
 
     .navbar-brand {
         padding-top: 0;
@@ -9,6 +12,17 @@
         font-size: 0.8rem;
         font-weight: bold;
         line-height: 1.1;
+
+        .font-xlarge & {
+            .navbar-text-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                div {
+                    margin-right: 0.3rem;
+                }
+            }
+        }
 
         &:focus {
             outline: none;

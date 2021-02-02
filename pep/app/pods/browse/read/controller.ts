@@ -6,7 +6,7 @@ import { tracked } from '@glimmer/tracking';
 import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
 import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 
-import { SearchView, SearchViews, SearchViewType } from 'pep/constants/search';
+import { SearchFacetId, SearchView, SearchViews, SearchViewType } from 'pep/constants/search';
 import Document from 'pep/pods/document/model';
 import LoadingBarService from 'pep/services/loading-bar';
 import { buildSearchQueryParams } from 'pep/utils/search';
@@ -32,7 +32,17 @@ export default class BrowseRead extends Controller {
     get relatedDocumentQueryParams() {
         const smartSearchTerm = this.model.id.split('.');
         return buildSearchQueryParams({
-            smartSearchTerm: `${smartSearchTerm[0]}.${smartSearchTerm[1]}.*`
+            facetValues: [
+                {
+                    id: SearchFacetId.ART_SOURCECODE,
+                    value: smartSearchTerm[0]
+                },
+                {
+                    id: SearchFacetId.ART_VOL,
+                    value: Number(smartSearchTerm[1]).toString()
+                }
+            ],
+            abstract: false
         });
     }
 

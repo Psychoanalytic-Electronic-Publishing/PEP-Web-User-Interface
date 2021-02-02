@@ -70,6 +70,7 @@ type BuildSearchQueryParams = {
     facetLimit?: number | null;
     facetMinCount?: number | null;
     highlightlimit?: number;
+    abstract?: boolean;
 };
 
 export type SearchController = {
@@ -106,7 +107,8 @@ export function buildSearchQueryParams(searchQueryParams: BuildSearchQueryParams
         joinOp = 'AND',
         facetLimit = null,
         facetMinCount = null,
-        highlightlimit
+        highlightlimit,
+        abstract
     } = searchQueryParams;
 
     const queryParams: SearchQueryParams = {
@@ -117,7 +119,7 @@ export function buildSearchQueryParams(searchQueryParams: BuildSearchQueryParams
         citecount: citedCount,
         viewcount: viewedCount,
         viewperiod: `${!isNone(viewedPeriod) && !isEmpty(viewedCount) ? viewedPeriod : ''}`,
-        abstract: true,
+        abstract: abstract ?? true,
         highlightlimit,
         synonyms
     };
