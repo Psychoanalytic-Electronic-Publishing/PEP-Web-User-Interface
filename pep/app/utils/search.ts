@@ -345,3 +345,27 @@ export function getSearchQueryParams(toController: Controller) {
     const searchController = getOwner(toController).lookup(`controller:search.index`) as Controller & SearchController;
     return searchController.queryParams;
 }
+
+/**
+ * Build the left hand column search for when you read documents in browse mode
+ *
+ * @export
+ * @param {string} id
+ * @return {*}
+ */
+export function buildBrowseRelatedDocumentsParams(id: string) {
+    const terms = id.split('.');
+    return {
+        facetValues: [
+            {
+                id: SearchFacetId.ART_SOURCECODE,
+                value: terms[0]
+            },
+            {
+                id: SearchFacetId.ART_VOL,
+                value: Number(terms[1]).toString()
+            }
+        ],
+        abstract: false
+    };
+}

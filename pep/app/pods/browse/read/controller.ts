@@ -9,7 +9,9 @@ import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 import { SearchFacetId, SearchView, SearchViews, SearchViewType } from 'pep/constants/search';
 import Document from 'pep/pods/document/model';
 import LoadingBarService from 'pep/services/loading-bar';
-import { buildSearchQueryParams } from 'pep/utils/search';
+import {
+    buildBrowseRelatedDocuments, buildBrowseRelatedDocumentsParams, buildSearchQueryParams
+} from 'pep/utils/search';
 import { SearchSorts, transformSearchSortToAPI } from 'pep/utils/sort';
 import { reject } from 'rsvp';
 
@@ -30,20 +32,8 @@ export default class BrowseRead extends Controller {
     sorts = SearchSorts;
 
     get relatedDocumentQueryParams() {
-        const smartSearchTerm = this.model.id.split('.');
-        return buildSearchQueryParams({
-            facetValues: [
-                {
-                    id: SearchFacetId.ART_SOURCECODE,
-                    value: smartSearchTerm[0]
-                },
-                {
-                    id: SearchFacetId.ART_VOL,
-                    value: Number(smartSearchTerm[1]).toString()
-                }
-            ],
-            abstract: false
-        });
+        const params = buildBrowseRelatedDocumentsParams(this.model.id);
+        return buildSearchQueryParams(params);
     }
 
     /**

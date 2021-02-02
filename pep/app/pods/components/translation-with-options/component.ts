@@ -11,6 +11,12 @@ interface TranslationWithOptionsArgs {
 export default class TranslationWithOptions extends Component<TranslationWithOptionsArgs> {
     @service intl!: IntlService;
 
+    /**
+     * Generated the tranlated message using the key and options. This allows you to pass in components like font awesome icons
+     *
+     * @readonly
+     * @memberof TranslationWithOptions
+     */
     get tokens() {
         const translation = this.intl.lookup(this.args.path);
         if (translation) {

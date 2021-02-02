@@ -14,7 +14,7 @@ import SearchDocument from 'pep/pods/search-document/model';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService, { VIEW_DOCUMENT_FROM } from 'pep/services/current-user';
 import SidebarService from 'pep/services/sidebar';
-import { buildSearchQueryParams } from 'pep/utils/search';
+import { buildBrowseRelatedDocumentsParams, buildSearchQueryParams } from 'pep/utils/search';
 
 export interface BrowseReadParams {
     document_id: string;
@@ -54,21 +54,10 @@ export default class BrowseRead extends PageNav(Route) {
         });
 
         const controller = this.controllerFor(this.routeName) as BrowseReadController;
-        const smartSearchTerm = model.id.split('.');
-        const searchParams = buildSearchQueryParams({
-            // smartSearchTerm: `${smartSearchTerm[0]}.${smartSearchTerm[1]}.*`
-            facetValues: [
-                {
-                    id: SearchFacetId.ART_SOURCECODE,
-                    value: smartSearchTerm[0]
-                },
-                {
-                    id: SearchFacetId.ART_VOL,
-                    value: Number(smartSearchTerm[1]).toString()
-                }
-            ],
-            abstract: false
-        });
+
+        const params = buildBrowseRelatedDocumentsParams(model.id);
+        const searchParams = buildSearchQueryParams(params);
+
         const queryParams = buildQueryParams({
             context: controller,
             pagingRootKey: null,
