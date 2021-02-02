@@ -696,7 +696,7 @@
             "username": "Username",
             "fullName": "Full Name",
             "email": "Email",
-            "problemText": "Please the describe the issue and/or problem text",
+            "problemText": "Please describe the issue/problem text",
             "correctedText": "Please describe the corrections",
             "correctedTextHelp": "You may also describe the problem and corrections.",
             "urlOfProblem": "URL of Problem",
