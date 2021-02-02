@@ -60,9 +60,11 @@ export default class AuthService extends Service {
             const model: LoginForm = { username: null, password: null };
             const changeset = createChangeset<LoginForm>(model, LoginValidations);
             this.dontRedirectOnLogin = dontRedirectOnLogin;
-            const session = this.session.getUnauthenticatedSession();
+            const session = this.session.isAuthenticated
+                ? this.session.data?.authenticated?.SessionId
+                : this.session.getUnauthenticatedSession()?.SessionId;
             const params = serializeQueryParams({
-                sessionId: session?.SessionId ?? ''
+                sessionId: session ?? ''
             });
             const federatedLogins = await this.ajax.request<FederatedLoginResponse>(
                 `${ENV.federatedLoginUrl}?${params}`,
