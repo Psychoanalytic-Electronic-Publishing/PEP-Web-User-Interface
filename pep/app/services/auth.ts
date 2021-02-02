@@ -71,7 +71,7 @@ export default class AuthService extends Service {
                 }
             );
             if (modalOptions.closeOpenModal) {
-                this.modal.close();
+                await this.modal.close();
             }
             this.modal.open('user/login', {
                 ...modalOptions,
