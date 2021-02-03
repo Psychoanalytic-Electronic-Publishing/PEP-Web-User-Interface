@@ -24,9 +24,14 @@
             <p class="text-muted font-size-secondary mb-0">
                 {{t "about.version.server" versionNumber=@options.serverInformation.text_server_version}}
             </p>
-            <p class="text-muted font-size-secondary">
+            <p class="text-muted font-size-secondary mb-0">
                 {{t "about.version.data" versionNumber=@options.serverInformation.dataSource}}
             </p>
+            {{#if this.sessionId}}
+                <p class="text-muted font-size-secondary">
+                    {{t "about.version.sessionId" id=this.sessionId}}
+                </p>
+            {{/if}}
         </div>
         <div class="mb-2">
             <h5>

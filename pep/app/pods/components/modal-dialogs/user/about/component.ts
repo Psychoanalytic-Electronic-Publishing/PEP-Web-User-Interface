@@ -1,8 +1,11 @@
-import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
+import Component from '@glimmer/component';
+
 import IntlService from 'ember-intl/services/intl';
+import SessionService from 'ember-simple-auth/services/session';
 
 import { ServerStatus } from 'pep/api';
+import PepSessionService from 'pep/services/pep-session';
 
 interface ModalDialogsUserAboutArgs {
     onClose: () => void;
@@ -14,6 +17,7 @@ interface ModalDialogsUserAboutArgs {
 
 export default class ModalDialogsUserAbout extends Component<ModalDialogsUserAboutArgs> {
     @service intl!: IntlService;
+    @service('pep-session') session!: PepSessionService;
 
     /**
      * @remarks
@@ -29,5 +33,11 @@ export default class ModalDialogsUserAbout extends Component<ModalDialogsUserAbo
 
     get status(): string {
         return this.intl.t(this.isStatusOk ? 'about.status.ok' : 'about.status.down');
+    }
+
+    get sessionId(): string | undefined {
+        return this.session.isAuthenticated
+            ? this.session.data.authenticated.SessionId
+            : this.session?.getUnauthenticatedSession()?.SessionId;
     }
 }

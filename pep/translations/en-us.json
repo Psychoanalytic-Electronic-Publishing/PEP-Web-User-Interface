@@ -632,7 +632,8 @@
             "title": "Version",
             "client": "Client: {versionNumber}",
             "server": "Server: {versionNumber}",
-            "data": "DataSource: {versionNumber}"
+            "data": "DataSource: {versionNumber}",
+            "sessionId": "Session: {id}"
         },
         "status": {
             "title": "Status",
