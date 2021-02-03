@@ -36,6 +36,13 @@ export default class ModalDialogsUserPreferences extends Component<ModalDialogsU
     hicLimit = PreferenceKey.SEARCH_HIC_LIMIT;
     glossaryFormattingEnabledKey = PreferenceKey.GLOSSARY_FORMATTING_ENABLED;
 
+    get widgets() {
+        return WIDGETS.map((widget) => ({
+            ...widget,
+            label: this.intl.t(widget.label)
+        }));
+    }
+
     /**
      * Close the preferences modal dialog
      */
@@ -132,13 +139,6 @@ export default class ModalDialogsUserPreferences extends Component<ModalDialogsU
         let newValue = Number(value.data) as UserPreferences['searchHICLimit'];
         this.searchHicLimit = value.data ?? undefined;
         return taskFor(this.updatePreferenceTask).perform(this.hicLimit, newValue);
-    }
-
-    get widgets() {
-        return WIDGETS.map((widget) => ({
-            ...widget,
-            label: this.intl.t(widget.label)
-        }));
     }
 
     /**
