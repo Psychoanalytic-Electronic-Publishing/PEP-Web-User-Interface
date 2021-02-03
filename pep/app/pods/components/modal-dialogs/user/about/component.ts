@@ -34,10 +34,4 @@ export default class ModalDialogsUserAbout extends Component<ModalDialogsUserAbo
     get status(): string {
         return this.intl.t(this.isStatusOk ? 'about.status.ok' : 'about.status.down');
     }
-
-    get sessionId(): string | undefined {
-        return this.session.isAuthenticated
-            ? this.session.data.authenticated.SessionId
-            : this.session?.getUnauthenticatedSession()?.SessionId;
-    }
 }

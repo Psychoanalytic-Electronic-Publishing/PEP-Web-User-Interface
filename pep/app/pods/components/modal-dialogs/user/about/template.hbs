@@ -27,9 +27,9 @@
             <p class="text-muted font-size-secondary mb-0">
                 {{t "about.version.data" versionNumber=@options.serverInformation.dataSource}}
             </p>
-            {{#if this.sessionId}}
+            {{#if this.session.sessionId}}
                 <p class="text-muted font-size-secondary">
-                    {{t "about.version.sessionId" id=this.sessionId}}
+                    {{t "about.version.sessionId" id=this.session.sessionId}}
                 </p>
             {{/if}}
         </div>

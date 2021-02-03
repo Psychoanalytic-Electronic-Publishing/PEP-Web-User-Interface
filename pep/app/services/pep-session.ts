@@ -30,6 +30,9 @@ export default class PepSessionService extends SessionService.extend({
 }) {
     @service cookies!: CookiesService;
 
+    get sessionId(): string | undefined {
+        return this.isAuthenticated ? this.data.authenticated.SessionId : this.getUnauthenticatedSession()?.SessionId;
+    }
     /**
      * Set the unauthed session date in a cookie
      *
