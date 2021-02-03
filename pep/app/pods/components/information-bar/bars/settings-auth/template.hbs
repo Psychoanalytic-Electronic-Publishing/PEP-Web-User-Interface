@@ -1,10 +1,12 @@
-<span class="mr-5">
+<span class="mr-0 mr-sm-5 my-2 my-sm-0 d-flex">
     {{t "informationBars.settingsAuth.title"}}
 </span>
-<Button
-    @type="primary"
-    @wide={{true}}
-    @action={{this.login}}
-    @label={{t "informationBars.settingsAuth.buttons.signIn"}}
-/>
-<Button @type="link" @action={{@close}} @label={{t "common.cancel"}} />
+<div class="d-flex">
+    <Button
+        @type="primary"
+        @wide={{true}}
+        @action={{this.login}}
+        @label={{t "informationBars.settingsAuth.buttons.signIn"}}
+    />
+    <Button @type="link" @action={{@close}} @label={{t "common.cancel"}} />
+</div>

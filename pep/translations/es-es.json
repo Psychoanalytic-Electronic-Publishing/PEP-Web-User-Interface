@@ -420,7 +420,7 @@
             "publisherInfo": {
                 "title": "Informacion de la editorial",
                 "view": "View information for {publisher}",
-                "noResults": "You must view a document to see the documents publisher information.",
+                "noResults": "You must view a document to see the document's publisher information.",
                 "help": "Publisher information for the current document your viewing will appear here."
             },
             "readLater": {
