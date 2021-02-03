@@ -30,6 +30,13 @@ export default class PepSessionService extends SessionService.extend({
 }) {
     @service cookies!: CookiesService;
 
+    /**
+     * Get the session. It could be either the logged in or logged out session.
+     *
+     * @readonly
+     * @type {(string | undefined)}
+     * @memberof PepSessionService
+     */
     get sessionId(): string | undefined {
         return this.isAuthenticated ? this.data.authenticated.SessionId : this.getUnauthenticatedSession()?.SessionId;
     }
