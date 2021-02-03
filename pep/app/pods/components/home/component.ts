@@ -36,7 +36,7 @@ export default class Home extends Component<HomeArgs> {
      * wraps above the expert-pick text.
      *
      */
-    graphicWrapWidth = 870;
+    graphicWrapWidth = 725;
 
     @tracked model?: Abstract;
     @tracked imageArticle?: SearchDocument;
@@ -163,13 +163,12 @@ export default class Home extends Component<HomeArgs> {
      */
     @action
     handleResize(el: HTMLElement) {
-        const graphicContainer = el.className === 'card-body' ? el.querySelector('.expert-pick-graphic-container') : el;
+        const graphicContainer = el.className === 'card-body' ? el.querySelector('.card-text-container') : el;
         if (graphicContainer) {
             if (el.clientWidth < this.graphicWrapWidth) {
-                graphicContainer.className = 'expert-pick-graphic-container mb-2 mb-md-3 d-flex flex-column';
+                graphicContainer.className = 'card-text-container d-flex flex-wrap';
             } else {
-                graphicContainer.className =
-                    'expert-pick-graphic-container float-right ml-3 pl-3 mb-2 d-flex flex-column border-divider-l';
+                graphicContainer.className = 'card-text-container d-flex';
             }
         }
     }

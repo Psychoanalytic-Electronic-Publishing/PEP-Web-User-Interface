@@ -431,7 +431,7 @@
             "relatedDocuments": {
                 "title": "Related Documents",
                 "noResults": "You must view a document to see the documents related to it. If you are already viewing one, this means no results have been found.",
-                "help": "Related documents to the document you are reading will show up here."
+                "help": "For documents which have related articles, the {faIcon} icon will show up next to listing, indicating that the article is part of a series or has follow up commentary in the journal."
             },
             "relevantSearches": {
                 "title": "Relevant searches",
@@ -754,6 +754,14 @@
             "tomato": "Tomato",
             "dark": "Dark",
             "highContrast": "High Contrast"
+        }
+    },
+    "informationBars": {
+        "settingsAuth": {
+            "title": "Sign in is required in order to change settings",
+            "buttons": {
+                "signIn": "Sign in"
+            }
         }
     },
     "validations": {

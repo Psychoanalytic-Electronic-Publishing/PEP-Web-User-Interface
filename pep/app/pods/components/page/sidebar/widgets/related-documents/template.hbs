@@ -8,7 +8,11 @@
 >
     <Panel.header
         @title={{t "relatedInfo.widgets.relatedDocuments.title"}}
-        @tooltip={{t "relatedInfo.widgets.relatedDocuments.help"}}
+        @tooltip={{component
+            "translation-with-options"
+            path="relatedInfo.widgets.relatedDocuments.help"
+            options=(hash faIcon=(component "fa-icon" icon="layer-group"))
+        }}
     />
     <Panel.body>
         <ContentWithPlaceholder @placeholderComponent="loading/widget" @isLoading={{this.loadResults.isRunning}}>

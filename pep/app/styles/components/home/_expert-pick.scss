@@ -1,5 +1,23 @@
 .expert-pick {
     &-graphic-container {
-        max-width: 20.75rem;
+        min-width: 17rem;
+    }
+}
+
+.card-text-container {
+    .expert-pick-graphic-container {
+        border-left: 1px solid $color-divider;
+        margin-left: 1rem;
+        padding-left: 1rem;
+    }
+    &.flex-wrap {
+        .expert-pick-graphic-container {
+            border-top: 1px solid $color-divider;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-left: none;
+            margin-left: 0;
+            padding-left: 0;
+        }
     }
 }

@@ -8,8 +8,6 @@ import { tracked } from '@glimmer/tracking';
 import ModalService from '@gavant/ember-modals/services/modal';
 import { DS } from 'ember-data';
 
-import ENV from 'pep/config/environment';
-import { DOCUMENT_EPUB_BASE_URL, DOCUMENT_PDF_BASE_URL, DOCUMENT_PDFORIG_BASE_URL } from 'pep/constants/documents';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import Abstract from 'pep/pods/abstract/model';
 import GlossaryTerm from 'pep/pods/glossary-term/model';
@@ -17,7 +15,6 @@ import AuthService from 'pep/services/auth';
 import LoadingBarService from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
 import ScrollableService from 'pep/services/scrollable';
-import { serializeQueryParams } from 'pep/utils/url';
 
 export type SearchPreviewMode = 'minimized' | 'maximized' | 'fit' | 'custom';
 

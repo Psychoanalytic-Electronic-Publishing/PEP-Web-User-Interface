@@ -70,6 +70,7 @@ type BuildSearchQueryParams = {
     facetLimit?: number | null;
     facetMinCount?: number | null;
     highlightlimit?: number;
+    abstract?: boolean;
 };
 
 export type SearchController = {
@@ -106,7 +107,8 @@ export function buildSearchQueryParams(searchQueryParams: BuildSearchQueryParams
         joinOp = 'AND',
         facetLimit = null,
         facetMinCount = null,
-        highlightlimit
+        highlightlimit,
+        abstract
     } = searchQueryParams;
 
     const queryParams: SearchQueryParams = {
@@ -117,7 +119,7 @@ export function buildSearchQueryParams(searchQueryParams: BuildSearchQueryParams
         citecount: citedCount,
         viewcount: viewedCount,
         viewperiod: `${!isNone(viewedPeriod) && !isEmpty(viewedCount) ? viewedPeriod : ''}`,
-        abstract: true,
+        abstract: abstract ?? true,
         highlightlimit,
         synonyms
     };
@@ -342,4 +344,28 @@ export function copyToController<ControllerInstance>(object: any, controller: Co
 export function getSearchQueryParams(toController: Controller) {
     const searchController = getOwner(toController).lookup(`controller:search.index`) as Controller & SearchController;
     return searchController.queryParams;
+}
+
+/**
+ * Build the left hand column search for when you read documents in browse mode
+ *
+ * @export
+ * @param {string} id
+ * @return {*}
+ */
+export function buildBrowseRelatedDocumentsParams(id: string) {
+    const terms = id.split('.');
+    return {
+        facetValues: [
+            {
+                id: SearchFacetId.ART_SOURCECODE,
+                value: terms[0]
+            },
+            {
+                id: SearchFacetId.ART_VOL,
+                value: Number(terms[1]).toString()
+            }
+        ],
+        abstract: false
+    };
 }

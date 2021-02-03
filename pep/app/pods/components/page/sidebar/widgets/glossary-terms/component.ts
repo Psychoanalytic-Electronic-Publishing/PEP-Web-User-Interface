@@ -5,10 +5,12 @@ import Component from '@glimmer/component';
 
 import Modal from '@gavant/ember-modals/services/modal';
 import DS from 'ember-data';
+import IntlService from 'ember-intl/services/intl';
 
 import { WIDGET } from 'pep/constants/sidebar';
 import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
 import LoadingBarService from 'pep/services/loading-bar';
+import NotificationsService from 'pep/services/notifications';
 import { shuffle } from 'pep/utils/array';
 
 interface PageSidebarWidgetsGlossaryTermsArgs extends PageSidebarWidgetArgs {}
@@ -17,6 +19,8 @@ export default class PageSidebarWidgetsGlossaryTerms extends Component<PageSideb
     @service loadingBar!: LoadingBarService;
     @service store!: DS.Store;
     @service modal!: Modal;
+    @service notifications!: NotificationsService;
+    @service intl!: IntlService;
 
     smallestFontSize = 0.6;
     fontMultiplier = 1.1;
@@ -87,6 +91,7 @@ export default class PageSidebarWidgetsGlossaryTerms extends Component<PageSideb
                 term
             });
         } catch (error) {
+            this.notifications.error(this.intl.t('serverErrors.unknown.unexpected'));
             throw error;
         } finally {
             this.loadingBar.hide();

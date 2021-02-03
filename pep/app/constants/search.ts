@@ -23,7 +23,8 @@ export type SearchTermParam =
     | 'endyear'
     | 'citecount'
     | 'viewcount'
-    | 'viewperiod';
+    | 'viewperiod'
+    | 'volume';
 
 /**
  * Valid values for the viewperiod /v2/Database/Search endpoint (and misc other endpoints)
@@ -485,6 +486,26 @@ export const SEARCH_FACET_LANG: SearchFacetType = {
 //     values: []
 // };
 
+export const SEARCH_FACET_SOURCE_CODE: SearchFacetType = {
+    id: SearchFacetId.ART_SOURCECODE,
+    param: 'sourcecode',
+    paramSeparator: ' OR ',
+    label: 'search.facets.source_code.label',
+    dynamicValues: true,
+    prefixValues: false,
+    values: []
+};
+
+export const SEARCH_FACET_VOLUME: SearchFacetType = {
+    id: SearchFacetId.ART_VOL,
+    param: 'volume',
+    paramSeparator: ' OR ',
+    label: 'search.facets.volume.label',
+    dynamicValues: true,
+    prefixValues: false,
+    values: []
+};
+
 export const SEARCH_FACET_GLOSSARY_GROUPS: SearchFacetType = {
     id: SearchFacetId.GLOSSARY_GROUP_TERMS,
     param: 'fulltext1',
@@ -580,7 +601,9 @@ export const SEARCH_FACETS = [
     // SEARCH_FACET_GLOSSARY,
     SEARCH_FACET_GLOSSARY_GROUPS,
     SEARCH_FACET_KEYWORDS,
-    SEARCH_FACET_ART_QUAL
+    SEARCH_FACET_ART_QUAL,
+    SEARCH_FACET_SOURCE_CODE,
+    SEARCH_FACET_VOLUME
 ];
 
 export const VIEW_PERIOD_WEEK: ViewPeriodOption = {
