@@ -2,7 +2,6 @@ import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
 
 import IntlService from 'ember-intl/services/intl';
-import SessionService from 'ember-simple-auth/services/session';
 
 import { ServerStatus } from 'pep/api';
 import PepSessionService from 'pep/services/pep-session';

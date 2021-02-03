@@ -1,13 +1,13 @@
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
 
 import { timeout } from 'ember-concurrency';
 import { enqueueTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
 import IntlService from 'ember-intl/services/intl';
 
-import { Err } from 'neverthrow';
 import { LanguageCode } from 'pep/constants/lang';
 import { PreferenceKey, UserPreferences } from 'pep/constants/preferences';
 import { WIDGET, WIDGETS } from 'pep/constants/sidebar';
@@ -30,6 +30,8 @@ export default class ModalDialogsUserPreferences extends Component<ModalDialogsU
     @service lang!: LangService;
     @service notifications!: NotificationsService;
 
+    @tracked searchHicLimit = this.currentUser.preferences?.searchHICLimit?.toString();
+
     searchEnabledKey = PreferenceKey.SEARCH_PREVIEW_ENABLED;
     hicLimit = PreferenceKey.SEARCH_HIC_LIMIT;
     glossaryFormattingEnabledKey = PreferenceKey.GLOSSARY_FORMATTING_ENABLED;
@@ -51,12 +53,12 @@ export default class ModalDialogsUserPreferences extends Component<ModalDialogsU
     @action
     async updateFontSize(size: FontSize) {
         try {
-            await this.currentUser.updateFontSize(size);
-            this.currentUser.setFontSize(size);
-        } catch (error) {
-            if (!guard<Err<any, any>>(error, 'isErr')) {
-                this.notifications.errors(error, {});
+            const result = await this.currentUser.updateFontSize(size);
+            if (result.isOk()) {
+                this.currentUser.setFontSize(size);
             }
+        } catch (error) {
+            this.notifications.errors(error, {});
         }
     }
 
@@ -118,6 +120,20 @@ export default class ModalDialogsUserPreferences extends Component<ModalDialogsU
         return taskFor(this.updatePreferenceTask).perform(key, newValue);
     }
 
+    /**
+     * Update the HIC limit
+     *
+     * @param {InputEvent} value
+     * @return {*}
+     * @memberof ModalDialogsUserPreferences
+     */
+    @action
+    updateHicLimit(value: InputEvent) {
+        let newValue = Number(value.data) as UserPreferences['searchHICLimit'];
+        this.searchHicLimit = value.data ?? undefined;
+        return taskFor(this.updatePreferenceTask).perform(this.hicLimit, newValue);
+    }
+
     get widgets() {
         return WIDGETS.map((widget) => ({
             ...widget,
@@ -137,15 +153,19 @@ export default class ModalDialogsUserPreferences extends Component<ModalDialogsU
         if (selected) {
             const widgets = [...(this.currentUser.preferences?.visibleWidgets ?? [])];
             widgets.push(widget);
-            await this.currentUser.updatePrefs({ [PreferenceKey.VISIBLE_WIDGETS]: widgets });
-            this.currentUser.preferences?.visibleWidgets?.push(widget);
+            const result = await this.currentUser.updatePrefs({ [PreferenceKey.VISIBLE_WIDGETS]: widgets });
+            if (result.isOk()) {
+                this.currentUser.preferences?.visibleWidgets?.push(widget);
+            }
         } else {
             const index = this.currentUser.preferences?.visibleWidgets.indexOf(widget);
             const widgets = [...(this.currentUser.preferences?.visibleWidgets ?? [])];
             if (widgets && index !== undefined) {
                 widgets.removeAt(index);
-                await this.currentUser.updatePrefs({ [PreferenceKey.VISIBLE_WIDGETS]: widgets });
-                this.currentUser.preferences?.visibleWidgets.removeAt(index);
+                const result = await this.currentUser.updatePrefs({ [PreferenceKey.VISIBLE_WIDGETS]: widgets });
+                if (result.isOk()) {
+                    this.currentUser.preferences?.visibleWidgets.removeAt(index);
+                }
             }
         }
     }

@@ -6,12 +6,10 @@ import { tracked } from '@glimmer/tracking';
 import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
 import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 
-import { SearchFacetId, SearchView, SearchViews, SearchViewType } from 'pep/constants/search';
+import { SearchView, SearchViews, SearchViewType } from 'pep/constants/search';
 import Document from 'pep/pods/document/model';
 import LoadingBarService from 'pep/services/loading-bar';
-import {
-    buildBrowseRelatedDocuments, buildBrowseRelatedDocumentsParams, buildSearchQueryParams
-} from 'pep/utils/search';
+import { buildBrowseRelatedDocumentsParams, buildSearchQueryParams } from 'pep/utils/search';
 import { SearchSorts, transformSearchSortToAPI } from 'pep/utils/sort';
 import { reject } from 'rsvp';
 

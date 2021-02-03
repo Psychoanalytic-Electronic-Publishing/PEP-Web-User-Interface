@@ -90,9 +90,9 @@
                         <div class="col-sm-8">
                             <FlInput
                                 @placeholder={{t "preferences.search.hic.limit"}}
-                                @value={{this.currentUser.preferences.searchHICLimit}}
+                                @value={{this.searchHicLimit}}
                                 maxlength="2"
-                                {{on "input" (fn this.updatePreference this.hicLimit)}}
+                                {{on "input" this.updateHicLimit}}
                             />
                         </div>
                     </div>
