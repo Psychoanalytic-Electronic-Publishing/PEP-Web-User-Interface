@@ -104,7 +104,7 @@ export const DEFAULT_USER_PREFERENCES: UserPreferences = {
     searchHICEnabled: true,
     searchHICLimit: 1,
     readLater: [],
-    theme: ThemeId.DARK,
+    theme: ThemeId.DEFAULT,
     searchViewType: SearchViews[0],
     searchSortType: SearchSorts[0],
     tourEnabled: true,
