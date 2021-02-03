@@ -7,6 +7,7 @@ import { enqueueTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
 import IntlService from 'ember-intl/services/intl';
 
+import { Err } from 'neverthrow';
 import { LanguageCode } from 'pep/constants/lang';
 import { PreferenceKey, UserPreferences } from 'pep/constants/preferences';
 import { WIDGET, WIDGETS } from 'pep/constants/sidebar';
@@ -14,6 +15,7 @@ import { FontSize, TextJustificationId } from 'pep/constants/text';
 import { ThemeId } from 'pep/constants/themes';
 import CurrentUserService from 'pep/services/current-user';
 import LangService from 'pep/services/lang';
+import NotificationsService from 'pep/services/notifications';
 import ThemeService from 'pep/services/theme';
 import { guard } from 'pep/utils/types';
 
@@ -26,6 +28,7 @@ export default class ModalDialogsUserPreferences extends Component<ModalDialogsU
     @service currentUser!: CurrentUserService;
     @service intl!: IntlService;
     @service lang!: LangService;
+    @service notifications!: NotificationsService;
 
     searchEnabledKey = PreferenceKey.SEARCH_PREVIEW_ENABLED;
     hicLimit = PreferenceKey.SEARCH_HIC_LIMIT;
@@ -46,9 +49,15 @@ export default class ModalDialogsUserPreferences extends Component<ModalDialogsU
      * @memberof ModalDialogsUserPreferences
      */
     @action
-    updateFontSize(size: FontSize) {
-        this.currentUser.setFontSize(size);
-        this.currentUser.updateFontSize(size);
+    async updateFontSize(size: FontSize) {
+        try {
+            await this.currentUser.updateFontSize(size);
+            this.currentUser.setFontSize(size);
+        } catch (error) {
+            if (!guard<Err<any, any>>(error, 'isErr')) {
+                this.notifications.errors(error, {});
+            }
+        }
     }
 
     /**

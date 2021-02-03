@@ -6,6 +6,7 @@ import CookiesService from 'ember-cookies/services/cookies';
 import DS from 'ember-data';
 import IntlService from 'ember-intl/services/intl';
 
+import { err, ok, Result } from 'neverthrow';
 import ENV from 'pep/config/environment';
 import { DATE_FOREVER } from 'pep/constants/dates';
 import {
@@ -25,6 +26,14 @@ import { reject } from 'rsvp';
 export enum VIEW_DOCUMENT_FROM {
     SEARCH = 'search',
     OTHER = 'other'
+}
+
+export class PreferencesUpdateError extends Error {
+    constructor(m: string) {
+        super(m);
+        // Set the prototype explicitly.
+        Object.setPrototypeOf(this, PreferencesUpdateError.prototype);
+    }
 }
 
 export default class CurrentUserService extends Service {
@@ -208,9 +217,10 @@ export default class CurrentUserService extends Service {
      * @param {PreferenceChangeset} prefValues
      * @returns Promise<UserPreferences>
      */
-    async updatePrefs(prefValues: PreferenceChangeset) {
+    async updatePrefs(prefValues: PreferenceChangeset): Promise<Result<UserPreferences | undefined, Error>> {
         if (this.user?.userType === UserType.GROUP) {
-            return reject(this.informationBar.show('settings-auth'));
+            this.informationBar.show('settings-auth');
+            return reject(err(new PreferencesUpdateError('Could not update preferences due to user being a group')));
         } else {
             const keys = Object.keys(prefValues) as PreferenceKey[];
             const cookie = this.cookies.read(USER_PREFERENCES_COOKIE_NAME);
@@ -240,21 +250,25 @@ export default class CurrentUserService extends Service {
 
             // if the user is logged in, apply the new prefs locally, then save the user
             if (this.session.isAuthenticated && this.user) {
-                const oldUserPrefs = this.user?.clientSettings ?? {};
-                const newUserPrefs = Object.assign(
-                    {},
-                    DEFAULT_USER_PREFERENCES,
-                    oldUserPrefs,
-                    prefValues
-                ) as UserPreferences;
-                this.user.clientSettings = newUserPrefs;
-                this.setup();
-                await this.user.save();
-                return this.preferences;
+                try {
+                    const oldUserPrefs = this.user?.clientSettings ?? {};
+                    const newUserPrefs = Object.assign(
+                        {},
+                        DEFAULT_USER_PREFERENCES,
+                        oldUserPrefs,
+                        prefValues
+                    ) as UserPreferences;
+                    this.user.clientSettings = newUserPrefs;
+                    this.setup();
+                    await this.user.save();
+                    return ok(this.preferences);
+                } catch (error) {
+                    return err(error);
+                }
                 // otherwise, just apply the prefs locally (cookies/localstorage)
             } else {
                 this.setup();
-                return this.preferences;
+                return ok(this.preferences);
             }
         }
     }
@@ -341,7 +355,7 @@ export default class CurrentUserService extends Service {
      * @memberof CurrentUserService
      */
     updateFontSize(newSize: FontSize) {
-        this.updatePrefs({ [PreferenceKey.FONT_SIZE]: newSize });
+        return this.updatePrefs({ [PreferenceKey.FONT_SIZE]: newSize });
     }
 
     /**
@@ -351,6 +365,6 @@ export default class CurrentUserService extends Service {
      * @memberof CurrentUserService
      */
     updateTextJustification(textJustification: TextJustificationId) {
-        this.updatePrefs({ [PreferenceKey.TEXT_JUSTIFICATION]: textJustification });
+        return this.updatePrefs({ [PreferenceKey.TEXT_JUSTIFICATION]: textJustification });
     }
 }
