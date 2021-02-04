@@ -11,7 +11,7 @@ interface ImageArgs {
 export default class Image extends Component<ImageArgs> {
     @service('pep-session') session!: PepSessionService;
 
-    get source() {
+    get source(): string {
         let src = `${this.args.source}?client-id=${ENV.clientId}`;
         if (this.session.isAuthenticated && this.session.data.authenticated.SessionId) {
             src += `&client-session=${this.session.data.authenticated.SessionId}`;

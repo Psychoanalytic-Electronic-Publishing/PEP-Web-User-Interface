@@ -1,11 +1,12 @@
 declare module 'ember-simple-auth/services/session' {
-    import Service from '@ember/service';
-    import Evented from '@ember/object/evented';
-    import RSVP from 'rsvp';
-    import User from 'pep/pods/user/model';
-    import Transition from '@ember/routing/-private/transition';
+import Evented from '@ember/object/evented';
+import Transition from '@ember/routing/-private/transition';
+import Service from '@ember/service';
 
-    export default class session extends Service.extend(Evented) {
+import User from 'pep/pods/user/model';
+import RSVP from 'rsvp';
+
+        export default class session extends Service.extend(Evented) {
         /**
          * Triggered whenever the session is successfully authenticated. This happens
          * when the session gets authenticated via
@@ -44,9 +45,9 @@ declare module 'ember-simple-auth/services/session' {
         user: User;
 
         set<K extends keyof this>(key: K, value: this[K]): this[K];
-        authenticate(...args: any[]): RSVP.Promise<{}>;
-        invalidate(...args: any): RSVP.Promise<{}>;
-        authorize(...args: any[]): RSVP.Promise<{}>;
+        authenticate(...args: any[]): RSVP.Promise<Record<string, unknown>>;
+        invalidate(...args: any): RSVP.Promise<Record<string, unknown>>;
+        authorize(...args: any[]): RSVP.Promise<Record<string, unknown>>;
 
         /**
             Checks whether the session is authenticated and if it is not, transitions
@@ -64,7 +65,7 @@ declare module 'ember-simple-auth/services/session' {
             @return {Boolean} true when the session is authenticated, false otherwise
             @public
         */
-        requireAuthentication(transition: Transition, routeOrCallback: string | Function): boolean;
+        requireAuthentication(transition: Transition, routeOrCallback: string | (() => void)): boolean;
 
         /**
             Checks whether the session is authenticated and if it is, transitions
@@ -74,7 +75,7 @@ declare module 'ember-simple-auth/services/session' {
             @return {Boolean} true when the session is not authenticated, false otherwise
             @public
         */
-        prohibitAuthentication(routeOrCallback: string | Function): boolean;
+        prohibitAuthentication(routeOrCallback: string | (() => void)): boolean;
 
         /**
             This method is called whenever the session goes from being unauthenticated

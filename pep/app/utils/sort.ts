@@ -1,3 +1,5 @@
+import { TableSort } from '@gavant/ember-table';
+
 import { SORT_DASH_REGEX } from 'pep/constants/regex';
 
 export enum APISortDirection {
@@ -50,7 +52,7 @@ export const SearchSorts = [
  * @param {string[]} sorts
  * @returns {string[]}
  */
-export function transformSearchSortToAPI(sorts?: string[]) {
+export function transformSearchSortToAPI(sorts?: string[]): string[] {
     if (sorts?.length) {
         const sort = sorts[0];
         const transformedSort = transformSortDirectionToAPI(sort);
@@ -80,7 +82,7 @@ export function transformSearchSortToAPI(sorts?: string[]) {
  * @param {string[]} [sorts]
  * @returns {TableSort[] | undefined}
  */
-export function transformSearchSortsToTable(sorts?: string[]) {
+export function transformSearchSortsToTable(sorts?: string[]): TableSort[] | undefined {
     return sorts?.map((sort) => {
         const sortValue = sort.split(' ');
         const name = sortValue[0];
@@ -112,7 +114,7 @@ export function transformSearchSortsToTable(sorts?: string[]) {
  * @param {string} sort
  * @returns {TableSort}
  */
-export function transformSortDirectionToTable(sort: string) {
+export function transformSortDirectionToTable(sort: string): TableSort {
     const sortValue = sort.split(' ');
     const name = sortValue[0];
     const direction = sortValue[1];
@@ -129,7 +131,7 @@ export function transformSortDirectionToTable(sort: string) {
  * @param {string} sort
  * @returns {string}
  */
-export function transformSortDirectionToAPI(sort: string) {
+export function transformSortDirectionToAPI(sort: string): string {
     const sortWithoutDirection = sort.replace(SORT_DASH_REGEX, '');
     return sort.indexOf('-') !== -1
         ? `${sortWithoutDirection} ${APISortDirection.DESCENDING}`

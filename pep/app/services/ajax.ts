@@ -23,7 +23,12 @@ export default class AjaxService extends Service {
      * Add the oauth token authorization header to all requests
      * @returns {Object}
      */
-    @computed('session.{isAuthenticated,data.authenticated.SessionId}')
+    @computed(
+        'fastboot.isFastBoot',
+        'fastboot.request.headers',
+        'session.data.authenticated.SessionId',
+        'session.isAuthenticated'
+    )
     get authorizationHeaders() {
         const headers = {} as any;
         // api auth token is sent in cookies
@@ -129,7 +134,7 @@ export default class AjaxService extends Service {
      * @returns {Boolean}
      */
     isSuccess(status: string | number) {
-        let s = this.normalizeStatus(status);
+        const s = this.normalizeStatus(status);
         return (s >= 200 && s < 300) || s === 304;
     }
 
@@ -155,7 +160,7 @@ export default class AjaxService extends Service {
     parseHeaders(headers: Headers) {
         if (headers && typeof headers.keys === 'function') {
             const parsedHeaders = {} as any;
-            for (let key of headers.keys()) {
+            for (const key of headers.keys()) {
                 parsedHeaders[key] = headers.get(key);
             }
             return parsedHeaders;

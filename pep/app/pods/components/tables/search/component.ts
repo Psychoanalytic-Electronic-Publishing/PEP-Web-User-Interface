@@ -43,7 +43,7 @@ export default class TablesSearch extends Component<TablesSearchArgs> {
      * @type {ColumnValue[]}
      * @memberof TablesMostViewed
      */
-    @computed()
+    @computed('args.onLinkClick')
     get columns(): ColumnValue[] {
         return [
             {

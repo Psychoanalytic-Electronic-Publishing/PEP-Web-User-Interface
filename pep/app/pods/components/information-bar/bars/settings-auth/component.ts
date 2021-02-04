@@ -24,7 +24,7 @@ export default class InformationBarBarsSettingsAuth extends Component<Informatio
      * @memberof InformationBarBarsSettingsAuth
      */
     @action
-    login() {
+    login(): void {
         this.args.close();
         this.auth.openLoginModal(true, {
             closeOpenModal: true,

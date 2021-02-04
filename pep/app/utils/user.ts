@@ -1,4 +1,7 @@
 import { getOwner } from '@ember/application';
+import Controller from '@ember/controller';
+import Route from '@ember/routing/route';
+import Component from '@glimmer/component';
 
 /**
  * Functionality for loading user and configs after authentication
@@ -7,7 +10,7 @@ import { getOwner } from '@ember/application';
  * @param {*} owner
  * @return {Promise<any>}
  */
-export async function onAuthenticated(owner: any) {
+export async function onAuthenticated(owner: Controller | Route | Component): Promise<any> {
     const currentOwner = getOwner(owner);
     const currentUserService = currentOwner.lookup(`service:current-user`);
     const notificationsService = currentOwner.lookup(`service:notifications`);

@@ -128,7 +128,7 @@ export function buildSearchQueryParams(searchQueryParams: BuildSearchQueryParams
     const parascopes: string[] = [];
 
     nonEmptyTerms?.forEach((term) => {
-        let searchType = SEARCH_TYPES.findBy('id', term.type);
+        const searchType = SEARCH_TYPES.findBy('id', term.type);
         if (searchType && searchType.param) {
             let value = term.term.trim();
             const p = searchType.param as keyof SearchQueryStrParams;
@@ -171,11 +171,11 @@ export function buildSearchQueryParams(searchQueryParams: BuildSearchQueryParams
     );
 
     Object.keys(groupedFacets).forEach((id) => {
-        let facetType = SEARCH_FACETS.findBy('id', id);
-        let facets = groupedFacets[id];
+        const facetType = SEARCH_FACETS.findBy('id', id);
+        const facets = groupedFacets[id];
         if (facetType && facetType.param) {
             //join all the selected facet values together
-            let facetValues = facets.map((f) => (facetType?.quoteValues ? `"${f.value}"` : f.value));
+            const facetValues = facets.map((f) => (facetType?.quoteValues ? `"${f.value}"` : f.value));
             let values = facetValues.join(facetType.paramSeparator);
 
             if (facetType.prefixValues) {
@@ -201,7 +201,7 @@ export function joinParamValues(
     currentParam: string | undefined,
     newParam: string | string[],
     joinOperator: 'AND' | 'OR' = 'AND'
-) {
+): string {
     return `${currentParam ? `${currentParam} ${joinOperator} ` : ''}${newParam}`;
 }
 
@@ -225,7 +225,7 @@ export function hasSearchQuery(
         'formatrequested',
         'highlightlimit'
     ]
-) {
+): boolean {
     return Object.keys(params).filter((p) => !exclude.includes(p)).length > 0;
 }
 
@@ -243,7 +243,7 @@ export function groupCountsByRange(
     range: number = 10,
     separator: string = '-',
     postfix: string = ''
-) {
+): SearchFacetCounts {
     const values = Object.keys(counts).map((id) => Number(id));
     const countsByRanges: SearchFacetCounts = {};
     values.forEach((v) => {
@@ -262,7 +262,7 @@ export function groupCountsByRange(
  * @param {(Controller & SearchController)} toController
  * @param {Search} searchController
  */
-export function copySearchToController(toController: Controller & SearchController) {
+export function copySearchToController(toController: Controller & SearchController): void {
     const searchController = getOwner(toController).lookup(`controller:search.index`);
     const config: ConfigurationService = getOwner(toController).lookup('service:configuration');
     const user: CurrentUserService = getOwner(toController).lookup('service:currentUser');
@@ -292,7 +292,7 @@ export function clearSearch(
     controller: Controller & SearchController,
     configuration: ConfigurationService,
     user: CurrentUserService
-) {
+): void {
     const searchController = getOwner(controller).lookup(`controller:search.index`);
     const cfg = configuration.base.search;
     const preferences = user.preferences;
@@ -330,7 +330,7 @@ export function clearSearch(
  * @param {*} object
  * @param {ControllerInstance} controller
  */
-export function copyToController<ControllerInstance>(object: any, controller: ControllerInstance) {
+export function copyToController<ControllerInstance>(object: any, controller: ControllerInstance): void {
     Object.assign(controller, object);
 }
 
@@ -341,7 +341,7 @@ export function copyToController<ControllerInstance>(object: any, controller: Co
  * @param {Controller} toController
  * @return {*}
  */
-export function getSearchQueryParams(toController: Controller) {
+export function getSearchQueryParams(toController: Controller): any {
     const searchController = getOwner(toController).lookup(`controller:search.index`) as Controller & SearchController;
     return searchController.queryParams;
 }
@@ -351,9 +351,23 @@ export function getSearchQueryParams(toController: Controller) {
  *
  * @export
  * @param {string} id
- * @return {*}
+ * @return {*}  {{
+ *     facetValues: {
+ *         id: SearchFacetId;
+ *         value: string;
+ *     }[];
+ *     abstract: boolean;
+ * }}
  */
-export function buildBrowseRelatedDocumentsParams(id: string) {
+export function buildBrowseRelatedDocumentsParams(
+    id: string
+): {
+    facetValues: {
+        id: SearchFacetId;
+        value: string;
+    }[];
+    abstract: boolean;
+} {
     const terms = id.split('.');
     return {
         facetValues: [

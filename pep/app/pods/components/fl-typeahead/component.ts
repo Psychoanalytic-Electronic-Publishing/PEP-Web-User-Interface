@@ -1,7 +1,8 @@
-import Component from '@glimmer/component';
-import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { next } from '@ember/runloop';
+import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
+
 import { Dropdown } from 'ember-basic-dropdown/addon/components/basic-dropdown';
 import { timeout } from 'ember-concurrency';
 import { restartableTask } from 'ember-concurrency-decorators';
@@ -208,7 +209,7 @@ export default class FlTypeahead extends Component<FlTypeaheadArgs> {
             // continue until it also reaches whitespace or beginning/end of the string).
             while (prevCharPos >= 0 || nextCharPos <= value.length - 1) {
                 if (prevCharPos >= 0) {
-                    let char = value.charAt(prevCharPos);
+                    const char = value.charAt(prevCharPos);
                     if (NOT_WHITESPACE_RE.test(char)) {
                         word = `${char}${word}`;
                         startIndex = prevCharPos;
@@ -219,7 +220,7 @@ export default class FlTypeahead extends Component<FlTypeaheadArgs> {
                 }
 
                 if (nextCharPos <= value.length - 1) {
-                    let char = value.charAt(nextCharPos);
+                    const char = value.charAt(nextCharPos);
                     if (NOT_WHITESPACE_RE.test(char)) {
                         word = `${word}${char}`;
                         nextCharPos++;

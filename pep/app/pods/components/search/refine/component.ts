@@ -47,12 +47,12 @@ export default class SearchRefine extends Component<SearchRefineArgs> {
 
         displayedFacets.forEach((facetType) => {
             if (facetType && incFields.includes(facetType.id)) {
-                let fieldCountsMap = facetType.formatCounts
+                const fieldCountsMap = facetType.formatCounts
                     ? facetType.formatCounts(fieldsMap[facetType.id])
                     : fieldsMap[facetType.id];
-                let fieldCountIds = Object.keys(fieldCountsMap);
-                let allOptIds = facetType.dynamicValues ? fieldCountIds : facetType.values.map((v) => v.id);
-                let allOptions: RefineOption[] = allOptIds.map((optId) => {
+                const fieldCountIds = Object.keys(fieldCountsMap);
+                const allOptIds = facetType.dynamicValues ? fieldCountIds : facetType.values.map((v) => v.id);
+                const allOptions: RefineOption[] = allOptIds.map((optId) => {
                     let label;
                     if (facetType.dynamicValues) {
                         label = facetType.formatOption ? facetType.formatOption(optId, this.intl) : capitalize(optId);

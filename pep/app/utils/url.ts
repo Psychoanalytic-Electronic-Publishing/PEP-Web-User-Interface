@@ -38,10 +38,10 @@ function add(s: Array<any>, k: string, v?: string | (() => string)) {
  * @return {String}
  */
 export function serializeQueryParams(queryParamsObject: object | string): string {
-    var s: any[] = [];
+    const s: any[] = [];
 
     function buildParams(prefix: string, obj: any) {
-        var i, len, key;
+        let i, len, key;
 
         if (prefix) {
             if (Array.isArray(obj)) {
@@ -49,12 +49,12 @@ export function serializeQueryParams(queryParamsObject: object | string): string
                     if (RBRACKET.test(prefix)) {
                         add(s, prefix, obj[i]);
                     } else {
-                        buildParams(prefix + '[' + (typeof obj[i] === 'object' ? i : '') + ']', obj[i]);
+                        buildParams(`${prefix}[${typeof obj[i] === 'object' ? i : ''}]`, obj[i]);
                     }
                 }
             } else if (isPlainObject(obj)) {
                 for (key in obj) {
-                    buildParams(prefix + '[' + key + ']', obj[key]);
+                    buildParams(`${prefix}[${key}]`, obj[key]);
                 }
             } else {
                 add(s, prefix, obj);
@@ -81,7 +81,7 @@ export function serializeQueryParams(queryParamsObject: object | string): string
  * @param {String} url
  * @returns {String}
  */
-export function appendTrailingSlash(url: string) {
+export function appendTrailingSlash(url: string): string {
     const hasQueryStr = url.indexOf('?') !== -1;
     return hasQueryStr ? url.replace('?', '/?') : `${url}/`;
 }
