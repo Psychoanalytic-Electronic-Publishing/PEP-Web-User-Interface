@@ -39,17 +39,19 @@ export default class ThemeService extends Service {
      * @param {ThemeId} newThemeId
      */
     async updateTheme(newThemeId: ThemeId) {
-        await this.currentUser.updatePrefs({ [PreferenceKey.THEME]: newThemeId });
-        const theme = window.document.querySelector('#theme');
-        if (theme) {
-            theme?.setAttribute('href', this.currentTheme.cssPath);
-        } else {
-            const linkElement = window.document.createElement('link');
-            linkElement.setAttribute('rel', 'stylesheet');
-            linkElement.setAttribute('type', 'text/css');
-            linkElement.setAttribute('id', 'theme');
-            linkElement.setAttribute('href', this.currentTheme.cssPath);
-            window.document.head.appendChild(linkElement);
+        const result = await this.currentUser.updatePrefs({ [PreferenceKey.THEME]: newThemeId });
+        if (result.isOk()) {
+            const theme = window.document.querySelector('#theme');
+            if (theme) {
+                theme?.setAttribute('href', this.currentTheme.cssPath);
+            } else {
+                const linkElement = window.document.createElement('link');
+                linkElement.setAttribute('rel', 'stylesheet');
+                linkElement.setAttribute('type', 'text/css');
+                linkElement.setAttribute('id', 'theme');
+                linkElement.setAttribute('href', this.currentTheme.cssPath);
+                window.document.head.appendChild(linkElement);
+            }
         }
     }
 }

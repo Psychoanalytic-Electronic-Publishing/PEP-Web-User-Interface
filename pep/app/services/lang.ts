@@ -48,10 +48,12 @@ export default class LangService extends Service {
      * @returns {Promise<void>}
      */
     async changeLanguage(lang: LanguageCode) {
-        await this.currentUser.updatePrefs({ [PreferenceKey.LANG]: lang });
-        await this.loadLanguage(lang);
-        this.currentLanguage = lang;
-        this.intl.setLocale(lang);
+        const result = await this.currentUser.updatePrefs({ [PreferenceKey.LANG]: lang });
+        if (result.isOk()) {
+            await this.loadLanguage(lang);
+            this.currentLanguage = lang;
+            this.intl.setLocale(lang);
+        }
         return this.configuration.setup();
     }
 }

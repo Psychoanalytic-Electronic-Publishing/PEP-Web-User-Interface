@@ -21,6 +21,7 @@ import InformationBarService from 'pep/services/information-bar';
 import PepSessionService from 'pep/services/pep-session';
 import { addClass, removeClass } from 'pep/utils/dom';
 import { reject } from 'rsvp';
+import Result, { err, ok } from 'true-myth/result';
 
 export enum VIEW_DOCUMENT_FROM {
     SEARCH = 'search',
@@ -208,9 +209,10 @@ export default class CurrentUserService extends Service {
      * @param {PreferenceChangeset} prefValues
      * @returns Promise<UserPreferences>
      */
-    async updatePrefs(prefValues: PreferenceChangeset) {
+    async updatePrefs(prefValues: PreferenceChangeset): Promise<Result<UserPreferences | undefined, string>> {
         if (this.user?.userType === UserType.GROUP) {
-            return reject(this.informationBar.show('settings-auth'));
+            this.informationBar.show('settings-auth');
+            return err('Could not update preferences due to user being a group');
         } else {
             const keys = Object.keys(prefValues) as PreferenceKey[];
             const cookie = this.cookies.read(USER_PREFERENCES_COOKIE_NAME);
@@ -250,11 +252,12 @@ export default class CurrentUserService extends Service {
                 this.user.clientSettings = newUserPrefs;
                 this.setup();
                 await this.user.save();
-                return this.preferences;
+                return ok(this.preferences);
+
                 // otherwise, just apply the prefs locally (cookies/localstorage)
             } else {
                 this.setup();
-                return this.preferences;
+                return ok(this.preferences);
             }
         }
     }
@@ -341,7 +344,7 @@ export default class CurrentUserService extends Service {
      * @memberof CurrentUserService
      */
     updateFontSize(newSize: FontSize) {
-        this.updatePrefs({ [PreferenceKey.FONT_SIZE]: newSize });
+        return this.updatePrefs({ [PreferenceKey.FONT_SIZE]: newSize });
     }
 
     /**
@@ -351,6 +354,6 @@ export default class CurrentUserService extends Service {
      * @memberof CurrentUserService
      */
     updateTextJustification(textJustification: TextJustificationId) {
-        this.updatePrefs({ [PreferenceKey.TEXT_JUSTIFICATION]: textJustification });
+        return this.updatePrefs({ [PreferenceKey.TEXT_JUSTIFICATION]: textJustification });
     }
 }

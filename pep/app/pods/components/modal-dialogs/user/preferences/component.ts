@@ -1,6 +1,7 @@
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
 
 import { timeout } from 'ember-concurrency';
 import { enqueueTask } from 'ember-concurrency-decorators';
@@ -14,6 +15,7 @@ import { FontSize, TextJustificationId } from 'pep/constants/text';
 import { ThemeId } from 'pep/constants/themes';
 import CurrentUserService from 'pep/services/current-user';
 import LangService from 'pep/services/lang';
+import NotificationsService from 'pep/services/notifications';
 import ThemeService from 'pep/services/theme';
 import { guard } from 'pep/utils/types';
 
@@ -26,10 +28,20 @@ export default class ModalDialogsUserPreferences extends Component<ModalDialogsU
     @service currentUser!: CurrentUserService;
     @service intl!: IntlService;
     @service lang!: LangService;
+    @service notifications!: NotificationsService;
+
+    @tracked searchHicLimit = this.currentUser.preferences?.searchHICLimit?.toString();
 
     searchEnabledKey = PreferenceKey.SEARCH_PREVIEW_ENABLED;
     hicLimit = PreferenceKey.SEARCH_HIC_LIMIT;
     glossaryFormattingEnabledKey = PreferenceKey.GLOSSARY_FORMATTING_ENABLED;
+
+    get widgets() {
+        return WIDGETS.map((widget) => ({
+            ...widget,
+            label: this.intl.t(widget.label)
+        }));
+    }
 
     /**
      * Close the preferences modal dialog
@@ -46,9 +58,15 @@ export default class ModalDialogsUserPreferences extends Component<ModalDialogsU
      * @memberof ModalDialogsUserPreferences
      */
     @action
-    updateFontSize(size: FontSize) {
-        this.currentUser.setFontSize(size);
-        this.currentUser.updateFontSize(size);
+    async updateFontSize(size: FontSize) {
+        try {
+            const result = await this.currentUser.updateFontSize(size);
+            if (result.isOk()) {
+                this.currentUser.setFontSize(size);
+            }
+        } catch (error) {
+            this.notifications.errors(error, {});
+        }
     }
 
     /**
@@ -109,11 +127,18 @@ export default class ModalDialogsUserPreferences extends Component<ModalDialogsU
         return taskFor(this.updatePreferenceTask).perform(key, newValue);
     }
 
-    get widgets() {
-        return WIDGETS.map((widget) => ({
-            ...widget,
-            label: this.intl.t(widget.label)
-        }));
+    /**
+     * Update the HIC limit
+     *
+     * @param {InputEvent} value
+     * @return {*}
+     * @memberof ModalDialogsUserPreferences
+     */
+    @action
+    updateHicLimit(value: InputEvent) {
+        let newValue = Number(value.data) as UserPreferences['searchHICLimit'];
+        this.searchHicLimit = value.data ?? undefined;
+        return taskFor(this.updatePreferenceTask).perform(this.hicLimit, newValue);
     }
 
     /**
@@ -128,15 +153,19 @@ export default class ModalDialogsUserPreferences extends Component<ModalDialogsU
         if (selected) {
             const widgets = [...(this.currentUser.preferences?.visibleWidgets ?? [])];
             widgets.push(widget);
-            await this.currentUser.updatePrefs({ [PreferenceKey.VISIBLE_WIDGETS]: widgets });
-            this.currentUser.preferences?.visibleWidgets?.push(widget);
+            const result = await this.currentUser.updatePrefs({ [PreferenceKey.VISIBLE_WIDGETS]: widgets });
+            if (result.isOk()) {
+                this.currentUser.preferences?.visibleWidgets?.push(widget);
+            }
         } else {
             const index = this.currentUser.preferences?.visibleWidgets.indexOf(widget);
             const widgets = [...(this.currentUser.preferences?.visibleWidgets ?? [])];
             if (widgets && index !== undefined) {
                 widgets.removeAt(index);
-                await this.currentUser.updatePrefs({ [PreferenceKey.VISIBLE_WIDGETS]: widgets });
-                this.currentUser.preferences?.visibleWidgets.removeAt(index);
+                const result = await this.currentUser.updatePrefs({ [PreferenceKey.VISIBLE_WIDGETS]: widgets });
+                if (result.isOk()) {
+                    this.currentUser.preferences?.visibleWidgets.removeAt(index);
+                }
             }
         }
     }
