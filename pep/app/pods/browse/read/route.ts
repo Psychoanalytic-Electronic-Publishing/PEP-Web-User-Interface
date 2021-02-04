@@ -1,9 +1,11 @@
 import Transition from '@ember/routing/-private/transition';
 import Route from '@ember/routing/route';
+import { next } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 
 import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hooks/pagination';
 import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
+import FastbootService from 'ember-cli-fastboot/services/fastboot';
 
 import { WIDGET } from 'pep/constants/sidebar';
 import { PageNav } from 'pep/mixins/page-layout';
@@ -12,6 +14,7 @@ import Document from 'pep/pods/document/model';
 import SearchDocument from 'pep/pods/search-document/model';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService, { VIEW_DOCUMENT_FROM } from 'pep/services/current-user';
+import ScrollableService from 'pep/services/scrollable';
 import SidebarService from 'pep/services/sidebar';
 import { buildBrowseRelatedDocumentsParams, buildSearchQueryParams } from 'pep/utils/search';
 
@@ -23,6 +26,8 @@ export default class BrowseRead extends PageNav(Route) {
     @service configuration!: ConfigurationService;
     @service sidebar!: SidebarService;
     @service currentUser!: CurrentUserService;
+    @service scrollable!: ScrollableService;
+    @service fastboot!: FastbootService;
 
     navController = 'browse.read';
     relatedDocuments?: Document[];
@@ -107,5 +112,8 @@ export default class BrowseRead extends PageNav(Route) {
         this.currentUser.lastViewedDocumentId = model.id;
         this.currentUser.lastViewedDocumentFrom = VIEW_DOCUMENT_FROM.OTHER;
         controller.document = model;
+        if (!this.fastboot.isFastBoot) {
+            next(this, () => this.scrollable.scrollToTop('page-content'));
+        }
     }
 }
