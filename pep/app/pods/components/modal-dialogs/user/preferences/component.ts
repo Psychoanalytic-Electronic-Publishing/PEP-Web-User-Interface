@@ -136,7 +136,7 @@ export default class ModalDialogsUserPreferences extends Component<ModalDialogsU
      */
     @action
     updateHicLimit(value: InputEvent) {
-        let newValue = Number(value.data) as UserPreferences['searchHICLimit'];
+        const newValue = Number(value.data) as UserPreferences['searchHICLimit'];
         this.searchHicLimit = value.data ?? undefined;
         return taskFor(this.updatePreferenceTask).perform(this.hicLimit, newValue);
     }

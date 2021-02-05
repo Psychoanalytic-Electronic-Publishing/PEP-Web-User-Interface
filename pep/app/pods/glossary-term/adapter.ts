@@ -33,7 +33,7 @@ export default class GlossaryTerm extends ApplicationAdapter {
         query.return_format = 'XML';
 
         const url = super.urlForQuery(query, modelName);
-        return url + `/${newPathSegment}`;
+        return `${url}/${newPathSegment}`;
     }
 }
 

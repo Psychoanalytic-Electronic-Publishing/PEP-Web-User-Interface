@@ -36,7 +36,7 @@ export default class PageDrawer extends Component<PageDrawerArgs> {
     }
 
     get readDisabled() {
-        return !!!this.currentUser.lastViewedDocumentId;
+        return !this.currentUser.lastViewedDocumentId;
     }
 
     /**

@@ -328,7 +328,7 @@ export default class CurrentUserService extends Service {
      */
     setFontSize(newSize: FontSize) {
         const document = this.document;
-        let target = document.documentElement;
+        const target = document.documentElement;
         const size = AvailableFontSizes.find((item) => item.id === newSize) ?? FONT_SIZE_DEFAULT;
         AvailableFontSizes.map((item) => item.class).forEach((item) => {
             removeClass(target, item);

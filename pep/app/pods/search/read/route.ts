@@ -43,7 +43,6 @@ export default class SearchRead extends PageNav(Route) {
      * @param {ReadDocumentParams} params
      */
     model(params: SearchReadParams) {
-        let searchQueryString;
         //workaround for https://github.com/emberjs/ember.js/issues/18981
         const searchTerms = params._searchTerms ? JSON.parse(params._searchTerms) : [];
         const facets = params._facets ? JSON.parse(params._facets) : [];
@@ -64,8 +63,8 @@ export default class SearchRead extends PageNav(Route) {
         });
         delete searchParams.abstract;
         // We now want to take this object and convert it to a browser query param string to send to the server (as that is what they are expecting)
-        let queryString = serializeQueryParams(searchParams);
-        searchQueryString = encodeURIComponent(`?${queryString}`);
+        const queryString = serializeQueryParams(searchParams);
+        const searchQueryString = encodeURIComponent(`?${queryString}`);
         const adapterOptions = searchQueryString
             ? {
                   searchQuery: `search='${searchQueryString}'`
@@ -94,8 +93,8 @@ export default class SearchRead extends PageNav(Route) {
 
         let results;
         let resultsMeta;
-        let pastQueryParams = transition.from?.queryParams;
-        let queryParams = transition.to?.queryParams;
+        const pastQueryParams = transition.from?.queryParams;
+        const queryParams = transition.to?.queryParams;
 
         if (transition.from?.name) {
             const controller = this.controllerFor(transition.from.name) as SearchReadController;

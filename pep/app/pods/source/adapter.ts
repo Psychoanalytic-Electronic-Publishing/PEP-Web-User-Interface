@@ -29,7 +29,7 @@ export default class Source extends Application {
         }
 
         const url = super.urlForQuery(query, modelName);
-        return url + `/${newPathSegment}`;
+        return `${url}/${newPathSegment}`;
     }
 }
 

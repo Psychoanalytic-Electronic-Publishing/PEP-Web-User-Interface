@@ -1,24 +1,26 @@
-import { module, test } from 'qunit';
-import { setupTest } from 'ember-qunit';
 import { run } from '@ember/runloop';
 
+import { setupTest } from 'ember-qunit';
+
+import { module, test } from 'qunit';
+
 module('Unit | Serializer | glossary term', function(hooks) {
-  setupTest(hooks);
+    setupTest(hooks);
 
-  // Replace this with your real tests.
-  test('it exists', function(assert) {
-    let store = this.owner.lookup('service:store');
-    let serializer = store.serializerFor('glossary-term');
+    // Replace this with your real tests.
+    test('it exists', function(assert) {
+        const store = this.owner.lookup('service:store');
+        const serializer = store.serializerFor('glossary-term');
 
-    assert.ok(serializer);
-  });
+        assert.ok(serializer);
+    });
 
-  test('it serializes records', function(assert) {
-    let store = this.owner.lookup('service:store');
-    let record = run(() => store.createRecord('glossary-term', {}));
+    test('it serializes records', function(assert) {
+        const store = this.owner.lookup('service:store');
+        const record = run(() => store.createRecord('glossary-term', {}));
 
-    let serializedRecord = record.serialize();
+        const serializedRecord = record.serialize();
 
-    assert.ok(serializedRecord);
-  });
+        assert.ok(serializedRecord);
+    });
 });

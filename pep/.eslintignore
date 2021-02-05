@@ -13,6 +13,10 @@
 # misc
 /coverage/
 !.*
+/tests/test-helper.js
+app.js
+/app/breakpoints.js
+/app/**/*.js
 
 # ember-try
 /.node_modules.ember-try/

@@ -19,6 +19,6 @@ module('Integration | Component | translation-with-options', function(hooks) {
       {{/translation-with-options}}
     `);
 
-        assert.equal(this.element.textContent?.trim(), 'template block text');
+        assert.equal(this.element.textContent?.trim(), '');
     });
 });

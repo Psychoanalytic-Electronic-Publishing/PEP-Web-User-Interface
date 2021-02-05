@@ -50,7 +50,7 @@ export function getEventOffset(event: MouseEvent | TouchEvent): ElementOffset {
  * @param {HTMLInputElement | HTMLTextAreaElement} input
  * @returns {number}
  */
-export function getCaretPosition(input: HTMLInputElement | HTMLTextAreaElement) {
+export function getCaretPosition(input: HTMLInputElement | HTMLTextAreaElement): number {
     let pos = 0;
 
     if (!isNone(input.selectionStart)) {
@@ -60,12 +60,12 @@ export function getCaretPosition(input: HTMLInputElement | HTMLTextAreaElement) 
     return pos;
 }
 
-export function findElements(source: Element | XMLDocument, tagName: PepXmlTagNames) {
+export function findElements(source: Element | XMLDocument, tagName: PepXmlTagNames): Element[] {
     const elements = Array.from(source.getElementsByTagName(tagName) ?? []);
     return elements;
 }
 
-export function findElement(source: Element | XMLDocument, tagName: PepXmlTagNames) {
+export function findElement(source: Element | XMLDocument, tagName: PepXmlTagNames): Element {
     return source.getElementsByTagName(tagName)[0];
 }
 
@@ -74,7 +74,7 @@ export function parseXML(input: string): XMLDocument | Error {
         const parser = new DOMParser();
         return parser.parseFromString(input, 'text/xml');
     } else if (typeof window.ActiveXObject != 'undefined' && new window.ActiveXObject('Microsoft.XMLDOM')) {
-        var xmlDoc = new window.ActiveXObject('Microsoft.XMLDOM');
+        const xmlDoc = new window.ActiveXObject('Microsoft.XMLDOM');
         xmlDoc.async = 'false';
         xmlDoc.loadXML(input);
         return xmlDoc;
@@ -110,9 +110,9 @@ export async function loadXSLT(this: any): Promise<Document | null> {
  * @param {number} anchorCount
  * @return {object}
  */
-export function buildJumpToHitsHTML(anchorCount: number) {
-    let previous = `<button data-target-search-hit="${anchorCount}" data-type="${DocumentLinkTypes.SEARCH_HIT_ARROW}" class="btn btn-link py-0 pr-1 pl-0">&#171;&#171;</button>`;
-    let next = `<button data-target-search-hit="${anchorCount + 1}" data-type="${
+export function buildJumpToHitsHTML(anchorCount: number): { previous: string; next: string } {
+    const previous = `<button data-target-search-hit="${anchorCount}" data-type="${DocumentLinkTypes.SEARCH_HIT_ARROW}" class="btn btn-link py-0 pr-1 pl-0">&#171;&#171;</button>`;
+    const next = `<button data-target-search-hit="${anchorCount + 1}" data-type="${
         DocumentLinkTypes.SEARCH_HIT_ARROW
     }" class="btn btn-link py-0 pl-1 pr-0">&#187;&#187;</button>`;
     return {
@@ -143,12 +143,12 @@ function replacer(_match: string, leading: string, trailing: string) {
  * @param {String} className The className to add to the element.
  * @public
  */
-export function removeClass(element: HTMLElement, className: string) {
-    let existingClass = element.getAttribute('class');
+export function removeClass(element: HTMLElement, className: string): void {
+    const existingClass = element.getAttribute('class');
 
     if (existingClass) {
-        let classNameRegExp = new RegExp(`(^|\\s+)${className}(?:\\s+${className})*(\\s+|$)`, 'g');
-        let newClassName = existingClass.replace(classNameRegExp, replacer);
+        const classNameRegExp = new RegExp(`(^|\\s+)${className}(?:\\s+${className})*(\\s+|$)`, 'g');
+        const newClassName = existingClass.replace(classNameRegExp, replacer);
         element.setAttribute('class', newClassName);
     }
 }
@@ -162,11 +162,11 @@ export function removeClass(element: HTMLElement, className: string) {
  * @param {String} className The className to add to the element.
  * @public
  */
-export function addClass(element: HTMLElement, className: string) {
-    let existingClass = element.getAttribute('class');
+export function addClass(element: HTMLElement, className: string): void {
+    const existingClass = element.getAttribute('class');
 
     if (existingClass) {
-        let classes = existingClass.split(' ');
+        const classes = existingClass.split(' ');
 
         if (~classes.indexOf(className)) {
             return;
