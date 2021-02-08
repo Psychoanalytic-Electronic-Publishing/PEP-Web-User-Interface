@@ -9,6 +9,7 @@ import IntlService from 'ember-intl/services/intl';
 import { TITLE_REGEX } from 'pep/constants/regex';
 import Abstract from 'pep/pods/abstract/model';
 import { SearchPreviewMode } from 'pep/pods/components/search/preview/component';
+import Journal from 'pep/pods/journal/model';
 import SourceVolume from 'pep/pods/source-volume/model';
 import Volume from 'pep/pods/volume/model';
 import BrowseSelection from 'pep/services/browse-selection';
@@ -36,7 +37,7 @@ export default class BrowseJournalVolume extends Controller {
     @tracked containerMaxHeight = 0;
     @tracked meta?: { next_vol: string; prev_vol: string };
     @tracked sourcecode?: string;
-    @tracked journalBannerUrl?: string;
+    @tracked journal?: Journal;
 
     /**
      * If items are selected, use that for the export/print data. Otherwise use the paginator

@@ -5,10 +5,11 @@ import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
-import ModalService from '@gavant/ember-modals/services/modal';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import { DS } from 'ember-data';
 import IntlService from 'ember-intl/services/intl';
+
+import ModalService from '@gavant/ember-modals/services/modal';
 
 import animateScrollTo from 'animated-scroll-to';
 import ENV from 'pep/config/environment';
@@ -65,6 +66,12 @@ export type DocumentTippyInstance = Instance & {
     _isFetching: boolean;
     _loaded: boolean;
 };
+
+interface RegexPair {
+    start: RegExpMatchArray;
+    end: RegExpMatchArray;
+}
+
 export default class DocumentText extends Component<DocumentTextArgs> {
     @service store!: DS.Store;
     @service loadingBar!: LoadingBarService;
@@ -160,7 +167,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
      */
     get text() {
         if (this.xml) {
-            var s = new XMLSerializer();
+            const s = new XMLSerializer();
             return this.replaceHitMarkerText(s.serializeToString(this.xml));
         } else {
             return '';
@@ -175,26 +182,57 @@ export default class DocumentText extends Component<DocumentTextArgs> {
      * @memberof DocumentText
      */
     replaceHitMarkerText(text: string) {
-        let anchorCount = 0;
-        let regex = SEARCH_HIT_MARKER_REGEX;
-        let totalAnchorCount = text.match(new RegExp(HIT_MARKER_START, 'g'))?.length ?? 1;
-        return text.replace(regex, (match: string) => {
-            const { previous, next } = buildJumpToHitsHTML(anchorCount);
-            if (match === HIT_MARKER_START) {
-                anchorCount += 1;
-                if (anchorCount > 1) {
-                    return `<span data-hit-number='${anchorCount}' class='hit'>${previous}${HIT_MARKER_START_OUTPUT_HTML}`;
-                } else if (anchorCount <= 1) {
-                    return `<span data-hit-number='${anchorCount}' class='hit'>${HIT_MARKER_START_OUTPUT_HTML}`;
-                } else {
-                    return '';
+        // Gives us matches with indexes in string
+        const matches = [...text.matchAll(SEARCH_HIT_MARKER_REGEX)];
+        //Create pairs of matches in an array
+        const pairs = matches.reduce<RegexPair[]>(function(result, value, index, array) {
+            if (index % 2 === 0) {
+                const arr = array.slice(index, index + 2);
+                const pair: RegexPair = {
+                    start: arr[0],
+                    end: arr[1]
+                };
+                result.push(pair);
+            }
+            return result;
+        }, []);
+
+        pairs.forEach((pair, index) => {
+            const startIndex = pair.start.index;
+            const endIndex = pair.end.index;
+            if (startIndex && endIndex) {
+                const closingTagRegex = /((<\/)\w+(>))/g;
+                const lastTagRegex = /^[\S\s]+(<\/*>)/i;
+                const substring = text.substring(startIndex, endIndex);
+                const hasTagInMiddle = closingTagRegex.test(substring);
+                // Tag in middle has been found on first element, which means between the start of the string and the startIndex is where we should move the hit marker
+                if (hasTagInMiddle && index === 0) {
+                } else if (hasTagInMiddle) {
+                    const previousPair = pairs[index - 1];
                 }
-            } else if (match === HIT_MARKER_END) {
-                return `${HIT_MARKER_END_OUTPUT_HTML}${anchorCount < totalAnchorCount ? next : ''}</span>`;
-            } else {
-                return match;
             }
         });
+
+        // let anchorCount = 0;
+        // const regex = SEARCH_HIT_MARKER_REGEX;
+        // const totalAnchorCount = text.match(new RegExp(HIT_MARKER_START, 'g'))?.length ?? 1;
+        // return text.replace(regex, (match: string) => {
+        //     const { previous, next } = buildJumpToHitsHTML(anchorCount);
+        //     if (match === HIT_MARKER_START) {
+        //         anchorCount += 1;
+        //         if (anchorCount > 1) {
+        //             return `<span data-hit-number='${anchorCount}' class='hit'>${previous}${HIT_MARKER_START_OUTPUT_HTML}`;
+        //         } else if (anchorCount <= 1) {
+        //             return `<span data-hit-number='${anchorCount}' class='hit'>${HIT_MARKER_START_OUTPUT_HTML}`;
+        //         } else {
+        //             return '';
+        //         }
+        //     } else if (match === HIT_MARKER_END) {
+        //         return `${HIT_MARKER_END_OUTPUT_HTML}${anchorCount < totalAnchorCount ? next : ''}</span>`;
+        //     } else {
+        //         return match;
+        //     }
+        // });
     }
 
     /**
@@ -543,7 +581,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
                                         translationEnabled: false
                                     });
                                     if (xml) {
-                                        var s = new XMLSerializer();
+                                        const s = new XMLSerializer();
                                         const html = this.replaceHitMarkerText(s.serializeToString(xml));
                                         instance._loaded = true;
                                         instance.setContent(html);

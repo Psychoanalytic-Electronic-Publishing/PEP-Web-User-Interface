@@ -100,6 +100,12 @@
         }
     }
 
+    li {
+        &.bg-backdrop {
+            background-color: $color-search-item-bg;
+        }
+    }
+
     @include media-breakpoint-down(md) {
         position: fixed;
         z-index: $z-sidebar-overlay;
@@ -125,12 +131,6 @@
 
         &.other-sidebar-is-open {
             z-index: $z-sidebar-mask - 1;
-        }
-    }
-
-    .search-item {
-        &.bg-backdrop {
-            background-color: $color-search-item-bg;
         }
     }
 }

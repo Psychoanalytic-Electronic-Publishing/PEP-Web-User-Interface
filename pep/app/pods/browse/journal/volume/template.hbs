@@ -70,8 +70,8 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="d-flex justify-content-center align-items-center">
-                                {{#if this.journalBannerUrl}}
-                                    <Image @source="{{this.journalBannerUrl}}" alt="{{t "browse.alt"}}" />
+                                {{#if this.journal.bannerURL}}
+                                    <Image @source="{{this.journal.bannerURL}}" alt="{{this.journal.displayTitle}}" />
                                 {{/if}}
                             </div>
                         </div>
