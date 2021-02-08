@@ -4,14 +4,16 @@ import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
-import Modal from '@gavant/ember-modals/services/modal';
-import { ModelChangeset } from '@gavant/ember-validations/utilities/create-changeset';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import IntlService from 'ember-intl/services/intl';
+
+import Modal from '@gavant/ember-modals/services/modal';
+import { ModelChangeset } from '@gavant/ember-validations/utilities/create-changeset';
 
 import { FORGOT_PW_URL } from 'pep/constants/urls';
 import AjaxService from 'pep/services/ajax';
 import { FederatedLoginArgs, LoginForm } from 'pep/services/auth';
+import CurrentUserService from 'pep/services/current-user';
 import LoadingBar from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
 import { reject } from 'rsvp';
@@ -32,6 +34,7 @@ export default class ModalDialogsUserLogin extends Component<ModalDialogsUserLog
     @service intl!: IntlService;
     @service modal!: Modal;
     @service ajax!: AjaxService;
+    @service currentUser!: CurrentUserService;
 
     @tracked loginError = null;
 
