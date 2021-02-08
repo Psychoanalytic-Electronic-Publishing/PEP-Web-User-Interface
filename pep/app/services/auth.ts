@@ -1,8 +1,9 @@
 import Service, { inject as service } from '@ember/service';
 
+import NotificationService from 'ember-cli-notifications/services/notifications';
+
 import ModalService from '@gavant/ember-modals/services/modal';
 import createChangeset from '@gavant/ember-validations/utilities/create-changeset';
-import NotificationService from 'ember-cli-notifications/services/notifications';
 
 import ENV from 'pep/config/environment';
 import AjaxService from 'pep/services/ajax';
@@ -16,6 +17,7 @@ export interface FederatedLoginResponse {
     GenericFederatedURL: string;
     PaDSLogonURL: string;
     PaDSPasswordResetURL: string;
+    PaDSRegisterUserURL: string;
     ReasonDescription: string;
 }
 export interface FederatedLoginArgs {
@@ -26,6 +28,7 @@ export interface FederatedLoginArgs {
     genericLoginUrl: string;
     padsLoginUrl: string;
     padsForgotPasswordUrl: string;
+    padsRegisterUrl: string;
 }
 
 export interface LoginForm {
@@ -81,7 +84,8 @@ export default class AuthService extends Service {
                 logins: JSON.parse(federatedLogins.FederatedLinks).FederatedLinks,
                 genericLoginUrl: federatedLogins.GenericFederatedURL,
                 padsLoginUrl: federatedLogins.PaDSLogonURL,
-                padsForgotPasswordUrl: federatedLogins.PaDSPasswordResetURL
+                padsForgotPasswordUrl: federatedLogins.PaDSPasswordResetURL,
+                padsRegisterUrl: federatedLogins.PaDSRegisterUserURL
             });
         } catch (errors) {
             this.notifications.error(errors);

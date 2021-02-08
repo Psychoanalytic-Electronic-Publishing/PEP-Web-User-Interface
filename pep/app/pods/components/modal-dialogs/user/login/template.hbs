@@ -24,20 +24,20 @@
                             type="password"
                         />
                     </validator.input>
-                    {{! TODO no subscribe link yet, hiding for now }}
-                    {{!--
-                    <p class="mb-0 text-muted">
-                        {{t "login.notAMember"}}
-                        <a href="" {{on "click" this.transitionToSubscribe}}>
-                            {{t "login.clickToSubscribe"}}
-                        </a>.
-                    </p>
-                    --}}
+
                     <p class="mb-0 text-muted">
                         <a href="{{this.forgotPasswordUrl}}" target="_blank" rel="noopener noreferrer">
                             {{t "login.forgotPassword"}}
                         </a>
                     </p>
+                    {{#if this.currentUser.user.isGroup}}
+                        <p class="mb-0 text-muted">
+                            {{t "login.notAMember"}}
+                            <a href="{{@options.padsRegisterUrl}}" target="_blank" rel="noopener noreferrer">
+                                {{t "login.clickToSubscribe"}}
+                            </a>
+                        </p>
+                    {{/if}}
                 </div>
             </div>
         </Modal.body>
