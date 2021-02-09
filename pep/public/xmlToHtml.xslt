@@ -87,6 +87,10 @@
         <svg viewBox="0 0 576 512" xmlns="http://www.w3.org/2000/svg" role="img" focusable="false" aria-hidden="true" data-icon="book-open" data-prefix="fal" id="ember314" class="pointer-events-none svg-inline--fa fa-book-open fa-w-18 ember-view"><path fill="currentColor" d="M514.91 32h-.16c-24.08.12-144.75 8.83-219.56 48.09-4.05 2.12-10.33 2.12-14.38 0C205.99 40.83 85.32 32.12 61.25 32h-.16C27.4 32 0 58.47 0 91.01v296.7c0 31.41 25.41 57.28 57.85 58.9 34.77 1.76 122.03 8.26 181.89 30.37 5.27 1.95 10.64 3.02 16.25 3.02h64c5.62 0 10.99-1.08 16.26-3.02 59.87-22.11 147.12-28.61 181.92-30.37 32.41-1.62 57.82-27.48 57.82-58.89V91.01C576 58.47 548.6 32 514.91 32zM272 433c0 8.61-7.14 15.13-15.26 15.13-1.77 0-3.59-.31-5.39-.98-62.45-23.21-148.99-30.33-191.91-32.51-15.39-.77-27.44-12.6-27.44-26.93V91.01c0-14.89 13.06-27 29.09-27 19.28.1 122.46 7.38 192.12 38.29 11.26 5 18.64 15.75 18.66 27.84l.13 100.32V433zm272-45.29c0 14.33-12.05 26.16-27.45 26.93-42.92 2.18-129.46 9.3-191.91 32.51-1.8.67-3.62.98-5.39.98-8.11 0-15.26-6.52-15.26-15.13V230.46l.13-100.32c.01-12.09 7.4-22.84 18.66-27.84 69.66-30.91 172.84-38.19 192.12-38.29 16.03 0 29.09 12.11 29.09 27v296.7z"></path>
         </svg>
     </xsl:variable>
+    <xsl:variable name="fa-book-closed">
+        <svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" role="img" focusable="false" aria-hidden="true" data-icon="book" data-prefix="fal" id="ember349" class="svg-inline--fa fa-book fa-w-14 ember-view"><path fill="currentColor" d="M356 160H188c-6.6 0-12-5.4-12-12v-8c0-6.6 5.4-12 12-12h168c6.6 0 12 5.4 12 12v8c0 6.6-5.4 12-12 12zm12 52v-8c0-6.6-5.4-12-12-12H188c-6.6 0-12 5.4-12 12v8c0 6.6 5.4 12 12 12h168c6.6 0 12-5.4 12-12zm64.7 268h3.3c6.6 0 12 5.4 12 12v8c0 6.6-5.4 12-12 12H80c-44.2 0-80-35.8-80-80V80C0 35.8 35.8 0 80 0h344c13.3 0 24 10.7 24 24v368c0 10-6.2 18.6-14.9 22.2-3.6 16.1-4.4 45.6-.4 65.8zM128 384h288V32H128v352zm-96 16c13.4-10 30-16 48-16h16V32H80c-26.5 0-48 21.5-48 48v320zm372.3 80c-3.1-20.4-2.9-45.2 0-64H80c-64 0-64 64 0 64h324.3z"></path>
+        </svg>
+    </xsl:variable>
     <xsl:variable name="fa-robot">
         <svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg" role="img" focusable="false" aria-hidden="true" data-icon="robot" data-prefix="fal" id="ember313" class="pointer-events-none svg-inline--fa fa-robot fa-w-20 ember-view"><path fill="currentColor" d="M192,416h64V384H192ZM576,224H544V192a95.99975,95.99975,0,0,0-96-96H336V16a16,16,0,0,0-32,0V96H192a95.99975,95.99975,0,0,0-96,96v32H64a31.99908,31.99908,0,0,0-32,32V384a32.00033,32.00033,0,0,0,32,32H96a95.99975,95.99975,0,0,0,96,96H448a95.99975,95.99975,0,0,0,96-96h32a32.00033,32.00033,0,0,0,32-32V256A31.99908,31.99908,0,0,0,576,224ZM96,384H64V256H96Zm416,32a64.18916,64.18916,0,0,1-64,64H192a64.18916,64.18916,0,0,1-64-64V192a63.99942,63.99942,0,0,1,64-64H448a63.99942,63.99942,0,0,1,64,64Zm64-32H544V256h32ZM416,192a64,64,0,1,0,64,64A64.07333,64.07333,0,0,0,416,192Zm0,96a32,32,0,1,1,32-32A31.97162,31.97162,0,0,1,416,288ZM384,416h64V384H384Zm-96,0h64V384H288ZM224,192a64,64,0,1,0,64,64A64.07333,64.07333,0,0,0,224,192Zm0,96a32,32,0,1,1,32-32A31.97162,31.97162,0,0,1,224,288Z"></path>
         </svg>
@@ -214,7 +218,7 @@
 
         <div id="front" class="frontmatter">
             <xsl:apply-templates select="front | front-stub" mode="metadata"/>
-            <p class="banner">
+            <p class="banner d-flex justify-content-between">
                 <a class="toc-link" href="/browse/{$journal-code}/volumes" data-journal-code="{$journal-code}">
                     <img class="img-fluid">
                         <xsl:attribute name="data-type">document-banner</xsl:attribute>
@@ -227,6 +231,9 @@
                         <xsl:attribute name="alt">Journal Logo</xsl:attribute>
                     </img>
                 </a>
+                <span>
+                    Glossary links are marked with []
+                </span>
             </p>
             <div class="pubinfotop small">
                 <xsl:for-each select="artinfo">
@@ -685,11 +692,11 @@
             <xsl:choose>
                 <xsl:when test="current()[@affid!=''] or current()/nbio" >
                     <xsl:text> </xsl:text>
-                    <span class="peppopup authortip">
+                    <a class="peppopup authortip" href="#author-information">
                         <xsl:copy-of select="$fa-information" />
                         <xsl:text></xsl:text>
                         <br></br>
-                        <div class="peppopuptext" hidden="True">
+                        <div class="peppopuptext" hidden="True" role="dialog">
                             <div class="autcontent">
                                 <xsl:for-each select="key('role', @role)">
                                     <div class="author-information">
@@ -703,16 +710,16 @@
                                 </xsl:for-each>
                             </div>
                         </div>
-                    </span>
+                    </a>
                 </xsl:when>
                 <xsl:when test="count(key('role', @role)) = 1 and count(../autaff) = 1">
                     <xsl:text> </xsl:text>
-                    <span class="peppopup authortip">
+                    <a class="peppopup authortip" href="#author-information">
                         <xsl:copy-of select="$fa-information" />
                         <xsl:text></xsl:text>
                         <br></br>
 
-                        <div class="peppopuptext" hidden="True">
+                        <div class="peppopuptext" hidden="True" role="dialog">
 
                             <div class="autcontent">
                                 <xsl:for-each select="key('role', @role)">
@@ -728,15 +735,15 @@
                                 </xsl:for-each>
                             </div>
                         </div>
-                    </span>
+                    </a>
                 </xsl:when>
                 <xsl:when test="@role = 'author'">
                     <xsl:text> </xsl:text>
-                    <span class="peppopup newauthortip">
+                    <a class="peppopup newauthortip" href="#new-author-information">
                         <xsl:copy-of select="$fa-information" />
                         <br></br>
                         <xsl:text>&#xa;</xsl:text>
-                        <div class="peppopuptext" id="autaffinfo" hidden="True">
+                        <div class="peppopuptext" id="autaffinfo" hidden="True" role="dialog">
                             <div id="autcontent" class="autcontent">
                                 <p class="autaffname">
                                     <xsl:apply-templates mode="metadata" select="nfirst"/>
@@ -745,7 +752,7 @@
                                 <xsl:apply-templates mode="metadata" select="nbio"/>
                             </div>
                         </div>
-                    </span>
+                    </a>
                 </xsl:when>
             </xsl:choose>
         </div>
@@ -948,11 +955,11 @@
                 </xsl:choose>
                 <xsl:if test="nbio">
                     <xsl:text> </xsl:text>
-                    <span class="peppopup authortip">
+                    <a class="peppopup authortip" href="#author-bio-information">
                         <xsl:copy-of select="$fa-information" />
                         <xsl:text></xsl:text>
                         <br></br>
-                        <div class="peppopuptext" id="autaffinfo" hidden="True">
+                        <div class="peppopuptext" id="autaffinfo" hidden="True" role="dialog">
                             <div id="autcontent" class="autcontent">
                                 <p class="autaffname">
                                     <xsl:apply-templates mode="metadata" select="nfirst"/>
@@ -969,7 +976,7 @@
                                 </p>
                             </div>
                         </div>
-                    </span>
+                    </a>
                 </xsl:if>
             </xsl:for-each>
         </div>
@@ -1363,13 +1370,14 @@
     <xsl:template match="impx"> <!--when not in metadata mode -->
         <xsl:choose>
             <xsl:when test="@rx"> <!-- for the generated links -->
-                <span class="peppopup glosstip impx text-nowrap" data-type="{@type}" data-doc-id="{@rx}" data-grpname="{@grpname}">
-                    <xsl:value-of select="."/>
-                </span>
+                <a href="/search/document/{@rx}?glossary={@grpanme}" class="peppopup glosstip impx text-nowrap" data-type="{@type}" data-doc-id="{@rx}" data-grpname="{@grpname}">
+                    [<xsl:value-of select="."/>]
+                </a>
             </xsl:when>
             <xsl:otherwise> <!-- sometimes impx is manually tagged -->
                 <span class="impx" data-type="{@type}">
-                    <xsl:value-of select="."/>
+
+                    [<xsl:value-of select="."/>]
                 </span>
             </xsl:otherwise>
         </xsl:choose>
@@ -2042,46 +2050,6 @@
             </span>
         </xsl:if>
     </xsl:template>
-
-    <!-- <xsl:template name="highlight">
-         <xsl:param name="element"/>
-         <xsl:param name="search" as="xs:string"/>
-         <xsl:param name="flags" required="no" select="'im'" as="xs:string"/>
-
-         <xsl:choose>
-         <xsl:when test="empty($search) or $search eq ''">
-         <xsl:value-of select="."/>
-         </xsl:when>
-         <xsl:otherwise>
-         <xsl:for-each select="$element/node()">
-         <xsl:choose>
-         <xsl:when test=". instance of text()">
-         <xsl:for-each select="analyze-string(., $search, $flags)/*">
-         <xsl:choose>
-         <xsl:when test="local-name(.) eq 'non-match'">
-         <xsl:value-of select="./text()"/>
-         </xsl:when>
-         <xsl:otherwise>
-         <span class="highlighted">
-         <xsl:value-of select="./text()"/>
-         </span>
-         </xsl:otherwise>
-         </xsl:choose>
-         </xsl:for-each>
-         </xsl:when>
-         <xsl:otherwise>
-         <xsl:call-template name="highlight">
-         <xsl:with-param name="element" select="."/>
-         <xsl:with-param name="search" select="$search"/>
-         <xsl:with-param name="flags" select="$flags"/>
-         </xsl:call-template>
-         </xsl:otherwise>
-         </xsl:choose>
-         </xsl:for-each>
-         </xsl:otherwise>
-         </xsl:choose>
-         </xsl:template> -->
-
 
     <xsl:template match="app" mode="label-text">
         <xsl:param name="warning" select="true()"/>

@@ -1,21 +1,22 @@
-import { action } from '@ember/object';
+import { action, computed } from '@ember/object';
 import RouterService from '@ember/routing/router-service';
 import { next, scheduleOnce } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
-import ModalService from '@gavant/ember-modals/services/modal';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import { DS } from 'ember-data';
 import IntlService from 'ember-intl/services/intl';
+
+import ModalService from '@gavant/ember-modals/services/modal';
 
 import animateScrollTo from 'animated-scroll-to';
 import ENV from 'pep/config/environment';
 import { DOCUMENT_IMG_BASE_URL, DocumentLinkTypes } from 'pep/constants/documents';
 import {
-    HIT_MARKER_END, HIT_MARKER_END_OUTPUT_HTML, HIT_MARKER_START, HIT_MARKER_START_OUTPUT_HTML, SEARCH_HIT_MARKER_REGEX,
-    SearchTermId
+    HIT_MARKER_END, HIT_MARKER_END_OUTPUT_HTML, HIT_MARKER_START, HIT_MARKER_START_OUTPUT_HTML,
+    POSSIBLE_INVALID_SEARCH_HITS, SEARCH_HIT_MARKER_REGEX, SearchTermId
 } from 'pep/constants/search';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import Document from 'pep/pods/document/model';
@@ -65,6 +66,7 @@ export type DocumentTippyInstance = Instance & {
     _isFetching: boolean;
     _loaded: boolean;
 };
+
 export default class DocumentText extends Component<DocumentTextArgs> {
     @service store!: DS.Store;
     @service loadingBar!: LoadingBarService;
@@ -158,9 +160,10 @@ export default class DocumentText extends Component<DocumentTextArgs> {
      * @readonly
      * @memberof DocumentText
      */
+    @computed('xml')
     get text() {
         if (this.xml) {
-            var s = new XMLSerializer();
+            const s = new XMLSerializer();
             return this.replaceHitMarkerText(s.serializeToString(this.xml));
         } else {
             return '';
@@ -169,16 +172,28 @@ export default class DocumentText extends Component<DocumentTextArgs> {
 
     /**
      * Find and replace all search hit marker text with the correct html
+     * TODO: Possibly improve this to just call regex once instead of using a regex to fix issues, and then using a different regex to make html
      *
      * @param {string} text
      * @return {string}
      * @memberof DocumentText
      */
-    replaceHitMarkerText(text: string) {
+    replaceHitMarkerText(text: string): string {
+        // First fix all issues of a search hit being mixed inside of another tag. This commonly happens when we have a glossary term inside a search hit
+        const replacer = (match: string) => {
+            if (!match.includes('@@@#')) {
+                return `#@@@${match.replace('#@@@', '')}`;
+            } else {
+                return match;
+            }
+        };
+        const fixedStr = text.replace(POSSIBLE_INVALID_SEARCH_HITS, replacer);
+
+        // Now replace all search hit markers with the correct html
         let anchorCount = 0;
-        let regex = SEARCH_HIT_MARKER_REGEX;
-        let totalAnchorCount = text.match(new RegExp(HIT_MARKER_START, 'g'))?.length ?? 1;
-        return text.replace(regex, (match: string) => {
+        const regex = SEARCH_HIT_MARKER_REGEX;
+        const totalAnchorCount = fixedStr.match(new RegExp(HIT_MARKER_START, 'g'))?.length ?? 1;
+        return fixedStr.replace(regex, (match: string) => {
             const { previous, next } = buildJumpToHitsHTML(anchorCount);
             if (match === HIT_MARKER_START) {
                 anchorCount += 1;
@@ -543,7 +558,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
                                         translationEnabled: false
                                     });
                                     if (xml) {
-                                        var s = new XMLSerializer();
+                                        const s = new XMLSerializer();
                                         const html = this.replaceHitMarkerText(s.serializeToString(xml));
                                         instance._loaded = true;
                                         instance.setContent(html);

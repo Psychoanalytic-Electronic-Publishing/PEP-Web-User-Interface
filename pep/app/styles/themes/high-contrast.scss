@@ -29,7 +29,7 @@ $color-navbar-toggle: saturate(lighten($color-brand-primary, 20%), 20%);
 $color-drawer-bg: $color-brand-primary;
 $color-help-tooltip-foreground: #a2aeb9;
 $color-help-tooltip-background: $color-primary-background;
-$color-search-item-bg: darken($color-backdrop, 10%);
+$color-search-item-bg: darken($color-backdrop, 5%);
 $gradient-primary: linear-gradient(
     to right,
     $color-brand-primary 0,

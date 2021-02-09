@@ -1,4 +1,4 @@
-<Page::Sidebar::Left as |Sidebar|>
+<Page::Sidebar::Left ...attributes as |Sidebar|>
     <Sidebar.content>
         {{#if (or @paginator.metadata.fullCount this.isLoadingRoute)}}
             <div class="bg-primary border-divider-b p-3">

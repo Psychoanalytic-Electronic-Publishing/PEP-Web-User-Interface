@@ -5,8 +5,7 @@
     {{#if this.currentUser.user.brandingImgUrl}}
         <Image
             @source={{this.currentUser.user.brandingImgUrl}}
-            alt=""
-            role="presentation"
+            alt={{t "alt.brandingImageUrl"}}
             class="ml-auto footer-branding-img"
         />
     {{/if}}
