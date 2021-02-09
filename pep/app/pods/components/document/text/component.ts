@@ -1,4 +1,4 @@
-import { action } from '@ember/object';
+import { action, computed } from '@ember/object';
 import RouterService from '@ember/routing/router-service';
 import { next, scheduleOnce } from '@ember/runloop';
 import { inject as service } from '@ember/service';
@@ -15,8 +15,8 @@ import animateScrollTo from 'animated-scroll-to';
 import ENV from 'pep/config/environment';
 import { DOCUMENT_IMG_BASE_URL, DocumentLinkTypes } from 'pep/constants/documents';
 import {
-    HIT_MARKER_END, HIT_MARKER_END_OUTPUT_HTML, HIT_MARKER_START, HIT_MARKER_START_OUTPUT_HTML, SEARCH_HIT_MARKER_REGEX,
-    SearchTermId
+    HIT_MARKER_END, HIT_MARKER_END_OUTPUT_HTML, HIT_MARKER_START, HIT_MARKER_START_OUTPUT_HTML,
+    POSSIBLE_INVALID_SEARCH_HITS, SEARCH_HIT_MARKER_REGEX, SearchTermId
 } from 'pep/constants/search';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import Document from 'pep/pods/document/model';
@@ -165,6 +165,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
      * @readonly
      * @memberof DocumentText
      */
+    @computed('xml')
     get text() {
         if (this.xml) {
             const s = new XMLSerializer();
@@ -176,63 +177,44 @@ export default class DocumentText extends Component<DocumentTextArgs> {
 
     /**
      * Find and replace all search hit marker text with the correct html
+     * TODO: Possibly improve this to just call regex once instead of using a regex to fix issues, and then using a different regex to make html
      *
      * @param {string} text
      * @return {string}
      * @memberof DocumentText
      */
-    replaceHitMarkerText(text: string) {
-        // Gives us matches with indexes in string
-        const matches = [...text.matchAll(SEARCH_HIT_MARKER_REGEX)];
-        //Create pairs of matches in an array
-        const pairs = matches.reduce<RegexPair[]>(function(result, value, index, array) {
-            if (index % 2 === 0) {
-                const arr = array.slice(index, index + 2);
-                const pair: RegexPair = {
-                    start: arr[0],
-                    end: arr[1]
-                };
-                result.push(pair);
+    replaceHitMarkerText(text: string): string {
+        // First fix all issues of a search hit being mixed inside of another tag. This commonly happens when we have a glossary term inside a search hit
+        const replacer = (match: string) => {
+            if (!match.includes('@@@#')) {
+                return `#@@@${match.replace('#@@@', '')}`;
+            } else {
+                return match;
             }
-            return result;
-        }, []);
+        };
+        const fixedStr = text.replace(POSSIBLE_INVALID_SEARCH_HITS, replacer);
 
-        pairs.forEach((pair, index) => {
-            const startIndex = pair.start.index;
-            const endIndex = pair.end.index;
-            if (startIndex && endIndex) {
-                const closingTagRegex = /((<\/)\w+(>))/g;
-                const lastTagRegex = /^[\S\s]+(<\/*>)/i;
-                const substring = text.substring(startIndex, endIndex);
-                const hasTagInMiddle = closingTagRegex.test(substring);
-                // Tag in middle has been found on first element, which means between the start of the string and the startIndex is where we should move the hit marker
-                if (hasTagInMiddle && index === 0) {
-                } else if (hasTagInMiddle) {
-                    const previousPair = pairs[index - 1];
+        // Now replace all search hit markers with the correct html
+        let anchorCount = 0;
+        const regex = SEARCH_HIT_MARKER_REGEX;
+        const totalAnchorCount = fixedStr.match(new RegExp(HIT_MARKER_START, 'g'))?.length ?? 1;
+        return fixedStr.replace(regex, (match: string) => {
+            const { previous, next } = buildJumpToHitsHTML(anchorCount);
+            if (match === HIT_MARKER_START) {
+                anchorCount += 1;
+                if (anchorCount > 1) {
+                    return `<span data-hit-number='${anchorCount}' class='hit'>${previous}${HIT_MARKER_START_OUTPUT_HTML}`;
+                } else if (anchorCount <= 1) {
+                    return `<span data-hit-number='${anchorCount}' class='hit'>${HIT_MARKER_START_OUTPUT_HTML}`;
+                } else {
+                    return '';
                 }
+            } else if (match === HIT_MARKER_END) {
+                return `${HIT_MARKER_END_OUTPUT_HTML}${anchorCount < totalAnchorCount ? next : ''}</span>`;
+            } else {
+                return match;
             }
         });
-
-        // let anchorCount = 0;
-        // const regex = SEARCH_HIT_MARKER_REGEX;
-        // const totalAnchorCount = text.match(new RegExp(HIT_MARKER_START, 'g'))?.length ?? 1;
-        // return text.replace(regex, (match: string) => {
-        //     const { previous, next } = buildJumpToHitsHTML(anchorCount);
-        //     if (match === HIT_MARKER_START) {
-        //         anchorCount += 1;
-        //         if (anchorCount > 1) {
-        //             return `<span data-hit-number='${anchorCount}' class='hit'>${previous}${HIT_MARKER_START_OUTPUT_HTML}`;
-        //         } else if (anchorCount <= 1) {
-        //             return `<span data-hit-number='${anchorCount}' class='hit'>${HIT_MARKER_START_OUTPUT_HTML}`;
-        //         } else {
-        //             return '';
-        //         }
-        //     } else if (match === HIT_MARKER_END) {
-        //         return `${HIT_MARKER_END_OUTPUT_HTML}${anchorCount < totalAnchorCount ? next : ''}</span>`;
-        //     } else {
-        //         return match;
-        //     }
-        // });
     }
 
     /**

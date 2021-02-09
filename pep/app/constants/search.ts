@@ -659,3 +659,9 @@ export const HIT_MARKER_END = '@@@#';
 export const HIT_MARKER_START_OUTPUT_HTML = `<span class='searchhit' data-type='${DocumentLinkTypes.SEARCH_HIT_TEXT}'>`;
 export const HIT_MARKER_END_OUTPUT_HTML = '</span>';
 export const SEARCH_HIT_MARKER_REGEX = new RegExp(`${HIT_MARKER_START}|${HIT_MARKER_END}`, 'g');
+
+// Finds all tags with a #@@@ inside
+export const POSSIBLE_INVALID_SEARCH_HITS = /<[^>]*>(([^<>/])*?(#@@@))([^<>/])*?<\/[^>]*>/g;
+
+//Finds all invalid search hits - working - but for the wrong reason - leaving it here incase we get time to have another look
+// expost const INVALID_SEARCH_HITS  = /<[^>]*>(([^<>\/])*?(#@@@))([^@@@#$])*?<\/[^>]*>/g
