@@ -232,7 +232,7 @@
                     </img>
                 </a>
                 <span>
-                    Glossary links are marked with <xsl:copy-of select="$fa-book-closed" />
+                    Glossary links are marked with []
                 </span>
             </p>
             <div class="pubinfotop small">
@@ -1371,16 +1371,13 @@
         <xsl:choose>
             <xsl:when test="@rx"> <!-- for the generated links -->
                 <a href="/search/document/{@rx}?glossary={@grpanme}" class="peppopup glosstip impx text-nowrap" data-type="{@type}" data-doc-id="{@rx}" data-grpname="{@grpname}">
-                    <span class="mr-1">
-                        <xsl:copy-of select="$fa-book-closed" />
-                    </span>
-                    <xsl:value-of select="."/>
+                    [<xsl:value-of select="."/>]
                 </a>
             </xsl:when>
             <xsl:otherwise> <!-- sometimes impx is manually tagged -->
                 <span class="impx" data-type="{@type}">
-                    <xsl:copy-of select="$fa-book-closed" />
-                    <xsl:value-of select="."/>
+
+                    [<xsl:value-of select="."/>]
                 </span>
             </xsl:otherwise>
         </xsl:choose>
