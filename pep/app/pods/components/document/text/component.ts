@@ -67,11 +67,6 @@ export type DocumentTippyInstance = Instance & {
     _loaded: boolean;
 };
 
-interface RegexPair {
-    start: RegExpMatchArray;
-    end: RegExpMatchArray;
-}
-
 export default class DocumentText extends Component<DocumentTextArgs> {
     @service store!: DS.Store;
     @service loadingBar!: LoadingBarService;

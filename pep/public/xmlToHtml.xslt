@@ -1371,15 +1371,15 @@
         <xsl:choose>
             <xsl:when test="@rx"> <!-- for the generated links -->
                 <a href="/search/document/{@rx}?glossary={@grpanme}" class="peppopup glosstip impx text-nowrap" data-type="{@type}" data-doc-id="{@rx}" data-grpname="{@grpname}">
-                    <!-- <span class="mr-1">
-                         <xsl:copy-of select="$fa-book-closed" />
-                         </span> -->
+                    <span class="mr-1">
+                        <xsl:copy-of select="$fa-book-closed" />
+                    </span>
                     <xsl:value-of select="."/>
                 </a>
             </xsl:when>
             <xsl:otherwise> <!-- sometimes impx is manually tagged -->
                 <span class="impx" data-type="{@type}">
-                    <!-- <xsl:copy-of select="$fa-book-closed" /> -->
+                    <xsl:copy-of select="$fa-book-closed" />
                     <xsl:value-of select="."/>
                 </span>
             </xsl:otherwise>
@@ -2053,46 +2053,6 @@
             </span>
         </xsl:if>
     </xsl:template>
-
-    <!-- <xsl:template name="highlight">
-         <xsl:param name="element"/>
-         <xsl:param name="search" as="xs:string"/>
-         <xsl:param name="flags" required="no" select="'im'" as="xs:string"/>
-
-         <xsl:choose>
-         <xsl:when test="empty($search) or $search eq ''">
-         <xsl:value-of select="."/>
-         </xsl:when>
-         <xsl:otherwise>
-         <xsl:for-each select="$element/node()">
-         <xsl:choose>
-         <xsl:when test=". instance of text()">
-         <xsl:for-each select="analyze-string(., $search, $flags)/*">
-         <xsl:choose>
-         <xsl:when test="local-name(.) eq 'non-match'">
-         <xsl:value-of select="./text()"/>
-         </xsl:when>
-         <xsl:otherwise>
-         <span class="highlighted">
-         <xsl:value-of select="./text()"/>
-         </span>
-         </xsl:otherwise>
-         </xsl:choose>
-         </xsl:for-each>
-         </xsl:when>
-         <xsl:otherwise>
-         <xsl:call-template name="highlight">
-         <xsl:with-param name="element" select="."/>
-         <xsl:with-param name="search" select="$search"/>
-         <xsl:with-param name="flags" select="$flags"/>
-         </xsl:call-template>
-         </xsl:otherwise>
-         </xsl:choose>
-         </xsl:for-each>
-         </xsl:otherwise>
-         </xsl:choose>
-         </xsl:template> -->
-
 
     <xsl:template match="app" mode="label-text">
         <xsl:param name="warning" select="true()"/>
