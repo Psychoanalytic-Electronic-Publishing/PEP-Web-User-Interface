@@ -62,7 +62,7 @@ export default class CredentialsAuthenticator extends BaseAuthenticator {
     setupExpiresAt(response: PepSecureAuthenticatedData) {
         const expiresAt = this._absolutizeExpirationTime(response.SessionExpires);
         if (expiresAt && !isEmpty(expiresAt)) {
-            Object.assign(response, { expiresAt: expiresAt });
+            Object.assign(response, { expiresAt });
         }
         return response;
     }

@@ -13,6 +13,7 @@ import MediaService from 'ember-responsive/services/media';
 import TourService, { Step } from 'ember-shepherd/services/tour';
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 
+import { PepSecureAuthenticatedData } from 'pep/api';
 import { PreferenceKey } from 'pep/constants/preferences';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import PageLayout from 'pep/mixins/page-layout';
@@ -51,7 +52,7 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
     constructor() {
         super(...arguments);
 
-        let router = this.router;
+        const router = this.router;
         router.on('routeDidChange', () => {
             const page = router.currentURL;
             const title = router.currentRouteName || 'unknown';
@@ -64,9 +65,10 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
      * App setup and configuration tasks
      * Runs on initial app boot, and also after the user logs in
      * So that any user session-specific preferences are applied
-     * @returns {Promise<void>}
+     * @return {*}  {Promise<void>}
+     * @memberof Application
      */
-    async appSetup() {
+    async appSetup(): Promise<void> {
         this.currentUser.setup();
         this.currentUser.setFontSize(this.currentUser.fontSize.id);
         await this.theme.setup();
@@ -79,21 +81,18 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
      * If the user is already authenticated, load their data here
      * @param {Transition} transition
      */
-    async beforeModel(transition: Transition) {
+    async beforeModel(transition: Transition): Promise<void> {
         super.beforeModel(transition);
-
-        // IP authentication should only happen once, IN fastboot
-        // if the user doesn't get logged in, a second call on
-        // client-side boot would be pointless, and would add a
-        // delay (and as a result, FOUC) to the app setup process
-        // since we do not currently cache ajax service requests
-        // in the fastboot shoebox (like ember-data does)
-
+        let sessionId;
         if (this.fastboot.isFastBoot) {
             this.auth.dontRedirectOnLogin = true;
         }
 
-        if (this.fastboot.isFastBoot && !this.session.isAuthenticated) {
+        // IP auth should only happen if we are in fastboot, and we are not authenticated OR we are given a session ID in the url
+        if (
+            this.fastboot.isFastBoot &&
+            (!this.session.isAuthenticated || this.fastboot.request.queryParams.sessionId)
+        ) {
             try {
                 await this.session.authenticate('authenticator:ip');
                 // We are doing this to work around a strange cookie issue seen from what we think is Ember Simple Auth.
@@ -104,26 +103,31 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
             } catch (errors) {
                 this.session.invalidate();
             }
-        } else if (!this.session.isAuthenticated) {
-            this.cookies.write('pep_session', this.cookies.read('pep_session_fastboot'), {});
+        } else if (this.cookies.exists('pep_session_fastboot')) {
+            // If the fastboot session cookie exists, it means we have new information. So rewrite the pep_session we were logged in with
+            // and pass this new session to the user endpoint to make sure we get the correct one. We can't just rely on having the right ID
+            // as the update from cookie to session service happens asynchronously
+            const newSession = this.cookies.read('pep_session_fastboot');
+            this.cookies.write('pep_session', newSession, {});
+            const sessionData: { authenticated: PepSecureAuthenticatedData } = JSON.parse(newSession);
+            sessionId = sessionData.authenticated.SessionId;
             this.cookies.clear('pep_session_fastboot', {});
         }
 
         try {
             if (this.session.isAuthenticated) {
-                await this.currentUser.load();
+                await this.currentUser.load(sessionId);
             }
         } catch (err) {
             this.replaceWith('five-hundred');
-        } finally {
-            return this.appSetup();
         }
+        return this.appSetup();
     }
 
     /**
      * Handler called by ember-simple-auth upon successful login
      */
-    async sessionAuthenticated() {
+    async sessionAuthenticated(): Promise<void> {
         onAuthenticated(this);
 
         // trigger a custom event on the session that tells us when the user is logged in
@@ -145,7 +149,7 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
      *
      * @memberof Application
      */
-    async setupTour() {
+    async setupTour(): Promise<void> {
         const sizeClass = this.media.isMobile ? 'mobile-tour' : 'desktop-tour';
         this.tour.set('defaultStepOptions', {
             classes: `${sizeClass} ${this.theme.currentTheme.id}`,
@@ -247,7 +251,7 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
      * @memberof Application
      */
     @dontRunInFastboot
-    async setupController(controller: ApplicationController, model: any) {
+    async setupController(controller: ApplicationController, model: any): Promise<void> {
         super.setupController(controller, model);
         if (this.currentUser.preferences?.tourEnabled) {
             this.setupTour();
@@ -262,7 +266,7 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
      * @param {Object} transition
      */
     @action
-    loading(transition: Transition) {
+    loading(transition: Transition): boolean {
         this.loadingBar.show();
         //@ts-ignore - `promise` appears to technically be a private api
         transition.promise.finally(() => this.loadingBar.hide());
@@ -274,7 +278,7 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
      * When transitioning to a new route, close sidebars on mobile/tablet
      */
     @action
-    didTransition() {
+    didTransition(): void {
         if (this.media.isMobile || this.media.isTablet) {
             this.sidebar.toggleAll(false);
         }
@@ -288,7 +292,7 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
      * @param {ApiServerErrorResponse} error
      */
     @action
-    error(error?: ApiServerErrorResponse) {
+    error(error?: ApiServerErrorResponse): boolean {
         if (this.fastboot.isFastBoot) {
             this.fastboot.response.statusCode = error?.errors?.[0]?.status ?? 200;
         }

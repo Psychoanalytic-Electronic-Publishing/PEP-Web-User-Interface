@@ -52,7 +52,7 @@ export default class ConfigurationService extends Service {
      * Initialize the app by loading the applicable base and
      * language-specific configurations
      */
-    async setup() {
+    async setup(): Promise<void> {
         try {
             // TODO re-enable this once the configuration endpoints/data are live/populated
             // const base = this.store.queryRecord('configuration', { configname: BASE_CONFIG_NAME });
