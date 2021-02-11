@@ -1,3 +1,4 @@
+import Transition from '@ember/routing/-private/transition';
 import Route from '@ember/routing/route';
 
 import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hooks/pagination';
@@ -51,8 +52,8 @@ export default class MostCited extends PageNav(Route) {
      * @param {MostCitedController} controller
      * @param {object} model
      */
-    setupController(controller: MostCitedController, model: RecordArrayWithMeta<Document>) {
-        super.setupController(controller, model);
+    setupController(controller: MostCitedController, model: RecordArrayWithMeta<Document>, transition: Transition) {
+        super.setupController(controller, model, transition);
         controller.paginator = usePagination<Document>({
             context: controller,
             modelName: 'document',

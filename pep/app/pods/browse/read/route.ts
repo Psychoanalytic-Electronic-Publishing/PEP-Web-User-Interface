@@ -3,9 +3,10 @@ import Route from '@ember/routing/route';
 import { next } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 
+import FastbootService from 'ember-cli-fastboot/services/fastboot';
+
 import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hooks/pagination';
 import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
-import FastbootService from 'ember-cli-fastboot/services/fastboot';
 
 import { WIDGET } from 'pep/constants/sidebar';
 import { PageNav } from 'pep/mixins/page-layout';
@@ -91,8 +92,8 @@ export default class BrowseRead extends PageNav(Route) {
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
     //@ts-ignore
-    setupController(controller: BrowseReadController, model: Document) {
-        super.setupController(controller, model);
+    setupController(controller: BrowseReadController, model: Document, transition: Transition) {
+        super.setupController(controller, model, transition);
 
         controller.paginator = usePagination<Document, any>({
             context: controller,
