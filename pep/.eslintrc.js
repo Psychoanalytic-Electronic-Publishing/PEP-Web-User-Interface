@@ -24,6 +24,7 @@ module.exports = {
         //@see http://eslint.org/docs/rules/prefer-template
         'prefer-template': 'error',
         'require-yield': 'off',
+        'prefer-rest-params': 'off',
 
         // typescript
         '@typescript-eslint/no-inferrable-types': 'off',
@@ -32,6 +33,7 @@ module.exports = {
         '@typescript-eslint/no-empty-function': 'off',
         '@typescript-eslint/no-empty-interface': 'off',
         '@typescript-eslint/ban-ts-comment': 'off',
+
         '@typescript-eslint/ban-types': [
             'error',
             {

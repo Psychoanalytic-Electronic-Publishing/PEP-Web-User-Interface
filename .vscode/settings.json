@@ -41,6 +41,5 @@
         "unparse",
         "viewcount",
         "viewperiod"
-    ],
-    "typescript.tsdk": "pep/node_modules/typescript/lib"
+    ]
 }

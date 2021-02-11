@@ -91,11 +91,14 @@ export default class CurrentUserService extends Service {
     }
 
     /**
-     * Loads the current user from the API
-     * @returns {Promise<User>}
+     *Loads the current user from the API
+     *
+     * @param {string} [sessionId]
+     * @return {*}  {(Promise<User | void>)}
+     * @memberof CurrentUserService
      */
-    load(): Promise<User | void> {
-        return this.fetchUser();
+    load(sessionId?: string): Promise<User | void> {
+        return this.fetchUser(sessionId);
     }
 
     /**
@@ -111,12 +114,15 @@ export default class CurrentUserService extends Service {
     }
 
     /**
-     * Fetches the current user model
-     * @returns Promise<User | void>
+     *Fetches the current user model
+     *
+     * @param {string} [sessionId]
+     * @return {*}  {(Promise<User | void>)}
+     * @memberof CurrentUserService
      */
-    async fetchUser(): Promise<User | void> {
-        const { SessionId } = this.session.data.authenticated;
-        const user = await this.store.queryRecord('user', { SessionId: SessionId ?? '' });
+    async fetchUser(sessionId?: string): Promise<User | void> {
+        const id = sessionId ?? this.session.sessionId;
+        const user = await this.store.queryRecord('user', { SessionId: id ?? '' });
         this.user = user;
         return user;
     }

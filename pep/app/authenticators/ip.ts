@@ -14,7 +14,7 @@ export default class IpAuthenticator extends CredentialsAuthenticator {
      * @returns
      * @memberof IpAuthenticator
      */
-    async authenticate() {
+    async authenticate(): Promise<PepSecureAuthenticatedData> {
         try {
             const sessionData = this.session.getUnauthenticatedSession();
             let url = `${ENV.authBaseUrl}/Authenticate/ip`;
@@ -33,6 +33,7 @@ export default class IpAuthenticator extends CredentialsAuthenticator {
             const response = await this.ajax.request<PepSecureAuthenticatedData>(url, {
                 headers: this.authenticationHeaders
             });
+
             if (response.IsValidLogon && response.SessionId) {
                 this.session.clearUnauthenticatedSession();
                 response.SessionType = sessionType;

@@ -765,6 +765,11 @@
             }
         }
     },
+    "alt": {
+        "brandingImageUrl": "Branded Image",
+        "gw": "Gesammelte Werke",
+        "se": "Standard Edition"
+    },
     "validations": {
         "inclusion": "{description} is not included in the list",
         "exclusion": "{description} is reserved",

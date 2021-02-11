@@ -3308,14 +3308,14 @@
     ember-cli-htmlbars "^4.2.3"
     ember-cli-typescript "^3.1.3"
 
-"@gavant/ember-floating-labels@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@gavant/ember-floating-labels/-/ember-floating-labels-1.0.1.tgz#06bf38f5d3df2f806254eb2023d107d04cd7aa8f"
-  integrity sha512-bLtS3watCusx+wiFOAaoQDGJpON3VZsJyZS2LKmS6CSMwGgERDQ4IkZf6/EztM7w64Phs+Zx4hVS12C5doQhqw==
+"@gavant/ember-floating-labels@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@gavant/ember-floating-labels/-/ember-floating-labels-1.0.2.tgz#3b4e12c3c7c1b00b045018c1d68f834412a2c32e"
+  integrity sha512-Om+5DNym4el9BFrv9mDMlQpqlwUGjZQP90Xo2rb9hbFF6DVGyQBsHDr6ITSYrw87RnmDz0zwxR8jzqDQ0lBfmw==
   dependencies:
     ember-cli-babel "^7.18.0"
     ember-cli-htmlbars "^4.2.3"
-    ember-cli-typescript "^3.1.3"
+    ember-cli-typescript "^4.1.0"
     ember-truth-helpers "^2.1.0"
 
 "@gavant/ember-modals@^1.0.3":
@@ -9009,6 +9009,22 @@ ember-cli-typescript@^4.0.0:
     stagehand "^1.0.0"
     walk-sync "^2.2.0"
 
+ember-cli-typescript@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/ember-cli-typescript/-/ember-cli-typescript-4.1.0.tgz#2ff17be2e6d26b58c88b1764cb73887e7176618b"
+  integrity sha512-zSuKG8IQuYE3vS+c7V0mHJqwrN/4Wo9Wr50+0NUjnZH3P99ChynczQHu/P7WSifkO6pF6jaxwzf09XzWvG8sVw==
+  dependencies:
+    ansi-to-html "^0.6.6"
+    broccoli-stew "^3.0.0"
+    debug "^4.0.0"
+    execa "^4.0.0"
+    fs-extra "^9.0.1"
+    resolve "^1.5.0"
+    rsvp "^4.8.1"
+    semver "^7.3.2"
+    stagehand "^1.0.0"
+    walk-sync "^2.2.0"
+
 ember-cli-uglify@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/ember-cli-uglify/-/ember-cli-uglify-3.0.0.tgz#8819665b2cc5fe70e3ba9fe7a94645209bc42fd6"
@@ -9637,10 +9653,10 @@ ember-shepherd@^11.0.2:
     ember-cli-htmlbars "^5.3.1"
     shepherd.js "^8.0.1"
 
-ember-simple-auth@3.1.0-beta.1:
-  version "3.1.0-beta.1"
-  resolved "https://registry.yarnpkg.com/ember-simple-auth/-/ember-simple-auth-3.1.0-beta.1.tgz#22df3007aa2897d213dc05532bfcfbff7b853622"
-  integrity sha512-Wg9AUfIcY6nbj4nBSdvMu+juW5GdZH+lztRRu14BjUx39btNpOm5Fe76BiU/ST0PLhGyXPCs1npgT6RBp7CdRg==
+ember-simple-auth@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/ember-simple-auth/-/ember-simple-auth-3.1.0.tgz#e8abe27f6c3c44f46ebacace57364e82223bab9a"
+  integrity sha512-JS8NtYAlSftkoQh36Kxps6iLHTP/InIgKt8w21QBHCTqDx07af4aka59GojaBvc+8GubQuGKldk6vvw3R8bwxA==
   dependencies:
     base-64 "^0.1.0"
     broccoli-file-creator "^2.0.0"
