@@ -1,4 +1,5 @@
 import Controller from '@ember/controller';
+import Transition from '@ember/routing/-private/transition';
 import Route from '@ember/routing/route';
 
 import Application from 'pep/pods/application/controller';
@@ -10,8 +11,8 @@ export default class Index extends Route {
      * @param {IndexController} controller
      * @param {Object} model
      */
-    setupController(controller: Controller, model: object) {
-        super.setupController(controller, model);
+    setupController(controller: Controller, model: object, transition: Transition) {
+        super.setupController(controller, model, transition);
         const appController = this.controllerFor('application') as Application;
 
         copySearchToController(appController);

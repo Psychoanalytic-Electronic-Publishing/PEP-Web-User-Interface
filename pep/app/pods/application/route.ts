@@ -251,8 +251,8 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
      * @memberof Application
      */
     @dontRunInFastboot
-    async setupController(controller: ApplicationController, model: any): Promise<void> {
-        super.setupController(controller, model);
+    async setupController(controller: ApplicationController, model: any, transition: Transition): Promise<void> {
+        super.setupController(controller, model, transition);
         if (this.currentUser.preferences?.tourEnabled) {
             this.setupTour();
         }

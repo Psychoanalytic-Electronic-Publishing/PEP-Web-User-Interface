@@ -1,3 +1,4 @@
+import Transition from '@ember/routing/-private/transition';
 import Route from '@ember/routing/route';
 
 import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hooks/pagination';
@@ -38,8 +39,12 @@ export default class BrowseJournalIndex extends Route {
      * @param {RecordArrayWithMeta<Source>} model
      * @memberof BrowseJournalIndex
      */
-    setupController(controller: BrowseJournalIndexController, model: RecordArrayWithMeta<Source>) {
-        super.setupController(controller, model);
+    setupController(
+        controller: BrowseJournalIndexController,
+        model: RecordArrayWithMeta<Source>,
+        transition: Transition
+    ) {
+        super.setupController(controller, model, transition);
 
         controller.sourcecode = this.sourceCode;
         controller.journal = this.modelFor('browse.journal') as Journal;

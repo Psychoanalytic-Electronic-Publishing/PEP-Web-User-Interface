@@ -7,7 +7,8 @@ import { DEFAULT_USER_PREFERENCES, UserPreferences } from 'pep/constants/prefere
 
 export enum UserType {
     GROUP = 'Group',
-    INDIVIDUAL = 'Individual'
+    INDIVIDUAL = 'Individual',
+    ADMIN = 'Admin'
 }
 
 interface ActiveSubscription {

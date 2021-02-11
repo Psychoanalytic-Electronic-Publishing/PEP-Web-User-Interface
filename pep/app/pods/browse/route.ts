@@ -1,9 +1,11 @@
 import ArrayProxy from '@ember/array/proxy';
+import Transition from '@ember/routing/-private/transition';
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 
-import { buildQueryParams, removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
 import MediaService from 'ember-responsive/services/media';
+
+import { buildQueryParams, removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
 
 import { GW_VOLUME_DOCUMENT_ID, SE_VOLUME_DOCUMENT_ID } from 'pep/constants/books';
 import { PageNav } from 'pep/mixins/page-layout';
@@ -47,8 +49,8 @@ export default class Browse extends PageNav(Route) {
         });
     }
 
-    async setupController(controller: BrowseController, model: BrowseModel) {
-        super.setupController(controller, model);
+    async setupController(controller: BrowseController, model: BrowseModel, transition: Transition) {
+        super.setupController(controller, model, transition);
 
         controller.journals = model.journals.toArray() ?? [];
         controller.books = model.books.toArray() ?? [];

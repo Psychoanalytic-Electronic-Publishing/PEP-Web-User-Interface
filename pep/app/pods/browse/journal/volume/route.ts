@@ -1,3 +1,4 @@
+import Transition from '@ember/routing/-private/transition';
 import Route from '@ember/routing/route';
 
 import { RecordArrayWithMeta } from '@gavant/ember-pagination/hooks/pagination';
@@ -22,8 +23,12 @@ export default class BrowseJournalVolume extends Route {
         });
     }
 
-    async setupController(controller: BrowseJournalVolumeController, model: RecordArrayWithMeta<SourceVolume[]>) {
-        super.setupController(controller, model);
+    async setupController(
+        controller: BrowseJournalVolumeController,
+        model: RecordArrayWithMeta<SourceVolume[]>,
+        transition: Transition
+    ): Promise<void> {
+        super.setupController(controller, model, transition);
         const journalParams = this.paramsFor('browse.journal') as BrowseJournalParams;
         const routeParams = this.paramsFor(this.routeName) as BrowseJournalVolumeParams;
         const journal = this.modelFor('browse.journal') as Journal;
@@ -35,10 +40,11 @@ export default class BrowseJournalVolume extends Route {
         controller.volumeInformation = volumes.findBy('id', routeParams.volume_number);
     }
 
-    resetController(controller: BrowseJournalVolumeController, isExiting: boolean) {
+    resetController(controller: BrowseJournalVolumeController, isExiting: boolean): void {
         if (isExiting) {
             controller.sourcecode = undefined;
             controller.journal = undefined;
+            controller.previewedResult = null;
         }
     }
 }
