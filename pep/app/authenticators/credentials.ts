@@ -44,7 +44,7 @@ export default class CredentialsAuthenticator extends BaseAuthenticator {
      * @returns
      * @memberof CredentialsAuthenticator
      */
-    _absolutizeExpirationTime(expiresIn: number) {
+    _absolutizeExpirationTime(expiresIn: number): number | undefined {
         if (!isEmpty(expiresIn)) {
             return new Date(new Date().getTime() + expiresIn * 1000).getTime();
         } else {
@@ -59,7 +59,7 @@ export default class CredentialsAuthenticator extends BaseAuthenticator {
      * @returns
      * @memberof CredentialsAuthenticator
      */
-    setupExpiresAt(response: PepSecureAuthenticatedData) {
+    setupExpiresAt(response: PepSecureAuthenticatedData): PepSecureAuthenticatedData {
         const expiresAt = this._absolutizeExpirationTime(response.SessionExpires);
         if (expiresAt && !isEmpty(expiresAt)) {
             Object.assign(response, { expiresAt });
@@ -70,13 +70,15 @@ export default class CredentialsAuthenticator extends BaseAuthenticator {
     /**
      * Authenticates and logs the user in as well as schedules a session expiration based on the
      * SessionExpires number that is sent back in the result
-     * @param  {String} username
-     * @param {String} password
+     *
+     * @param {string} username
+     * @param {string} password
+     * @return {*}
+     * @memberof CredentialsAuthenticator
      */
-    async authenticate(username: string, password: string) {
+    async authenticate(username: string, password: string): Promise<PepSecureAuthenticatedData> {
         try {
-            const sessionData = this.session.getUnauthenticatedSession();
-            const sessionId = sessionData?.SessionId;
+            const sessionId = this.session.sessionId;
             const params = serializeQueryParams({ SessionId: sessionId });
             let url = `${ENV.authBaseUrl}/Authenticate`;
             if (sessionId) {
@@ -113,7 +115,7 @@ export default class CredentialsAuthenticator extends BaseAuthenticator {
     /**
      * Invalidates the local session and logs the user out
      */
-    async invalidate(data: PepSecureAuthenticatedData) {
+    async invalidate(data: PepSecureAuthenticatedData): Promise<void> {
         try {
             const params = serializeQueryParams({ SessionId: data.SessionId });
             await this.ajax.request(`${ENV.authBaseUrl}/Users/Logout?${params}`, {
@@ -133,7 +135,7 @@ export default class CredentialsAuthenticator extends BaseAuthenticator {
      * if needed
      * @param {SessionAuthenticatedData} data
      */
-    restore(data: PepSecureAuthenticatedData) {
+    restore(data: PepSecureAuthenticatedData): Promise<unknown> {
         return new Promise((resolve, reject) => {
             const now = new Date().getTime();
             if (!isEmpty(data.expiresAt) && data.expiresAt <= now) {
@@ -156,7 +158,7 @@ export default class CredentialsAuthenticator extends BaseAuthenticator {
      * @param {PepSecureAuthenticatedData} data
      * @memberof CredentialsAuthenticator
      */
-    _scheduleSessionExpiration(data: PepSecureAuthenticatedData) {
+    _scheduleSessionExpiration(data: PepSecureAuthenticatedData): void {
         let expiresAt = data.expiresAt;
         const expiresIn = data.SessionExpires;
         const scheduleExpiration = !this.fastboot.isFastBoot;
@@ -175,7 +177,7 @@ export default class CredentialsAuthenticator extends BaseAuthenticator {
      *
      * @memberof CredentialsAuthenticator
      */
-    _cancelTimeout() {
+    _cancelTimeout(): void {
         if (this._invalidateTimeout) {
             run.cancel(this._invalidateTimeout);
             delete this._invalidateTimeout;
