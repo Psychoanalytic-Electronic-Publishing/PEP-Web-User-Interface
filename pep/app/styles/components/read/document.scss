@@ -69,6 +69,9 @@ $document-paragraph-indent: 1.5rem;
             margin-left: 2px;
             margin-right: 2px;
         }
+        &.glosstip {
+            color: $body-color;
+        }
     }
 
     p {
@@ -347,6 +350,7 @@ $document-paragraph-indent: 1.5rem;
     &.glossary-highlight {
         .glosstip {
             background-color: $document-link-glosstip-bg;
+            color: $link-color;
             &:hover {
                 color: $document-link-glosstip-hover;
             }

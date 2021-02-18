@@ -70,6 +70,7 @@
     <xsl:param name="clientId"/>
     <xsl:param name="sessionId"/>
     <xsl:param name="translationConcordanceEnabled" />
+    <xsl:param name="glossaryTermFormattingEnabled" />
 
     <xsl:variable name="fa-right-arrow">
         <svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" role="img" focusable="false" aria-hidden="true" data-icon="arrow-right" data-prefix="fal" id="ember488" class="pointer-events-none svg-inline--fa fa-arrow-right fa-w-14 ember-view"><path fill="currentColor" d="M216.464 36.465l-7.071 7.07c-4.686 4.686-4.686 12.284 0 16.971L387.887 239H12c-6.627 0-12 5.373-12 12v10c0 6.627 5.373 12 12 12h375.887L209.393 451.494c-4.686 4.686-4.686 12.284 0 16.971l7.071 7.07c4.686 4.686 12.284 4.686 16.97 0l211.051-211.05c4.686-4.686 4.686-12.284 0-16.971L233.434 36.465c-4.686-4.687-12.284-4.687-16.97 0z"></path>
@@ -218,7 +219,7 @@
 
         <div id="front" class="frontmatter">
             <xsl:apply-templates select="front | front-stub" mode="metadata"/>
-            <p class="banner d-flex justify-content-between">
+            <p class="banner d-flex ">
                 <a class="toc-link" href="/browse/{$journal-code}/volumes" data-journal-code="{$journal-code}">
                     <img class="img-fluid">
                         <xsl:attribute name="data-type">document-banner</xsl:attribute>
@@ -231,9 +232,8 @@
                         <xsl:attribute name="alt">Journal Logo</xsl:attribute>
                     </img>
                 </a>
-                <span>
-                    Glossary links are marked with []
-                </span>
+
+
             </p>
             <div class="pubinfotop small">
                 <xsl:for-each select="artinfo">
@@ -244,6 +244,11 @@
                     <span>:<xsl:apply-templates mode="text" select="artpgrg"/></span>
                 </xsl:for-each>
             </div>
+            <xsl:if test="$glossaryTermFormattingEnabled = 'true'">
+                <div class="small">
+                    Glossary links are marked with []
+                </div>
+            </xsl:if>
 
             <xsl:for-each select="artinfo">
                 <div id="{$this-article}-artinfo" class="artinfo" data-arttype="{@arttype}" data-journal="{@j}">
@@ -1371,13 +1376,27 @@
         <xsl:choose>
             <xsl:when test="@rx"> <!-- for the generated links -->
                 <a href="/search/document/{@rx}?glossary={@grpanme}" class="peppopup glosstip impx text-nowrap" data-type="{@type}" data-doc-id="{@rx}" data-grpname="{@grpname}">
-                    [<xsl:value-of select="."/>]
+                    <xsl:choose>
+                        <xsl:when test="$glossaryTermFormattingEnabled = 'true'">
+                            [<xsl:value-of select="."/>]
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:value-of select="."/>
+                        </xsl:otherwise>
+                    </xsl:choose>
                 </a>
             </xsl:when>
             <xsl:otherwise> <!-- sometimes impx is manually tagged -->
                 <span class="impx" data-type="{@type}">
+                    <xsl:choose>
+                        <xsl:when test="$glossaryTermFormattingEnabled = 'true'">
+                            [<xsl:value-of select="."/>]
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:value-of select="."/>
+                        </xsl:otherwise>
+                    </xsl:choose>
 
-                    [<xsl:value-of select="."/>]
                 </span>
             </xsl:otherwise>
         </xsl:choose>
