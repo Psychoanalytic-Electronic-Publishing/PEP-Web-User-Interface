@@ -141,6 +141,11 @@ export default class DocumentText extends Component<DocumentTextArgs> {
                     'translationConcordanceEnabled',
                     options?.translationEnabled ?? this.currentUser.preferences?.translationConcordanceEnabled
                 );
+                processor.setParameter(
+                    '',
+                    'glossaryTermFormattingEnabled',
+                    this.currentUser.preferences?.glossaryFormattingEnabled
+                );
                 processor.setParameter('', 'clientId', ENV.clientId);
                 processor.setParameter('', 'journalName', this.args.document.sourceTitle);
                 processor.setParameter('', 'imageUrl', DOCUMENT_IMG_BASE_URL);
