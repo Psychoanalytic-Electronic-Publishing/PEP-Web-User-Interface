@@ -4,8 +4,9 @@ import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
-import ModalService from '@gavant/ember-modals/services/modal';
 import { DS } from 'ember-data';
+
+import ModalService from '@gavant/ember-modals/services/modal';
 
 import Abstract from 'pep/pods/abstract/model';
 import GlossaryTerm from 'pep/pods/glossary-term/model';
@@ -172,4 +173,6 @@ export default class Home extends Component<HomeArgs> {
             }
         }
     }
+
+  
 }
