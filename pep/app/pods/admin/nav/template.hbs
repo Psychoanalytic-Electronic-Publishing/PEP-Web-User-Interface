@@ -1,0 +1,18 @@
+<Page::Sidebar @side="left" class="main-menu">
+    <div class="main-menu-content">
+        <ul class="navigation navigation-main list-unstyled">
+            <LinkTo @route="admin.common" @tagName="li" class="nav-item p-2 cursor-pointer" @activeClass="bg-backdrop">
+                Common
+            </LinkTo>
+            <LinkTo @route="admin.en-us" @tagName="li" class="nav-item p-2 cursor-pointer" @activeClass="bg-backdrop">
+                English
+            </LinkTo>
+            <LinkTo @route="admin.es-es" @tagName="li" class="nav-item p-2 cursor-pointer" @activeClass="bg-backdrop">
+                Spanish
+            </LinkTo>
+            <LinkTo @route="admin.fr-fr" @tagName="li" class="nav-item p-2 cursor-pointer" @activeClass="bg-backdrop">
+                French
+            </LinkTo>
+        </ul>
+    </div>
+</Page::Sidebar>

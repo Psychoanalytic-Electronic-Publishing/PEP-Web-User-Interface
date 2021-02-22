@@ -56,6 +56,17 @@ export default class User extends DS.Model {
         return this.userType === UserType.GROUP;
     }
 
+    /**
+     * Is the user an admin
+     *
+     * @readonly
+     * @type {boolean}
+     * @memberof User
+     */
+    get isAdmin(): boolean {
+        return this.userType === UserType.ADMIN;
+    }
+
     get activeSubscriptionsJSON(): ActiveSubscription[] {
         return this.activeSubscriptions
             ? JSON.parse(this.activeSubscriptions).map((subscription: ActiveSubscription) => {

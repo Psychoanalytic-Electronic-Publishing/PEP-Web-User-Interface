@@ -147,7 +147,7 @@ export interface ContentConfiguration {
     };
 }
 
-export const BASE_CONFIG_NAME = 'pep-base';
+export const BASE_CONFIG_NAME = 'common';
 export const CONTENT_CONFIG_NAME = 'pep-content';
 
 export const DEFAULT_BASE_CONFIGURATION: BaseConfiguration = {
