@@ -1,9 +1,18 @@
 import { validatePresence } from 'ember-changeset-validations/validators';
 
 const FEEDBACK_VALIDATIONS = {
-    description: [validatePresence({ presence: true, ignoreBlank: true })],
-    subject: [validatePresence({ presence: true, ignoreBlank: true })],
-    url: [validatePresence({ presence: true, ignoreBlank: true, description: 'URL' })]
+    configSettings: {
+        global: {
+            cards: {
+                videoPreview: {
+                    code: [validatePresence({ presence: true, ignoreBlank: true })]
+                },
+                whatsNew: {
+                    limit: [validatePresence({ presence: true, ignoreBlank: true })]
+                }
+            }
+        }
+    }
 };
 
 export default FEEDBACK_VALIDATIONS;

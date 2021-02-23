@@ -3,32 +3,36 @@
     <div class="p-4 form-row">
         <div class="card col-sm-8">
             <div class="card-body">
-                <FormValidator @changeset={{@options.changeset}} @submit={{this.login}} as |changeset validator|>
+                <FormValidator @changeset={{this.changeset}} @submit={{this.save}} as |changeset validator|>
                     <div class="form-row">
                         <div class="col-sm-10 offset-sm-1 p-0">
                             <validator.input
-                                @errors={{changeset.error.username.validation}}
-                                class="input-validator-compact"
+                                @errors={{changeset.error.configSettings.global.cards.videoPreview.code.validation}}
+                                @fieldLabel="Nested Item1"
+                                @label={{true}}
                             >
-                                <FlInput
-                                    @value={{changeset.global.cards.videoPreview.code}}
-                                    @placeholder="Latest video embed code"
-                                    maxlength="1028"
+                                <ChangesetInput
+                                    @changeset={{changeset}}
+                                    @path="configSettings.global.cards.videoPreview.code"
+                                    class="form-control"
+                                    autocomplete="off"
                                 />
                             </validator.input>
                             <validator.input
-                                @errors={{changeset.error.whatsNew.validation}}
-                                class="input-validator-compact"
+                                @errors={{changeset.error.configSettings.global.cards.whatsNew.limit.validation}}
+                                @fieldLabel="Nested Item2"
+                                @label={{true}}
                             >
-                                <FlInput
-                                    @value={{changeset.global.cards.whatsNew.limit}}
-                                    @placeholder="Whats new result count"
-                                    maxlength="2"
+                                <ChangesetInput
+                                    @changeset={{changeset}}
+                                    @path="configSettings.global.cards.whatsNew.limit"
+                                    class="form-control"
+                                    autocomplete="off"
                                 />
                             </validator.input>
+
                             <div class="d-flex  justify-content-end align-items-center">
                                 <div>
-                                    <Button @type="link" @label={{t "common.cancel"}} @action={{@onClose}} />
                                     <ButtonSpinner
                                         @type="primary"
                                         @label={{t "common.save"}}

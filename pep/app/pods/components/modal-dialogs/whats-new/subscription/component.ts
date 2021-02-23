@@ -1,14 +1,15 @@
-import Component from '@glimmer/component';
 import { action } from '@ember/object';
-import { inject as service } from '@ember/service';
-import { reject } from 'rsvp';
-import DS from 'ember-data';
 import RouterService from '@ember/routing/router-service';
+import { inject as service } from '@ember/service';
+import Component from '@glimmer/component';
+
 import NotificationService from 'ember-cli-notifications/services/notifications';
+import DS from 'ember-data';
 import IntlService from 'ember-intl/services/intl';
 
 import LoadingBar from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
+import { reject } from 'rsvp';
 
 interface ModalDialogsWhatsNewSubscriptionArgs {
     onClose: () => void;
@@ -29,7 +30,7 @@ export default class ModalDialogsWhatsNewSubscription extends Component<ModalDia
     /**
      * Submits the update dialog form
      * TODO this is just a placeholder, will eventually be filled in
-     * @param {ModelChangeset<LoginForm>} changeset
+     * @param {GenericChangeset<LoginForm>} changeset
      */
     @action
     async update() {
