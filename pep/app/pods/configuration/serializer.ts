@@ -9,11 +9,11 @@ import ConfigurationModel from 'pep/pods/configuration/model';
 export default class Configuration extends ApplicationSerializer {
     primaryKey = 'configName';
 
-    payloadKeyFromModelName<K extends string | number>(modelName: K) {
+    payloadKeyFromModelName() {
         return 'configList';
     }
 
-    serialize(snapshot: DS.Snapshot, options) {
+    serialize(snapshot: DS.Snapshot<string | number>, options: object): object {
         const serialized = super.serialize(snapshot, options) as ConfigurationModel;
         serialized.configName = snapshot.id;
         return [serialized];

@@ -1,0 +1,7 @@
+<TinymceEditor
+    @plugins={{this.plugins}}
+    @toolbar={{this.toolbar}}
+    @baseUrl={{this.baseUrl}}
+    @value={{changeset-get @changeset @path}}
+    @onUpdate={{changeset-set @changeset @path}}
+/>

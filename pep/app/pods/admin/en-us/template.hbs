@@ -16,13 +16,7 @@
                                 @errors={{changeset.error.configSettings.home.intro.left.validation}}
                                 @label={{true}}
                             >
-                                <TinymceEditor
-                                    @plugins={{this.plugins}}
-                                    @toolbar={{this.toolbar}}
-                                    @baseUrl="/assets/"
-                                    @value={{changeset-get changeset "configSettings.home.intro.left"}}
-                                    @onUpdate={{changeset-set changeset "configSettings.home.intro.left"}}
-                                />
+                                <Admin::Editor @changeset={{changeset}} @path="configSettings.home.intro.left" />
                             </validator.input>
                         </div>
                         <div class="col-12">
@@ -33,13 +27,7 @@
                                 @errors={{changeset.error.configSettings.home.intro.right.validation}}
                                 @label={{true}}
                             >
-                                <TinymceEditor
-                                    @plugins={{this.plugins}}
-                                    @toolbar={{this.toolbar}}
-                                    @baseUrl="/assets/"
-                                    @value={{changeset-get changeset "configSettings.home.intro.right"}}
-                                    @onUpdate={{changeset-set changeset "configSettings.home.intro.right"}}
-                                />
+                                <Admin::Editor @changeset={{changeset}} @path="configSettings.home.intro.right" />
                             </validator.input>
 
                             <div class="d-flex  justify-content-end align-items-center">

@@ -3,7 +3,6 @@ import { tracked } from '@glimmer/tracking';
 
 import DS from 'ember-data';
 
-import merge from 'lodash.merge';
 import {
     BASE_CONFIG_NAME, BaseConfiguration, ContentConfiguration, DEFAULT_BASE_CONFIGURATION, DEFAULT_CONTENT_CONFIGURATION
 } from 'pep/constants/configuration';
