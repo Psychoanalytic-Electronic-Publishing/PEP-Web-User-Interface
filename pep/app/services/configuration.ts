@@ -61,8 +61,8 @@ export default class ConfigurationService extends Service {
             // to ensure the app can always safely access config data
             // e.g. even if a new version is released w/new configs that
             // do not yet exist in the saved config records
-            this.base = merge({}, baseCfg, DEFAULT_BASE_CONFIGURATION) as BaseConfiguration;
-            this.content = merge({}, contentCfg, DEFAULT_CONTENT_CONFIGURATION) as ContentConfiguration;
+            this.base = Object.assign({}, DEFAULT_BASE_CONFIGURATION, baseCfg) as BaseConfiguration;
+            this.content = Object.assign({}, DEFAULT_CONTENT_CONFIGURATION, contentCfg) as ContentConfiguration;
         } catch (err) {
             // if configs fail to load, fall back to the default config values
             this.base = DEFAULT_BASE_CONFIGURATION;

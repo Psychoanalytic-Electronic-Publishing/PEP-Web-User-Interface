@@ -3,7 +3,7 @@ import attr from 'ember-data/attr';
 
 export default class Configuration extends DS.Model {
     @attr('number') clientID!: number;
-
+    @attr('string') configName!: string;
     // Note: the shape of the data in configSettings will be very different
     // from model to model, but will be properly typed when specific configs
     // are retrieved via the `config` service. So, very rarely, if ever,

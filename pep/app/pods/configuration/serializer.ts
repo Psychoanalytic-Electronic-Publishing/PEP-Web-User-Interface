@@ -4,9 +4,20 @@ import { DS } from 'ember-data';
 import { pluralize } from 'ember-inflector';
 
 import ApplicationSerializer from 'pep/pods/application/serializer';
+import ConfigurationModel from 'pep/pods/configuration/model';
 
 export default class Configuration extends ApplicationSerializer {
     primaryKey = 'configName';
+
+    payloadKeyFromModelName<K extends string | number>(modelName: K) {
+        return 'configList';
+    }
+
+    serialize(snapshot: DS.Snapshot, options) {
+        const serialized = super.serialize(snapshot, options) as ConfigurationModel;
+        serialized.configName = snapshot.id;
+        return [serialized];
+    }
 
     /**
      * The API returns result sets in the JSON under documentList.responseSet
@@ -27,7 +38,7 @@ export default class Configuration extends ApplicationSerializer {
         const modelKey = pluralize(camelize(primaryModelClass.modelName));
         if (payload?.configList) {
             payload[modelKey] = payload.configList;
-            delete payload.documentList;
+            delete payload.configList;
         }
 
         return super.normalizeArrayResponse(store, primaryModelClass, payload, id, requestType);
@@ -52,7 +63,7 @@ export default class Configuration extends ApplicationSerializer {
         if (payload?.configList) {
             payload[modelKey] = payload.configList;
 
-            delete payload.documents;
+            delete payload.configList;
         }
 
         return super.normalizeSingleResponse(store, primaryModelClass, payload, id, requestType);

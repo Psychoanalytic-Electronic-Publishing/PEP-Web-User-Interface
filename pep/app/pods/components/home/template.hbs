@@ -10,14 +10,7 @@
             <div class="col-xl-6 d-xl-flex">
                 <div class="card mb-4 flex-xl-grow-1">
                     <div class="card-body">
-                        <h5 class="card-title">
-                            {{html-safe this.intro.left.heading}}
-                        </h5>
-                        {{#if this.intro.left.subheading}}
-                            <h6 class="card-subtitle mb-2 text-muted">
-                                {{html-safe this.intro.left.subheading}}
-                            </h6>
-                        {{/if}}
+                        {{html-safe this.intro.left}}
                         <p class="d-lg-none">
                             <Button
                                 @type="primary"
@@ -28,22 +21,13 @@
                                 @action={{this.showSearch}}
                             />
                         </p>
-                        {{html-safe this.intro.left.body}}
                     </div>
                 </div>
             </div>
             <div class="col-xl-6 d-xl-flex">
                 <div class="card mb-4 flex-xl-grow-1">
                     <div class="card-body">
-                        <h5 class="card-title">
-                            {{html-safe this.intro.right.heading}}
-                        </h5>
-                        {{#if this.intro.right.subheading}}
-                            <h6 class="card-subtitle mb-2 text-muted">
-                                {{html-safe this.intro.right.subheading}}
-                            </h6>
-                        {{/if}}
-                        {{html-safe this.intro.right.body}}
+                        {{html-safe this.intro.right}}
                     </div>
                 </div>
             </div>

@@ -1,17 +1,17 @@
 <Page::Sidebar @side="left" class="main-menu">
     <div class="main-menu-content">
         <ul class="navigation navigation-main list-unstyled">
-            <LinkTo @route="admin.common" @tagName="li" class="nav-item p-2 cursor-pointer" @activeClass="bg-backdrop">
-                Common
+            <LinkTo @route="admin.common" @tagName="li" class="nav-item p-3 cursor-pointer" @activeClass="bg-backdrop">
+                {{t "nav.admin.common"}}
             </LinkTo>
-            <LinkTo @route="admin.en-us" @tagName="li" class="nav-item p-2 cursor-pointer" @activeClass="bg-backdrop">
-                English
+            <LinkTo @route="admin.en-us" @tagName="li" class="nav-item p-3 cursor-pointer" @activeClass="bg-backdrop">
+                {{t "nav.admin.languages.enUs"}}
             </LinkTo>
-            <LinkTo @route="admin.es-es" @tagName="li" class="nav-item p-2 cursor-pointer" @activeClass="bg-backdrop">
-                Spanish
+            <LinkTo @route="admin.es-es" @tagName="li" class="nav-item p-3 cursor-pointer" @activeClass="bg-backdrop">
+                {{t "nav.admin.languages.esEs"}}
             </LinkTo>
-            <LinkTo @route="admin.fr-fr" @tagName="li" class="nav-item p-2 cursor-pointer" @activeClass="bg-backdrop">
-                French
+            <LinkTo @route="admin.fr-fr" @tagName="li" class="nav-item p-3 cursor-pointer" @activeClass="bg-backdrop">
+                {{t "nav.admin.languages.frFr"}}
             </LinkTo>
         </ul>
     </div>
