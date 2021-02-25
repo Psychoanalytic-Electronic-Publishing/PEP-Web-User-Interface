@@ -780,6 +780,7 @@
     },
 
     "admin": {
+        "title": "Admin",
         "common": {
             "title": "Common",
             "global": {

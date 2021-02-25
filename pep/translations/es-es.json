@@ -779,6 +779,7 @@
         "se": "Standard Edition"
     },
     "admin": {
+        "title": "Admin",
         "common": {
             "title": "Common",
             "global": {
