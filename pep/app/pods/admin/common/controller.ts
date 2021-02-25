@@ -7,8 +7,13 @@ import { BufferedChangeset } from 'ember-changeset/types';
 export default class AdminCommon extends Controller {
     @tracked changeset?: BufferedChangeset;
 
+    /**
+     * Save the changeset to update the config
+     *
+     * @memberof AdminCommon
+     */
     @action
-    save() {
+    save(): void {
         this.changeset?.save();
     }
 }
