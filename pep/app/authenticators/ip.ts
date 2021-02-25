@@ -29,9 +29,16 @@ export default class IpAuthenticator extends CredentialsAuthenticator {
                 const params = serializeQueryParams({ SessionId: sessionData.SessionId });
                 url = `${url}?${params}`;
             }
+            const headers = this.authenticationHeaders;
+            if (this.fastboot.isFastBoot) {
+                const referrer = this.fastboot.request.headers?.get('referer');
 
+                if (referrer) {
+                    headers['ReferrerURL-For-PEP'] = referrer;
+                }
+            }
             const response = await this.ajax.request<PepSecureAuthenticatedData>(url, {
-                headers: this.authenticationHeaders
+                headers
             });
 
             if (response.IsValidLogon && response.SessionId) {

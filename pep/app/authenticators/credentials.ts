@@ -32,7 +32,7 @@ export default class CredentialsAuthenticator extends BaseAuthenticator {
     @service('pep-session') session!: PepSessionService;
     @service fastboot!: FastbootService;
 
-    authenticationHeaders = {
+    authenticationHeaders: { [key: string]: any } = {
         'Content-Type': 'application/json'
     };
     private _invalidateTimeout?: EmberRunTimer;

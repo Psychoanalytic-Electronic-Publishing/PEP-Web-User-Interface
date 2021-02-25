@@ -1,11 +1,11 @@
 declare module 'ember-cli-fastboot/services/fastboot' {
-    import Service from '@ember/service';
+import Service from '@ember/service';
 
-    interface Request {
+        interface Request {
         method: string;
         body: any;
         cookies: any;
-        headers: any;
+        headers: Headers;
         queryParams: any;
         path: string;
         protocol: string;
