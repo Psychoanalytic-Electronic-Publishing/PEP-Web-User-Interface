@@ -5,9 +5,7 @@ import Service from '@ember/service';
         method: string;
         body: any;
         cookies: any;
-        headers: {
-            headers: { [key: string]: any };
-        };
+        headers: Headers;
         queryParams: any;
         path: string;
         protocol: string;

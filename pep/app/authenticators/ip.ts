@@ -31,13 +31,12 @@ export default class IpAuthenticator extends CredentialsAuthenticator {
             }
             const headers = this.authenticationHeaders;
             if (this.fastboot.isFastBoot) {
-                const referrer = this.fastboot.request.headers.headers['referer'];
+                const referrer = this.fastboot.request.headers?.get('referer');
 
                 if (referrer) {
                     headers['ReferrerURL-For-PEP'] = referrer;
                 }
             }
-            console.log(headers);
             const response = await this.ajax.request<PepSecureAuthenticatedData>(url, {
                 headers
             });
