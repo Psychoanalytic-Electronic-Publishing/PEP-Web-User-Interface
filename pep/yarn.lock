@@ -1327,15 +1327,16 @@
   resolved "https://registry.yarnpkg.com/@gavant/ember-template-lint-forms/-/ember-template-lint-forms-0.0.2.tgz#a7a931dc7b6975eacbc7abf7fcb925856e709e62"
   integrity sha512-L9XLSTpI8TEh3wAMbiZKSprGfBTLWosaUT1MsPem+otaudJx/qkirPuzc0AS0KG3j7YuICsUHK1sTpjrOsXlAg==
 
-"@gavant/ember-tinymce@^0.0.4":
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/@gavant/ember-tinymce/-/ember-tinymce-0.0.4.tgz#27cd9c6f8002665d566a558929301df70b2f14ff"
-  integrity sha512-+DTB3tJwzWlkcETLjSEBFm3JyoddjxRVDL5/2WLgjquAay8wsGp7qGa6pmyvOOhH8XP/Ap2uXmzTRBCQhSAUPg==
+"@gavant/ember-tinymce@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@gavant/ember-tinymce/-/ember-tinymce-0.0.5.tgz#6ebd230f36f77c628937505dd629d51b18e6f198"
+  integrity sha512-95Tp9XeVNZ4F1yyx7FePPMopaBJu7bD9B80hkvbqJnK/z7PP9T9cChQTfvES1cSPMq11UlbEmWLVN01kRWSUGw==
   dependencies:
     ember-auto-import "^1.10.1"
     ember-cli-babel "^7.21.0"
     ember-cli-htmlbars "^5.2.0"
     ember-cli-typescript "^4.1.0"
+    ember-named-blocks-polyfill "^0.2.4"
     tinymce "^5.7.0"
 
 "@gavant/ember-validations@^2.1.2":
@@ -6928,6 +6929,14 @@ ember-named-arguments-polyfill@^1.0.0:
   dependencies:
     ember-cli-babel "^6.6.0"
     ember-cli-version-checker "^2.1.2"
+
+ember-named-blocks-polyfill@^0.2.4:
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/ember-named-blocks-polyfill/-/ember-named-blocks-polyfill-0.2.4.tgz#f5f30711ee89244927b55aae7fa9630edaadc974"
+  integrity sha512-PsohC7ejjS7V++6i/JSy0pl1hXLV3IS3Qs+O7SrjIPYcg1UEmUwqgPiDmXqNgy0p2dc5TK5bIJTtX8wofCI63Q==
+  dependencies:
+    ember-cli-babel "^7.19.0"
+    ember-cli-version-checker "^5.1.1"
 
 ember-native-dom-helpers@^0.6.3:
   version "0.6.3"

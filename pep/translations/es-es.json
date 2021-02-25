@@ -61,6 +61,14 @@
             "preferences": "Personalizar ayuda",
             "reportDataError": "Report a data error",
             "provideFeedback": "Provide Feedback"
+        },
+        "admin": {
+            "common": "Common",
+            "languages": {
+                "enUs": "English",
+                "esEs": "Spanish",
+                "frFr": "French"
+            }
         }
     },
     "home": {
@@ -769,6 +777,44 @@
         "brandingImageUrl": "Branded Image",
         "gw": "Gesammelte Werke",
         "se": "Standard Edition"
+    },
+    "admin": {
+        "common": {
+            "title": "Common",
+            "global": {
+                "cards": {
+                    "videoPreview": {
+                        "code": "Video Preview Embed Code"
+                    },
+                    "whatsNew": {
+                        "limit": "Whats new result limit"
+                    },
+                    "mostCited": {
+                        "limit": "Most cited result limit"
+                    },
+                    "mostViewed": {
+                        "limit": "Most viewed result limit"
+                    }
+                }
+            }
+        },
+        "content": {
+            "home": {
+                "intro": {
+                    "left": {
+                        "title": "Left intro card"
+                    },
+                    "right": {
+                        "title": "Right intro Card"
+                    }
+                }
+            }
+        },
+        "language": {
+            "enUs": {
+                "title": "English"
+            }
+        }
     },
     "validations": {
         "inclusion": "{description} is not included in the list",

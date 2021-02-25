@@ -2,6 +2,13 @@
     @plugins={{this.plugins}}
     @toolbar={{this.toolbar}}
     @baseUrl={{this.baseUrl}}
+    @branding={{false}}
     @value={{changeset-get @changeset @path}}
     @onUpdate={{changeset-set @changeset @path}}
-/>
+>
+    <:loading>
+        <ContentPlaceholders @rounded={{true}} as |CP|>
+            <CP.img />
+        </ContentPlaceholders>
+    </:loading>
+</TinymceEditor>

@@ -789,6 +789,12 @@
                     },
                     "whatsNew": {
                         "limit": "Whats new result limit"
+                    },
+                    "mostCited": {
+                        "limit": "Most cited result limit"
+                    },
+                    "mostViewed": {
+                        "limit": "Most viewed result limit"
                     }
                 }
             }

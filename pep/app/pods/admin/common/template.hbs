@@ -52,6 +52,38 @@
                                     />
                                 </FlInput>
                             </validator.input>
+                            <validator.input
+                                @errors={{changeset.error.configSettings.global.cards.mostCited.limit.validation}}
+                                @label={{true}}
+                            >
+                                <FlInput
+                                    @value={{changeset.configSettings.global.cards.mostCited.limit}}
+                                    @placeholder={{t "admin.common.global.cards.mostCited.limit"}}
+                                >
+                                    <ChangesetInput
+                                        @changeset={{changeset}}
+                                        @path="configSettings.global.cards.mostCited.limit"
+                                        class="form-control"
+                                        autocomplete="off"
+                                    />
+                                </FlInput>
+                            </validator.input>
+                            <validator.input
+                                @errors={{changeset.error.configSettings.global.cards.mostViewed.limit.validation}}
+                                @label={{true}}
+                            >
+                                <FlInput
+                                    @value={{changeset.configSettings.global.cards.mostViewed.limit}}
+                                    @placeholder={{t "admin.common.global.cards.mostViewed.limit"}}
+                                >
+                                    <ChangesetInput
+                                        @changeset={{changeset}}
+                                        @path="configSettings.global.cards.mostViewed.limit"
+                                        class="form-control"
+                                        autocomplete="off"
+                                    />
+                                </FlInput>
+                            </validator.input>
 
                             <div class="d-flex  justify-content-end align-items-center">
                                 <div>

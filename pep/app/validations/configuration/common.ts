@@ -9,6 +9,12 @@ const FEEDBACK_VALIDATIONS = {
                 },
                 whatsNew: {
                     limit: [validatePresence({ presence: true, ignoreBlank: true })]
+                },
+                mostCited: {
+                    limit: [validatePresence({ presence: true, ignoreBlank: true })]
+                },
+                mostViewed: {
+                    limit: [validatePresence({ presence: true, ignoreBlank: true })]
                 }
             }
         }
