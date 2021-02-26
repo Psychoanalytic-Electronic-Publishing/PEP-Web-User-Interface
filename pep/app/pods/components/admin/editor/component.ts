@@ -26,5 +26,5 @@ export default class AdminEditor<T> extends Component<AdminEditorArgs<T>> {
     toolbar: string[] = [
         'bold italic | bullist numlist | hr | image | link openlink unlink | pastetext | table | emoticons'
     ];
-    baseUrl = `${Env.assetBaseUrl}/assets/`;
+    baseUrl = `${Env.assetBaseUrl}assets`;
 }
