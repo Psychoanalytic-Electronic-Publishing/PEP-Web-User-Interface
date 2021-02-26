@@ -5,6 +5,7 @@ import Component from '@glimmer/component';
 
 import ModalService from '@gavant/ember-modals/services/modal';
 
+import { Languages } from 'pep/constants/lang';
 import { SUPPORT_URL } from 'pep/constants/urls';
 import AuthService from 'pep/services/auth';
 import ConfigurationService from 'pep/services/configuration';
@@ -26,6 +27,8 @@ export default class PageNav extends Component<PageNavArgs> {
     @service router!: RouterService;
 
     supportUrl = SUPPORT_URL;
+
+    languages = Languages;
 
     get readDisabled() {
         return !this.currentUser.lastViewedDocumentId;

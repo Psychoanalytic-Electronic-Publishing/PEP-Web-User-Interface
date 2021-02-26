@@ -3,11 +3,8 @@ import { tracked } from '@glimmer/tracking';
 
 import DS from 'ember-data';
 
-import merge from 'lodash.merge';
-import ENV from 'pep/config/environment';
 import {
-    BASE_CONFIG_NAME, BaseConfiguration, CONTENT_CONFIG_NAME, ContentConfiguration, DEFAULT_BASE_CONFIGURATION,
-    DEFAULT_CONTENT_CONFIGURATION
+    BASE_CONFIG_NAME, BaseConfiguration, ContentConfiguration, DEFAULT_BASE_CONFIGURATION, DEFAULT_CONTENT_CONFIGURATION
 } from 'pep/constants/configuration';
 import { SEARCH_DEFAULT_FACETS, SEARCH_DEFAULT_VIEW_PERIOD } from 'pep/constants/search';
 import LangService from 'pep/services/lang';
@@ -27,7 +24,7 @@ export default class ConfigurationService extends Service {
      * @returns {string}
      */
     get contentConfigName() {
-        return `${CONTENT_CONFIG_NAME}-${this.lang.currentLanguage}`;
+        return this.lang.currentLanguage;
     }
 
     /**
@@ -54,37 +51,17 @@ export default class ConfigurationService extends Service {
      */
     async setup(): Promise<void> {
         try {
-            // TODO re-enable this once the configuration endpoints/data are live/populated
-            // const base = this.store.queryRecord('configuration', { configname: BASE_CONFIG_NAME });
-            // const content = this.store.queryRecord('configuration', { configname: this.contentConfigName });
-
-            // TODO remove this once the configuration endpoints/data are live/populated
-            this.store.pushPayload('configuration', {
-                configuration: [
-                    {
-                        configName: BASE_CONFIG_NAME,
-                        clientID: ENV.clientId,
-                        configSettings: DEFAULT_BASE_CONFIGURATION
-                    },
-                    {
-                        configName: this.contentConfigName,
-                        clientID: ENV.clientId,
-                        configSettings: DEFAULT_CONTENT_CONFIGURATION
-                    }
-                ]
-            });
-            const base = this.store.peekRecord('configuration', BASE_CONFIG_NAME)!;
-            const content = this.store.peekRecord('configuration', this.contentConfigName)!;
-
+            const base = this.store.queryRecord('configuration', { configname: BASE_CONFIG_NAME });
+            const content = this.store.queryRecord('configuration', { configname: this.contentConfigName });
             const configs = await hash({ base, content });
-            const contentCfg = configs.content.configSettings;
-            const baseCfg = configs.base.configSettings;
+            const contentCfg: ContentConfiguration = configs.content.configSettings;
+            const baseCfg: BaseConfiguration = configs.base.configSettings;
             // merge the returned configs with the default config values
             // to ensure the app can always safely access config data
             // e.g. even if a new version is released w/new configs that
             // do not yet exist in the saved config records
-            this.base = merge({}, baseCfg, DEFAULT_BASE_CONFIGURATION) as BaseConfiguration;
-            this.content = merge({}, contentCfg, DEFAULT_CONTENT_CONFIGURATION) as ContentConfiguration;
+            this.base = Object.assign({}, DEFAULT_BASE_CONFIGURATION, baseCfg) as BaseConfiguration;
+            this.content = Object.assign({}, DEFAULT_CONTENT_CONFIGURATION, contentCfg) as ContentConfiguration;
         } catch (err) {
             // if configs fail to load, fall back to the default config values
             this.base = DEFAULT_BASE_CONFIGURATION;

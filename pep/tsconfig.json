@@ -57,6 +57,6 @@
     "app/**/*",
     "tests/**/*",
     "types/**/*",
-    "lib/tippy"
+    "lib/tippy",
   ]
 }

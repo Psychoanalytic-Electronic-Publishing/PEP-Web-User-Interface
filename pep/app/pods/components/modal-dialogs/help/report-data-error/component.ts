@@ -1,17 +1,19 @@
+import { action } from '@ember/object';
+import { inject as service } from '@ember/service';
+import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
+
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import IntlService from 'ember-intl/services/intl';
+
+import createChangeset, { GenericChangeset } from '@gavant/ember-validations/utilities/create-changeset';
+
 import ENV from 'pep/config/environment';
 import { DATA_ERROR_SUPPORT_RESOURCES, SupportResource } from 'pep/constants/urls';
 import AjaxService from 'pep/services/ajax';
 import CurrentUserService from 'pep/services/current-user';
 import LoadingBarService from 'pep/services/loading-bar';
 import REPORT_DATA_ERROR_VALIDATIONS from 'pep/validations/help/report-data-error';
-
-import { action } from '@ember/object';
-import { inject as service } from '@ember/service';
-import createChangeset, { ModelChangeset } from '@gavant/ember-validations/utilities/create-changeset';
-import Component from '@glimmer/component';
-import { tracked } from '@glimmer/tracking';
 
 interface ErrorReport {
     username: string;
@@ -25,7 +27,7 @@ interface ErrorReport {
     hasOriginalCopy: boolean;
 }
 
-type ErrorReportChangeset = ModelChangeset<ErrorReport>;
+type ErrorReportChangeset = GenericChangeset<ErrorReport>;
 
 interface ModalDialogsHelpReportDataErrorArgs {
     onClose: () => void;

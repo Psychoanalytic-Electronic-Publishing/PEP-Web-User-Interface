@@ -28,4 +28,4 @@ export const LANG_ES_ES: Language = {
     path: '/translations/es-es.json'
 };
 
-export const Languages = [LANG_EN_US, LANG_ES_ES];
+export const Languages = [LANG_EN_US, LANG_ES_ES, LANG_FR_FR];

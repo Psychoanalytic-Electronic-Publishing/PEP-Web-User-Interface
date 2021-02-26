@@ -8,7 +8,7 @@ import NotificationService from 'ember-cli-notifications/services/notifications'
 import IntlService from 'ember-intl/services/intl';
 
 import Modal from '@gavant/ember-modals/services/modal';
-import { ModelChangeset } from '@gavant/ember-validations/utilities/create-changeset';
+import { GenericChangeset } from '@gavant/ember-validations/utilities/create-changeset';
 
 import { FORGOT_PW_URL } from 'pep/constants/urls';
 import AjaxService from 'pep/services/ajax';
@@ -50,10 +50,10 @@ export default class ModalDialogsUserLogin extends Component<ModalDialogsUserLog
 
     /**
      * Submits the login dialog form and logs the user in
-     * @param {ModelChangeset<LoginForm>} changeset
+     * @param {GenericChangeset<LoginForm>} changeset
      */
     @action
-    async login(changeset: ModelChangeset<LoginForm>) {
+    async login(changeset: GenericChangeset<LoginForm>) {
         try {
             const username = changeset.username;
             const password = changeset.password;

@@ -36,7 +36,7 @@
         "@fortawesome/ember-fontawesome": "^0.2.1",
         "@fortawesome/free-solid-svg-icons": "^5.12.1",
         "@fortawesome/pro-light-svg-icons": "^5.13.0",
-        "@gavant/ember-bootstrap-dropdown": "^1.0.0",
+        "@gavant/ember-bootstrap-dropdown": "^1.0.3",
         "@gavant/ember-button-basic": "^1.0.1",
         "@gavant/ember-button-spinner": "^1.0.1",
         "@gavant/ember-floating-labels": "^1.0.2",
@@ -44,7 +44,8 @@
         "@gavant/ember-pagination": "3.0.0-beta.2",
         "@gavant/ember-table": "0.6.6",
         "@gavant/ember-template-lint-forms": "^0.0.2",
-        "@gavant/ember-validations": "2.1.0",
+        "@gavant/ember-tinymce": "^0.0.5",
+        "@gavant/ember-validations": "^2.1.2",
         "@glimmer/component": "^1.0.3",
         "@glimmer/tracking": "^1.0.3",
         "@html-next/vertical-collection": "^1.0.0",
@@ -95,6 +96,7 @@
         "ember-cli-app-version": "^3.2.0",
         "ember-cli-autoprefixer": "^0.8.1",
         "ember-cli-babel": "^7.21.0",
+        "ember-cli-bundle-analyzer": "^0.2.2",
         "ember-cli-clipboard": "^0.15.0",
         "ember-cli-dependency-checker": "^3.2.0",
         "ember-cli-dotenv": "3.1.0",
@@ -129,6 +131,7 @@
         "ember-metrics": "^1.0.0",
         "ember-modifier": "^2.1.1",
         "ember-moment": "^8.0.0",
+        "ember-named-blocks-polyfill": "^0.2.4",
         "ember-page-title": "^6.0.3",
         "ember-power-select": "^4.0.3",
         "ember-qunit": "^4.6.0",
@@ -176,8 +179,5 @@
     "fastbootDependencies": [
         "node-fetch",
         "moment"
-    ],
-    "resolutions": {
-        "validated-changeset": "0.7.1"
-    }
+    ]
 }

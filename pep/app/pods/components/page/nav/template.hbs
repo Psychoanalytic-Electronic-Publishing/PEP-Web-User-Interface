@@ -123,5 +123,29 @@
                 </DD.Content>
             </DropdownMenu>
         </li>
+        {{#if this.currentUser.user.isAdmin}}
+            <li class="nav-item">
+                <DropdownMenu @horizontalPosition="auto-right" as |DD|>
+                    <DD.Trigger @htmlTag="a" class="nav-link">
+                        <FaIcon @icon="cog" @size="lg" />
+                    </DD.Trigger>
+                    <DD.Content class="dropdown-menu">
+                        <DropdownLink @route="admin.general" @dd={{DD}}>
+                            {{t "nav.admin.general"}}
+                        </DropdownLink>
+                        <div class="dropdown-divider"></div>
+                        <h6 class="dropdown-header">
+                            {{t "nav.admin.content"}}
+                        </h6>
+
+                        {{#each this.languages as |language|}}
+                            <DropdownLink @route="admin.language" @model={{language.code}} @dd={{DD}}>
+                                {{t language.label}}
+                            </DropdownLink>
+                        {{/each}}
+                    </DD.Content>
+                </DropdownMenu>
+            </li>
+        {{/if}}
     </ul>
 </nav>

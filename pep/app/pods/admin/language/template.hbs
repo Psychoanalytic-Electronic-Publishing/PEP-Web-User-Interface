@@ -1,0 +1,49 @@
+{{page-title (t "admin.title")}}
+<Page::Content>
+    <div class="p-4 form-row">
+        <div class="card col-lg-8">
+            <div class="card-body">
+                <h2 class="mb-4">
+                    {{t this.language.label}}
+                </h2>
+                <FormValidator @changeset={{this.changeset}} @submit={{this.save}} as |changeset validator|>
+                    <div class="form-row">
+                        <div class="col-12">
+                            <h4>
+                                {{t "admin.content.home.intro.left.title"}}
+                            </h4>
+                            <validator.input
+                                @errors={{changeset.error.configSettings.home.intro.left.validation}}
+                                @label={{true}}
+                            >
+                                <Admin::Editor @changeset={{changeset}} @path="configSettings.home.intro.left" />
+                            </validator.input>
+                        </div>
+                        <div class="col-12">
+                            <h4>
+                                {{t "admin.content.home.intro.right.title"}}
+                            </h4>
+                            <validator.input
+                                @errors={{changeset.error.configSettings.home.intro.right.validation}}
+                                @label={{true}}
+                            >
+                                <Admin::Editor @changeset={{changeset}} @path="configSettings.home.intro.right" />
+                            </validator.input>
+
+                            <div class="d-flex  justify-content-end align-items-center">
+                                <div>
+                                    <ButtonSpinner
+                                        @type="primary"
+                                        @label={{t "common.save"}}
+                                        @wide={{true}}
+                                        @action={{validator.submit}}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </FormValidator>
+            </div>
+        </div>
+    </div>
+</Page::Content>

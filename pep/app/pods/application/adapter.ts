@@ -82,6 +82,7 @@ export default class Application extends DS.RESTAdapter.extend(FastbootAdapter) 
             const xForwardedFor = (fastbootHeaders.get('X-Forwarded-For') as string) ?? '';
             headers['X-Forwarded-For-PEP'] = xForwardedFor.split(',')[0];
         }
+        headers['x-api-authorize'] = 'pr2x%$ddE??233aGYKSE';
 
         return headers;
     }
@@ -140,7 +141,7 @@ export default class Application extends DS.RESTAdapter.extend(FastbootAdapter) 
      * @memberof Application
      */
     appendQueryParams(url: string, snapshot: SnapshotWithQuery) {
-        let query = snapshot?.adapterOptions?.query;
+        const query = snapshot?.adapterOptions?.query;
         if (query) {
             url += `?${serializeQueryParams(query)}`;
         }
