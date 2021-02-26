@@ -41,6 +41,16 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-12">
+                            <Table
+                                @containerSelector=".page-content-inner"
+                                @columns={{this.columns}}
+                                @rows={{changeset.configSettings.global.publishers}}
+                                @fillMode="nth-column"
+                                @fillColumnIndex={{0}}
+                                @renderAllRows={{this.fastboot.isFastBoot}}
+                            />
+                        </div>
                     </div>
                 </FormValidator>
             </div>
