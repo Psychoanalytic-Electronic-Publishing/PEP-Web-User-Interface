@@ -1,6 +1,6 @@
 import { validatePresence } from 'ember-changeset-validations/validators';
 
-const FEEDBACK_VALIDATIONS = {
+export const CONFIGURATION_COMMON_VALIDATIONS = {
     configSettings: {
         global: {
             cards: {
@@ -20,5 +20,3 @@ const FEEDBACK_VALIDATIONS = {
         }
     }
 };
-
-export default FEEDBACK_VALIDATIONS;

@@ -4,23 +4,22 @@ import { tracked } from '@glimmer/tracking';
 
 import { BufferedChangeset } from 'ember-changeset/types';
 
-export default class AdminEnUs extends Controller {
+export default class AdminGeneral extends Controller {
     @tracked changeset?: BufferedChangeset;
 
     /**
-     * Save the english admin items
+     * Save the changeset to update the config
      *
-     * @memberof AdminEnUs
+     * @memberof AdminGeneral
      */
     @action
     save(): void {
         this.changeset?.save();
     }
 }
-
 // DO NOT DELETE: this is how TypeScript knows how to look up your controllers.
 declare module '@ember/controller' {
     interface Registry {
-        'admin/en-us': AdminEnUs;
+        'admin/general': AdminGeneral;
     }
 }

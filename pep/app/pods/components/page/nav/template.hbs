@@ -130,19 +130,19 @@
                         <FaIcon @icon="cog" @size="lg" />
                     </DD.Trigger>
                     <DD.Content class="dropdown-menu">
-                        <DropdownLink @route="admin.common" @dd={{DD}}>
-                            {{t "nav.admin.common"}}
+                        <DropdownLink @route="admin.general" @dd={{DD}}>
+                            {{t "nav.admin.general"}}
                         </DropdownLink>
                         <div class="dropdown-divider"></div>
-                        <DropdownLink @route="admin.en-us" @dd={{DD}}>
-                            {{t "nav.admin.languages.enUs"}}
-                        </DropdownLink>
-                        <DropdownLink @route="admin.es-es" @dd={{DD}}>
-                            {{t "nav.admin.languages.esEs"}}
-                        </DropdownLink>
-                        <DropdownLink @route="admin.fr-fr" @dd={{DD}}>
-                            {{t "nav.admin.languages.frFr"}}
-                        </DropdownLink>
+                        <h6 class="dropdown-header">
+                            {{t "nav.admin.content"}}
+                        </h6>
+
+                        {{#each this.languages as |language|}}
+                            <DropdownLink @route="admin.language" @model={{language.code}} @dd={{DD}}>
+                                {{t language.label}}
+                            </DropdownLink>
+                        {{/each}}
                     </DD.Content>
                 </DropdownMenu>
             </li>

@@ -29,10 +29,8 @@ Router.map(function() {
     this.route('most-cited');
     this.route('most-viewed');
     this.route('admin', function() {
-        this.route('common');
-        this.route('en-us');
-        this.route('fr-fr');
-        this.route('es-es');
+      this.route('language', { path: '/language/:lang_code' });
+      this.route('general');
     });
 
     //make sure these routes are always defined last!

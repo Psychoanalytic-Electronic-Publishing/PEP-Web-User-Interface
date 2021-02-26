@@ -1,10 +1,10 @@
-{{page-title (t "read.title" title=this.document.title)}}
+{{page-title (t "admin.title")}}
 <Page::Content>
     <div class="p-4 form-row">
         <div class="card col-lg-8">
             <div class="card-body">
                 <h2 class="mb-4">
-                    {{t "admin.language.enUs.title"}}
+                    {{t this.language.label}}
                 </h2>
                 <FormValidator @changeset={{this.changeset}} @submit={{this.save}} as |changeset validator|>
                     <div class="form-row">

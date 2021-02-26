@@ -24,7 +24,7 @@ export default class ConfigurationService extends Service {
      * @returns {string}
      */
     get contentConfigName() {
-        return `${this.lang.currentLanguage}`;
+        return this.lang.currentLanguage;
     }
 
     /**

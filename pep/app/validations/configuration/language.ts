@@ -1,6 +1,6 @@
 import { validatePresence } from 'ember-changeset-validations/validators';
 
-const FEEDBACK_VALIDATIONS = {
+export const CONFIGURATION_LANGUAGE_VALIDATIONS = {
     configSettings: {
         home: {
             intro: {
@@ -10,5 +10,3 @@ const FEEDBACK_VALIDATIONS = {
         }
     }
 };
-
-export default FEEDBACK_VALIDATIONS;

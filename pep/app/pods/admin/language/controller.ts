@@ -4,13 +4,15 @@ import { tracked } from '@glimmer/tracking';
 
 import { BufferedChangeset } from 'ember-changeset/types';
 
-export default class AdminCommon extends Controller {
-    @tracked changeset?: BufferedChangeset;
+import { Language } from 'pep/constants/lang';
 
+export default class AdminLanguage extends Controller {
+    @tracked changeset?: BufferedChangeset;
+    @tracked language?: Language;
     /**
-     * Save the changeset to update the config
+     * Save the english admin items
      *
-     * @memberof AdminCommon
+     * @memberof AdminEnUs
      */
     @action
     save(): void {
@@ -21,6 +23,6 @@ export default class AdminCommon extends Controller {
 // DO NOT DELETE: this is how TypeScript knows how to look up your controllers.
 declare module '@ember/controller' {
     interface Registry {
-        'admin/common': AdminCommon;
+        'admin/language': AdminLanguage;
     }
 }

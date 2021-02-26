@@ -1,18 +1,21 @@
 <Page::Sidebar @side="left" class="main-menu">
     <div class="main-menu-content">
         <ul class="navigation navigation-main list-unstyled">
-            <LinkTo @route="admin.common" @tagName="li" class="nav-item p-3 cursor-pointer" @activeClass="bg-backdrop">
-                {{t "nav.admin.common"}}
+            <LinkTo @route="admin.general" @tagName="li" class="nav-item p-3 cursor-pointer" @activeClass="bg-backdrop">
+                {{t "nav.admin.general"}}
             </LinkTo>
-            <LinkTo @route="admin.en-us" @tagName="li" class="nav-item p-3 cursor-pointer" @activeClass="bg-backdrop">
-                {{t "nav.admin.languages.enUs"}}
-            </LinkTo>
-            <LinkTo @route="admin.es-es" @tagName="li" class="nav-item p-3 cursor-pointer" @activeClass="bg-backdrop">
-                {{t "nav.admin.languages.esEs"}}
-            </LinkTo>
-            <LinkTo @route="admin.fr-fr" @tagName="li" class="nav-item p-3 cursor-pointer" @activeClass="bg-backdrop">
-                {{t "nav.admin.languages.frFr"}}
-            </LinkTo>
+            {{#each this.languages as |language|}}
+                <LinkTo
+                    @route="admin.language"
+                    @model={{language.code}}
+                    @tagName="li"
+                    @current-when={{eq language.code this.selectedLanguage}}
+                    @activeClass="bg-backdrop"
+                    class="nav-item p-3 cursor-pointer"
+                >
+                    {{t language.label}}
+                </LinkTo>
+            {{/each}}
         </ul>
     </div>
 </Page::Sidebar>

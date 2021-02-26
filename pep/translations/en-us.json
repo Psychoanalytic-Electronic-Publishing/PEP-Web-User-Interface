@@ -63,12 +63,8 @@
             "provideFeedback": "Provide Feedback"
         },
         "admin": {
-            "common": "Common",
-            "languages": {
-                "enUs": "English",
-                "esEs": "Spanish",
-                "frFr": "French"
-            }
+            "general": "General Settings",
+            "content": "Content Settings"
         }
     },
     "home": {
