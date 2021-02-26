@@ -6,7 +6,7 @@ import createChangeset from '@gavant/ember-validations/utilities/create-changese
 import { BASE_CONFIG_NAME, DEFAULT_BASE_CONFIGURATION } from 'pep/constants/configuration';
 import AdminGeneralController from 'pep/pods/admin/general/controller';
 import Configuration from 'pep/pods/configuration/model';
-import { CONFIGURATION_COMMON_VALIDATIONS } from 'pep/validations/configuration/common';
+import { CONFIGURATION_GENERAL_VALIDATIONS } from 'pep/validations/configuration/general';
 
 export default class AdminGeneral extends Route {
     /**
@@ -30,6 +30,6 @@ export default class AdminGeneral extends Route {
     setupController(controller: AdminGeneralController, model: Configuration, transition: Transition): void {
         super.setupController(controller, model, transition);
         model.configSettings = Object.assign({}, DEFAULT_BASE_CONFIGURATION, model.configSettings);
-        controller.changeset = createChangeset(model, CONFIGURATION_COMMON_VALIDATIONS);
+        controller.changeset = createChangeset(model, CONFIGURATION_GENERAL_VALIDATIONS);
     }
 }

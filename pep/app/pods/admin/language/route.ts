@@ -47,7 +47,7 @@ export default class AdminLanguage extends Route {
      * @param {Transition} transition
      * @memberof AdminLanguage
      */
-    resetController(controller: AdminLanguageController, isExiting: boolean, transition: Transition) {
+    resetController(_controller: AdminLanguageController, _isExiting: boolean, _transition: Transition) {
         const adminController = this.controllerFor('admin') as AdminController;
         adminController.selectedLanguage = undefined;
     }
