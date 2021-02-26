@@ -4,9 +4,10 @@ import { next } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 import { isEmpty } from '@ember/utils';
 
+import FastbootService from 'ember-cli-fastboot/services/fastboot';
+
 import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hooks/pagination';
 import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
-import FastbootService from 'ember-cli-fastboot/services/fastboot';
 
 import { SearchMetadata } from 'pep/api';
 import { WIDGET } from 'pep/constants/sidebar';
@@ -83,7 +84,7 @@ export default class SearchIndex extends PageNav(Route) {
                     controller.selectedView.id === controller.tableView
                         ? ['']
                         : [this.currentUser.preferences?.searchSortType.id ?? ''],
-                processQueryParams: (params) => ({ ...params, ...searchParams })
+                processQueryParams: (params) => ({ ...params, ...searchParams, user: true })
             });
             return this.store.query('search-document', queryParams);
         } else {

@@ -4,14 +4,15 @@ import { inject as service } from '@ember/service';
 import { isEmpty } from '@ember/utils';
 import { tracked } from '@glimmer/tracking';
 
-import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
-import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import { didCancel, timeout } from 'ember-concurrency';
 import { restartableTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
 import IntlService from 'ember-intl/services/intl';
+
+import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
+import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 
 import { SearchMetadata } from 'pep/api';
 import { PreferenceKey } from 'pep/constants/preferences';
@@ -97,6 +98,7 @@ export default class SearchIndex extends Controller {
     tableView = SearchViewType.TABLE;
     searchViews = SearchViews;
     sorts = SearchSorts;
+    isFirstSearch = false;
 
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
@@ -204,6 +206,10 @@ export default class SearchIndex extends Controller {
             facetMinCount: cfg.facets.valueMinCount,
             highlightlimit: this.currentUser.preferences?.searchHICLimit ?? cfg.hitsInContext.limit
         });
+        if (this.isFirstSearch) {
+            searchParams.user = true;
+            this.isFirstSearch = false;
+        }
 
         return { ...params, ...searchParams };
     }
@@ -242,7 +248,7 @@ export default class SearchIndex extends Controller {
             if (this.fastbootMedia.isSmallDevice) {
                 this.sidebar.toggleLeftSidebar();
             }
-
+            this.isFirstSearch = true;
             //perform search
             this.loadingBar.show();
             this.scrollable.scrollToTop('search-results');
@@ -267,6 +273,7 @@ export default class SearchIndex extends Controller {
     async resubmitSearchWithFacets(): Promise<Document[]> {
         try {
             this.facets = this.currentFacets;
+            this.isFirstSearch = true;
             this.updateSearchQueryParams();
             this.closeResultPreview();
             this.loadingBar.show();
