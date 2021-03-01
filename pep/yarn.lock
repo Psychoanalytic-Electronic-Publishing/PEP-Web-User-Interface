@@ -1327,10 +1327,10 @@
   resolved "https://registry.yarnpkg.com/@gavant/ember-template-lint-forms/-/ember-template-lint-forms-0.0.2.tgz#a7a931dc7b6975eacbc7abf7fcb925856e709e62"
   integrity sha512-L9XLSTpI8TEh3wAMbiZKSprGfBTLWosaUT1MsPem+otaudJx/qkirPuzc0AS0KG3j7YuICsUHK1sTpjrOsXlAg==
 
-"@gavant/ember-tinymce@^0.0.5":
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/@gavant/ember-tinymce/-/ember-tinymce-0.0.5.tgz#6ebd230f36f77c628937505dd629d51b18e6f198"
-  integrity sha512-95Tp9XeVNZ4F1yyx7FePPMopaBJu7bD9B80hkvbqJnK/z7PP9T9cChQTfvES1cSPMq11UlbEmWLVN01kRWSUGw==
+"@gavant/ember-tinymce@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@gavant/ember-tinymce/-/ember-tinymce-0.0.6.tgz#ef8252e98c531f9edec1532092860b61b181ba07"
+  integrity sha512-1KQ2ay1+iwwgHvXg7NAmUv7lKn3vrwn3UUXk/vfWTDn0GPDwTQuzqC3+7vOOcNVAjTpn6lgE8YkoEEqyPQ9erg==
   dependencies:
     ember-auto-import "^1.10.1"
     ember-cli-babel "^7.21.0"

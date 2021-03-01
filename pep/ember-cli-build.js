@@ -7,7 +7,7 @@ module.exports = function(defaults) {
         fingerprint: {
             prepend: process.env.ASSETS_BASE_URL,
             extensions: ['js', 'css', 'png', 'jpg', 'gif', 'map', 'xslt', 'json'],
-            exclude: ['/icons/', '/plugins/', '/skins/', '/themes/mobile/', '/themes/silver/', 'package.json']
+            exclude: ['package.json', '@gavant/ember-tinymce']
         },
         outputPaths: {
             app: {

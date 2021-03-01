@@ -1,0 +1,50 @@
+<ModalDialog @onClose={{@onClose}} @size="lg" @clickOutsideToClose={{false}} as |Modal|>
+    <Modal.header @title={{t "admin.publisher.information"}} />
+    <FormValidator @changeset={{@options.changeset}} @submit={{this.update}} as |changeset validator|>
+        <Modal.body>
+            <validator.input @errors={{changeset.error.sourceCode.validation}} @label={{true}}>
+                <FlInput
+                    @value={{changeset.sourceCode}}
+                    @placeholder={{t "admin.content.global.publishers.sourceCode"}}
+                >
+                    <ChangesetInput
+                        @changeset={{changeset}}
+                        @path="sourceCode"
+                        class="form-control"
+                        autocomplete="off"
+                    />
+                </FlInput>
+            </validator.input>
+            <validator.input
+                @errors={{changeset.error.previewHTML.validation}}
+                @label={{true}}
+                @fieldLabel={{t "admin.content.global.publishers.previewHTML"}}
+            >
+                <Admin::Editor @changeset={{changeset}} @path="previewHTML" />
+            </validator.input>
+            <validator.input
+                @errors={{changeset.error.fullHTML.validation}}
+                @label={{true}}
+                @fieldLabel={{t "admin.content.global.publishers.fullHTML"}}
+            >
+                <Admin::Editor @changeset={{changeset}} @path="fullHTML" />
+            </validator.input>
+            <validator.input
+                @errors={{changeset.error.description.validation}}
+                @label={{true}}
+                @fieldLabel={{t "admin.content.global.publishers.description"}}
+            >
+                <Admin::Editor @changeset={{changeset}} @path="description" />
+            </validator.input>
+        </Modal.body>
+        <Modal.footer>
+            <Button @type="link" @label={{t "common.cancel"}} @action={{@onClose}} />
+            <ButtonSpinner
+                @type="primary"
+                @label={{t "admin.publisher.update"}}
+                @wide={{true}}
+                @action={{validator.submit}}
+            />
+        </Modal.footer>
+    </FormValidator>
+</ModalDialog>

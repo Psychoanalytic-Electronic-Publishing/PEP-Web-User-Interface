@@ -777,8 +777,12 @@
 
     "admin": {
         "title": "Admin",
+        "publisher": {
+            "information": "Publisher Information",
+            "update": "Update"
+        },
         "common": {
-            "title": "Common",
+            "title": "General",
             "global": {
                 "cards": {
                     "videoPreview": {
@@ -797,6 +801,15 @@
             }
         },
         "content": {
+            "global": {
+                "publishers": {
+                    "title": "Publishers",
+                    "sourceCode": "sourceCode",
+                    "previewHTML": "Preview HTML",
+                    "fullHTML": "Full HTML",
+                    "description": "Description"
+                }
+            },
             "home": {
                 "intro": {
                     "left": {

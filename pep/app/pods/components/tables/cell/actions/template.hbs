@@ -1,0 +1,14 @@
+{{#each @columnValue.actions as |actionButton|}}
+    {{#component
+        (or actionButton.component this.defaultButtonComponent)
+        action=(fn actionButton.action @rowValue @cellValue @columnValue @rowMeta @cellMeta @columnMeta)
+        type=(or actionButton.type this.defaultButtonType)
+        size=(or actionButton.size this.defaultButtonSize)
+        slim=(or actionButton.slim this.defaultButtonSlim)
+    }}
+        {{#if actionButton.icon}}
+            <FaIcon @icon={{actionButton.icon}} />
+        {{/if}}
+        {{actionButton.label}}
+    {{/component}}
+{{/each}}
