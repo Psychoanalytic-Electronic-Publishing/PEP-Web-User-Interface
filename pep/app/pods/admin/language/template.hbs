@@ -24,6 +24,7 @@
                                 <validator.input
                                     @errors={{changeset.error.configSettings.home.intro.left.validation}}
                                     @label={{true}}
+                                    @hasFocusedOut={{true}}
                                 >
                                     <Admin::Editor @changeset={{changeset}} @path="configSettings.home.intro.left" />
                                 </validator.input>
@@ -35,11 +36,12 @@
                                 <validator.input
                                     @errors={{changeset.error.configSettings.home.intro.right.validation}}
                                     @label={{true}}
+                                    @hasFocusedOut={{true}}
                                 >
                                     <Admin::Editor @changeset={{changeset}} @path="configSettings.home.intro.right" />
                                 </validator.input>
                             </div>
-                            <div class="col-12">
+                            <div class="col-12 border-top pt-3">
                                 <h4 class="d-flex justify-content-between align-items-center">
                                     {{t "admin.content.global.publishers.title"}}
                                     <Button

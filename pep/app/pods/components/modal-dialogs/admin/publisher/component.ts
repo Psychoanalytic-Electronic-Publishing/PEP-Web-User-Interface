@@ -14,6 +14,12 @@ interface ModalDialogsAdminPublisherArgs {
 }
 
 export default class ModalDialogsAdminPublisher extends Component<ModalDialogsAdminPublisherArgs> {
+    /**
+     * Update the Publisher changeset, call save and then close the modal
+     *
+     * @return {*}  {Promise<void>}
+     * @memberof ModalDialogsAdminPublisher
+     */
     @action
     async update(): Promise<void> {
         this.args.options.changeset.execute();

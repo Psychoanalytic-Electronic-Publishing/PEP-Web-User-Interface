@@ -32,14 +32,28 @@ export default class AdminLanguage extends Controller {
         this.changeset?.save();
     }
 
+    /**
+     * Open the create publisher modal
+     *
+     * @memberof AdminLanguage
+     */
     @action
     openCreatePublisher(): void {
         const changeset = createChangeset({}, CONFIGURATION_PUBLISHER_VALIDATIONS);
         this.modal.open('admin/publisher', {
-            changeset
+            changeset,
+            actions: {
+                onSave: this.createPublisher
+            }
         });
     }
 
+    /**
+     * Open the edit publisher modal
+     *
+     * @param {Publisher} publisher
+     * @memberof AdminLanguage
+     */
     @action
     openEditPublisher(publisher: Publisher): void {
         const changeset = createChangeset(publisher, CONFIGURATION_PUBLISHER_VALIDATIONS);
@@ -51,9 +65,15 @@ export default class AdminLanguage extends Controller {
         });
     }
 
+    /**
+     * Edit the publisher and update the changeset
+     *
+     * @param {Publisher} publisher
+     * @memberof AdminLanguage
+     */
     @action
-    editPublisher(publisher: Publisher) {
-        const publishers = this.changeset?.get('configSettings').content.global.publishers as Publisher[];
+    editPublisher(publisher: Publisher): void {
+        const publishers = this.changeset?.get('configSettings.global.publishers') as Publisher[];
         const newPublishers = publishers.map((item) => {
             if (item.sourceCode === publisher.sourceCode) {
                 return publisher;
@@ -61,11 +81,34 @@ export default class AdminLanguage extends Controller {
                 return item;
             }
         });
-        this.changeset?.set('publishers', newPublishers);
+        this.changeset?.set('configSettings.global.publishers', newPublishers);
     }
 
+    /**
+     * Create the publisher and update the changeset
+     *
+     * @param {Publisher} publisher
+     * @memberof AdminLanguage
+     */
     @action
-    deletePublisher(): void {}
+    createPublisher(publisher: Publisher): void {
+        const publishers = this.changeset?.get('configSettings.global.publishers') as Publisher[];
+        publishers.push(publisher);
+        this.changeset?.set('configSettings.global.publishers', [...publishers]);
+    }
+
+    /**
+     * Delete the publisher and update the changeset
+     *
+     * @param {Publisher} publisher
+     * @memberof AdminLanguage
+     */
+    @action
+    deletePublisher(publisher: Publisher): void {
+        const publishers = this.changeset?.get('configSettings.global.publishers') as Publisher[];
+        const filteredPublishers = publishers.filter((item) => item.sourceCode !== publisher.sourceCode);
+        this.changeset?.set('configSettings.global.publishers', [...filteredPublishers]);
+    }
 
     /**
      * Columns for the table. The `computed` is required
