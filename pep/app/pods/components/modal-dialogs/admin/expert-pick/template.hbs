@@ -1,0 +1,31 @@
+<ModalDialog @onClose={{@onClose}} @size="lg" @clickOutsideToClose={{false}} as |Modal|>
+    <Modal.header @title={{t "admin.publisher.information"}} />
+    <FormValidator @changeset={{@options.changeset}} @submit={{this.update}} as |changeset validator|>
+        <Modal.body>
+            <validator.input @errors={{changeset.error.articleId.validation}} @label={{true}}>
+                <FlInput @value={{changeset.articleId}} @placeholder={{t "admin.common.home.expertPicks.articleId"}}>
+                    <ChangesetInput
+                        @changeset={{changeset}}
+                        @path="articleId"
+                        class="form-control"
+                        autocomplete="off"
+                    />
+                </FlInput>
+            </validator.input>
+            <validator.input @errors={{changeset.error.imageId.validation}} @label={{true}}>
+                <FlInput @value={{changeset.imageId}} @placeholder={{t "admin.common.home.expertPicks.imageId"}}>
+                    <ChangesetInput @changeset={{changeset}} @path="imageId" class="form-control" autocomplete="off" />
+                </FlInput>
+            </validator.input>
+        </Modal.body>
+        <Modal.footer>
+            <Button @type="link" @label={{t "common.cancel"}} @action={{@onClose}} />
+            <ButtonSpinner
+                @type="primary"
+                @label={{t "admin.publisher.update"}}
+                @wide={{true}}
+                @action={{validator.submit}}
+            />
+        </Modal.footer>
+    </FormValidator>
+</ModalDialog>

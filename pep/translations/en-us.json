@@ -798,16 +798,29 @@
                         "limit": "Most viewed result limit"
                     }
                 }
+            },
+            "home": {
+                "expertPicks": {
+                    "title": "Expert Picks",
+                    "table": {
+                        "article": "Article ID",
+                        "image": "Image ID"
+                    }
+                }
             }
         },
         "content": {
             "global": {
                 "publishers": {
                     "title": "Publishers",
-                    "sourceCode": "sourceCode",
+                    "sourceCode": "Source Code",
                     "previewHTML": "Preview HTML",
                     "fullHTML": "Full HTML",
-                    "description": "Description"
+                    "description": "Description",
+                    "table": {
+                        "sourceCode": "Source Code",
+                        "description": "Description"
+                    }
                 }
             },
             "home": {

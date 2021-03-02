@@ -113,6 +113,6 @@ export const DEFAULT_USER_PREFERENCES: UserPreferences = {
     fontSize: FontSize.DEFAULT,
     visibleWidgets: flattenEnum(WIDGET),
     translationConcordanceEnabled: true,
-    glossaryFormattingEnabled: true,
+    glossaryFormattingEnabled: false,
     textJustification: TextJustificationId.LEFT
 };

@@ -244,11 +244,6 @@
                     <span>:<xsl:apply-templates mode="text" select="artpgrg"/></span>
                 </xsl:for-each>
             </div>
-            <xsl:if test="$glossaryTermFormattingEnabled = 'true'">
-                <div class="small">
-                    Glossary links are marked with []
-                </div>
-            </xsl:if>
 
             <xsl:for-each select="artinfo">
                 <div id="{$this-article}-artinfo" class="artinfo" data-arttype="{@arttype}" data-journal="{@j}">
@@ -1378,7 +1373,7 @@
                 <a href="/search/document/{@rx}?glossary={@grpanme}" class="peppopup glosstip impx text-nowrap" data-type="{@type}" data-doc-id="{@rx}" data-grpname="{@grpname}">
                     <xsl:choose>
                         <xsl:when test="$glossaryTermFormattingEnabled = 'true'">
-                            [<xsl:value-of select="."/>]
+                            <xsl:value-of select="."/>
                         </xsl:when>
                         <xsl:otherwise>
                             <xsl:value-of select="."/>
@@ -1390,7 +1385,7 @@
                 <span class="impx" data-type="{@type}">
                     <xsl:choose>
                         <xsl:when test="$glossaryTermFormattingEnabled = 'true'">
-                            [<xsl:value-of select="."/>]
+                            <xsl:value-of select="."/>
                         </xsl:when>
                         <xsl:otherwise>
                             <xsl:value-of select="."/>

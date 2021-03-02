@@ -19,6 +19,7 @@ export default class AdminLanguage extends Controller {
     @service intl!: IntlService;
     @service fastbootMedia!: FastbootMediaService;
     @service modal!: ModalService;
+
     @tracked changeset?: BufferedChangeset;
     @tracked language?: Language;
 
@@ -122,12 +123,12 @@ export default class AdminLanguage extends Controller {
         return [
             {
                 valuePath: 'sourceCode',
-                name: this.intl.t('mostCited.table.title'),
+                name: this.intl.t('admin.content.global.publishers.table.sourceCode'),
                 isSortable: false
             },
 
             {
-                name: this.intl.t('mostCited.table.fiveYears'),
+                name: this.intl.t('admin.content.global.publishers.table.description'),
                 cellComponent: 'tables/cell/html',
                 valuePath: 'description',
                 isSortable: true

@@ -26,6 +26,11 @@ export interface Publisher {
     description: string;
 }
 
+export interface ExpertPick {
+    articleId: string;
+    imageId: string;
+}
+
 /**
  * Base admin configuration fields for the application
  * MUST NOT contain any configuration data/content that is language-dependent
@@ -54,10 +59,7 @@ export interface BaseConfiguration {
         };
     };
     home: {
-        expertPicks: {
-            articleId: string;
-            imageId: string;
-        }[];
+        expertPicks: ExpertPick[];
     };
     search: {
         hitsInContext: {
