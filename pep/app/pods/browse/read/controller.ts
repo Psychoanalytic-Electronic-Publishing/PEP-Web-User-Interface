@@ -18,7 +18,7 @@ export default class BrowseRead extends Controller {
 
     @tracked selectedView = SearchViews[0];
     @tracked paginator!: Pagination<Document>;
-    @tracked page = null;
+    @tracked page: string | null = null;
 
     // This becomes our model as the template wasn't updating when we changed the default model
     @tracked document?: Document;
@@ -100,6 +100,11 @@ export default class BrowseRead extends Controller {
     @action
     updateSelectedView(view: SearchView) {
         this.selectedView = view;
+    }
+
+    @action
+    changeHistory(page: string) {
+        this.page = page;
     }
 }
 // DO NOT DELETE: this is how TypeScript knows how to look up your controllers.

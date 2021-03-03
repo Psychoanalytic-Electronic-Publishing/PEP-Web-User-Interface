@@ -45,6 +45,7 @@ interface DocumentTextArgs {
     onGlossaryItemClick: (term: string, termResults: GlossaryTerm[]) => void;
     viewSearch: (searchTerms: string) => void;
     documentRendered: () => void;
+    viewablePageUpdate?: (page: string) => void;
 }
 
 /**
@@ -80,6 +81,8 @@ export default class DocumentText extends Component<DocumentTextArgs> {
     @service ajax!: AjaxService;
 
     @tracked xml?: XMLDocument;
+    @tracked visiblePages: string[] = [];
+    @tracked pageTracking = true;
 
     containerElement?: HTMLElement;
     scrollableElement?: Element | null;
@@ -390,12 +393,14 @@ export default class DocumentText extends Component<DocumentTextArgs> {
      * @param {number} pageOrTarget
      * @memberof DocumentText
      */
-    scrollToPageOrTarget(pageOrTarget: string) {
+    async scrollToPageOrTarget(pageOrTarget: string) {
         const element =
             this.containerElement?.querySelector(`[data-page-start='${pageOrTarget}']`) ??
             this.containerElement?.querySelector(`#${pageOrTarget}`);
         if (element) {
-            this.animateScrollToElement(element);
+            this.pageTracking = false;
+            await this.animateScrollToElement(element);
+            this.pageTracking = true;
         }
     }
 
@@ -457,14 +462,50 @@ export default class DocumentText extends Component<DocumentTextArgs> {
      * @param {HTMLElement} element
      * @memberof DocumentText
      */
+    /**
+     *
+     *
+     * @param {HTMLElement} element
+     * @memberof DocumentText
+     */
     @action
-    setupListeners(element: HTMLElement) {
+    async setupListeners(element: HTMLElement) {
         this.containerElement = element;
         this.scrollableElement = this.containerElement?.closest('.page-content-inner');
         scheduleOnce('afterRender', this, this.attachTooltips);
         if (this.args.page) {
-            this.scrollToPageOrTarget(this.args.page);
+            await this.scrollToPageOrTarget(this.args.page);
         }
+        Object.values(this.containerElement.querySelectorAll('div.pagebreak')).forEach((item) => {
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    if (this.pageTracking) {
+                        this.itemVisible(entries);
+                    }
+                },
+                { threshold: 1 }
+            );
+            // eslint-disable-next-line ember/no-observers
+            observer.observe(item);
+        });
+    }
+
+    @action
+    itemVisible(entries: IntersectionObserverEntry[]) {
+        const newVisiblePages: string[] = [];
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                const pageNumber = entry.target.getAttribute('data-page-end');
+                if (pageNumber) {
+                    newVisiblePages.push(pageNumber);
+                }
+            }
+        });
+        if (newVisiblePages.length) {
+            this.visiblePages = newVisiblePages;
+            this.args.viewablePageUpdate?.(this.visiblePages[0]);
+        }
+        console.log(this.visiblePages);
     }
 
     /**
@@ -606,5 +647,9 @@ export default class DocumentText extends Component<DocumentTextArgs> {
             appendTrailingSlash: false
         });
         return results.documents?.responseSet?.[0].document;
+    }
+
+    willDestroy() {
+        this.pageTracking = false;
     }
 }

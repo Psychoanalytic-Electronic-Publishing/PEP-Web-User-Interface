@@ -149,7 +149,8 @@ export default class SearchIndex extends Controller {
             facets: this._facets,
             matchSynonyms: this.matchSynonyms,
             citedCount: this.citedCount,
-            viewedCount: this.viewedCount
+            viewedCount: this.viewedCount,
+            page: null
         };
     }
 
