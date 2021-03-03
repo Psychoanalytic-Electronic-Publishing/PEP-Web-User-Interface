@@ -16,11 +16,6 @@
                 </div>
             </div>
         </div>
-        <Document::Read
-            @model={{this.document}}
-            @page={{this.page}}
-            @onAuthenticated={{this.onAuthenticated}}
-            @viewablePageUpdate={{this.changeHistory}}
-        />
+        <Document::Read @model={{this.document}} @page={{this.page}} @onAuthenticated={{this.onAuthenticated}} />
     </div>
 </Page::Content>

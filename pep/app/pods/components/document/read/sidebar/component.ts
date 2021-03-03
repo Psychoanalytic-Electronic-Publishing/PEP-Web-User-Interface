@@ -4,10 +4,11 @@ import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
-import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import IntlService from 'ember-intl/services/intl';
+
+import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
 
 import { PreferenceKey } from 'pep/constants/preferences';
 import { TITLE_REGEX } from 'pep/constants/regex';
@@ -51,7 +52,7 @@ export default class DocumentReadSidebar extends Component<DocumentReadSidebarAr
     sorts = SearchSorts;
 
     get isLoadingRoute(): boolean {
-        return /loading$/.test(this.router.currentRouteName);
+        return false;
     }
 
     /**

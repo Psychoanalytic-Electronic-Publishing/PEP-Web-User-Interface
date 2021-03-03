@@ -4,10 +4,12 @@ import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
+import CookiesService from 'ember-cookies/services/cookies';
 import { DS } from 'ember-data';
 
 import ModalService from '@gavant/ember-modals/services/modal';
 
+import moment from 'moment';
 import Abstract from 'pep/pods/abstract/model';
 import GlossaryTerm from 'pep/pods/glossary-term/model';
 import SearchDocument from 'pep/pods/search-document/model';
@@ -31,6 +33,7 @@ export default class Home extends Component<HomeArgs> {
     @service store!: DS.Store;
     @service router!: RouterService;
     @service loadingBar!: LoadingBarService;
+    @service cookies!: CookiesService;
 
     /**
      * The approximate width where the graphic
@@ -39,8 +42,11 @@ export default class Home extends Component<HomeArgs> {
      */
     graphicWrapWidth = 725;
 
+    cookieName = 'pep_last_viewed_expert_pick';
+
     @tracked model?: Abstract;
     @tracked imageArticle?: SearchDocument;
+    @tracked currentlyShownIndex: number = 0;
 
     get intro() {
         return this.configuration.content.home.intro;
@@ -48,11 +54,28 @@ export default class Home extends Component<HomeArgs> {
 
     get expertPick() {
         const expertPicks = this.configuration.base.home.expertPicks;
-        return expertPicks[expertPicks.length - 1];
+        return expertPicks[this.currentlyShownIndex];
     }
 
     get imageArticleUrl() {
         return this.imageArticle?.id ? this.router.urlFor('browse.read', this.imageArticle?.id) : '';
+    }
+
+    /**
+     * Save expert pick viewed index and date to a cookie. We need to do this to figure out what they viewed, and when to switch them to the next item in the list
+     *
+     * @param {number} index
+     * @memberof Home
+     */
+    saveExpertPickViewToCookie(index: number): void {
+        this.cookies.write(
+            this.cookieName,
+            JSON.stringify({
+                index,
+                dateViewed: new Date()
+            }),
+            {}
+        );
     }
 
     /**
@@ -122,19 +145,37 @@ export default class Home extends Component<HomeArgs> {
     }
 
     /**
-     * Returns the expert pick of the day abstract
+     *Returns the expert pick of the day abstract
+     *
+     * @return {*}  {Promise<void>}
+     * @memberof Home
      */
     @action
-    async loadModel() {
+    async loadModel(): Promise<void> {
         const expertPicks = this.configuration.base.home.expertPicks;
-        const result = await this.store.findRecord('abstract', expertPicks[expertPicks.length - 1].articleId);
-        this.model = result;
-        const queryParams = buildSearchQueryParams({
-            smartSearchTerm: `art_graphic_list: ${this.expertPick.imageId}`
-        });
-        const imageArticleResults = await this.store.query('search-document', queryParams);
-        const imageArticle = imageArticleResults.toArray()[0];
-        this.imageArticle = imageArticle;
+        const expertPick = this.cookies.read(this.cookieName);
+        if (!expertPick) {
+            this.saveExpertPickViewToCookie(0);
+        } else {
+            const expertPickObject = JSON.parse(expertPick);
+            const dateViewed = expertPickObject.dateViewed;
+            const dayDifferential = moment(new Date()).diff(dateViewed, 'days');
+            let index = expertPickObject.index;
+            if (dayDifferential >= 1) {
+                index = expertPickObject.index + 1 < expertPicks.length ? expertPickObject.index + 1 : 0;
+            }
+
+            const result = await this.store.findRecord('abstract', expertPicks[index].articleId);
+            this.model = result;
+            const queryParams = buildSearchQueryParams({
+                smartSearchTerm: `art_graphic_list: ${expertPicks[index].imageId}`
+            });
+            const imageArticleResults = await this.store.query('search-document', queryParams);
+            const imageArticle = imageArticleResults.toArray()[0];
+            this.imageArticle = imageArticle;
+            this.currentlyShownIndex = index;
+            this.saveExpertPickViewToCookie(index);
+        }
     }
 
     /**
@@ -173,6 +214,4 @@ export default class Home extends Component<HomeArgs> {
             }
         }
     }
-
-  
 }

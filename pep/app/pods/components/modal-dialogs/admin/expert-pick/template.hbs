@@ -1,8 +1,8 @@
-<ModalDialog @onClose={{@onClose}} @size="lg" @clickOutsideToClose={{false}} as |Modal|>
+<ModalDialog @onClose={{@onClose}} @size="sm" @clickOutsideToClose={{false}} as |Modal|>
     <Modal.header @title={{t "admin.publisher.information"}} />
     <FormValidator @changeset={{@options.changeset}} @submit={{this.update}} as |changeset validator|>
         <Modal.body>
-            <validator.input @errors={{changeset.error.articleId.validation}} @label={{true}}>
+            <validator.input @errors={{changeset.error.articleId.validation}}>
                 <FlInput @value={{changeset.articleId}} @placeholder={{t "admin.common.home.expertPicks.articleId"}}>
                     <ChangesetInput
                         @changeset={{changeset}}
@@ -12,7 +12,7 @@
                     />
                 </FlInput>
             </validator.input>
-            <validator.input @errors={{changeset.error.imageId.validation}} @label={{true}}>
+            <validator.input @errors={{changeset.error.imageId.validation}}>
                 <FlInput @value={{changeset.imageId}} @placeholder={{t "admin.common.home.expertPicks.imageId"}}>
                     <ChangesetInput @changeset={{changeset}} @path="imageId" class="form-control" autocomplete="off" />
                 </FlInput>

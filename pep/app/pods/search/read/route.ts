@@ -38,11 +38,11 @@ export default class SearchRead extends PageNav(Route) {
     searchResultsMeta?: any;
     searchParams?: SearchReadParams | QueryParamsObj;
 
-    // queryParams = {
-    //     page: {
-    //         replace: true
-    //     }
-    // };
+    queryParams = {
+        page: {
+            replace: true
+        }
+    };
 
     /**
      * Fetch the requested document

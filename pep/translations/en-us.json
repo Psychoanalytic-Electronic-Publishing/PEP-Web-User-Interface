@@ -802,6 +802,8 @@
             "home": {
                 "expertPicks": {
                     "title": "Expert Picks",
+                    "articleId": "Article ID",
+                    "imageId": "Image ID",
                     "table": {
                         "article": "Article ID",
                         "image": "Image ID"

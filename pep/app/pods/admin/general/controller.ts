@@ -57,10 +57,8 @@ export default class AdminGeneral extends Controller {
     @action
     deleteExpertPick(expertPick: ExpertPick): void {
         const expertPicks = this.changeset?.get('configSettings.home.expertPicks') as ExpertPick[];
-        const filteredPicks = expertPicks.filter(
-            (item) => item.articleId !== expertPick.articleId && item.imageId !== expertPick.imageId
-        );
-        this.changeset?.set('configSettings.global.publishers', [...filteredPicks]);
+        const filteredPicks = expertPicks.filter((item) => item !== expertPick);
+        this.changeset?.set('configSettings.home.expertPicks', [...filteredPicks]);
     }
 
     /**

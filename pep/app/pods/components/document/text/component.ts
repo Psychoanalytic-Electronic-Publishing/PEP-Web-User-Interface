@@ -474,17 +474,19 @@ export default class DocumentText extends Component<DocumentTextArgs> {
         this.scrollableElement = this.containerElement?.closest('.page-content-inner');
         scheduleOnce('afterRender', this, this.attachTooltips);
         if (this.args.page) {
+            console.log(this.args.page);
             await this.scrollToPageOrTarget(this.args.page);
         }
-        Object.values(this.containerElement.querySelectorAll('div.pagebreak')).forEach((item) => {
-            const observer = new IntersectionObserver(
-                (entries) => {
-                    if (this.pageTracking) {
-                        this.itemVisible(entries);
-                    }
-                },
-                { threshold: 1 }
-            );
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (this.pageTracking) {
+                    next(() => this.itemVisible(entries));
+                }
+            },
+            { threshold: 1 }
+        );
+        const pageBreaks = this.containerElement.querySelectorAll('div.pagebreak');
+        Object.values(pageBreaks).forEach((item) => {
             // eslint-disable-next-line ember/no-observers
             observer.observe(item);
         });
