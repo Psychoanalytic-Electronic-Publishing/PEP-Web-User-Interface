@@ -38,6 +38,15 @@ export async function onAuthenticated(owner: Controller | Route | Component): Pr
     return configurationService.setup();
 }
 
+/**
+ * Check and see if the route can be accessed via permission lookup with the `ember-can` library
+ *
+ * @export
+ * @param {Route} owner
+ * @param {string[]} abilities
+ * @param {ModelRegistry} [model]
+ * @return {*}  {boolean}
+ */
 export function canAccessRoute(owner: Route, abilities: string[], model?: ModelRegistry): boolean {
     const currentOwner = getOwner(owner);
     const canService = currentOwner.lookup(`service:can`) as CanService;

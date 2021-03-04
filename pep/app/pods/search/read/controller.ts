@@ -40,8 +40,6 @@ export default class SearchRead extends Controller {
     searchViews = SearchViews;
     sorts = SearchSorts;
 
-    @tracked test = null;
-
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
     //@ts-ignore
@@ -234,11 +232,6 @@ export default class SearchRead extends Controller {
         this.searchHitNumber = undefined;
         this.searchHitNumber = number;
     }
-
-    // @action
-    // changeHistory(page: string) {
-    //     this.page = page;
-    // }
 }
 
 // DO NOT DELETE: this is how TypeScript knows how to look up your controllers.

@@ -9,6 +9,11 @@ import { canAccessRoute } from 'pep/utils/user';
 export default class Admin extends PageSidebar(PageNav(Route)) {
     navController = 'admin';
 
+    /**
+     * Check and see if the user can access this route, and if not forward them to the 403 page
+     *
+     * @memberof Admin
+     */
     beforeModel(): void {
         const access = canAccessRoute(this, ['user.viewAdmin']);
         if (!access) {

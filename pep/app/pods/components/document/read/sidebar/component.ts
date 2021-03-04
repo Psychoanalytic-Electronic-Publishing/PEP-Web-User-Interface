@@ -52,7 +52,7 @@ export default class DocumentReadSidebar extends Component<DocumentReadSidebarAr
     sorts = SearchSorts;
 
     get isLoadingRoute(): boolean {
-        return false;
+        return /loading$/.test(this.router.currentRouteName);
     }
 
     /**

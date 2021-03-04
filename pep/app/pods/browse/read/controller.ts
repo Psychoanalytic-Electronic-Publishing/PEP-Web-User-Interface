@@ -101,11 +101,6 @@ export default class BrowseRead extends Controller {
     updateSelectedView(view: SearchView) {
         this.selectedView = view;
     }
-
-    @action
-    changeHistory(page: string) {
-        this.page = page;
-    }
 }
 // DO NOT DELETE: this is how TypeScript knows how to look up your controllers.
 declare module '@ember/controller' {

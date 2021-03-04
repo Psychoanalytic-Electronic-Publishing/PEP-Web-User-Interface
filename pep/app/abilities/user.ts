@@ -7,7 +7,14 @@ import CurrentUserService from 'pep/services/current-user';
 export default class UserAbilityAbility extends Ability {
     @service currentUser!: CurrentUserService;
 
-    get canViewAdmin() {
-        return this.currentUser.user?.isAdmin;
+    /**
+     * Whether or not the user can view admin pages
+     *
+     * @readonly
+     * @type {boolean}
+     * @memberof UserAbilityAbility
+     */
+    get canViewAdmin(): boolean {
+        return this.currentUser.user?.isAdmin ?? false;
     }
 }

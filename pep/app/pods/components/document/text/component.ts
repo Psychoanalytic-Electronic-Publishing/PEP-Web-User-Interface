@@ -457,19 +457,15 @@ export default class DocumentText extends Component<DocumentTextArgs> {
     }
 
     /**
-     * set up the tooltips and if we get passed in a page number - scroll to it
+     * Set up the tooltips and if we get passed in a page number - scroll to it
+     * Also add intersection observers to all pagebreaks, in order to know how far the user has scroll down the document
      *
      * @param {HTMLElement} element
      * @memberof DocumentText
      */
-    /**
-     *
-     *
-     * @param {HTMLElement} element
-     * @memberof DocumentText
-     */
+
     @action
-    async setupListeners(element: HTMLElement) {
+    async setupListeners(element: HTMLElement): Promise<void> {
         this.containerElement = element;
         this.scrollableElement = this.containerElement?.closest('.page-content-inner');
         scheduleOnce('afterRender', this, this.attachTooltips);
@@ -492,6 +488,12 @@ export default class DocumentText extends Component<DocumentTextArgs> {
         });
     }
 
+    /**
+     * When the item is visible, call the function to update the viewable page.
+     *
+     * @param {IntersectionObserverEntry[]} entries
+     * @memberof DocumentText
+     */
     @action
     itemVisible(entries: IntersectionObserverEntry[]) {
         const newVisiblePages: string[] = [];
@@ -507,7 +509,6 @@ export default class DocumentText extends Component<DocumentTextArgs> {
             this.visiblePages = newVisiblePages;
             this.args.viewablePageUpdate?.(this.visiblePages[0]);
         }
-        console.log(this.visiblePages);
     }
 
     /**
@@ -651,7 +652,12 @@ export default class DocumentText extends Component<DocumentTextArgs> {
         return results.documents?.responseSet?.[0].document;
     }
 
-    willDestroy() {
+    /**
+     * Turn off page tracking so even if the user happens to scroll before the component is destroyed, we dont update the page
+     *
+     * @memberof DocumentText
+     */
+    willDestroy(): void {
         this.pageTracking = false;
     }
 }
