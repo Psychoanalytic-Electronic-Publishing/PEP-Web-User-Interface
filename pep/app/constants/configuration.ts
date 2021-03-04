@@ -32,6 +32,11 @@ export interface ExpertPick {
     imageId: string;
 }
 
+export interface VideoConfiguration {
+    code: string;
+    aspectRatio: AspectRatio;
+}
+
 /**
  * Base admin configuration fields for the application
  * MUST NOT contain any configuration data/content that is language-dependent
@@ -51,10 +56,8 @@ export interface BaseConfiguration {
             mostViewed: {
                 limit: number;
             };
-            videoPreview: {
-                code: string;
-                aspectRatio: AspectRatio;
-            };
+            videoPreview: VideoConfiguration;
+            topicalVideoPreview: VideoConfiguration;
             left: WidgetConfiguration[];
             right: WidgetConfiguration[];
         };
@@ -162,7 +165,15 @@ export const DEFAULT_BASE_CONFIGURATION: BaseConfiguration = {
                 code:
                     '<iframe src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2Fpepweb%2Fvideos%2F1085606578152566%2F&show_text=0" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allowFullScreen="true"></iframe>'
             },
-            left: [{ widget: WIDGET.VIDEO_PREVIEW, open: true }],
+            topicalVideoPreview: {
+                aspectRatio: AspectRatio.SIXTEEN_BY_NINE,
+                code:
+                    '<iframe src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2Fpepweb%2Fvideos%2F1085606578152566%2F&show_text=0" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allowFullScreen="true"></iframe>'
+            },
+            left: [
+                { widget: WIDGET.VIDEO_PREVIEW, open: true },
+                { widget: WIDGET.TOPICAL_VIDEO_PREVIEW, open: true }
+            ],
             right: [
                 { widget: WIDGET.WHATS_NEW, open: true },
                 { widget: WIDGET.MOST_CITED, open: true },
@@ -180,10 +191,6 @@ export const DEFAULT_BASE_CONFIGURATION: BaseConfiguration = {
     home: {
         expertPicksStartDate: '2019-01-07T15:14:29-0500',
         expertPicks: [
-            {
-                articleId: 'CJP.024A.0233A',
-                imageId: 'CJP.024-025.0233A.FIG001'
-            },
             {
                 articleId: 'IJP.027.0099A',
                 imageId: 'CJP.024-025.0233A.FIG001'

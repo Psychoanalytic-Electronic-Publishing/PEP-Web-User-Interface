@@ -29,6 +29,7 @@ export default class AdminGeneral extends Route {
      */
     setupController(controller: AdminGeneralController, model: Configuration, transition: Transition): void {
         super.setupController(controller, model, transition);
+
         model.configSettings = Object.assign({}, DEFAULT_BASE_CONFIGURATION, model.configSettings);
         controller.changeset = createChangeset(model, CONFIGURATION_GENERAL_VALIDATIONS);
     }
