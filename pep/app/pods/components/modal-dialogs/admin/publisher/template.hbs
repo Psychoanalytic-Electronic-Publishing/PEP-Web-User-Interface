@@ -2,7 +2,7 @@
     <Modal.header @title={{t "admin.publisher.information"}} />
     <FormValidator @changeset={{@options.changeset}} @submit={{this.update}} as |changeset validator|>
         <Modal.body>
-            <validator.input @errors={{changeset.error.sourceCode.validation}} @label={{true}}>
+            <validator.input @errors={{changeset.error.sourceCode.validation}}>
                 <FlInput
                     @value={{changeset.sourceCode}}
                     @placeholder={{t "admin.content.global.publishers.sourceCode"}}
@@ -13,6 +13,24 @@
                         class="form-control"
                         autocomplete="off"
                     />
+                </FlInput>
+            </validator.input>
+            <validator.input @errors={{changeset.error.embargoYears.validation}}>
+                <FlInput
+                    @value={{changeset.embargoYears}}
+                    @placeholder={{t "admin.content.global.publishers.embargoYears"}}
+                >
+                    <ChangesetInput
+                        @changeset={{changeset}}
+                        @path="embargoYears"
+                        class="form-control"
+                        autocomplete="off"
+                    />
+                </FlInput>
+            </validator.input>
+            <validator.input @errors={{changeset.error.url.validation}}>
+                <FlInput @value={{changeset.url}} @placeholder={{t "admin.content.global.publishers.url"}}>
+                    <ChangesetInput @changeset={{changeset}} @path="url" class="form-control" autocomplete="off" />
                 </FlInput>
             </validator.input>
             <validator.input
@@ -30,14 +48,6 @@
                 @fieldLabel={{t "admin.content.global.publishers.fullHTML"}}
             >
                 <Admin::Editor @changeset={{changeset}} @path="fullHTML" />
-            </validator.input>
-            <validator.input
-                @errors={{changeset.error.description.validation}}
-                @label={{true}}
-                @hasFocusedOut={{true}}
-                @fieldLabel={{t "admin.content.global.publishers.description"}}
-            >
-                <Admin::Editor @changeset={{changeset}} @path="description" />
             </validator.input>
         </Modal.body>
         <Modal.footer>

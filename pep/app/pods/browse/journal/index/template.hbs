@@ -47,7 +47,17 @@
                         </div>
                     </ContentWithPlaceholder>
                     <div class="small text-muted">
-                        {{this.publisherInformation.description}}
+                        <p>
+                            {{t
+                                "publisherInfo.description"
+                                year=(embargo-year this.publisherInformation.embargoYears)
+                                url=this.publisherInformation.url
+                                htmlSafe=true
+                            }}
+                        </p>
+                        <p>
+                            {{html-safe this.publisherInformation.fullHTML}}
+                        </p>
                     </div>
                 </div>
             </div>

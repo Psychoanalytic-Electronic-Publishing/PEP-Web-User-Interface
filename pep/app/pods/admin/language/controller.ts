@@ -128,9 +128,9 @@ export default class AdminLanguage extends Controller {
             },
 
             {
-                name: this.intl.t('admin.content.global.publishers.table.description'),
+                name: this.intl.t('admin.content.global.publishers.table.embargoYears'),
                 cellComponent: 'tables/cell/html',
-                valuePath: 'description',
+                valuePath: 'embargoYears',
                 isSortable: true
             },
             {
