@@ -789,6 +789,7 @@
                     "videoPreview": {
                         "code": "Video Preview Embed Code"
                     },
+                    "limitsTitle": "Widget Limits",
                     "whatsNew": {
                         "limit": "Whats new result limit"
                     },
@@ -829,11 +830,25 @@
             },
             "home": {
                 "intro": {
+                    "title": "Intro Cards",
                     "left": {
                         "title": "Left intro card"
                     },
                     "right": {
                         "title": "Right intro Card"
+                    }
+                },
+                "newsAndInfo": {
+                    "title": "News and Information Cards",
+                    "boxOne": {
+                        "title": "News",
+                        "heading": "News Heading",
+                        "body": "News Body"
+                    },
+                    "boxTwo": {
+                        "title": "Information",
+                        "heading": "Information Heading",
+                        "body": "Information body"
                     }
                 }
             }
