@@ -42,8 +42,6 @@ export default class Home extends Component<HomeArgs> {
      */
     graphicWrapWidth = 725;
 
-    cookieName = 'pep_last_viewed_expert_pick';
-
     @tracked model?: Abstract;
     @tracked imageArticle?: SearchDocument;
     @tracked currentlyShownIndex: number = 0;
@@ -59,23 +57,6 @@ export default class Home extends Component<HomeArgs> {
 
     get imageArticleUrl() {
         return this.imageArticle?.id ? this.router.urlFor('browse.read', this.imageArticle?.id) : '';
-    }
-
-    /**
-     * Save expert pick viewed index and date to a cookie. We need to do this to figure out what they viewed, and when to switch them to the next item in the list
-     *
-     * @param {number} index
-     * @memberof Home
-     */
-    saveExpertPickViewToCookie(index: number): void {
-        this.cookies.write(
-            this.cookieName,
-            JSON.stringify({
-                index,
-                dateViewed: new Date()
-            }),
-            {}
-        );
     }
 
     /**
@@ -153,29 +134,20 @@ export default class Home extends Component<HomeArgs> {
     @action
     async loadModel(): Promise<void> {
         const expertPicks = this.configuration.base.home.expertPicks;
-        const expertPick = this.cookies.read(this.cookieName);
-        if (!expertPick) {
-            this.saveExpertPickViewToCookie(0);
-        } else {
-            const expertPickObject = JSON.parse(expertPick);
-            const dateViewed = expertPickObject.dateViewed;
-            const dayDifferential = moment(new Date()).diff(dateViewed, 'days');
-            let index = expertPickObject.index;
-            if (dayDifferential >= 1) {
-                index = expertPickObject.index + 1 < expertPicks.length ? expertPickObject.index + 1 : 0;
-            }
+        const specialDate = this.configuration.base.home.expertPicksStartDate;
 
-            const result = await this.store.findRecord('abstract', expertPicks[index].articleId);
-            this.model = result;
-            const queryParams = buildSearchQueryParams({
-                smartSearchTerm: `art_graphic_list: ${expertPicks[index].imageId}`
-            });
-            const imageArticleResults = await this.store.query('search-document', queryParams);
-            const imageArticle = imageArticleResults.toArray()[0];
-            this.imageArticle = imageArticle;
-            this.currentlyShownIndex = index;
-            this.saveExpertPickViewToCookie(index);
-        }
+        const dayDifferential = moment(new Date()).diff(specialDate, 'days');
+        const index = dayDifferential % expertPicks.length;
+
+        const result = await this.store.findRecord('abstract', expertPicks[index].articleId);
+        this.model = result;
+        const queryParams = buildSearchQueryParams({
+            smartSearchTerm: `art_graphic_list: ${expertPicks[index].imageId}`
+        });
+        const imageArticleResults = await this.store.query('search-document', queryParams);
+        const imageArticle = imageArticleResults.toArray()[0];
+        this.imageArticle = imageArticle;
+        this.currentlyShownIndex = index;
     }
 
     /**

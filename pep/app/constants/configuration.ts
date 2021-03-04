@@ -60,6 +60,7 @@ export interface BaseConfiguration {
         };
     };
     home: {
+        expertPicksStartDate: string;
         expertPicks: ExpertPick[];
     };
     search: {
@@ -177,6 +178,7 @@ export const DEFAULT_BASE_CONFIGURATION: BaseConfiguration = {
         }
     },
     home: {
+        expertPicksStartDate: '2019-01-07T15:14:29-0500',
         expertPicks: [
             {
                 articleId: 'CJP.024A.0233A',
