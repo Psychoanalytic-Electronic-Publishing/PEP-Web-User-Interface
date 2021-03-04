@@ -59,6 +59,13 @@ export default class Home extends Component<HomeArgs> {
         return this.imageArticle?.id ? this.router.urlFor('browse.read', this.imageArticle?.id) : '';
     }
 
+    get expertPickIndex() {
+        const expertPicks = this.configuration.base.home.expertPicks;
+        const specialDate = this.configuration.base.home.expertPicksStartDate;
+        const dayDifferential = moment(new Date()).diff(specialDate, 'days');
+        return dayDifferential % expertPicks.length;
+    }
+
     /**
      * Open the search form sidebar
      * @returns {void}
@@ -134,10 +141,7 @@ export default class Home extends Component<HomeArgs> {
     @action
     async loadModel(): Promise<void> {
         const expertPicks = this.configuration.base.home.expertPicks;
-        const specialDate = this.configuration.base.home.expertPicksStartDate;
-
-        const dayDifferential = moment(new Date()).diff(specialDate, 'days');
-        const index = dayDifferential % expertPicks.length;
+        const index = this.expertPickIndex;
 
         const result = await this.store.findRecord('abstract', expertPicks[index].articleId);
         this.model = result;
