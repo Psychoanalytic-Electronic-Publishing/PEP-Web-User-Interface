@@ -4,7 +4,7 @@ import { Ability } from 'ember-can';
 
 import CurrentUserService from 'pep/services/current-user';
 
-export default class UserAbilityAbility extends Ability {
+export default class UserAbility extends Ability {
     @service currentUser!: CurrentUserService;
 
     /**
@@ -12,7 +12,7 @@ export default class UserAbilityAbility extends Ability {
      *
      * @readonly
      * @type {boolean}
-     * @memberof UserAbilityAbility
+     * @memberof UserAbility
      */
     get canViewAdmin(): boolean {
         return this.currentUser.user?.isAdmin ?? false;

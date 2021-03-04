@@ -4,7 +4,7 @@ import Route from '@ember/routing/route';
 import { LanguageCode } from 'pep/constants/lang';
 import { PageNav, PageSidebar } from 'pep/mixins/page-layout';
 import AdminController from 'pep/pods/admin/controller';
-import { canAccessRoute } from 'pep/utils/user';
+import { handleRouteAuthorization } from 'pep/utils/user';
 
 export default class Admin extends PageSidebar(PageNav(Route)) {
     navController = 'admin';
@@ -15,10 +15,7 @@ export default class Admin extends PageSidebar(PageNav(Route)) {
      * @memberof Admin
      */
     beforeModel(): void {
-        const access = canAccessRoute(this, ['user.viewAdmin']);
-        if (!access) {
-            this.transitionTo('four-oh-three');
-        }
+        handleRouteAuthorization(this, ['user.viewAdmin']);
     }
 
     setupController(controller: AdminController, model: object, transition: Transition): void {

@@ -1,6 +1,7 @@
 import { getOwner } from '@ember/application';
 import Controller from '@ember/controller';
 import Route from '@ember/routing/route';
+import RouterService from '@ember/routing/router-service';
 import Component from '@glimmer/component';
 
 import ModelRegistry from 'ember-data/types/registries/model';
@@ -58,4 +59,13 @@ export function canAccessRoute(owner: Route, abilities: string[], model?: ModelR
         }
     }
     return access;
+}
+
+export function handleRouteAuthorization(owner: Route, abilities: string[], model?: ModelRegistry): void {
+    const currentOwner = getOwner(owner);
+    const routerService = currentOwner.lookup(`service:router`) as RouterService;
+    const access = canAccessRoute(owner, abilities, model);
+    if (!access) {
+        routerService.transitionTo('four-oh-three');
+    }
 }
