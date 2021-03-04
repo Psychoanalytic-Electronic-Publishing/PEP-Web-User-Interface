@@ -34,6 +34,12 @@ export default class BrowseRead extends PageNav(Route) {
     relatedDocuments?: Document[];
     relatedDocumentsMeta?: any;
 
+    queryParams = {
+        page: {
+            replace: true
+        }
+    };
+
     /**
      * Fetch the requested document
      * @param {ReadDocumentParams} params

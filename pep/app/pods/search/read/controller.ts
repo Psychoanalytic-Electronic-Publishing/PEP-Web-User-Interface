@@ -30,7 +30,7 @@ export default class SearchRead extends Controller {
     @tracked viewedPeriod: ViewPeriod = SEARCH_DEFAULT_VIEW_PERIOD;
     @tracked _searchTerms: string | null = null;
     @tracked paginator!: Pagination<Document>;
-    @tracked page = null;
+    @tracked page: string | null = null;
     @tracked searchHitNumber?: number;
 
     // This becomes our model as the template wasn't updating when we changed the default model
@@ -62,7 +62,8 @@ export default class SearchRead extends Controller {
             facets: this._facets,
             matchSynonyms: this.matchSynonyms,
             citedCount: this.citedCount,
-            viewedCount: this.viewedCount
+            viewedCount: this.viewedCount,
+            page: null
         };
     }
 
@@ -190,7 +191,8 @@ export default class SearchRead extends Controller {
             queryParams: {
                 q: this.q,
                 matchSynonyms: this.matchSynonyms,
-                searchTerms: this._searchTerms
+                searchTerms: this._searchTerms,
+                page: null
             }
         });
     }

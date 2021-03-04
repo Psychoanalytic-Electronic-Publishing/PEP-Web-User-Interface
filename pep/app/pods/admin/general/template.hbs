@@ -1,104 +1,146 @@
 {{page-title (t "admin.title")}}
 <Page::Content>
-    <div class="p-4 form-row">
-        <div class="card col-lg-8">
-            <div class="card-body">
-                <h2>
-                    {{t "admin.common.title"}}
-                </h2>
-                <FormValidator @changeset={{this.changeset}} @submit={{this.save}} as |changeset validator|>
-                    <div class="form-row">
-                        <div class="col-12">
-                            <validator.input
-                                @errors={{changeset.error.configSettings.global.cards.videoPreview.code.validation}}
-                                @label={{true}}
-                            >
-                                <FlInput
-                                    @value={{changeset.configSettings.global.cards.videoPreview.code}}
-                                    @placeholder={{t "admin.common.global.cards.videoPreview.code"}}
+    <FormValidator @changeset={{this.changeset}} @submit={{this.save}} as |changeset validator|>
+        <div class="p-4 form-row">
+            <div class="col-lg-8">
+                <div class="d-flex justify-content-between align-items-center sticky-top bg-body p-3">
+                    <h2 class="mb-0">
+                        {{t "admin.common.title"}}
+                    </h2>
+                    <ButtonSpinner
+                        @type="primary"
+                        @label={{t "common.save"}}
+                        @wide={{true}}
+                        @action={{validator.submit}}
+                    />
+                </div>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="col-12">
+                                <h4 class="border-bottom mb-3">
+                                    {{t "admin.common.global.cards.videoPreview.code"}}
+                                </h4>
+                                <validator.input
+                                    @errors={{changeset.error.configSettings.global.cards.videoPreview.code.validation}}
+                                    @label={{true}}
                                 >
-                                    <textarea
-                                        value={{changeset-get
-                                            changeset
-                                            "configSettings.global.cards.videoPreview.code"
-                                        }}
-                                        class="form-control"
-                                        autocomplete="off"
-                                        rows="5"
-                                        {{on
-                                            "input"
-                                            (event-value
-                                                (changeset-set
-                                                    changeset "configSettings.global.cards.videoPreview.code"
+                                    <FlInput
+                                        @value={{changeset.configSettings.global.cards.videoPreview.code}}
+                                        @placeholder={{t "admin.common.global.cards.videoPreview.code"}}
+                                    >
+                                        <textarea
+                                            value={{changeset-get
+                                                changeset
+                                                "configSettings.global.cards.videoPreview.code"
+                                            }}
+                                            class="form-control"
+                                            autocomplete="off"
+                                            rows="5"
+                                            {{on
+                                                "input"
+                                                (event-value
+                                                    (changeset-set
+                                                        changeset "configSettings.global.cards.videoPreview.code"
+                                                    )
                                                 )
-                                            )
-                                        }}
-                                    ></textarea>
-                                </FlInput>
-                            </validator.input>
-                            <validator.input
-                                @errors={{changeset.error.configSettings.global.cards.whatsNew.limit.validation}}
-                                @label={{true}}
-                            >
-                                <FlInput
-                                    @value={{changeset.configSettings.global.cards.whatsNew.limit}}
-                                    @placeholder={{t "admin.common.global.cards.whatsNew.limit"}}
-                                >
-                                    <ChangesetInput
-                                        @changeset={{changeset}}
-                                        @path="configSettings.global.cards.whatsNew.limit"
-                                        class="form-control"
-                                        autocomplete="off"
-                                    />
-                                </FlInput>
-                            </validator.input>
-                            <validator.input
-                                @errors={{changeset.error.configSettings.global.cards.mostCited.limit.validation}}
-                                @label={{true}}
-                            >
-                                <FlInput
-                                    @value={{changeset.configSettings.global.cards.mostCited.limit}}
-                                    @placeholder={{t "admin.common.global.cards.mostCited.limit"}}
-                                >
-                                    <ChangesetInput
-                                        @changeset={{changeset}}
-                                        @path="configSettings.global.cards.mostCited.limit"
-                                        class="form-control"
-                                        autocomplete="off"
-                                    />
-                                </FlInput>
-                            </validator.input>
-                            <validator.input
-                                @errors={{changeset.error.configSettings.global.cards.mostViewed.limit.validation}}
-                                @label={{true}}
-                            >
-                                <FlInput
-                                    @value={{changeset.configSettings.global.cards.mostViewed.limit}}
-                                    @placeholder={{t "admin.common.global.cards.mostViewed.limit"}}
-                                >
-                                    <ChangesetInput
-                                        @changeset={{changeset}}
-                                        @path="configSettings.global.cards.mostViewed.limit"
-                                        class="form-control"
-                                        autocomplete="off"
-                                    />
-                                </FlInput>
-                            </validator.input>
-
-                            <div class="d-flex  justify-content-end align-items-center">
-                                <div>
-                                    <ButtonSpinner
-                                        @type="primary"
-                                        @label={{t "common.save"}}
-                                        @wide={{true}}
-                                        @action={{validator.submit}}
-                                    />
+                                            }}
+                                        ></textarea>
+                                    </FlInput>
+                                </validator.input>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="col-12">
+                                <h4 class="border-bottom mb-3">
+                                    {{t "admin.common.global.cards.limitsTitle"}}
+                                </h4>
+                                <div class="form-row">
+                                    <div class="col-3">
+                                        <validator.input
+                                            @errors={{changeset.error.configSettings.global.cards.whatsNew.limit.validation
+                                            }}
+                                        >
+                                            <FlInput
+                                                @value={{changeset.configSettings.global.cards.whatsNew.limit}}
+                                                @placeholder={{t "admin.common.global.cards.whatsNew.limit"}}
+                                            >
+                                                <ChangesetInput
+                                                    @changeset={{changeset}}
+                                                    @path="configSettings.global.cards.whatsNew.limit"
+                                                    class="form-control"
+                                                    autocomplete="off"
+                                                />
+                                            </FlInput>
+                                        </validator.input>
+                                        <validator.input
+                                            @errors={{changeset.error.configSettings.global.cards.mostCited.limit.validation
+                                            }}
+                                        >
+                                            <FlInput
+                                                @value={{changeset.configSettings.global.cards.mostCited.limit}}
+                                                @placeholder={{t "admin.common.global.cards.mostCited.limit"}}
+                                            >
+                                                <ChangesetInput
+                                                    @changeset={{changeset}}
+                                                    @path="configSettings.global.cards.mostCited.limit"
+                                                    class="form-control"
+                                                    autocomplete="off"
+                                                />
+                                            </FlInput>
+                                        </validator.input>
+                                        <validator.input
+                                            @errors={{changeset.error.configSettings.global.cards.mostViewed.limit.validation
+                                            }}
+                                        >
+                                            <FlInput
+                                                @value={{changeset.configSettings.global.cards.mostViewed.limit}}
+                                                @placeholder={{t "admin.common.global.cards.mostViewed.limit"}}
+                                            >
+                                                <ChangesetInput
+                                                    @changeset={{changeset}}
+                                                    @path="configSettings.global.cards.mostViewed.limit"
+                                                    class="form-control"
+                                                    autocomplete="off"
+                                                />
+                                            </FlInput>
+                                        </validator.input>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </FormValidator>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="col-12">
+                                <h4 class="d-flex justify-content-between align-items-center border-bottom mb-3 pb-1">
+                                    {{t "admin.common.home.expertPicks.title"}}
+                                    <Button
+                                        @action={{this.openExpertPickModal}}
+                                        @icon="plus"
+                                        @iconSize="lg"
+                                        class="p-1"
+                                    />
+                                </h4>
+                                <Table
+                                    @containerSelector=".page-content-inner"
+                                    @columns={{this.columns}}
+                                    @rows={{changeset.configSettings.home.expertPicks}}
+                                    @fillMode="nth-column"
+                                    @fillColumnIndex={{0}}
+                                    @renderAllRows={{this.fastboot.isFastBoot}}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+    </FormValidator>
 </Page::Content>

@@ -20,10 +20,16 @@ export enum AspectRatio {
 }
 
 export interface Publisher {
+    embargoYears: string;
     sourceCode: string;
     previewHTML: string;
     fullHTML: string;
-    description: string;
+    url: string;
+}
+
+export interface ExpertPick {
+    articleId: string;
+    imageId: string;
 }
 
 /**
@@ -54,10 +60,8 @@ export interface BaseConfiguration {
         };
     };
     home: {
-        expertPicks: {
-            articleId: string;
-            imageId: string;
-        }[];
+        expertPicksStartDate: string;
+        expertPicks: ExpertPick[];
     };
     search: {
         hitsInContext: {
@@ -174,6 +178,7 @@ export const DEFAULT_BASE_CONFIGURATION: BaseConfiguration = {
         }
     },
     home: {
+        expertPicksStartDate: '2019-01-07T15:14:29-0500',
         expertPicks: [
             {
                 articleId: 'CJP.024A.0233A',
@@ -229,49 +234,56 @@ export const DEFAULT_CONTENT_CONFIGURATION: ContentConfiguration = {
                 sourceCode: 'IJP',
                 previewHTML: 'Preview HTML',
                 fullHTML: 'Full HTML',
-                description: 'A cool description test'
+                embargoYears: '5',
+                url: 'https://www.palgrave.com/us/journal/11231'
             },
             {
                 sourceCode: 'AIM',
                 previewHTML: 'Preview HTML',
+                embargoYears: '3',
                 fullHTML:
                     "<p>American Imago was founded by Sigmund Freud and Hanns Sachs in the U.S. in 1939 as the successor to Imago, founded by Freud, Sachs, and Otto Rank in Vienna in 1912. Having celebrated its centenary anniversary in 2012, the journal retains its luster as the leading scholarly journal of psychoanalysis. Each issue features cutting-edge articles that explore the enduring relevance of Freud's legacy across the humanities, arts, and social sciences.</p><p>Editor<br>Murray M. Schwartz</p><p>Associate Editor for Film<br>Catherine Portuges</p><p>Associate Editors<br>Vera J. Camden</p><p>David Willbern</p><p>Managing Editor<br>Melissa Skepko</p><p>PUBLISHED BY Johns Hopkins University Press</p>",
-                description: 'American Imago Description'
+                url: 'https://www.google.com'
             },
             {
                 sourceCode: 'FD',
                 previewHTML: 'Preview HTML',
+                embargoYears: '5',
                 fullHTML:
                     '<p>A Regional Affiliate of the Division of Psychoanalysis (39), American Psychological Association</p><p>fort da is a psychoanalytic journal that provides a forum for San Francisco Bay Area professionals as well as national and international thinkers and clinicians. fort da publishes work on psychoanalytic theory, practice, research, and applied psychoanalysis -- in the form of articles, reviews, interviews, essays, commentary, and poetry.</p><p>fort da encourages writers to present their ideas and views on psychoanalysis, both inside and outside the consulting room, giving voice to the multiple ways in which psychoanalytic thinking enriches life. We support creative, evocative, and associational styles rather than a strictly academic format, encouraging material that is at once accessible, lively and of a high intellectual standard.</p>',
-                description: 'Fort Da Description'
+                url: 'https://www.google.com'
             },
             {
                 sourceCode: 'RFP',
                 previewHTML: 'Preview HTML',
+                embargoYears: '8',
                 fullHTML:
                     '<p>The leading French Journal since 1927 and a repository of many of the most important articles in our discipline. Check out the articles by Freud, Lacan, Green, Chasseguet-Smirgel, McDougall, Viderman and many many more. Thanks are due to Denys Ribas (Former editor and President SPP), the Paris Psychoanalytic Society and their library and librarians (SPP), Christine Mique-Bez and Charles Ruelle (Presses Universitaires de France).</p>',
-                description: 'Revue française de psychanalyse Description'
+                url: 'https://www.google.com'
             },
             {
                 sourceCode: 'PPSY',
                 previewHTML: 'Preview HTML',
+                embargoYears: '8',
                 fullHTML:
                     '<p>Psychoanalytic Psychology serves as a resource for original contributions that reflect and broaden the interaction between psychoanalysis and psychology. Manuscripts that involve issues in psychology raised by psychoanalysis and issues in psychoanalysis raised by psychology are welcome.</p><p>The journal, a quarterly, publishes research papers, clinical papers, literature reviews, clinical notes, brief reports, commentary and book reviews.</p><p>Editor: Elliot L. Jurist<br>Publisher: APA PsycNET</p>',
-                description: 'Psychoanalytic Psychology Description'
+                url: 'https://www.google.com'
             },
             {
                 sourceCode: 'DR',
                 previewHTML: 'Preview HTML',
+                embargoYears: '8',
                 fullHTML:
                     '<p>DIVISION/Review is a forum for review essays, commentary, interviews and discussion in the field of psychoanalysis. It is open to viewpoints from across the spectrum of psychoanalytic schools and disciplines. DIVISION/Review primarily addresses topics related to clinical psychoanalysis but also cultural and intellectual fields beyond that focus.</p><p>The full text of this journal is available up through the current issue for all PEP Archive subscribers.</p>',
-                description: 'Division Review Description'
+                url: 'https://www.google.com'
             },
             {
                 sourceCode: 'PB',
                 previewHTML: 'Preview HTML',
+                embargoYears: '8',
                 fullHTML:
                     '<p>Joseph Reppen’s journal, Psychoanalytic Books, is a compendium of reviews of the important books of its era, the 1990’s, written by many of the best scholars in our field.</p>',
-                description: 'Psychoanalytic Books Description'
+                url: 'https://www.google.com'
             }
         ]
     },

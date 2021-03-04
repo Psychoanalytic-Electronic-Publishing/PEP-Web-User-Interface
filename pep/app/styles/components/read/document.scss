@@ -349,7 +349,6 @@ $document-paragraph-indent: 1.5rem;
 
     &.glossary-highlight {
         .glosstip {
-            background-color: $document-link-glosstip-bg;
             color: $link-color;
             &:hover {
                 color: $document-link-glosstip-hover;

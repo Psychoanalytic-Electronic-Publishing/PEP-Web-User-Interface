@@ -4,10 +4,12 @@ import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
+import CookiesService from 'ember-cookies/services/cookies';
 import { DS } from 'ember-data';
 
 import ModalService from '@gavant/ember-modals/services/modal';
 
+import moment from 'moment';
 import Abstract from 'pep/pods/abstract/model';
 import GlossaryTerm from 'pep/pods/glossary-term/model';
 import SearchDocument from 'pep/pods/search-document/model';
@@ -31,6 +33,7 @@ export default class Home extends Component<HomeArgs> {
     @service store!: DS.Store;
     @service router!: RouterService;
     @service loadingBar!: LoadingBarService;
+    @service cookies!: CookiesService;
 
     /**
      * The approximate width where the graphic
@@ -48,11 +51,18 @@ export default class Home extends Component<HomeArgs> {
 
     get expertPick() {
         const expertPicks = this.configuration.base.home.expertPicks;
-        return expertPicks[expertPicks.length - 1];
+        return expertPicks[this.expertPickIndex];
     }
 
     get imageArticleUrl() {
         return this.imageArticle?.id ? this.router.urlFor('browse.read', this.imageArticle?.id) : '';
+    }
+
+    get expertPickIndex() {
+        const expertPicks = this.configuration.base.home.expertPicks;
+        const specialDate = this.configuration.base.home.expertPicksStartDate;
+        const dayDifferential = moment(new Date()).diff(specialDate, 'days');
+        return dayDifferential % expertPicks.length;
     }
 
     /**
@@ -122,12 +132,14 @@ export default class Home extends Component<HomeArgs> {
     }
 
     /**
-     * Returns the expert pick of the day abstract
+     *Returns the expert pick of the day abstract
+     *
+     * @return {*}  {Promise<void>}
+     * @memberof Home
      */
     @action
-    async loadModel() {
-        const expertPicks = this.configuration.base.home.expertPicks;
-        const result = await this.store.findRecord('abstract', expertPicks[expertPicks.length - 1].articleId);
+    async loadModel(): Promise<void> {
+        const result = await this.store.findRecord('abstract', this.expertPick.articleId);
         this.model = result;
         const queryParams = buildSearchQueryParams({
             smartSearchTerm: `art_graphic_list: ${this.expertPick.imageId}`
@@ -173,6 +185,4 @@ export default class Home extends Component<HomeArgs> {
             }
         }
     }
-
-  
 }
