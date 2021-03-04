@@ -44,7 +44,6 @@ export default class Home extends Component<HomeArgs> {
 
     @tracked model?: Abstract;
     @tracked imageArticle?: SearchDocument;
-    @tracked currentlyShownIndex: number = 0;
 
     get intro() {
         return this.configuration.content.home.intro;
@@ -52,7 +51,7 @@ export default class Home extends Component<HomeArgs> {
 
     get expertPick() {
         const expertPicks = this.configuration.base.home.expertPicks;
-        return expertPicks[this.currentlyShownIndex];
+        return expertPicks[this.expertPickIndex];
     }
 
     get imageArticleUrl() {
@@ -140,18 +139,14 @@ export default class Home extends Component<HomeArgs> {
      */
     @action
     async loadModel(): Promise<void> {
-        const expertPicks = this.configuration.base.home.expertPicks;
-        const index = this.expertPickIndex;
-
-        const result = await this.store.findRecord('abstract', expertPicks[index].articleId);
+        const result = await this.store.findRecord('abstract', this.expertPick.articleId);
         this.model = result;
         const queryParams = buildSearchQueryParams({
-            smartSearchTerm: `art_graphic_list: ${expertPicks[index].imageId}`
+            smartSearchTerm: `art_graphic_list: ${this.expertPick.imageId}`
         });
         const imageArticleResults = await this.store.query('search-document', queryParams);
         const imageArticle = imageArticleResults.toArray()[0];
         this.imageArticle = imageArticle;
-        this.currentlyShownIndex = index;
     }
 
     /**
