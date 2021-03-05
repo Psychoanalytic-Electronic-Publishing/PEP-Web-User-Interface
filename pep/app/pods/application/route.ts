@@ -154,15 +154,22 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
         this.tour.set('defaultStepOptions', {
             classes: `${sizeClass} ${this.theme.currentTheme.id}`,
             cancelIcon: {
-                enabled: false
+                enabled: true
             },
             scrollTo: true,
             popperOptions: {
                 modifiers: [{ name: 'offset', options: { offset: [0, 10] } }]
+            },
+            when: {
+                cancel: () => {
+                    this.currentUser.updatePrefs({ [PreferenceKey.TOUR_ENABLED]: false });
+                }
             }
         });
         this.tour.set('disableScroll', true);
         this.tour.set('modal', true);
+        this.tour.set('exitOnEsc', true);
+        this.tour.set('keyboardNavigation', true);
         const steps: Step[] = [];
         if (this.media.isMobile) {
             steps.push({

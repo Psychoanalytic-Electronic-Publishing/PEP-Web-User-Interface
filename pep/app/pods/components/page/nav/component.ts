@@ -8,6 +8,7 @@ import ModalService from '@gavant/ember-modals/services/modal';
 import { Languages } from 'pep/constants/lang';
 import { SUPPORT_URL } from 'pep/constants/urls';
 import AuthService from 'pep/services/auth';
+import { tracked } from '@glimmer/tracking';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService, { VIEW_DOCUMENT_FROM } from 'pep/services/current-user';
 import DrawerService from 'pep/services/drawer';
@@ -29,6 +30,8 @@ export default class PageNav extends Component<PageNavArgs> {
     supportUrl = SUPPORT_URL;
 
     languages = Languages;
+
+    @tracked canLogOut!: boolean;
 
     get readDisabled() {
         return !this.currentUser.lastViewedDocumentId;
@@ -131,5 +134,15 @@ export default class PageNav extends Component<PageNavArgs> {
     @action
     openFeedbackModal() {
         return this.modal.open('help/feedback', {});
+    }
+
+    /**
+     * Set any necessary tracked properties when
+     * a dropdown is opened.
+     *
+     */
+    @action
+    setProperties() {
+        this.canLogOut = this.session.canLogOut;
     }
 }
