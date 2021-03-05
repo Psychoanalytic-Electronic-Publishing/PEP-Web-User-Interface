@@ -139,6 +139,12 @@ export default class PageNav extends Component<PageNavArgs> {
      * Set any necessary tracked properties when
      * a dropdown is opened.
      *
+     * NOTE: This is necessary because accessing `this.sessions.canLogOut`
+     * directly has been problematic in this component. It works fine in
+     * other locations but doesn't cause re-rendering here unexplainably.
+     * These problems occurred specifically when logging in after a preference
+     * was updated.
+     *
      */
     @action
     setProperties() {
