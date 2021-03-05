@@ -36,7 +36,7 @@ export function unsendable(target: any, propertyKey: string) {
  * Usage:
  * ```
  * class MyModel extends Model {
- *     \@unsendable \@attr('date') dateCreated!: Date;
+ *     \@alwaysSend \@attr('date') dateCreated!: Date;
  * }
  * ```
  */
