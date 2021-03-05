@@ -1,13 +1,14 @@
 {{page-title (t "admin.title")}}
 <Page::Content>
     <FormValidator @changeset={{this.changeset}} @submit={{this.save}} as |changeset validator|>
-        <div class="p-4 form-row">
+        <div class="d-flex">
             <div class="col-lg-8">
                 <div class="d-flex justify-content-between align-items-center sticky-top bg-body p-3">
                     <h2 class="mb-0">
                         {{t "admin.common.title"}}
                     </h2>
                     <ButtonSpinner
+                        @disabled={{this.saveDisabled}}
                         @type="primary"
                         @label={{t "common.save"}}
                         @wide={{true}}
@@ -173,7 +174,16 @@
                                         >
                                             {{#each container.items as |item|}}
                                                 <container.item @item={{item}}>
-                                                    {{item.widget}}
+                                                    <div
+                                                        class="d-flex justify-content-between align-items-center w-100"
+                                                    >
+                                                        {{item.widget}}
+                                                        <CheckboxInput
+                                                            @checked={{item.open}}
+                                                            @onChange={{fn this.updateOpenState changeset item "right"}}
+                                                            @label={{t "admin.common.global.cards.opened"}}
+                                                        />
+                                                    </div>
                                                 </container.item>
                                             {{/each}}
                                         </Group.container>
@@ -193,7 +203,16 @@
                                         >
                                             {{#each container.items as |item|}}
                                                 <container.item @item={{item}}>
-                                                    {{item.widget}}
+                                                    <div
+                                                        class="d-flex justify-content-between align-items-center w-100"
+                                                    >
+                                                        {{item.widget}}
+                                                        <CheckboxInput
+                                                            @checked={{item.open}}
+                                                            @onChange={{fn this.updateOpenState changeset item "right"}}
+                                                            @label={{t "admin.common.global.cards.opened"}}
+                                                        />
+                                                    </div>
                                                 </container.item>
                                             {{/each}}
                                         </Group.container>

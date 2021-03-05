@@ -1,5 +1,6 @@
-import DS from 'ember-data';
 import { isArray } from '@ember/array';
+
+import DS from 'ember-data';
 
 type Constructor<T = DS.RESTSerializer> = new (...args: any[]) => T;
 
@@ -25,9 +26,12 @@ export default function ApplicationSerializer<TBase extends Constructor>(Base: T
          */
         serializeAttribute(snapshot: DS.Snapshot<string | number>, json: {}, key: string, attribute: {}) {
             if (
-                (snapshot.record.get('isNew') || snapshot.changedAttributes()[key]) &&
-                (!isArray(snapshot.record.unsendableAttributes) ||
-                    snapshot.record.unsendableAttributes.indexOf(key) === -1)
+                snapshot.record.get('isNew') ||
+                snapshot.changedAttributes()[key] ||
+                (isArray(snapshot.record.alwaysSentAttributes) &&
+                    snapshot.record.alwaysSentAttributes.indexOf(key) !== -1 &&
+                    (!isArray(snapshot.record.unsendableAttributes) ||
+                        snapshot.record.unsendableAttributes.indexOf(key) === -1))
             ) {
                 super.serializeAttribute(snapshot, json, key, attribute);
             }

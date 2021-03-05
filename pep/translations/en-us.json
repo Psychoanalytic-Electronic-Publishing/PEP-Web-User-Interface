@@ -792,6 +792,7 @@
                 "cards": {
                     "left": "Left Sidebar",
                     "right": "Right Sidebar",
+                    "opened": "Opened",
                     "videoPreview": {
                         "title": "Video Previews",
                         "code": "Video Preview Embed Code"
