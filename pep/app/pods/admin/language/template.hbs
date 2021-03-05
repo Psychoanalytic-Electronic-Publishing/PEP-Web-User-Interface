@@ -1,49 +1,141 @@
 {{page-title (t "admin.title")}}
 <Page::Content>
-    <div class="p-4 form-row">
-        <div class="card col-lg-8">
-            <div class="card-body">
-                <h2 class="mb-4">
-                    {{t this.language.label}}
-                </h2>
-                <FormValidator @changeset={{this.changeset}} @submit={{this.save}} as |changeset validator|>
-                    <div class="form-row">
-                        <div class="col-12">
-                            <h4>
-                                {{t "admin.content.home.intro.left.title"}}
-                            </h4>
-                            <validator.input
-                                @errors={{changeset.error.configSettings.home.intro.left.validation}}
-                                @label={{true}}
-                            >
-                                <Admin::Editor @changeset={{changeset}} @path="configSettings.home.intro.left" />
-                            </validator.input>
-                        </div>
-                        <div class="col-12">
-                            <h4>
-                                {{t "admin.content.home.intro.right.title"}}
-                            </h4>
-                            <validator.input
-                                @errors={{changeset.error.configSettings.home.intro.right.validation}}
-                                @label={{true}}
-                            >
-                                <Admin::Editor @changeset={{changeset}} @path="configSettings.home.intro.right" />
-                            </validator.input>
-
-                            <div class="d-flex  justify-content-end align-items-center">
-                                <div>
-                                    <ButtonSpinner
-                                        @type="primary"
-                                        @label={{t "common.save"}}
-                                        @wide={{true}}
-                                        @action={{validator.submit}}
-                                    />
-                                </div>
+    <FormValidator @changeset={{this.changeset}} @submit={{this.save}} as |changeset validator|>
+        <div class="p-4 form-row">
+            <div class="col-lg-8">
+                <div class="d-flex justify-content-between align-items-center sticky-top bg-body p-3">
+                    <h2 class="mb-0">
+                        {{t this.language.label}}
+                    </h2>
+                    <ButtonSpinner
+                        @type="primary"
+                        @label={{t "common.save"}}
+                        @wide={{true}}
+                        @action={{validator.submit}}
+                    />
+                </div>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="col-12">
+                                <h4 class="border-bottom mb-3">
+                                    {{t "admin.content.home.intro.title"}}
+                                </h4>
+                                <validator.input
+                                    @errors={{changeset.error.configSettings.home.intro.left.validation}}
+                                    @label={{true}}
+                                    @hasFocusedOut={{true}}
+                                    @fieldLabel={{t "admin.content.home.intro.left.title"}}
+                                >
+                                    <Admin::Editor @changeset={{changeset}} @path="configSettings.home.intro.left" />
+                                </validator.input>
+                            </div>
+                            <div class="col-12">
+                                <validator.input
+                                    @errors={{changeset.error.configSettings.home.intro.right.validation}}
+                                    @label={{true}}
+                                    @hasFocusedOut={{true}}
+                                    @fieldLabel={{t "admin.content.home.intro.right.title"}}
+                                >
+                                    <Admin::Editor @changeset={{changeset}} @path="configSettings.home.intro.right" />
+                                </validator.input>
                             </div>
                         </div>
                     </div>
-                </FormValidator>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="col-12">
+                                <h4 class="border-bottom mb-3">
+                                    {{t "admin.content.home.newsAndInfo.title"}}
+                                </h4>
+                                <validator.input
+                                    @errors={{changeset.error.configSettings.home.newsAndInfo.boxOne.heading.validation
+                                    }}
+                                >
+                                    <FlInput
+                                        @value={{changeset.configSettings.home.newsAndInfo.boxOne.heading}}
+                                        @placeholder={{t "admin.content.home.newsAndInfo.boxOne.heading"}}
+                                    >
+                                        <ChangesetInput
+                                            @changeset={{changeset}}
+                                            @path="configSettings.home.newsAndInfo.boxOne.heading"
+                                            class="form-control"
+                                            autocomplete="off"
+                                        />
+                                    </FlInput>
+                                </validator.input>
+                                <validator.input
+                                    @errors={{changeset.error.configSettings.home.newsAndInfo.boxOne.body.validation}}
+                                    @label={{true}}
+                                    @hasFocusedOut={{true}}
+                                    @fieldLabel={{t "admin.content.home.newsAndInfo.boxOne.body"}}
+                                >
+                                    <Admin::Editor
+                                        @changeset={{changeset}}
+                                        @path="configSettings.home.newsAndInfo.boxOne.body"
+                                    />
+                                </validator.input>
+                            </div>
+                            <div class="col-12">
+                                <validator.input
+                                    @errors={{changeset.error.configSettings.home.newsAndInfo.boxTwo.heading.validation
+                                    }}
+                                >
+                                    <FlInput
+                                        @value={{changeset.configSettings.home.newsAndInfo.boxTwo.heading}}
+                                        @placeholder={{t "admin.content.home.newsAndInfo.boxTwo.heading"}}
+                                    >
+                                        <ChangesetInput
+                                            @changeset={{changeset}}
+                                            @path="configSettings.home.newsAndInfo.boxTwo.heading"
+                                            class="form-control"
+                                            autocomplete="off"
+                                        />
+                                    </FlInput>
+                                </validator.input>
+                                <validator.input
+                                    @errors={{changeset.error.configSettings.home.newsAndInfo.boxTwo.body.validation}}
+                                    @label={{true}}
+                                    @hasFocusedOut={{true}}
+                                    @fieldLabel={{t "admin.content.home.newsAndInfo.boxTwo.body"}}
+                                >
+                                    <Admin::Editor
+                                        @changeset={{changeset}}
+                                        @path="configSettings.home.newsAndInfo.boxTwo.body"
+                                    />
+                                </validator.input>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="col-12">
+                                <h4 class="d-flex justify-content-between align-items-center border-bottom mb-3 pb-1">
+                                    {{t "admin.content.global.publishers.title"}}
+                                    <Button
+                                        @action={{this.openCreatePublisher}}
+                                        @icon="plus"
+                                        @iconSize="lg"
+                                        class="p-1"
+                                    />
+                                </h4>
+                                <Table
+                                    @containerSelector=".page-content-inner"
+                                    @columns={{this.columns}}
+                                    @rows={{changeset.configSettings.global.publishers}}
+                                    @fillMode="nth-column"
+                                    @fillColumnIndex={{0}}
+                                    @renderAllRows={{this.fastboot.isFastBoot}}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+    </FormValidator>
 </Page::Content>

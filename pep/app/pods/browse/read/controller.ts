@@ -18,7 +18,7 @@ export default class BrowseRead extends Controller {
 
     @tracked selectedView = SearchViews[0];
     @tracked paginator!: Pagination<Document>;
-    @tracked page = null;
+    @tracked page: string | null = null;
 
     // This becomes our model as the template wasn't updating when we changed the default model
     @tracked document?: Document;

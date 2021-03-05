@@ -445,6 +445,10 @@
                 "title": "Seminal papers",
                 "help": "Seminal papers can be viewed here."
             },
+            "topicalVideoPreview": {
+                "title": "Topical Video",
+                "help": "Check out the latest topical video in our system here."
+            },
             "whatsNew": {
                 "title": "What's new?",
                 "issue": "Issue #{issueNum}, Vol {volNum} &bull; {updatedDate}",
@@ -502,7 +506,8 @@
         }
     },
     "publisherInfo": {
-        "title": "Publisher Information"
+        "title": "Publisher Information",
+        "description": "The PEP Archive contains the full-text content of all of the volumes above. Due to contracts with the publishers, there is a three year moving wall (embargo of current articles) for most journals. You can browse the tables of contents up through the current issue, and searches include the complete text of the articles, but only the titles and abstracts (or summaries) will be displayed for articles from {year} and newer. For details on how to read the full text of {year} and more current articles see the publishers official website <a target='_blank' href={url}>here</a>."
     },
     "glossary": {
         "title": "Glossary",
@@ -776,13 +781,22 @@
     },
     "admin": {
         "title": "Admin",
+        "publisher": {
+            "information": "Publisher Information",
+            "update": "Update"
+        },
         "common": {
-            "title": "Common",
+            "title": "General",
             "global": {
                 "cards": {
                     "videoPreview": {
+                        "title": "Video Previews",
                         "code": "Video Preview Embed Code"
                     },
+                    "topicalVideoPreview": {
+                        "code": "Topical Video Preview Embed Code"
+                    },
+                    "limitsTitle": "Widget Limits",
                     "whatsNew": {
                         "limit": "Whats new result limit"
                     },
@@ -793,23 +807,57 @@
                         "limit": "Most viewed result limit"
                     }
                 }
+            },
+            "home": {
+                "expertPicks": {
+                    "title": "Expert Picks",
+                    "articleId": "Article ID",
+                    "imageId": "Image ID",
+                    "table": {
+                        "article": "Article ID",
+                        "image": "Image ID"
+                    }
+                }
             }
         },
         "content": {
+            "global": {
+                "publishers": {
+                    "title": "Publishers",
+                    "sourceCode": "Source Code",
+                    "previewHTML": "Preview HTML",
+                    "fullHTML": "Full HTML",
+                    "embargoYears": "Embargo Years",
+                    "url": "Url",
+                    "table": {
+                        "sourceCode": "Source Code",
+                        "embargoYears": "Embargo Years"
+                    }
+                }
+            },
             "home": {
                 "intro": {
+                    "title": "Intro Cards",
                     "left": {
                         "title": "Left intro card"
                     },
                     "right": {
                         "title": "Right intro Card"
                     }
+                },
+                "newsAndInfo": {
+                    "title": "News and Information Cards",
+                    "boxOne": {
+                        "title": "News",
+                        "heading": "News Heading",
+                        "body": "News Body"
+                    },
+                    "boxTwo": {
+                        "title": "Information",
+                        "heading": "Information Heading",
+                        "body": "Information body"
+                    }
                 }
-            }
-        },
-        "language": {
-            "enUs": {
-                "title": "English"
             }
         }
     },

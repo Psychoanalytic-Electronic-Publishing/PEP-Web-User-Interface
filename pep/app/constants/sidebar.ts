@@ -29,6 +29,7 @@ export enum WIDGET {
     RELATED_DOCUMENTS = 'related-documents',
     RELEVANT_SEARCHES = 'relevant-searches',
     SEMINAL_PAPERS = 'seminal-papers',
+    TOPICAL_VIDEO_PREVIEW = 'topical-video-preview',
     VIDEO_PREVIEW = 'video-preview',
     WHATS_NEW = 'whats-new',
     YOUR_INTERESTS = 'your-interests',
@@ -104,6 +105,10 @@ export const PUBLISHER_INFO: WidgetItem = {
     id: WIDGET.PUBLISHER_INFO,
     label: 'relatedInfo.widgets.publisherInfo.title'
 };
+export const TOPICAL_VIDEO_PREVIEW: WidgetItem = {
+    id: WIDGET.TOPICAL_VIDEO_PREVIEW,
+    label: 'relatedInfo.widgets.topicalVideoPreview.title'
+};
 
 export const WIDGETS = [
     EXPERT_PICKS,
@@ -116,6 +121,7 @@ export const WIDGETS = [
     PUBLISHER_INFO,
     READ_LATER,
     RELATED_DOCUMENTS,
+    TOPICAL_VIDEO_PREVIEW,
     WHATS_NEW
 ];
 export type WidgetData = Partial<Record<WIDGET, any>>;

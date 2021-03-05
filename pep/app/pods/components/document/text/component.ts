@@ -45,6 +45,7 @@ interface DocumentTextArgs {
     onGlossaryItemClick: (term: string, termResults: GlossaryTerm[]) => void;
     viewSearch: (searchTerms: string) => void;
     documentRendered: () => void;
+    viewablePageUpdate?: (page: string) => void;
 }
 
 /**
@@ -80,6 +81,8 @@ export default class DocumentText extends Component<DocumentTextArgs> {
     @service ajax!: AjaxService;
 
     @tracked xml?: XMLDocument;
+    @tracked visiblePages: string[] = [];
+    @tracked pageTracking = true;
 
     containerElement?: HTMLElement;
     scrollableElement?: Element | null;
@@ -390,12 +393,14 @@ export default class DocumentText extends Component<DocumentTextArgs> {
      * @param {number} pageOrTarget
      * @memberof DocumentText
      */
-    scrollToPageOrTarget(pageOrTarget: string) {
+    async scrollToPageOrTarget(pageOrTarget: string) {
         const element =
             this.containerElement?.querySelector(`[data-page-start='${pageOrTarget}']`) ??
             this.containerElement?.querySelector(`#${pageOrTarget}`);
         if (element) {
-            this.animateScrollToElement(element);
+            this.pageTracking = false;
+            await this.animateScrollToElement(element);
+            this.pageTracking = true;
         }
     }
 
@@ -452,18 +457,57 @@ export default class DocumentText extends Component<DocumentTextArgs> {
     }
 
     /**
-     * set up the tooltips and if we get passed in a page number - scroll to it
+     * Set up the tooltips and if we get passed in a page number - scroll to it
+     * Also add intersection observers to all pagebreaks, in order to know how far the user has scroll down the document
      *
      * @param {HTMLElement} element
      * @memberof DocumentText
      */
+
     @action
-    setupListeners(element: HTMLElement) {
+    async setupListeners(element: HTMLElement): Promise<void> {
         this.containerElement = element;
         this.scrollableElement = this.containerElement?.closest('.page-content-inner');
         scheduleOnce('afterRender', this, this.attachTooltips);
         if (this.args.page) {
-            this.scrollToPageOrTarget(this.args.page);
+            console.log(this.args.page);
+            await this.scrollToPageOrTarget(this.args.page);
+        }
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (this.pageTracking) {
+                    next(() => this.itemVisible(entries));
+                }
+            },
+            { threshold: 1 }
+        );
+        const pageBreaks = this.containerElement.querySelectorAll('div.pagebreak');
+        Object.values(pageBreaks).forEach((item) => {
+            // eslint-disable-next-line ember/no-observers
+            observer.observe(item);
+        });
+    }
+
+    /**
+     * When the item is visible, call the function to update the viewable page.
+     *
+     * @param {IntersectionObserverEntry[]} entries
+     * @memberof DocumentText
+     */
+    @action
+    itemVisible(entries: IntersectionObserverEntry[]) {
+        const newVisiblePages: string[] = [];
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                const pageNumber = entry.target.getAttribute('data-page-end');
+                if (pageNumber) {
+                    newVisiblePages.push(pageNumber);
+                }
+            }
+        });
+        if (newVisiblePages.length) {
+            this.visiblePages = newVisiblePages;
+            this.args.viewablePageUpdate?.(this.visiblePages[0]);
         }
     }
 
@@ -606,5 +650,14 @@ export default class DocumentText extends Component<DocumentTextArgs> {
             appendTrailingSlash: false
         });
         return results.documents?.responseSet?.[0].document;
+    }
+
+    /**
+     * Turn off page tracking so even if the user happens to scroll before the component is destroyed, we dont update the page
+     *
+     * @memberof DocumentText
+     */
+    willDestroy(): void {
+        this.pageTracking = false;
     }
 }

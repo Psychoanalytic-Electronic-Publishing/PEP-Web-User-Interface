@@ -38,6 +38,12 @@ export default class SearchRead extends PageNav(Route) {
     searchResultsMeta?: any;
     searchParams?: SearchReadParams | QueryParamsObj;
 
+    queryParams = {
+        page: {
+            replace: true
+        }
+    };
+
     /**
      * Fetch the requested document
      * @param {ReadDocumentParams} params
@@ -219,5 +225,6 @@ export default class SearchRead extends PageNav(Route) {
         super.resetController(controller, isExiting, transition);
         this.searchResults = undefined;
         this.searchParams = undefined;
+        controller.page = null;
     }
 }

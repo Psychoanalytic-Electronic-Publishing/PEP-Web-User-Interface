@@ -1,7 +1,12 @@
 import { getOwner } from '@ember/application';
 import Controller from '@ember/controller';
 import Route from '@ember/routing/route';
+import RouterService from '@ember/routing/router-service';
 import Component from '@glimmer/component';
+
+import ModelRegistry from 'ember-data/types/registries/model';
+
+import CanService from 'pep/services/can';
 
 /**
  * Functionality for loading user and configs after authentication
@@ -32,4 +37,35 @@ export async function onAuthenticated(owner: Controller | Route | Component): Pr
     await themeService.setup();
     await langService.setup();
     return configurationService.setup();
+}
+
+/**
+ * Check and see if the route can be accessed via permission lookup with the `ember-can` library
+ *
+ * @export
+ * @param {Route} owner
+ * @param {string[]} abilities
+ * @param {ModelRegistry} [model]
+ * @return {*}  {boolean}
+ */
+export function canAccessRoute(owner: Route, abilities: string[], model?: ModelRegistry): boolean {
+    const currentOwner = getOwner(owner);
+    const canService = currentOwner.lookup(`service:can`) as CanService;
+    let access = true;
+    for (const ability of abilities) {
+        //if we can't perform this ability, forward to the 403 page
+        if (canService.cannot(ability, model, {})) {
+            access = false;
+        }
+    }
+    return access;
+}
+
+export function handleRouteAuthorization(owner: Route, abilities: string[], model?: ModelRegistry): void {
+    const currentOwner = getOwner(owner);
+    const routerService = currentOwner.lookup(`service:router`) as RouterService;
+    const access = canAccessRoute(owner, abilities, model);
+    if (!access) {
+        routerService.transitionTo('four-oh-three');
+    }
 }
