@@ -1,0 +1,16 @@
+<CollapsiblePanel
+    @scrollableNamespace="sidebar-right"
+    @isOpen={{this.isOpen}}
+    @toggle={{fn @toggleIsOpen this.widget}}
+    class="mb-2" as |Panel|
+>
+    <Panel.header
+        @title={{t "relatedInfo.widgets.topicalVideoPreview.title"}}
+        @tooltip={{t "relatedInfo.widgets.topicalVideoPreview.help"}}
+    />
+    <Panel.body class="p-1">
+        <div class="embed-responsive embed-responsive-{{this.aspectRatio}}">
+            {{html-safe this.configuration.base.global.cards.topicalVideoPreview.code}}
+        </div>
+    </Panel.body>
+</CollapsiblePanel>

@@ -19,7 +19,7 @@
                         <div class="form-row">
                             <div class="col-12">
                                 <h4 class="border-bottom mb-3">
-                                    {{t "admin.common.global.cards.videoPreview.code"}}
+                                    {{t "admin.common.global.cards.videoPreview.title"}}
                                 </h4>
                                 <validator.input
                                     @errors={{changeset.error.configSettings.global.cards.videoPreview.code.validation}}
@@ -42,6 +42,34 @@
                                                 (event-value
                                                     (changeset-set
                                                         changeset "configSettings.global.cards.videoPreview.code"
+                                                    )
+                                                )
+                                            }}
+                                        ></textarea>
+                                    </FlInput>
+                                </validator.input>
+                                <validator.input
+                                    @errors={{changeset.error.configSettings.global.cards.topicalVideoPreview.code.validation
+                                    }}
+                                    @label={{true}}
+                                >
+                                    <FlInput
+                                        @value={{changeset.configSettings.global.cards.topicalVideoPreview.code}}
+                                        @placeholder={{t "admin.common.global.cards.topicalVideoPreview.code"}}
+                                    >
+                                        <textarea
+                                            value={{changeset-get
+                                                changeset
+                                                "configSettings.global.cards.topicalVideoPreview.code"
+                                            }}
+                                            class="form-control"
+                                            autocomplete="off"
+                                            rows="5"
+                                            {{on
+                                                "input"
+                                                (event-value
+                                                    (changeset-set
+                                                        changeset "configSettings.global.cards.topicalVideoPreview.code"
                                                     )
                                                 )
                                             }}
