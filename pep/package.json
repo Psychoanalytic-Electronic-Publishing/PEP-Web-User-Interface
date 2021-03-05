@@ -42,6 +42,7 @@
         "@gavant/ember-floating-labels": "^1.0.2",
         "@gavant/ember-modals": "^1.0.3",
         "@gavant/ember-pagination": "3.0.0-beta.2",
+        "@gavant/ember-shopify-draggable": "^0.3.3",
         "@gavant/ember-table": "^0.6.6",
         "@gavant/ember-template-lint-forms": "^0.0.2",
         "@gavant/ember-tinymce": "^0.0.6",

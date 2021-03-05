@@ -790,6 +790,8 @@
             "title": "General",
             "global": {
                 "cards": {
+                    "left": "Left Sidebar",
+                    "right": "Right Sidebar",
                     "videoPreview": {
                         "title": "Video Previews",
                         "code": "Video Preview Embed Code"

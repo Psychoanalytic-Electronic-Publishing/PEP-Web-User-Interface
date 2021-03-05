@@ -147,6 +147,66 @@
                     <div class="card-body">
                         <div class="form-row">
                             <div class="col-12">
+                                <SortableGroup class="row" as |Group|>
+                                    <div class="col-12">
+                                        <div class="row">
+                                            <h4 class="col-6 d-flex justify-content-center align-items-end">
+                                                {{t "admin.common.global.cards.left"}}
+                                            </h4>
+                                            <h4 class="col-6 d-flex justify-content-center align-items-end">
+                                                {{t "admin.common.global.cards.right"}}
+                                            </h4>
+                                        </div>
+                                    </div>
+                                    <div class="sortable container-list col-6">
+                                        <Group.container
+                                            @items={{changeset.configSettings.global.cards.left}}
+                                            @itemReordered={{changeset-set
+                                                changeset
+                                                "configSettings.global.cards.left"
+                                            }}
+                                            @itemAdded={{changeset-set changeset "configSettings.global.cards.left"}}
+                                            @itemRemoved={{changeset-set
+                                                changeset
+                                                "configSettings.global.cards.left"
+                                            }} as |container|
+                                        >
+                                            {{#each container.items as |item|}}
+                                                <container.item @item={{item}}>
+                                                    {{item.widget}}
+                                                </container.item>
+                                            {{/each}}
+                                        </Group.container>
+                                    </div>
+                                    <div class="sortable container-list col-6">
+                                        <Group.container
+                                            @items={{changeset.configSettings.global.cards.right}}
+                                            @itemReordered={{changeset-set
+                                                changeset
+                                                "configSettings.global.cards.right"
+                                            }}
+                                            @itemAdded={{changeset-set changeset "configSettings.global.cards.right"}}
+                                            @itemRemoved={{changeset-set
+                                                changeset
+                                                "configSettings.global.cards.right"
+                                            }} as |container|
+                                        >
+                                            {{#each container.items as |item|}}
+                                                <container.item @item={{item}}>
+                                                    {{item.widget}}
+                                                </container.item>
+                                            {{/each}}
+                                        </Group.container>
+                                    </div>
+                                </SortableGroup>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="col-12">
                                 <h4 class="d-flex justify-content-between align-items-center border-bottom mb-3 pb-1">
                                     {{t "admin.common.home.expertPicks.title"}}
                                     <Button
