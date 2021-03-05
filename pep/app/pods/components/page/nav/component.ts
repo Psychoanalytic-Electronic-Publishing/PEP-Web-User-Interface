@@ -1,10 +1,3 @@
-import { action } from '@ember/object';
-import RouterService from '@ember/routing/router-service';
-import { inject as service } from '@ember/service';
-import Component from '@glimmer/component';
-
-import ModalService from '@gavant/ember-modals/services/modal';
-
 import { Languages } from 'pep/constants/lang';
 import { SUPPORT_URL } from 'pep/constants/urls';
 import AuthService from 'pep/services/auth';
@@ -12,6 +5,13 @@ import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService, { VIEW_DOCUMENT_FROM } from 'pep/services/current-user';
 import DrawerService from 'pep/services/drawer';
 import PepSessionService from 'pep/services/pep-session';
+
+import { action } from '@ember/object';
+import RouterService from '@ember/routing/router-service';
+import { inject as service } from '@ember/service';
+import ModalService from '@gavant/ember-modals/services/modal';
+import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
 
 interface PageNavArgs {
     openAboutModal: () => Promise<void>;
@@ -29,6 +29,8 @@ export default class PageNav extends Component<PageNavArgs> {
     supportUrl = SUPPORT_URL;
 
     languages = Languages;
+
+    @tracked canLogOut!: boolean;
 
     get readDisabled() {
         return !this.currentUser.lastViewedDocumentId;
@@ -131,5 +133,21 @@ export default class PageNav extends Component<PageNavArgs> {
     @action
     openFeedbackModal() {
         return this.modal.open('help/feedback', {});
+    }
+
+    /**
+     * Set any necessary tracked properties when
+     * a dropdown is opened.
+     *
+     * NOTE: This is necessary because accessing `this.sessions.canLogOut`
+     * directly has been problematic in this component. It works fine in
+     * other locations but doesn't cause re-rendering here unexplainably.
+     * These problems occurred specifically when logging in after a preference
+     * was updated.
+     *
+     */
+    @action
+    setProperties() {
+        this.canLogOut = this.session.canLogOut;
     }
 }
