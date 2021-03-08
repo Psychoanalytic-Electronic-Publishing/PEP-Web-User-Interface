@@ -13,9 +13,9 @@ export default class Configuration extends ApplicationSerializer {
         return 'configList';
     }
 
-    serialize(snapshot: DS.Snapshot<string | number>, options: object): object {
+    serialize(snapshot: DS.Snapshot<string | number>, options: object & { includeId: boolean }): object {
+        options.includeId = true;
         const serialized = super.serialize(snapshot, options) as ConfigurationModel;
-        serialized.configName = snapshot.id;
         return [serialized];
     }
 
@@ -61,7 +61,7 @@ export default class Configuration extends ApplicationSerializer {
     ) {
         const modelKey = camelize(primaryModelClass.modelName);
         if (payload?.configList) {
-            payload[modelKey] = payload.configList;
+            payload[modelKey] = payload.configList[0];
 
             delete payload.configList;
         }

@@ -8,9 +8,10 @@ import IntlService from 'ember-intl/services/intl';
 
 import ModalService from '@gavant/ember-modals/services/modal';
 import { ColumnValue } from '@gavant/ember-table';
-import createChangeset from '@gavant/ember-validations/utilities/create-changeset';
+import createChangeset, { GenericChangeset } from '@gavant/ember-validations/utilities/create-changeset';
 
-import { ExpertPick } from 'pep/constants/configuration';
+import { ExpertPick, WidgetConfiguration } from 'pep/constants/configuration';
+import Configuration from 'pep/pods/configuration/model';
 import { CONFIGURATION_EXPERT_PICK_VALIDATIONS } from 'pep/validations/configuration/expert-pick';
 
 export default class AdminGeneral extends Controller {
@@ -18,6 +19,7 @@ export default class AdminGeneral extends Controller {
     @service modal!: ModalService;
 
     @tracked changeset?: BufferedChangeset;
+    @tracked saveDisabled: boolean = false;
 
     /**
      * Open the expert pick modal
@@ -103,7 +105,41 @@ export default class AdminGeneral extends Controller {
      */
     @action
     save(): void {
-        this.changeset?.save();
+        if (!this.saveDisabled) {
+            this.changeset?.save();
+        }
+    }
+
+    /**
+     * Update the open state of the widgets
+     *
+     * @param {GenericChangeset<Configuration>} changeset
+     * @param {WidgetConfiguration} widget
+     * @param {('right' | 'left')} column
+     * @param {boolean} status
+     * @memberof AdminGeneral
+     */
+    @action
+    updateOpenState(
+        changeset: GenericChangeset<Configuration>,
+        widget: WidgetConfiguration,
+        column: 'right' | 'left',
+        status: boolean
+    ): void {
+        this.saveDisabled = true;
+        const columnWidgets = changeset?.get(`configSettings.global.cards.${column}`) as WidgetConfiguration[];
+        const newWidgets = columnWidgets.map((item) => {
+            if (item.widget === widget.widget) {
+                return {
+                    widget: item.widget,
+                    open: status
+                };
+            } else {
+                return item;
+            }
+        });
+        changeset?.set(`configSettings.global.cards.${column}`, newWidgets);
+        this.saveDisabled = false;
     }
 }
 // DO NOT DELETE: this is how TypeScript knows how to look up your controllers.
