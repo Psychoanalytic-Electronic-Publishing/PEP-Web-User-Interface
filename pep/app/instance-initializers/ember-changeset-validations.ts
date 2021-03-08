@@ -1,7 +1,7 @@
-import Messages from 'ember-changeset-validations/utils/messages';
-
 import ApplicationInstance from '@ember/application/instance';
 import { isNone } from '@ember/utils';
+
+import Messages from 'ember-changeset-validations/utils/messages';
 
 /**
  * Override Ember-Validators exported `formatMessage()` method to allow
@@ -13,7 +13,7 @@ import { isNone } from '@ember/utils';
 export function initialize(applicationInstance: ApplicationInstance) {
     const intl = applicationInstance.lookup('service:intl');
     Messages.formatMessage = (message: string, context = {}) => {
-        let errorKey = message;
+        const errorKey = message;
         if (isNone(errorKey) || typeof errorKey !== 'string') {
             return intl.t('validations.invalid');
         }
