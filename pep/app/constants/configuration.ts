@@ -104,6 +104,20 @@ export interface ContentConfiguration {
             }[];
         };
         publishers: Publisher[];
+        tour: {
+            stepOne: {
+                title: string;
+                text: string;
+            };
+            stepTwo: {
+                title: string;
+                text: string;
+            };
+            stepThree: {
+                title: string;
+                text: string;
+            };
+        };
     };
     home: {
         intro: {
@@ -292,7 +306,21 @@ export const DEFAULT_CONTENT_CONFIGURATION: ContentConfiguration = {
                     '<p>Joseph Reppen’s journal, Psychoanalytic Books, is a compendium of reviews of the important books of its era, the 1990’s, written by many of the best scholars in our field.</p>',
                 url: 'https://www.google.com'
             }
-        ]
+        ],
+        tour: {
+            stepOne: {
+                title: 'Home',
+                text: 'This button takes you home'
+            },
+            stepTwo: {
+                title: 'Search',
+                text: 'This button shows/hides the search'
+            },
+            stepThree: {
+                title: 'Widgets',
+                text: 'This button shows/hides the widgets'
+            }
+        }
     },
     home: {
         intro: {
