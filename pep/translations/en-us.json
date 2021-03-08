@@ -788,6 +788,12 @@
         },
         "common": {
             "title": "General",
+            "search": {
+                "title": "Search",
+                "hitsInContext": {
+                    "limit": "Hits in context limit"
+                }
+            },
             "global": {
                 "cards": {
                     "left": "Left Sidebar",

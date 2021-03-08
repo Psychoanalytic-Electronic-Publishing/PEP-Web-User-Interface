@@ -148,6 +148,37 @@
                     <div class="card-body">
                         <div class="form-row">
                             <div class="col-12">
+                                <h4 class="border-bottom mb-3">
+                                    {{t "admin.common.search.title"}}
+                                </h4>
+                                <div class="form-row">
+                                    <div class="col-3">
+                                        <validator.input
+                                            @errors={{changeset.error.configSettings.search.hitsInContext.limit.validation
+                                            }}
+                                        >
+                                            <FlInput
+                                                @value={{changeset.configSettings.search.hitsInContext.limit}}
+                                                @placeholder={{t "admin.common.search.hitsInContext.limit"}}
+                                            >
+                                                <ChangesetInput
+                                                    @changeset={{changeset}}
+                                                    @path="configSettings.search.hitsInContext.limit"
+                                                    class="form-control"
+                                                    autocomplete="off"
+                                                />
+                                            </FlInput>
+                                        </validator.input>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="col-12">
                                 <SortableGroup class="row" as |Group|>
                                     <div class="col-12">
                                         <div class="row">

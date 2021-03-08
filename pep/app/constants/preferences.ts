@@ -102,7 +102,6 @@ export const DEFAULT_USER_PREFERENCES: UserPreferences = {
     lang: LanguageCode.EnUS,
     searchPreviewEnabled: true,
     searchHICEnabled: true,
-    searchHICLimit: 1,
     readLater: [],
     theme: ThemeId.DEFAULT,
     searchViewType: SearchViews[0],
