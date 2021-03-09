@@ -101,8 +101,7 @@
             "label": {
                 "short": "Hits",
                 "full": "Hits in context"
-            },
-            "help": "Hits in context explanation goes here"
+            }
         },
         "sort": {
             "label": "Sort:",
@@ -824,6 +823,42 @@
             }
         },
         "content": {
+            "help": {
+                "title": "Help icon text",
+                "search": {
+                    "smartSearch": "Smart Search",
+                    "matchSynonyms": "Match Synonyms",
+                    "limitTo": "Limit To",
+                    "terms": {
+                        "types": {
+                            "everywhere": "Search term types - Everywhere",
+                            "author": "Search term types - Author",
+                            "title": "Search term types - Title",
+                            "dream": "Search term types - Dream",
+                            "quote": "Search term types - Quote",
+                            "reference": "Search term types - Reference",
+                            "dialog": "Search term types - Dialog",
+                            "article": "Search term types - Article",
+                            "startYear": "Search term types - Start Year",
+                            "endYear": "Search term types - End Year"
+                        }
+                    }
+                },
+                "cards": {
+                    "viewPreview": "Video preview widget",
+                    "topicalVideoPreview": "Topical video preview widget",
+                    "whatsNew": "Whats new widget",
+                    "mostCited": "Most cited widget",
+                    "mostViewed": "Most viewed widget",
+                    "relatedDocuments": "Related documents widget",
+                    "expertPicks": "Expert picks widget",
+                    "glossaryTerms": "Glossary terms widget",
+                    "moreLikeThese": "More like these widget",
+                    "readLater": "Read later widget",
+                    "favorites": "Favorites widget",
+                    "publisherInfo": "Publisher information widget"
+                }
+            },
             "global": {
                 "tour": {
                     "title": "Tour Steps",

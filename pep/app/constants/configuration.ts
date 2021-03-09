@@ -118,6 +118,11 @@ export interface ContentConfiguration {
                 text: string;
             };
         };
+        cards: {
+            [K in WIDGET]?: {
+                help: string;
+            };
+        };
     };
     home: {
         intro: {
@@ -147,6 +152,9 @@ export interface ContentConfiguration {
         };
         limitTo: {
             help?: string;
+        };
+        hitsInContext: {
+            help: string;
         };
         terms: {
             types: {
@@ -320,6 +328,45 @@ export const DEFAULT_CONTENT_CONFIGURATION: ContentConfiguration = {
                 title: 'Widgets',
                 text: 'This button shows/hides the widgets'
             }
+        },
+        cards: {
+            [WIDGET.VIDEO_PREVIEW]: {
+                help: 'Check out the latest video in our system here.'
+            },
+            [WIDGET.TOPICAL_VIDEO_PREVIEW]: {
+                help: 'Check out the latest topical video in our system here.'
+            },
+            [WIDGET.WHATS_NEW]: {
+                help: 'The newest additions to our system can be viewed here.'
+            },
+            [WIDGET.MOST_CITED]: {
+                help: 'The most cited documents throughout our system can be viewed here.'
+            },
+            [WIDGET.MOST_VIEWED]: {
+                help: 'The most viewed documents throughout our system can be viewed here.'
+            },
+            [WIDGET.RELATED_DOCUMENTS]: {
+                help:
+                    'For documents which have related articles, the {faIcon} icon will show up next to listing, indicating that the article is part of a series or has follow up commentary in the journal.'
+            },
+            [WIDGET.EXPERT_PICKS]: {
+                help: 'Expert picks ...picked expertly for you.'
+            },
+            [WIDGET.GLOSSARY_TERMS]: {
+                help: 'When reading a document, a word cloud of glossary terms will appear here.'
+            },
+            [WIDGET.MORE_LIKE_THESE]: {
+                help: 'Using AI, we recommend documents that we think are similar to the current document your reading.'
+            },
+            [WIDGET.READ_LATER]: {
+                help: 'Save items you want to read later and view them here.'
+            },
+            [WIDGET.FAVORITES]: {
+                help: 'You can save your favorite documents for easy access here.'
+            },
+            [WIDGET.PUBLISHER_INFO]: {
+                help: 'Publisher information for the current document your viewing will appear here.'
+            }
         }
     },
     home: {
@@ -356,6 +403,9 @@ export const DEFAULT_CONTENT_CONFIGURATION: ContentConfiguration = {
         },
         limitTo: {
             help: 'Restrict the search results to documents with a specific number of citations or views'
+        },
+        hitsInContext: {
+            help: 'Hits in context help text'
         },
         terms: {
             types: {

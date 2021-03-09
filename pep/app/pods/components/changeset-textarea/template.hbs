@@ -1,0 +1,8 @@
+<textarea
+    value={{changeset-get @changeset @path}}
+    class="form-control"
+    autocomplete="off"
+    rows="3"
+    ...attributes
+    {{on "input" (event-value (changeset-set @changeset @path))}}
+></textarea>

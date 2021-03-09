@@ -207,6 +207,415 @@
                     <div class="card-body">
                         <div class="form-row">
                             <div class="col-12">
+                                <h4 class="border-bottom mb-3">
+                                    {{t "admin.content.help.title"}}
+                                </h4>
+                                <validator.input
+                                    @errors={{changeset.error.configSettings.search.terms.types.everywhere.help.validation
+                                    }}
+                                >
+                                    <FlInput
+                                        @value={{changeset.configSettings.search.terms.types.everywhere.help}}
+                                        @placeholder={{t "admin.content.help.search.terms.types.everywhere"}}
+                                    >
+                                        <ChangesetTextarea
+                                            @changeset={{changeset}}
+                                            @path="configSettings.search.terms.types.everywhere.help"
+                                        />
+                                    </FlInput>
+                                </validator.input>
+                            </div>
+                            <div class="col-12">
+                                <validator.input
+                                    @errors={{changeset.error.configSettings.search.terms.types.author.help.validation}}
+                                >
+                                    <FlInput
+                                        @value={{changeset.configSettings.search.terms.types.author.help}}
+                                        @placeholder={{t "admin.content.help.search.terms.types.author"}}
+                                    >
+                                        <ChangesetTextarea
+                                            @changeset={{changeset}}
+                                            @path="configSettings.search.terms.types.author.help"
+                                        />
+                                    </FlInput>
+                                </validator.input>
+                            </div>
+                            <div class="col-12">
+                                <validator.input
+                                    @errors={{changeset.error.configSettings.search.terms.types.title.help.validation}}
+                                >
+                                    <FlInput
+                                        @value={{changeset.configSettings.search.terms.types.title.help}}
+                                        @placeholder={{t "admin.content.help.search.terms.types.title"}}
+                                    >
+                                        <ChangesetTextarea
+                                            @changeset={{changeset}}
+                                            @path="configSettings.search.terms.types.title.help"
+                                        />
+                                    </FlInput>
+                                </validator.input>
+                            </div>
+                            <div class="col-12">
+                                <validator.input
+                                    @errors={{changeset.error.configSettings.search.terms.types.dream.help.validation}}
+                                >
+                                    <FlInput
+                                        @value={{changeset.configSettings.search.terms.types.dream.help}}
+                                        @placeholder={{t "admin.content.help.search.terms.types.dream"}}
+                                    >
+                                        <ChangesetTextarea
+                                            @changeset={{changeset}}
+                                            @path="configSettings.search.terms.types.dream.help"
+                                        />
+                                    </FlInput>
+                                </validator.input>
+                            </div>
+                            <div class="col-12">
+                                <validator.input
+                                    @errors={{changeset.error.configSettings.search.terms.types.quote.help.validation}}
+                                >
+                                    <FlInput
+                                        @value={{changeset.configSettings.search.terms.types.quote.help}}
+                                        @placeholder={{t "admin.content.help.search.terms.types.quote"}}
+                                    >
+                                        <ChangesetTextarea
+                                            @changeset={{changeset}}
+                                            @path="configSettings.search.terms.types.quote.help"
+                                        />
+                                    </FlInput>
+                                </validator.input>
+                            </div>
+                            <div class="col-12">
+                                <validator.input
+                                    @errors={{changeset.error.configSettings.search.terms.types.reference.help.validation
+                                    }}
+                                >
+                                    <FlInput
+                                        @value={{changeset.configSettings.search.terms.types.reference.help}}
+                                        @placeholder={{t "admin.content.help.search.terms.types.reference"}}
+                                    >
+                                        <ChangesetTextarea
+                                            @changeset={{changeset}}
+                                            @path="configSettings.search.terms.types.reference.help"
+                                        />
+                                    </FlInput>
+                                </validator.input>
+                            </div>
+                            <div class="col-12">
+                                <validator.input
+                                    @errors={{changeset.error.configSettings.search.terms.types.dialog.help.validation}}
+                                >
+                                    <FlInput
+                                        @value={{changeset.configSettings.search.terms.types.dialog.help}}
+                                        @placeholder={{t "admin.content.help.search.terms.types.dialog"}}
+                                    >
+                                        <ChangesetTextarea
+                                            @changeset={{changeset}}
+                                            @path="configSettings.search.terms.types.dialog.help"
+                                        />
+                                    </FlInput>
+                                </validator.input>
+                            </div>
+                            <div class="col-12">
+                                <validator.input
+                                    @errors={{changeset.error.configSettings.search.terms.types.article.help.validation
+                                    }}
+                                >
+                                    <FlInput
+                                        @value={{changeset.configSettings.search.terms.types.article.help}}
+                                        @placeholder={{t "admin.content.help.search.terms.types.article"}}
+                                    >
+                                        <ChangesetTextarea
+                                            @changeset={{changeset}}
+                                            @path="configSettings.search.terms.types.article.help"
+                                        />
+                                    </FlInput>
+                                </validator.input>
+                            </div>
+                            <div class="col-12">
+                                <validator.input
+                                    @errors={{changeset.error.configSettings.search.terms.types.startYear.help.validation
+                                    }}
+                                >
+                                    <FlInput
+                                        @value={{changeset.configSettings.search.terms.types.startYear.help}}
+                                        @placeholder={{t "admin.content.help.search.terms.types.startYear"}}
+                                    >
+                                        <ChangesetTextarea
+                                            @changeset={{changeset}}
+                                            @path="configSettings.search.terms.types.startYear.help"
+                                        />
+                                    </FlInput>
+                                </validator.input>
+                            </div>
+                            <div class="col-12">
+                                <validator.input
+                                    @errors={{changeset.error.configSettings.search.terms.types.endYear.help.validation
+                                    }}
+                                >
+                                    <FlInput
+                                        @value={{changeset.configSettings.search.terms.types.endYear.help}}
+                                        @placeholder={{t "admin.content.help.search.terms.types.endYear"}}
+                                    >
+                                        <ChangesetTextarea
+                                            @changeset={{changeset}}
+                                            @path="configSettings.search.terms.types.endYear.help"
+                                        />
+                                    </FlInput>
+                                </validator.input>
+                            </div>
+                            <div class="col-12">
+                                <validator.input
+                                    @errors={{changeset.error.configSettings.search.smartSearch.help.validation}}
+                                >
+                                    <FlInput
+                                        @value={{changeset.configSettings.search.smartSearch.help}}
+                                        @placeholder={{t "admin.content.help.search.smartSearch"}}
+                                    >
+                                        <ChangesetTextarea
+                                            @changeset={{changeset}}
+                                            @path="configSettings.search.smartSearch.help"
+                                        />
+                                    </FlInput>
+                                </validator.input>
+                            </div>
+                            <div class="col-12">
+                                <validator.input
+                                    @errors={{changeset.error.configSettings.search.matchSynonyms.help.validation}}
+                                >
+                                    <FlInput
+                                        @value={{changeset.configSettings.search.matchSynonyms.help}}
+                                        @placeholder={{t "admin.content.help.search.matchSynonyms"}}
+                                    >
+                                        <ChangesetTextarea
+                                            @changeset={{changeset}}
+                                            @path="configSettings.search.matchSynonyms.help"
+                                        />
+                                    </FlInput>
+                                </validator.input>
+                            </div>
+                            <div class="col-12">
+                                <validator.input
+                                    @errors={{changeset.error.configSettings.search.limitTo.help.validation}}
+                                >
+                                    <FlInput
+                                        @value={{changeset.configSettings.search.limitTo.help}}
+                                        @placeholder={{t "admin.content.help.search.limitTo"}}
+                                    >
+                                        <ChangesetTextarea
+                                            @changeset={{changeset}}
+                                            @path="configSettings.search.limitTo.help"
+                                        />
+                                    </FlInput>
+                                </validator.input>
+                            </div>
+                            <div class="col-12">
+                                <validator.input
+                                    @errors={{changeset.error.configSettings.search.hitsInContext.help.validation}}
+                                >
+                                    <FlInput
+                                        @value={{changeset.configSettings.search.hitsInContext.help}}
+                                        @placeholder={{t "admin.content.help.search.hitsInContext"}}
+                                    >
+                                        <ChangesetTextarea
+                                            @changeset={{changeset}}
+                                            @path="configSettings.search.hitsInContext.help"
+                                        />
+                                    </FlInput>
+                                </validator.input>
+                            </div>
+                            <div class="col-12">
+                                <validator.input
+                                    @errors={{changeset.error.configSettings.global.cards.videoPreview.help.validation}}
+                                >
+                                    <FlInput
+                                        @value={{changeset.configSettings.global.cards.videoPreview.help}}
+                                        @placeholder={{t "admin.content.help.cards.viewPreview"}}
+                                    >
+                                        <ChangesetTextarea
+                                            @changeset={{changeset}}
+                                            @path="configSettings.global.cards.videoPreview.help"
+                                        />
+                                    </FlInput>
+                                </validator.input>
+                            </div>
+                            <div class="col-12">
+                                <validator.input
+                                    @errors={{changeset.error.configSettings.global.cards.topicalVideoPreview.help.validation
+                                    }}
+                                >
+                                    <FlInput
+                                        @value={{changeset.configSettings.global.cards.topicalVideoPreview.help}}
+                                        @placeholder={{t "admin.content.help.cards.topicalVideoPreview"}}
+                                    >
+                                        <ChangesetTextarea
+                                            @changeset={{changeset}}
+                                            @path="configSettings.global.cards.topicalVideoPreview.help"
+                                        />
+                                    </FlInput>
+                                </validator.input>
+                            </div>
+                            <div class="col-12">
+                                <validator.input
+                                    @errors={{changeset.error.configSettings.global.cards.whatsNew.help.validation}}
+                                >
+                                    <FlInput
+                                        @value={{changeset.configSettings.global.cards.whatsNew.help}}
+                                        @placeholder={{t "admin.content.help.cards.whatsNew"}}
+                                    >
+                                        <ChangesetTextarea
+                                            @changeset={{changeset}}
+                                            @path="configSettings.global.cards.whatsNew.help"
+                                        />
+                                    </FlInput>
+                                </validator.input>
+                            </div>
+                            <div class="col-12">
+                                <validator.input
+                                    @errors={{changeset.error.configSettings.global.cards.mostCited.help.validation}}
+                                >
+                                    <FlInput
+                                        @value={{changeset.configSettings.global.cards.mostCited.help}}
+                                        @placeholder={{t "admin.content.help.cards.mostCited"}}
+                                    >
+                                        <ChangesetTextarea
+                                            @changeset={{changeset}}
+                                            @path="configSettings.global.cards.mostCited.help"
+                                        />
+                                    </FlInput>
+                                </validator.input>
+                            </div>
+                            <div class="col-12">
+                                <validator.input
+                                    @errors={{changeset.error.configSettings.global.cards.mostViewed.help.validation}}
+                                >
+                                    <FlInput
+                                        @value={{changeset.configSettings.global.cards.mostViewed.help}}
+                                        @placeholder={{t "admin.content.help.cards.mostViewed"}}
+                                    >
+                                        <ChangesetTextarea
+                                            @changeset={{changeset}}
+                                            @path="configSettings.global.cards.mostViewed.help"
+                                        />
+                                    </FlInput>
+                                </validator.input>
+                            </div>
+                            <div class="col-12">
+                                <validator.input
+                                    @errors={{changeset.error.configSettings.global.cards.relatedDocuments.help.validation
+                                    }}
+                                >
+                                    <FlInput
+                                        @value={{changeset.configSettings.global.cards.relatedDocuments.help}}
+                                        @placeholder={{t "admin.content.help.cards.relatedDocuments"}}
+                                    >
+                                        <ChangesetTextarea
+                                            @changeset={{changeset}}
+                                            @path="configSettings.global.cards.relatedDocuments.help"
+                                        />
+                                    </FlInput>
+                                </validator.input>
+                            </div>
+                            <div class="col-12">
+                                <validator.input
+                                    @errors={{changeset.error.configSettings.global.cards.expertPicks.help.validation}}
+                                >
+                                    <FlInput
+                                        @value={{changeset.configSettings.global.cards.expertPicks.help}}
+                                        @placeholder={{t "admin.content.help.cards.expertPicks"}}
+                                    >
+                                        <ChangesetTextarea
+                                            @changeset={{changeset}}
+                                            @path="configSettings.global.cards.expertPicks.help"
+                                        />
+                                    </FlInput>
+                                </validator.input>
+                            </div>
+                            <div class="col-12">
+                                <validator.input
+                                    @errors={{changeset.error.configSettings.global.cards.glossaryTerms.help.validation
+                                    }}
+                                >
+                                    <FlInput
+                                        @value={{changeset.configSettings.global.cards.glossaryTerms.help}}
+                                        @placeholder={{t "admin.content.help.cards.glossaryTerms"}}
+                                    >
+                                        <ChangesetTextarea
+                                            @changeset={{changeset}}
+                                            @path="configSettings.global.cards.glossaryTerms.help"
+                                        />
+                                    </FlInput>
+                                </validator.input>
+                            </div>
+                            <div class="col-12">
+                                <validator.input
+                                    @errors={{changeset.error.configSettings.global.cards.moreLikeThese.help.validation
+                                    }}
+                                >
+                                    <FlInput
+                                        @value={{changeset.configSettings.global.cards.moreLikeThese.help}}
+                                        @placeholder={{t "admin.content.help.cards.moreLikeThese"}}
+                                    >
+                                        <ChangesetTextarea
+                                            @changeset={{changeset}}
+                                            @path="configSettings.global.cards.moreLikeThese.help"
+                                        />
+                                    </FlInput>
+                                </validator.input>
+                            </div>
+                            <div class="col-12">
+                                <validator.input
+                                    @errors={{changeset.error.configSettings.global.cards.readLater.help.validation}}
+                                >
+                                    <FlInput
+                                        @value={{changeset.configSettings.global.cards.readLater.help}}
+                                        @placeholder={{t "admin.content.help.cards.readLater"}}
+                                    >
+                                        <ChangesetTextarea
+                                            @changeset={{changeset}}
+                                            @path="configSettings.global.cards.readLater.help"
+                                        />
+                                    </FlInput>
+                                </validator.input>
+                            </div>
+                            <div class="col-12">
+                                <validator.input
+                                    @errors={{changeset.error.configSettings.global.cards.favorites.help.validation}}
+                                >
+                                    <FlInput
+                                        @value={{changeset.configSettings.global.cards.favorites.help}}
+                                        @placeholder={{t "admin.content.help.cards.favorites"}}
+                                    >
+                                        <ChangesetTextarea
+                                            @changeset={{changeset}}
+                                            @path="configSettings.global.cards.favorites.help"
+                                        />
+                                    </FlInput>
+                                </validator.input>
+                            </div>
+                            <div class="col-12">
+                                <validator.input
+                                    @errors={{changeset.error.configSettings.global.cards.publisherInfo.help.validation
+                                    }}
+                                >
+                                    <FlInput
+                                        @value={{changeset.configSettings.global.cards.publisherInfo.help}}
+                                        @placeholder={{t "admin.content.help.cards.publisherInfo"}}
+                                    >
+                                        <ChangesetTextarea
+                                            @changeset={{changeset}}
+                                            @path="configSettings.global.cards.publisherInfo.help"
+                                        />
+                                    </FlInput>
+                                </validator.input>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="col-12">
                                 <h4 class="d-flex justify-content-between align-items-center border-bottom mb-3 pb-1">
                                     {{t "admin.content.global.publishers.title"}}
                                     <Button

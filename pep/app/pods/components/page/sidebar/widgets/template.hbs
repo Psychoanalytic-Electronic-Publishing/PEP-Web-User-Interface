@@ -15,7 +15,7 @@
         {{#each @widgets as |widget|}}
             {{#if (contains widget.widget this.currentUser.preferences.visibleWidgets)}}
                 {{component
-                    (concat "page/sidebar/widgets/" widget.widget)
+                    (concat "page/sidebar/widgets/" (dasherize widget.widget))
                     toggleIsOpen=this.toggleIsOpen
                     openWidgets=this.openWidgets
                     data=@data
