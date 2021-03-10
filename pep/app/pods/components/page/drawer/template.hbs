@@ -162,6 +162,17 @@
                                     {{t "nav.user.logout"}}
                                 </button>
                             </Page::Drawer::NavItem>
+                        {{else if this.currentUser.user.isGroup}}
+                            <Page::Drawer::NavItem class="mt-1">
+                                <button
+                                    type="button"
+                                    class="list-group-item list-group-item-action"
+                                    {{on "click" this.openLoginModal}}
+                                >
+                                    <FaIcon @icon="sign-in" @fixedWidth={{true}} class="mr-2" />
+                                    {{t "nav.user.login"}}
+                                </button>
+                            </Page::Drawer::NavItem>
                         {{/if}}
                     {{else}}
                         <Page::Drawer::NavItem class="mt-1">
