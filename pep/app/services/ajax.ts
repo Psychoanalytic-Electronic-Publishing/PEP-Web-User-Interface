@@ -81,7 +81,7 @@ export default class AjaxService extends Service {
         if (options.appendTrailingSlash) {
             requestUrl = appendTrailingSlash(requestUrl);
         }
-
+        console.log(options);
         const response = await fetch(requestUrl, options);
         const responseHeaders = this.parseHeaders(response.headers);
         const result = await this.handleResponse(response.status, responseHeaders, response);

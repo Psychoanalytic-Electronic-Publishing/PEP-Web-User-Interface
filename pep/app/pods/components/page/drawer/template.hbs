@@ -134,10 +134,10 @@
                         <div class="border-divider-b bg-secondary"></div>
                         <div class="page-drawer-nav-item mt-1">
                             <div class="list-group-item w-100">
-                                {{#if this.session.canLogOut}}
+                                {{#if this.currentUser.canLogOut}}
                                     {{this.currentUser.user.userName}}
                                 {{else}}
-                                    {{t "nav.user.loggedInViaIP"}}
+                                    {{this.currentUser.user.loggedInLabel}}
                                 {{/if}}
                             </div>
                         </div>
@@ -151,7 +151,7 @@
                                 {{t "nav.user.accountInfo"}}
                             </button>
                         </Page::Drawer::NavItem>
-                        {{#if this.session.canLogOut}}
+                        {{#if this.currentUser.canLogOut}}
                             <Page::Drawer::NavItem class="mt-1">
                                 <button
                                     type="button"

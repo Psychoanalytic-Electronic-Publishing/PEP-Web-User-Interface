@@ -14,7 +14,7 @@ export default class PageSidebarWidgetsPublisherInfo extends Component<PageSideb
     @service modal!: Modal;
 
     get data(): Document {
-        return this.args.data[this.widget];
+        return this.args.data?.[this.widget];
     }
 
     get publisherInformation() {

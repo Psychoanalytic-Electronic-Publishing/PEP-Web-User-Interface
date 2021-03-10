@@ -26,7 +26,7 @@ export default class PageSidebarWidgetsRelatedDocuments extends Component<PageSi
     @tracked results: Document[] = [];
 
     get data(): Document | undefined {
-        return this.args.data[this.widget];
+        return this.args.data?.[this.widget];
     }
 
     get isOpen() {

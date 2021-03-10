@@ -9,11 +9,23 @@ import IntlService from 'ember-intl/services/intl';
 import ENV from 'pep/config/environment';
 import { DATE_FOREVER } from 'pep/constants/dates';
 import {
-    COOKIE_PREFERENCES, DEFAULT_USER_PREFERENCES, LOCALSTORAGE_PREFERENCES, PreferenceChangeset, PreferenceDocumentsKey,
-    PreferenceKey, USER_PREFERENCES_COOKIE_NAME, USER_PREFERENCES_LS_PREFIX, UserPreferences
+    COOKIE_PREFERENCES,
+    DEFAULT_USER_PREFERENCES,
+    LOCALSTORAGE_PREFERENCES,
+    PreferenceChangeset,
+    PreferenceDocumentsKey,
+    PreferenceKey,
+    USER_PREFERENCES_COOKIE_NAME,
+    USER_PREFERENCES_LS_PREFIX,
+    UserPreferences
 } from 'pep/constants/preferences';
 import {
-    AvailableFontSizes, FONT_SIZE_DEFAULT, FontSize, TEXT_LEFT, TextJustificationId, TextJustifications
+    AvailableFontSizes,
+    FONT_SIZE_DEFAULT,
+    FontSize,
+    TEXT_LEFT,
+    TextJustificationId,
+    TextJustifications
 } from 'pep/constants/text';
 import User, { UserType } from 'pep/pods/user/model';
 import AuthService from 'pep/services/auth';
@@ -88,6 +100,10 @@ export default class CurrentUserService extends Service {
      */
     get fontSize() {
         return AvailableFontSizes.find((item) => item.id === this.preferences?.fontSize) ?? FONT_SIZE_DEFAULT;
+    }
+
+    get canLogOut() {
+        return this.user?.isIndividual ?? false;
     }
 
     /**

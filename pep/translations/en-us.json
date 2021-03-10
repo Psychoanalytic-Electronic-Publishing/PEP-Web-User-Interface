@@ -617,6 +617,18 @@
             }
         }
     },
+    "user": {
+        "login": {
+            "individual": "Individual",
+            "ip": "IP",
+            "referrer": "Referrer",
+            "federated": "Federated",
+            "ipIndividual": "IP Individual",
+            "referrerIndividual": "Referrer Individual",
+            "federatedIndividual": "Federated Individual",
+            "loginMethod": "Login method: {method}"
+        }
+    },
     "text": {
         "sizes": {
             "xs": "Extra Small",

@@ -8,9 +8,9 @@
             <p class="text-muted font-size-secondary mb-0">
                 {{t "accountInfo.registeredUser.username" username=this.currentUser.user.userName}}
             </p>
-            {{#unless this.session.canLogOut}}
+            {{#unless this.currentUser.canLogOut}}
                 <p class="text-muted font-size-secondary mb-0">
-                    {{t "accountInfo.registeredUser.loggedInViaIP"}}
+                    {{this.currentUser.user.loggedInLabel}}
                 </p>
             {{/unless}}
             <p class="text-muted font-size-secondary mb-0">

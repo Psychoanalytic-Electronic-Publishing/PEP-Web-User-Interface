@@ -24,7 +24,7 @@ export default class PageSidebarWidgetsMoreLikeThese extends Component<PageSideb
     similarCount = 5;
 
     get data(): Document {
-        return this.args.data[this.widget];
+        return this.args.data?.[this.widget];
     }
 
     get isOpen() {
