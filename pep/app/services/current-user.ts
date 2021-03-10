@@ -1,11 +1,7 @@
-import Service, { inject as service } from '@ember/service';
-import { tracked } from '@glimmer/tracking';
-
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import CookiesService from 'ember-cookies/services/cookies';
 import DS from 'ember-data';
 import IntlService from 'ember-intl/services/intl';
-
 import ENV from 'pep/config/environment';
 import { DATE_FOREVER } from 'pep/constants/dates';
 import {
@@ -27,6 +23,7 @@ import {
     TextJustificationId,
     TextJustifications
 } from 'pep/constants/text';
+import USER_LOGIN_METHODS from 'pep/constants/user';
 import User, { UserType } from 'pep/pods/user/model';
 import AuthService from 'pep/services/auth';
 import InformationBarService from 'pep/services/information-bar';
@@ -34,6 +31,9 @@ import PepSessionService from 'pep/services/pep-session';
 import { addClass, removeClass } from 'pep/utils/dom';
 import { reject } from 'rsvp';
 import Result, { err, ok } from 'true-myth/result';
+
+import Service, { inject as service } from '@ember/service';
+import { tracked } from '@glimmer/tracking';
 
 export enum VIEW_DOCUMENT_FROM {
     SEARCH = 'search',
@@ -104,6 +104,12 @@ export default class CurrentUserService extends Service {
 
     get canLogOut() {
         return this.user?.isIndividual ?? false;
+    }
+
+    get loggedInLabel() {
+        const methodTranslation = USER_LOGIN_METHODS.findBy('id', this.user?.loggedInMethod)?.label ?? '';
+        const method = methodTranslation ? this.intl.t(methodTranslation) : '';
+        return this.intl.t('user.login.loginMethod', { method });
     }
 
     /**

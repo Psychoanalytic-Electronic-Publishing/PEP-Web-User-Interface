@@ -1,12 +1,11 @@
 import DS from 'ember-data';
 import attr from 'ember-data/attr';
-
+import IntlService from 'ember-intl/services/intl';
 import moment, { Moment } from 'moment';
 import { SERVER_DATE_FORMAT } from 'pep/constants/dates';
 import { DEFAULT_USER_PREFERENCES, UserPreferences } from 'pep/constants/preferences';
-import USER_LOGIN_METHODS from 'pep/constants/user';
+
 import { inject as service } from '@ember/service';
-import IntlService from 'ember-intl/services/intl';
 
 export enum UserType {
     GROUP = 'Group',
@@ -88,12 +87,6 @@ export default class User extends DS.Model {
                   };
               })
             : [];
-    }
-
-    get loggedInLabel() {
-        const methodTranslation = USER_LOGIN_METHODS.findBy('id', this.loggedInMethod)?.label ?? '';
-        const method = methodTranslation ? this.intl.t(methodTranslation) : '';
-        return this.intl.t('user.login.loginMethod', { method });
     }
 }
 
