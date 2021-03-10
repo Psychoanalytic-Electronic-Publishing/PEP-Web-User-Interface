@@ -619,14 +619,14 @@
     },
     "user": {
         "login": {
-            "individual": "Individual",
-            "ip": "IP",
-            "referrer": "Referrer",
-            "federated": "Federated",
-            "ipIndividual": "IP Individual",
-            "referrerIndividual": "Referrer Individual",
-            "federatedIndividual": "Federated Individual",
-            "loginMethod": "Login method: {method}"
+            "individual": "Individual Login",
+            "ip": "IP Address",
+            "referrer": "Referrer URL",
+            "federated": "Federated Login",
+            "ipIndividual": "IP Address (Individual)",
+            "referrerIndividual": "Referrer URL (Individual)",
+            "federatedIndividual": "Federated Login (Individual)",
+            "loginMethod": "Logged in via {method}"
         }
     },
     "text": {
