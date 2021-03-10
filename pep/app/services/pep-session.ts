@@ -1,15 +1,13 @@
-import { oneWay } from '@ember/object/computed';
-import { inject as service } from '@ember/service';
-
-import { removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
 import CookiesService from 'ember-cookies/services/cookies';
 import SessionService from 'ember-simple-auth/services/session';
-
 import { PepSecureAuthenticatedData } from 'pep/api';
-import { SessionType } from 'pep/authenticators/credentials';
 import ENV from 'pep/config/environment';
 import { DATE_FOREVER } from 'pep/constants/dates';
 import { serializeQueryParams } from 'pep/utils/url';
+
+import { oneWay } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
+import { removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
 
 export interface AuthenticatedData {
     authenticated: PepSecureAuthenticatedData;
@@ -76,10 +74,6 @@ export default class PepSessionService extends SessionService.extend({
             secure: ENV.cookieSecure,
             sameSite: ENV.cookieSameSite
         });
-    }
-
-    get canLogOut() {
-        return this.data.authenticated.SessionType !== SessionType.IP;
     }
 
     get downloadAuthParams() {

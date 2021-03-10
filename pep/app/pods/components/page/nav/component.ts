@@ -1,5 +1,5 @@
 import { Languages } from 'pep/constants/lang';
-import { SUPPORT_URL } from 'pep/constants/urls';
+import { PEP_FACEBOOK_URL, SUPPORT_URL } from 'pep/constants/urls';
 import AuthService from 'pep/services/auth';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService, { VIEW_DOCUMENT_FROM } from 'pep/services/current-user';
@@ -11,7 +11,6 @@ import RouterService from '@ember/routing/router-service';
 import { inject as service } from '@ember/service';
 import ModalService from '@gavant/ember-modals/services/modal';
 import Component from '@glimmer/component';
-import { tracked } from '@glimmer/tracking';
 
 interface PageNavArgs {
     openAboutModal: () => Promise<void>;
@@ -27,10 +26,9 @@ export default class PageNav extends Component<PageNavArgs> {
     @service router!: RouterService;
 
     supportUrl = SUPPORT_URL;
+    facebookUrl = PEP_FACEBOOK_URL;
 
     languages = Languages;
-
-    @tracked canLogOut!: boolean;
 
     get readDisabled() {
         return !this.currentUser.lastViewedDocumentId;
@@ -133,21 +131,5 @@ export default class PageNav extends Component<PageNavArgs> {
     @action
     openFeedbackModal() {
         return this.modal.open('help/feedback', {});
-    }
-
-    /**
-     * Set any necessary tracked properties when
-     * a dropdown is opened.
-     *
-     * NOTE: This is necessary because accessing `this.sessions.canLogOut`
-     * directly has been problematic in this component. It works fine in
-     * other locations but doesn't cause re-rendering here unexplainably.
-     * These problems occurred specifically when logging in after a preference
-     * was updated.
-     *
-     */
-    @action
-    setProperties() {
-        this.canLogOut = this.session.canLogOut;
     }
 }

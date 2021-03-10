@@ -6,7 +6,7 @@ import { tracked } from '@glimmer/tracking';
 
 import ModalService from '@gavant/ember-modals/services/modal';
 
-import { SUPPORT_URL } from 'pep/constants/urls';
+import { PEP_FACEBOOK_URL, SUPPORT_URL } from 'pep/constants/urls';
 import AuthService from 'pep/services/auth';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService, { VIEW_DOCUMENT_FROM } from 'pep/services/current-user';
@@ -30,6 +30,7 @@ export default class PageDrawer extends Component<PageDrawerArgs> {
     @tracked isHelpMenuOpen = false;
 
     supportUrl = SUPPORT_URL;
+    facebookUrl = PEP_FACEBOOK_URL;
 
     get defaultSearchParams() {
         return this.configuration.defaultSearchParams;
