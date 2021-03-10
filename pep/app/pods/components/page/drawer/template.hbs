@@ -178,8 +178,15 @@
                 </Page::Drawer::NavMenu>
             </div>
         </div>
-        <div class="page-drawer-footer mt-auto p-2 small text-center text-white-50">
-            {{t "brand.copyWrite" year=(current-year) htmlSafe=true}}
+        <div class="page-drawer-footer mt-auto p-2 text-center text-white-50">
+            <div class="mx-auto mb-2">
+                <a href={{this.facebookUrl}} class="text-white-50" target="_blank" rel="noopener noreferrer">
+                    <FaIcon @icon="facebook" @prefix="fab" @size="lg"/>
+                </a>
+            </div>
+            <div class="small">
+                {{t "brand.copyWrite" year=(current-year) htmlSafe=true}}
+            </div>
         </div>
     </Scrollable>
 </div>

@@ -1,5 +1,5 @@
 import { Languages } from 'pep/constants/lang';
-import { SUPPORT_URL } from 'pep/constants/urls';
+import { PEP_FACEBOOK_URL, SUPPORT_URL } from 'pep/constants/urls';
 import AuthService from 'pep/services/auth';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService, { VIEW_DOCUMENT_FROM } from 'pep/services/current-user';
@@ -27,6 +27,7 @@ export default class PageNav extends Component<PageNavArgs> {
     @service router!: RouterService;
 
     supportUrl = SUPPORT_URL;
+    facebookUrl = PEP_FACEBOOK_URL;
 
     languages = Languages;
 

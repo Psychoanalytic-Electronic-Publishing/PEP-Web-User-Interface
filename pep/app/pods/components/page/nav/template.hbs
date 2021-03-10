@@ -51,6 +51,13 @@
             </LinkTo>
         </li>
         <li class="nav-item">
+            <div>
+                <a href={{this.facebookUrl}} class="nav-link" target="_blank" rel="noopener noreferrer">
+                    <FaIcon @icon="facebook" @prefix="fab" @size="lg"/>
+                </a>
+            </div>
+        </li>
+        <li class="nav-item">
             <DropdownMenu @horizontalPosition="auto-right" as |DD|>
                 <DD.Trigger @htmlTag="a" class="nav-link">
                     <FaIcon @icon="question" @size="lg" />
@@ -112,6 +119,11 @@
                             <DropdownAction @dd={{DD}} @action={{this.logout}}>
                                 <FaIcon @icon="sign-out" @fixedWidth={{true}} class="text-muted" />
                                 {{t "nav.user.logout"}}
+                            </DropdownAction>
+                        {{else if this.currentUser.user.isGroup}}
+                            <DropdownAction @dd={{DD}} @action={{this.openLoginModal}}>
+                                <FaIcon @icon="sign-in" @fixedWidth={{true}} class="text-muted" />
+                                {{t "nav.user.login"}}
                             </DropdownAction>
                         {{/if}}
                     {{else}}
