@@ -18,7 +18,12 @@ import { SearchMetadata } from 'pep/api';
 import { PreferenceKey } from 'pep/constants/preferences';
 import { TITLE_REGEX } from 'pep/constants/regex';
 import {
-    SEARCH_DEFAULT_VIEW_PERIOD, SEARCH_TYPE_ARTICLE, SearchFacetValue, SearchTermValue, SearchViews, SearchViewType,
+    SEARCH_DEFAULT_VIEW_PERIOD,
+    SEARCH_TYPE_ARTICLE,
+    SearchFacetValue,
+    SearchTermValue,
+    SearchViews,
+    SearchViewType,
     ViewPeriod
 } from 'pep/constants/search';
 import { WIDGET } from 'pep/constants/sidebar';
@@ -38,6 +43,7 @@ import SidebarService from 'pep/services/sidebar';
 import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
 import { SearchSorts, SearchSortType, transformSearchSortsToTable, transformSearchSortToAPI } from 'pep/utils/sort';
 import { hash } from 'rsvp';
+import { DEFAULT_BASE_CONFIGURATION } from 'pep/constants/configuration';
 
 export default class SearchIndex extends Controller {
     @service ajax!: AjaxService;
@@ -90,8 +96,13 @@ export default class SearchIndex extends Controller {
     @tracked previewMode: SearchPreviewMode = 'fit';
     @tracked containerMaxHeight = 0;
 
-    @tracked selectedView = this.currentUser.preferences?.searchViewType ?? SearchViews[0];
-    @tracked selectedSort = this.currentUser.preferences?.searchSortType ?? SearchSorts[0];
+    get selectedView() {
+        return this.currentUser.preferences?.searchViewType ?? SearchViews[0];
+    }
+
+    get selectedSort() {
+        return this.currentUser.preferences?.searchSortType ?? SearchSorts[0];
+    }
 
     readLaterKey = PreferenceKey.READ_LATER;
     favoritesKey = PreferenceKey.FAVORITES;
@@ -581,7 +592,6 @@ export default class SearchIndex extends Controller {
     updateSelectedView(event: HTMLElementEvent<HTMLSelectElement>) {
         const id = event.target.value as SearchViewType;
         const selectedView = SearchViews.find((item) => item.id === id);
-        this.selectedView = selectedView!;
         this.currentUser.updatePrefs({
             [PreferenceKey.SEARCH_VIEW_TYPE]: selectedView
         });
@@ -613,7 +623,6 @@ export default class SearchIndex extends Controller {
     updateSort(event: HTMLElementEvent<HTMLSelectElement>) {
         const id = event.target.value as SearchSortType;
         const selectedSort = SearchSorts.find((item) => item.id === id);
-        this.selectedSort = selectedSort!;
         this.paginator.changeSorting([
             {
                 valuePath: id,
@@ -724,6 +733,22 @@ export default class SearchIndex extends Controller {
         this.transitionToRoute('search.read', abstract.id, {
             queryParams: this.readQueryParams
         });
+    }
+
+    /**
+     * Reload the search page when the user has logged in
+     * and their searchHICLimit preference is different than the default.
+     *
+     */
+    @action
+    handleUserChange() {
+        const currentUser = this.currentUser;
+        if (
+            currentUser.user?.isIndividual &&
+            currentUser.preferences?.searchHICLimit !== DEFAULT_BASE_CONFIGURATION.search.hitsInContext.limit
+        ) {
+            this.paginator.reloadModels();
+        }
     }
 }
 

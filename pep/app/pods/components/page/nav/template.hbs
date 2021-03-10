@@ -86,7 +86,7 @@
                 <DD.Trigger @htmlTag="a" class="nav-link">
                     <FaIcon @icon="user" @size="lg" />
                 </DD.Trigger>
-                <DD.Content class="dropdown-menu" {{did-insert this.setProperties}}>
+                <DD.Content class="dropdown-menu">
                     <DropdownAction @dd={{DD}} @action={{this.openPreferencesModal}}>
                         <FaIcon @icon="cog" @fixedWidth={{true}} class="text-muted" />
                         {{t "nav.user.preferences"}}

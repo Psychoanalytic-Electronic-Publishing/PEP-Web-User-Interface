@@ -48,6 +48,10 @@ export default class PageNav extends Component<PageNavArgs> {
         return this.router.currentRouteName?.includes('search') && !this.readActive;
     }
 
+    get canLogOut() {
+        return this.session.canLogOut;
+    }
+
     /**
      * Opens the user preferences modal dialog
      */

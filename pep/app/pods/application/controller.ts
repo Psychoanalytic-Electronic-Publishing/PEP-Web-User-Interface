@@ -183,6 +183,21 @@ export default class Application extends Controller {
             this.loadingBar.hide();
         }
     }
+
+    @action
+    handleUserChange() {
+        const currentUser = this.currentUser;
+        if (currentUser.user?.isIndividual) {
+            const searchTermPreferences = currentUser.preferences?.searchTermFields;
+            if (searchTermPreferences) {
+                const updatedSearchTerms = searchTermPreferences.map((t) => {
+                    const existingTerm = this.searchTerms.findBy('type', t);
+                    return { type: t, term: existingTerm?.term ?? '' };
+                });
+                this.searchTerms = updatedSearchTerms;
+            }
+        }
+    }
 }
 
 // DO NOT DELETE: this is how TypeScript knows how to look up your controllers.
