@@ -56,4 +56,11 @@
             width: 100%;
         }
     }
+
+    .draggable-mirror {
+        input,
+        select {
+            visibility: hidden;
+        }
+    }
 }

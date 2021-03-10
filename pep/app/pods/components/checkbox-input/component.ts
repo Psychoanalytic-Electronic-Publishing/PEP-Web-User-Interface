@@ -1,6 +1,6 @@
-import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { guidFor } from '@ember/object/internals';
+import Component from '@glimmer/component';
 
 interface CheckboxInputArgs {
     onChange?: (newValue: boolean, event: Event) => void;
@@ -37,7 +37,8 @@ export default class CheckboxInput extends Component<CheckboxInputArgs> {
         if (this.stopPropagation) {
             event.stopPropagation();
         }
-
-        this.args.onChange?.(!this.args.checked, event);
+        // Always get the current checked value and send it as an argument for the `onChange` event
+        const target = event.target as HTMLInputElement;
+        this.args.onChange?.(target.checked, event);
     }
 }

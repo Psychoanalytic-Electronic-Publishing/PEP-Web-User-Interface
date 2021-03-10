@@ -7,7 +7,7 @@
 >
     <Panel.header
         @title={{t "relatedInfo.widgets.expertPicks.title"}}
-        @tooltip={{t "relatedInfo.widgets.expertPicks.help"}}
+        @tooltip={{this.configuration.content.global.cards.expertPicks.help}}
     />
     <Panel.body>
         <ContentWithPlaceholder @placeholderComponent="loading/widget" @isLoading={{this.loadResults.isRunning}}>

@@ -11,6 +11,7 @@ import { ColumnValue } from '@gavant/ember-table';
 import createChangeset, { GenericChangeset } from '@gavant/ember-validations/utilities/create-changeset';
 
 import { ExpertPick, WidgetConfiguration } from 'pep/constants/configuration';
+import { SEARCH_TYPES, SearchTermId } from 'pep/constants/search';
 import Configuration from 'pep/pods/configuration/model';
 import { CONFIGURATION_EXPERT_PICK_VALIDATIONS } from 'pep/validations/configuration/expert-pick';
 
@@ -20,6 +21,14 @@ export default class AdminGeneral extends Controller {
 
     @tracked changeset?: BufferedChangeset;
     @tracked saveDisabled: boolean = false;
+
+    mirrorOptions = {
+        constrainDimensions: true
+    };
+
+    get searchTypeOptions() {
+        return SEARCH_TYPES.filter((t) => t.isTypeOption);
+    }
 
     /**
      * Open the expert pick modal
@@ -122,24 +131,57 @@ export default class AdminGeneral extends Controller {
     @action
     updateOpenState(
         changeset: GenericChangeset<Configuration>,
-        widget: WidgetConfiguration,
+        index: number,
         column: 'right' | 'left',
         status: boolean
     ): void {
         this.saveDisabled = true;
         const columnWidgets = changeset?.get(`configSettings.global.cards.${column}`) as WidgetConfiguration[];
-        const newWidgets = columnWidgets.map((item) => {
-            if (item.widget === widget.widget) {
-                return {
-                    widget: item.widget,
-                    open: status
-                };
-            } else {
-                return item;
-            }
-        });
-        changeset?.set(`configSettings.global.cards.${column}`, newWidgets);
+        columnWidgets[index].open = status;
+        changeset?.set(`configSettings.global.cards.${column}`, [...columnWidgets]);
         this.saveDisabled = false;
+    }
+
+    /**
+     * Modify the type of the default field
+     *
+     * @param {GenericChangeset<Configuration>} changeset
+     * @param {number} index
+     * @param {InputEvent} event
+     * @memberof AdminGeneral
+     */
+    @action
+    updateDefaultField(changeset: GenericChangeset<Configuration>, index: number, event: InputEvent): void {
+        const defaultFields = [...changeset.configSettings.search.terms.defaultFields];
+        defaultFields[index] = (event.target as HTMLSelectElement)?.value;
+        changeset.set('configSettings.search.terms.defaultFields', defaultFields);
+    }
+
+    /**
+     * Remove default field from list
+     *
+     * @param {GenericChangeset<Configuration>} changeset
+     * @param {number} index
+     * @memberof AdminGeneral
+     */
+    @action
+    removeDefaultField(changeset: GenericChangeset<Configuration>, index: number): void {
+        const defaultFields = [...changeset.configSettings.search.terms.defaultFields];
+        defaultFields.splice(index, 1);
+        changeset.set('configSettings.search.terms.defaultFields', defaultFields);
+    }
+
+    /**
+     * Add in a default field to the array
+     *
+     * @param {GenericChangeset<Configuration>} changeset
+     * @memberof AdminGeneral
+     */
+    @action
+    addDefaultField(changeset: GenericChangeset<Configuration>): void {
+        const defaultFields = [...changeset.configSettings.search.terms.defaultFields];
+        defaultFields.push(SearchTermId.ARTICLE);
+        changeset.set('configSettings.search.terms.defaultFields', defaultFields);
     }
 }
 // DO NOT DELETE: this is how TypeScript knows how to look up your controllers.

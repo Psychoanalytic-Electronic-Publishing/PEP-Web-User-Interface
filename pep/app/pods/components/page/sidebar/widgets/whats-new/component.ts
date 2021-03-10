@@ -4,10 +4,11 @@ import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
-import Modal from '@gavant/ember-modals/services/modal';
 import { restartableTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
 import DS from 'ember-data';
+
+import Modal from '@gavant/ember-modals/services/modal';
 
 import { WIDGET } from 'pep/constants/sidebar';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';

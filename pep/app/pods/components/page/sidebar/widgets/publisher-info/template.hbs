@@ -7,7 +7,7 @@
 >
     <Panel.header
         @title={{t "relatedInfo.widgets.publisherInfo.title"}}
-        @tooltip={{t "relatedInfo.widgets.publisherInfo.help"}}
+        @tooltip={{this.configuration.content.global.cards.publisherInfo.help}}
     />
     <Panel.body>
         {{#if this.data.PEPCode}}
