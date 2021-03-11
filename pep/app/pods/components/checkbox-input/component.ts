@@ -15,11 +15,11 @@ interface CheckboxInputArgs {
 export default class CheckboxInput extends Component<CheckboxInputArgs> {
     inputId: string = `checkbox-input-${guidFor(this)}`;
 
-    get preventDefault() {
+    get preventDefault(): boolean {
         return this.args.preventDefault ?? false;
     }
 
-    get stopPropagation() {
+    get stopPropagation(): boolean {
         return this.args.stopPropagation ?? false;
     }
 
@@ -29,7 +29,7 @@ export default class CheckboxInput extends Component<CheckboxInputArgs> {
      *
      */
     @action
-    onChange(event: Event) {
+    onChange(event: HTMLElementEvent<HTMLInputElement>): void {
         if (this.preventDefault) {
             event.preventDefault();
         }
@@ -38,7 +38,6 @@ export default class CheckboxInput extends Component<CheckboxInputArgs> {
             event.stopPropagation();
         }
         // Always get the current checked value and send it as an argument for the `onChange` event
-        const target = event.target as HTMLInputElement;
-        this.args.onChange?.(target.checked, event);
+        this.args.onChange?.(event.target.checked, event);
     }
 }
