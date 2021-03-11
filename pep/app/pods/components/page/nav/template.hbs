@@ -85,6 +85,10 @@
                         <FaIcon @icon="hands-helping" @fixedWidth={{true}} class="text-muted" />
                         {{t "nav.support.preferences"}}
                     </DropdownAction>
+                    <DropdownAction @dd={{DD}} @action={{@openAboutModal}}>
+                        <FaIcon @icon="info-square" @fixedWidth={{true}} class="text-muted" />
+                        {{t "nav.user.aboutPepWeb"}}
+                    </DropdownAction>
                 </DD.Content>
             </DropdownMenu>
         </li>
@@ -98,34 +102,40 @@
                         <FaIcon @icon="cog" @fixedWidth={{true}} class="text-muted" />
                         {{t "nav.user.preferences"}}
                     </DropdownAction>
-                    <DropdownAction @dd={{DD}} @action={{@openAboutModal}}>
-                        <FaIcon @icon="info-square" @fixedWidth={{true}} class="text-muted" />
-                        {{t "nav.user.about"}}
-                    </DropdownAction>
                     <div class="dropdown-divider"></div>
                     {{#if this.session.isAuthenticated}}
-                        <div class="py-1 px-4">
-                            {{#if this.currentUser.canLogOut}}
+                        {{#if this.currentUser.user}}
+                            <div class="pt-1 px-4">
                                 {{this.currentUser.user.userName}}
-                            {{else}}
-                                {{this.currentUser.loggedInLabel}}
-                            {{/if}}
+                            </div>
+                        {{/if}}
+                        <div class="py-1 px-4">
+                            {{this.currentUser.loggedInLabel}}
                         </div>
                         <DropdownAction @dd={{DD}} @action={{this.openAccountInfoModal}}>
                             <FaIcon @icon="info-circle" @fixedWidth={{true}} class="text-muted" />
                             {{t "nav.user.accountInfo"}}
                         </DropdownAction>
-                        {{#if this.currentUser.canLogOut}}
-                            <DropdownAction @dd={{DD}} @action={{this.logout}}>
-                                <FaIcon @icon="sign-out" @fixedWidth={{true}} class="text-muted" />
-                                {{t "nav.user.logout"}}
-                            </DropdownAction>
-                        {{else if this.currentUser.user.isGroup}}
+                        {{#if this.currentUser.user.isGroup}}
                             <DropdownAction @dd={{DD}} @action={{this.openLoginModal}}>
                                 <FaIcon @icon="sign-in" @fixedWidth={{true}} class="text-muted" />
-                                {{t "nav.user.login"}}
+                                <span>
+                                    {{t "nav.user.login"}}
+                                </span>
+                                {{#if this.currentUser.loginTypeLabel}}
+                                    <small class="text-muted">{{this.currentUser.loginTypeLabel}}</small>
+                                {{/if}}
                             </DropdownAction>
                         {{/if}}
+                        <DropdownAction @dd={{DD}} @action={{this.logout}}>
+                            <FaIcon @icon="sign-out" @fixedWidth={{true}} class="text-muted" />
+                            <span>
+                                {{t "nav.user.logout"}}
+                            </span>
+                            {{#if this.currentUser.logoutTypeLabel}}
+                                <small class="text-muted">{{this.currentUser.logoutTypeLabel}}</small>
+                            {{/if}}
+                        </DropdownAction>
                     {{else}}
                         <DropdownAction @dd={{DD}} @action={{this.openLoginModal}}>
                             <FaIcon @icon="sign-in" @fixedWidth={{true}} class="text-muted" />
