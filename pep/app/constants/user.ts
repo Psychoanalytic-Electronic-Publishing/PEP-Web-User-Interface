@@ -11,16 +11,18 @@ export enum LoginMethod {
 export interface UserLoginMethod {
     id: LoginMethod;
     label: string;
+    logoutLabel?: string;
 }
 
 export const LOGIN_INDIVIDUAL: UserLoginMethod = {
     id: LoginMethod.INDIVIDUAL,
-    label: 'user.login.individual'
+    label: 'user.login.individualLogin'
 };
 
 export const LOGIN_IP: UserLoginMethod = {
     id: LoginMethod.IP,
-    label: 'user.login.ip'
+    label: 'user.login.ip',
+    logoutLabel: 'user.login.network'
 };
 
 export const LOGIN_REFERRER: UserLoginMethod = {

@@ -7,13 +7,13 @@
         <div class="form-row">
             <ul class="col-sm-8 list-unstyled">
                 <li>
-                    <a href="{{@options.genericLoginUrl}}" target="_blank" rel="noopener noreferrer">
+                    <a href="{{@options.genericLoginUrl}}">
                         {{t "federatedLogin.openAthens"}}
                     </a>
                 </li>
                 {{#each @options.logins as |login|}}
                     <li>
-                        <a href="{{login.URL}}" target="_blank" rel="noopener noreferrer">
+                        <a href="{{login.URL}}">
                             {{login.Name}}
                         </a>
                     </li>

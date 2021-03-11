@@ -54,7 +54,8 @@
             "login": "Iniciar sesion",
             "logout": "Cerrar sesion",
             "accountInfo": "Informacion de la cuenta",
-            "loggedInViaIP": "Logged in via IP"
+            "loggedInViaIP": "Logged in via IP",
+            "aboutPepWeb": "About PEP-Web"
         },
         "support": {
             "link": "Soporte",
@@ -619,14 +620,17 @@
     },
     "user": {
         "login": {
-            "individual": "Individual Login",
+            "individualLogin": "Individual Login",
             "ip": "IP Address",
             "referrer": "Referrer URL",
             "federated": "Federated Login",
             "ipIndividual": "IP Address (Individual)",
             "referrerIndividual": "Referrer URL (Individual)",
             "federatedIndividual": "Federated Login (Individual)",
-            "loginMethod": "Logged in via {method}"
+            "loginMethod": "Logged in via {method}",
+            "individual": "Individual",
+            "logoutType": "{method}",
+            "network": "Network"
         }
     },
     "text": {
