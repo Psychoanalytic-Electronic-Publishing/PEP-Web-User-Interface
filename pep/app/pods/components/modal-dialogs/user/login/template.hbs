@@ -30,14 +30,12 @@
                             {{t "login.forgotPassword"}}
                         </a>
                     </p>
-                    {{#if this.currentUser.user.isGroup}}
-                        <p class="mb-0 text-muted">
-                            {{t "login.notAMember"}}
-                            <a href="{{@options.padsRegisterUrl}}" target="_blank" rel="noopener noreferrer">
-                                {{t "login.clickToSubscribe"}}
-                            </a>
-                        </p>
-                    {{/if}}
+                    <p class="mb-0 text-muted">
+                        {{t (if this.currentUser.user.isGroup "login.notARegisteredUser" "login.notAMember")}}
+                        <a href="{{@options.padsRegisterUrl}}" target="_blank" rel="noopener noreferrer">
+                            {{t (if this.currentUser.user.isGroup "login.clickToRegister" "login.clickToSubscribe")}}
+                        </a>
+                    </p>
                 </div>
             </div>
         </Modal.body>

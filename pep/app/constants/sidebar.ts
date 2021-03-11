@@ -18,22 +18,22 @@ export const PUBPERIOD_ALL_YEARS: PubPeriod = { translationKey: 'mostCited.allYe
 export const PUBPERIODS = [PUBPERIOD_5_YEARS, PUBPERIOD_10_YEARS, PUBPERIOD_20_YEARS, PUBPERIOD_ALL_YEARS];
 
 export enum WIDGET {
-    EXPERT_PICKS = 'expert-picks',
+    EXPERT_PICKS = 'expertPicks',
     FAVORITES = 'favorites',
-    GLOSSARY_TERMS = 'glossary-terms',
-    MORE_LIKE_THESE = 'more-like-these',
-    MOST_CITED = 'most-cited',
-    MOST_VIEWED = 'most-viewed',
-    PAST_SEARCHES = 'past-searches',
-    READ_LATER = 'read-later',
-    RELATED_DOCUMENTS = 'related-documents',
-    RELEVANT_SEARCHES = 'relevant-searches',
-    SEMINAL_PAPERS = 'seminal-papers',
-    TOPICAL_VIDEO_PREVIEW = 'topical-video-preview',
-    VIDEO_PREVIEW = 'video-preview',
-    WHATS_NEW = 'whats-new',
-    YOUR_INTERESTS = 'your-interests',
-    PUBLISHER_INFO = 'publisher-info'
+    GLOSSARY_TERMS = 'glossaryTerms',
+    MORE_LIKE_THESE = 'moreLikeThese',
+    MOST_CITED = 'mostCited',
+    MOST_VIEWED = 'mostViewed',
+    PAST_SEARCHES = 'pastSearches',
+    READ_LATER = 'readLater',
+    RELATED_DOCUMENTS = 'relatedDocuments',
+    RELEVANT_SEARCHES = 'relevantSearches',
+    SEMINAL_PAPERS = 'seminalPapers',
+    TOPICAL_VIDEO_PREVIEW = 'topicalVideoPreview',
+    VIDEO_PREVIEW = 'videoPreview',
+    WHATS_NEW = 'whatsNew',
+    YOUR_INTERESTS = 'yourInterests',
+    PUBLISHER_INFO = 'publisherInfo'
 }
 
 export interface WidgetItem {

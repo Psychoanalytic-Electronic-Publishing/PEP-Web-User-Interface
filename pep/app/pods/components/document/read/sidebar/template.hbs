@@ -27,7 +27,7 @@
                                     @onChange={{this.updateHitsInContext}}
                                     @label={{t "search.hitsInContext.label.short"}}
                                 />
-                                <HelpTooltip @tooltip={{t "search.hitsInContext.help"}} />
+                                <HelpTooltip @tooltip={{this.configuration.content.search.hitsInContext.help}} />
                             {{/if}}
                         </div>
                         <div class="d-flex align-items-center">

@@ -179,8 +179,8 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
                     on: 'bottom'
                 },
 
-                text: this.intl.t('tour.home.text'),
-                title: this.intl.t('tour.home.title'),
+                text: this.configuration.content.global.tour.stepOne.text,
+                title: this.configuration.content.global.tour.stepOne.title,
                 buttons: [
                     {
                         text: this.intl.t('tour.home.buttons.next'),
@@ -195,8 +195,8 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
                     element: '.nav-item.home',
                     on: 'auto'
                 },
-                text: this.intl.t('tour.home.text'),
-                title: this.intl.t('tour.home.title'),
+                text: this.configuration.content.global.tour.stepOne.text,
+                title: this.configuration.content.global.tour.stepOne.title,
                 buttons: [
                     {
                         text: this.intl.t('tour.home.buttons.next'),
@@ -213,8 +213,8 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
                     on: 'auto'
                 },
                 classes: 'tour-left-sidebar-spacing',
-                text: this.intl.t('tour.leftSidebar.text'),
-                title: this.intl.t('tour.leftSidebar.title'),
+                text: this.configuration.content.global.tour.stepTwo.text,
+                title: this.configuration.content.global.tour.stepTwo.title,
                 buttons: [
                     {
                         text: this.intl.t('tour.leftSidebar.buttons.next'),
@@ -230,8 +230,8 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
                     on: 'left'
                 },
                 classes: 'tour-right-sidebar-spacing',
-                text: this.intl.t('tour.rightSidebar.text'),
-                title: this.intl.t('tour.rightSidebar.title'),
+                text: this.configuration.content.global.tour.stepThree.text,
+                title: this.configuration.content.global.tour.stepThree.title,
                 buttons: [
                     {
                         text: this.intl.t('tour.rightSidebar.buttons.cancel'),

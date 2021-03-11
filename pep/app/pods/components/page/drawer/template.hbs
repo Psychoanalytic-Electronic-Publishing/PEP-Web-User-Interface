@@ -134,10 +134,10 @@
                         <div class="border-divider-b bg-secondary"></div>
                         <div class="page-drawer-nav-item mt-1">
                             <div class="list-group-item w-100">
-                                {{#if this.session.canLogOut}}
+                                {{#if this.currentUser.canLogOut}}
                                     {{this.currentUser.user.userName}}
                                 {{else}}
-                                    {{t "nav.user.loggedInViaIP"}}
+                                    {{this.currentUser.loggedInLabel}}
                                 {{/if}}
                             </div>
                         </div>
@@ -151,7 +151,7 @@
                                 {{t "nav.user.accountInfo"}}
                             </button>
                         </Page::Drawer::NavItem>
-                        {{#if this.session.canLogOut}}
+                        {{#if this.currentUser.canLogOut}}
                             <Page::Drawer::NavItem class="mt-1">
                                 <button
                                     type="button"
@@ -160,6 +160,17 @@
                                 >
                                     <FaIcon @icon="sign-out" @fixedWidth={{true}} class="mr-2" />
                                     {{t "nav.user.logout"}}
+                                </button>
+                            </Page::Drawer::NavItem>
+                        {{else if this.currentUser.user.isGroup}}
+                            <Page::Drawer::NavItem class="mt-1">
+                                <button
+                                    type="button"
+                                    class="list-group-item list-group-item-action"
+                                    {{on "click" this.openLoginModal}}
+                                >
+                                    <FaIcon @icon="sign-in" @fixedWidth={{true}} class="mr-2" />
+                                    {{t "nav.user.login"}}
                                 </button>
                             </Page::Drawer::NavItem>
                         {{/if}}
@@ -178,8 +189,15 @@
                 </Page::Drawer::NavMenu>
             </div>
         </div>
-        <div class="page-drawer-footer mt-auto p-2 small text-center text-white-50">
-            {{t "brand.copyWrite" year=(current-year) htmlSafe=true}}
+        <div class="page-drawer-footer mt-auto p-2 text-center text-white-50">
+            <div class="mx-auto mb-2">
+                <a href={{this.facebookUrl}} class="text-white-50" target="_blank" rel="noopener noreferrer">
+                    <FaIcon @icon="facebook" @prefix="fab" @size="lg"/>
+                </a>
+            </div>
+            <div class="small">
+                {{t "brand.copyWrite" year=(current-year) htmlSafe=true}}
+            </div>
         </div>
     </Scrollable>
 </div>

@@ -104,6 +104,25 @@ export interface ContentConfiguration {
             }[];
         };
         publishers: Publisher[];
+        tour: {
+            stepOne: {
+                title: string;
+                text: string;
+            };
+            stepTwo: {
+                title: string;
+                text: string;
+            };
+            stepThree: {
+                title: string;
+                text: string;
+            };
+        };
+        cards: {
+            [K in WIDGET]?: {
+                help: string;
+            };
+        };
     };
     home: {
         intro: {
@@ -120,6 +139,9 @@ export interface ContentConfiguration {
                 body: string;
             };
         };
+        expertPickOfTheDay: {
+            help: string;
+        };
     };
     search: {
         tooManyResults: {
@@ -133,6 +155,9 @@ export interface ContentConfiguration {
         };
         limitTo: {
             help?: string;
+        };
+        hitsInContext: {
+            help: string;
         };
         terms: {
             types: {
@@ -292,7 +317,60 @@ export const DEFAULT_CONTENT_CONFIGURATION: ContentConfiguration = {
                     '<p>Joseph Reppen’s journal, Psychoanalytic Books, is a compendium of reviews of the important books of its era, the 1990’s, written by many of the best scholars in our field.</p>',
                 url: 'https://www.google.com'
             }
-        ]
+        ],
+        tour: {
+            stepOne: {
+                title: 'Home',
+                text: 'This button takes you home'
+            },
+            stepTwo: {
+                title: 'Search',
+                text: 'This button shows/hides the search'
+            },
+            stepThree: {
+                title: 'Widgets',
+                text: 'This button shows/hides the widgets'
+            }
+        },
+        cards: {
+            [WIDGET.VIDEO_PREVIEW]: {
+                help: 'Check out the latest video in our system here.'
+            },
+            [WIDGET.TOPICAL_VIDEO_PREVIEW]: {
+                help: 'Check out the latest topical video in our system here.'
+            },
+            [WIDGET.WHATS_NEW]: {
+                help: 'The newest additions to our system can be viewed here.'
+            },
+            [WIDGET.MOST_CITED]: {
+                help: 'The most cited documents throughout our system can be viewed here.'
+            },
+            [WIDGET.MOST_VIEWED]: {
+                help: 'The most viewed documents throughout our system can be viewed here.'
+            },
+            [WIDGET.RELATED_DOCUMENTS]: {
+                help:
+                    'For documents which have related articles, the {faIcon} icon will show up next to listing, indicating that the article is part of a series or has follow up commentary in the journal.'
+            },
+            [WIDGET.EXPERT_PICKS]: {
+                help: 'Expert picks ...picked expertly for you.'
+            },
+            [WIDGET.GLOSSARY_TERMS]: {
+                help: 'When reading a document, a word cloud of glossary terms will appear here.'
+            },
+            [WIDGET.MORE_LIKE_THESE]: {
+                help: 'Using AI, we recommend documents that we think are similar to the current document your reading.'
+            },
+            [WIDGET.READ_LATER]: {
+                help: 'Save items you want to read later and view them here.'
+            },
+            [WIDGET.FAVORITES]: {
+                help: 'You can save your favorite documents for easy access here.'
+            },
+            [WIDGET.PUBLISHER_INFO]: {
+                help: 'Publisher information for the current document your viewing will appear here.'
+            }
+        }
     },
     home: {
         intro: {
@@ -312,6 +390,9 @@ export const DEFAULT_CONTENT_CONFIGURATION: ContentConfiguration = {
                 body:
                     'The PEP-Web Archive has the complete content of the Standard Edition of the Complete Psychological Works of Sigmund Freud and the 19 volume German Freud Standard Edition Gesammelte Werke, and includes a concordance between editions where corresponding paragraphs are cross-linked. The Archive also contains 100 classic psychoanalytic books, including classic authors such as Bion, Bowlby, Klein, Meltzer, Winnicott, and many more.'
             }
+        },
+        expertPickOfTheDay: {
+            help: 'This article is picked by us due to it being interesting'
         }
     },
     search: {
@@ -328,6 +409,9 @@ export const DEFAULT_CONTENT_CONFIGURATION: ContentConfiguration = {
         },
         limitTo: {
             help: 'Restrict the search results to documents with a specific number of citations or views'
+        },
+        hitsInContext: {
+            help: 'Hits in context help text'
         },
         terms: {
             types: {

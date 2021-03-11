@@ -74,7 +74,15 @@ export default class SearchIndex extends Controller {
         'preview'
     ];
 
-    @tracked isLimitOpen: boolean = false;
+    /**
+     * This needs to be set like this in order to correctly copy over the right value if you have not visited the search page yet but you
+     * are on the index page
+     *
+     * @type {boolean}
+     * @memberof SearchIndex
+     */
+    @tracked isLimitOpen: boolean =
+        this.currentUser.preferences?.searchLimitIsShown ?? this.configuration.base.search.limitFields.isShown;
     @tracked q: string = '';
     @tracked matchSynonyms: boolean = false;
     @tracked citedCount: string = '';

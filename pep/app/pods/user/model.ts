@@ -1,9 +1,11 @@
 import DS from 'ember-data';
 import attr from 'ember-data/attr';
-
+import IntlService from 'ember-intl/services/intl';
 import moment, { Moment } from 'moment';
 import { SERVER_DATE_FORMAT } from 'pep/constants/dates';
 import { DEFAULT_USER_PREFERENCES, UserPreferences } from 'pep/constants/preferences';
+
+import { inject as service } from '@ember/service';
 
 export enum UserType {
     GROUP = 'Group',
@@ -20,6 +22,8 @@ interface ActiveSubscription {
 }
 
 export default class User extends DS.Model {
+    @service intl!: IntlService;
+
     @attr('string') activeSubscriptions!: string;
     @attr('boolean') branding!: boolean;
     @attr('string') brandingImgUrl!: string;

@@ -10,3 +10,4 @@ export const PARENTHESIS_REGEX = /\((.*)\)/;
 export const NON_DIGIT_REGEX = /\D/g;
 export const SEARCH_STRING_REGEX = /\(([^()]+)\)/g;
 export const SEARCH_STRING_TERMS_REGEX = /[^a-zA-Z\s-]+/g;
+export const URL_REGEX = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;

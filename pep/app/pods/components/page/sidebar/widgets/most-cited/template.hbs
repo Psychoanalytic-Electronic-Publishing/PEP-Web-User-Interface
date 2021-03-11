@@ -8,7 +8,7 @@
 >
     <Panel.header
         @title={{t "relatedInfo.widgets.mostCited.title"}}
-        @tooltip={{t "relatedInfo.widgets.mostCited.help"}}
+        @tooltip={{this.configuration.content.global.cards.mostCited.help}}
     />
     <Panel.body>
         <ContentWithPlaceholder @placeholderComponent="loading/widget" @isLoading={{this.loadResults.isRunning}}>

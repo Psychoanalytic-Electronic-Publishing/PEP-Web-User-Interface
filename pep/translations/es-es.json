@@ -101,8 +101,7 @@
             "label": {
                 "short": "Hits",
                 "full": "Hits in context"
-            },
-            "help": "Hits in context explanation goes here"
+            }
         },
         "sort": {
             "label": "Sort:",
@@ -527,7 +526,9 @@
         "success": "You are now logged in.",
         "forgotPassword": "Forgot Password?",
         "genericError": "Unable to login. There is a problem behind the scenes, and we are looking into it. Please try again later.",
-        "federatedLogin": "Federated Login"
+        "federatedLogin": "Federated Login",
+        "notARegisteredUser": "Not a registered user?",
+        "clickToRegister": "Click here to register"
     },
     "federatedLogin": {
         "title": "Federated Login",
@@ -616,6 +617,18 @@
             }
         }
     },
+    "user": {
+        "login": {
+            "individual": "Individual Login",
+            "ip": "IP Address",
+            "referrer": "Referrer URL",
+            "federated": "Federated Login",
+            "ipIndividual": "IP Address (Individual)",
+            "referrerIndividual": "Referrer URL (Individual)",
+            "federatedIndividual": "Federated Login (Individual)",
+            "loginMethod": "Logged in via {method}"
+        }
+    },
     "text": {
         "sizes": {
             "xs": "Extra Small",
@@ -660,22 +673,16 @@
     },
     "tour": {
         "home": {
-            "title": "Home",
-            "text": "This button takes you home",
             "buttons": {
                 "next": "Next"
             }
         },
         "leftSidebar": {
-            "title": "Search",
-            "text": "This button shows/hides the search",
             "buttons": {
                 "next": "Next"
             }
         },
         "rightSidebar": {
-            "title": "Widgets",
-            "text": "This button shows/hides the widgets",
             "buttons": {
                 "cancel": "Close"
             }
@@ -787,8 +794,17 @@
         },
         "common": {
             "title": "General",
+            "search": {
+                "title": "Search",
+                "hitsInContext": {
+                    "limit": "Hits in context limit"
+                }
+            },
             "global": {
                 "cards": {
+                    "left": "Left Sidebar",
+                    "right": "Right Sidebar",
+                    "opened": "Opened",
                     "videoPreview": {
                         "title": "Video Previews",
                         "code": "Video Preview Embed Code"
@@ -821,7 +837,61 @@
             }
         },
         "content": {
+            "help": {
+                "title": "Help icon text",
+                "home": {
+                    "expertPickOfTheDay": "Expert Pick of the Day"
+                },
+                "search": {
+                    "smartSearch": "Smart Search",
+                    "matchSynonyms": "Match Synonyms",
+                    "limitTo": "Limit To",
+                    "terms": {
+                        "types": {
+                            "everywhere": "Search term types - Everywhere",
+                            "author": "Search term types - Author",
+                            "title": "Search term types - Title",
+                            "dream": "Search term types - Dream",
+                            "quote": "Search term types - Quote",
+                            "reference": "Search term types - Reference",
+                            "dialog": "Search term types - Dialog",
+                            "article": "Search term types - Article",
+                            "startYear": "Search term types - Start Year",
+                            "endYear": "Search term types - End Year"
+                        }
+                    }
+                },
+                "cards": {
+                    "viewPreview": "Video preview widget",
+                    "topicalVideoPreview": "Topical video preview widget",
+                    "whatsNew": "Whats new widget",
+                    "mostCited": "Most cited widget",
+                    "mostViewed": "Most viewed widget",
+                    "relatedDocuments": "Related documents widget",
+                    "expertPicks": "Expert picks widget",
+                    "glossaryTerms": "Glossary terms widget",
+                    "moreLikeThese": "More like these widget",
+                    "readLater": "Read later widget",
+                    "favorites": "Favorites widget",
+                    "publisherInfo": "Publisher information widget"
+                }
+            },
             "global": {
+                "tour": {
+                    "title": "Tour Steps",
+                    "stepOne": {
+                        "title": "Step one title",
+                        "text": "Step one text"
+                    },
+                    "stepTwo": {
+                        "title": "Step two title",
+                        "text": "Step two text"
+                    },
+                    "stepThree": {
+                        "title": "Step three title",
+                        "text": "Step three text"
+                    }
+                },
                 "publishers": {
                     "title": "Publishers",
                     "sourceCode": "Source Code",
@@ -896,7 +966,8 @@
         "date": "{description} must be a valid date",
         "email": "{description} must be a valid email address",
         "phone": "{description} must be a valid phone number",
-        "url": "{description} must be a valid url"
+        "url": "{description} must be a valid url",
+        "urlFormat": "{description} must start with http:// or https://"
     },
     "fourOhFour": {
         "title": "404",

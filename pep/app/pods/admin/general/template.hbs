@@ -171,6 +171,20 @@
                                         </validator.input>
                                     </div>
                                 </div>
+                                <div class="form-row">
+                                    <div class="col-3">
+                                        <validator.input
+                                            @errors={{changeset.error.configSettings.search.limitFields.isShown.validation
+                                            }}
+                                        >
+                                            <ChangesetCheckbox
+                                                @changeset={{changeset}}
+                                                @path="configSettings.search.limitFields.isShown"
+                                                @label={{t "admin.common.search.limitFields.isShown"}}
+                                            />
+                                        </validator.input>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -179,7 +193,11 @@
                     <div class="card-body">
                         <div class="form-row">
                             <div class="col-12">
-                                <SortableGroup class="row" as |Group|>
+                                <SortableGroup
+                                    @swapAnimation={{true}}
+                                    @mirrorOptions={{this.mirrorOptions}}
+                                    class="row" as |Group|
+                                >
                                     <div class="col-12">
                                         <div class="row">
                                             <h4 class="col-6 d-flex justify-content-center align-items-end">
@@ -192,7 +210,7 @@
                                     </div>
                                     <div class="sortable container-list col-6">
                                         <Group.container
-                                            @items={{changeset.configSettings.global.cards.left}}
+                                            @items={{changeset-get changeset "configSettings.global.cards.left"}}
                                             @itemReordered={{changeset-set
                                                 changeset
                                                 "configSettings.global.cards.left"
@@ -203,7 +221,7 @@
                                                 "configSettings.global.cards.left"
                                             }} as |container|
                                         >
-                                            {{#each container.items as |item|}}
+                                            {{#each container.items as |item index|}}
                                                 <container.item @item={{item}}>
                                                     <div
                                                         class="d-flex justify-content-between align-items-center w-100"
@@ -211,7 +229,7 @@
                                                         {{item.widget}}
                                                         <CheckboxInput
                                                             @checked={{item.open}}
-                                                            @onChange={{fn this.updateOpenState changeset item "right"}}
+                                                            @onChange={{fn this.updateOpenState changeset index "left"}}
                                                             @label={{t "admin.common.global.cards.opened"}}
                                                         />
                                                     </div>
@@ -232,7 +250,7 @@
                                                 "configSettings.global.cards.right"
                                             }} as |container|
                                         >
-                                            {{#each container.items as |item|}}
+                                            {{#each container.items as |item index|}}
                                                 <container.item @item={{item}}>
                                                     <div
                                                         class="d-flex justify-content-between align-items-center w-100"
@@ -240,8 +258,82 @@
                                                         {{item.widget}}
                                                         <CheckboxInput
                                                             @checked={{item.open}}
-                                                            @onChange={{fn this.updateOpenState changeset item "right"}}
+                                                            @onChange={{fn
+                                                                this.updateOpenState
+                                                                changeset
+                                                                index
+                                                                "right"
+                                                            }}
                                                             @label={{t "admin.common.global.cards.opened"}}
+                                                        />
+                                                    </div>
+                                                </container.item>
+                                            {{/each}}
+                                        </Group.container>
+                                    </div>
+                                </SortableGroup>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="col-12">
+                                <SortableGroup
+                                    @swapAnimation={{true}}
+                                    @mirrorOptions={{this.mirrorOptions}}
+                                    class="row" as |Group|
+                                >
+                                    <h4 class="col-12 d-flex justify-content-between align-items-center">
+                                        {{t "admin.common.search.terms.defaults"}}
+                                        <Button
+                                            @type="primary"
+                                            @blockLayout={{this.fastbootMedia.isMobile}}
+                                            @icon="plus"
+                                            @action={{fn this.addDefaultField changeset}}
+                                        />
+                                    </h4>
+                                    <div class="sortable container-list col-12">
+                                        <Group.container
+                                            @items={{changeset.configSettings.search.terms.defaultFields}}
+                                            @itemReordered={{changeset-set
+                                                changeset
+                                                "configSettings.search.terms.defaultFields"
+                                            }}
+                                            @itemAdded={{changeset-set
+                                                changeset
+                                                "configSettings.search.terms.defaultFields"
+                                            }}
+                                            @itemRemoved={{changeset-set
+                                                changeset
+                                                "configSettings.search.terms.defaultFields"
+                                            }} as |container|
+                                        >
+                                            {{#each container.items as |item index|}}
+                                                <container.item @item={{item}}>
+                                                    <div
+                                                        class="d-flex justify-content-between align-items-center w-100"
+                                                    >
+                                                        <select
+                                                            class="custom-select col-2"
+                                                            {{on "change" (fn this.updateDefaultField changeset index)}}
+                                                        >
+                                                            {{#each this.searchTypeOptions as |searchType|}}
+                                                                <option
+                                                                    value={{searchType.id}}
+                                                                    selected={{eq searchType.id item}}
+                                                                >
+                                                                    {{t searchType.label}}
+                                                                </option>
+                                                            {{/each}}
+                                                        </select>
+
+                                                        <Button
+                                                            @type="secondary"
+                                                            @blockLayout={{this.fastbootMedia.isMobile}}
+                                                            @icon="times"
+                                                            @action={{fn this.removeDefaultField changeset index}}
                                                         />
                                                     </div>
                                                 </container.item>
