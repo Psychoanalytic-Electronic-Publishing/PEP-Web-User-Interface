@@ -36,9 +36,7 @@ export async function onAuthenticated(owner: Controller | Route | Component | Se
 
     currentUserService.setup();
     currentUserService.setFontSize(currentUserService.fontSize.id);
-    await themeService.setup();
-    await langService.setup();
-    configurationService.setup();
+    await Promise.all([themeService, langService, configurationService].invoke('setup'));
     return session.trigger('authenticationAndSetupSucceeded');
 }
 
