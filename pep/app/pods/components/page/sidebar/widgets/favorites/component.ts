@@ -1,23 +1,27 @@
-import Component from '@glimmer/component';
-import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
-import { WIDGET } from 'pep/constants/sidebar';
-import { inject as service } from '@ember/service';
-import CurrentUserService from 'pep/services/current-user';
 import { action } from '@ember/object';
-import Document from 'pep/pods/document/model';
+import { inject as service } from '@ember/service';
+import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
+
+import { restartableTask } from 'ember-concurrency-decorators';
+import { taskFor } from 'ember-concurrency-ts';
+import DS from 'ember-data';
+
 import { PreferenceKey } from 'pep/constants/preferences';
 import { SearchFacetId } from 'pep/constants/search';
+import { WIDGET } from 'pep/constants/sidebar';
+import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
+import Document from 'pep/pods/document/model';
+import ConfigurationService from 'pep/services/configuration';
+import CurrentUserService from 'pep/services/current-user';
 import { buildSearchQueryParams } from 'pep/utils/search';
-import { restartableTask } from 'ember-concurrency-decorators';
-import DS from 'ember-data';
-import { taskFor } from 'ember-concurrency-ts';
 
 interface PageSidebarWidgetsFavoritesArgs extends PageSidebarWidgetArgs {}
 
 export default class PageSidebarWidgetsFavorites extends Component<PageSidebarWidgetsFavoritesArgs> {
     @service store!: DS.Store;
     @service currentUser!: CurrentUserService;
+    @service configuration!: ConfigurationService;
 
     @tracked results?: Document[];
 

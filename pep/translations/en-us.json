@@ -799,6 +799,12 @@
                 "title": "Search",
                 "hitsInContext": {
                     "limit": "Hits in context limit"
+                },
+                "limitFields": {
+                    "isShown": "Limit fields shown"
+                },
+                "terms": {
+                    "defaults": "Default search types"
                 }
             },
             "global": {

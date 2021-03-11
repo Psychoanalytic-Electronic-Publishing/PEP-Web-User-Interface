@@ -14,12 +14,15 @@ import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/
 import Document from 'pep/pods/document/model';
 import SimilarityMatch from 'pep/pods/similarity-match/model';
 import AjaxService from 'pep/services/ajax';
+import ConfigurationService from 'pep/services/configuration';
 
 interface PageSidebarWidgetsMoreLikeTheseArgs extends PageSidebarWidgetArgs {}
 
 export default class PageSidebarWidgetsMoreLikeThese extends Component<PageSidebarWidgetsMoreLikeTheseArgs> {
     @service store!: DS.Store;
     @service ajax!: AjaxService;
+    @service configuration!: ConfigurationService;
+
     @tracked results?: SimilarityMatch;
     similarCount = 5;
 

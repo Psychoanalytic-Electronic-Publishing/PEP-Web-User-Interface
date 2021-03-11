@@ -3,12 +3,14 @@ import { inject as service } from '@ember/service';
 import { htmlSafe } from '@ember/string';
 import Component from '@glimmer/component';
 
-import Modal from '@gavant/ember-modals/services/modal';
 import DS from 'ember-data';
 import IntlService from 'ember-intl/services/intl';
 
+import Modal from '@gavant/ember-modals/services/modal';
+
 import { WIDGET } from 'pep/constants/sidebar';
 import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
+import ConfigurationService from 'pep/services/configuration';
 import LoadingBarService from 'pep/services/loading-bar';
 import NotificationsService from 'pep/services/notifications';
 import { shuffle } from 'pep/utils/array';
@@ -21,6 +23,7 @@ export default class PageSidebarWidgetsGlossaryTerms extends Component<PageSideb
     @service modal!: Modal;
     @service notifications!: NotificationsService;
     @service intl!: IntlService;
+    @service configuration!: ConfigurationService;
 
     smallestFontSize = 0.6;
     fontMultiplier = 1.1;
