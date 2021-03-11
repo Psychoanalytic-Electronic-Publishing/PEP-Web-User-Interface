@@ -37,8 +37,12 @@
                 <div class="card">
                     <div class="card-body" {{did-resize this.handleResize debounce=200}}>
                         <div class="border-divider-b mb-3">
-                            <h5 class="card-title">
+                            <h5 class="card-title align-items-center d-flex">
                                 {{t "home.expertPick.heading"}}
+                                <HelpTooltip
+                                    @tooltip={{this.configuration.content.home.expertPickOfTheDay.help}}
+                                    class="widget-tooltip mr-2"
+                                />
                             </h5>
                         </div>
                         <ContentWithPlaceholder @placeholderInFastboot={{true}}>

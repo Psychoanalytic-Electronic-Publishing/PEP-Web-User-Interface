@@ -350,6 +350,23 @@
                             </div>
                             <div class="col-12">
                                 <validator.input
+                                    @errors={{changeset.error.configSettings.home.expertPickOfTheDay.help.validation}}
+                                >
+                                    <FlInput
+                                        @value={{changeset.configSettings.home.expertPickOfTheDay.help}}
+                                        @placeholder={{t "admin.content.help.home.expertPickOfTheDay"}}
+                                    >
+                                        <ChangesetTextarea
+                                            @changeset={{changeset}}
+                                            @path="configSettings.home.expertPickOfTheDay.help"
+                                        />
+                                    </FlInput>
+                                </validator.input>
+                            </div>
+
+                            {{! Not being used for now - we are only using startYear }}
+                            {{!-- <div class="col-12">
+                                <validator.input
                                     @errors={{changeset.error.configSettings.search.terms.types.endYear.help.validation
                                     }}
                                 >
@@ -363,7 +380,7 @@
                                         />
                                     </FlInput>
                                 </validator.input>
-                            </div>
+                            </div> --}}
                             <div class="col-12">
                                 <validator.input
                                     @errors={{changeset.error.configSettings.search.smartSearch.help.validation}}

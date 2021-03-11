@@ -139,6 +139,9 @@ export interface ContentConfiguration {
                 body: string;
             };
         };
+        expertPickOfTheDay: {
+            help: string;
+        };
     };
     search: {
         tooManyResults: {
@@ -387,6 +390,9 @@ export const DEFAULT_CONTENT_CONFIGURATION: ContentConfiguration = {
                 body:
                     'The PEP-Web Archive has the complete content of the Standard Edition of the Complete Psychological Works of Sigmund Freud and the 19 volume German Freud Standard Edition Gesammelte Werke, and includes a concordance between editions where corresponding paragraphs are cross-linked. The Archive also contains 100 classic psychoanalytic books, including classic authors such as Bion, Bowlby, Klein, Meltzer, Winnicott, and many more.'
             }
+        },
+        expertPickOfTheDay: {
+            help: 'This article is picked by us due to it being interesting'
         }
     },
     search: {

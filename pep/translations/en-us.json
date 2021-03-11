@@ -846,6 +846,9 @@
         "content": {
             "help": {
                 "title": "Help icon text",
+                "home": {
+                    "expertPickOfTheDay": "Expert Pick of the Day"
+                },
                 "search": {
                     "smartSearch": "Smart Search",
                     "matchSynonyms": "Match Synonyms",
