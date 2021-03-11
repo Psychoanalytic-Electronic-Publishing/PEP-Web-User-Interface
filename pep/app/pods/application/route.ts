@@ -10,11 +10,12 @@ import CookiesService from 'ember-cookies/services/cookies';
 import IntlService from 'ember-intl/services/intl';
 import MetricService from 'ember-metrics/services/metrics';
 import MediaService from 'ember-responsive/services/media';
-import TourService, { Step } from 'ember-shepherd/services/tour';
+import TourService, { Step, StepButton } from 'ember-shepherd/services/tour';
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 
 import { PepSecureAuthenticatedData } from 'pep/api';
 import { PreferenceKey } from 'pep/constants/preferences';
+import { desktopTour, mobileTour } from 'pep/constants/tour';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import PageLayout from 'pep/mixins/page-layout';
 import { ApiServerErrorResponse } from 'pep/pods/application/adapter';
@@ -170,81 +171,35 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
         this.tour.set('modal', true);
         this.tour.set('exitOnEsc', true);
         this.tour.set('keyboardNavigation', true);
-        const steps: Step[] = [];
-        if (this.media.isMobile) {
-            steps.push({
-                id: 'home',
-                attachTo: {
-                    element: '.navbar .navbar-toggler',
-                    on: 'bottom'
-                },
 
-                text: this.configuration.content.global.tour.stepOne.text,
-                title: this.configuration.content.global.tour.stepOne.title,
-                buttons: [
-                    {
-                        text: this.intl.t('tour.home.buttons.next'),
-                        type: 'next'
-                    }
-                ]
-            });
-        } else {
-            steps.push({
-                id: 'home',
-                attachTo: {
-                    element: '.nav-item.home',
-                    on: 'auto'
-                },
-                text: this.configuration.content.global.tour.stepOne.text,
-                title: this.configuration.content.global.tour.stepOne.title,
-                buttons: [
-                    {
-                        text: this.intl.t('tour.home.buttons.next'),
-                        type: 'next'
-                    }
-                ]
-            });
-        }
-        steps.push(
-            {
-                id: 'toggle-left',
-                attachTo: {
-                    element: '.sidebar-left .sidebar-toggle-handle',
-                    on: 'auto'
-                },
-                classes: 'tour-left-sidebar-spacing',
-                text: this.configuration.content.global.tour.stepTwo.text,
-                title: this.configuration.content.global.tour.stepTwo.title,
-                buttons: [
-                    {
-                        text: this.intl.t('tour.leftSidebar.buttons.next'),
-                        type: 'next'
-                    }
-                ],
-                scrollTo: true
-            },
-            {
-                id: 'toggle-right',
-                attachTo: {
-                    element: '.sidebar-right .sidebar-toggle-handle',
-                    on: 'left'
-                },
-                classes: 'tour-right-sidebar-spacing',
-                text: this.configuration.content.global.tour.stepThree.text,
-                title: this.configuration.content.global.tour.stepThree.title,
-                buttons: [
-                    {
-                        text: this.intl.t('tour.rightSidebar.buttons.cancel'),
-                        type: 'cancel'
-                    }
-                ],
-                when: {
-                    show: () => {
-                        this.currentUser.updatePrefs({ [PreferenceKey.TOUR_ENABLED]: false });
-                    }
-                }
+        const partialSteps = this.media.isMobile ? mobileTour : desktopTour;
+        const steps: Step[] = partialSteps.map((partialStep, index) => {
+            const tour = this.configuration.content.global.tour;
+            const id = partialStep.id;
+            const buttons: StepButton[] =
+                partialStep.buttons?.map((button) => {
+                    return {
+                        ...button,
+                        text:
+                            index !== partialSteps.length - 1
+                                ? this.intl.t('tour.leftSidebar.buttons.next')
+                                : this.intl.t('tour.rightSidebar.buttons.cancel')
+                    };
+                }) ?? [];
+            const step: Step = {
+                ...partialStep,
+                text: tour[id].text,
+                title: tour[id].title,
+                buttons
+            };
+            return step;
+        });
+
+        steps[steps.length - 1].when = {
+            show: () => {
+                this.currentUser.updatePrefs({ [PreferenceKey.TOUR_ENABLED]: false });
             }
-        );
+        };
 
         await this.tour.addSteps(steps);
         this.tour.start();

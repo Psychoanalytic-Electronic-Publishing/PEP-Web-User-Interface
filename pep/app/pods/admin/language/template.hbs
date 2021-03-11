@@ -114,33 +114,53 @@
                     <div class="card-body">
                         <div class="form-row">
                             <div class="col-12">
+                                <h4 class="d-flex justify-content-between align-items-center border-bottom mb-3 pb-1">
+                                    {{t "admin.content.global.tour.title"}}
+                                </h4>
+                                <Table
+                                    @containerSelector=".page-content-inner"
+                                    @columns={{this.tourColumns}}
+                                    @rows={{this.tour}}
+                                    @fillMode="nth-column"
+                                    @fillColumnIndex={{0}}
+                                    @renderAllRows={{this.fastboot.isFastBoot}}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{!-- <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="col-12">
                                 <h4 class="border-bottom mb-3">
                                     {{t "admin.content.global.tour.title"}}
                                 </h4>
+
                                 <validator.input
-                                    @errors={{changeset.error.configSettings.global.tour.stepOne.title.validation}}
+                                    @errors={{changeset.error.configSettings.global.tour.stepOne.home.validation}}
                                 >
                                     <FlInput
-                                        @value={{changeset.configSettings.global.tour.stepOne.title}}
-                                        @placeholder={{t "admin.content.global.tour.stepOne.title"}}
+                                        @value={{changeset.configSettings.global.tour.home.title}}
+                                        @placeholder={{t "admin.content.global.tour.home.title"}}
                                     >
                                         <ChangesetInput
                                             @changeset={{changeset}}
-                                            @path="configSettings.global.tour.stepOne.title"
+                                            @path="configSettings.global.tour.home.title"
                                             class="form-control"
                                             autocomplete="off"
                                         />
                                     </FlInput>
                                 </validator.input>
                                 <validator.input
-                                    @errors={{changeset.error.configSettings.global.tour.stepOne.text.validation}}
+                                    @errors={{changeset.error.configSettings.global.tour.toggleLeft.text.validation}}
                                     @label={{true}}
                                     @hasFocusedOut={{true}}
-                                    @fieldLabel={{t "admin.content.global.tour.stepOne.text"}}
+                                    @fieldLabel={{t "admin.content.global.tour.toggleLeft.text"}}
                                 >
                                     <Admin::Editor
                                         @changeset={{changeset}}
-                                        @path="configSettings.global.tour.stepOne.text"
+                                        @path="configSettings.global.tour.toggleLeft.text"
                                     />
                                 </validator.input>
                             </div>
@@ -202,7 +222,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
                 <div class="card mb-4">
                     <div class="card-body">
                         <div class="form-row">
