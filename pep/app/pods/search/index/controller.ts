@@ -202,9 +202,20 @@ export default class SearchIndex extends Controller {
             : this.paginator.models;
     }
 
+    /**
+     * Sets up an auth succeeded event listener to reload the search page
+     * using the user's preferences.
+     */
     constructor() {
         super(...arguments);
         this.session.on('authenticationAndSetupSucceeded', this.handleUserChange);
+    }
+
+    /**
+     * Removes the auth succeeded event listener on controller destroy
+     */
+    willDestroy() {
+        this.session.off('authenticationAndSetupSucceeded', this.handleUserChange);
     }
 
     /**
