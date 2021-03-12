@@ -1,24 +1,20 @@
-import Controller from '@ember/controller';
-import { action, setProperties } from '@ember/object';
-import { inject as service } from '@ember/service';
-import { isEmpty } from '@ember/utils';
-import { tracked } from '@glimmer/tracking';
-
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import { didCancel, timeout } from 'ember-concurrency';
 import { restartableTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
 import IntlService from 'ember-intl/services/intl';
-
-import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
-import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
-
 import { SearchMetadata } from 'pep/api';
+import { DEFAULT_BASE_CONFIGURATION } from 'pep/constants/configuration';
 import { PreferenceKey } from 'pep/constants/preferences';
 import { TITLE_REGEX } from 'pep/constants/regex';
 import {
-    SEARCH_DEFAULT_VIEW_PERIOD, SEARCH_TYPE_ARTICLE, SearchFacetValue, SearchTermValue, SearchViews, SearchViewType,
+    SEARCH_DEFAULT_VIEW_PERIOD,
+    SEARCH_TYPE_ARTICLE,
+    SearchFacetValue,
+    SearchTermValue,
+    SearchViews,
+    SearchViewType,
     ViewPeriod
 } from 'pep/constants/search';
 import { WIDGET } from 'pep/constants/sidebar';
@@ -31,6 +27,7 @@ import CurrentUserService from 'pep/services/current-user';
 import ExportsService, { ExportType } from 'pep/services/exports';
 import FastbootMediaService from 'pep/services/fastboot-media';
 import LoadingBarService from 'pep/services/loading-bar';
+import PepSessionService from 'pep/services/pep-session';
 import PrinterService from 'pep/services/printer';
 import ScrollableService from 'pep/services/scrollable';
 import SearchSelection from 'pep/services/search-selection';
@@ -38,6 +35,14 @@ import SidebarService from 'pep/services/sidebar';
 import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
 import { SearchSorts, SearchSortType, transformSearchSortsToTable, transformSearchSortToAPI } from 'pep/utils/sort';
 import { hash } from 'rsvp';
+
+import Controller from '@ember/controller';
+import { action, setProperties } from '@ember/object';
+import { inject as service } from '@ember/service';
+import { isEmpty } from '@ember/utils';
+import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
+import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
+import { tracked } from '@glimmer/tracking';
 
 export default class SearchIndex extends Controller {
     @service ajax!: AjaxService;
@@ -53,6 +58,7 @@ export default class SearchIndex extends Controller {
     @service notifications!: NotificationService;
     @service intl!: IntlService;
     @service printer!: PrinterService;
+    @service('pep-session') session!: PepSessionService;
 
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
@@ -98,8 +104,13 @@ export default class SearchIndex extends Controller {
     @tracked previewMode: SearchPreviewMode = 'fit';
     @tracked containerMaxHeight = 0;
 
-    @tracked selectedView = this.currentUser.preferences?.searchViewType ?? SearchViews[0];
-    @tracked selectedSort = this.currentUser.preferences?.searchSortType ?? SearchSorts[0];
+    get selectedView() {
+        return this.currentUser.preferences?.searchViewType ?? SearchViews[0];
+    }
+
+    get selectedSort() {
+        return this.currentUser.preferences?.searchSortType ?? SearchSorts[0];
+    }
 
     readLaterKey = PreferenceKey.READ_LATER;
     favoritesKey = PreferenceKey.FAVORITES;
@@ -189,6 +200,22 @@ export default class SearchIndex extends Controller {
         return this.searchSelection.includedRecords.length
             ? this.searchSelection.includedRecords
             : this.paginator.models;
+    }
+
+    /**
+     * Sets up an auth succeeded event listener to reload the search page
+     * using the user's preferences.
+     */
+    constructor() {
+        super(...arguments);
+        this.session.on('authenticationAndSetupSucceeded', this.handleUserChange);
+    }
+
+    /**
+     * Removes the auth succeeded event listener on controller destroy
+     */
+    willDestroy() {
+        this.session.off('authenticationAndSetupSucceeded', this.handleUserChange);
     }
 
     /**
@@ -589,7 +616,6 @@ export default class SearchIndex extends Controller {
     updateSelectedView(event: HTMLElementEvent<HTMLSelectElement>) {
         const id = event.target.value as SearchViewType;
         const selectedView = SearchViews.find((item) => item.id === id);
-        this.selectedView = selectedView!;
         this.currentUser.updatePrefs({
             [PreferenceKey.SEARCH_VIEW_TYPE]: selectedView
         });
@@ -621,7 +647,6 @@ export default class SearchIndex extends Controller {
     updateSort(event: HTMLElementEvent<HTMLSelectElement>) {
         const id = event.target.value as SearchSortType;
         const selectedSort = SearchSorts.find((item) => item.id === id);
-        this.selectedSort = selectedSort!;
         this.paginator.changeSorting([
             {
                 valuePath: id,
@@ -732,6 +757,19 @@ export default class SearchIndex extends Controller {
         this.transitionToRoute('search.read', abstract.id, {
             queryParams: this.readQueryParams
         });
+    }
+
+    /**
+     * Reload the search page when the user has logged in
+     * and their searchHICLimit preference is different than the default.
+     *
+     */
+    @action
+    handleUserChange() {
+        const currentUser = this.currentUser;
+        if (currentUser.preferences?.searchHICLimit !== DEFAULT_BASE_CONFIGURATION.search.hitsInContext.limit) {
+            this.paginator?.reloadModels();
+        }
     }
 }
 

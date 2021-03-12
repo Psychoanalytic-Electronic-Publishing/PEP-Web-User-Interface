@@ -112,6 +112,19 @@ export default class CurrentUserService extends Service {
         return this.intl.t('user.login.loginMethod', { method });
     }
 
+    get loginTypeLabel() {
+        const isGroup = this.user?.isGroup ?? false;
+        return isGroup ? this.intl.t('user.login.individual') : '';
+    }
+
+    get logoutTypeLabel() {
+        const isGroup = this.user?.isGroup ?? false;
+        const loginMethod = USER_LOGIN_METHODS.findBy('id', this.user?.loggedInMethod);
+        const methodTranslation = loginMethod?.logoutLabel ?? loginMethod?.label;
+        const method = methodTranslation ? this.intl.t(methodTranslation) : '';
+        return isGroup ? this.intl.t('user.login.logoutType', { method }) : '';
+    }
+
     /**
      *Loads the current user from the API
      *
