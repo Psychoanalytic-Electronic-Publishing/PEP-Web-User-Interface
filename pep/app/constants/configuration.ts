@@ -1,5 +1,6 @@
 import { SearchFacetId, SearchTermId } from 'pep/constants/search';
 import { WIDGET } from 'pep/constants/sidebar';
+import { TourStepId } from 'pep/constants/tour';
 import { WordWheelSearchType } from 'pep/pods/components/word-wheel/component';
 
 /**
@@ -35,6 +36,11 @@ export interface ExpertPick {
 export interface VideoConfiguration {
     code: string;
     aspectRatio: AspectRatio;
+}
+
+export interface TourConfiguration {
+    title: string;
+    text: string;
 }
 
 /**
@@ -105,18 +111,7 @@ export interface ContentConfiguration {
         };
         publishers: Publisher[];
         tour: {
-            stepOne: {
-                title: string;
-                text: string;
-            };
-            stepTwo: {
-                title: string;
-                text: string;
-            };
-            stepThree: {
-                title: string;
-                text: string;
-            };
+            [K in TourStepId]: TourConfiguration;
         };
         cards: {
             [K in WIDGET]?: {
@@ -319,17 +314,25 @@ export const DEFAULT_CONTENT_CONFIGURATION: ContentConfiguration = {
             }
         ],
         tour: {
-            stepOne: {
+            [TourStepId.HOME]: {
                 title: 'Home',
                 text: 'This button takes you home'
             },
-            stepTwo: {
+            [TourStepId.TOGGLE_LEFT]: {
                 title: 'Search',
                 text: 'This button shows/hides the search'
             },
-            stepThree: {
+            [TourStepId.TOGGLE_RIGHT]: {
                 title: 'Widgets',
                 text: 'This button shows/hides the widgets'
+            },
+            [TourStepId.MAIN_NAVIGATION]: {
+                title: 'Navigation',
+                text: 'These buttons are your main navigation'
+            },
+            [TourStepId.LOGO]: {
+                title: 'Logo',
+                text: 'This is our logo'
             }
         },
         cards: {

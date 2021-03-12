@@ -32,6 +32,7 @@
         "saving": "Saving ...",
         "yes": "Yes",
         "no": "No",
+        "update": "Update",
         "asterixFieldsRequired": "Fields marked with an asterisk (*) are required."
     },
     "serverErrors": {
@@ -798,8 +799,7 @@
     "admin": {
         "title": "Admin",
         "publisher": {
-            "information": "Publisher Information",
-            "update": "Update"
+            "information": "Publisher Information"
         },
         "common": {
             "title": "General",
@@ -807,6 +807,12 @@
                 "title": "Search",
                 "hitsInContext": {
                     "limit": "Hits in context limit"
+                },
+                "limitFields": {
+                    "isShown": "Limit fields shown"
+                },
+                "terms": {
+                    "defaults": "Default search types"
                 }
             },
             "global": {
@@ -855,6 +861,7 @@
                     "smartSearch": "Smart Search",
                     "matchSynonyms": "Match Synonyms",
                     "limitTo": "Limit To",
+                    "hitsInContext": "Hits in context",
                     "terms": {
                         "types": {
                             "everywhere": "Search term types - Everywhere",
@@ -888,17 +895,14 @@
             "global": {
                 "tour": {
                     "title": "Tour Steps",
-                    "stepOne": {
-                        "title": "Step one title",
-                        "text": "Step one text"
+                    "table": {
+                        "id": "ID",
+                        "title": "Title"
                     },
-                    "stepTwo": {
-                        "title": "Step two title",
-                        "text": "Step two text"
-                    },
-                    "stepThree": {
-                        "title": "Step three title",
-                        "text": "Step three text"
+                    "step": {
+                        "title": "Step",
+                        "inputTitle": "Step title",
+                        "inputText": "Step text"
                     }
                 },
                 "publishers": {
@@ -934,7 +938,7 @@
                     "boxTwo": {
                         "title": "Information",
                         "heading": "Information Heading",
-                        "body": "Information body"
+                        "body": "Information Body"
                     }
                 }
             }
