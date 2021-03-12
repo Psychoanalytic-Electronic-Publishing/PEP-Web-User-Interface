@@ -75,6 +75,8 @@
                                         @action={{this.readImageDocument}}
                                         @type="none"
                                         class="mb-1 px-0 mr-md-auto mr-0"
+                                        name={{t "buttons.expertPickImage.name" id=this.expertPick.imageId}}
+                                        aria-label={{t "buttons.expertPickImage.ariaLabel" id=this.expertPick.imageId}}
                                     >
                                         <Document::Image @id={{this.expertPick.imageId}} class="rounded img-fluid" />
                                     </Button>

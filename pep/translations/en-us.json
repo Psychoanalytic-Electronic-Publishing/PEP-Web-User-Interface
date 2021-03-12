@@ -32,7 +32,8 @@
         "saving": "Saving...",
         "yes": "Yes",
         "no": "No",
-        "update": "Update"
+        "update": "Update",
+        "asterixFieldsRequired": "Fields marked with an asterisk (*) are required."
     },
     "serverErrors": {
         "heading": "The following {count, plural, =1 {error} other {errors}} occurred while attempting to process your request.",
@@ -167,7 +168,8 @@
                 "add": "Add term",
                 "synonyms": {
                     "title": "Match Synonyms"
-                }
+                },
+                "termSelectName": "{type}-select"
             },
             "additional": {
                 "limitTo": {
@@ -607,6 +609,7 @@
             },
             "preview": {
                 "label": "On search result selection",
+                "labelName": "on-search-result-selection",
                 "select": "Select your desired behavior",
                 "enabled": "Display a preview pane",
                 "disabled": "Open the full document"
@@ -716,18 +719,20 @@
         "form": {
             "title": "Error Report",
             "username": "Username",
-            "fullName": "Full Name",
-            "email": "Email",
+            "fullName": "Full Name *",
+            "email": "Email *",
             "problemText": "Please describe the issue/problem text",
-            "correctedText": "Please describe the corrections",
+            "correctedText": "Please describe the corrections *",
             "correctedTextHelp": "You may also describe the problem and corrections.",
-            "urlOfProblem": "URL of Problem",
+            "urlOfProblem": "URL of Problem *",
             "errorVerification": "Please verify that the issue is either PEP-Web only, or an obvious typographical issue in the original.",
             "explanation": "Explanation",
             "explanationHelp": "Please explain why you think this is an error on PEP-Web rather than the original.",
             "authorOrPublisher": "Are you the author or publisher?",
             "authorOrPublisherHelp": "Non-typographical issues in the original can be provided publisher changes.",
-            "originalCopy": "Do you have a copy of the original paper?"
+            "originalCopy": "Do you have a copy of the original paper?",
+            "authorOrPublisherName": "author-or-publisher",
+            "originalCopyName": "original-paper-copy"
         },
         "supportResource": {
             "customerService": "Access problems or general support",
@@ -740,9 +745,9 @@
         "instructions": "Thank you for providing feedback! Please describe any issues with as much detail as possible.",
         "feedbackSuccessful": "Your feedback has been submitted successfully. Thank you!",
         "form": {
-            "subject": "Subject",
-            "description": "Description",
-            "url": "URL",
+            "subject": "Subject *",
+            "description": "Description *",
+            "url": "URL *",
             "selectFeedbackType": "Select a feedback type",
             "type": "Type"
         },
@@ -791,7 +796,6 @@
         "gw": "Gesammelte Werke",
         "se": "Standard Edition"
     },
-
     "admin": {
         "title": "Admin",
         "publisher": {
@@ -936,6 +940,52 @@
                         "heading": "Information Heading",
                         "body": "Information Body"
                     }
+                }
+            }
+        }
+    },
+    "buttons": {
+        "sidebarToggle": {
+            "name": "Sidebar Toggle",
+            "ariaLabel": "Toggle the sidebar"
+        },
+        "expertPickImage": {
+            "name": "Article image {id}",
+            "ariaLabel": "Read article {id}"
+        },
+        "sideBarResize": {
+            "name": "Sidebar Resize",
+            "ariaLabel": "Resize the sidebar"
+        },
+        "nav": {
+            "help": {
+                "name": "Help Menu"
+            },
+            "user": {
+                "name": "User Menu"
+            },
+            "admin": {
+                "name": "Administrator Menu"
+            },
+            "facebook": {
+                "name": "PEP Facebook Page"
+            },
+            "home": {
+                "name": "Home",
+                "ariaLabel": "Visit Home Page"
+            },
+            "search": {
+                "name": "Search"
+            },
+            "read": {
+                "name": "Read"
+            },
+            "browse": {
+                "name": "Browse"
+            },
+            "support": {
+                "support": {
+                    "name": "Support"
                 }
             }
         }

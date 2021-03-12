@@ -1282,10 +1282,10 @@
     ember-cli-htmlbars "^4.2.3"
     ember-cli-typescript "^3.1.3"
 
-"@gavant/ember-floating-labels@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@gavant/ember-floating-labels/-/ember-floating-labels-1.0.2.tgz#3b4e12c3c7c1b00b045018c1d68f834412a2c32e"
-  integrity sha512-Om+5DNym4el9BFrv9mDMlQpqlwUGjZQP90Xo2rb9hbFF6DVGyQBsHDr6ITSYrw87RnmDz0zwxR8jzqDQ0lBfmw==
+"@gavant/ember-floating-labels@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@gavant/ember-floating-labels/-/ember-floating-labels-1.1.0.tgz#dd4e3aaddbbc233884ca224c72634d71eebc932f"
+  integrity sha512-7Xdq6sTPGKIzxOEydBhyeYRf97fJ8gdRoJ8izni02MZIWkzTG9gc9R91cuZFHZzJnnT5Z9QsuXve2WMKQcEpZw==
   dependencies:
     ember-cli-babel "^7.18.0"
     ember-cli-htmlbars "^4.2.3"

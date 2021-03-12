@@ -21,11 +21,19 @@
                 @onDragStart={{this.onDragStart}}
                 @onDragMove={{this.onDragMove}}
                 @onDragEnd={{this.onDragEnd}}
+                name={{t "buttons.sideBarResize.name"}}
+                aria-label={{t "buttons.sideBarResize.ariaLabel"}}
             />
         {{/if}}
         {{yield}}
     </div>
-    <button type="button" class="sidebar-toggle-handle" {{on "click" this.toggle}}>
+    <button
+        type="button"
+        class="sidebar-toggle-handle"
+        name={{t "buttons.sidebarToggle.name"}}
+        aria-label={{t "buttons.sidebarToggle.ariaLabel"}}
+        {{on "click" this.toggle}}
+    >
         <FaIcon @icon={{if
             this.isOpen
             (if this.isLeft "chevron-left" "chevron-right")

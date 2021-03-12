@@ -22,9 +22,10 @@
                 {{/each}}
             </ul>
             <div class="mb-2">
-                <h5 class="mb-3">
+                <h5 class="mb-0">
                     {{t "reportDataError.form.title"}}
                 </h5>
+                <div class="font-size-secondary text-muted mb-3">{{t "common.asterixFieldsRequired"}}</div>
                 <div class="form-row">
                     <div class="col-md-4">
                         <Validator.input @errors={{changeset.error.username.validation}} class="input-validator-compact">
@@ -64,49 +65,57 @@
                     </div>
                 </div>
                 <div class="form-row mb-2">
-                    <div class="col-md-7 d-flex flex-row justify-content-between pr-md-5">
-                        <div class="pl-md-1">
-                            {{t "reportDataError.form.authorOrPublisher"}}
+                    <fieldset class="col-md-7 pr-md-5">
+                        <div class="d-flex flex-row justify-content-between">
+                            <legend class="pl-md-1 d-flex radio-input-legend">
+                                {{t "reportDataError.form.authorOrPublisher"}}
+                            </legend>
+                            <div class="d-flex">
+                                <RadioInput
+                                    @label={{t "common.yes"}}
+                                    @value={{true}}
+                                    @checked={{changeset.isAuthorPublisher}}
+                                    @onChange={{fn this.updateBoolean "isAuthorPublisher" true}}
+                                    @name={{t "reportDataError.form.authorOrPublisherName"}}
+                                />
+                                <RadioInput
+                                    @label={{t "common.no"}}
+                                    @value={{false}}
+                                    @checked={{not changeset.isAuthorPublisher}}
+                                    @onChange={{fn this.updateBoolean "isAuthorPublisher" false}}
+                                    @name={{t "reportDataError.form.authorOrPublisherName"}}
+                                    class="ml-md-3 ml-2 mr-md-2 mr-0"
+                                />
+                            </div>
                         </div>
-                        <div class="d-flex">
-                            <RadioInput
-                                @label={{t "common.yes"}}
-                                @value={{true}}
-                                @checked={{changeset.isAuthorPublisher}}
-                                @onChange={{fn this.updateBoolean "isAuthorPublisher" true}}
-                            />
-                            <RadioInput
-                                @label={{t "common.no"}}
-                                @value={{false}}
-                                @checked={{not changeset.isAuthorPublisher}}
-                                @onChange={{fn this.updateBoolean "isAuthorPublisher" false}}
-                                class="ml-md-3 ml-2 mr-md-2 mr-0"
-                            />
-                        </div>
-                    </div>
+                    </fieldset>
                     <div class="small text-muted col-md-5">{{t "reportDataError.form.authorOrPublisherHelp"}}</div>
                 </div>
                 <div class="form-row">
-                    <div class="col-md-7 d-flex flex-row justify-content-between pr-md-5">
-                        <div class="pl-md-1">
-                            {{t "reportDataError.form.originalCopy"}}
+                    <fieldset class="col-md-7 pr-md-5">
+                        <div class="d-flex flex-row justify-content-between">
+                            <legend class="pl-md-1 d-flex radio-input-legend">
+                                {{t "reportDataError.form.originalCopy"}}
+                            </legend>
+                            <div class="d-flex">
+                                <RadioInput
+                                    @label={{t "common.yes"}}
+                                    @value={{true}}
+                                    @checked={{changeset.hasOriginalCopy}}
+                                    @onChange={{fn this.updateBoolean "hasOriginalCopy" true}}
+                                    @name={{t "reportDataError.form.originalCopyName"}}
+                                />
+                                <RadioInput
+                                    @label={{t "common.no"}}
+                                    @value={{false}}
+                                    @checked={{not changeset.hasOriginalCopy}}
+                                    @onChange={{fn this.updateBoolean "hasOriginalCopy" false}}
+                                    @name={{t "reportDataError.form.originalCopyName"}}
+                                    class="ml-md-3 ml-2 mr-md-2 mr-0"
+                                />
+                            </div>
                         </div>
-                        <div class="d-flex">
-                            <RadioInput
-                                @label={{t "common.yes"}}
-                                @value={{true}}
-                                @checked={{changeset.hasOriginalCopy}}
-                                @onChange={{fn this.updateBoolean "hasOriginalCopy" true}}
-                            />
-                            <RadioInput
-                                @label={{t "common.no"}}
-                                @value={{false}}
-                                @checked={{not changeset.hasOriginalCopy}}
-                                @onChange={{fn this.updateBoolean "hasOriginalCopy" false}}
-                                class="ml-md-3 ml-2 mr-md-2 mr-0"
-                            />
-                        </div>
-                    </div>
+                    </fieldset>
                 </div>
             </div>
         </Modal.body>

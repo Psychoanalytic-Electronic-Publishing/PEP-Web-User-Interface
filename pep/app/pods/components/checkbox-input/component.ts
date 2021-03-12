@@ -1,3 +1,5 @@
+import { cleanAndDasherize } from 'pep/utils/string';
+
 import { action } from '@ember/object';
 import { guidFor } from '@ember/object/internals';
 import Component from '@glimmer/component';
@@ -10,6 +12,7 @@ interface CheckboxInputArgs {
     label?: string;
     preventDefault?: boolean;
     stopPropagation?: boolean;
+    name?: string;
 }
 
 export default class CheckboxInput extends Component<CheckboxInputArgs> {
@@ -21,6 +24,10 @@ export default class CheckboxInput extends Component<CheckboxInputArgs> {
 
     get stopPropagation(): boolean {
         return this.args.stopPropagation ?? false;
+    }
+
+    get name() {
+        return this.args.name ?? cleanAndDasherize(this.args.label);
     }
 
     /**
