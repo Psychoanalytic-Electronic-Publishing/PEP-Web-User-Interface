@@ -2,6 +2,7 @@ import { action } from '@ember/object';
 import Transition from '@ember/routing/-private/transition';
 import Route from '@ember/routing/route';
 import RouterService from '@ember/routing/router-service';
+import { later, next } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
@@ -15,7 +16,7 @@ import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mi
 
 import { PepSecureAuthenticatedData } from 'pep/api';
 import { PreferenceKey } from 'pep/constants/preferences';
-import { desktopTour, mobileTour } from 'pep/constants/tour';
+import { DesktopTour, MobileTour } from 'pep/constants/tour';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import PageLayout from 'pep/mixins/page-layout';
 import { ApiServerErrorResponse } from 'pep/pods/application/adapter';
@@ -23,6 +24,7 @@ import ApplicationController from 'pep/pods/application/controller';
 import AuthService from 'pep/services/auth';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
+import DrawerService from 'pep/services/drawer';
 import LangService from 'pep/services/lang';
 import LoadingBarService from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
@@ -49,6 +51,7 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
     @service sidebar!: SidebarService;
     @service tour!: TourService;
     @service cookies!: CookiesService;
+    @service drawer!: DrawerService;
 
     constructor() {
         super(...arguments);
@@ -172,7 +175,7 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
         this.tour.set('exitOnEsc', true);
         this.tour.set('keyboardNavigation', true);
 
-        const partialSteps = this.media.isMobile ? mobileTour : desktopTour;
+        const partialSteps = this.media.isMobile ? MobileTour : DesktopTour;
         const steps: Step[] = partialSteps.map((partialStep, index) => {
             const tour = this.configuration.content.global.tour;
             const id = partialStep.id;
@@ -192,9 +195,16 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
                 title: tour[id].title,
                 buttons
             };
+            if (partialStep.beforeShow) {
+                step.beforeShowPromise = () => {
+                    return new Promise((resolve) => {
+                        partialStep.beforeShow?.(this);
+                        later(resolve, 1000);
+                    });
+                };
+            }
             return step;
         });
-
         steps[steps.length - 1].when = {
             show: () => {
                 this.currentUser.updatePrefs({ [PreferenceKey.TOUR_ENABLED]: false });

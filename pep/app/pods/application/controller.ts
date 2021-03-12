@@ -4,12 +4,13 @@ import { inject as service } from '@ember/service';
 import { isEmpty } from '@ember/utils';
 import { tracked } from '@glimmer/tracking';
 
-import Modal from '@gavant/ember-modals/services/modal';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import { timeout } from 'ember-concurrency';
 import { restartableTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
 import IntlService from 'ember-intl/services/intl';
+
+import Modal from '@gavant/ember-modals/services/modal';
 
 import { ServerStatus } from 'pep/api';
 import ENV from 'pep/config/environment';

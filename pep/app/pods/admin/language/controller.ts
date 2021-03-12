@@ -3,9 +3,7 @@ import { action, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 
-import { BufferedChangeset } from 'ember-changeset/types';
 import IntlService from 'ember-intl/services/intl';
-import { Step } from 'ember-shepherd/services/tour';
 
 import ModalService from '@gavant/ember-modals/services/modal';
 import { ColumnValue } from '@gavant/ember-table';
@@ -13,7 +11,7 @@ import createChangeset, { GenericChangeset } from '@gavant/ember-validations/uti
 
 import { ContentConfiguration, Publisher, TourConfiguration } from 'pep/constants/configuration';
 import { Language } from 'pep/constants/lang';
-import { PartialTourStep, TourStepId } from 'pep/constants/tour';
+import { TourStepId } from 'pep/constants/tour';
 import FastbootMediaService from 'pep/services/fastboot-media';
 import { CONFIGURATION_PUBLISHER_VALIDATIONS } from 'pep/validations/configuration/publisher';
 import { CONFIGURATION_TOUR_STEP_VALIDATIONS } from 'pep/validations/configuration/tour-step';

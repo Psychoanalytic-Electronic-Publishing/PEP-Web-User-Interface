@@ -21,40 +21,43 @@
         </div>
         <div class="px-3 py-4 page-drawer-content">
             <div class="list-group">
-                <Page::Drawer::NavItem class="mt-1">
+                <Page::Drawer::NavItem class="mt-1 tour-step-home">
                     <LinkTo @route="index" class="list-group-item list-group-item-action">
                         <FaIcon @icon="home" @fixedWidth={{true}} class="mr-2" />
                         {{t "nav.home"}}
                     </LinkTo>
                 </Page::Drawer::NavItem>
-                <Page::Drawer::NavItem class="mt-1">
-                    <LinkTo
-                        @route="search"
-                        @query={{this.defaultSearchParams}}
-                        class="list-group-item list-group-item-action"
-                    >
-                        <FaIcon @icon="search" @fixedWidth={{true}} class="mr-2" />
-                        {{t "nav.search"}}
-                    </LinkTo>
-                </Page::Drawer::NavItem>
-                <Page::Drawer::NavItem class="mt-1">
-                    <Button
-                        @action={{this.viewRead}}
-                        @type="link"
-                        class="list-group-item list-group-item-action"
-                        @disabled={{this.readDisabled}}
-                        @icon="book-reader"
-                        @iconClass="mr-2"
-                    >
-                        {{t "nav.read"}}
-                    </Button>
-                </Page::Drawer::NavItem>
-                <Page::Drawer::NavItem class="mt-1">
-                    <LinkTo @route="browse" class="list-group-item list-group-item-action">
-                        <FaIcon @icon="books" @fixedWidth={{true}} class="mr-2" />
-                        {{t "nav.browse"}}
-                    </LinkTo>
-                </Page::Drawer::NavItem>
+                <div class="list-group tour-step-navigation">
+                    <Page::Drawer::NavItem class="mt-1">
+                        <LinkTo
+                            @route="search"
+                            @query={{this.defaultSearchParams}}
+                            class="list-group-item list-group-item-action"
+                        >
+                            <FaIcon @icon="search" @fixedWidth={{true}} class="mr-2" />
+                            {{t "nav.search"}}
+                        </LinkTo>
+                    </Page::Drawer::NavItem>
+                    <Page::Drawer::NavItem class="mt-1">
+                        <Button
+                            @action={{this.viewRead}}
+                            @type="link"
+                            class="list-group-item list-group-item-action"
+                            @disabled={{this.readDisabled}}
+                            @icon="book-reader"
+                            @iconClass="mr-2"
+                        >
+                            {{t "nav.read"}}
+                        </Button>
+                    </Page::Drawer::NavItem>
+
+                    <Page::Drawer::NavItem class="mt-1">
+                        <LinkTo @route="browse" class="list-group-item list-group-item-action">
+                            <FaIcon @icon="books" @fixedWidth={{true}} class="mr-2" />
+                            {{t "nav.browse"}}
+                        </LinkTo>
+                    </Page::Drawer::NavItem>
+                </div>
 
                 <Page::Drawer::NavMenu
                     @title={{t "nav.help"}}
@@ -192,7 +195,7 @@
         <div class="page-drawer-footer mt-auto p-2 text-center text-white-50">
             <div class="mx-auto mb-2">
                 <a href={{this.facebookUrl}} class="text-white-50" target="_blank" rel="noopener noreferrer">
-                    <FaIcon @icon="facebook" @prefix="fab" @size="lg"/>
+                    <FaIcon @icon="facebook" @prefix="fab" @size="lg" />
                 </a>
             </div>
             <div class="small">
