@@ -627,7 +627,7 @@
             "ipIndividual": "IP Address (Individual)",
             "referrerIndividual": "Referrer URL (Individual)",
             "federatedIndividual": "Federated Login (Individual)",
-            "loginMethod": "Logged in via {method}",
+            "loginMethod": "Subscriptions set via {method}",
             "individual": "Individual",
             "logoutType": "{method}",
             "network": "Network"
