@@ -31,7 +31,8 @@
         "more": "More",
         "saving": "Saving...",
         "yes": "Yes",
-        "no": "No"
+        "no": "No",
+        "update": "Update"
     },
     "serverErrors": {
         "heading": "The following {count, plural, =1 {error} other {errors}} occurred while attempting to process your request.",
@@ -794,8 +795,7 @@
     "admin": {
         "title": "Admin",
         "publisher": {
-            "information": "Publisher Information",
-            "update": "Update"
+            "information": "Publisher Information"
         },
         "common": {
             "title": "General",
@@ -891,17 +891,14 @@
             "global": {
                 "tour": {
                     "title": "Tour Steps",
-                    "stepOne": {
-                        "title": "Step one title",
-                        "text": "Step one text"
+                    "table": {
+                        "id": "ID",
+                        "title": "Title"
                     },
-                    "stepTwo": {
-                        "title": "Step two title",
-                        "text": "Step two text"
-                    },
-                    "stepThree": {
-                        "title": "Step three title",
-                        "text": "Step three text"
+                    "step": {
+                        "title": "Step",
+                        "inputTitle": "Step title",
+                        "inputText": "Step text"
                     }
                 },
                 "publishers": {

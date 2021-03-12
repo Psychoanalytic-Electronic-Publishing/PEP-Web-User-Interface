@@ -114,91 +114,17 @@
                     <div class="card-body">
                         <div class="form-row">
                             <div class="col-12">
-                                <h4 class="border-bottom mb-3">
+                                <h4 class="d-flex justify-content-between align-items-center border-bottom mb-3 pb-1">
                                     {{t "admin.content.global.tour.title"}}
                                 </h4>
-                                <validator.input
-                                    @errors={{changeset.error.configSettings.global.tour.stepOne.title.validation}}
-                                >
-                                    <FlInput
-                                        @value={{changeset.configSettings.global.tour.stepOne.title}}
-                                        @placeholder={{t "admin.content.global.tour.stepOne.title"}}
-                                    >
-                                        <ChangesetInput
-                                            @changeset={{changeset}}
-                                            @path="configSettings.global.tour.stepOne.title"
-                                            class="form-control"
-                                            autocomplete="off"
-                                        />
-                                    </FlInput>
-                                </validator.input>
-                                <validator.input
-                                    @errors={{changeset.error.configSettings.global.tour.stepOne.text.validation}}
-                                    @label={{true}}
-                                    @hasFocusedOut={{true}}
-                                    @fieldLabel={{t "admin.content.global.tour.stepOne.text"}}
-                                >
-                                    <Admin::Editor
-                                        @changeset={{changeset}}
-                                        @path="configSettings.global.tour.stepOne.text"
-                                    />
-                                </validator.input>
-                            </div>
-                            <div class="col-12">
-                                <validator.input
-                                    @errors={{changeset.error.configSettings.global.tour.stepTwo.title.validation}}
-                                >
-                                    <FlInput
-                                        @value={{changeset.configSettings.global.tour.stepTwo.title}}
-                                        @placeholder={{t "admin.content.global.tour.stepTwo.title"}}
-                                    >
-                                        <ChangesetInput
-                                            @changeset={{changeset}}
-                                            @path="configSettings.global.tour.stepTwo.title"
-                                            class="form-control"
-                                            autocomplete="off"
-                                        />
-                                    </FlInput>
-                                </validator.input>
-                                <validator.input
-                                    @errors={{changeset.error.configSettings.global.tour.stepTwo.text.validation}}
-                                    @label={{true}}
-                                    @hasFocusedOut={{true}}
-                                    @fieldLabel={{t "admin.content.global.tour.stepTwo.text"}}
-                                >
-                                    <Admin::Editor
-                                        @changeset={{changeset}}
-                                        @path="configSettings.global.tour.stepTwo.text"
-                                    />
-                                </validator.input>
-                            </div>
-                            <div class="col-12">
-                                <validator.input
-                                    @errors={{changeset.error.configSettings.global.tour.stepThree.title.validation}}
-                                >
-                                    <FlInput
-                                        @value={{changeset.configSettings.global.tour.stepThree.title}}
-                                        @placeholder={{t "admin.content.global.tour.stepThree.title"}}
-                                    >
-                                        <ChangesetInput
-                                            @changeset={{changeset}}
-                                            @path="configSettings.global.tour.stepThree.title"
-                                            class="form-control"
-                                            autocomplete="off"
-                                        />
-                                    </FlInput>
-                                </validator.input>
-                                <validator.input
-                                    @errors={{changeset.error.configSettings.global.tour.stepThree.text.validation}}
-                                    @label={{true}}
-                                    @hasFocusedOut={{true}}
-                                    @fieldLabel={{t "admin.content.global.tour.stepThree.text"}}
-                                >
-                                    <Admin::Editor
-                                        @changeset={{changeset}}
-                                        @path="configSettings.global.tour.stepThree.text"
-                                    />
-                                </validator.input>
+                                <Table
+                                    @containerSelector=".page-content-inner"
+                                    @columns={{this.tourColumns}}
+                                    @rows={{this.tour}}
+                                    @fillMode="nth-column"
+                                    @fillColumnIndex={{0}}
+                                    @renderAllRows={{this.fastboot.isFastBoot}}
+                                />
                             </div>
                         </div>
                     </div>

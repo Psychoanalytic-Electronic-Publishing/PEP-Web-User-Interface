@@ -3,25 +3,112 @@ import { action, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 
-import { BufferedChangeset } from 'ember-changeset/types';
 import IntlService from 'ember-intl/services/intl';
 
 import ModalService from '@gavant/ember-modals/services/modal';
 import { ColumnValue } from '@gavant/ember-table';
-import createChangeset from '@gavant/ember-validations/utilities/create-changeset';
+import createChangeset, { GenericChangeset } from '@gavant/ember-validations/utilities/create-changeset';
 
-import { Publisher } from 'pep/constants/configuration';
+import { ContentConfiguration, Publisher, TourConfiguration } from 'pep/constants/configuration';
 import { Language } from 'pep/constants/lang';
+import { TourStepId } from 'pep/constants/tour';
 import FastbootMediaService from 'pep/services/fastboot-media';
 import { CONFIGURATION_PUBLISHER_VALIDATIONS } from 'pep/validations/configuration/publisher';
+import { CONFIGURATION_TOUR_STEP_VALIDATIONS } from 'pep/validations/configuration/tour-step';
 
 export default class AdminLanguage extends Controller {
     @service intl!: IntlService;
     @service fastbootMedia!: FastbootMediaService;
     @service modal!: ModalService;
 
-    @tracked changeset?: BufferedChangeset;
+    @tracked changeset?: GenericChangeset<ContentConfiguration>;
     @tracked language?: Language;
+
+    get tour() {
+        const changeset: ContentConfiguration = this.changeset?.get('configSettings');
+        const tour = changeset.global.tour;
+        return Object.keys(tour).map((key: TourStepId) => {
+            return {
+                id: key,
+                ...tour[key]
+            };
+        });
+    }
+
+    /**
+     * Columns for the table. The `computed` is required
+     *
+     * @readonly
+     * @type {ColumnValue[]}
+     * @memberof AdminLanguage
+     */
+    @computed('deletePublisher', 'editPublisher', 'openEditPublisher')
+    get columns(): ColumnValue[] {
+        return [
+            {
+                valuePath: 'sourceCode',
+                name: this.intl.t('admin.content.global.publishers.table.sourceCode'),
+                isSortable: false
+            },
+
+            {
+                name: this.intl.t('admin.content.global.publishers.table.embargoYears'),
+                cellComponent: 'tables/cell/html',
+                valuePath: 'embargoYears',
+                isSortable: true
+            },
+            {
+                cellComponent: 'tables/cell/actions',
+                textAlign: 'right',
+                cellClassNames: 'align-center',
+                actions: [
+                    {
+                        action: this.openEditPublisher,
+                        icon: 'edit'
+                    },
+                    {
+                        action: this.deletePublisher,
+                        icon: 'times'
+                    }
+                ]
+            }
+        ];
+    }
+
+    /**
+     * Columns for the table. The `computed` is required
+     *
+     * @readonly
+     * @type {ColumnValue[]}
+     * @memberof AdminLanguage
+     */
+    @computed('openEditTourStep')
+    get tourColumns(): ColumnValue[] {
+        return [
+            {
+                valuePath: 'id',
+                name: this.intl.t('admin.content.global.tour.table.id'),
+                isSortable: false
+            },
+
+            {
+                name: this.intl.t('admin.content.global.tour.table.title'),
+                valuePath: 'title',
+                isSortable: true
+            },
+            {
+                cellComponent: 'tables/cell/actions',
+                textAlign: 'right',
+                cellClassNames: 'align-center',
+                actions: [
+                    {
+                        action: this.openEditTourStep,
+                        icon: 'edit'
+                    }
+                ]
+            }
+        ];
+    }
 
     /**
      * Save the english admin items
@@ -67,6 +154,36 @@ export default class AdminLanguage extends Controller {
     }
 
     /**
+     * Open edit tour step modal
+     *
+     * @param {Step} step
+     * @memberof AdminLanguage
+     */
+    @action
+    openEditTourStep(step: TourConfiguration & { id: TourStepId }): void {
+        const changeset = createChangeset(step, CONFIGURATION_TOUR_STEP_VALIDATIONS);
+        this.modal.open('admin/tour', {
+            changeset,
+            actions: {
+                onSave: this.editTourStep
+            }
+        });
+    }
+
+    /**
+     * Edit the publisher and update the changeset
+     *
+     * @param {Publisher} publisher
+     * @memberof AdminLanguage
+     */
+    @action
+    editTourStep(step: TourConfiguration & { id: TourStepId }): void {
+        const tourSteps = (this.changeset?.configSettings as ContentConfiguration).global.tour;
+        tourSteps[step.id] = step;
+        this.changeset?.set('configSettings.global.tour', { ...tourSteps });
+    }
+
+    /**
      * Edit the publisher and update the changeset
      *
      * @param {Publisher} publisher
@@ -109,46 +226,6 @@ export default class AdminLanguage extends Controller {
         const publishers = this.changeset?.get('configSettings.global.publishers') as Publisher[];
         const filteredPublishers = publishers.filter((item) => item.sourceCode !== publisher.sourceCode);
         this.changeset?.set('configSettings.global.publishers', [...filteredPublishers]);
-    }
-
-    /**
-     * Columns for the table. The `computed` is required
-     *
-     * @readonly
-     * @type {ColumnValue[]}
-     * @memberof AdminLanguage
-     */
-    @computed('deletePublisher', 'editPublisher', 'openEditPublisher')
-    get columns(): ColumnValue[] {
-        return [
-            {
-                valuePath: 'sourceCode',
-                name: this.intl.t('admin.content.global.publishers.table.sourceCode'),
-                isSortable: false
-            },
-
-            {
-                name: this.intl.t('admin.content.global.publishers.table.embargoYears'),
-                cellComponent: 'tables/cell/html',
-                valuePath: 'embargoYears',
-                isSortable: true
-            },
-            {
-                cellComponent: 'tables/cell/actions',
-                textAlign: 'right',
-                cellClassNames: 'align-center',
-                actions: [
-                    {
-                        action: this.openEditPublisher,
-                        icon: 'edit'
-                    },
-                    {
-                        action: this.deletePublisher,
-                        icon: 'times'
-                    }
-                ]
-            }
-        ];
     }
 }
 

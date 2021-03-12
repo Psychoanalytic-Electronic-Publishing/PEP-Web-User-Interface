@@ -20,12 +20,7 @@
         </Modal.body>
         <Modal.footer>
             <Button @type="link" @label={{t "common.cancel"}} @action={{@onClose}} />
-            <ButtonSpinner
-                @type="primary"
-                @label={{t "admin.publisher.update"}}
-                @wide={{true}}
-                @action={{validator.submit}}
-            />
+            <ButtonSpinner @type="primary" @label={{t "common.update"}} @wide={{true}} @action={{validator.submit}} />
         </Modal.footer>
     </FormValidator>
 </ModalDialog>
