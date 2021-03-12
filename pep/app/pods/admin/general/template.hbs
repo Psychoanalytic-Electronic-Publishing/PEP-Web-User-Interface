@@ -239,7 +239,7 @@
                                     </div>
                                     <div class="sortable container-list col-6">
                                         <Group.container
-                                            @items={{changeset.configSettings.global.cards.right}}
+                                            @items={{changeset-get changeset "configSettings.global.cards.right"}}
                                             @itemReordered={{changeset-set
                                                 changeset
                                                 "configSettings.global.cards.right"
@@ -291,24 +291,13 @@
                                             @type="primary"
                                             @blockLayout={{this.fastbootMedia.isMobile}}
                                             @icon="plus"
-                                            @action={{fn this.addDefaultField changeset}}
+                                            @action={{fn this.addDefaultField}}
                                         />
                                     </h4>
                                     <div class="sortable container-list col-12">
                                         <Group.container
-                                            @items={{changeset.configSettings.search.terms.defaultFields}}
-                                            @itemReordered={{changeset-set
-                                                changeset
-                                                "configSettings.search.terms.defaultFields"
-                                            }}
-                                            @itemAdded={{changeset-set
-                                                changeset
-                                                "configSettings.search.terms.defaultFields"
-                                            }}
-                                            @itemRemoved={{changeset-set
-                                                changeset
-                                                "configSettings.search.terms.defaultFields"
-                                            }} as |container|
+                                            @items={{this.fields}}
+                                            @itemReordered={{this.updateFields}} as |container|
                                         >
                                             {{#each container.items as |item index|}}
                                                 <container.item @item={{item}}>
@@ -317,12 +306,12 @@
                                                     >
                                                         <select
                                                             class="custom-select col-2"
-                                                            {{on "change" (fn this.updateDefaultField changeset index)}}
+                                                            {{on "change" (fn this.updateDefaultField index)}}
                                                         >
                                                             {{#each this.searchTypeOptions as |searchType|}}
                                                                 <option
                                                                     value={{searchType.id}}
-                                                                    selected={{eq searchType.id item}}
+                                                                    selected={{eq searchType.id item.field}}
                                                                 >
                                                                     {{t searchType.label}}
                                                                 </option>
@@ -333,7 +322,7 @@
                                                             @type="secondary"
                                                             @blockLayout={{this.fastbootMedia.isMobile}}
                                                             @icon="times"
-                                                            @action={{fn this.removeDefaultField changeset index}}
+                                                            @action={{fn this.removeDefaultField index}}
                                                         />
                                                     </div>
                                                 </container.item>
