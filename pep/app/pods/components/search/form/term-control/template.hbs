@@ -23,6 +23,8 @@
             {{/if}}
             <select
                 class="custom-select search-form-term-control-field-type"
+                name={{t "search.form.terms.termSelectName" type=@searchTerm.type}}
+                aria-label={{t "search.form.terms.termSelectName" type=@searchTerm.type}}
                 {{on "change" (fn @updateTermType @searchTerm)}}
             >
                 {{#each this.searchTypeOptions as |searchType|}}

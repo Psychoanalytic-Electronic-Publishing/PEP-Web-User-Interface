@@ -31,7 +31,8 @@
         "more": "More",
         "saving": "Saving...",
         "yes": "Yes",
-        "no": "No"
+        "no": "No",
+        "asterixFieldsRequired": "Fields marked with an asterisk (*) are required."
     },
     "serverErrors": {
         "heading": "The following {count, plural, =1 {error} other {errors}} occurred while attempting to process your request.",
@@ -166,7 +167,8 @@
                 "add": "Add term",
                 "synonyms": {
                     "title": "Match Synonyms"
-                }
+                },
+                "termSelectName": "{type}-select"
             },
             "additional": {
                 "limitTo": {
@@ -608,7 +610,8 @@
                 "label": "On search result selection",
                 "select": "Select your desired behavior",
                 "enabled": "Display a preview pane",
-                "disabled": "Open the full document"
+                "disabled": "Open the full document",
+                "labelName": "on-search-result-selection"
             }
         },
         "sidebar": {
@@ -726,7 +729,9 @@
             "explanationHelp": "Please explain why you think this is an error on PEP-Web rather than the original.",
             "authorOrPublisher": "Are you the author or publisher?",
             "authorOrPublisherHelp": "Non-typographical issues in the original can be provided publisher changes.",
-            "originalCopy": "Do you have a copy of the original paper?"
+            "originalCopy": "Do you have a copy of the original paper?",
+            "authorOrPublisherName": "author-or-publisher",
+            "originalCopyName": "original-paper-copy"
         },
         "supportResource": {
             "customerService": "Access problems or general support",
@@ -931,6 +936,52 @@
                         "heading": "Information Heading",
                         "body": "Information body"
                     }
+                }
+            }
+        }
+    },
+    "buttons": {
+        "sidebarToggle": {
+            "name": "Sidebar Toggle",
+            "ariaLabel": "Toggle the sidebar"
+        },
+        "expertPickImage": {
+            "name": "Article image {id}",
+            "ariaLabel": "Read article {id}"
+        },
+        "sideBarResize": {
+            "name": "Sidebar Resize",
+            "ariaLabel": "Resize the sidebar"
+        },
+        "nav": {
+            "help": {
+                "name": "Help Menu"
+            },
+            "user": {
+                "name": "User Menu"
+            },
+            "admin": {
+                "name": "Administrator Menu"
+            },
+            "facebook": {
+                "name": "PEP Facebook Page"
+            },
+            "home": {
+                "name": "Home",
+                "ariaLabel": "Visit Home Page"
+            },
+            "search": {
+                "name": "Search"
+            },
+            "read": {
+                "name": "Read"
+            },
+            "browse": {
+                "name": "Browse"
+            },
+            "support": {
+                "support": {
+                    "name": "Support"
                 }
             }
         }

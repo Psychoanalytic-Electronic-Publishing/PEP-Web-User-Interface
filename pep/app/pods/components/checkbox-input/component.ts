@@ -1,5 +1,6 @@
 import { action } from '@ember/object';
 import { guidFor } from '@ember/object/internals';
+import { dasherize } from '@ember/string';
 import Component from '@glimmer/component';
 
 interface CheckboxInputArgs {
@@ -10,6 +11,7 @@ interface CheckboxInputArgs {
     label?: string;
     preventDefault?: boolean;
     stopPropagation?: boolean;
+    name?: string;
 }
 
 export default class CheckboxInput extends Component<CheckboxInputArgs> {
@@ -21,6 +23,11 @@ export default class CheckboxInput extends Component<CheckboxInputArgs> {
 
     get stopPropagation(): boolean {
         return this.args.stopPropagation ?? false;
+    }
+
+    get name() {
+        const name = this.args.name ?? this.args.label;
+        return name ? dasherize(name.replace(/\W/g, '')) : '';
     }
 
     /**

@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand fixed-top navbar-dark bg-gradient-primary" ...attributes>
-    <LinkTo @route="index" class="navbar-brand mr-auto d-flex">
+    <LinkTo @route="index" class="navbar-brand mr-auto d-flex" title={{t "buttons.nav.home.name"}}>
         <div class="navbar-brand-logo"></div>
         <div class="ml-2 navbar-text-container">
             <div>
@@ -25,7 +25,11 @@
     </button>
     <ul class="navbar-nav d-none d-md-flex">
         <li class="nav-item">
-            <LinkTo @route="search" @active={{this.searchActive}} class="nav-link">
+            <LinkTo
+                @route="search"
+                @active={{this.searchActive}}
+                class="nav-link"
+            >
                 {{t "nav.search"}}
             </LinkTo>
         </li>
@@ -41,25 +45,44 @@
             </Button>
         </li>
         <li class="nav-item">
-            <LinkTo @route="browse" @active={{this.browseActive}} class="nav-link">
+            <LinkTo
+                @route="browse"
+                @active={{this.browseActive}}
+                class="nav-link"
+                
+            >
                 {{t "nav.browse"}}
             </LinkTo>
         </li>
         <li class="nav-item home">
-            <LinkTo @route="index" class="nav-link">
-                <FaIcon @icon="home" @size="lg" />
+            <LinkTo
+                @route="index"
+                class="nav-link"
+                title={{t "buttons.nav.home.name"}}
+            >
+                <FaIcon @icon="home" @size="lg"/>
             </LinkTo>
         </li>
         <li class="nav-item">
             <div>
-                <a href={{this.facebookUrl}} class="nav-link" target="_blank" rel="noopener noreferrer">
+                <a
+                    href={{this.facebookUrl}}
+                    class="nav-link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title={{t "buttons.nav.facebook.name"}}
+                >
                     <FaIcon @icon="facebook" @prefix="fab" @size="lg"/>
                 </a>
             </div>
         </li>
         <li class="nav-item">
             <DropdownMenu @horizontalPosition="auto-right" as |DD|>
-                <DD.Trigger @htmlTag="a" class="nav-link">
+                <DD.Trigger
+                    @htmlTag="a"
+                    class="nav-link"
+                    title={{t "buttons.nav.help.name"}}
+                >
                     <FaIcon @icon="question" @size="lg" />
                 </DD.Trigger>
                 <DD.Content class="dropdown-menu">
@@ -94,7 +117,11 @@
         </li>
         <li class="nav-item">
             <DropdownMenu @horizontalPosition="auto-right" as |DD|>
-                <DD.Trigger @htmlTag="a" class="nav-link">
+                <DD.Trigger
+                    @htmlTag="a"
+                    class="nav-link"
+                    title={{t "buttons.nav.user.name"}}
+                >
                     <FaIcon @icon="user" @size="lg" />
                 </DD.Trigger>
                 <DD.Content class="dropdown-menu">
@@ -148,7 +175,11 @@
         {{#if this.currentUser.user.isAdmin}}
             <li class="nav-item">
                 <DropdownMenu @horizontalPosition="auto-right" as |DD|>
-                    <DD.Trigger @htmlTag="a" class="nav-link">
+                    <DD.Trigger
+                        @htmlTag="a"
+                        class="nav-link"
+                        title={{t "buttons.nav.admin.name"}}
+                    >
                         <FaIcon @icon="cog" @size="lg" />
                     </DD.Trigger>
                     <DD.Content class="dropdown-menu">
