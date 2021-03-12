@@ -22,9 +22,10 @@
                 {{/each}}
             </ul>
             <div class="mb-2">
-                <h5 class="mb-3">
+                <h5 class="mb-0">
                     {{t "reportDataError.form.title"}}
                 </h5>
+                <div class="font-size-secondary text-muted mb-3">{{t "common.asterixFieldsRequired"}}</div>
                 <div class="form-row">
                     <div class="col-md-4">
                         <Validator.input @errors={{changeset.error.username.validation}} class="input-validator-compact">

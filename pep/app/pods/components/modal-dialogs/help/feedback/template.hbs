@@ -12,6 +12,7 @@
     >
         <Modal.body>
             <p class="text-muted">{{t "feedback.instructions"}}</p>
+            <div class="font-size-secondary text-muted mb-3">{{t "common.asterixFieldsRequired"}}</div>
             <div class="form-row">
                 <div class="col-sm-6">
                     <Validator.input @errors={{changeset.error.subject.validation}} class="input-validator-compact">

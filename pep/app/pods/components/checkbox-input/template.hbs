@@ -2,6 +2,7 @@
     <input
         type="checkbox"
         class="custom-control-input"
+        name={{@label}}
         {{on "click" this.onChange}}
         checked={{@checked}}
         id={{this.inputId}}

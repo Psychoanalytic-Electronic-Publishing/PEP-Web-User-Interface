@@ -31,7 +31,8 @@
         "more": "More",
         "saving": "Saving...",
         "yes": "Yes",
-        "no": "No"
+        "no": "No",
+        "asterixFieldsRequired": "Fields marked with an asterisk (*) are required."
     },
     "serverErrors": {
         "heading": "The following {count, plural, =1 {error} other {errors}} occurred while attempting to process your request.",
@@ -715,12 +716,12 @@
         "form": {
             "title": "Error Report",
             "username": "Username",
-            "fullName": "Full Name",
-            "email": "Email",
+            "fullName": "Full Name *",
+            "email": "Email *",
             "problemText": "Please describe the issue/problem text",
-            "correctedText": "Please describe the corrections",
+            "correctedText": "Please describe the corrections *",
             "correctedTextHelp": "You may also describe the problem and corrections.",
-            "urlOfProblem": "URL of Problem",
+            "urlOfProblem": "URL of Problem *",
             "errorVerification": "Please verify that the issue is either PEP-Web only, or an obvious typographical issue in the original.",
             "explanation": "Explanation",
             "explanationHelp": "Please explain why you think this is an error on PEP-Web rather than the original.",
@@ -739,9 +740,9 @@
         "instructions": "Thank you for providing feedback! Please describe any issues with as much detail as possible.",
         "feedbackSuccessful": "Your feedback has been submitted successfully. Thank you!",
         "form": {
-            "subject": "Subject",
-            "description": "Description",
-            "url": "URL",
+            "subject": "Subject *",
+            "description": "Description *",
+            "url": "URL *",
             "selectFeedbackType": "Select a feedback type",
             "type": "Type"
         },
@@ -790,7 +791,6 @@
         "gw": "Gesammelte Werke",
         "se": "Standard Edition"
     },
-
     "admin": {
         "title": "Admin",
         "publisher": {
@@ -941,6 +941,16 @@
                     }
                 }
             }
+        }
+    },
+    "buttons": {
+        "sidebarToggle": {
+            "name": "Sidebar Toggle",
+            "ariaLabel": "Toggle the sidebar"
+        },
+        "expertPickImage": {
+            "name": "Article image {id}",
+            "ariaLabel": "Read article {id}"
         }
     },
     "validations": {
