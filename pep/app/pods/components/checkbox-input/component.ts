@@ -2,6 +2,7 @@ import { action } from '@ember/object';
 import { guidFor } from '@ember/object/internals';
 import { dasherize } from '@ember/string';
 import Component from '@glimmer/component';
+import { createAccessibilityName } from 'pep/utils/string';
 
 interface CheckboxInputArgs {
     onChange?: (newValue: boolean, event: Event) => void;
@@ -26,8 +27,7 @@ export default class CheckboxInput extends Component<CheckboxInputArgs> {
     }
 
     get name() {
-        const name = this.args.name ?? this.args.label;
-        return name ? dasherize(name.replace(/\W/g, '')) : '';
+        return this.args.name ?? createAccessibilityName(this.args.label);
     }
 
     /**
