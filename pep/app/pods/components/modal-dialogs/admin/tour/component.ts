@@ -14,6 +14,12 @@ interface ModalDialogsAdminTourArgs {
 }
 
 export default class ModalDialogsAdminTour extends Component<ModalDialogsAdminTourArgs> {
+    /**
+     * Update the tour step
+     *
+     * @return {*}  {Promise<void>}
+     * @memberof ModalDialogsAdminTour
+     */
     @action
     async update(): Promise<void> {
         this.args.options.changeset.execute();
