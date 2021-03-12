@@ -3,11 +3,16 @@ import Route from '@ember/routing/route';
 
 import createChangeset from '@gavant/ember-validations/utilities/create-changeset';
 
-import { BASE_CONFIG_NAME, DEFAULT_BASE_CONFIGURATION } from 'pep/constants/configuration';
+import { BASE_CONFIG_NAME, BaseConfiguration, DEFAULT_BASE_CONFIGURATION } from 'pep/constants/configuration';
+import { SearchTermId } from 'pep/constants/search';
 import AdminGeneralController from 'pep/pods/admin/general/controller';
 import Configuration from 'pep/pods/configuration/model';
 import { CONFIGURATION_GENERAL_VALIDATIONS } from 'pep/validations/configuration/general';
 
+export interface AdminField {
+    id: number;
+    field: SearchTermId;
+}
 export default class AdminGeneral extends Route {
     /**
      * Load the base config
@@ -31,6 +36,14 @@ export default class AdminGeneral extends Route {
         super.setupController(controller, model, transition);
 
         model.configSettings = Object.assign({}, DEFAULT_BASE_CONFIGURATION, model.configSettings);
-        controller.changeset = createChangeset(model, CONFIGURATION_GENERAL_VALIDATIONS);
+        const changeset = createChangeset<BaseConfiguration>(model, CONFIGURATION_GENERAL_VALIDATIONS);
+        controller.changeset = changeset;
+        const fields = (model.configSettings as BaseConfiguration).search.terms.defaultFields;
+        controller.fields = fields.map((field, index) => {
+            return {
+                id: index,
+                field
+            };
+        });
     }
 }

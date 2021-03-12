@@ -1,5 +1,6 @@
 import Controller from '@ember/controller';
 import { action, computed } from '@ember/object';
+import { next } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 
@@ -12,6 +13,7 @@ import createChangeset, { GenericChangeset } from '@gavant/ember-validations/uti
 
 import { ExpertPick, WidgetConfiguration } from 'pep/constants/configuration';
 import { SEARCH_TYPES, SearchTermId } from 'pep/constants/search';
+import { AdminField } from 'pep/pods/admin/general/route';
 import Configuration from 'pep/pods/configuration/model';
 import { CONFIGURATION_EXPERT_PICK_VALIDATIONS } from 'pep/validations/configuration/expert-pick';
 
@@ -21,7 +23,7 @@ export default class AdminGeneral extends Controller {
 
     @tracked changeset?: BufferedChangeset;
     @tracked saveDisabled: boolean = false;
-
+    @tracked fields: { id: number; field: SearchTermId }[] = [];
     mirrorOptions = {
         constrainDimensions: true
     };
@@ -115,6 +117,10 @@ export default class AdminGeneral extends Controller {
     @action
     save(): void {
         if (!this.saveDisabled) {
+            this.changeset?.set(
+                'configSettings.search.terms.defaultFields',
+                this.fields.map((field) => field.field)
+            );
             this.changeset?.save();
         }
     }
@@ -151,10 +157,23 @@ export default class AdminGeneral extends Controller {
      * @memberof AdminGeneral
      */
     @action
-    updateDefaultField(changeset: GenericChangeset<Configuration>, index: number, event: InputEvent): void {
-        const defaultFields = [...changeset.configSettings.search.terms.defaultFields];
-        defaultFields[index] = (event.target as HTMLSelectElement)?.value;
-        changeset.set('configSettings.search.terms.defaultFields', defaultFields);
+    updateDefaultField(index: number, event: InputEvent): void {
+        const defaultFields = this.fields;
+        defaultFields[index] = {
+            field: (event.target as HTMLSelectElement)?.value as SearchTermId,
+            id: defaultFields[index].id
+        };
+    }
+
+    /**
+     * Update fields on re-order
+     *
+     * @param {AdminField[]} orderedArray
+     * @memberof AdminGeneral
+     */
+    @action
+    updateFields(orderedArray: AdminField[]): void {
+        this.fields = [...orderedArray];
     }
 
     /**
@@ -165,10 +184,14 @@ export default class AdminGeneral extends Controller {
      * @memberof AdminGeneral
      */
     @action
-    removeDefaultField(changeset: GenericChangeset<Configuration>, index: number): void {
-        const defaultFields = [...changeset.configSettings.search.terms.defaultFields];
+    removeDefaultField(index: number): void {
+        const defaultFields = this.fields;
         defaultFields.splice(index, 1);
-        changeset.set('configSettings.search.terms.defaultFields', defaultFields);
+        // TODO: Why do I need to do this?
+        this.fields = [];
+        next(this, () => {
+            this.fields = [...defaultFields];
+        });
     }
 
     /**
@@ -178,10 +201,14 @@ export default class AdminGeneral extends Controller {
      * @memberof AdminGeneral
      */
     @action
-    addDefaultField(changeset: GenericChangeset<Configuration>): void {
-        const defaultFields = [...changeset.configSettings.search.terms.defaultFields];
-        defaultFields.push(SearchTermId.ARTICLE);
-        changeset.set('configSettings.search.terms.defaultFields', defaultFields);
+    addDefaultField(): void {
+        const defaultFields = this.fields;
+        defaultFields.push({ id: this.fields.length, field: SearchTermId.ARTICLE });
+        // TODO: Why do I need to do this?
+        this.fields = [];
+        next(this, () => {
+            this.fields = [...defaultFields];
+        });
     }
 }
 // DO NOT DELETE: this is how TypeScript knows how to look up your controllers.
