@@ -3,10 +3,12 @@ import Route from '@ember/routing/route';
 
 import createChangeset from '@gavant/ember-validations/utilities/create-changeset';
 
-import { DEFAULT_CONTENT_CONFIGURATION } from 'pep/constants/configuration';
+import merge from 'lodash.merge';
+import { ContentConfiguration, DEFAULT_CONTENT_CONFIGURATION, TourConfiguration } from 'pep/constants/configuration';
 import { LanguageCode, Languages } from 'pep/constants/lang';
+import { TourStepId } from 'pep/constants/tour';
 import AdminController from 'pep/pods/admin/controller';
-import AdminLanguageController from 'pep/pods/admin/language/controller';
+import AdminLanguageController, { TourConfigWithId } from 'pep/pods/admin/language/controller';
 import Configuration from 'pep/pods/configuration/model';
 import { CONFIGURATION_LANGUAGE_VALIDATIONS } from 'pep/validations/configuration/language';
 
@@ -31,10 +33,19 @@ export default class AdminLanguage extends Route {
      */
     setupController(controller: AdminLanguageController, model: Configuration, transition: Transition): void {
         super.setupController(controller, model, transition);
-        model.configSettings = Object.assign({}, DEFAULT_CONTENT_CONFIGURATION, model.configSettings);
+        model.configSettings = merge(DEFAULT_CONTENT_CONFIGURATION, model.configSettings);
+        // model.configSettings = DEFAULT_CONTENT_CONFIGURATION;
         controller.changeset = createChangeset(model, CONFIGURATION_LANGUAGE_VALIDATIONS);
         const langId = model.configName as LanguageCode;
         controller.language = Languages.findBy('code', langId);
+        const tour = (model.configSettings as ContentConfiguration).global.tour;
+        controller.tour = Object.keys(tour).map((key: TourStepId) => {
+            return {
+                id: key,
+                ...tour[key]
+            } as TourConfigWithId;
+        });
+
         const adminController = this.controllerFor('admin') as AdminController;
         adminController.selectedLanguage = langId;
     }
