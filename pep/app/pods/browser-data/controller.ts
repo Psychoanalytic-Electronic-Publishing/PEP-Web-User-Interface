@@ -11,6 +11,11 @@ import { SESSION_COOKIE_NAME } from 'pep/session-stores/application';
 export default class BrowserData extends Controller {
     @service cookies!: CookiesService;
 
+    /**
+     * Clear all local storage and cookies
+     *
+     * @memberof BrowserData
+     */
     @action
     clearData(): void {
         localStorage.clear();
