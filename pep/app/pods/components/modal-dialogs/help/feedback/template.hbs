@@ -14,6 +14,13 @@
             <p class="text-muted">{{t "feedback.instructions"}}</p>
             <div class="font-size-secondary text-muted mb-3">{{t "common.asterixFieldsRequired"}}</div>
             <div class="form-row">
+                <div class="col-sm-8">
+                    <Validator.input @errors={{changeset.error.reporterName.validation}} class="input-validator-compact">
+                        <FlInput @value={{changeset.reporterName}} @placeholder={{t "feedback.form.fullName"}} maxlength="128" />
+                    </Validator.input>
+                </div>
+            </div>
+            <div class="form-row">
                 <div class="col-sm-6">
                     <Validator.input @errors={{changeset.error.subject.validation}} class="input-validator-compact">
                         <FlInput @value={{changeset.subject}} @placeholder={{t "feedback.form.subject"}} maxlength="128" />

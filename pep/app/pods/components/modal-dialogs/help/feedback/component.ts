@@ -14,6 +14,7 @@ import FEEDBACK_TYPES, { FEEDBACK_TYPE_FEEDBACK, FeedbackType, FeedbackTypeId } 
 import AjaxService from 'pep/services/ajax';
 import LoadingBarService from 'pep/services/loading-bar';
 import FEEDBACK_VALIDATIONS from 'pep/validations/help/feedback';
+import CurrentUserService from 'pep/services/current-user';
 
 interface Feedback {
     subject: string;
@@ -35,6 +36,7 @@ export default class ModalDialogsHelpFeedback extends Component<ModalDialogsHelp
     @service notifications!: NotificationService;
     @service intl!: IntlService;
     @service ajax!: AjaxService;
+    @service currentUser!: CurrentUserService;
     validations = FEEDBACK_VALIDATIONS;
     feedbackUrl = `${ENV.reportsBaseUrl}/feedback`;
     feedbackTypes = FEEDBACK_TYPES;
@@ -56,8 +58,10 @@ export default class ModalDialogsHelpFeedback extends Component<ModalDialogsHelp
     constructor(owner: unknown, args: ModalDialogsHelpFeedbackArgs) {
         super(owner, args);
         const { name, version } = this.userAgent.browser.info;
+        const currentUser = this.currentUser.user;
         const feedbackChangeset = createChangeset<Feedback>(
             {
+                reporterName: currentUser?.userFullName ?? '',
                 subject: '',
                 description: '',
                 url: window.location.href,
