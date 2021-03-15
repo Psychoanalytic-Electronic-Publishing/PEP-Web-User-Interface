@@ -18,6 +18,7 @@ import LangService from 'pep/services/lang';
 import NotificationsService from 'pep/services/notifications';
 import ThemeService from 'pep/services/theme';
 import { guard } from 'pep/utils/types';
+import { Result } from 'true-myth/result';
 
 interface ModalDialogsUserPreferencesArgs {
     onClose: () => void;
@@ -149,23 +150,23 @@ export default class ModalDialogsUserPreferences extends Component<ModalDialogsU
      * @memberof ModalDialogsUserPreferences
      */
     @action
-    async updateWidgetsList(widget: WIDGET, selected: boolean) {
+    async updateWidgetsList(
+        widget: WIDGET,
+        selected: boolean
+    ): Promise<Result<UserPreferences | undefined, string> | undefined> {
         if (selected) {
-            const widgets = [...(this.currentUser.preferences?.visibleWidgets ?? [])];
+            const widgets = [...new Set(this.currentUser.preferences?.visibleWidgets)];
             widgets.push(widget);
-            const result = await this.currentUser.updatePrefs({ [PreferenceKey.VISIBLE_WIDGETS]: widgets });
-            if (result.isOk()) {
-                this.currentUser.preferences?.visibleWidgets?.push(widget);
-            }
+            return this.currentUser.updatePrefs({ [PreferenceKey.VISIBLE_WIDGETS]: widgets });
         } else {
             const index = this.currentUser.preferences?.visibleWidgets.indexOf(widget);
-            const widgets = [...(this.currentUser.preferences?.visibleWidgets ?? [])];
+            const widgets = [...new Set(this.currentUser.preferences?.visibleWidgets)];
+
             if (widgets && index !== undefined) {
                 widgets.removeAt(index);
-                const result = await this.currentUser.updatePrefs({ [PreferenceKey.VISIBLE_WIDGETS]: widgets });
-                if (result.isOk()) {
-                    this.currentUser.preferences?.visibleWidgets.removeAt(index);
-                }
+                return this.currentUser.updatePrefs({ [PreferenceKey.VISIBLE_WIDGETS]: widgets });
+            } else {
+                return;
             }
         }
     }

@@ -4,7 +4,7 @@ import Route from '@ember/routing/route';
 import createChangeset from '@gavant/ember-validations/utilities/create-changeset';
 
 import merge from 'lodash.merge';
-import { ContentConfiguration, DEFAULT_CONTENT_CONFIGURATION, TourConfiguration } from 'pep/constants/configuration';
+import { ContentConfiguration, DEFAULT_CONTENT_CONFIGURATION } from 'pep/constants/configuration';
 import { LanguageCode, Languages } from 'pep/constants/lang';
 import { TourStepId } from 'pep/constants/tour';
 import AdminController from 'pep/pods/admin/controller';
