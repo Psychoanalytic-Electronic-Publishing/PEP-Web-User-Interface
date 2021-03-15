@@ -749,7 +749,8 @@
             "description": "Description",
             "url": "URL",
             "selectFeedbackType": "Select a feedback type",
-            "type": "Type"
+            "type": "Type",
+            "fullName": "Full Name *"
         },
         "feedbackTypes": {
             "feedback": "Feedback",
