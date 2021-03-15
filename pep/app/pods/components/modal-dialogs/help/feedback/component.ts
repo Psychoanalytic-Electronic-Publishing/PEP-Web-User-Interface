@@ -20,6 +20,7 @@ interface Feedback {
     url: string;
     type: string;
     browser: string;
+    reporterName: string;
 }
 
 type FeedbackChangeset = GenericChangeset<Feedback>;
