@@ -945,6 +945,12 @@
             }
         }
     },
+    "browserData": {
+        "title": "Browser Data",
+        "heading": "Clear your browser data",
+        "text": "There are instances you may want to remove all browser based data that PEP stores. This page allows you remove all data stored in cookies and localstorage. Keep in mind that once you do that - any preferences not saved to the server will be lost, and you will be logged out",
+        "button": "Clear data"
+    },
     "buttons": {
         "sidebarToggle": {
             "name": "Sidebar Toggle",
