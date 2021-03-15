@@ -16,6 +16,7 @@ import FastbootMediaService from 'pep/services/fastboot-media';
 import { CONFIGURATION_PUBLISHER_VALIDATIONS } from 'pep/validations/configuration/publisher';
 import { CONFIGURATION_TOUR_STEP_VALIDATIONS } from 'pep/validations/configuration/tour-step';
 
+export type TourConfigWithId = TourConfiguration & { id: TourStepId };
 export default class AdminLanguage extends Controller {
     @service intl!: IntlService;
     @service fastbootMedia!: FastbootMediaService;
@@ -23,17 +24,7 @@ export default class AdminLanguage extends Controller {
 
     @tracked changeset?: GenericChangeset<ContentConfiguration>;
     @tracked language?: Language;
-
-    get tour() {
-        const changeset: ContentConfiguration = this.changeset?.get('configSettings');
-        const tour = changeset.global.tour;
-        return Object.keys(tour).map((key: TourStepId) => {
-            return {
-                id: key,
-                ...tour[key]
-            };
-        });
-    }
+    @tracked tour: TourConfigWithId[] = [];
 
     /**
      * Columns for the table. The `computed` is required
@@ -117,6 +108,17 @@ export default class AdminLanguage extends Controller {
      */
     @action
     save(): void {
+        const tour = this.tour.reduce(
+            (o, key) => ({
+                ...o,
+                [key.id]: {
+                    text: key.text,
+                    title: key.title
+                }
+            }),
+            {}
+        );
+        this.changeset?.set('configSettings.global.tour', tour);
         this.changeset?.save();
     }
 
@@ -177,10 +179,14 @@ export default class AdminLanguage extends Controller {
      * @memberof AdminLanguage
      */
     @action
-    editTourStep(step: TourConfiguration & { id: TourStepId }): void {
-        const tourSteps = (this.changeset?.configSettings as ContentConfiguration).global.tour;
-        tourSteps[step.id] = step;
-        this.changeset?.set('configSettings.global.tour', { ...tourSteps });
+    editTourStep(step: TourConfigWithId): void {
+        this.tour = this.tour.map((item) => {
+            if (item.id === step.id) {
+                return step;
+            } else {
+                return item;
+            }
+        });
     }
 
     /**

@@ -3,6 +3,7 @@ import Route from '@ember/routing/route';
 
 import createChangeset from '@gavant/ember-validations/utilities/create-changeset';
 
+import merge from 'lodash.merge';
 import { BASE_CONFIG_NAME, BaseConfiguration, DEFAULT_BASE_CONFIGURATION } from 'pep/constants/configuration';
 import { SearchTermId } from 'pep/constants/search';
 import AdminGeneralController from 'pep/pods/admin/general/controller';
@@ -35,7 +36,7 @@ export default class AdminGeneral extends Route {
     setupController(controller: AdminGeneralController, model: Configuration, transition: Transition): void {
         super.setupController(controller, model, transition);
 
-        model.configSettings = Object.assign({}, DEFAULT_BASE_CONFIGURATION, model.configSettings);
+        model.configSettings = merge(DEFAULT_BASE_CONFIGURATION, model.configSettings);
         const changeset = createChangeset<BaseConfiguration>(model, CONFIGURATION_GENERAL_VALIDATIONS);
         controller.changeset = changeset;
         const fields = (model.configSettings as BaseConfiguration).search.terms.defaultFields;

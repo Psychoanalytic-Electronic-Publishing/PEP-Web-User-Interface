@@ -173,7 +173,7 @@ export default class AdminGeneral extends Controller {
      */
     @action
     updateFields(orderedArray: AdminField[]): void {
-        this.fields = [...orderedArray];
+        this.fields = orderedArray;
     }
 
     /**
@@ -207,7 +207,7 @@ export default class AdminGeneral extends Controller {
         // TODO: Why do I need to do this?
         this.fields = [];
         next(this, () => {
-            this.fields = [...defaultFields];
+            this.fields = defaultFields;
         });
     }
 }
