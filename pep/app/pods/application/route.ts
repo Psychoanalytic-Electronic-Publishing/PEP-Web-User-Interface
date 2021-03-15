@@ -166,7 +166,9 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
             },
             when: {
                 cancel: () => {
-                    this.currentUser.updatePrefs({ [PreferenceKey.TOUR_ENABLED]: false });
+                    if (this.session.isAuthenticated) {
+                        this.currentUser.updatePrefs({ [PreferenceKey.TOUR_ENABLED]: false });
+                    }
                 }
             }
         });
@@ -207,7 +209,9 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
         });
         steps[steps.length - 1].when = {
             show: () => {
-                this.currentUser.updatePrefs({ [PreferenceKey.TOUR_ENABLED]: false });
+                if (this.session.isAuthenticated) {
+                    this.currentUser.updatePrefs({ [PreferenceKey.TOUR_ENABLED]: false });
+                }
             }
         };
 

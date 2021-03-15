@@ -33,6 +33,8 @@ Router.map(function() {
         this.route('general');
     });
 
+    this.route('browser-data');
+
     //make sure these routes are always defined last!
     this.route('five-hundred', { path: '/500' });
     this.route('four-oh-three', { path: '/403' });
