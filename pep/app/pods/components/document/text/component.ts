@@ -24,7 +24,7 @@ import GlossaryTerm from 'pep/pods/glossary-term/model';
 import AjaxService from 'pep/services/ajax';
 import CurrentUserService from 'pep/services/current-user';
 import LoadingBarService from 'pep/services/loading-bar';
-import PepSessionService from 'pep/services/pep-session';
+import PepSessionService from 'pep/services/session';
 import ThemeService from 'pep/services/theme';
 import { buildJumpToHitsHTML, loadXSLT, parseXML } from 'pep/utils/dom';
 import { reject } from 'rsvp';
@@ -77,7 +77,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
     @service theme!: ThemeService;
     @service router!: RouterService;
     @service currentUser!: CurrentUserService;
-    @service('pep-session') session!: PepSessionService;
+    @service session!: PepSessionService;
     @service ajax!: AjaxService;
 
     @tracked xml?: XMLDocument;

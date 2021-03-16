@@ -20,13 +20,13 @@ import AjaxService from 'pep/services/ajax';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
 import LoadingBarService from 'pep/services/loading-bar';
-import PepSessionService from 'pep/services/pep-session';
+import PepSessionService from 'pep/services/session';
 import SidebarService from 'pep/services/sidebar';
 import { clearSearch } from 'pep/utils/search';
 
 export default class Application extends Controller {
     @service loadingBar!: LoadingBarService;
-    @service('pep-session') session!: PepSessionService;
+    @service session!: PepSessionService;
     @service ajax!: AjaxService;
     @service notifications!: NotificationService;
     @service modal!: Modal;

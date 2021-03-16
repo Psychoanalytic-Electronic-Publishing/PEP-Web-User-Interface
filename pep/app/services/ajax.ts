@@ -5,7 +5,7 @@ import FastbootService from 'ember-cli-fastboot/services/fastboot';
 
 import fetch from 'fetch';
 import ENV from 'pep/config/environment';
-import PepSessionService from 'pep/services/pep-session';
+import PepSessionService from 'pep/services/session';
 import { guard } from 'pep/utils/types';
 import { appendTrailingSlash } from 'pep/utils/url';
 import { reject } from 'rsvp';
@@ -13,7 +13,7 @@ import { reject } from 'rsvp';
 export type RequestInitWithSlash = RequestInit & { appendTrailingSlash?: boolean };
 
 export default class AjaxService extends Service {
-    @service('pep-session') session!: PepSessionService;
+    @service session!: PepSessionService;
     @service fastboot!: FastbootService;
 
     host: string = ENV.apiBaseUrl;

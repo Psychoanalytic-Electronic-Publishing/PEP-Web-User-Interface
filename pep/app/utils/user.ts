@@ -24,7 +24,7 @@ export async function onAuthenticated(owner: Controller | Route | Component | Se
     const themeService = currentOwner.lookup(`service:theme`);
     const langService = currentOwner.lookup(`service:lang`);
     const configurationService = currentOwner.lookup(`service:configuration`);
-    const session = currentOwner.lookup('service:pep-session');
+    const session = currentOwner.lookup('service:session');
 
     try {
         // get the current user's model before transitioning from the login page

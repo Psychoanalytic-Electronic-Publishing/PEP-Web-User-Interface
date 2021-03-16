@@ -1,6 +1,5 @@
 import Controller from '@ember/controller';
 import { action, computed } from '@ember/object';
-import { next } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 
@@ -185,13 +184,9 @@ export default class AdminGeneral extends Controller {
      */
     @action
     removeDefaultField(index: number): void {
-        const defaultFields = this.fields;
+        const defaultFields = [...this.fields];
         defaultFields.splice(index, 1);
-        // TODO: Why do I need to do this?
-        this.fields = [];
-        next(this, () => {
-            this.fields = [...defaultFields];
-        });
+        this.fields = [...defaultFields];
     }
 
     /**
@@ -202,13 +197,7 @@ export default class AdminGeneral extends Controller {
      */
     @action
     addDefaultField(): void {
-        const defaultFields = this.fields;
-        defaultFields.push({ id: this.fields.length, field: SearchTermId.ARTICLE });
-        // TODO: Why do I need to do this?
-        this.fields = [];
-        next(this, () => {
-            this.fields = defaultFields;
-        });
+        this.fields = [...this.fields, { id: this.fields.length, field: SearchTermId.ARTICLE }];
     }
 }
 // DO NOT DELETE: this is how TypeScript knows how to look up your controllers.

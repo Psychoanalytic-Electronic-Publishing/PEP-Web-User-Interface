@@ -3,15 +3,15 @@ import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
 
 import ENV from 'pep/config/environment';
-import PepSessionService from 'pep/services/pep-session';
 import PrinterService from 'pep/services/printer';
+import PepSessionService from 'pep/services/session';
 
 interface DocumentActionsPrintArgs {
     id: string;
 }
 
 export default class DocumentActionsPrint extends Component<DocumentActionsPrintArgs> {
-    @service('pep-session') session!: PepSessionService;
+    @service session!: PepSessionService;
     @service printer!: PrinterService;
 
     /**
@@ -21,7 +21,7 @@ export default class DocumentActionsPrint extends Component<DocumentActionsPrint
      */
     @action
     print() {
-        let url = `${ENV.apiBaseUrl}/${ENV.apiNamespace}/Documents/Downloads/PDF/${this.args.id}/?${this.session.downloadAuthParams}`;
+        const url = `${ENV.apiBaseUrl}/${ENV.apiNamespace}/Documents/Downloads/PDF/${this.args.id}/?${this.session.downloadAuthParams}`;
         this.printer.printElement(url);
     }
 }

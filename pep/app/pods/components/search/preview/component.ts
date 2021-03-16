@@ -5,16 +5,17 @@ import { htmlSafe } from '@ember/template';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
-import ModalService from '@gavant/ember-modals/services/modal';
 import { DS } from 'ember-data';
+
+import ModalService from '@gavant/ember-modals/services/modal';
 
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import Abstract from 'pep/pods/abstract/model';
 import GlossaryTerm from 'pep/pods/glossary-term/model';
 import AuthService from 'pep/services/auth';
 import LoadingBarService from 'pep/services/loading-bar';
-import PepSessionService from 'pep/services/pep-session';
 import ScrollableService from 'pep/services/scrollable';
+import PepSessionService from 'pep/services/session';
 
 export type SearchPreviewMode = 'minimized' | 'maximized' | 'fit' | 'custom';
 
@@ -28,7 +29,7 @@ interface SearchPreviewArgs {
 }
 
 export default class SearchPreview extends Component<SearchPreviewArgs> {
-    @service('pep-session') session!: PepSessionService;
+    @service session!: PepSessionService;
     @service auth!: AuthService;
     @service scrollable!: ScrollableService;
     @service loadingBar!: LoadingBarService;

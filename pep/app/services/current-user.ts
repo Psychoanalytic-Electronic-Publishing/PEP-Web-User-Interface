@@ -19,7 +19,7 @@ import USER_LOGIN_METHODS from 'pep/constants/user';
 import User, { UserType } from 'pep/pods/user/model';
 import AuthService from 'pep/services/auth';
 import InformationBarService from 'pep/services/information-bar';
-import PepSessionService from 'pep/services/pep-session';
+import PepSessionService from 'pep/services/session';
 import { addClass, removeClass } from 'pep/utils/dom';
 import { reject } from 'rsvp';
 import Result, { err, ok } from 'true-myth/result';
@@ -31,7 +31,7 @@ export enum VIEW_DOCUMENT_FROM {
 
 export default class CurrentUserService extends Service {
     @service store!: DS.Store;
-    @service('pep-session') session!: PepSessionService;
+    @service session!: PepSessionService;
     @service fastboot!: FastbootService;
     @service cookies!: CookiesService;
     @service intl!: IntlService;

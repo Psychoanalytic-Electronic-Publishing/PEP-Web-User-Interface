@@ -4,17 +4,21 @@ import { inject as service } from '@ember/service';
 import { htmlSafe } from '@ember/string';
 import { isEmpty } from '@ember/utils';
 
+import classic from 'ember-classic-decorator';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
+import CookiesService from 'ember-cookies/services/cookies';
 import IntlService from 'ember-intl/services/intl';
-import BaseAuthenticator from 'ember-simple-auth/authenticators/base';
+import OAuth2PasswordGrant from 'ember-simple-auth/authenticators/oauth2-password-grant';
 
 import { PepSecureAuthenticatedData } from 'pep/api';
 import ENV from 'pep/config/environment';
+import { USER_PREFERENCES_COOKIE_NAME } from 'pep/constants/preferences';
 import AjaxService from 'pep/services/ajax';
-import PepSessionService from 'pep/services/pep-session';
+import PepSessionService, { UNAUTHENTICATED_SESSION_COOKIE_NAME } from 'pep/services/session';
+import { SESSION_COOKIE_NAME } from 'pep/session-stores/application';
 import { guard } from 'pep/utils/types';
 import { serializeQueryParams } from 'pep/utils/url';
-import { reject, resolve } from 'rsvp';
+import RSVP, { reject, resolve } from 'rsvp';
 
 export enum SessionType {
     CREDENTIALS = 'credentials',
@@ -26,31 +30,17 @@ export interface AuthError {
     response: Response;
 }
 
-export default class CredentialsAuthenticator extends BaseAuthenticator {
+@classic
+export default class CredentialsAuthenticator extends OAuth2PasswordGrant {
     @service ajax!: AjaxService;
     @service intl!: IntlService;
-    @service('pep-session') session!: PepSessionService;
+    @service session!: PepSessionService;
     @service fastboot!: FastbootService;
+    @service cookies!: CookiesService;
 
     authenticationHeaders: { [key: string]: any } = {
         'Content-Type': 'application/json'
     };
-    private _invalidateTimeout?: EmberRunTimer;
-
-    /**
-     * Calculate expiration time - copied from ember simple auth
-     *
-     * @param {number} expiresIn
-     * @returns
-     * @memberof CredentialsAuthenticator
-     */
-    _absolutizeExpirationTime(expiresIn: number): number | undefined {
-        if (!isEmpty(expiresIn)) {
-            return new Date(new Date().getTime() + expiresIn * 1000).getTime();
-        } else {
-            return undefined;
-        }
-    }
 
     /**
      * Calculate the expires at value and add it to the response so it gets saved in the cookie
@@ -76,111 +66,122 @@ export default class CredentialsAuthenticator extends BaseAuthenticator {
      * @return {*}
      * @memberof CredentialsAuthenticator
      */
-    async authenticate(username: string, password: string): Promise<PepSecureAuthenticatedData> {
-        try {
-            const sessionId = this.session.sessionId;
-            const params = serializeQueryParams({ SessionId: sessionId });
-            let url = `${ENV.authBaseUrl}/Authenticate`;
-            if (sessionId) {
-                url = `${url}?${params}`;
-            }
+    authenticate(username: string, password: string): Promise<PepSecureAuthenticatedData> {
+        this.cookies.write(SESSION_COOKIE_NAME, JSON.stringify({ authenticated: {} }), {});
+        return new RSVP.Promise((resolve, reject) => {
+            try {
+                const sessionId = this.session.sessionId;
+                const params = serializeQueryParams({ SessionId: sessionId });
+                let url = `${ENV.authBaseUrl}/Authenticate`;
+                if (sessionId) {
+                    url = `${url}?${params}`;
+                }
 
-            const response = await this.ajax.request<PepSecureAuthenticatedData>(url, {
-                method: 'POST',
-                headers: this.authenticationHeaders,
-                body: this.ajax.stringifyData({
-                    UserName: username,
-                    Password: password
-                })
-            });
-            if (response.IsValidLogon) {
-                this.session.clearUnauthenticatedSession();
-                response.SessionType = SessionType.CREDENTIALS;
-                const updatedResponse = this.setupExpiresAt(response);
-                this._scheduleSessionExpiration(updatedResponse);
-                return updatedResponse;
-            } else {
-                this.session.setUnauthenticatedSession(response);
-                return reject(response.ReasonStr);
-            }
-        } catch (errors) {
-            if (guard<AuthError>(errors, 'payload')) {
-                return reject(htmlSafe(errors.payload?.ReasonStr ?? this.intl.t('login.error')));
-            } else {
-                return reject(this.intl.t('login.genericError'));
-            }
-        }
-    }
+                this.ajax
+                    .request<PepSecureAuthenticatedData>(url, {
+                        method: 'POST',
+                        headers: this.authenticationHeaders,
+                        body: this.ajax.stringifyData({
+                            UserName: username,
+                            Password: password
+                        })
+                    })
+                    .then(
+                        (response) => {
+                            run(() => {
+                                if (response.IsValidLogon) {
+                                    this.session.clearUnauthenticatedSession();
+                                    response.SessionType = SessionType.CREDENTIALS;
+                                    // // const updatedResponse = this.setupExpiresAt(response);
+                                    // // this._scheduleSessionExpiration(updatedResponse);
 
-    /**
-     * Invalidates the local session and logs the user out
-     */
-    async invalidate(data: PepSecureAuthenticatedData): Promise<void> {
-        try {
-            const params = serializeQueryParams({ SessionId: data.SessionId });
-            await this.ajax.request(`${ENV.authBaseUrl}/Users/Logout?${params}`, {
-                method: 'POST',
-                headers: this.authenticationHeaders
-            });
-            return resolve();
-        } catch (errors) {
-            return resolve();
-        } finally {
-            this._cancelTimeout();
-        }
-    }
+                                    // const expiresAt = this._absolutizeExpirationTime(response['SessionExpires']);
+                                    // this._scheduleAccessTokenRefresh(response['expires_in'], expiresAt, response['refresh_token']);
+                                    // if (!isEmpty(expiresAt)) {
+                                    //   response = assign(response, { 'expires_at': expiresAt });
+                                    // }
 
-    /**
-     * Restores the local session from cookies, if one exists. Also schedule the session expiration
-     * if needed
-     * @param {SessionAuthenticatedData} data
-     */
-    restore(data: PepSecureAuthenticatedData): Promise<unknown> {
-        return new Promise((resolve, reject) => {
-            const now = new Date().getTime();
-            if (!isEmpty(data.expiresAt) && data.expiresAt <= now) {
-                this.session.invalidate(data);
-                reject();
-            } else {
-                if (isEmpty(data.SessionId)) {
-                    reject();
+                                    resolve(response);
+                                } else {
+                                    this.session.setUnauthenticatedSession(response);
+                                    reject(response.ReasonStr);
+                                }
+                            });
+                        },
+                        (response) => {
+                            run(null, reject, response);
+                        }
+                    );
+            } catch (errors) {
+                if (guard<AuthError>(errors, 'payload')) {
+                    return reject(htmlSafe(errors.payload?.ReasonStr ?? this.intl.t('login.error')));
                 } else {
-                    this._scheduleSessionExpiration(data);
-                    resolve(data);
+                    return reject(this.intl.t('login.genericError'));
                 }
             }
         });
     }
 
     /**
-     * Schedule the session expiration to run
-     *
-     * @param {PepSecureAuthenticatedData} data
-     * @memberof CredentialsAuthenticator
+     * Invalidates the local session and logs the user out
      */
-    _scheduleSessionExpiration(data: PepSecureAuthenticatedData): void {
-        let expiresAt = data.expiresAt;
-        const expiresIn = data.SessionExpires;
-        const scheduleExpiration = !this.fastboot.isFastBoot;
-        if (scheduleExpiration) {
-            const now = new Date().getTime();
-            if (isEmpty(expiresAt) && !isEmpty(expiresIn)) {
-                expiresAt = new Date(now + expiresIn * 1000).getTime();
-            }
-            this._cancelTimeout();
-            this._invalidateTimeout = run.later(this, this.session.invalidate, data, expiresAt! - now);
+    async invalidate(data: PepSecureAuthenticatedData): Promise<void> {
+        // try {
+        //     const params = serializeQueryParams({ SessionId: data.SessionId });
+        //     await this.ajax.request(`${ENV.authBaseUrl}/Users/Logout?${params}`, {
+        //         method: 'POST',
+        //         headers: this.authenticationHeaders
+        //     });
+        //     return resolve();
+        // } catch (errors) {
+        //     return resolve();
+        // } finally {
+        //     this._cancelTimeout();
+        // }
+        const params = serializeQueryParams({ SessionId: data.SessionId });
+        const serverTokenRevocationEndpoint = `${ENV.authBaseUrl}/Users/Logout?${params}`;
+        function success(resolve) {
+            run.cancel(this._cancelTimeout);
+            delete this._cancelTimeout;
+            resolve();
         }
+        return new RSVP.Promise((resolve) => {
+            if (isEmpty(serverTokenRevocationEndpoint)) {
+                success.apply(this, [resolve]);
+            } else {
+                const requests = [];
+                ['access_token', 'refresh_token'].forEach((tokenType) => {
+                    const token = data[tokenType];
+                    if (!isEmpty(token)) {
+                        requests.push(
+                            this.ajax.request(serverTokenRevocationEndpoint, {
+                                method: 'POST',
+                                headers: this.authenticationHeaders
+                            })
+                        );
+                    }
+                });
+                const succeed = () => {
+                    success.apply(this, [resolve]);
+                };
+                RSVP.all(requests).then(succeed, succeed);
+            }
+        });
     }
 
-    /**
-     * Cancel the timeout that keeps track of the session expiration
-     *
-     * @memberof CredentialsAuthenticator
-     */
-    _cancelTimeout(): void {
-        if (this._invalidateTimeout) {
-            run.cancel(this._invalidateTimeout);
-            delete this._invalidateTimeout;
-        }
+    restore(data) {
+        return new RSVP.Promise((resolve, reject) => {
+            const now = new Date().getTime();
+
+            if (!isEmpty(data['expiresAt']) && data['expiresAt'] < now) {
+                reject();
+            } else {
+                if (!data.SessionId) {
+                    reject();
+                } else {
+                    resolve(data);
+                }
+            }
+        });
     }
 }

@@ -17,7 +17,7 @@ import AuthService from 'pep/services/auth';
 import ConfigurationService from 'pep/services/configuration';
 import FastbootMediaService from 'pep/services/fastboot-media';
 import LoadingBarService from 'pep/services/loading-bar';
-import PepSessionService from 'pep/services/pep-session';
+import PepSessionService from 'pep/services/session';
 import SidebarService from 'pep/services/sidebar';
 import { buildSearchQueryParams } from 'pep/utils/search';
 
@@ -29,7 +29,7 @@ export default class Home extends Component<HomeArgs> {
     @service fastbootMedia!: FastbootMediaService;
     @service configuration!: ConfigurationService;
     @service auth!: AuthService;
-    @service('pep-session') session!: PepSessionService;
+    @service session!: PepSessionService;
     @service store!: DS.Store;
     @service router!: RouterService;
     @service loadingBar!: LoadingBarService;
@@ -82,11 +82,7 @@ export default class Home extends Component<HomeArgs> {
     @action
     readExpertPick() {
         if (!this.session.isAuthenticated) {
-            return this.auth.openLoginModal(true, {
-                actions: {
-                    onAuthenticated: this.transitionToExpertPick
-                }
-            });
+            return this.auth.openLoginModal(true);
         } else {
             return this.transitionToExpertPick();
         }
@@ -102,11 +98,7 @@ export default class Home extends Component<HomeArgs> {
     readImageDocument(event?: Event) {
         event?.preventDefault();
         if (!this.session.isAuthenticated) {
-            return this.auth.openLoginModal(true, {
-                actions: {
-                    onAuthenticated: this.transitionToImageDocument
-                }
-            });
+            return this.auth.openLoginModal(true);
         } else {
             return this.transitionToImageDocument();
         }
