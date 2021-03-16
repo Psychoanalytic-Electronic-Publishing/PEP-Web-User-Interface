@@ -3,8 +3,9 @@ import RouterService from '@ember/routing/router-service';
 import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
 
-import ModalService from '@gavant/ember-modals/services/modal';
 import DS from 'ember-data';
+
+import ModalService from '@gavant/ember-modals/services/modal';
 
 import Document from 'pep/pods/document/model';
 import GlossaryTerm from 'pep/pods/glossary-term/model';
@@ -13,7 +14,7 @@ import AuthService from 'pep/services/auth';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
 import LoadingBarService from 'pep/services/loading-bar';
-import PepSessionService from 'pep/services/pep-session';
+import PepSessionService from 'pep/services/session';
 import { clearSearch } from 'pep/utils/search';
 
 interface DocumentReadArgs {
@@ -32,7 +33,7 @@ export default class DocumentRead extends Component<DocumentReadArgs> {
     @service auth!: AuthService;
     @service loadingBar!: LoadingBarService;
     @service store!: DS.Store;
-    @service('pep-session') session!: PepSessionService;
+    @service session!: PepSessionService;
 
     /**
      * Opens the login modal dialog
@@ -41,11 +42,7 @@ export default class DocumentRead extends Component<DocumentReadArgs> {
     @action
     login(event: Event) {
         event.preventDefault();
-        return this.auth.openLoginModal(true, {
-            actions: {
-                onAuthenticated: this.args.onAuthenticated
-            }
-        });
+        return this.auth.openLoginModal(true);
     }
 
     /**

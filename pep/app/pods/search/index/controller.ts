@@ -1,20 +1,25 @@
+import Controller from '@ember/controller';
+import { action, setProperties } from '@ember/object';
+import { inject as service } from '@ember/service';
+import { isEmpty } from '@ember/utils';
+import { tracked } from '@glimmer/tracking';
+
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import { didCancel, timeout } from 'ember-concurrency';
 import { restartableTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
 import IntlService from 'ember-intl/services/intl';
+
+import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
+import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
+
 import { SearchMetadata } from 'pep/api';
 import { DEFAULT_BASE_CONFIGURATION } from 'pep/constants/configuration';
 import { PreferenceKey } from 'pep/constants/preferences';
 import { TITLE_REGEX } from 'pep/constants/regex';
 import {
-    SEARCH_DEFAULT_VIEW_PERIOD,
-    SEARCH_TYPE_ARTICLE,
-    SearchFacetValue,
-    SearchTermValue,
-    SearchViews,
-    SearchViewType,
+    SEARCH_DEFAULT_VIEW_PERIOD, SEARCH_TYPE_ARTICLE, SearchFacetValue, SearchTermValue, SearchViews, SearchViewType,
     ViewPeriod
 } from 'pep/constants/search';
 import { WIDGET } from 'pep/constants/sidebar';
@@ -27,22 +32,14 @@ import CurrentUserService from 'pep/services/current-user';
 import ExportsService, { ExportType } from 'pep/services/exports';
 import FastbootMediaService from 'pep/services/fastboot-media';
 import LoadingBarService from 'pep/services/loading-bar';
-import PepSessionService from 'pep/services/pep-session';
 import PrinterService from 'pep/services/printer';
 import ScrollableService from 'pep/services/scrollable';
 import SearchSelection from 'pep/services/search-selection';
+import PepSessionService from 'pep/services/session';
 import SidebarService from 'pep/services/sidebar';
 import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
 import { SearchSorts, SearchSortType, transformSearchSortsToTable, transformSearchSortToAPI } from 'pep/utils/sort';
 import { hash } from 'rsvp';
-
-import Controller from '@ember/controller';
-import { action, setProperties } from '@ember/object';
-import { inject as service } from '@ember/service';
-import { isEmpty } from '@ember/utils';
-import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
-import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
-import { tracked } from '@glimmer/tracking';
 
 export default class SearchIndex extends Controller {
     @service ajax!: AjaxService;
@@ -58,7 +55,7 @@ export default class SearchIndex extends Controller {
     @service notifications!: NotificationService;
     @service intl!: IntlService;
     @service printer!: PrinterService;
-    @service('pep-session') session!: PepSessionService;
+    @service session!: PepSessionService;
 
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981

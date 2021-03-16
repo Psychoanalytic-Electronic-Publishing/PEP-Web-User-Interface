@@ -12,7 +12,6 @@ import IntlService from 'ember-intl/services/intl';
 import MetricService from 'ember-metrics/services/metrics';
 import MediaService from 'ember-responsive/services/media';
 import TourService, { Step, StepButton } from 'ember-shepherd/services/tour';
-import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 
 import { PepSecureAuthenticatedData } from 'pep/api';
 import { PreferenceKey } from 'pep/constants/preferences';
@@ -27,17 +26,17 @@ import CurrentUserService from 'pep/services/current-user';
 import DrawerService from 'pep/services/drawer';
 import LangService from 'pep/services/lang';
 import LoadingBarService from 'pep/services/loading-bar';
-import PepSessionService from 'pep/services/pep-session';
+import PepSessionService from 'pep/services/session';
 import SidebarService from 'pep/services/sidebar';
 import ThemeService from 'pep/services/theme';
-import { onAuthenticated } from 'pep/utils/user';
+import { SESSION_COOKIE_NAME } from 'pep/session-stores/application';
 
-export default class Application extends PageLayout(Route.extend(ApplicationRouteMixin)) {
+export default class Application extends PageLayout(Route) {
     routeAfterAuthentication = 'index';
 
     @service router!: RouterService;
     @service metrics!: MetricService;
-    @service('pep-session') session!: PepSessionService;
+    @service session!: PepSessionService;
     @service fastboot!: FastbootService;
     @service media!: MediaService;
     @service notifications!: NotificationService;
@@ -91,6 +90,7 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
         if (this.fastboot.isFastBoot) {
             this.auth.dontRedirectOnLogin = true;
         }
+        // this.cookies.write(SESSION_COOKIE_NAME, JSON.stringify({ authenticated: {} }), {});
 
         // IP auth should only happen if we are in fastboot, and we are not authenticated OR we are given a session ID in the url
         if (
@@ -99,11 +99,12 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
         ) {
             try {
                 await this.session.authenticate('authenticator:ip');
+
                 // We are doing this to work around a strange cookie issue seen from what we think is Ember Simple Auth.
                 // The fastboot session would authenticate through IP, we would write to the cookie and save everything but when the app
                 // loaded back up, we would be logged out and the cookie would mysteriously be removed. We work around this by writing the our own cookie
                 // and then getting that cookie and setting it as the simple auth cookie to force auth state.
-                this.cookies.write('pep_session_fastboot', this.cookies.read('pep_session'), {});
+                this.cookies.write('pep_session_fastboot', this.cookies.read(SESSION_COOKIE_NAME), {});
             } catch (errors) {
                 this.session.invalidate();
             }
@@ -112,7 +113,7 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
             // and pass this new session to the user endpoint to make sure we get the correct one. We can't just rely on having the right ID
             // as the update from cookie to session service happens asynchronously
             const newSession = this.cookies.read('pep_session_fastboot');
-            this.cookies.write('pep_session', newSession, {});
+            this.cookies.write(SESSION_COOKIE_NAME, newSession, {});
             const sessionData: { authenticated: PepSecureAuthenticatedData } = JSON.parse(newSession);
             sessionId = sessionData.authenticated.SessionId;
             this.cookies.clear('pep_session_fastboot', {});
@@ -126,26 +127,6 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
             this.replaceWith('five-hundred');
         }
         return this.appSetup();
-    }
-
-    /**
-     * Handler called by ember-simple-auth upon successful login
-     */
-    async sessionAuthenticated(): Promise<void> {
-        onAuthenticated(this);
-
-        // trigger a custom event on the session that tells us when the user is logged in
-        // and all other post-login tasks (loading user record, prefs/configs setup, etc) is complete
-        // as the built-in `authenticationSucceeded` event fires immediately after the login request returns
-        this.session.trigger('authenticationAndSetupSucceeded');
-
-        // dont redirect the user on login if the behavior is suppressed
-        if (this.auth.dontRedirectOnLogin) {
-            this.auth.dontRedirectOnLogin = false;
-        } else {
-            //@ts-ignore TODO we need a way to inform TS about class members coming from Ember-style mixins
-            super.sessionAuthenticated(...arguments);
-        }
     }
 
     /**

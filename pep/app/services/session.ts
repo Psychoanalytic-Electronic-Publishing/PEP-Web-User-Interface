@@ -1,13 +1,18 @@
+import { inject as service } from '@ember/service';
+
+import classic from 'ember-classic-decorator';
 import CookiesService from 'ember-cookies/services/cookies';
 import SessionService from 'ember-simple-auth/services/session';
+
+import { removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
+
 import { PepSecureAuthenticatedData } from 'pep/api';
 import ENV from 'pep/config/environment';
 import { DATE_FOREVER } from 'pep/constants/dates';
+import AuthService from 'pep/services/auth';
+import { SESSION_COOKIE_NAME } from 'pep/session-stores/application';
 import { serializeQueryParams } from 'pep/utils/url';
-
-import { oneWay } from '@ember/object/computed';
-import { inject as service } from '@ember/service';
-import { removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
+import { onAuthenticated } from 'pep/utils/user';
 
 export interface AuthenticatedData {
     authenticated: PepSecureAuthenticatedData;
@@ -23,10 +28,10 @@ export const UNAUTHENTICATED_SESSION_COOKIE_NAME = 'pepweb_unauthenticated_sessi
  * @class Session
  * @extends 'ember-simple-auth/services/session
  */
-export default class PepSessionService extends SessionService.extend({
-    data: (oneWay('session.content') as unknown) as AuthenticatedData
-}) {
+@classic
+export default class PepSessionService extends SessionService {
     @service cookies!: CookiesService;
+    @service auth!: AuthService;
 
     /**
      * Get logged in sessionId if it exists, or logged out sessionId if it does not
@@ -36,7 +41,7 @@ export default class PepSessionService extends SessionService.extend({
      * @memberof PepSessionService
      */
     get sessionId(): string | undefined {
-        return this.isAuthenticated ? this.data.authenticated.SessionId : this.getUnauthenticatedSession()?.SessionId;
+        return this.isAuthenticated ? this.data?.authenticated.SessionId : this.getUnauthenticatedSession()?.SessionId;
     }
     /**
      * Set the unauthed session date in a cookie
@@ -79,16 +84,37 @@ export default class PepSessionService extends SessionService.extend({
     get downloadAuthParams() {
         const queryPrams = {
             'client-id': ENV.clientId,
-            'client-session': this.data.authenticated.SessionId ?? ''
+            'client-session': this.data?.authenticated.SessionId ?? ''
         };
         const normalizedParams = removeEmptyQueryParams(queryPrams);
         return serializeQueryParams(normalizedParams);
+    }
+
+    handleAuthentication(routeAfterAuthentication: string): void {
+        onAuthenticated(this);
+
+        // trigger a custom event on the session that tells us when the user is logged in
+        // and all other post-login tasks (loading user record, prefs/configs setup, etc) is complete
+        // as the built-in `authenticationSucceeded` event fires immediately after the login request returns
+        this.session.trigger('authenticationAndSetupSucceeded');
+        this.clearUnauthenticatedSession();
+        // dont redirect the user on login if the behavior is suppressed
+        if (this.auth.dontRedirectOnLogin) {
+            this.auth.dontRedirectOnLogin = false;
+        } else {
+            super.handleAuthentication(routeAfterAuthentication);
+        }
+    }
+
+    handleInvalidation(routeAfterInvalidation: string): void {
+        this.cookies.write(SESSION_COOKIE_NAME, JSON.stringify({ authenticated: {} }), {});
+        super.handleInvalidation(routeAfterInvalidation);
     }
 }
 
 // DO NOT DELETE: this is how TypeScript knows how to look up your services.
 declare module '@ember/service' {
     interface Registry {
-        'pep-session': PepSessionService;
+        session: PepSessionService;
     }
 }

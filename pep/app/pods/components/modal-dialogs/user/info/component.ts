@@ -1,9 +1,9 @@
-import CurrentUserService from 'pep/services/current-user';
-
-import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
+import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
-import PepSessionService from 'pep/services/pep-session';
+
+import CurrentUserService from 'pep/services/current-user';
+import PepSessionService from 'pep/services/session';
 
 interface ModalDialogsUserInfoArgs {
     onClose: () => void;
@@ -11,7 +11,7 @@ interface ModalDialogsUserInfoArgs {
 
 export default class ModalDialogsUserInfo extends Component<ModalDialogsUserInfoArgs> {
     @service currentUser!: CurrentUserService;
-    @service('pep-session') session!: PepSessionService;
+    @service session!: PepSessionService;
 
     /**
      * Open the PaDS home-site using the user's generated

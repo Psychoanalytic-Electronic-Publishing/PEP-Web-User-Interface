@@ -8,10 +8,10 @@ import createChangeset from '@gavant/ember-validations/utilities/create-changese
 import ENV from 'pep/config/environment';
 import AjaxService from 'pep/services/ajax';
 import LoadingBarService from 'pep/services/loading-bar';
-import PepSessionService from 'pep/services/pep-session';
+import PepSessionService from 'pep/services/session';
 import { serializeQueryParams } from 'pep/utils/url';
-import LoginValidations from 'pep/validations/user/login';
 import { onAuthenticated } from 'pep/utils/user';
+import LoginValidations from 'pep/validations/user/login';
 
 export interface FederatedLoginResponse {
     FederatedLinks: string;
@@ -45,7 +45,7 @@ interface ModalOptions {
 }
 
 export default class AuthService extends Service {
-    @service('pep-session') session!: PepSessionService;
+    @service session!: PepSessionService;
     @service ajax!: AjaxService;
     @service modal!: ModalService;
     @service notifications!: NotificationService;

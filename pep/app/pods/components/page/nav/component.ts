@@ -1,16 +1,17 @@
+import { action } from '@ember/object';
+import RouterService from '@ember/routing/router-service';
+import { inject as service } from '@ember/service';
+import Component from '@glimmer/component';
+
+import ModalService from '@gavant/ember-modals/services/modal';
+
 import { Languages } from 'pep/constants/lang';
 import { PEP_FACEBOOK_URL, SUPPORT_URL } from 'pep/constants/urls';
 import AuthService from 'pep/services/auth';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService, { VIEW_DOCUMENT_FROM } from 'pep/services/current-user';
 import DrawerService from 'pep/services/drawer';
-import PepSessionService from 'pep/services/pep-session';
-
-import { action } from '@ember/object';
-import RouterService from '@ember/routing/router-service';
-import { inject as service } from '@ember/service';
-import ModalService from '@gavant/ember-modals/services/modal';
-import Component from '@glimmer/component';
+import PepSessionService from 'pep/services/session';
 
 interface PageNavArgs {
     openAboutModal: () => Promise<void>;
@@ -18,7 +19,7 @@ interface PageNavArgs {
 
 export default class PageNav extends Component<PageNavArgs> {
     @service modal!: ModalService;
-    @service('pep-session') session!: PepSessionService;
+    @service session!: PepSessionService;
     @service auth!: AuthService;
     @service drawer!: DrawerService;
     @service configuration!: ConfigurationService;

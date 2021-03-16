@@ -5,7 +5,7 @@ import Component from '@glimmer/component';
 import { DOCUMENT_EPUB_BASE_URL, DOCUMENT_PDF_BASE_URL, DOCUMENT_PDFORIG_BASE_URL } from 'pep/constants/documents';
 import Document from 'pep/pods/document/model';
 import ExportsService from 'pep/services/exports';
-import PepSessionService from 'pep/services/pep-session';
+import PepSessionService from 'pep/services/session';
 
 interface DocumentActionsDownloadArgs {
     document: Document;
@@ -13,7 +13,7 @@ interface DocumentActionsDownloadArgs {
 }
 
 export default class DocumentActionsDownload extends Component<DocumentActionsDownloadArgs> {
-    @service('pep-session') session!: PepSessionService;
+    @service session!: PepSessionService;
     @service exports!: ExportsService;
 
     get downloadUrlEpub() {

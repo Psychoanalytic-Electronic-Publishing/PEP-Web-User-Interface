@@ -15,7 +15,7 @@ import AjaxService from 'pep/services/ajax';
 import { FederatedLoginArgs, LoginForm } from 'pep/services/auth';
 import CurrentUserService from 'pep/services/current-user';
 import LoadingBar from 'pep/services/loading-bar';
-import PepSessionService from 'pep/services/pep-session';
+import PepSessionService from 'pep/services/session';
 import { reject } from 'rsvp';
 
 interface ModalDialogsUserLoginArgs {
@@ -27,7 +27,7 @@ interface ModalDialogsUserLoginArgs {
 }
 
 export default class ModalDialogsUserLogin extends Component<ModalDialogsUserLoginArgs> {
-    @service('pep-session') session!: PepSessionService;
+    @service session!: PepSessionService;
     @service router!: RouterService;
     @service loadingBar!: LoadingBar;
     @service notifications!: NotificationService;

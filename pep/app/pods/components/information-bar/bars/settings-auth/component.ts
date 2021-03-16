@@ -7,7 +7,6 @@ import IntlService from 'ember-intl/services/intl';
 
 import AuthService from 'pep/services/auth';
 import CurrentUserService from 'pep/services/current-user';
-import { onAuthenticated } from 'pep/utils/user';
 
 interface InformationBarBarsSettingsAuthArgs {
     close: () => void;
@@ -27,10 +26,7 @@ export default class InformationBarBarsSettingsAuth extends Component<Informatio
     login(): void {
         this.args.close();
         this.auth.openLoginModal(true, {
-            closeOpenModal: true,
-            actions: {
-                onAuthenticated: () => onAuthenticated(this)
-            }
+            closeOpenModal: true
         });
     }
 }

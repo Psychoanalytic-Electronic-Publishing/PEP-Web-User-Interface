@@ -1,7 +1,7 @@
 declare module 'ember-simple-auth/mixins/data-adapter-mixin' {
 import EmberObject from '@ember/object';
 
-import PepSessionService from 'pep/services/pep-session';
+import PepSessionService from 'pep/services/session';
 
         export default class DataAdapterMixin extends EmberObject {
         session: PepSessionService;
