@@ -193,6 +193,47 @@
                     <div class="card-body">
                         <div class="form-row">
                             <div class="col-12">
+                                <h4 class="border-bottom mb-3">
+                                    {{t "admin.common.signInCard.title"}}
+                                </h4>
+                                <fieldset class="col-3 pl-0">
+                                    <legend class="d-flex radio-input-legend mb-1">{{t "admin.common.signInCard.position"}}</legend>
+                                    <ChangesetRadioInput
+                                        @changeset={{changeset}}
+                                        @path="configSettings.global.signInCard.side"
+                                        @label={{t "admin.common.signInCard.left"}}
+                                        @value={{this.widgetLeft}}
+                                        class="mb-1"
+                                    />
+                                    <ChangesetRadioInput
+                                        @changeset={{changeset}}
+                                        @path="configSettings.global.signInCard.side"
+                                        @label={{t "admin.common.signInCard.right"}}
+                                        @value={{this.widgetRight}}
+                                    />
+                                </fieldset>
+                                <div class="form-row mt-3">
+                                    <div class="col-3">
+                                        <validator.input
+                                            @errors={{changeset.error.configSettings.global.signInCard.collapsible.validation
+                                            }}
+                                        >
+                                            <ChangesetCheckbox
+                                                @changeset={{changeset}}
+                                                @path="configSettings.global.signInCard.collapsible"
+                                                @label={{t "admin.common.signInCard.cardCollapsible"}}
+                                            />
+                                        </validator.input>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="col-12">
                                 <SortableGroup
                                     @swapAnimation={{true}}
                                     @mirrorOptions={{this.mirrorOptions}}

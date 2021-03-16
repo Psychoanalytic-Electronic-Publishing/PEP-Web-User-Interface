@@ -10,7 +10,7 @@ import ModalService from '@gavant/ember-modals/services/modal';
 import { ColumnValue } from '@gavant/ember-table';
 import createChangeset, { GenericChangeset } from '@gavant/ember-validations/utilities/create-changeset';
 
-import { ExpertPick, WidgetConfiguration } from 'pep/constants/configuration';
+import { ExpertPick, WidgetConfiguration, WidgetSide } from 'pep/constants/configuration';
 import { SEARCH_TYPES, SearchTermId } from 'pep/constants/search';
 import { AdminField } from 'pep/pods/admin/general/route';
 import Configuration from 'pep/pods/configuration/model';
@@ -26,6 +26,8 @@ export default class AdminGeneral extends Controller {
     mirrorOptions = {
         constrainDimensions: true
     };
+    widgetLeft = WidgetSide.left;
+    widgetRight = WidgetSide.right;
 
     get searchTypeOptions() {
         return SEARCH_TYPES.filter((t) => t.isTypeOption);

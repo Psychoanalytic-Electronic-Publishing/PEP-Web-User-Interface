@@ -1,0 +1,21 @@
+<CollapsiblePanel
+    @scrollableNamespace="sidebar-right"
+    @isOpen={{true}}
+    class="mb-2 page-widget"
+    ...attributes
+    as |Panel|
+>
+    <Panel.header
+        @title={{t "relatedInfo.widgets.signIn.title"}}
+        @tooltip={{this.configuration.content.global.signInCard.help}}
+    />
+    <Panel.body>
+        <ContentWithPlaceholder @placeholderComponent="loading/widget" @isLoading={{this.loadResults.isRunning}}>
+            {{html-safe this.cardInfo.body}}
+            <Button @action={{this.openModal}} @type="link" class="p-0">
+                {{t "relatedInfo.widgets.whatsNew.update"}}
+                <FaIcon @icon="arrow-right" @prefix="fal" />
+            </Button>
+        </ContentWithPlaceholder>
+    </Panel.body>
+</CollapsiblePanel>

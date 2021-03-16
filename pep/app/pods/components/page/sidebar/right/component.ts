@@ -3,6 +3,7 @@ import { inject as service } from '@ember/service';
 
 import ConfigurationService from 'pep/services/configuration';
 import { WidgetData } from 'pep/constants/sidebar';
+import { WidgetSide } from 'pep/constants/configuration';
 
 interface PageSidebarRightArgs {
     data: WidgetData;

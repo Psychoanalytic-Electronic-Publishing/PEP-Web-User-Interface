@@ -850,6 +850,13 @@
                         "image": "Image ID"
                     }
                 }
+            },
+            "signInCard": {
+                "title": "Sign In Card",
+                "position": "Position",
+                "left": "Left Sidebar",
+                "right": "Right Sidebar",
+                "cardCollapsible": "Card Collapsible"
             }
         },
         "content": {
@@ -917,6 +924,10 @@
                         "sourceCode": "Source Code",
                         "embargoYears": "Embargo Years"
                     }
+                },
+                "signInCard": {
+                    "title": "Sign In Card",
+                    "body": "Sign In Card Body"
                 }
             },
             "home": {
