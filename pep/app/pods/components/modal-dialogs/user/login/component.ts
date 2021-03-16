@@ -66,7 +66,6 @@ export default class ModalDialogsUserLogin extends Component<ModalDialogsUserLog
             await this.args.options.onAuthenticated?.(response);
             return response;
         } catch (err) {
-            console.log(err);
             this.loginError = err;
             this.loadingBar.hide();
             return reject(err);

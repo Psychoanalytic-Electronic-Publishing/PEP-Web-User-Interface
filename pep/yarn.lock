@@ -1539,15 +1539,15 @@
     ember-cli-typescript "^3.1.4"
     moment "^2.24.0"
 
-"@gavant/ember-shopify-draggable@https://github.com/Gavant/ember-shopify-draggable.git#update-addon":
+"@gavant/ember-shopify-draggable@^0.3.3":
   version "0.3.3"
-  resolved "https://github.com/Gavant/ember-shopify-draggable.git#e002b3087968e4acad1647c73ddac5e26a76a3be"
+  resolved "https://registry.yarnpkg.com/@gavant/ember-shopify-draggable/-/ember-shopify-draggable-0.3.3.tgz#05ba7c1546dfd1eb00864d03b3de5b2f4e648251"
+  integrity sha512-UW3sIZLla5WhJACuxQtO6zNhtEJsW3ZA3SOZZu/wcNKM31ZUm3/nQS4Lie3HXXtFmRuAJqRFI3UmlnPSqqTrLA==
   dependencies:
     "@shopify/draggable" "1.0.0-beta.12"
-    ember-auto-import "^1.10.1"
-    ember-cli-babel "7.23.1"
-    ember-cli-htmlbars "^5.3.2"
-    ember-cli-typescript "^4.1.0"
+    ember-auto-import "^1.2.20"
+    ember-cli-babel "6.18.0"
+    ember-cli-htmlbars "^2.0.1"
 
 "@gavant/ember-table@^0.6.6":
   version "0.6.6"
@@ -6112,7 +6112,7 @@ ember-ast-helpers@0.3.5:
     "@glimmer/compiler" "^0.27.0"
     "@glimmer/syntax" "^0.27.0"
 
-ember-auto-import@^1.10.1, ember-auto-import@^1.2.15, ember-auto-import@^1.5.2, ember-auto-import@^1.5.3, ember-auto-import@^1.6.0, ember-auto-import@^1.9.0:
+ember-auto-import@^1.10.1, ember-auto-import@^1.2.15, ember-auto-import@^1.2.20, ember-auto-import@^1.5.2, ember-auto-import@^1.5.3, ember-auto-import@^1.6.0, ember-auto-import@^1.9.0:
   version "1.10.1"
   resolved "https://registry.yarnpkg.com/ember-auto-import/-/ember-auto-import-1.10.1.tgz#6c93a875e494aa0a58b759867d3f20adfd514ae3"
   integrity sha512-7bOWzPELlVwdWDOkB+phDIjg8BNW+/2RiLLQ+Xa/eIvCLT4ABYhHV5wqW5gs5BnXTDVLfE4ddKZdllnGuPGGDQ==
@@ -6288,7 +6288,26 @@ ember-cli-babel-plugin-helpers@^1.0.0, ember-cli-babel-plugin-helpers@^1.1.0, em
   resolved "https://registry.yarnpkg.com/ember-cli-babel-plugin-helpers/-/ember-cli-babel-plugin-helpers-1.1.1.tgz#5016b80cdef37036c4282eef2d863e1d73576879"
   integrity sha512-sKvOiPNHr5F/60NLd7SFzMpYPte/nnGkq/tMIfXejfKHIhaiIkYFqX8Z9UFTKWLLn+V7NOaby6niNPZUdvKCRw==
 
-ember-cli-babel@7.23.1, ember-cli-babel@^7.0.0, ember-cli-babel@^7.1.0, ember-cli-babel@^7.1.2, ember-cli-babel@^7.1.3, ember-cli-babel@^7.10.0, ember-cli-babel@^7.11.0, ember-cli-babel@^7.11.1, ember-cli-babel@^7.12.0, ember-cli-babel@^7.13.0, ember-cli-babel@^7.13.2, ember-cli-babel@^7.17.2, ember-cli-babel@^7.18.0, ember-cli-babel@^7.19.0, ember-cli-babel@^7.20.2, ember-cli-babel@^7.20.5, ember-cli-babel@^7.21.0, ember-cli-babel@^7.22.1, ember-cli-babel@^7.23.0, ember-cli-babel@^7.23.1, ember-cli-babel@^7.5.0, ember-cli-babel@^7.7.3, ember-cli-babel@^7.8.0:
+ember-cli-babel@6.18.0, ember-cli-babel@^6.0.0-beta.4, ember-cli-babel@^6.10.0, ember-cli-babel@^6.12.0, ember-cli-babel@^6.16.0, ember-cli-babel@^6.17.0, ember-cli-babel@^6.3.0, ember-cli-babel@^6.6.0, ember-cli-babel@^6.7.1, ember-cli-babel@^6.7.2, ember-cli-babel@^6.8.1, ember-cli-babel@^6.8.2, ember-cli-babel@^6.9.2:
+  version "6.18.0"
+  resolved "https://registry.yarnpkg.com/ember-cli-babel/-/ember-cli-babel-6.18.0.tgz#3f6435fd275172edeff2b634ee7b29ce74318957"
+  integrity sha512-7ceC8joNYxY2wES16iIBlbPSxwKDBhYwC8drU3ZEvuPDMwVv1KzxCNu1fvxyFEBWhwaRNTUxSCsEVoTd9nosGA==
+  dependencies:
+    amd-name-resolver "1.2.0"
+    babel-plugin-debug-macros "^0.2.0-beta.6"
+    babel-plugin-ember-modules-api-polyfill "^2.6.0"
+    babel-plugin-transform-es2015-modules-amd "^6.24.0"
+    babel-polyfill "^6.26.0"
+    babel-preset-env "^1.7.0"
+    broccoli-babel-transpiler "^6.5.0"
+    broccoli-debug "^0.6.4"
+    broccoli-funnel "^2.0.0"
+    broccoli-source "^1.1.0"
+    clone "^2.0.0"
+    ember-cli-version-checker "^2.1.2"
+    semver "^5.5.0"
+
+ember-cli-babel@^7.0.0, ember-cli-babel@^7.1.0, ember-cli-babel@^7.1.2, ember-cli-babel@^7.1.3, ember-cli-babel@^7.10.0, ember-cli-babel@^7.11.0, ember-cli-babel@^7.11.1, ember-cli-babel@^7.12.0, ember-cli-babel@^7.13.0, ember-cli-babel@^7.13.2, ember-cli-babel@^7.17.2, ember-cli-babel@^7.18.0, ember-cli-babel@^7.19.0, ember-cli-babel@^7.20.2, ember-cli-babel@^7.20.5, ember-cli-babel@^7.21.0, ember-cli-babel@^7.22.1, ember-cli-babel@^7.23.0, ember-cli-babel@^7.23.1, ember-cli-babel@^7.5.0, ember-cli-babel@^7.7.3, ember-cli-babel@^7.8.0:
   version "7.23.1"
   resolved "https://registry.yarnpkg.com/ember-cli-babel/-/ember-cli-babel-7.23.1.tgz#d1517228ede08a5d4b045c78a7429728e956b30b"
   integrity sha512-qYggmt3hRs6QJ6cRkww3ahMpyP8IEV2KFrIRO/Z6hu9MkE/8Y28Xd5NjQl6fPV3oLoG0vwuHzhNe3Jr7Wec8zw==
@@ -6318,25 +6337,6 @@ ember-cli-babel@7.23.1, ember-cli-babel@^7.0.0, ember-cli-babel@^7.1.0, ember-cl
     ensure-posix-path "^1.0.2"
     fixturify-project "^1.10.0"
     rimraf "^3.0.1"
-    semver "^5.5.0"
-
-ember-cli-babel@^6.0.0-beta.4, ember-cli-babel@^6.10.0, ember-cli-babel@^6.12.0, ember-cli-babel@^6.16.0, ember-cli-babel@^6.17.0, ember-cli-babel@^6.3.0, ember-cli-babel@^6.6.0, ember-cli-babel@^6.7.1, ember-cli-babel@^6.7.2, ember-cli-babel@^6.8.1, ember-cli-babel@^6.8.2, ember-cli-babel@^6.9.2:
-  version "6.18.0"
-  resolved "https://registry.yarnpkg.com/ember-cli-babel/-/ember-cli-babel-6.18.0.tgz#3f6435fd275172edeff2b634ee7b29ce74318957"
-  integrity sha512-7ceC8joNYxY2wES16iIBlbPSxwKDBhYwC8drU3ZEvuPDMwVv1KzxCNu1fvxyFEBWhwaRNTUxSCsEVoTd9nosGA==
-  dependencies:
-    amd-name-resolver "1.2.0"
-    babel-plugin-debug-macros "^0.2.0-beta.6"
-    babel-plugin-ember-modules-api-polyfill "^2.6.0"
-    babel-plugin-transform-es2015-modules-amd "^6.24.0"
-    babel-polyfill "^6.26.0"
-    babel-preset-env "^1.7.0"
-    broccoli-babel-transpiler "^6.5.0"
-    broccoli-debug "^0.6.4"
-    broccoli-funnel "^2.0.0"
-    broccoli-source "^1.1.0"
-    clone "^2.0.0"
-    ember-cli-version-checker "^2.1.2"
     semver "^5.5.0"
 
 ember-cli-bundle-analyzer@^0.2.2:

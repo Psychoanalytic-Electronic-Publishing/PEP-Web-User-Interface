@@ -43,6 +43,7 @@ import RSVP from 'rsvp';
         attemptedTransition: any;
         session: any;
         user: User;
+        data: any;
 
         set<K extends keyof this>(key: K, value: this[K]): this[K];
         authenticate(...args: any[]): RSVP.Promise<Record<string, unknown>>;

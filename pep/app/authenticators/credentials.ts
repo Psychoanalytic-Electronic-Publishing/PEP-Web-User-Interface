@@ -1,5 +1,4 @@
 import { run } from '@ember/runloop';
-import { EmberRunTimer } from '@ember/runloop/types';
 import { inject as service } from '@ember/service';
 import { htmlSafe } from '@ember/string';
 import { isEmpty } from '@ember/utils';
@@ -12,13 +11,12 @@ import OAuth2PasswordGrant from 'ember-simple-auth/authenticators/oauth2-passwor
 
 import { PepSecureAuthenticatedData } from 'pep/api';
 import ENV from 'pep/config/environment';
-import { USER_PREFERENCES_COOKIE_NAME } from 'pep/constants/preferences';
 import AjaxService from 'pep/services/ajax';
-import PepSessionService, { UNAUTHENTICATED_SESSION_COOKIE_NAME } from 'pep/services/session';
+import PepSessionService from 'pep/services/session';
 import { SESSION_COOKIE_NAME } from 'pep/session-stores/application';
 import { guard } from 'pep/utils/types';
 import { serializeQueryParams } from 'pep/utils/url';
-import RSVP, { reject, resolve } from 'rsvp';
+import RSVP from 'rsvp';
 
 export enum SessionType {
     CREDENTIALS = 'credentials',
@@ -41,21 +39,6 @@ export default class CredentialsAuthenticator extends OAuth2PasswordGrant {
     authenticationHeaders: { [key: string]: any } = {
         'Content-Type': 'application/json'
     };
-
-    /**
-     * Calculate the expires at value and add it to the response so it gets saved in the cookie
-     *
-     * @param {PepSecureAuthenticatedData} response
-     * @returns
-     * @memberof CredentialsAuthenticator
-     */
-    setupExpiresAt(response: PepSecureAuthenticatedData): PepSecureAuthenticatedData {
-        const expiresAt = this._absolutizeExpirationTime(response.SessionExpires);
-        if (expiresAt && !isEmpty(expiresAt)) {
-            Object.assign(response, { expiresAt });
-        }
-        return response;
-    }
 
     /**
      * Authenticates and logs the user in as well as schedules a session expiration based on the
@@ -92,15 +75,6 @@ export default class CredentialsAuthenticator extends OAuth2PasswordGrant {
                                 if (response.IsValidLogon) {
                                     this.session.clearUnauthenticatedSession();
                                     response.SessionType = SessionType.CREDENTIALS;
-                                    // // const updatedResponse = this.setupExpiresAt(response);
-                                    // // this._scheduleSessionExpiration(updatedResponse);
-
-                                    // const expiresAt = this._absolutizeExpirationTime(response['SessionExpires']);
-                                    // this._scheduleAccessTokenRefresh(response['expires_in'], expiresAt, response['refresh_token']);
-                                    // if (!isEmpty(expiresAt)) {
-                                    //   response = assign(response, { 'expires_at': expiresAt });
-                                    // }
-
                                     resolve(response);
                                 } else {
                                     this.session.setUnauthenticatedSession(response);
@@ -140,7 +114,7 @@ export default class CredentialsAuthenticator extends OAuth2PasswordGrant {
         // }
         const params = serializeQueryParams({ SessionId: data.SessionId });
         const serverTokenRevocationEndpoint = `${ENV.authBaseUrl}/Users/Logout?${params}`;
-        function success(resolve) {
+        function success(this: any, resolve: any) {
             run.cancel(this._cancelTimeout);
             delete this._cancelTimeout;
             resolve();
@@ -149,9 +123,9 @@ export default class CredentialsAuthenticator extends OAuth2PasswordGrant {
             if (isEmpty(serverTokenRevocationEndpoint)) {
                 success.apply(this, [resolve]);
             } else {
-                const requests = [];
-                ['access_token', 'refresh_token'].forEach((tokenType) => {
-                    const token = data[tokenType];
+                const requests: Promise<any>[] = [];
+                ['SessionId'].forEach((tokenType) => {
+                    const token = data[tokenType as keyof PepSecureAuthenticatedData];
                     if (!isEmpty(token)) {
                         requests.push(
                             this.ajax.request(serverTokenRevocationEndpoint, {
@@ -169,7 +143,7 @@ export default class CredentialsAuthenticator extends OAuth2PasswordGrant {
         });
     }
 
-    restore(data) {
+    restore(data: any) {
         return new RSVP.Promise((resolve, reject) => {
             const now = new Date().getTime();
 

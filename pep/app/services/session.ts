@@ -1,4 +1,3 @@
-import { oneWay } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 
 import classic from 'ember-classic-decorator';
@@ -10,7 +9,6 @@ import { removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-par
 import { PepSecureAuthenticatedData } from 'pep/api';
 import ENV from 'pep/config/environment';
 import { DATE_FOREVER } from 'pep/constants/dates';
-import { USER_PREFERENCES_COOKIE_NAME } from 'pep/constants/preferences';
 import AuthService from 'pep/services/auth';
 import { SESSION_COOKIE_NAME } from 'pep/session-stores/application';
 import { serializeQueryParams } from 'pep/utils/url';
@@ -43,7 +41,7 @@ export default class PepSessionService extends SessionService {
      * @memberof PepSessionService
      */
     get sessionId(): string | undefined {
-        return this.isAuthenticated ? this.data.authenticated.SessionId : this.getUnauthenticatedSession()?.SessionId;
+        return this.isAuthenticated ? this.data?.authenticated.SessionId : this.getUnauthenticatedSession()?.SessionId;
     }
     /**
      * Set the unauthed session date in a cookie
@@ -86,7 +84,7 @@ export default class PepSessionService extends SessionService {
     get downloadAuthParams() {
         const queryPrams = {
             'client-id': ENV.clientId,
-            'client-session': this.data.authenticated.SessionId ?? ''
+            'client-session': this.data?.authenticated.SessionId ?? ''
         };
         const normalizedParams = removeEmptyQueryParams(queryPrams);
         return serializeQueryParams(normalizedParams);

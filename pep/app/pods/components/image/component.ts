@@ -13,7 +13,7 @@ export default class Image extends Component<ImageArgs> {
 
     get source(): string {
         let src = `${this.args.source}?client-id=${ENV.clientId}`;
-        if (this.session.isAuthenticated && this.session.data.authenticated.SessionId) {
+        if (this.session.isAuthenticated && this.session.data?.authenticated.SessionId) {
             src += `&client-session=${this.session.data.authenticated.SessionId}`;
         }
         return src;

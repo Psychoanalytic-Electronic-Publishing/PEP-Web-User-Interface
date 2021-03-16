@@ -137,7 +137,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
             if (xslt && document.implementation && document.implementation.createDocument) {
                 const processor = new XSLTProcessor();
                 if (this.session.isAuthenticated) {
-                    processor.setParameter('', 'sessionId', this.session.data.authenticated.SessionId);
+                    processor.setParameter('', 'sessionId', this.session.data?.authenticated.SessionId);
                 }
                 processor.setParameter(
                     '',

@@ -104,7 +104,7 @@ export default class Application extends PageLayout(Route) {
                 // The fastboot session would authenticate through IP, we would write to the cookie and save everything but when the app
                 // loaded back up, we would be logged out and the cookie would mysteriously be removed. We work around this by writing the our own cookie
                 // and then getting that cookie and setting it as the simple auth cookie to force auth state.
-                this.cookies.write('pep_session_fastboot', this.cookies.read('ember_simple_auth-session'), {});
+                this.cookies.write('pep_session_fastboot', this.cookies.read(SESSION_COOKIE_NAME), {});
             } catch (errors) {
                 this.session.invalidate();
             }
@@ -113,7 +113,7 @@ export default class Application extends PageLayout(Route) {
             // and pass this new session to the user endpoint to make sure we get the correct one. We can't just rely on having the right ID
             // as the update from cookie to session service happens asynchronously
             const newSession = this.cookies.read('pep_session_fastboot');
-            this.cookies.write('ember_simple_auth-session', newSession, {});
+            this.cookies.write(SESSION_COOKIE_NAME, newSession, {});
             const sessionData: { authenticated: PepSecureAuthenticatedData } = JSON.parse(newSession);
             sessionId = sessionData.authenticated.SessionId;
             this.cookies.clear('pep_session_fastboot', {});

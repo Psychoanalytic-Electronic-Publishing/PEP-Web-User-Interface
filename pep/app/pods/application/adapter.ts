@@ -70,7 +70,7 @@ export default class Application extends DS.RESTAdapter.extend(FastbootAdapter) 
     //@ts-ignore
     get headers() {
         const headers = { 'client-id': ENV.clientId } as any;
-        if (this.session.isAuthenticated) {
+        if (this.session.isAuthenticated && this.session.data) {
             const { SessionId } = this.session.data.authenticated;
             headers['client-session'] = SessionId ?? '';
         } else {

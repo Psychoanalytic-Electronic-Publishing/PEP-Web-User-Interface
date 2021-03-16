@@ -81,7 +81,7 @@ export default class UserSerializer extends ApplicationSerializerMixin(DS.RESTSe
         delete hash[root];
 
         if (this.session.isAuthenticated) {
-            hash.SessionId = this.session.data.authenticated.SessionId ?? '';
+            hash.SessionId = this.session.data?.authenticated.SessionId ?? '';
         }
     }
 }
