@@ -8,7 +8,7 @@
             @icon="exclamation-circle"
         />
         <div class="form-row mt-4">
-            <div class="col-12">
+            <div class="{{~if @isModal " col-sm-8" " col-12"}}">
                 <validator.input @errors={{changeset.error.username.validation}} class="input-validator-compact">
                     <FlInput @value={{changeset.username}} @placeholder={{t "login.username"}} maxlength="128" />
                 </validator.input>
