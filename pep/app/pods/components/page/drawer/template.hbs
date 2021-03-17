@@ -22,10 +22,15 @@
         <div class="px-3 py-4 page-drawer-content">
             <div class="list-group">
                 <Page::Drawer::NavItem class="mt-1 tour-step-home">
-                    <LinkTo @route="index" class="list-group-item list-group-item-action">
+                    <a
+                        href={{this.supportUrl}}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="list-group-item list-group-item-action"
+                    >
                         <FaIcon @icon="home" @fixedWidth={{true}} class="mr-2" />
-                        {{t "nav.home"}}
-                    </LinkTo>
+                        {{t "nav.support.link"}}
+                    </a>
                 </Page::Drawer::NavItem>
                 <div class="list-group tour-step-navigation">
                     <Page::Drawer::NavItem class="mt-1">

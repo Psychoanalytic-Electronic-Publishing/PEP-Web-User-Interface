@@ -48,13 +48,17 @@
             </div>
         </li>
         <li class="nav-item home">
-            <LinkTo
-                @route="index"
-                class="nav-link"
-                title={{t "buttons.nav.home.name"}}
-            >
-                <FaIcon @icon="home" @size="lg"/>
-            </LinkTo>
+            <div>
+                <a
+                    href={{this.supportUrl}}
+                    class="nav-link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title={{t "buttons.nav.support.support.name"}}
+                >
+                    <FaIcon @icon="home" @size="lg"/>
+                </a>
+            </div>
         </li>
         <li class="nav-item">
             <div>
