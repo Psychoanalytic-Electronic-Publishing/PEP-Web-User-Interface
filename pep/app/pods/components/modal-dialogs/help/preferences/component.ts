@@ -1,14 +1,14 @@
-import { action } from '@ember/object';
-import { inject as service } from '@ember/service';
-import Component from '@glimmer/component';
-
 import { timeout } from 'ember-concurrency';
 import { enqueueTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
-
 import { PreferenceKey, UserPreferences } from 'pep/constants/preferences';
 import CurrentUserService from 'pep/services/current-user';
+import PepSessionService from 'pep/services/session';
 import { guard } from 'pep/utils/types';
+
+import { action } from '@ember/object';
+import { inject as service } from '@ember/service';
+import Component from '@glimmer/component';
 
 interface ModalDialogsHelpPreferencesArgs {
     onClose: () => void;
@@ -16,6 +16,7 @@ interface ModalDialogsHelpPreferencesArgs {
 
 export default class ModalDialogsHelpPreferences extends Component<ModalDialogsHelpPreferencesArgs> {
     @service currentUser!: CurrentUserService;
+    @service session!: PepSessionService;
 
     tourEnabled = PreferenceKey.TOUR_ENABLED;
     helpDescriptionsEnabled = PreferenceKey.HELP_DESCRIPTIONS_ENABLED;

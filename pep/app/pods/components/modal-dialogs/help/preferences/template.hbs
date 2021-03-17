@@ -5,9 +5,14 @@
             {{t "help.preferences.info"}}
         </p>
         <div class="mb-4">
-            <h6 class="mb-3">
+            <h6 class="{{~if this.session.isAuthenticated " mb-3" " mb-0"}}">
                 {{t "help.preferences.general.heading"}}
             </h6>
+            {{#unless this.session.isAuthenticated}}
+                <p class="font-size-secondary text-muted">
+                    {{t "preferences.changesNotSaved"}}
+                </p>
+            {{/unless}}
             <div class="mb-2">
                 <div class="form-row">
                     <div class="col-sm-12">

@@ -1,22 +1,18 @@
-import { action } from '@ember/object';
-import RouterService from '@ember/routing/router-service';
-import { inject as service } from '@ember/service';
-import Component from '@glimmer/component';
-import { tracked } from '@glimmer/tracking';
-
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import IntlService from 'ember-intl/services/intl';
-
-import Modal from '@gavant/ember-modals/services/modal';
-import { GenericChangeset } from '@gavant/ember-validations/utilities/create-changeset';
-
 import { FORGOT_PW_URL } from 'pep/constants/urls';
 import AjaxService from 'pep/services/ajax';
-import { FederatedLoginArgs, LoginForm } from 'pep/services/auth';
+import { FederatedLoginArgs } from 'pep/services/auth';
 import CurrentUserService from 'pep/services/current-user';
 import LoadingBar from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/session';
-import { reject } from 'rsvp';
+
+import { action } from '@ember/object';
+import RouterService from '@ember/routing/router-service';
+import { inject as service } from '@ember/service';
+import Modal from '@gavant/ember-modals/services/modal';
+import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
 
 interface ModalDialogsUserLoginArgs {
     onClose: () => void;
