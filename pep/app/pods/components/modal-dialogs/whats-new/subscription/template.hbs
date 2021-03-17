@@ -32,11 +32,6 @@
                 @onChange={{@matchSynonymsChange}}
                 @label={{t "relatedInfo.widgets.whatsNew.alerts.videos"}}
             />
-            <CheckboxInput
-                @checked={{@matchSynonyms}}
-                @onChange={{@matchSynonymsChange}}
-                @label={{t "relatedInfo.widgets.whatsNew.alerts.ijp"}}
-            />
         </Modal.body>
         <Modal.footer>
             <Button @type="link" @label={{t "common.cancel"}} @action={{@onClose}} />
