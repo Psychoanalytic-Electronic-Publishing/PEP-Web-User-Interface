@@ -6,7 +6,6 @@ import { tracked } from '@glimmer/tracking';
 import { restartableTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
 import DS from 'ember-data';
-import SessionService from 'ember-simple-auth/services/session';
 
 import { PreferenceKey } from 'pep/constants/preferences';
 import { SearchFacetId } from 'pep/constants/search';

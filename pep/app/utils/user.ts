@@ -7,6 +7,7 @@ import Component from '@glimmer/component';
 
 import ModelRegistry from 'ember-data/types/registries/model';
 
+import { HIDE_TOUR_COOKIE_NAME } from 'pep/constants/cookies';
 import CanService from 'pep/services/can';
 
 /**
@@ -25,7 +26,8 @@ export async function onAuthenticated(owner: Controller | Route | Component | Se
     const langService = currentOwner.lookup(`service:lang`);
     const configurationService = currentOwner.lookup(`service:configuration`);
     const session = currentOwner.lookup('service:session');
-
+    const cookies = currentOwner.lookup('service:cookies');
+    const introTour = currentOwner.lookup('service:intro-tour');
     try {
         // get the current user's model before transitioning from the login page
         await currentUserService.load();
@@ -37,6 +39,12 @@ export async function onAuthenticated(owner: Controller | Route | Component | Se
     currentUserService.setup();
     currentUserService.setFontSize(currentUserService.fontSize.id);
     await Promise.all([themeService, langService, configurationService].invoke('setup'));
+    const hideTour = cookies.read(HIDE_TOUR_COOKIE_NAME);
+    if (hideTour) {
+        cookies.clear(HIDE_TOUR_COOKIE_NAME, {});
+        introTour.show();
+    }
+
     return session.trigger('authenticationAndSetupSucceeded');
 }
 

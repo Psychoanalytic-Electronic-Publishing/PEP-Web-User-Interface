@@ -8,17 +8,15 @@ import { removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-par
 
 import { PepSecureAuthenticatedData } from 'pep/api';
 import ENV from 'pep/config/environment';
+import { HIDE_TOUR_COOKIE_NAME, SESSION_COOKIE_NAME, UNAUTHENTICATED_SESSION_COOKIE_NAME } from 'pep/constants/cookies';
 import { DATE_FOREVER } from 'pep/constants/dates';
 import AuthService from 'pep/services/auth';
-import { SESSION_COOKIE_NAME } from 'pep/session-stores/application';
 import { serializeQueryParams } from 'pep/utils/url';
 import { onAuthenticated } from 'pep/utils/user';
 
 export interface AuthenticatedData {
     authenticated: PepSecureAuthenticatedData;
 }
-
-export const UNAUTHENTICATED_SESSION_COOKIE_NAME = 'pepweb_unauthenticated_session';
 
 /**
  * We extend the ember-simple-auth session to strongly type the data object thats stored in it since
@@ -92,7 +90,6 @@ export default class PepSessionService extends SessionService {
 
     handleAuthentication(routeAfterAuthentication: string): void {
         onAuthenticated(this);
-
         // trigger a custom event on the session that tells us when the user is logged in
         // and all other post-login tasks (loading user record, prefs/configs setup, etc) is complete
         // as the built-in `authenticationSucceeded` event fires immediately after the login request returns
@@ -108,6 +105,7 @@ export default class PepSessionService extends SessionService {
 
     handleInvalidation(routeAfterInvalidation: string): void {
         this.cookies.write(SESSION_COOKIE_NAME, JSON.stringify({ authenticated: {} }), {});
+        this.cookies.write(HIDE_TOUR_COOKIE_NAME, 'true', {});
         super.handleInvalidation(routeAfterInvalidation);
     }
 }

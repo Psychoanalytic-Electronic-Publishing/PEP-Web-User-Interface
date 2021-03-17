@@ -7,10 +7,11 @@ import DS from 'ember-data';
 import IntlService from 'ember-intl/services/intl';
 
 import ENV from 'pep/config/environment';
+import { USER_PREFERENCES_COOKIE_NAME } from 'pep/constants/cookies';
 import { DATE_FOREVER } from 'pep/constants/dates';
 import {
     COOKIE_PREFERENCES, DEFAULT_USER_PREFERENCES, LOCALSTORAGE_PREFERENCES, PreferenceChangeset, PreferenceDocumentsKey,
-    PreferenceKey, USER_PREFERENCES_COOKIE_NAME, USER_PREFERENCES_LS_PREFIX, UserPreferences
+    PreferenceKey, USER_PREFERENCES_LS_PREFIX, UserPreferences
 } from 'pep/constants/preferences';
 import {
     AvailableFontSizes, FONT_SIZE_DEFAULT, FontSize, TEXT_LEFT, TextJustificationId, TextJustifications
