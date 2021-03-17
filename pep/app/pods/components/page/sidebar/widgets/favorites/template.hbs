@@ -33,7 +33,11 @@
                     </li>
                 {{else}}
                     <li class="py-3 mb-0 text-center text-muted">
-                        {{t "relatedInfo.widgets.favorites.noResults"}}
+                        {{#if this.session.isAuthenticated}}
+                            {{t "relatedInfo.widgets.favorites.noResults.loggedIn"}}
+                        {{else}}
+                            {{t "relatedInfo.widgets.favorites.noResults.loggedOut"}}
+                        {{/if}}
                     </li>
                 {{/each}}
             </ul>
