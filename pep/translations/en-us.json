@@ -477,6 +477,9 @@
             "videoPreview": {
                 "title": "Latest Video",
                 "help": "Check out the latest video in our system here."
+            },
+            "signIn": {
+                "title": "Sign In"
             }
         }
     },
@@ -585,6 +588,7 @@
     "preferences": {
         "title": "Preferences",
         "info": "Customize and personalize your PEP experience using the settings below.",
+        "changesNotSaved": "Preferences will not be saved until you log in.",
         "general": {
             "heading": "General settings",
             "theme": {
@@ -922,6 +926,10 @@
                         "sourceCode": "Source Code",
                         "embargoYears": "Embargo Years"
                     }
+                },
+                "signInCard": {
+                    "title": "Sign In Card",
+                    "body": "Sign In Card Body"
                 }
             },
             "home": {

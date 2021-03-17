@@ -49,30 +49,6 @@ export default class ModalDialogsUserLogin extends Component<ModalDialogsUserLog
     }
 
     /**
-     * Submits the login dialog form and logs the user in
-     * @param {GenericChangeset<LoginForm>} changeset
-     */
-    @action
-    async login(changeset: GenericChangeset<LoginForm>) {
-        try {
-            const username = changeset.username;
-            const password = changeset.password;
-            this.loadingBar.show();
-            const response = await this.session.authenticate('authenticator:credentials', username, password);
-            this.loginError = null;
-            this.loadingBar.hide();
-            this.args.onClose();
-            this.notifications.success(this.intl.t('login.success'));
-            await this.args.options.onAuthenticated?.(response);
-            return response;
-        } catch (err) {
-            this.loginError = err;
-            this.loadingBar.hide();
-            return reject(err);
-        }
-    }
-
-    /**
      * Transitions to a subscribe/register page
      * TODO this is just a placeholder, will eventually change or be removed completely
      * @param {Event} event

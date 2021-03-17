@@ -48,6 +48,28 @@
                         <div class="form-row">
                             <div class="col-12">
                                 <h4 class="border-bottom mb-3">
+                                    {{t "admin.content.global.signInCard.title"}}
+                                </h4>
+                                <validator.input
+                                    @errors={{changeset.error.configSettings.home.signInCard.body.validation}}
+                                    @label={{true}}
+                                    @hasFocusedOut={{true}}
+                                    @fieldLabel={{t "admin.content.global.signInCard.body"}}
+                                >
+                                    <Admin::Editor
+                                        @changeset={{changeset}}
+                                        @path="configSettings.global.signInCard.body"
+                                    />
+                                </validator.input>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="col-12">
+                                <h4 class="border-bottom mb-3">
                                     {{t "admin.content.home.newsAndInfo.title"}}
                                 </h4>
                                 <validator.input

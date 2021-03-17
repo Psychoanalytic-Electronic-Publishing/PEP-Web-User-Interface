@@ -1,0 +1,65 @@
+<FormValidator @changeset={{this.changeset}} @submit={{this.login}} class="{{~unless @isModal "mt-4"}}" as |changeset validator|>
+    {{#@wrapperComponent}}
+        {{html-safe this.cardInfo.body}}
+        <Alert
+            @isShown={{bool this.loginError}}
+            @message={{this.loginError}}
+            @type="danger"
+            @icon="exclamation-circle"
+        />
+        <div class="form-row mt-4">
+            <div class="{{~if @isModal " col-sm-8" " col-12"}}">
+                <validator.input @errors={{changeset.error.username.validation}} class="input-validator-compact">
+                    <FlInput @value={{changeset.username}} @placeholder={{t "login.username"}} maxlength="128" />
+                </validator.input>
+                <validator.input @errors={{changeset.error.password.validation}} class="input-validator-compact">
+                    <FlInput
+                        @value={{changeset.password}}
+                        @placeholder={{t "login.password"}}
+                        maxlength="128"
+                        type="password"
+                    />
+                </validator.input>
+                {{#if @isModal}}
+                    <p class="mb-0 text-muted">
+                        <a href="{{@padsForgotPasswordUrl}}" target="_blank" rel="noopener noreferrer">
+                            {{t "login.forgotPassword"}}
+                        </a>
+                    </p>
+                {{else}}
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <p class="mb-0 text-muted">
+                            <a href="{{@padsForgotPasswordUrl}}" target="_blank" rel="noopener noreferrer">
+                                {{t "login.forgotPassword"}}
+                            </a>
+                        </p>
+                        <ButtonSpinner
+                            @type="primary"
+                            @blockLayout={{false}}
+                            @showSuccess={{false}}
+                            @label={{t "relatedInfo.widgets.signIn.title"}}
+                            @action={{validator.submit}}
+                        />
+                    </div>
+                {{/if}}
+                <p class="mb-0 text-muted">
+                    {{t (if this.currentUser.user.isGroup "login.notARegisteredUser" "login.notAMember")}}
+                    <a href="{{@padsRegisterUrl}}" target="_blank" rel="noopener noreferrer">
+                        {{t (if this.currentUser.user.isGroup "login.clickToRegister" "login.clickToSubscribe")}}
+                    </a>
+                </p>
+                {{#unless @isModal}}
+                    <p class="mb-0 text-muted">
+                        <Button
+                            @type="link"
+                            @label={{t "login.federatedLogin"}}
+                            @action={{this.showFederatedLogins}}
+                            class="pl-0"
+                        />
+                    </p>
+                {{/unless}}
+            </div>
+        </div>
+    {{/@wrapperComponent}}
+    {{yield changeset validator}}
+</FormValidator>
