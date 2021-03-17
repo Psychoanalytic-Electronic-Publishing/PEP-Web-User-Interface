@@ -6,6 +6,7 @@ import { tracked } from '@glimmer/tracking';
 import { restartableTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
 import DS from 'ember-data';
+import SessionService from 'ember-simple-auth/services/session';
 
 import { PreferenceKey } from 'pep/constants/preferences';
 import { SearchFacetId } from 'pep/constants/search';
@@ -14,6 +15,7 @@ import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/
 import Document from 'pep/pods/document/model';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
+import PepSessionService from 'pep/services/session';
 import { buildSearchQueryParams } from 'pep/utils/search';
 
 interface PageSidebarWidgetsReadLaterArgs extends PageSidebarWidgetArgs {}
@@ -22,6 +24,7 @@ export default class PageSidebarWidgetsReadLater extends Component<PageSidebarWi
     @service currentUser!: CurrentUserService;
     @service store!: DS.Store;
     @service configuration!: ConfigurationService;
+    @service session!: PepSessionService;
 
     @tracked results?: Document[];
 

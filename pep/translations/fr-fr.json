@@ -397,7 +397,10 @@
             },
             "favorites": {
                 "title": "Favorites",
-                "noResults": "You don't have any favorites. Add documents that you frequently view to your favorites for quick access",
+                "noResults": {
+                    "loggedIn": "You don't have any favorites. Add documents that you frequently view to your favorites for quick access.",
+                    "loggedOut": "You need to be logged in to save the Favorites list"
+                },
                 "help": "You can save your favorite documents for easy access here."
             },
             "glossaryTerms": {
@@ -432,7 +435,10 @@
             },
             "readLater": {
                 "title": "Read later",
-                "noResults": "You don't have any documents saved for later. Add documents that you want to view for quick access.",
+                "noResults": {
+                    "loggedIn": "You don't have any documents saved for later. Add documents that you want to view for quick access.",
+                    "loggedOut": "You need to be logged in to save the Read Later list"
+                },
                 "help": "Save items you want to read later and view them here."
             },
             "relatedDocuments": {

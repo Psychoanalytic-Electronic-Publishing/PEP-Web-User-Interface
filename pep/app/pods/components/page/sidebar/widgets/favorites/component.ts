@@ -14,6 +14,7 @@ import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/
 import Document from 'pep/pods/document/model';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
+import PepSessionService from 'pep/services/session';
 import { buildSearchQueryParams } from 'pep/utils/search';
 
 interface PageSidebarWidgetsFavoritesArgs extends PageSidebarWidgetArgs {}
@@ -22,6 +23,7 @@ export default class PageSidebarWidgetsFavorites extends Component<PageSidebarWi
     @service store!: DS.Store;
     @service currentUser!: CurrentUserService;
     @service configuration!: ConfigurationService;
+    @service session!: PepSessionService;
 
     @tracked results?: Document[];
 
