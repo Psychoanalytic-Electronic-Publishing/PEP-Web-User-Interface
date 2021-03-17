@@ -2,20 +2,18 @@ import { action } from '@ember/object';
 import Transition from '@ember/routing/-private/transition';
 import Route from '@ember/routing/route';
 import RouterService from '@ember/routing/router-service';
-import { later } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import CookiesService from 'ember-cookies/services/cookies';
-import IntlService from 'ember-intl/services/intl';
 import MetricService from 'ember-metrics/services/metrics';
 import MediaService from 'ember-responsive/services/media';
-import TourService, { Step, StepButton } from 'ember-shepherd/services/tour';
 
 import { PepSecureAuthenticatedData } from 'pep/api';
-import { PreferenceKey } from 'pep/constants/preferences';
-import { DesktopTour, MobileTour } from 'pep/constants/tour';
+import {
+    FASTBOOT_SESSION_WORKAROUND_COOKIE_NAME, HIDE_TOUR_COOKIE_NAME, SESSION_COOKIE_NAME
+} from 'pep/constants/cookies';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import PageLayout from 'pep/mixins/page-layout';
 import { ApiServerErrorResponse } from 'pep/pods/application/adapter';
@@ -24,12 +22,12 @@ import AuthService from 'pep/services/auth';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
 import DrawerService from 'pep/services/drawer';
+import IntroTour from 'pep/services/intro-tour';
 import LangService from 'pep/services/lang';
 import LoadingBarService from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/session';
 import SidebarService from 'pep/services/sidebar';
 import ThemeService from 'pep/services/theme';
-import { SESSION_COOKIE_NAME } from 'pep/session-stores/application';
 
 export default class Application extends PageLayout(Route) {
     routeAfterAuthentication = 'index';
@@ -40,7 +38,6 @@ export default class Application extends PageLayout(Route) {
     @service fastboot!: FastbootService;
     @service media!: MediaService;
     @service notifications!: NotificationService;
-    @service intl!: IntlService;
     @service auth!: AuthService;
     @service currentUser!: CurrentUserService;
     @service configuration!: ConfigurationService;
@@ -48,9 +45,9 @@ export default class Application extends PageLayout(Route) {
     @service lang!: LangService;
     @service loadingBar!: LoadingBarService;
     @service sidebar!: SidebarService;
-    @service tour!: TourService;
     @service cookies!: CookiesService;
     @service drawer!: DrawerService;
+    @service introTour!: IntroTour;
 
     constructor() {
         super(...arguments);
@@ -90,8 +87,6 @@ export default class Application extends PageLayout(Route) {
         if (this.fastboot.isFastBoot) {
             this.auth.dontRedirectOnLogin = true;
         }
-        // this.cookies.write(SESSION_COOKIE_NAME, JSON.stringify({ authenticated: {} }), {});
-
         // IP auth should only happen if we are in fastboot, and we are not authenticated OR we are given a session ID in the url
         if (
             this.fastboot.isFastBoot &&
@@ -104,19 +99,19 @@ export default class Application extends PageLayout(Route) {
                 // The fastboot session would authenticate through IP, we would write to the cookie and save everything but when the app
                 // loaded back up, we would be logged out and the cookie would mysteriously be removed. We work around this by writing the our own cookie
                 // and then getting that cookie and setting it as the simple auth cookie to force auth state.
-                this.cookies.write('pep_session_fastboot', this.cookies.read(SESSION_COOKIE_NAME), {});
+                this.cookies.write(FASTBOOT_SESSION_WORKAROUND_COOKIE_NAME, this.cookies.read(SESSION_COOKIE_NAME), {});
             } catch (errors) {
                 this.session.invalidate();
             }
-        } else if (this.cookies.exists('pep_session_fastboot')) {
+        } else if (this.cookies.exists(FASTBOOT_SESSION_WORKAROUND_COOKIE_NAME)) {
             // If the fastboot session cookie exists, it means we have new information. So rewrite the pep_session we were logged in with
             // and pass this new session to the user endpoint to make sure we get the correct one. We can't just rely on having the right ID
             // as the update from cookie to session service happens asynchronously
-            const newSession = this.cookies.read('pep_session_fastboot');
+            const newSession = this.cookies.read(FASTBOOT_SESSION_WORKAROUND_COOKIE_NAME);
             this.cookies.write(SESSION_COOKIE_NAME, newSession, {});
             const sessionData: { authenticated: PepSecureAuthenticatedData } = JSON.parse(newSession);
             sessionId = sessionData.authenticated.SessionId;
-            this.cookies.clear('pep_session_fastboot', {});
+            this.cookies.clear(FASTBOOT_SESSION_WORKAROUND_COOKIE_NAME, {});
         }
 
         try {
@@ -130,77 +125,6 @@ export default class Application extends PageLayout(Route) {
     }
 
     /**
-     * Sets up the tour by providing options and steps to ember-shepherd
-     *
-     * @memberof Application
-     */
-    async setupTour(): Promise<void> {
-        const sizeClass = this.media.isMobile ? 'mobile-tour' : 'desktop-tour';
-        this.tour.set('defaultStepOptions', {
-            classes: `${sizeClass} ${this.theme.currentTheme.id}`,
-            cancelIcon: {
-                enabled: true
-            },
-            scrollTo: true,
-            popperOptions: {
-                modifiers: [{ name: 'offset', options: { offset: [0, 10] } }]
-            },
-            when: {
-                cancel: () => {
-                    if (this.session.isAuthenticated) {
-                        this.currentUser.updatePrefs({ [PreferenceKey.TOUR_ENABLED]: false });
-                    }
-                }
-            }
-        });
-        this.tour.set('disableScroll', true);
-        this.tour.set('modal', true);
-        this.tour.set('exitOnEsc', true);
-        this.tour.set('keyboardNavigation', true);
-
-        const partialSteps = this.media.isMobile ? MobileTour : DesktopTour;
-        const steps: Step[] = partialSteps.map((partialStep, index) => {
-            const tour = this.configuration.content.global.tour;
-            const id = partialStep.id;
-            const buttons: StepButton[] =
-                partialStep.buttons?.map((button) => {
-                    return {
-                        ...button,
-                        text:
-                            index !== partialSteps.length - 1
-                                ? this.intl.t('tour.leftSidebar.buttons.next')
-                                : this.intl.t('tour.rightSidebar.buttons.cancel')
-                    };
-                }) ?? [];
-            const step: Step = {
-                ...partialStep,
-                text: tour[id].text,
-                title: tour[id].title,
-                buttons
-            };
-            if (partialStep.beforeShow) {
-                step.beforeShowPromise = () => {
-                    return new Promise((resolve) => {
-                        partialStep.beforeShow?.(this);
-                        later(resolve, 1000);
-                    });
-                };
-            }
-            return step;
-        });
-        steps[steps.length - 1].when = {
-            show: () => {
-                if (this.session.isAuthenticated) {
-                    this.currentUser.updatePrefs({ [PreferenceKey.TOUR_ENABLED]: false });
-                }
-            }
-        };
-
-        await this.tour.addSteps(steps);
-        this.tour.start();
-    }
-
-    /**
      * If the tour is enabled, show it
      *
      * @param {ApplicationController} controller
@@ -210,8 +134,9 @@ export default class Application extends PageLayout(Route) {
     @dontRunInFastboot
     async setupController(controller: ApplicationController, model: any, transition: Transition): Promise<void> {
         super.setupController(controller, model, transition);
-        if (this.currentUser.preferences?.tourEnabled) {
-            this.setupTour();
+        const hideTour = this.cookies.read(HIDE_TOUR_COOKIE_NAME);
+        if (this.currentUser.preferences?.tourEnabled && !hideTour) {
+            this.introTour.show();
         }
     }
 

@@ -4,9 +4,9 @@ import { inject as service } from '@ember/service';
 
 import CookiesService from 'ember-cookies/services/cookies';
 
-import { USER_PREFERENCES_COOKIE_NAME } from 'pep/constants/preferences';
-import { UNAUTHENTICATED_SESSION_COOKIE_NAME } from 'pep/services/session';
-import { SESSION_COOKIE_NAME } from 'pep/session-stores/application';
+import {
+    APPLICATION_COOKIE_NAMES, SESSION_COOKIE_NAME, UNAUTHENTICATED_SESSION_COOKIE_NAME, USER_PREFERENCES_COOKIE_NAME
+} from 'pep/constants/cookies';
 
 export default class BrowserData extends Controller {
     @service cookies!: CookiesService;
@@ -19,11 +19,9 @@ export default class BrowserData extends Controller {
     @action
     clearData(): void {
         localStorage.clear();
-        this.cookies.clear('pep_session_fastboot', {});
-        this.cookies.write(SESSION_COOKIE_NAME, JSON.stringify({ authenticated: {} }), {});
-        this.cookies.clear(USER_PREFERENCES_COOKIE_NAME, {});
-        this.cookies.clear(`${SESSION_COOKIE_NAME}-expiration_time`, {});
-        this.cookies.clear(UNAUTHENTICATED_SESSION_COOKIE_NAME, {});
+        APPLICATION_COOKIE_NAMES.forEach((name) => {
+            this.cookies.clear(name, {});
+        });
         window.location.reload();
     }
 }

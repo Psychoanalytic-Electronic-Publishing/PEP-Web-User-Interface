@@ -58,7 +58,6 @@ export type PreferenceChangeset = Partial<UserPreferences>;
 
 export type PreferenceDocumentsKey = PreferenceKey.READ_LATER | PreferenceKey.FAVORITES;
 
-export const USER_PREFERENCES_COOKIE_NAME = 'pepweb_user_prefs';
 export const USER_PREFERENCES_LS_PREFIX = 'pepweb_user_prefs';
 
 /**

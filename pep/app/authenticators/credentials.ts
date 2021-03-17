@@ -11,9 +11,9 @@ import OAuth2PasswordGrant from 'ember-simple-auth/authenticators/oauth2-passwor
 
 import { PepSecureAuthenticatedData } from 'pep/api';
 import ENV from 'pep/config/environment';
+import { SESSION_COOKIE_NAME } from 'pep/constants/cookies';
 import AjaxService from 'pep/services/ajax';
 import PepSessionService from 'pep/services/session';
-import { SESSION_COOKIE_NAME } from 'pep/session-stores/application';
 import { guard } from 'pep/utils/types';
 import { serializeQueryParams } from 'pep/utils/url';
 import RSVP from 'rsvp';
