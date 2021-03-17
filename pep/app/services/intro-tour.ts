@@ -21,6 +21,11 @@ export default class IntroTour extends Service {
     @service tour!: TourService;
     @service intl!: IntlService;
 
+    /**
+     * Show the intro tour by building the options for either mobile or desktop depending on which one you are in
+     *
+     * @memberof IntroTour
+     */
     async show() {
         const sizeClass = this.media.isMobile ? 'mobile-tour' : 'desktop-tour';
         this.tour.set('defaultStepOptions', {

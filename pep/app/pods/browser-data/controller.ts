@@ -4,9 +4,7 @@ import { inject as service } from '@ember/service';
 
 import CookiesService from 'ember-cookies/services/cookies';
 
-import {
-    APPLICATION_COOKIE_NAMES, SESSION_COOKIE_NAME, UNAUTHENTICATED_SESSION_COOKIE_NAME, USER_PREFERENCES_COOKIE_NAME
-} from 'pep/constants/cookies';
+import { APPLICATION_COOKIE_NAMES } from 'pep/constants/cookies';
 
 export default class BrowserData extends Controller {
     @service cookies!: CookiesService;
