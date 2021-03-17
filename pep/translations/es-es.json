@@ -583,6 +583,7 @@
     "preferences": {
         "title": "Preferencias",
         "info": "Customize and personalize your PEP experience using the settings below.",
+        "changesNotSaved": "Preferences will not be saved until you log in.",
         "general": {
             "heading": "General settings",
             "theme": {

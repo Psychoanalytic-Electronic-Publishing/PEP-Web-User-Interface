@@ -6,9 +6,14 @@
 >
     <Modal.header @title={{t "preferences.title"}} />
     <Modal.body>
-        <p class="text-muted">
+        <p class="{{~if this.session.isAuthenticated " text-muted mb-3" " font-size-secondary mb-0"}}">
             {{t "preferences.info"}}
         </p>
+        {{#unless this.session.isAuthenticated}}
+            <p class="font-size-secondary text-muted">
+                {{t "preferences.changesNotSaved"}}
+            </p>
+        {{/unless}}
         <div class="row">
             <div class="col-sm-6 col-lg-8">
                 <div class="mb-4">
