@@ -1,8 +1,14 @@
 <Page::Sidebar @side="right">
     <Page::Sidebar::Content @scrollableNamespace="sidebar-right">
+        {{#unless this.session.isAuthenticated}}
+            <div class="px-2 pt-3">
+                <Page::Sidebar::Widgets::SignIn />
+            </div>
+        {{/unless}}
         <Page::Sidebar::Widgets
             @widgets={{this.rightSidebarWidgets}}
             @data={{@data}}
+            @signInCardInfo={{this.signInCardInfo}}
             class="pt-3"
         />
     </Page::Sidebar::Content>

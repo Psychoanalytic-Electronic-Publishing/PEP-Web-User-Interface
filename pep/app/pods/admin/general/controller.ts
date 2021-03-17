@@ -26,8 +26,6 @@ export default class AdminGeneral extends Controller {
     mirrorOptions = {
         constrainDimensions: true
     };
-    widgetLeft = WidgetSide.left;
-    widgetRight = WidgetSide.right;
 
     get searchTypeOptions() {
         return SEARCH_TYPES.filter((t) => t.isTypeOption);
