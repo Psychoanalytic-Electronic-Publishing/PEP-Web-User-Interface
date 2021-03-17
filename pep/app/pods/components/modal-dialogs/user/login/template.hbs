@@ -1,44 +1,16 @@
 <ModalDialog @onClose={{@onClose}} @size="md" @clickOutsideToClose={{false}} as |Modal|>
     <Modal.header @title={{t "login.title"}} />
-    <FormValidator @changeset={{@options.changeset}} @submit={{this.login}} as |changeset validator|>
-        <Modal.body>
-            <p class="text-muted">
-                {{t "login.info"}}
-            </p>
-            <Alert
-                @isShown={{bool this.loginError}}
-                @message={{this.loginError}}
-                @type="danger"
-                @icon="exclamation-circle"
-            />
-            <div class="form-row">
-                <div class="col-sm-8">
-                    <validator.input @errors={{changeset.error.username.validation}} class="input-validator-compact">
-                        <FlInput @value={{changeset.username}} @placeholder={{t "login.username"}} maxlength="128" />
-                    </validator.input>
-                    <validator.input @errors={{changeset.error.password.validation}} class="input-validator-compact">
-                        <FlInput
-                            @value={{changeset.password}}
-                            @placeholder={{t "login.password"}}
-                            maxlength="128"
-                            type="password"
-                        />
-                    </validator.input>
-
-                    <p class="mb-0 text-muted">
-                        <a href="{{this.forgotPasswordUrl}}" target="_blank" rel="noopener noreferrer">
-                            {{t "login.forgotPassword"}}
-                        </a>
-                    </p>
-                    <p class="mb-0 text-muted">
-                        {{t (if this.currentUser.user.isGroup "login.notARegisteredUser" "login.notAMember")}}
-                        <a href="{{@options.padsRegisterUrl}}" target="_blank" rel="noopener noreferrer">
-                            {{t (if this.currentUser.user.isGroup "login.clickToRegister" "login.clickToSubscribe")}}
-                        </a>
-                    </p>
-                </div>
-            </div>
-        </Modal.body>
+    <Forms::Login
+        @wrapperComponent={{component 'modal-dialog/body'}}
+        @isModal={{true}}
+        @logins={{@options.logins}}
+        @genericLoginUrl={{@options.genericLoginUrl}}
+        @padsLoginUrl={{@options.padsLoginUrl}}
+        @padsForgotPasswordUrl={{@options.padsForgotPasswordUrl}}
+        @padsRegisterUrl={{@options.padsRegisterUrl}}
+        @onClose={{@onClose}}
+        as |changeset validator|
+    >
         <Modal.footer>
             <div class="d-flex w-100 justify-content-between align-items-center">
                 <p class="mb-0 text-muted">
@@ -60,5 +32,5 @@
                 </div>
             </div>
         </Modal.footer>
-    </FormValidator>
+    </Forms::Login>
 </ModalDialog>

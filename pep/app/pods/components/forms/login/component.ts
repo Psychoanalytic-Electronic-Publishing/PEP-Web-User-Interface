@@ -1,16 +1,11 @@
 import NotificationService from 'ember-cli-notifications/services/notifications';
-import { restartableTask } from 'ember-concurrency-decorators';
-import { taskFor } from 'ember-concurrency-ts';
 import IntlService from 'ember-intl/services/intl';
-import ENV from 'pep/config/environment';
-import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import AjaxService from 'pep/services/ajax';
-import { FederatedLoginResponse, LoginForm } from 'pep/services/auth';
+import { LoginForm } from 'pep/services/auth';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
 import LoadingBarService from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/session';
-import { serializeQueryParams } from 'pep/utils/url';
 import { onAuthenticated } from 'pep/utils/user';
 import LoginValidations from 'pep/validations/user/login';
 import { reject } from 'rsvp';
@@ -22,9 +17,17 @@ import createChangeset, { GenericChangeset } from '@gavant/ember-validations/uti
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
-interface PageSidebarWidgetsSignInArgs {}
+interface FormsLoginArgs {
+    logins: string;
+    padsForgotPasswordUrl: string;
+    genericLoginUrl: string;
+    padsLoginUrl: string;
+    padsRegisterUrl: string;
+    isModal?: boolean;
+    onClose?: () => void;
+}
 
-export default class PageSidebarWidgetsSignIn extends Component<PageSidebarWidgetsSignInArgs> {
+export default class FormsLogin extends Component<FormsLoginArgs> {
     @service configuration!: ConfigurationService;
     @service currentUser!: CurrentUserService;
     @service loadingBar!: LoadingBarService;
@@ -36,18 +39,17 @@ export default class PageSidebarWidgetsSignIn extends Component<PageSidebarWidge
 
     @tracked changeset!: GenericChangeset<LoginForm>;
     @tracked loginError = null;
-    @tracked logins = null;
-    @tracked padsForgotPasswordUrl = null;
-    @tracked genericLoginUrl = null;
-    @tracked padsLoginUrl = null;
-    @tracked padsRegisterUrl = null;
+
+    get cardInfo() {
+        return this.configuration.content.global.signInCard;
+    }
 
     /**
      * Create the loginForm changeset.
      * @param {unknown} owner
-     * @param {PageSidebarWidgetsSignInArgs} args
+     * @param {FormsLoginArgs} args
      */
-    constructor(owner: unknown, args: PageSidebarWidgetsSignInArgs) {
+    constructor(owner: unknown, args: FormsLoginArgs) {
         super(owner, args);
         const model: LoginForm = { username: null, password: null };
         const changeset = createChangeset<LoginForm>(model, LoginValidations);
@@ -67,6 +69,9 @@ export default class PageSidebarWidgetsSignIn extends Component<PageSidebarWidge
             const response = await this.session.authenticate('authenticator:credentials', username, password);
             this.loginError = null;
             this.loadingBar.hide();
+            if (this.args.isModal) {
+                this.args.onClose?.();
+            }
             this.notifications.success(this.intl.t('login.success'));
             await onAuthenticated(this);
             return response;
@@ -78,33 +83,16 @@ export default class PageSidebarWidgetsSignIn extends Component<PageSidebarWidge
     }
 
     /**
-     * Load the widget login data
-     */
-    @restartableTask
-    *loadResults() {
-        const session = this.session.isAuthenticated
-            ? this.session.data?.authenticated?.SessionId
-            : this.session.getUnauthenticatedSession()?.SessionId;
-        const params = serializeQueryParams({
-            sessionId: session ?? ''
-        });
-        const federatedLogins = yield this.ajax.request<FederatedLoginResponse>(`${ENV.federatedLoginUrl}?${params}`, {
-            appendTrailingSlash: false
-        });
-        this.logins = JSON.parse(federatedLogins.FederatedLinks).FederatedLinks;
-        this.genericLoginUrl = federatedLogins.GenericFederatedURL;
-        this.padsLoginUrl = federatedLogins.PaDSLogonURL;
-        this.padsForgotPasswordUrl = federatedLogins.PaDSPasswordResetURL;
-        this.padsRegisterUrl = federatedLogins.PaDSRegisterUserURL;
-    }
-
-    /**
-     * Load the widget results on render
+     * Show the federated login modal
      *
      */
     @action
-    @dontRunInFastboot
-    onElementInsert() {
-        taskFor(this.loadResults).perform();
+    async showFederatedLogins() {
+        this.modal.open('user/federated-login', {
+            logins: this.args.logins,
+            genericLoginUrl: this.args.genericLoginUrl,
+            padsLoginUrl: this.args.padsLoginUrl,
+            padsForgotPasswordUrl: this.args.padsForgotPasswordUrl
+        });
     }
 }
