@@ -44,6 +44,11 @@ export default class PageSidebarWidgetsSignIn extends Component<PageSidebarWidge
     @tracked padsLoginUrl = null;
     @tracked padsRegisterUrl = null;
 
+    /**
+     * Create the loginForm changeset.
+     * @param {unknown} owner
+     * @param {PageSidebarWidgetsSignInArgs} args
+     */
     constructor(owner: unknown, args: PageSidebarWidgetsSignInArgs) {
         super(owner, args);
         const model: LoginForm = { username: null, password: null };
@@ -59,14 +64,13 @@ export default class PageSidebarWidgetsSignIn extends Component<PageSidebarWidge
      * Forgot password url. We use the FP URL from the api, and then the hardcoded one as a backup
      *
      * @readonly
-     * @memberof ModalDialogsUserLogin
      */
     get forgotPasswordUrl() {
         return this.padsForgotPasswordUrl ?? FORGOT_PW_URL;
     }
 
     /**
-     * Submits the login dialog form and logs the user in
+     * Submits the login form and logs the user in
      * @param {GenericChangeset<LoginForm>} changeset
      */
     @action
@@ -112,7 +116,6 @@ export default class PageSidebarWidgetsSignIn extends Component<PageSidebarWidge
     /**
      * Load the widget results on render
      *
-     * @memberof PageSidebarWidgetsWhatsNew
      */
     @action
     @dontRunInFastboot
@@ -125,7 +128,6 @@ export default class PageSidebarWidgetsSignIn extends Component<PageSidebarWidge
     /**
      * Show the federated login modal
      *
-     * @memberof ModalDialogsUserLogin
      */
     @action
     async showFederatedLogins() {

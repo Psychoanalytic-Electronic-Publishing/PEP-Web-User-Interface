@@ -5,7 +5,7 @@
                 {{t "relatedInfo.widgets.signIn.title"}}
             </h5>
         </div>
-        <ContentWithPlaceholder @placeholderComponent="loading/widget" @isLoading={{or this.loadResults.isRunning this.session.isAuthenticating}}>
+        <ContentWithPlaceholder @placeholderComponent="loading/widget" @isLoading={{this.loadResults.isRunning}}>
             {{html-safe this.cardInfo.body}}
             <FormValidator @changeset={{this.changeset}} @submit={{this.login}} class="mt-4" as |changeset validator|>
                 <Alert
