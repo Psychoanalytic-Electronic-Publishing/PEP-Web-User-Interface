@@ -4,7 +4,6 @@
             <h5 class="mb-0">
                 {{t "relatedInfo.widgets.signIn.title"}}
             </h5>
-            <HelpTooltip @tooltip={{this.configuration.content.global.signInCard.help}} class="widget-tooltip mr-0" />
         </div>
         <ContentWithPlaceholder @placeholderComponent="loading/widget" @isLoading={{or this.loadResults.isRunning this.session.isAuthenticating}}>
             {{html-safe this.cardInfo.body}}

@@ -853,13 +853,6 @@
                         "image": "Image ID"
                     }
                 }
-            },
-            "signInCard": {
-                "title": "Sign In Card",
-                "position": "Position",
-                "left": "Left Sidebar",
-                "right": "Right Sidebar",
-                "cardCollapsible": "Card Collapsible"
             }
         },
         "content": {
