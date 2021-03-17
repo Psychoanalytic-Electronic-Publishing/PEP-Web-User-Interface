@@ -67,9 +67,6 @@ export interface BaseConfiguration {
             left: WidgetConfiguration[];
             right: WidgetConfiguration[];
         };
-        signInCard: {
-            body: string;
-        };
     };
     home: {
         expertPicksStartDate: string;

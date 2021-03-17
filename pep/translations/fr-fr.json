@@ -472,6 +472,9 @@
             "videoPreview": {
                 "title": "Latest Video",
                 "help": "Check out the latest video in our system here."
+            },
+            "signIn": {
+                "title": "Sign In"
             }
         }
     },
@@ -917,6 +920,10 @@
                         "sourceCode": "Source Code",
                         "embargoYears": "Embargo Years"
                     }
+                },
+                "signInCard": {
+                    "title": "Sign In Card",
+                    "body": "Sign In Card Body"
                 }
             },
             "home": {

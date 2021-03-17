@@ -472,6 +472,9 @@
             "videoPreview": {
                 "title": "Video mas reciente",
                 "help": "Mire aqui nuestro video mas reciente."
+            },
+            "signIn": {
+                "title": "Sign In"
             }
         }
     },
@@ -917,6 +920,10 @@
                         "sourceCode": "Source Code",
                         "embargoYears": "Embargo Years"
                     }
+                },
+                "signInCard": {
+                    "title": "Sign In Card",
+                    "body": "Sign In Card Body"
                 }
             },
             "home": {
