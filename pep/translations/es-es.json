@@ -463,12 +463,11 @@
                 "issue": "Issue #{issueNum}, Vol {volNum} &bull; {updatedDate}",
                 "signUp": "You can now sign up to be notified when new content is added by entering your email below. When new content is added we will automatically send you an email with a list of what was added, with links to it on PEP-Web!",
                 "emailAddress": "Email Address",
-                "update": "activar notificaciones",
+                "update": "Update notifications",
                 "help": "The newest additions to our system can be viewed here.",
                 "alerts": {
-                    "journals": "PEP-Web revista (does not include IJP Open)",
-                    "videos": "PEP-Web Videos",
-                    "ijp": "IJP open"
+                    "journals": "PEP-Web revista",
+                    "videos": "PEP-Web Videos"
                 }
             },
             "yourInterests": {
