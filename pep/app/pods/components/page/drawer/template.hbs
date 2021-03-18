@@ -109,6 +109,12 @@
                         </button>
                     </Page::Drawer::NavItem>
                     <Page::Drawer::NavItem class="mt-1">
+                        <LinkTo @route="browse" class="list-group-item list-group-item-action">
+                            <FaIcon @icon="browser" @fixedWidth={{true}} class="text-muted" />
+                            {{t "nav.support.browserData"}}
+                        </LinkTo>
+                    </Page::Drawer::NavItem>
+                    <Page::Drawer::NavItem class="mt-1">
                         <button
                             type="button"
                             class="list-group-item list-group-item-action"
@@ -169,7 +175,9 @@
                                         {{t "nav.user.login"}}
                                     </span>
                                     {{#if this.currentUser.loginTypeLabel}}
-                                        <small class="text-muted ml-1">{{this.currentUser.loginTypeLabel}}</small>
+                                        <small class="text-muted ml-1">
+                                            {{this.currentUser.loginTypeLabel}}
+                                        </small>
                                     {{/if}}
                                 </button>
                             </Page::Drawer::NavItem>
@@ -185,7 +193,9 @@
                                     {{t "nav.user.logout"}}
                                 </span>
                                 {{#if this.currentUser.logoutTypeLabel}}
-                                    <small class="text-muted ml-1">{{this.currentUser.logoutTypeLabel}}</small>
+                                    <small class="text-muted ml-1">
+                                        {{this.currentUser.logoutTypeLabel}}
+                                    </small>
                                 {{/if}}
                             </button>
                         </Page::Drawer::NavItem>

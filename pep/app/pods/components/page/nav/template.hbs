@@ -1,5 +1,11 @@
 <nav class="navbar navbar-expand fixed-top navbar-dark bg-gradient-primary" ...attributes>
-    <a href={{this.supportUrl}} target="_blank" rel="noopener noreferrer" class="navbar-brand mr-auto d-flex" title={{t "buttons.nav.home.name"}}>
+    <a
+        href={{this.supportUrl}}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="navbar-brand mr-auto d-flex"
+        title={{t "buttons.nav.home.name"}}
+    >
         <div class="navbar-brand-logo"></div>
         <div class="ml-2 navbar-text-container">
             <div>
@@ -48,12 +54,8 @@
             </div>
         </li>
         <li class="nav-item home">
-            <LinkTo
-                @route="index"
-                class="nav-link"
-                title={{t "buttons.nav.home.name"}}
-            >
-                <FaIcon @icon="home" @size="lg"/>
+            <LinkTo @route="index" class="nav-link" title={{t "buttons.nav.home.name"}}>
+                <FaIcon @icon="home" @size="lg" />
             </LinkTo>
         </li>
         <li class="nav-item">
@@ -65,17 +67,13 @@
                     rel="noopener noreferrer"
                     title={{t "buttons.nav.facebook.name"}}
                 >
-                    <FaIcon @icon="facebook" @prefix="fab" @size="lg"/>
+                    <FaIcon @icon="facebook" @prefix="fab" @size="lg" />
                 </a>
             </div>
         </li>
         <li class="nav-item">
             <DropdownMenu @horizontalPosition="auto-right" as |DD|>
-                <DD.Trigger
-                    @htmlTag="a"
-                    class="nav-link"
-                    title={{t "buttons.nav.help.name"}}
-                >
+                <DD.Trigger @htmlTag="a" class="nav-link" title={{t "buttons.nav.help.name"}}>
                     <FaIcon @icon="question" @size="lg" />
                 </DD.Trigger>
                 <DD.Content class="dropdown-menu">
@@ -101,6 +99,10 @@
                         <FaIcon @icon="hands-helping" @fixedWidth={{true}} class="text-muted" />
                         {{t "nav.support.preferences"}}
                     </DropdownAction>
+                    <DropdownLink @dd={{DD}} @route="browser-data">
+                        <FaIcon @icon="browser" @fixedWidth={{true}} class="text-muted" />
+                        {{t "nav.support.browserData"}}
+                    </DropdownLink>
                     <DropdownAction @dd={{DD}} @action={{@openAboutModal}}>
                         <FaIcon @icon="info-square" @fixedWidth={{true}} class="text-muted" />
                         {{t "nav.user.aboutPepWeb"}}
@@ -110,11 +112,7 @@
         </li>
         <li class="nav-item">
             <DropdownMenu @horizontalPosition="auto-right" as |DD|>
-                <DD.Trigger
-                    @htmlTag="a"
-                    class="nav-link"
-                    title={{t "buttons.nav.user.name"}}
-                >
+                <DD.Trigger @htmlTag="a" class="nav-link" title={{t "buttons.nav.user.name"}}>
                     <FaIcon @icon="user" @size="lg" />
                 </DD.Trigger>
                 <DD.Content class="dropdown-menu">
@@ -143,7 +141,9 @@
                                     {{t "nav.user.login"}}
                                 </span>
                                 {{#if this.currentUser.loginTypeLabel}}
-                                    <small class="text-muted">{{this.currentUser.loginTypeLabel}}</small>
+                                    <small class="text-muted">
+                                        {{this.currentUser.loginTypeLabel}}
+                                    </small>
                                 {{/if}}
                             </DropdownAction>
                         {{/if}}
@@ -153,7 +153,9 @@
                                 {{t "nav.user.logout"}}
                             </span>
                             {{#if this.currentUser.logoutTypeLabel}}
-                                <small class="text-muted">{{this.currentUser.logoutTypeLabel}}</small>
+                                <small class="text-muted">
+                                    {{this.currentUser.logoutTypeLabel}}
+                                </small>
                             {{/if}}
                         </DropdownAction>
                     {{else}}
@@ -168,11 +170,7 @@
         {{#if this.currentUser.user.isAdmin}}
             <li class="nav-item">
                 <DropdownMenu @horizontalPosition="auto-right" as |DD|>
-                    <DD.Trigger
-                        @htmlTag="a"
-                        class="nav-link"
-                        title={{t "buttons.nav.admin.name"}}
-                    >
+                    <DD.Trigger @htmlTag="a" class="nav-link" title={{t "buttons.nav.admin.name"}}>
                         <FaIcon @icon="cog" @size="lg" />
                     </DD.Trigger>
                     <DD.Content class="dropdown-menu">
