@@ -14,8 +14,8 @@ import Abstract from 'pep/pods/abstract/model';
 import GlossaryTerm from 'pep/pods/glossary-term/model';
 import AuthService from 'pep/services/auth';
 import LoadingBarService from 'pep/services/loading-bar';
+import PepSessionService from 'pep/services/pep-session';
 import ScrollableService from 'pep/services/scrollable';
-import PepSessionService from 'pep/services/session';
 
 export type SearchPreviewMode = 'minimized' | 'maximized' | 'fit' | 'custom';
 
@@ -29,7 +29,7 @@ interface SearchPreviewArgs {
 }
 
 export default class SearchPreview extends Component<SearchPreviewArgs> {
-    @service session!: PepSessionService;
+    @service('pep-session') session!: PepSessionService;
     @service auth!: AuthService;
     @service scrollable!: ScrollableService;
     @service loadingBar!: LoadingBarService;

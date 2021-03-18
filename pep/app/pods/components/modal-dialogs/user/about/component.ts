@@ -4,7 +4,7 @@ import Component from '@glimmer/component';
 import IntlService from 'ember-intl/services/intl';
 
 import { ServerStatus } from 'pep/api';
-import PepSessionService from 'pep/services/session';
+import PepSessionService from 'pep/services/pep-session';
 
 interface ModalDialogsUserAboutArgs {
     onClose: () => void;
@@ -16,7 +16,7 @@ interface ModalDialogsUserAboutArgs {
 
 export default class ModalDialogsUserAbout extends Component<ModalDialogsUserAboutArgs> {
     @service intl!: IntlService;
-    @service session!: PepSessionService;
+    @service('pep-session') session!: PepSessionService;
 
     /**
      * @remarks

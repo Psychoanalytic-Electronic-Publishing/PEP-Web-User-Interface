@@ -11,7 +11,7 @@ import AuthService from 'pep/services/auth';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService, { VIEW_DOCUMENT_FROM } from 'pep/services/current-user';
 import DrawerService from 'pep/services/drawer';
-import PepSessionService from 'pep/services/session';
+import PepSessionService from 'pep/services/pep-session';
 
 interface PageDrawerArgs {
     openAboutModal: () => Promise<void>;
@@ -19,7 +19,7 @@ interface PageDrawerArgs {
 
 export default class PageDrawer extends Component<PageDrawerArgs> {
     @service drawer!: DrawerService;
-    @service session!: PepSessionService;
+    @service('pep-session') session!: PepSessionService;
     @service auth!: AuthService;
     @service modal!: ModalService;
     @service configuration!: ConfigurationService;

@@ -1,13 +1,14 @@
-import ModelRegistry from 'ember-data/types/registries/model';
-import CanService from 'pep/services/can';
-import CurrentUserService from 'pep/services/current-user';
-
 import { getOwner } from '@ember/application';
 import Controller from '@ember/controller';
 import Route from '@ember/routing/route';
 import RouterService from '@ember/routing/router-service';
 import Service from '@ember/service';
 import Component from '@glimmer/component';
+
+import ModelRegistry from 'ember-data/types/registries/model';
+
+import CanService from 'pep/services/can';
+import CurrentUserService from 'pep/services/current-user';
 
 /**
  * Functionality for loading user and configs after authentication
@@ -24,7 +25,7 @@ export async function onAuthenticated(owner: Controller | Route | Component | Se
     const themeService = currentOwner.lookup(`service:theme`);
     const langService = currentOwner.lookup(`service:lang`);
     const configurationService = currentOwner.lookup(`service:configuration`);
-    const session = currentOwner.lookup('service:session');
+    const session = currentOwner.lookup('service:pep-session');
     const introTour = currentOwner.lookup('service:intro-tour');
     try {
         // get the current user's model before transitioning from the login page

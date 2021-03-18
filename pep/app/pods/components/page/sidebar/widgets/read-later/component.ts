@@ -14,7 +14,7 @@ import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/
 import Document from 'pep/pods/document/model';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
-import PepSessionService from 'pep/services/session';
+import PepSessionService from 'pep/services/pep-session';
 import { buildSearchQueryParams } from 'pep/utils/search';
 
 interface PageSidebarWidgetsReadLaterArgs extends PageSidebarWidgetArgs {}
@@ -23,7 +23,7 @@ export default class PageSidebarWidgetsReadLater extends Component<PageSidebarWi
     @service currentUser!: CurrentUserService;
     @service store!: DS.Store;
     @service configuration!: ConfigurationService;
-    @service session!: PepSessionService;
+    @service('pep-session') session!: PepSessionService;
 
     @tracked results?: Document[];
 

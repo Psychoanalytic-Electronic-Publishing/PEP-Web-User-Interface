@@ -32,10 +32,10 @@ import CurrentUserService from 'pep/services/current-user';
 import ExportsService, { ExportType } from 'pep/services/exports';
 import FastbootMediaService from 'pep/services/fastboot-media';
 import LoadingBarService from 'pep/services/loading-bar';
+import PepSessionService from 'pep/services/pep-session';
 import PrinterService from 'pep/services/printer';
 import ScrollableService from 'pep/services/scrollable';
 import SearchSelection from 'pep/services/search-selection';
-import PepSessionService from 'pep/services/session';
 import SidebarService from 'pep/services/sidebar';
 import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
 import { SearchSorts, SearchSortType, transformSearchSortsToTable, transformSearchSortToAPI } from 'pep/utils/sort';
@@ -55,7 +55,7 @@ export default class SearchIndex extends Controller {
     @service notifications!: NotificationService;
     @service intl!: IntlService;
     @service printer!: PrinterService;
-    @service session!: PepSessionService;
+    @service('pep-session') session!: PepSessionService;
 
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981

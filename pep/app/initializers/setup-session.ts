@@ -7,7 +7,7 @@ import Application from '@ember/application';
  * @param {Application} application
  */
 export function initialize(application: Application): void {
-    application.inject('service:session', 'session', 'session:main');
+    application.inject('service:pep-session', 'session', 'session:main');
 }
 
 export default {
