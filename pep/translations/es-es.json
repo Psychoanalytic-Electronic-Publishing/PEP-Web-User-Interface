@@ -63,7 +63,8 @@
             "link": "Soporte",
             "preferences": "Personalizar ayuda",
             "reportDataError": "Report a data error",
-            "provideFeedback": "Provide Feedback"
+            "provideFeedback": "Provide Feedback",
+            "browserData": "Browser Data"
         },
         "admin": {
             "general": "General Settings",
