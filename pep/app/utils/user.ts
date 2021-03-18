@@ -1,14 +1,13 @@
+import ModelRegistry from 'ember-data/types/registries/model';
+import CanService from 'pep/services/can';
+import CurrentUserService from 'pep/services/current-user';
+
 import { getOwner } from '@ember/application';
 import Controller from '@ember/controller';
 import Route from '@ember/routing/route';
 import RouterService from '@ember/routing/router-service';
 import Service from '@ember/service';
 import Component from '@glimmer/component';
-
-import ModelRegistry from 'ember-data/types/registries/model';
-
-import { HIDE_TOUR_COOKIE_NAME } from 'pep/constants/cookies';
-import CanService from 'pep/services/can';
 
 /**
  * Functionality for loading user and configs after authentication
@@ -19,14 +18,13 @@ import CanService from 'pep/services/can';
  */
 export async function onAuthenticated(owner: Controller | Route | Component | Service): Promise<any> {
     const currentOwner = getOwner(owner);
-    const currentUserService = currentOwner.lookup(`service:current-user`);
+    const currentUserService = currentOwner.lookup(`service:current-user`) as CurrentUserService;
     const notificationsService = currentOwner.lookup(`service:notifications`);
     const intlService = currentOwner.lookup(`service:intl`);
     const themeService = currentOwner.lookup(`service:theme`);
     const langService = currentOwner.lookup(`service:lang`);
     const configurationService = currentOwner.lookup(`service:configuration`);
     const session = currentOwner.lookup('service:session');
-    const cookies = currentOwner.lookup('service:cookies');
     const introTour = currentOwner.lookup('service:intro-tour');
     try {
         // get the current user's model before transitioning from the login page
@@ -39,9 +37,8 @@ export async function onAuthenticated(owner: Controller | Route | Component | Se
     currentUserService.setup();
     currentUserService.setFontSize(currentUserService.fontSize.id);
     await Promise.all([themeService, langService, configurationService].invoke('setup'));
-    const hideTour = cookies.read(HIDE_TOUR_COOKIE_NAME);
-    if (hideTour) {
-        cookies.clear(HIDE_TOUR_COOKIE_NAME, {});
+    const showTour = currentUserService.preferences?.tourEnabled;
+    if (showTour) {
         introTour.show();
     }
 
