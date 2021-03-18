@@ -24,7 +24,6 @@ import {
 } from 'pep/constants/search';
 import { WIDGET } from 'pep/constants/sidebar';
 import Abstract from 'pep/pods/abstract/model';
-import { SearchPreviewMode } from 'pep/pods/components/search/preview/component';
 import Document from 'pep/pods/document/model';
 import AjaxService from 'pep/services/ajax';
 import ConfigurationService from 'pep/services/configuration';
@@ -98,7 +97,6 @@ export default class SearchIndex extends Controller {
 
     @tracked previewedResult?: Document | null = null;
     @tracked preview?: string | null = null;
-    @tracked previewMode: SearchPreviewMode = 'fit';
     @tracked containerMaxHeight = 0;
 
     get selectedView() {
@@ -575,15 +573,6 @@ export default class SearchIndex extends Controller {
             [WIDGET.MORE_LIKE_THESE]: undefined,
             [WIDGET.RELATED_DOCUMENTS]: undefined
         });
-    }
-
-    /**
-     * Set the current preview mode
-     * @param {String} mode
-     */
-    @action
-    setPreviewMode(mode: SearchPreviewMode) {
-        this.previewMode = mode;
     }
 
     /**
