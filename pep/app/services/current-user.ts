@@ -306,7 +306,7 @@ export default class CurrentUserService extends Service {
         if (!currentDocs.includes(documentId)) {
             currentDocs = [...currentDocs, documentId];
         }
-        this.updatePrefs({
+        return this.updatePrefs({
             [key]: currentDocs
         });
     }
@@ -334,7 +334,7 @@ export default class CurrentUserService extends Service {
     removePreferenceDocument(key: PreferenceDocumentsKey, documentId: string) {
         const currentDocs = this.getPreferenceDocuments(key);
         const newDocs = currentDocs.filter((id) => id !== documentId);
-        this.updatePrefs({
+        return this.updatePrefs({
             [key]: newDocs
         });
     }

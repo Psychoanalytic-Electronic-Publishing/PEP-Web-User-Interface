@@ -9,6 +9,7 @@ import IntlService from 'ember-intl/services/intl';
 import { PreferenceDocumentsKey, PreferenceKey } from 'pep/constants/preferences';
 import Document from 'pep/pods/document/model';
 import CurrentUserService from 'pep/services/current-user';
+import PepSessionService from 'pep/services/pep-session';
 import SearchSelection from 'pep/services/search-selection';
 import SidebarService from 'pep/services/sidebar';
 
@@ -28,6 +29,7 @@ export default class SearchItemBibliographic extends Component<SearchItemBibliog
     @service intl!: IntlService;
     @service searchSelection!: SearchSelection;
     @service router!: RouterService;
+    @service('pep-session') session!: PepSessionService;
 
     get showFavorites() {
         return typeof this.args.showFavorites === 'boolean' ? this.args.showFavorites : true;
@@ -111,6 +113,15 @@ export default class SearchItemBibliographic extends Component<SearchItemBibliog
         this.toggleDocument(key, document);
     }
 
+    @action
+    showPreferenceDocumentErrorMessage(key: PreferenceDocumentsKey) {
+        this.notifications.error(
+            this.intl.t(
+                `search.item.notifications.failure.${key === PreferenceKey.FAVORITES ? 'favorites' : 'readLater'}`
+            )
+        );
+    }
+
     /**
      * Private method to add / remove a document from local storage preferences based on a key and the document
      *
@@ -118,33 +129,41 @@ export default class SearchItemBibliographic extends Component<SearchItemBibliog
      * @param {Document} document
      * @memberof SearchItem
      */
-    toggleDocument(key: PreferenceDocumentsKey, document: Document) {
+    async toggleDocument(key: PreferenceDocumentsKey, document: Document) {
         try {
             if (this.currentUser.hasPreferenceDocument(key, document.id)) {
-                this.currentUser.removePreferenceDocument(key, document.id);
-                this.notifications.success(
-                    this.intl.t(
-                        `search.item.notifications.success.removeFrom${
-                            key === PreferenceKey.FAVORITES ? 'Favorites' : 'ReadLater'
-                        }`
-                    )
-                );
+                const result = await this.currentUser.removePreferenceDocument(key, document.id);
+                if (this.session.isAuthenticated) {
+                    if (result.isOk()) {
+                        this.notifications.success(
+                            this.intl.t(
+                                `search.item.notifications.success.removeFrom${
+                                    key === PreferenceKey.FAVORITES ? 'Favorites' : 'ReadLater'
+                                }`
+                            )
+                        );
+                    } else {
+                        this.showPreferenceDocumentErrorMessage(key);
+                    }
+                }
             } else {
-                this.currentUser.addPreferenceDocument(key, document.id);
-                this.notifications.success(
-                    this.intl.t(
-                        `search.item.notifications.success.addTo${
-                            key === PreferenceKey.FAVORITES ? 'Favorites' : 'ReadLater'
-                        }`
-                    )
-                );
+                const result = await this.currentUser.addPreferenceDocument(key, document.id);
+                if (this.session.isAuthenticated) {
+                    if (result.isOk()) {
+                        this.notifications.success(
+                            this.intl.t(
+                                `search.item.notifications.success.addTo${
+                                    key === PreferenceKey.FAVORITES ? 'Favorites' : 'ReadLater'
+                                }`
+                            )
+                        );
+                    } else {
+                        this.showPreferenceDocumentErrorMessage(key);
+                    }
+                }
             }
         } catch (errors) {
-            this.notifications.error(
-                this.intl.t(
-                    `search.item.notifications.failure.${key === PreferenceKey.FAVORITES ? 'favorites' : 'readLater'}`
-                )
-            );
+            this.showPreferenceDocumentErrorMessage(key);
         }
     }
 
