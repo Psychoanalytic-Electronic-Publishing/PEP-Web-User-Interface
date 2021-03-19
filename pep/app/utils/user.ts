@@ -70,6 +70,15 @@ export function canAccessRoute(owner: Route, abilities: string[], model?: ModelR
     return access;
 }
 
+/**
+ * Handle route authentication in one easy method. Just call this method with the abilities you want to check and you will be either sent on your merry way
+ * or forwarded to the 403 page if you dont have access
+ *
+ * @export
+ * @param {Route} owner
+ * @param {string[]} abilities
+ * @param {ModelRegistry} [model]
+ */
 export function handleRouteAuthorization(owner: Route, abilities: string[], model?: ModelRegistry): void {
     const currentOwner = getOwner(owner);
     const routerService = currentOwner.lookup(`service:router`) as RouterService;
@@ -79,6 +88,14 @@ export function handleRouteAuthorization(owner: Route, abilities: string[], mode
     }
 }
 
+/**
+ * Update the user preference documents (Favorites and Read Later lists). This method handles both addition and subtraction
+ *
+ * @export
+ * @param {(Component | Controller)} owner
+ * @param {PreferenceDocumentsKey} key
+ * @param {Document} document
+ */
 export async function updateUserPreferencesDocument(
     owner: Component | Controller,
     key: PreferenceDocumentsKey,

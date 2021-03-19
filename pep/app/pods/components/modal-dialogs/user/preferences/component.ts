@@ -13,15 +13,13 @@ import { PreferenceKey, UserPreferences } from 'pep/constants/preferences';
 import { WIDGET, WIDGETS } from 'pep/constants/sidebar';
 import { FontSize, TextJustificationId } from 'pep/constants/text';
 import { ThemeId } from 'pep/constants/themes';
-import CurrentUserService from 'pep/services/current-user';
+import CurrentUserService, { UserPreferenceError } from 'pep/services/current-user';
 import LangService from 'pep/services/lang';
 import NotificationsService from 'pep/services/notifications';
 import PepSessionService from 'pep/services/pep-session';
 import ThemeService from 'pep/services/theme';
 import { guard } from 'pep/utils/types';
 import { Result } from 'true-myth/result';
-
-import { UserPreferenceError } from '../../../../../services/current-user';
 
 interface ModalDialogsUserPreferencesArgs {
     onClose: () => void;
