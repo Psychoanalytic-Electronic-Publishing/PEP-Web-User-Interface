@@ -37,7 +37,7 @@
         "@fortawesome/free-brands-svg-icons": "^5.15.2",
         "@fortawesome/free-solid-svg-icons": "^5.12.1",
         "@fortawesome/pro-light-svg-icons": "^5.13.0",
-        "@gavant/ember-bootstrap-dropdown": "^1.0.3",
+        "@gavant/ember-bootstrap-dropdown": "^1.0.4",
         "@gavant/ember-button-basic": "^1.0.1",
         "@gavant/ember-button-spinner": "^1.0.1",
         "@gavant/ember-floating-labels": "^1.1.0",

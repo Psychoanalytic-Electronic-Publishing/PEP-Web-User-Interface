@@ -1,24 +1,41 @@
 <nav class="navbar navbar-expand fixed-top navbar-dark bg-gradient-primary" ...attributes>
-    <a
-        href={{this.supportUrl}}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="navbar-brand mr-auto d-flex"
-        title={{t "buttons.nav.home.name"}}
-    >
-        <div class="navbar-brand-logo"></div>
-        <div class="ml-2 navbar-text-container">
-            <div>
-                {{t "brand.nameFull.psychoanalytic"}}
+    {{#if (is-development)}}
+        <LinkTo @route="index" class="navbar-brand mr-auto d-flex">
+            <div class="navbar-brand-logo"></div>
+            <div class="ml-2">
+                <div>
+                    {{t "brand.nameFull.psychoanalytic"}}
+                </div>
+                <div>
+                    {{t "brand.nameFull.electronic"}}
+                </div>
+                <div>
+                    {{t "brand.nameFull.publishing"}}
+                </div>
             </div>
-            <div>
-                {{t "brand.nameFull.electronic"}}
+        </LinkTo>
+    {{else}}
+        <a
+            href={{this.supportUrl}}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="navbar-brand mr-auto d-flex"
+            title={{t "buttons.nav.home.name"}}
+        >
+            <div class="navbar-brand-logo"></div>
+            <div class="ml-2 navbar-text-container">
+                <div>
+                    {{t "brand.nameFull.psychoanalytic"}}
+                </div>
+                <div>
+                    {{t "brand.nameFull.electronic"}}
+                </div>
+                <div>
+                    {{t "brand.nameFull.publishing"}}
+                </div>
             </div>
-            <div>
-                {{t "brand.nameFull.publishing"}}
-            </div>
-        </div>
-    </a>
+        </a>
+    {{/if}}
     <button
         type="button"
         class="navbar-toggler d-block d-md-none"
