@@ -13,7 +13,7 @@ import { PreferenceKey, UserPreferences } from 'pep/constants/preferences';
 import { WIDGET, WIDGETS } from 'pep/constants/sidebar';
 import { FontSize, TextJustificationId } from 'pep/constants/text';
 import { ThemeId } from 'pep/constants/themes';
-import CurrentUserService from 'pep/services/current-user';
+import CurrentUserService, { UserPreferenceError } from 'pep/services/current-user';
 import LangService from 'pep/services/lang';
 import NotificationsService from 'pep/services/notifications';
 import PepSessionService from 'pep/services/pep-session';
@@ -155,7 +155,7 @@ export default class ModalDialogsUserPreferences extends Component<ModalDialogsU
     async updateWidgetsList(
         widget: WIDGET,
         selected: boolean
-    ): Promise<Result<UserPreferences | undefined, string> | undefined> {
+    ): Promise<Result<UserPreferences | undefined, UserPreferenceError> | undefined> {
         if (selected) {
             const widgets = [...new Set(this.currentUser.preferences?.visibleWidgets)];
             widgets.push(widget);

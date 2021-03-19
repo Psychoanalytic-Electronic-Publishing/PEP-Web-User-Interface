@@ -9,6 +9,7 @@ import { PreferenceDocumentsKey, PreferenceKey } from 'pep/constants/preferences
 import Document from 'pep/pods/document/model';
 import CurrentUserService from 'pep/services/current-user';
 import SidebarService from 'pep/services/sidebar';
+import { updateUserPreferencesDocument } from 'pep/utils/user';
 
 interface TablesCellSearchActionArgs {
     showFavorites?: boolean;
@@ -86,32 +87,6 @@ export default class TablesCellSearchAction extends Component<TablesCellSearchAc
      * @memberof SearchItem
      */
     toggleDocument(key: PreferenceDocumentsKey, document: Document) {
-        try {
-            if (this.currentUser.hasPreferenceDocument(key, document.id)) {
-                this.currentUser.removePreferenceDocument(key, document.id);
-                this.notifications.success(
-                    this.intl.t(
-                        `search.item.notifications.success.removeFrom${
-                            key === PreferenceKey.FAVORITES ? 'Favorites' : 'ReadLater'
-                        }`
-                    )
-                );
-            } else {
-                this.currentUser.addPreferenceDocument(key, document.id);
-                this.notifications.success(
-                    this.intl.t(
-                        `search.item.notifications.success.addTo${
-                            key === PreferenceKey.FAVORITES ? 'Favorites' : 'ReadLater'
-                        }`
-                    )
-                );
-            }
-        } catch (errors) {
-            this.notifications.error(
-                this.intl.t(
-                    `search.item.notifications.failure.${key === PreferenceKey.FAVORITES ? 'favorites' : 'readLater'}`
-                )
-            );
-        }
+        return updateUserPreferencesDocument(this, key, document);
     }
 }

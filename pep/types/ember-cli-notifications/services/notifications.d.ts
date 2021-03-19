@@ -1,8 +1,8 @@
 import Service from '@ember/service';
 
 declare interface NotificationOptions {
-    message: string;
-    type: string;
+    message?: string;
+    type?: string;
     autoClear?: boolean;
     clearDuration?: number;
     onClick?(): any;
