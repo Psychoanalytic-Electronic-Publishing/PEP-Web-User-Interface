@@ -100,22 +100,6 @@
                             </div>
                         {{/if}}
                         <h5>
-                            {{t "browse.selection.books.glossaries"}}
-                        </h5>
-                        {{#if this.filteredBooks.glossaries}}
-                            <ul class="list-unstyled">
-                                {{#each this.filteredBooks.glossaries as |result|}}
-                                    <Browse::SidebarItem @item={{result}} @route="browse.read">
-                                        {{result.title}}
-                                    </Browse::SidebarItem>
-                                {{/each}}
-                            </ul>
-                        {{else}}
-                            <div class="text-muted small">
-                                {{t "browse.selection.search.noResults" term=this.filter}}
-                            </div>
-                        {{/if}}
-                        <h5>
                             {{t "browse.selection.books.other"}}
                         </h5>
                         {{#if this.filteredBooks.others}}

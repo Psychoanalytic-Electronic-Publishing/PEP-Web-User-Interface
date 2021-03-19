@@ -20,7 +20,6 @@ export interface SortedBooks {
             volumes: FreudVolume[];
         };
     };
-    glossaries: Book[];
     others: Book[];
 }
 
