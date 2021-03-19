@@ -5,7 +5,6 @@ import Component from '@glimmer/component';
 
 import ModalService from '@gavant/ember-modals/services/modal';
 
-import ENV from 'pep/config/environment';
 import { Languages } from 'pep/constants/lang';
 import { PEP_FACEBOOK_URL, SUPPORT_URL } from 'pep/constants/urls';
 import AuthService from 'pep/services/auth';
@@ -29,11 +28,6 @@ export default class PageNav extends Component<PageNavArgs> {
 
     supportUrl = SUPPORT_URL;
     facebookUrl = PEP_FACEBOOK_URL;
-    environment = ENV.environment;
-
-    get isDevelopment(): boolean {
-        return this.environment === 'development';
-    }
 
     languages = Languages;
 
