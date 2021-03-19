@@ -9,11 +9,11 @@ import { PreferenceKey } from 'pep/constants/preferences';
 import { DesktopTour, MobileTour } from 'pep/constants/tour';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
-import PepSessionService from 'pep/services/session';
+import PepSessionService from 'pep/services/pep-session';
 import ThemeService from 'pep/services/theme';
 
 export default class IntroTour extends Service {
-    @service session!: PepSessionService;
+    @service('pep-session') session!: PepSessionService;
     @service media!: MediaService;
     @service currentUser!: CurrentUserService;
     @service theme!: ThemeService;

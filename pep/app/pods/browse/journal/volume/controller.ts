@@ -8,7 +8,6 @@ import IntlService from 'ember-intl/services/intl';
 
 import { TITLE_REGEX } from 'pep/constants/regex';
 import Abstract from 'pep/pods/abstract/model';
-import { SearchPreviewMode } from 'pep/pods/components/search/preview/component';
 import Journal from 'pep/pods/journal/model';
 import SourceVolume from 'pep/pods/source-volume/model';
 import Volume from 'pep/pods/volume/model';
@@ -33,7 +32,6 @@ export default class BrowseJournalVolume extends Controller {
     @tracked volumeInformation?: Volume;
     @tracked previewedResult?: Abstract | null = null;
     @tracked preview?: string | null = null;
-    @tracked previewMode: SearchPreviewMode = 'fit';
     @tracked containerMaxHeight = 0;
     @tracked meta?: { next_vol: string; prev_vol: string };
     @tracked sourcecode?: string;
@@ -102,16 +100,6 @@ export default class BrowseJournalVolume extends Controller {
     @action
     updateContainerMaxHeight(element: HTMLElement) {
         this.containerMaxHeight = element.offsetHeight;
-    }
-
-    /**
-     * Set the current preview mode
-     * @param {String} mode
-     * @memberof BrowseJournalVolume
-     */
-    @action
-    setPreviewMode(mode: SearchPreviewMode) {
-        this.previewMode = mode;
     }
 
     /**

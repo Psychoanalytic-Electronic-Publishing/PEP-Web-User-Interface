@@ -1,7 +1,13 @@
+import { action } from '@ember/object';
+import { inject as service } from '@ember/service';
+import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
+
 import { timeout } from 'ember-concurrency';
 import { enqueueTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
 import IntlService from 'ember-intl/services/intl';
+
 import { LanguageCode } from 'pep/constants/lang';
 import { PreferenceKey, UserPreferences } from 'pep/constants/preferences';
 import { WIDGET, WIDGETS } from 'pep/constants/sidebar';
@@ -10,15 +16,10 @@ import { ThemeId } from 'pep/constants/themes';
 import CurrentUserService from 'pep/services/current-user';
 import LangService from 'pep/services/lang';
 import NotificationsService from 'pep/services/notifications';
-import PepSessionService from 'pep/services/session';
+import PepSessionService from 'pep/services/pep-session';
 import ThemeService from 'pep/services/theme';
 import { guard } from 'pep/utils/types';
 import { Result } from 'true-myth/result';
-
-import { action } from '@ember/object';
-import { inject as service } from '@ember/service';
-import Component from '@glimmer/component';
-import { tracked } from '@glimmer/tracking';
 
 interface ModalDialogsUserPreferencesArgs {
     onClose: () => void;
@@ -30,7 +31,7 @@ export default class ModalDialogsUserPreferences extends Component<ModalDialogsU
     @service intl!: IntlService;
     @service lang!: LangService;
     @service notifications!: NotificationsService;
-    @service session!: PepSessionService;
+    @service('pep-session') session!: PepSessionService;
 
     @tracked searchHicLimit = this.currentUser.preferences?.searchHICLimit?.toString();
 

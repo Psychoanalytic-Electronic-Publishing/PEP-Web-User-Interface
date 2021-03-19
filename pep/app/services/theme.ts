@@ -6,11 +6,11 @@ import IntlService from 'ember-intl/services/intl';
 import { PreferenceKey } from 'pep/constants/preferences';
 import THEMES, { THEME_DEFAULT, ThemeId } from 'pep/constants/themes';
 import CurrentUserService from 'pep/services/current-user';
-import PepSessionService from 'pep/services/session';
+import PepSessionService from 'pep/services/pep-session';
 
 export default class ThemeService extends Service {
     @service headData!: HeadDataService;
-    @service session!: PepSessionService;
+    @service('pep-session') session!: PepSessionService;
     @service intl!: IntlService;
     @service currentUser!: CurrentUserService;
 

@@ -6,7 +6,7 @@ import DS from 'ember-data';
 import FastbootAdapter from 'ember-data-storefront/mixins/fastboot-adapter';
 
 import ENV from 'pep/config/environment';
-import PepSessionService from 'pep/services/session';
+import PepSessionService from 'pep/services/pep-session';
 import { appendTrailingSlash, serializeQueryParams } from 'pep/utils/url';
 import { reject } from 'rsvp';
 
@@ -27,7 +27,7 @@ export type SnapshotWithQuery = DS.Snapshot & { adapterOptions: { query: any } }
 
 //@ts-ignore TODO we need to figure out how to allow DS.RESTAdapter with custom properties correctly
 export default class Application extends DS.RESTAdapter.extend(FastbootAdapter) {
-    @service session!: PepSessionService;
+    @service('pep-session') session!: PepSessionService;
     @service fastboot!: FastbootService;
 
     host = ENV.apiBaseUrl;

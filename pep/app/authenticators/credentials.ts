@@ -13,7 +13,7 @@ import { PepSecureAuthenticatedData } from 'pep/api';
 import ENV from 'pep/config/environment';
 import { SESSION_COOKIE_NAME } from 'pep/constants/cookies';
 import AjaxService from 'pep/services/ajax';
-import PepSessionService from 'pep/services/session';
+import PepSessionService from 'pep/services/pep-session';
 import { guard } from 'pep/utils/types';
 import { serializeQueryParams } from 'pep/utils/url';
 import RSVP from 'rsvp';
@@ -32,7 +32,7 @@ export interface AuthError {
 export default class CredentialsAuthenticator extends OAuth2PasswordGrant {
     @service ajax!: AjaxService;
     @service intl!: IntlService;
-    @service session!: PepSessionService;
+    @service('pep-session') session!: PepSessionService;
     @service fastboot!: FastbootService;
     @service cookies!: CookiesService;
 

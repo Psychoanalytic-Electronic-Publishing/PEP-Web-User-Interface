@@ -2,10 +2,10 @@ import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 
 import AuthService from 'pep/services/auth';
-import PepSessionService from 'pep/services/session';
+import PepSessionService from 'pep/services/pep-session';
 
 export default class Login extends Route {
-    @service session!: PepSessionService;
+    @service('pep-session') session!: PepSessionService;
     @service auth!: AuthService;
     classNames = ['login'];
     routeIfAlreadyAuthenticated = 'index';

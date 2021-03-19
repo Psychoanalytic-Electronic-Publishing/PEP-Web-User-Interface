@@ -5,10 +5,10 @@ import DS from 'ember-data';
 import { pluralize } from 'ember-inflector';
 
 import ApplicationSerializerMixin from 'pep/mixins/application-serializer';
-import PepSessionService from 'pep/services/session';
+import PepSessionService from 'pep/services/pep-session';
 
 export default class UserSerializer extends ApplicationSerializerMixin(DS.RESTSerializer) {
-    @service session!: PepSessionService;
+    @service('pep-session') session!: PepSessionService;
 
     primaryKey = 'UserId';
 

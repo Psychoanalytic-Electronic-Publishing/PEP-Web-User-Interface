@@ -14,29 +14,27 @@ import Abstract from 'pep/pods/abstract/model';
 import GlossaryTerm from 'pep/pods/glossary-term/model';
 import AuthService from 'pep/services/auth';
 import LoadingBarService from 'pep/services/loading-bar';
+import PepSessionService from 'pep/services/pep-session';
+import PreviewPaneService, { SearchPreviewMode, SearchPreviewModeId } from 'pep/services/preview-pane';
 import ScrollableService from 'pep/services/scrollable';
-import PepSessionService from 'pep/services/session';
-
-export type SearchPreviewMode = 'minimized' | 'maximized' | 'fit' | 'custom';
 
 interface SearchPreviewArgs {
-    mode: SearchPreviewMode;
     maxHeight?: number;
     resultId?: string;
-    setMode: (mode: SearchPreviewMode) => void;
+    height?: number;
     close: () => void;
     loadDocument?: (abstract: Abstract) => void;
 }
 
 export default class SearchPreview extends Component<SearchPreviewArgs> {
-    @service session!: PepSessionService;
+    @service('pep-session') session!: PepSessionService;
     @service auth!: AuthService;
     @service scrollable!: ScrollableService;
     @service loadingBar!: LoadingBarService;
     @service store!: DS.Store;
     @service modal!: ModalService;
-
-    @tracked fitHeight: number = 0;
+    @service previewPane!: PreviewPaneService;
+    @tracked fitHeight: number = this.previewPane.mode.options?.height ?? 0;
     @tracked isDragResizing: boolean = false;
     @tracked result?: Abstract;
 
@@ -46,19 +44,19 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
     startingDragHeight: number = 0;
 
     get mode() {
-        return this.args.mode || 'fit';
+        return this.previewPane.mode;
     }
 
     get isFitMode() {
-        return this.mode === 'fit';
+        return this.mode.id === SearchPreviewModeId.FIT;
     }
 
     get isCustomMode() {
-        return this.mode === 'custom';
+        return this.mode.id === SearchPreviewModeId.CUSTOM;
     }
 
     get isMinimizedMode() {
-        return this.mode === 'minimized';
+        return this.mode.id === SearchPreviewModeId.MINIMIZED;
     }
 
     get styles() {
@@ -160,16 +158,21 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
 
     /**
      * Sets the preview pane's sizing mode
-     * @param {SearchPreviewMode} mode
+     * @param {SearchPreviewModeId} mode
      */
     @action
-    setMode(mode: SearchPreviewMode) {
+    setMode(mode: SearchPreviewModeId) {
+        const previewMode: SearchPreviewMode = { id: mode };
         // reset the calculated fit size in case it was resized
-        if (mode === 'fit') {
+        if (mode === SearchPreviewModeId.FIT) {
             this.updateFitHeight();
+        } else if (mode === SearchPreviewModeId.CUSTOM) {
+            previewMode.options = {
+                height: this.fitHeight
+            };
         }
 
-        this.args.setMode(mode);
+        this.previewPane.updateMode(previewMode);
     }
 
     /**
@@ -198,7 +201,12 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
     onDragStart() {
         if (!this.isCustomMode && this.scrollableElement) {
             this.fitHeight = this.scrollableElement.offsetHeight;
-            this.args.setMode('custom');
+            this.previewPane.updateMode({
+                id: SearchPreviewModeId.CUSTOM,
+                options: {
+                    height: this.fitHeight
+                }
+            });
         }
 
         this.startingDragHeight = this.fitHeight;
@@ -219,13 +227,16 @@ export default class SearchPreview extends Component<SearchPreviewArgs> {
      */
     @action
     onDragEnd(position: number) {
-        if (!this.isCustomMode) {
-            this.args.setMode('custom');
-        }
-
         this.fitHeight = Math.max(this.minFitHeight, this.startingDragHeight - position);
         this.startingDragHeight = 0;
         next(this, () => (this.isDragResizing = false));
+
+        this.previewPane.updateMode({
+            id: SearchPreviewModeId.CUSTOM,
+            options: {
+                height: this.fitHeight
+            }
+        });
     }
 
     /**

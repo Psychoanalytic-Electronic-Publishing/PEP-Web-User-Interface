@@ -25,7 +25,7 @@ import DrawerService from 'pep/services/drawer';
 import IntroTour from 'pep/services/intro-tour';
 import LangService from 'pep/services/lang';
 import LoadingBarService from 'pep/services/loading-bar';
-import PepSessionService from 'pep/services/session';
+import PepSessionService from 'pep/services/pep-session';
 import SidebarService from 'pep/services/sidebar';
 import ThemeService from 'pep/services/theme';
 
@@ -34,7 +34,7 @@ export default class Application extends PageLayout(Route) {
 
     @service router!: RouterService;
     @service metrics!: MetricService;
-    @service session!: PepSessionService;
+    @service('pep-session') session!: PepSessionService;
     @service fastboot!: FastbootService;
     @service media!: MediaService;
     @service notifications!: NotificationService;

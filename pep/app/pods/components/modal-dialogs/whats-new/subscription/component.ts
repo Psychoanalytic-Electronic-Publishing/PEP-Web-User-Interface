@@ -8,7 +8,7 @@ import DS from 'ember-data';
 import IntlService from 'ember-intl/services/intl';
 
 import LoadingBar from 'pep/services/loading-bar';
-import PepSessionService from 'pep/services/session';
+import PepSessionService from 'pep/services/pep-session';
 import { reject } from 'rsvp';
 
 interface ModalDialogsWhatsNewSubscriptionArgs {
@@ -20,7 +20,7 @@ interface ModalDialogsWhatsNewSubscriptionArgs {
 }
 
 export default class ModalDialogsWhatsNewSubscription extends Component<ModalDialogsWhatsNewSubscriptionArgs> {
-    @service session!: PepSessionService;
+    @service('pep-session') session!: PepSessionService;
     @service router!: RouterService;
     @service loadingBar!: LoadingBar;
     @service notifications!: NotificationService;

@@ -1,18 +1,20 @@
+import { action } from '@ember/object';
+import RouterService from '@ember/routing/router-service';
+import { inject as service } from '@ember/service';
+import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
+
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import IntlService from 'ember-intl/services/intl';
+
+import Modal from '@gavant/ember-modals/services/modal';
+
 import { FORGOT_PW_URL } from 'pep/constants/urls';
 import AjaxService from 'pep/services/ajax';
 import { FederatedLoginArgs } from 'pep/services/auth';
 import CurrentUserService from 'pep/services/current-user';
 import LoadingBar from 'pep/services/loading-bar';
-import PepSessionService from 'pep/services/session';
-
-import { action } from '@ember/object';
-import RouterService from '@ember/routing/router-service';
-import { inject as service } from '@ember/service';
-import Modal from '@gavant/ember-modals/services/modal';
-import Component from '@glimmer/component';
-import { tracked } from '@glimmer/tracking';
+import PepSessionService from 'pep/services/pep-session';
 
 interface ModalDialogsUserLoginArgs {
     onClose: () => void;
@@ -23,7 +25,7 @@ interface ModalDialogsUserLoginArgs {
 }
 
 export default class ModalDialogsUserLogin extends Component<ModalDialogsUserLoginArgs> {
-    @service session!: PepSessionService;
+    @service('pep-session') session!: PepSessionService;
     @service router!: RouterService;
     @service loadingBar!: LoadingBar;
     @service notifications!: NotificationService;
