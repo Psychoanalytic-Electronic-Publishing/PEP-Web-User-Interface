@@ -112,15 +112,6 @@ export default class SearchItemBibliographic extends Component<SearchItemBibliog
         this.toggleDocument(key, document);
     }
 
-    @action
-    showPreferenceDocumentErrorMessage(key: PreferenceDocumentsKey) {
-        this.notifications.error(
-            this.intl.t(
-                `search.item.notifications.failure.${key === PreferenceKey.FAVORITES ? 'favorites' : 'readLater'}`
-            )
-        );
-    }
-
     /**
      * Private method to add / remove a document from local storage preferences based on a key and the document
      *
