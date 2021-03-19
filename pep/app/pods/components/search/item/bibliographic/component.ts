@@ -9,9 +9,9 @@ import IntlService from 'ember-intl/services/intl';
 import { PreferenceDocumentsKey, PreferenceKey } from 'pep/constants/preferences';
 import Document from 'pep/pods/document/model';
 import CurrentUserService from 'pep/services/current-user';
-import PepSessionService from 'pep/services/pep-session';
 import SearchSelection from 'pep/services/search-selection';
 import SidebarService from 'pep/services/sidebar';
+import { updateUserPreferencesDocument } from 'pep/utils/user';
 
 interface SearchItemBibliographicArgs {
     item: Document;
@@ -29,7 +29,6 @@ export default class SearchItemBibliographic extends Component<SearchItemBibliog
     @service intl!: IntlService;
     @service searchSelection!: SearchSelection;
     @service router!: RouterService;
-    @service('pep-session') session!: PepSessionService;
 
     get showFavorites() {
         return typeof this.args.showFavorites === 'boolean' ? this.args.showFavorites : true;
@@ -129,42 +128,8 @@ export default class SearchItemBibliographic extends Component<SearchItemBibliog
      * @param {Document} document
      * @memberof SearchItem
      */
-    async toggleDocument(key: PreferenceDocumentsKey, document: Document) {
-        try {
-            if (this.currentUser.hasPreferenceDocument(key, document.id)) {
-                const result = await this.currentUser.removePreferenceDocument(key, document.id);
-                if (this.session.isAuthenticated) {
-                    if (result.isOk()) {
-                        this.notifications.success(
-                            this.intl.t(
-                                `search.item.notifications.success.removeFrom${
-                                    key === PreferenceKey.FAVORITES ? 'Favorites' : 'ReadLater'
-                                }`
-                            )
-                        );
-                    } else {
-                        this.showPreferenceDocumentErrorMessage(key);
-                    }
-                }
-            } else {
-                const result = await this.currentUser.addPreferenceDocument(key, document.id);
-                if (this.session.isAuthenticated) {
-                    if (result.isOk()) {
-                        this.notifications.success(
-                            this.intl.t(
-                                `search.item.notifications.success.addTo${
-                                    key === PreferenceKey.FAVORITES ? 'Favorites' : 'ReadLater'
-                                }`
-                            )
-                        );
-                    } else {
-                        this.showPreferenceDocumentErrorMessage(key);
-                    }
-                }
-            }
-        } catch (errors) {
-            this.showPreferenceDocumentErrorMessage(key);
-        }
+    toggleDocument(key: PreferenceDocumentsKey, document: Document) {
+        return updateUserPreferencesDocument(this, key, document);
     }
 
     /**

@@ -7,8 +7,10 @@ import Component from '@glimmer/component';
 
 import ModelRegistry from 'ember-data/types/registries/model';
 
+import { PreferenceDocumentsKey, PreferenceKey } from 'pep/constants/preferences';
+import Document from 'pep/pods/document/model';
 import CanService from 'pep/services/can';
-import CurrentUserService from 'pep/services/current-user';
+import CurrentUserService, { UserPreferenceErrorId } from 'pep/services/current-user';
 
 /**
  * Functionality for loading user and configs after authentication
@@ -74,5 +76,57 @@ export function handleRouteAuthorization(owner: Route, abilities: string[], mode
     const access = canAccessRoute(owner, abilities, model);
     if (!access) {
         routerService.transitionTo('four-oh-three');
+    }
+}
+
+export async function updateUserPreferencesDocument(
+    owner: Component | Controller,
+    key: PreferenceDocumentsKey,
+    document: Document
+) {
+    const showPreferenceDocumentErrorMessage = (key: PreferenceDocumentsKey) => {
+        notifications.error(
+            intl.t(`search.item.notifications.failure.${key === PreferenceKey.FAVORITES ? 'favorites' : 'readLater'}`)
+        );
+    };
+    const notifications = getOwner(owner).lookup('service:notifications');
+    const user = getOwner(owner).lookup('service:currentUser');
+    const intl = getOwner(owner).lookup('service:intl');
+    try {
+        if (user.hasPreferenceDocument(key, document.id)) {
+            const result = await user.removePreferenceDocument(key, document.id);
+            if (result.isOk()) {
+                notifications.success(
+                    intl.t(
+                        `search.item.notifications.success.removeFrom${
+                            key === PreferenceKey.FAVORITES ? 'Favorites' : 'ReadLater'
+                        }`
+                    )
+                );
+            } else if (
+                result.error.id !== UserPreferenceErrorId.GROUP &&
+                result.error.id !== UserPreferenceErrorId.UNAUTHENTICATED
+            ) {
+                showPreferenceDocumentErrorMessage(key);
+            }
+        } else {
+            const result = await user.addPreferenceDocument(key, document.id);
+            if (result.isOk()) {
+                notifications.success(
+                    intl.t(
+                        `search.item.notifications.success.addTo${
+                            key === PreferenceKey.FAVORITES ? 'Favorites' : 'ReadLater'
+                        }`
+                    )
+                );
+            } else if (
+                result.error.id !== UserPreferenceErrorId.GROUP &&
+                result.error.id !== UserPreferenceErrorId.UNAUTHENTICATED
+            ) {
+                showPreferenceDocumentErrorMessage(key);
+            }
+        }
+    } catch (errors) {
+        showPreferenceDocumentErrorMessage(key);
     }
 }

@@ -21,6 +21,8 @@ import ThemeService from 'pep/services/theme';
 import { guard } from 'pep/utils/types';
 import { Result } from 'true-myth/result';
 
+import { UserPreferenceError } from '../../../../../services/current-user';
+
 interface ModalDialogsUserPreferencesArgs {
     onClose: () => void;
 }
@@ -155,7 +157,7 @@ export default class ModalDialogsUserPreferences extends Component<ModalDialogsU
     async updateWidgetsList(
         widget: WIDGET,
         selected: boolean
-    ): Promise<Result<UserPreferences | undefined, string> | undefined> {
+    ): Promise<Result<UserPreferences | undefined, UserPreferenceError> | undefined> {
         if (selected) {
             const widgets = [...new Set(this.currentUser.preferences?.visibleWidgets)];
             widgets.push(widget);

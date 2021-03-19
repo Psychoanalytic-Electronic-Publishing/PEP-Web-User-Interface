@@ -30,6 +30,16 @@ export enum VIEW_DOCUMENT_FROM {
     OTHER = 'other'
 }
 
+export enum UserPreferenceErrorId {
+    UNAUTHENTICATED = 'unauthenticated',
+    GROUP = 'group'
+}
+
+export interface UserPreferenceError {
+    id: UserPreferenceErrorId;
+    message?: string;
+}
+
 export default class CurrentUserService extends Service {
     @service store!: DS.Store;
     @service('pep-session') session!: PepSessionService;
@@ -240,10 +250,18 @@ export default class CurrentUserService extends Service {
      * @param {PreferenceChangeset} prefValues
      * @returns Promise<UserPreferences>
      */
-    async updatePrefs(prefValues: PreferenceChangeset): Promise<Result<UserPreferences | undefined, string>> {
+    async updatePrefs(
+        prefValues: PreferenceChangeset
+    ): Promise<Result<UserPreferences | undefined, UserPreferenceError>> {
         if (this.user?.userType === UserType.GROUP || !this.session.isAuthenticated) {
             this.informationBar.show('settings-auth');
-            return err('Could not update preferences due to user being a group');
+            const error: UserPreferenceError = {
+                id:
+                    this.user?.userType === UserType.GROUP
+                        ? UserPreferenceErrorId.GROUP
+                        : UserPreferenceErrorId.UNAUTHENTICATED
+            };
+            return err(error);
         } else {
             const keys = Object.keys(prefValues) as PreferenceKey[];
             const cookie = this.cookies.read(USER_PREFERENCES_COOKIE_NAME);
