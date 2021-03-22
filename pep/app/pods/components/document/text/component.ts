@@ -21,6 +21,7 @@ import {
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import Document from 'pep/pods/document/model';
 import GlossaryTerm from 'pep/pods/glossary-term/model';
+import { SearchQueryParams } from 'pep/pods/search/index/route';
 import AjaxService from 'pep/services/ajax';
 import CurrentUserService from 'pep/services/current-user';
 import LoadingBarService from 'pep/services/loading-bar';
@@ -43,7 +44,7 @@ interface DocumentTextArgs {
     page?: string;
     searchHitNumber?: number;
     onGlossaryItemClick: (term: string, termResults: GlossaryTerm[]) => void;
-    viewSearch: (searchTerms: object) => void;
+    viewSearch: (searchTerms: SearchQueryParams) => void;
     documentRendered: () => void;
     viewablePageUpdate?: (page: string) => void;
 }
