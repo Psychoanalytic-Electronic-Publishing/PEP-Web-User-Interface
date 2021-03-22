@@ -26,5 +26,6 @@ export enum DocumentLinkTypes {
     SEARCH_HIT_TEXT = 'search-hit-text',
     BANNER = 'document-banner',
     TITLE = 'document-title',
-    TRANSLATION = 'GroupIDTrans'
+    TRANSLATION = 'GroupIDTrans',
+    KEYWORD = 'KEYWORD'
 }

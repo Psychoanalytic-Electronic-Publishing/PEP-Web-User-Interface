@@ -52,13 +52,13 @@ export default class DocumentRead extends Component<DocumentReadArgs> {
      * @memberof ReadDocument
      */
     @action
-    viewSearch(searchTerms: string) {
+    viewSearch(search: object) {
         // TODO improve this typing
         clearSearch(this as any, this.configuration, this.currentUser);
         this.router.transitionTo('search', {
             queryParams: {
                 ...this.configuration.defaultSearchParams,
-                searchTerms
+                ...search
             }
         });
     }
