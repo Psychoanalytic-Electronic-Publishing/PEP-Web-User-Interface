@@ -783,7 +783,9 @@
         "codes": {
             "enUS": "English",
             "esES": "Spanish",
-            "frFR": "French"
+            "frFR": "French",
+            "deDE": "German",
+            "itIT": "Italian"
         }
     },
     "theme": {
