@@ -1675,11 +1675,19 @@
 
 
     <xsl:template match="be/y">
-        <xsl:text>&#13;</xsl:text>
         <span class="bibyear y">
             <xsl:apply-templates/>
         </span>
     </xsl:template>
+
+
+    <xsl:template match="be/bst">
+        <xsl:text>&#13;</xsl:text>
+        <span class="bibyear bst">
+            <xsl:apply-templates/>
+        </span>
+    </xsl:template>
+
 
 
     <xsl:template match="be/t">
@@ -1697,8 +1705,15 @@
         </span>
     </xsl:template>
 
+    <xsl:template match="be/v">
+        <xsl:text>&#xA0;</xsl:text>
+        <span class="bibjournal v">
+            <xsl:apply-templates/>
+        </span>
+    </xsl:template>
 
     <xsl:template match="be/bp">
+        <xsl:text>&#xA0;</xsl:text>
         <span class="bibpublisher bp">
             <xsl:apply-templates/>
         </span>
