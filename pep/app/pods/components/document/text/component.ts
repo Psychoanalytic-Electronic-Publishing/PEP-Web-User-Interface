@@ -21,6 +21,7 @@ import {
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import Document from 'pep/pods/document/model';
 import GlossaryTerm from 'pep/pods/glossary-term/model';
+import { SearchQueryParams } from 'pep/pods/search/index/route';
 import AjaxService from 'pep/services/ajax';
 import CurrentUserService from 'pep/services/current-user';
 import LoadingBarService from 'pep/services/loading-bar';
@@ -43,7 +44,7 @@ interface DocumentTextArgs {
     page?: string;
     searchHitNumber?: number;
     onGlossaryItemClick: (term: string, termResults: GlossaryTerm[]) => void;
-    viewSearch: (searchTerms: string) => void;
+    viewSearch: (searchTerms: SearchQueryParams) => void;
     documentRendered: () => void;
     viewablePageUpdate?: (page: string) => void;
 }
@@ -302,7 +303,9 @@ export default class DocumentText extends Component<DocumentTextArgs> {
             const firstName = target?.querySelector('.nfirst')?.innerHTML;
             const lastName = target?.querySelector('.nlast')?.innerHTML;
             const name = `${firstName} ${lastName}`;
-            this.args.viewSearch(JSON.stringify([{ term: name, type: SearchTermId.AUTHOR, value: name }]));
+            this.args.viewSearch({
+                searchTerms: JSON.stringify([{ term: name, type: SearchTermId.AUTHOR, value: name }])
+            });
         } else if (type === DocumentLinkTypes.SEARCH_HIT_TEXT) {
             const possibleTermNode = target.parentElement?.parentElement;
             if (possibleTermNode) {
@@ -337,6 +340,11 @@ export default class DocumentText extends Component<DocumentTextArgs> {
                 if (sourceCode && volume) {
                     this.router.transitionTo('browse.journal.volume', sourceCode, volume);
                 }
+            }
+        } else if (type === DocumentLinkTypes.KEYWORD) {
+            const keyword = target.getAttribute('data-keyword');
+            if (keyword) {
+                this.args.viewSearch({ q: keyword });
             }
         }
     }

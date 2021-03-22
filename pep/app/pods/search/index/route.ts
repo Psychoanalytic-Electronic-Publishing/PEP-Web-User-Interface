@@ -20,14 +20,19 @@ import SidebarService from 'pep/services/sidebar';
 import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
 
 export interface SearchIndexParams {
-    q: string;
-    matchSynonyms: boolean;
+    q?: string;
+    matchSynonyms?: boolean;
     preview?: string;
     citedCount?: string;
     viewedCount?: string;
     viewedPeriod?: number;
     _searchTerms?: string;
     _facets?: string;
+}
+
+export interface SearchQueryParams extends Omit<SearchIndexParams, '_searchTerms' | '_facets'> {
+    searchTerms?: string;
+    facets?: string;
 }
 
 export default class SearchIndex extends PageNav(Route) {
