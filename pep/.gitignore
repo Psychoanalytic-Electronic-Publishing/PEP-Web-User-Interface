@@ -19,6 +19,7 @@
 /testem.log
 /yarn-error.log
 /.npmrc
+/ssl
 
 
 # ember-try

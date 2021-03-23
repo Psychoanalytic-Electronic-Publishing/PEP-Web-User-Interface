@@ -9,6 +9,7 @@ import ModalService from '@gavant/ember-modals/services/modal';
 
 import Document from 'pep/pods/document/model';
 import GlossaryTerm from 'pep/pods/glossary-term/model';
+import { SearchQueryParams } from 'pep/pods/search/index/route';
 import { SearchReadParams } from 'pep/pods/search/read/route';
 import AuthService from 'pep/services/auth';
 import ConfigurationService from 'pep/services/configuration';
@@ -52,13 +53,13 @@ export default class DocumentRead extends Component<DocumentReadArgs> {
      * @memberof ReadDocument
      */
     @action
-    viewSearch(searchTerms: string) {
+    viewSearch(search: SearchQueryParams) {
         // TODO improve this typing
         clearSearch(this as any, this.configuration, this.currentUser);
         this.router.transitionTo('search', {
             queryParams: {
                 ...this.configuration.defaultSearchParams,
-                searchTerms
+                ...search
             }
         });
     }

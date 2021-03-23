@@ -5,7 +5,7 @@ import { cached, tracked } from '@glimmer/tracking';
 
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 
-import { FREUD_GW_CODE, FREUD_SE_CODE, IPL_GLOSSARY_ID, PEP_GLOSSARY_ID } from 'pep/constants/books';
+import { FREUD_GW_CODE, FREUD_SE_CODE, PEP_GLOSSARY_ID } from 'pep/constants/books';
 import Book from 'pep/pods/book/model';
 import Journal from 'pep/pods/journal/model';
 import Video from 'pep/pods/video/model';
@@ -65,13 +65,11 @@ export default class Browse extends Controller {
         const books = this.books.reduce<SortedBooks>(
             (books, book) => {
                 if (!filter || book.title.toLowerCase().includes(filter.toLowerCase())) {
-                    if (book.documentID === PEP_GLOSSARY_ID || book.documentID === IPL_GLOSSARY_ID) {
-                        books.glossaries.push(book);
-                    } else if (book.bookCode === FREUD_GW_CODE) {
+                    if (book.bookCode === FREUD_GW_CODE) {
                         books.freudsCollectedWorks.GW.books.push(book);
                     } else if (book.bookCode === FREUD_SE_CODE) {
                         books.freudsCollectedWorks.SE.books.push(book);
-                    } else {
+                    } else if (book.id !== PEP_GLOSSARY_ID) {
                         books.others.push(book);
                     }
                 }
@@ -90,7 +88,6 @@ export default class Browse extends Controller {
                         volumes: []
                     }
                 },
-                glossaries: [],
                 others: []
             }
         );
@@ -111,7 +108,6 @@ export default class Browse extends Controller {
     get filteredBookCounts() {
         return (
             this.filteredBooks.others.length +
-            this.filteredBooks.glossaries.length +
             this.filteredBooks.freudsCollectedWorks.GW.books.length +
             this.filteredBooks.freudsCollectedWorks.SE.books.length
         );

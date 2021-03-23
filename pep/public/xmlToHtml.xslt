@@ -100,6 +100,10 @@
         <svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg" role="img" focusable="false" aria-hidden="true" data-icon="language" data-prefix="fal" id="ember323" class="svg-inline--fa fa-language fa-w-20 ember-view"><path fill="currentColor" d="M616 96H24c-13.255 0-24 10.745-24 24v272c0 13.255 10.745 24 24 24h592c13.255 0 24-10.745 24-24V120c0-13.255-10.745-24-24-24zM304 384H32V128h272v256zm304 0H336V128h272v256zM91.088 352h10.34a12 12 0 0 0 11.397-8.243l13.508-40.973h67.335l13.508 40.973A12.001 12.001 0 0 0 218.573 352h10.339c8.276 0 14.067-8.18 11.319-15.985l-59.155-168A12 12 0 0 0 169.757 160h-19.513a12 12 0 0 0-11.319 8.014l-59.155 168C77.021 343.82 82.812 352 91.088 352zm60.663-128.991c3.787-10.818 8.113-29.747 8.113-29.747h.541s4.057 18.929 7.572 29.747l17.036 51.38h-50.298l17.036-51.38zM384 212v-8c0-6.627 5.373-12 12-12h68v-20c0-6.627 5.373-12 12-12h8c6.627 0 12 5.373 12 12v20h68c6.627 0 12 5.373 12 12v8c0 6.627-5.373 12-12 12h-15.699c-7.505 24.802-23.432 50.942-44.896 74.842 10.013 9.083 20.475 17.265 30.924 24.086 5.312 3.467 6.987 10.475 3.84 15.982l-3.987 6.976c-3.429 6.001-11.188 7.844-16.993 4.091-13.145-8.5-25.396-18.237-36.56-28.5-11.744 10.454-24.506 20.146-37.992 28.68-5.761 3.646-13.409 1.698-16.791-4.221l-3.972-6.95c-3.197-5.594-1.379-12.672 4.058-16.129 11.382-7.237 22.22-15.428 32.24-24.227-10.026-11.272-18.671-22.562-25.687-33.033-3.833-5.721-2.11-13.48 3.803-17.01l6.867-4.099c5.469-3.264 12.55-1.701 16.092 3.592 6.379 9.531 13.719 18.947 21.677 27.953 15.017-16.935 26.721-34.905 33.549-52.033H396c-6.627 0-12-5.373-12-12z"></path>
         </svg>
     </xsl:variable>
+    <xsl:variable name="fa-search">
+        <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img" focusable="false" aria-hidden="true" data-icon="search" data-prefix="fal" id="ember268" class="svg-inline--fa fa-search fa-w-16 ember-view"><path fill="currentColor" d="M508.5 481.6l-129-129c-2.3-2.3-5.3-3.5-8.5-3.5h-10.3C395 312 416 262.5 416 208 416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c54.5 0 104-21 141.1-55.2V371c0 3.2 1.3 6.2 3.5 8.5l129 129c4.7 4.7 12.3 4.7 17 0l9.9-9.9c4.7-4.7 4.7-12.3 0-17zM208 384c-97.3 0-176-78.7-176-176S110.7 32 208 32s176 78.7 176 176-78.7 176-176 176z"></path>
+        </svg>
+    </xsl:variable>
 
     <!-- Keys -->
 
@@ -245,6 +249,12 @@
                 </xsl:for-each>
             </div>
 
+            <div class="keywords">
+                <xsl:for-each select="artinfo">
+                    <xsl:apply-templates mode="metadata" select="artkwds"/>
+                </xsl:for-each>
+            </div>
+
             <xsl:for-each select="artinfo">
                 <div id="{$this-article}-artinfo" class="artinfo" data-arttype="{@arttype}" data-journal="{@j}">
 
@@ -270,7 +280,7 @@
                     </div>
 
                     <xsl:apply-templates mode="metadata" select="artauth"/>
-                    <xsl:apply-templates mode="metadata" select="artkwds"/>
+
 
                     <!--<xsl:apply-templates/>-->
                 </div>
@@ -506,13 +516,23 @@
     </xsl:template>
 
     <xsl:template match="artkwds" mode="metadata">
-        <div class="artkwds">
+        <div class="artkwds small mb-2">
+            <span class="mr-1">
+                Keywords:
+            </span>
             <xsl:for-each select="//impx[@type='KEYWORD']">
-                <xsl:value-of select="."/>
-                <xsl:if test="position() != last()">
-                    <xsl:text>, </xsl:text>
-                </xsl:if>
-                <!--        <xsl:apply-templates />-->
+                <a class="keyword" >
+                    <xsl:attribute name="data-type">
+                        <xsl:value-of select="@type"/>
+                    </xsl:attribute>
+                    <xsl:attribute name="data-keyword">
+                        <xsl:value-of select="."/>
+                    </xsl:attribute>
+                    <xsl:value-of select="."/>
+                    <xsl:if test="position() != last()">
+                        <xsl:text>, </xsl:text>
+                    </xsl:if>
+                </a>
             </xsl:for-each>
         </div>
     </xsl:template>
