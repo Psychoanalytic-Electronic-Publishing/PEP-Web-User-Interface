@@ -1,7 +1,9 @@
 export enum LanguageCode {
     EnUS = 'en-us',
     FrFR = 'fr-fr',
-    EsES = 'es-es'
+    EsES = 'es-es',
+    DeDe = 'de-de',
+    ItIt = 'it-it'
 }
 
 export interface Language {
@@ -28,4 +30,15 @@ export const LANG_ES_ES: Language = {
     path: '/translations/es-es.json'
 };
 
-export const Languages = [LANG_EN_US, LANG_ES_ES, LANG_FR_FR];
+export const LANG_DE_DE: Language = {
+    code: LanguageCode.DeDe,
+    label: 'language.codes.deDE',
+    path: '/translations/de-de.json'
+};
+export const LANG_IT_IT: Language = {
+    code: LanguageCode.ItIt,
+    label: 'language.codes.itIT',
+    path: '/translations/it-it.json'
+};
+
+export const Languages = [LANG_EN_US, LANG_ES_ES, LANG_FR_FR, LANG_DE_DE, LANG_IT_IT];
