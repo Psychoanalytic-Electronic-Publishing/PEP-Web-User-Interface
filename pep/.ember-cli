@@ -6,7 +6,7 @@
     Setting `disableAnalytics` to true will prevent any data from being sent.
     */
     "disableAnalytics": false,
-    "usePods": true
-    // // https://medium.com/@bantic/serving-ember-and-rails-locally-with-ssl-tls-44640f615b95
-    // "ssl": true
+    "usePods": true,
+    // https://medium.com/@bantic/serving-ember-and-rails-locally-with-ssl-tls-44640f615b95
+    "ssl": true
 }
