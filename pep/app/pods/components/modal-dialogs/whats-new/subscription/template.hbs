@@ -4,12 +4,6 @@
         <p class="text-muted">
             {{t "relatedInfo.widgets.whatsNew.signUp"}}
         </p>
-        <Alert
-            @isShown={{bool this.loginError}}
-            @message={{t "login.error"}}
-            @type="danger"
-            @icon="exclamation-circle"
-        />
         <CheckboxInput
             @checked={{this.sendJournalAlerts}}
             @onChange={{fn this.updateUserAlerts "sendJournalAlerts"}}

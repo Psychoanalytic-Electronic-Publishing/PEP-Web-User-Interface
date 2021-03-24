@@ -29,54 +29,71 @@ export default class User extends DS.Model {
     @alwaysSend
     @attr('string')
     activeSubscriptions!: string;
+
     @alwaysSend
     @attr('boolean')
     branding!: boolean;
+
     @alwaysSend
     @attr('string')
     brandingImgUrl!: string;
+
     @alwaysSend
     @attr<any>('json', { defaultValue: () => ({ ...DEFAULT_USER_PREFERENCES }) })
     clientSettings!: UserPreferences;
+
     @alwaysSend
     @attr('string')
     emailAddress!: string;
+
     @alwaysSend
     @attr('boolean')
     hasArchiveAccess!: boolean;
+
     @alwaysSend
     @attr('boolean')
     hasCurrentAccess!: boolean;
+
     @alwaysSend
     @attr('boolean')
     isSubscriptionRenewalDue!: boolean;
+
     @alwaysSend
     @attr('string')
     loggedInMethod!: string;
+
     @alwaysSend
     @attr('string')
     paDSHomeURL!: string;
+
     @alwaysSend
     @attr('string')
     paDSRenewalURL!: string;
+
     @alwaysSend
     @attr('string')
     reasonDescription!: string;
+
     @alwaysSend
     @attr('boolean')
     sendJournalAlerts!: boolean;
+
     @alwaysSend
     @attr('boolean')
     sendVideoAlerts!: boolean;
+
     @alwaysSend
     @attr('date')
     subscriptionEndDate!: Date;
+
     @alwaysSend
     @attr('string')
     userFullName!: string;
+
     @alwaysSend
     @attr('string')
     userName!: string;
+
     @alwaysSend
     @attr('string')
     userType!: UserType;
