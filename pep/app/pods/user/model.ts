@@ -1,11 +1,13 @@
+import { inject as service } from '@ember/service';
+
 import DS from 'ember-data';
 import attr from 'ember-data/attr';
 import IntlService from 'ember-intl/services/intl';
+
 import moment, { Moment } from 'moment';
 import { SERVER_DATE_FORMAT } from 'pep/constants/dates';
 import { DEFAULT_USER_PREFERENCES, UserPreferences } from 'pep/constants/preferences';
-
-import { inject as service } from '@ember/service';
+import { alwaysSend } from 'pep/decorators/models';
 
 export enum UserType {
     GROUP = 'Group',
@@ -24,19 +26,77 @@ interface ActiveSubscription {
 export default class User extends DS.Model {
     @service intl!: IntlService;
 
-    @attr('string') activeSubscriptions!: string;
-    @attr('boolean') branding!: boolean;
-    @attr('string') brandingImgUrl!: string;
-    @attr<any>('json', { defaultValue: () => ({ ...DEFAULT_USER_PREFERENCES }) }) clientSettings!: UserPreferences;
-    @attr('string') emailAddress!: string;
-    @attr('boolean') hasArchiveAccess!: boolean;
-    @attr('boolean') hasCurrentAccess!: boolean;
-    @attr('string') loggedInMethod!: string;
-    @attr('string') paDSHomeURL!: string;
-    @attr('date') subscriptionEndDate!: Date;
-    @attr('string') userFullName!: string;
-    @attr('string') userName!: string;
-    @attr('string') userType!: UserType;
+    @alwaysSend
+    @attr('string')
+    activeSubscriptions!: string;
+
+    @alwaysSend
+    @attr('boolean')
+    branding!: boolean;
+
+    @alwaysSend
+    @attr('string')
+    brandingImgUrl!: string;
+
+    @alwaysSend
+    @attr<any>('json', { defaultValue: () => ({ ...DEFAULT_USER_PREFERENCES }) })
+    clientSettings!: UserPreferences;
+
+    @alwaysSend
+    @attr('string')
+    emailAddress!: string;
+
+    @alwaysSend
+    @attr('boolean')
+    hasArchiveAccess!: boolean;
+
+    @alwaysSend
+    @attr('boolean')
+    hasCurrentAccess!: boolean;
+
+    @alwaysSend
+    @attr('boolean')
+    isSubscriptionRenewalDue!: boolean;
+
+    @alwaysSend
+    @attr('string')
+    loggedInMethod!: string;
+
+    @alwaysSend
+    @attr('string')
+    paDSHomeURL!: string;
+
+    @alwaysSend
+    @attr('string')
+    paDSRenewalURL!: string;
+
+    @alwaysSend
+    @attr('string')
+    reasonDescription!: string;
+
+    @alwaysSend
+    @attr('boolean')
+    sendJournalAlerts!: boolean;
+
+    @alwaysSend
+    @attr('boolean')
+    sendVideoAlerts!: boolean;
+
+    @alwaysSend
+    @attr('date')
+    subscriptionEndDate!: Date;
+
+    @alwaysSend
+    @attr('string')
+    userFullName!: string;
+
+    @alwaysSend
+    @attr('string')
+    userName!: string;
+
+    @alwaysSend
+    @attr('string')
+    userType!: UserType;
 
     /**
      * Is the user an individual login (not part of a group)
