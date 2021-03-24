@@ -560,6 +560,11 @@
     </xsl:template>
 
     <!--PEPKBD3 Author Information-->
+    <!-- Documents needed to test the roles correctly
+         AJP.063.0149A [3 authors, 1 autaff, no affid] = 3 authors, 1 autaff
+         ZBK.061.0001A [2 authors, 10 in-collaboration, 2 translated by, 1 forwarded by, 3 autaff, 3 affids] = show 2 authors with autaff, 10 collabs, 2 translated by with autaff and 1 forwarwd by
+         RFP.053.1405A [1 author, 1 autaff, no affid] = show 1 author and 1 autaff
+    -->
     <xsl:template match="artauth/aut" mode="metadata">
 
         <div class="author-grouping" data-grouping="{@role}">
@@ -732,7 +737,8 @@
                         </div>
                     </a>
                 </xsl:when>
-                <xsl:when test="count(key('role', @role)) = 1 and count(../autaff) = 1">
+
+                <xsl:when test="count(../autaff) = 1">
                     <xsl:text> </xsl:text>
                     <a class="peppopup authortip" href="#author-information">
                         <xsl:copy-of select="$fa-information" />
@@ -748,11 +754,10 @@
                                             <xsl:apply-templates mode="metadata" select="nfirst"/>
                                             <xsl:apply-templates mode="metadata" select="nlast"/>
                                         </p>
-                                        <xsl:apply-templates mode="metadata" select="../autaff"/>
                                         <xsl:apply-templates mode="metadata" select="nbio"/>
                                     </div>
-
                                 </xsl:for-each>
+                                <xsl:apply-templates mode="metadata" select="../autaff"/>
                             </div>
                         </div>
                     </a>
@@ -838,6 +843,9 @@
 
 
     <xsl:template match="ndeg" mode="metadata">
+
+        <xsl:variable name="phdBefore" select="'PHD'" />
+        <xsl:variable name="phdAfter" select="'PhD'" />
         <xsl:choose>
             <xsl:when test="@other"> <!-- then i test if the attr exists -->
                 <span class="ndeg" data-dgr="{@dgr}" data-other="{@other}">
@@ -848,7 +856,7 @@
             <xsl:otherwise>
                 <span class="ndeg" data-dgr="{@dgr}" data-other="{@other}">
                     <xsl:text> </xsl:text> <!-- space character -->
-                    <xsl:value-of select="@dgr"/>
+                    <xsl:value-of select="translate(@dgr, $phdBefore, $phdAfter)"/>
                 </span>
             </xsl:otherwise>
         </xsl:choose>
