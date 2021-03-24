@@ -50,7 +50,6 @@ export default class PepSessionService extends SessionService {
     setUnauthenticatedSession(sessionData: PepSecureAuthenticatedData) {
         const resultString = JSON.stringify(sessionData);
         this.cookies.write(UNAUTHENTICATED_SESSION_COOKIE_NAME, resultString, {
-            secure: ENV.cookieSecure,
             sameSite: ENV.cookieSameSite,
             expires: DATE_FOREVER
         });

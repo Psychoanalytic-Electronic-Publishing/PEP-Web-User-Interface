@@ -1,46 +1,33 @@
 <ModalDialog @onClose={{@onClose}} @size="md" @clickOutsideToClose={{false}} as |Modal|>
     <Modal.header @title={{t "relatedInfo.widgets.whatsNew.title"}} />
-    <FormValidator @changeset={{@options.changeset}} @submit={{this.update}} as |changeset validator|>
-        <Modal.body>
-            <p class="text-muted">
-                {{t "relatedInfo.widgets.whatsNew.signUp"}}
-            </p>
-            <Alert
-                @isShown={{bool this.loginError}}
-                @message={{t "login.error"}}
-                @type="danger"
-                @icon="exclamation-circle"
-            />
-            <div class="form-row">
-                <div class="col-sm-8">
-                    <validator.input @errors={{changeset.error.username.validation}} class="input-validator-compact">
-                        <FlInput
-                            @value={{changeset.emailAddress}}
-                            @placeholder={{t "relatedInfo.widgets.whatsNew.emailAddress"}}
-                            maxlength="128"
-                        />
-                    </validator.input>
-                </div>
-            </div>
-            <CheckboxInput
-                @checked={{@matchSynonyms}}
-                @onChange={{@matchSynonymsChange}}
-                @label={{t "relatedInfo.widgets.whatsNew.alerts.journals"}}
-            />
-            <CheckboxInput
-                @checked={{@matchSynonyms}}
-                @onChange={{@matchSynonymsChange}}
-                @label={{t "relatedInfo.widgets.whatsNew.alerts.videos"}}
-            />
-        </Modal.body>
-        <Modal.footer>
-            <Button @type="link" @label={{t "common.cancel"}} @action={{@onClose}} />
-            <ButtonSpinner
-                @type="primary"
-                @label={{t "relatedInfo.widgets.whatsNew.update"}}
-                @wide={{true}}
-                @action={{validator.submit}}
-            />
-        </Modal.footer>
-    </FormValidator>
+    <Modal.body>
+        <p class="text-muted">
+            {{t "relatedInfo.widgets.whatsNew.signUp"}}
+        </p>
+        <Alert
+            @isShown={{bool this.loginError}}
+            @message={{t "login.error"}}
+            @type="danger"
+            @icon="exclamation-circle"
+        />
+        <CheckboxInput
+            @checked={{this.sendJournalAlerts}}
+            @onChange={{fn this.updateUserAlerts "sendJournalAlerts"}}
+            @label={{t "relatedInfo.widgets.whatsNew.alerts.journals"}}
+        />
+        <CheckboxInput
+            @checked={{this.sendVideoAlerts}}
+            @onChange={{fn this.updateUserAlerts "sendVideoAlerts"}}
+            @label={{t "relatedInfo.widgets.whatsNew.alerts.videos"}}
+        />
+    </Modal.body>
+    <Modal.footer>
+        <Button @type="link" @label={{t "common.cancel"}} @action={{@onClose}} />
+        <ButtonSpinner
+            @type="primary"
+            @label={{t "relatedInfo.widgets.whatsNew.update"}}
+            @wide={{true}}
+            @action={{this.update}}
+        />
+    </Modal.footer>
 </ModalDialog>
