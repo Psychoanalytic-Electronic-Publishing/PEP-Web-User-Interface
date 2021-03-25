@@ -42,7 +42,6 @@ export default class DocumentReadSidebar extends Component<DocumentReadSidebarAr
     @service configuration!: ConfigurationService;
     @service currentUser!: CurrentUserService;
 
-    @tracked showHitsInContext = this.currentUser.preferences?.searchHICEnabled;
     @tracked selectedSort = SearchSorts[0];
 
     readLaterKey = PreferenceKey.READ_LATER;
@@ -53,6 +52,10 @@ export default class DocumentReadSidebar extends Component<DocumentReadSidebarAr
 
     get isLoadingRoute(): boolean {
         return /loading$/.test(this.router.currentRouteName);
+    }
+
+    get showHitsInContext() {
+        return this.currentUser.preferences?.searchHICEnabled;
     }
 
     /**
@@ -100,7 +103,7 @@ export default class DocumentReadSidebar extends Component<DocumentReadSidebarAr
         if (!value) {
             await this.args.paginator.loadMoreModels();
         }
-        this.showHitsInContext = value;
+        this.currentUser.updatePrefs({ [PreferenceKey.SEARCH_HIC_ENABLED]: value });
     }
 
     /**

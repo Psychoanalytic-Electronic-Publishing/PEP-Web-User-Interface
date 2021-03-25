@@ -163,7 +163,7 @@
                                         @tagName="ul"
                                         @containerSelector=".page-content-inner"
                                         @class="list-unstyled"
-                                        @estimateHeight={{100}}
+                                        @estimateHeight={{if this.currentUser.preferences.searchHICEnabled 100 20}}
                                         @renderAll={{this.fastboot.isFastBoot}}
                                         @lastReached={{this.paginator.loadMoreModels}} as |result|
                                     >

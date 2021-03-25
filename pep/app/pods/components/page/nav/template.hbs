@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand fixed-top navbar-dark bg-gradient-primary" ...attributes>
-    {{#if (is-development)}}
+    {{#if (or this.logoNavigationGoesHome (is-development))}}
         <LinkTo @route="index" class="navbar-brand mr-auto d-flex">
             <div class="navbar-brand-logo"></div>
             <div class="ml-2">
@@ -210,3 +210,5 @@
         {{/if}}
     </ul>
 </nav>
+
+<KeyboardShortcuts @shortcuts={{this.shortcuts}} />

@@ -14,8 +14,13 @@ import Modal from '@gavant/ember-modals/services/modal';
 
 import { ServerStatus } from 'pep/api';
 import ENV from 'pep/config/environment';
+import {
+    CLEAR_SEARCH, ESCAPE, NAVIGATE_TO_BROWSE, NAVIGATE_TO_HOME, NAVIGATE_TO_SEARCH, TOGGLE_GLOSSARY_HIGHLIGHTING,
+    TOGGLE_HIC, TOGGLE_LEFT_SIDEBAR, TOGGLE_RIGHT_SIDEBAR, TOGGLE_SIDEBARS
+} from 'pep/constants/keyboard-shortcuts';
 import { PreferenceKey } from 'pep/constants/preferences';
 import { SEARCH_DEFAULT_VIEW_PERIOD, SEARCH_TYPE_ARTICLE, SearchTermValue, ViewPeriod } from 'pep/constants/search';
+import { KeyboardShortcut } from 'pep/pods/components/keyboard-shortcuts/component';
 import AjaxService from 'pep/services/ajax';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
@@ -42,6 +47,85 @@ export default class Application extends Controller {
     @tracked viewedCount: string = '';
     @tracked viewedPeriod: ViewPeriod = ViewPeriod.PAST_WEEK;
     @tracked searchTerms: SearchTermValue[] = [];
+
+    @tracked shortcuts: KeyboardShortcut[] = [
+        {
+            keys: NAVIGATE_TO_BROWSE,
+            shortcut: () => {
+                this.transitionToRoute('browse');
+            }
+        },
+        {
+            keys: NAVIGATE_TO_HOME,
+            shortcut: () => {
+                this.transitionToRoute('index');
+            }
+        },
+        {
+            keys: NAVIGATE_TO_SEARCH,
+            shortcut: () => {
+                this.transitionToRoute('search');
+            }
+        },
+        {
+            keys: CLEAR_SEARCH,
+            shortcut: () => {
+                this.clearSearch();
+            }
+        },
+        {
+            keys: TOGGLE_SIDEBARS,
+            shortcut: () => {
+                const areBothOpen = this.sidebar.leftSidebarIsOpen && this.sidebar.rightSidebarIsOpen;
+                this.sidebar.toggleAll(areBothOpen ? false : true);
+            }
+        },
+        {
+            keys: TOGGLE_LEFT_SIDEBAR,
+            shortcut: () => {
+                this.sidebar.toggleLeftSidebar(!this.sidebar.leftSidebarIsOpen);
+            }
+        },
+        {
+            keys: TOGGLE_RIGHT_SIDEBAR,
+            shortcut: () => {
+                this.sidebar.toggleRightSidebar(!this.sidebar.rightSidebarIsOpen);
+            }
+        },
+        {
+            keys: TOGGLE_GLOSSARY_HIGHLIGHTING,
+            shortcut: () => {
+                if (this.currentUser.preferences) {
+                    const currentValue = this.currentUser.preferences?.glossaryFormattingEnabled;
+                    this.currentUser.updatePrefs({ [PreferenceKey.GLOSSARY_FORMATTING_ENABLED]: !currentValue });
+                }
+            }
+        },
+        {
+            keys: TOGGLE_HIC,
+            shortcut: () => {
+                if (this.currentUser.preferences) {
+                    const currentValue = this.currentUser.preferences?.searchHICEnabled;
+                    this.currentUser.updatePrefs({ [PreferenceKey.SEARCH_HIC_ENABLED]: !currentValue });
+                }
+            }
+        },
+        {
+            keys: ESCAPE,
+            shortcut: () => {
+                const active = document.activeElement;
+                const enteringText =
+                    active instanceof HTMLElement &&
+                    (active.isContentEditable || active.tagName === 'INPUT' || active.tagName === 'TEXTAREA');
+                if (enteringText) {
+                    (active as HTMLInputElement)?.blur();
+                }
+            },
+            options: {
+                allowInInput: true
+            }
+        }
+    ];
 
     /**
      * Submits the application/nav sidebar's search form and transitions the
