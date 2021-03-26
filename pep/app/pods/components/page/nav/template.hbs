@@ -1,4 +1,8 @@
-<nav class="navbar navbar-expand fixed-top navbar-dark bg-gradient-primary" ...attributes>
+<nav
+    class="navbar navbar-expand fixed-top navbar-dark bg-gradient-primary"
+    ...attributes
+    {{register-keyboard-shortcuts shortcuts=this.shortcuts}}
+>
     {{#if (or this.logoNavigationGoesHome (is-development))}}
         <LinkTo @route="index" class="navbar-brand mr-auto d-flex">
             <div class="navbar-brand-logo"></div>
@@ -210,5 +214,3 @@
         {{/if}}
     </ul>
 </nav>
-
-<KeyboardShortcuts @shortcuts={{this.shortcuts}} />

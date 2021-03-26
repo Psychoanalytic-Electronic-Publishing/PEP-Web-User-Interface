@@ -48,7 +48,7 @@ export default class Application extends Controller {
     @tracked viewedPeriod: ViewPeriod = ViewPeriod.PAST_WEEK;
     @tracked searchTerms: SearchTermValue[] = [];
 
-    @tracked shortcuts: KeyboardShortcut[] = [
+    shortcuts: KeyboardShortcut[] = [
         {
             keys: NAVIGATE_TO_BROWSE,
             shortcut: () => {
@@ -114,9 +114,7 @@ export default class Application extends Controller {
             keys: ESCAPE,
             shortcut: () => {
                 const active = document.activeElement;
-                const enteringText =
-                    active instanceof HTMLElement &&
-                    (active.isContentEditable || active.tagName === 'INPUT' || active.tagName === 'TEXTAREA');
+                const enteringText = ['INPUT', 'TEXTAREA', 'SELECT'].includes(active?.tagName ?? '');
                 if (enteringText) {
                     (active as HTMLInputElement)?.blur();
                 }

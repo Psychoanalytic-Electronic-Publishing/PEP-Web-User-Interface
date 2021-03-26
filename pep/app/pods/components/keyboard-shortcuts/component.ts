@@ -38,9 +38,7 @@ export default class KeyboardShortcuts extends Component<KeyboardShortcutsArgs> 
 
     eventHandler(event: KeyboardEvent, callback: (event: KeyboardEvent) => void): void {
         const active = document.activeElement;
-        const enteringText =
-            active instanceof HTMLElement &&
-            (active.isContentEditable || active.tagName === 'INPUT' || active.tagName === 'TEXTAREA');
+        const enteringText = ['INPUT', 'TEXTAREA', 'SELECT'].includes(active?.tagName ?? '');
         if (!enteringText) {
             callback(event);
         }
