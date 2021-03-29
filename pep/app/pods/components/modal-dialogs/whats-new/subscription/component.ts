@@ -61,7 +61,7 @@ export default class ModalDialogsWhatsNewSubscription extends Component<ModalDia
             }
             await user?.save();
             this.loadingBar.hide();
-            this.args.onClose();
+            return this.args.onClose();
         } catch (err) {
             this.loadingBar.hide();
             return reject(err);
