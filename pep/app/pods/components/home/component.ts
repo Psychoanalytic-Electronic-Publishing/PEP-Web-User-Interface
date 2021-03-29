@@ -13,6 +13,7 @@ import moment from 'moment';
 import Abstract from 'pep/pods/abstract/model';
 import GlossaryTerm from 'pep/pods/glossary-term/model';
 import SearchDocument from 'pep/pods/search-document/model';
+import AjaxService from 'pep/services/ajax';
 import AuthService from 'pep/services/auth';
 import ConfigurationService from 'pep/services/configuration';
 import FastbootMediaService from 'pep/services/fastboot-media';
@@ -34,6 +35,7 @@ export default class Home extends Component<HomeArgs> {
     @service router!: RouterService;
     @service loadingBar!: LoadingBarService;
     @service cookies!: CookiesService;
+    @service ajax!: AjaxService;
 
     /**
      * The approximate width where the graphic
@@ -44,6 +46,7 @@ export default class Home extends Component<HomeArgs> {
 
     @tracked model?: Abstract;
     @tracked imageArticle?: SearchDocument;
+    @tracked imageId?: string;
 
     get intro() {
         return this.configuration.content.home.intro;
@@ -133,12 +136,22 @@ export default class Home extends Component<HomeArgs> {
     async loadModel(): Promise<void> {
         const result = await this.store.findRecord('abstract', this.expertPick.articleId);
         this.model = result;
+        let imageId = this.expertPick.imageId;
+
+        // if there was no expert pick image then load a random one
+        if (!imageId || imageId === '*') {
+            const result = await this.ajax.request<{ documentID: string; graphic: string }>(
+                'Documents/Image/*?download=2'
+            );
+            imageId = result.graphic.replace(/\.[^/.]+$/, '');
+        }
         const queryParams = buildSearchQueryParams({
-            smartSearchTerm: `art_graphic_list: ${this.expertPick.imageId}`
+            smartSearchTerm: `art_graphic_list: ${imageId}`
         });
         const imageArticleResults = await this.store.query('search-document', queryParams);
         const imageArticle = imageArticleResults.toArray()[0];
         this.imageArticle = imageArticle;
+        this.imageId = imageId;
     }
 
     /**
