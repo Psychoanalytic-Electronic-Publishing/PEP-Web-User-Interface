@@ -2,6 +2,12 @@ import { modifier } from 'ember-modifier';
 
 import tinykeys, { KeyBindingMap } from 'tinykeys';
 
+/**
+ * Dont allow keyboard shortcuts on input elements
+ *
+ * @param {KeyboardEvent} event
+ * @param {(event: KeyboardEvent) => void} callback
+ */
 const eventHandler = (event: KeyboardEvent, callback: (event: KeyboardEvent) => void) => {
     const active = document.activeElement;
     const enteringText = ['INPUT', 'TEXTAREA', 'SELECT'].includes(active?.tagName ?? '');
@@ -23,6 +29,13 @@ interface KeyboardShortcutsArgs {
     shortcuts?: KeyboardShortcut[];
 }
 
+/**
+ * Modifier that attaches attaches event listeners for keyboard shortcuts
+ *
+ * @param {Element} _element
+ * @param {unknown} _args
+ * @param {KeyboardShortcutsArgs} named
+ */
 export default modifier((_element, _args, named: KeyboardShortcutsArgs) => {
     const keyBindingMap = named.shortcuts?.reduce<KeyBindingMap>((previous, current) => {
         if (!current.options?.allowInInput) {
