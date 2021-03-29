@@ -13,7 +13,7 @@ import {
 } from 'pep/constants/keyboard-shortcuts';
 import { Languages } from 'pep/constants/lang';
 import { PEP_FACEBOOK_URL, SUPPORT_URL } from 'pep/constants/urls';
-import { KeyboardShortcut } from 'pep/pods/components/keyboard-shortcuts/component';
+import { KeyboardShortcut } from 'pep/modifiers/register-keyboard-shortcuts';
 import AuthService from 'pep/services/auth';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService, { VIEW_DOCUMENT_FROM } from 'pep/services/current-user';

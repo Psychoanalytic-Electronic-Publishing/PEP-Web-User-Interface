@@ -10,8 +10,8 @@ import {
     NEXT_ARTICLE, NEXT_ARTICLE_FIRST_HIT, NEXT_HIT, PREVIOUS_ARTICLE, PREVIOUS_ARTICLE_FIRST_HIT, PREVIOUS_HIT
 } from 'pep/constants/keyboard-shortcuts';
 import { SEARCH_DEFAULT_VIEW_PERIOD, SearchViews, SearchViewType, ViewPeriod } from 'pep/constants/search';
+import { KeyboardShortcut } from 'pep/modifiers/register-keyboard-shortcuts';
 import Abstract from 'pep/pods/abstract/model';
-import { KeyboardShortcut } from 'pep/pods/components/keyboard-shortcuts/component';
 import Document from 'pep/pods/document/model';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
