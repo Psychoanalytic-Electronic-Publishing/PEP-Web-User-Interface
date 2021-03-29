@@ -20,7 +20,7 @@ import {
 } from 'pep/constants/keyboard-shortcuts';
 import { PreferenceKey } from 'pep/constants/preferences';
 import { SEARCH_DEFAULT_VIEW_PERIOD, SEARCH_TYPE_ARTICLE, SearchTermValue, ViewPeriod } from 'pep/constants/search';
-import { KeyboardShortcut } from 'pep/pods/components/keyboard-shortcuts/component';
+import { KeyboardShortcut } from 'pep/modifiers/register-keyboard-shortcuts';
 import AjaxService from 'pep/services/ajax';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';

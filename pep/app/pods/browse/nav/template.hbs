@@ -140,8 +140,8 @@
                                 @estimateHeight={{100}}
                                 @renderAll={{this.fastboot.isFastBoot}} as |result|
                             >
-                                <Browse::SidebarItem @item={{result}} @route="browse.read">
-                                    {{result.title}}
+                                <Browse::SidebarItem @item={{result}} @route="browse.read" class="video-sidebar-item">
+                                    {{html-safe result.displayTitle}}
                                 </Browse::SidebarItem>
                             </VerticalCollection>
                         {{else}}
