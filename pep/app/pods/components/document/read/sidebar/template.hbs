@@ -120,7 +120,7 @@
                             @tagName="ul"
                             @containerSelector=".sidebar-content"
                             @class="list-unstyled"
-                            @estimateHeight={{100}}
+                            @estimateHeight={{if this.showHitsInContext 100 20}}
                             @renderAll={{this.fastboot.isFastBoot}}
                             @lastReached={{@paginator.loadMoreModels}} as |result|
                         >

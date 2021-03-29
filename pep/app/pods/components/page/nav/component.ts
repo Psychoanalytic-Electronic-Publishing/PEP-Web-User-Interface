@@ -2,11 +2,18 @@ import { action } from '@ember/object';
 import RouterService from '@ember/routing/router-service';
 import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
+
+import NotificationService from 'ember-cli-notifications/services/notifications';
 
 import ModalService from '@gavant/ember-modals/services/modal';
 
+import {
+    LOGOUT, NAVIGATE_TO_READ, OPEN_LOGIN, OPEN_USER_MENU, OPEN_USER_PREFERENCES, SECRET_DAVE_CODE
+} from 'pep/constants/keyboard-shortcuts';
 import { Languages } from 'pep/constants/lang';
 import { PEP_FACEBOOK_URL, SUPPORT_URL } from 'pep/constants/urls';
+import { KeyboardShortcut } from 'pep/pods/components/keyboard-shortcuts/component';
 import AuthService from 'pep/services/auth';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService, { VIEW_DOCUMENT_FROM } from 'pep/services/current-user';
@@ -25,6 +32,39 @@ export default class PageNav extends Component<PageNavArgs> {
     @service configuration!: ConfigurationService;
     @service currentUser!: CurrentUserService;
     @service router!: RouterService;
+    @service notifications!: NotificationService;
+
+    @tracked logoNavigationGoesHome = false;
+
+    @tracked shortcuts: KeyboardShortcut[] = [
+        {
+            keys: SECRET_DAVE_CODE,
+            shortcut: () => {
+                this.notifications.success('Dave mode entered');
+                this.logoNavigationGoesHome = true;
+            }
+        },
+        {
+            keys: NAVIGATE_TO_READ,
+            shortcut: this.viewRead
+        },
+        {
+            keys: OPEN_USER_MENU,
+            shortcut: this.openAccountInfoModal
+        },
+        {
+            keys: OPEN_USER_PREFERENCES,
+            shortcut: this.openPreferencesModal
+        },
+        {
+            keys: OPEN_LOGIN,
+            shortcut: this.openLoginModal
+        },
+        {
+            keys: LOGOUT,
+            shortcut: this.logout
+        }
+    ];
 
     supportUrl = SUPPORT_URL;
     facebookUrl = PEP_FACEBOOK_URL;
@@ -51,16 +91,20 @@ export default class PageNav extends Component<PageNavArgs> {
      * Opens the user preferences modal dialog
      */
     @action
-    openPreferencesModal() {
-        return this.modal.open('user/preferences', {});
+    openPreferencesModal(): void | undefined {
+        if (this.session.isAuthenticated) {
+            return this.modal.open('user/preferences', {});
+        }
     }
 
     /**
      * Opens the login modal dialog
      */
     @action
-    openLoginModal() {
-        return this.auth.openLoginModal(true);
+    openLoginModal(): Promise<void> | undefined {
+        if (!this.session.isAuthenticated) {
+            return this.auth.openLoginModal(true);
+        }
     }
 
     /**
@@ -84,7 +128,9 @@ export default class PageNav extends Component<PageNavArgs> {
      */
     @action
     openAccountInfoModal() {
-        return this.modal.open('user/info', {});
+        if (this.session.isAuthenticated) {
+            return this.modal.open('user/info', {});
+        }
     }
 
     /**

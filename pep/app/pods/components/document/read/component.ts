@@ -24,6 +24,7 @@ interface DocumentReadArgs {
     searchQueryParams?: SearchReadParams;
     searchHitNumber?: number;
     onAuthenticated: () => void;
+    documentRendered?: () => void;
 }
 
 export default class DocumentRead extends Component<DocumentReadArgs> {
@@ -77,5 +78,10 @@ export default class DocumentRead extends Component<DocumentReadArgs> {
             results,
             term
         });
+    }
+
+    @action
+    documentRendered() {
+        this.args.documentRendered?.();
     }
 }

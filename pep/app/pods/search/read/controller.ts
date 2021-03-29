@@ -6,14 +6,19 @@ import { tracked } from '@glimmer/tracking';
 import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
 import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 
+import {
+    NEXT_ARTICLE, NEXT_ARTICLE_FIRST_HIT, NEXT_HIT, PREVIOUS_ARTICLE, PREVIOUS_ARTICLE_FIRST_HIT, PREVIOUS_HIT
+} from 'pep/constants/keyboard-shortcuts';
 import { SEARCH_DEFAULT_VIEW_PERIOD, SearchViews, SearchViewType, ViewPeriod } from 'pep/constants/search';
 import Abstract from 'pep/pods/abstract/model';
+import { KeyboardShortcut } from 'pep/pods/components/keyboard-shortcuts/component';
 import Document from 'pep/pods/document/model';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
 import LoadingBarService from 'pep/services/loading-bar';
 import { buildSearchQueryParams } from 'pep/utils/search';
 import { SearchSorts, transformSearchSortToAPI } from 'pep/utils/sort';
+import { guard } from 'pep/utils/types';
 import { reject } from 'rsvp';
 
 export default class SearchRead extends Controller {
@@ -35,6 +40,53 @@ export default class SearchRead extends Controller {
 
     // This becomes our model as the template wasn't updating when we changed the default model
     @tracked document?: Document;
+
+    @tracked shortcuts: KeyboardShortcut[] = [
+        {
+            keys: NEXT_ARTICLE,
+            shortcut: () => {
+                if (this.document?.sourceNext) {
+                    this.loadDocument(this.document?.sourceNext);
+                }
+            }
+        },
+        {
+            keys: PREVIOUS_ARTICLE,
+            shortcut: () => {
+                if (this.document?.sourcePrevious) {
+                    this.loadDocument(this.document?.sourcePrevious);
+                }
+            }
+        },
+        {
+            keys: NEXT_HIT,
+            shortcut: this.viewNextSearchHit
+        },
+        {
+            keys: PREVIOUS_HIT,
+            shortcut: this.viewPreviousSearchHit
+        },
+        {
+            keys: NEXT_ARTICLE_FIRST_HIT,
+            shortcut: async () => {
+                if (this.document?.sourceNext) {
+                    await this.loadDocument(this.document?.sourceNext);
+                    this.afterDocumentRendered = this.viewNextSearchHit;
+                }
+            }
+        },
+        {
+            keys: PREVIOUS_ARTICLE_FIRST_HIT,
+            shortcut: async () => {
+                if (this.document?.sourcePrevious) {
+                    await this.loadDocument(this.document?.sourcePrevious);
+                    this.afterDocumentRendered = this.viewNextSearchHit;
+                }
+            }
+        }
+    ];
+
+    afterDocumentRendered: null | (() => void) = null;
 
     tableView = SearchViewType.TABLE;
     searchViews = SearchViews;
@@ -186,8 +238,13 @@ export default class SearchRead extends Controller {
      * @memberof ReadDocument
      */
     @action
-    loadDocument(abstract: Abstract) {
-        this.transitionToRoute('search.read', abstract.id, {
+    loadDocument(abstract: Abstract | string) {
+        let id = abstract;
+        if (guard<Abstract>(abstract, 'id')) {
+            id = abstract.id;
+        }
+
+        return this.transitionToRoute('search.read', id, {
             queryParams: {
                 q: this.q,
                 matchSynonyms: this.matchSynonyms,
@@ -231,6 +288,12 @@ export default class SearchRead extends Controller {
     viewSearchHitNumber(number: number) {
         this.searchHitNumber = undefined;
         this.searchHitNumber = number;
+    }
+
+    @action
+    documentRendered() {
+        this.afterDocumentRendered?.();
+        this.afterDocumentRendered = null;
     }
 }
 

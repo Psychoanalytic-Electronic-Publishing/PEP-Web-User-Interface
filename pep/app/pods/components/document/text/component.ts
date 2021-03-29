@@ -2,9 +2,9 @@ import { action, computed } from '@ember/object';
 import RouterService from '@ember/routing/router-service';
 import { next, scheduleOnce } from '@ember/runloop';
 import { inject as service } from '@ember/service';
-import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
+import Component from '@glint/environment-ember-loose/glimmer-component';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import { DS } from 'ember-data';
 import IntlService from 'ember-intl/services/intl';
@@ -32,21 +32,23 @@ import { reject } from 'rsvp';
 import tippy, { Instance, Props } from 'tippy.js';
 
 interface DocumentTextArgs {
-    document: Document;
-    target?: 'abstract' | 'document';
-    offsetForScroll?: number;
-    readQueryParams: {
-        q: string;
-        searchTerms: string | null;
-        facets: string | null;
-        matchSynonyms: boolean;
+    Args: {
+        document: Document;
+        target?: 'abstract' | 'document';
+        offsetForScroll?: number;
+        readQueryParams: {
+            q: string;
+            searchTerms: string | null;
+            facets: string | null;
+            matchSynonyms: boolean;
+        };
+        page?: string;
+        searchHitNumber?: number;
+        onGlossaryItemClick: (term: string, termResults: GlossaryTerm[]) => void;
+        viewSearch: (searchTerms: SearchQueryParams) => void;
+        documentRendered: () => void;
+        viewablePageUpdate?: (page: string) => void;
     };
-    page?: string;
-    searchHitNumber?: number;
-    onGlossaryItemClick: (term: string, termResults: GlossaryTerm[]) => void;
-    viewSearch: (searchTerms: SearchQueryParams) => void;
-    documentRendered: () => void;
-    viewablePageUpdate?: (page: string) => void;
 }
 
 /**
@@ -75,7 +77,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
     @service modal!: ModalService;
     @service notifications!: NotificationService;
     @service intl!: IntlService;
-    @service theme!: ThemeService;
+    @service declare theme: ThemeService;
     @service router!: RouterService;
     @service currentUser!: CurrentUserService;
     @service('pep-session') session!: PepSessionService;
@@ -100,7 +102,7 @@ export default class DocumentText extends Component<DocumentTextArgs> {
         }
     };
 
-    constructor(owner: unknown, args: DocumentTextArgs) {
+    constructor(owner: unknown, args: DocumentTextArgs['Args']) {
         super(owner, args);
         const target = args.target ?? (args.document.accessLimited ? 'abstract' : 'document');
         const text = args.document[target];
@@ -667,5 +669,11 @@ export default class DocumentText extends Component<DocumentTextArgs> {
      */
     willDestroy(): void {
         this.pageTracking = false;
+    }
+}
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        DocumentText: typeof DocumentText;
     }
 }
