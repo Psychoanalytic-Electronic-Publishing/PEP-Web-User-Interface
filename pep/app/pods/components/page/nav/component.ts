@@ -92,9 +92,7 @@ export default class PageNav extends Component<PageNavArgs> {
      */
     @action
     openPreferencesModal(): void | undefined {
-        if (this.session.isAuthenticated) {
-            return this.modal.open('user/preferences', {});
-        }
+        return this.modal.open('user/preferences', {});
     }
 
     /**
@@ -102,9 +100,7 @@ export default class PageNav extends Component<PageNavArgs> {
      */
     @action
     openLoginModal(): Promise<void> | undefined {
-        if (!this.session.isAuthenticated) {
-            return this.auth.openLoginModal(true);
-        }
+        return this.auth.openLoginModal(true);
     }
 
     /**
