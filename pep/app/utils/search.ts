@@ -7,8 +7,9 @@ import { QueryParamsObj, removeEmptyQueryParams } from '@gavant/ember-pagination
 import { QUOTED_VALUE_REGEX } from 'pep/constants/regex';
 import {
     SEARCH_DEFAULT_VIEW_PERIOD, SEARCH_FACETS, SEARCH_TYPES, SearchFacetId, SearchFacetValue, SearchTermValue,
-    ViewPeriod
+    SourceType, ViewPeriod
 } from 'pep/constants/search';
+import Document from 'pep/pods/document/model';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
 
@@ -360,7 +361,7 @@ export function getSearchQueryParams(toController: Controller): any {
  * }}
  */
 export function buildBrowseRelatedDocumentsParams(
-    id: string
+    model: Document
 ): {
     facetValues: {
         id: SearchFacetId;
@@ -368,18 +369,30 @@ export function buildBrowseRelatedDocumentsParams(
     }[];
     abstract: boolean;
 } {
-    const terms = id.split('.');
-    return {
-        facetValues: [
-            {
-                id: SearchFacetId.ART_SOURCECODE,
-                value: terms[0]
-            },
-            {
-                id: SearchFacetId.ART_VOL,
-                value: Number(terms[1]).toString()
-            }
-        ],
-        abstract: false
-    };
+    if (model.sourceType === SourceType.VIDEO_STREAM) {
+        return {
+            facetValues: [
+                {
+                    id: SearchFacetId.ART_SOURCETYPE,
+                    value: SourceType.VIDEO_STREAM
+                }
+            ],
+            abstract: false
+        };
+    } else {
+        const terms = model.id.split('.');
+        return {
+            facetValues: [
+                {
+                    id: SearchFacetId.ART_SOURCECODE,
+                    value: terms[0]
+                },
+                {
+                    id: SearchFacetId.ART_VOL,
+                    value: Number(terms[1]).toString()
+                }
+            ],
+            abstract: false
+        };
+    }
 }

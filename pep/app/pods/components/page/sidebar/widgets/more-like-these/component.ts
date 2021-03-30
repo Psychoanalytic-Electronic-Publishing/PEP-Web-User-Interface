@@ -57,13 +57,13 @@ export default class PageSidebarWidgetsMoreLikeThese extends Component<PageSideb
                 results,
                 this.data.id
             ) as { included: any[] };
-
-            const response = this.store.push({
-                data: normalizedResponse.included[0],
-                included: normalizedResponse.included
-            });
-
-            this.results = (Array.isArray(response) ? response[0] : response) as SimilarityMatch;
+            if (normalizedResponse.included.length) {
+                const response = this.store.push({
+                    data: normalizedResponse.included[0],
+                    included: normalizedResponse.included
+                });
+                this.results = (Array.isArray(response) ? response[0] : response) as SimilarityMatch;
+            }
         }
     }
 
