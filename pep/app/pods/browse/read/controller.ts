@@ -30,7 +30,7 @@ export default class BrowseRead extends Controller {
     sorts = SearchSorts;
 
     get relatedDocumentQueryParams() {
-        const params = buildBrowseRelatedDocumentsParams(this.model.id);
+        const params = buildBrowseRelatedDocumentsParams(this.model);
         return buildSearchQueryParams(params);
     }
 

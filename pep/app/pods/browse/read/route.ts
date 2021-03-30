@@ -66,7 +66,7 @@ export default class BrowseRead extends PageNav(Route) {
 
         const controller = this.controllerFor(this.routeName) as BrowseReadController;
 
-        const params = buildBrowseRelatedDocumentsParams(model.id);
+        const params = buildBrowseRelatedDocumentsParams(model);
         const searchParams = buildSearchQueryParams(params);
 
         const queryParams = buildQueryParams({
