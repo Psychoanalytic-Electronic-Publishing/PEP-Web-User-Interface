@@ -10,6 +10,8 @@ import CookiesService from 'ember-cookies/services/cookies';
 import MetricService from 'ember-metrics/services/metrics';
 import MediaService from 'ember-responsive/services/media';
 
+import ModalService from '@gavant/ember-modals/services/modal';
+
 import { PepSecureAuthenticatedData } from 'pep/api';
 import {
     FASTBOOT_SESSION_WORKAROUND_COOKIE_NAME, HIDE_TOUR_COOKIE_NAME, SESSION_COOKIE_NAME
@@ -48,6 +50,7 @@ export default class Application extends PageLayout(Route) {
     @service cookies!: CookiesService;
     @service drawer!: DrawerService;
     @service introTour!: IntroTour;
+    @service modal!: ModalService;
 
     constructor() {
         super(...arguments);
@@ -137,6 +140,9 @@ export default class Application extends PageLayout(Route) {
         const hideTour = this.cookies.read(HIDE_TOUR_COOKIE_NAME);
         if (this.currentUser.preferences?.tourEnabled && !hideTour) {
             this.introTour.show();
+        }
+        if (controller.openNotificationModal === true) {
+            this.modal.open('whats-new/subscription', {});
         }
     }
 
