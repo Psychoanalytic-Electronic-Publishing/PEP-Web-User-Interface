@@ -97,7 +97,11 @@ export default class SearchRead extends Controller {
     //@ts-ignore
     queryParams = [
         'q',
-        'page',
+        {
+            page: {
+                scope: 'controller'
+            }
+        },
         { _searchTerms: 'searchTerms' },
         'matchSynonyms',
         'citedCount',
@@ -114,8 +118,7 @@ export default class SearchRead extends Controller {
             facets: this._facets,
             matchSynonyms: this.matchSynonyms,
             citedCount: this.citedCount,
-            viewedCount: this.viewedCount,
-            page: null
+            viewedCount: this.viewedCount
         };
     }
 
@@ -248,8 +251,7 @@ export default class SearchRead extends Controller {
             queryParams: {
                 q: this.q,
                 matchSynonyms: this.matchSynonyms,
-                searchTerms: this._searchTerms,
-                page: null
+                searchTerms: this._searchTerms
             }
         });
     }
@@ -290,10 +292,26 @@ export default class SearchRead extends Controller {
         this.searchHitNumber = number;
     }
 
+    /**
+     * Document was rendered, so now we need to call the afterDocumentRendered function we saved
+     *
+     * @memberof SearchRead
+     */
     @action
     documentRendered() {
         this.afterDocumentRendered?.();
         this.afterDocumentRendered = null;
+    }
+
+    /**
+     * Update the page when the scroll changes
+     *
+     * @param {string} page
+     * @memberof SearchRead
+     */
+    @action
+    viewablePageUpdate(page: string) {
+        this.page = page;
     }
 }
 

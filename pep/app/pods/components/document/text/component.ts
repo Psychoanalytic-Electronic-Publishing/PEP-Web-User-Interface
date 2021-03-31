@@ -1,6 +1,6 @@
 import { action, computed } from '@ember/object';
 import RouterService from '@ember/routing/router-service';
-import { next, scheduleOnce } from '@ember/runloop';
+import { next, run, scheduleOnce } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 
@@ -26,6 +26,7 @@ import AjaxService from 'pep/services/ajax';
 import CurrentUserService from 'pep/services/current-user';
 import LoadingBarService from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
+import ScrollableService from 'pep/services/scrollable';
 import ThemeService from 'pep/services/theme';
 import { buildJumpToHitsHTML, loadXSLT, parseXML } from 'pep/utils/dom';
 import { reject } from 'rsvp';
@@ -82,10 +83,11 @@ export default class DocumentText extends Component<DocumentTextArgs> {
     @service currentUser!: CurrentUserService;
     @service('pep-session') session!: PepSessionService;
     @service ajax!: AjaxService;
+    @service scrollable!: ScrollableService;
 
     @tracked xml?: XMLDocument;
     @tracked visiblePages: string[] = [];
-    @tracked pageTracking = true;
+    @tracked pageTracking = false;
 
     containerElement?: HTMLElement;
     scrollableElement?: Element | null;
@@ -102,13 +104,6 @@ export default class DocumentText extends Component<DocumentTextArgs> {
         }
     };
 
-    constructor(owner: unknown, args: DocumentTextArgs['Args']) {
-        super(owner, args);
-        const target = args.target ?? (args.document.accessLimited ? 'abstract' : 'document');
-        const text = args.document[target];
-        this.generateDocument(text);
-    }
-
     private get scrollOffset() {
         return this.args.offsetForScroll ?? this.defaultOffsetForScroll;
     }
@@ -118,10 +113,22 @@ export default class DocumentText extends Component<DocumentTextArgs> {
         const document = await this.parseDocumentText(text);
         if (document) {
             this.xml = document;
-            if (this.args.documentRendered) {
-                next(this, this.args.documentRendered);
-            }
+            next(this, this.documentRendered);
         }
+    }
+
+    async documentRendered() {
+        run(() => {
+            this.scrollable.scrollToTop('page-content');
+        });
+        run(async () => {
+            this.args.documentRendered?.();
+
+            if (this.args.page) {
+                await this.scrollToPageOrTarget(this.args.page);
+            }
+            this.pageTracking = true;
+        });
     }
 
     /**
@@ -479,10 +486,6 @@ export default class DocumentText extends Component<DocumentTextArgs> {
         this.containerElement = element;
         this.scrollableElement = this.containerElement?.closest('.page-content-inner');
         scheduleOnce('afterRender', this, this.attachTooltips);
-        if (this.args.page) {
-            console.log(this.args.page);
-            await this.scrollToPageOrTarget(this.args.page);
-        }
         const observer = new IntersectionObserver(
             (entries) => {
                 if (this.pageTracking) {

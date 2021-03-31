@@ -23,7 +23,14 @@ export default class BrowseRead extends Controller {
     // This becomes our model as the template wasn't updating when we changed the default model
     @tracked document?: Document;
 
-    queryParams = ['page'];
+    // @ts-ignore
+    queryParams = [
+        {
+            page: {
+                scope: 'controller'
+            }
+        }
+    ];
 
     tableView = SearchViewType.TABLE;
     searchViews = SearchViews;
@@ -100,6 +107,17 @@ export default class BrowseRead extends Controller {
     @action
     updateSelectedView(view: SearchView) {
         this.selectedView = view;
+    }
+
+    /**
+     * Update page query param. This happens as the document is scrolled
+     *
+     * @param {string} page
+     * @memberof BrowseRead
+     */
+    @action
+    viewablePageUpdate(page: string) {
+        this.page = page;
     }
 }
 // DO NOT DELETE: this is how TypeScript knows how to look up your controllers.
