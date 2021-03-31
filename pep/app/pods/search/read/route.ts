@@ -2,6 +2,8 @@ import Transition from '@ember/routing/-private/transition';
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 
+import FastbootService from 'ember-cli-fastboot/services/fastboot';
+
 import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hooks/pagination';
 import { buildQueryParams, QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 
@@ -12,6 +14,7 @@ import SearchDocument from 'pep/pods/search-document/model';
 import SearchReadController from 'pep/pods/search/read/controller';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService, { VIEW_DOCUMENT_FROM } from 'pep/services/current-user';
+import ScrollableService from 'pep/services/scrollable';
 import SidebarService from 'pep/services/sidebar';
 import { buildSearchQueryParams, copyToController, hasSearchQuery } from 'pep/utils/search';
 import { serializeQueryParams } from 'pep/utils/url';
@@ -32,6 +35,8 @@ export default class SearchRead extends PageNav(Route) {
     @service configuration!: ConfigurationService;
     @service sidebar!: SidebarService;
     @service currentUser!: CurrentUserService;
+    @service scrollable!: ScrollableService;
+    @service fastboot!: FastbootService;
 
     navController = 'search.read';
     searchResults?: Document[];
@@ -181,7 +186,7 @@ export default class SearchRead extends PageNav(Route) {
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
     //@ts-ignore
-    setupController(controller: SearchReadController, model: Document) {
+    setupController(controller: SearchReadController, model: Document, transition: Transition) {
         //workaround for bug w/array-based query param values
         //@see https://github.com/emberjs/ember.js/issues/18981
         //@ts-ignore
@@ -203,10 +208,18 @@ export default class SearchRead extends PageNav(Route) {
             onChangeSorting: controller.onChangeSorting,
             limit: 20
         });
-        this.currentUser.lastViewedDocumentId = model.id;
-        this.currentUser.lastViewedDocumentFrom = VIEW_DOCUMENT_FROM.SEARCH;
+        this.currentUser.lastViewedDocument = {
+            id: model.id,
+            from: VIEW_DOCUMENT_FROM.SEARCH
+        };
         controller.searchHitNumber = undefined;
         controller.document = model;
+
+        if (!this.fastboot.isFastBoot) {
+            if (transition.to.queryParams.page) {
+                controller.page = transition.to.queryParams.page;
+            }
+        }
     }
 
     /**
@@ -223,8 +236,8 @@ export default class SearchRead extends PageNav(Route) {
         //@see https://github.com/emberjs/ember.js/issues/18981
         //@ts-ignore
         super.resetController(controller, isExiting, transition);
+        controller.page = null;
         this.searchResults = undefined;
         this.searchParams = undefined;
-        controller.page = null;
     }
 }

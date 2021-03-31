@@ -37,7 +37,7 @@ export default class PageDrawer extends Component<PageDrawerArgs> {
     }
 
     get readDisabled() {
-        return !this.currentUser.lastViewedDocumentId;
+        return !this.currentUser.lastViewedDocument?.id;
     }
 
     /**
@@ -118,11 +118,11 @@ export default class PageDrawer extends Component<PageDrawerArgs> {
      */
     @action
     viewRead() {
-        if (this.currentUser.lastViewedDocumentId) {
-            if (this.currentUser.lastViewedDocumentFrom === VIEW_DOCUMENT_FROM.SEARCH) {
-                this.router.transitionTo('search.read', this.currentUser.lastViewedDocumentId);
+        if (this.currentUser.lastViewedDocument) {
+            if (this.currentUser.lastViewedDocument.from === VIEW_DOCUMENT_FROM.SEARCH) {
+                this.router.transitionTo('search.read', this.currentUser.lastViewedDocument.id);
             } else {
-                this.router.transitionTo('browse.read', this.currentUser.lastViewedDocumentId);
+                this.router.transitionTo('browse.read', this.currentUser.lastViewedDocument.id);
             }
         }
     }

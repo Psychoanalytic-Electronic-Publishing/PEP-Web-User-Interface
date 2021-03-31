@@ -9,6 +9,7 @@
 
         {{this.currentUser.textJustification.class}}"
     {{on "click" this.onDocumentClick}}
+    {{did-insert this.parseDocument}}
     {{did-update this.setupListeners this.text}}
     {{did-update this.parseDocument @document}}
     {{did-update this.parseDocument this.currentUser.preferences.translationConcordanceEnabled}}

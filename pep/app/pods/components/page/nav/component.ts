@@ -72,7 +72,7 @@ export default class PageNav extends Component<PageNavArgs> {
     languages = Languages;
 
     get readDisabled() {
-        return !this.currentUser.lastViewedDocumentId;
+        return !this.currentUser.lastViewedDocument?.id;
     }
 
     get readActive() {
@@ -147,11 +147,11 @@ export default class PageNav extends Component<PageNavArgs> {
      */
     @action
     viewRead() {
-        if (this.currentUser.lastViewedDocumentId) {
-            if (this.currentUser.lastViewedDocumentFrom === VIEW_DOCUMENT_FROM.SEARCH) {
-                this.router.transitionTo('search.read', this.currentUser.lastViewedDocumentId);
+        if (this.currentUser.lastViewedDocument?.id) {
+            if (this.currentUser.lastViewedDocument.from === VIEW_DOCUMENT_FROM.SEARCH) {
+                this.router.transitionTo('search.read', this.currentUser.lastViewedDocument.id);
             } else {
-                this.router.transitionTo('browse.read', this.currentUser.lastViewedDocumentId);
+                this.router.transitionTo('browse.read', this.currentUser.lastViewedDocument.id);
             }
         }
     }

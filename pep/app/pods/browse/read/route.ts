@@ -1,6 +1,5 @@
 import Transition from '@ember/routing/-private/transition';
 import Route from '@ember/routing/route';
-import { next } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
@@ -99,6 +98,9 @@ export default class BrowseRead extends PageNav(Route) {
     //@see https://github.com/emberjs/ember.js/issues/18981
     //@ts-ignore
     setupController(controller: BrowseReadController, model: Document, transition: Transition) {
+        //workaround for bug w/array-based query param values
+        //@see https://github.com/emberjs/ember.js/issues/18981
+        //@ts-ignore
         super.setupController(controller, model, transition);
 
         controller.paginator = usePagination<Document, any>({
@@ -116,11 +118,31 @@ export default class BrowseRead extends PageNav(Route) {
             onChangeSorting: controller.onChangeSorting,
             limit: 20
         });
-        this.currentUser.lastViewedDocumentId = model.id;
-        this.currentUser.lastViewedDocumentFrom = VIEW_DOCUMENT_FROM.OTHER;
+        this.currentUser.lastViewedDocument = {
+            id: model.id,
+            from: VIEW_DOCUMENT_FROM.OTHER
+        };
+
         controller.document = model;
         if (!this.fastboot.isFastBoot) {
-            next(this, () => this.scrollable.scrollToTop('page-content'));
+            if (transition.to.queryParams.page) {
+                controller.page = transition.to.queryParams.page;
+            }
         }
+    }
+
+    /**
+     * Reset the page on the controller
+     *
+     * @param {BrowseReadController} controller
+     * @param {boolean} _isExiting
+     * @param {Transition} _transition
+     * @memberof BrowseRead
+     */
+    //workaround for bug w/array-based query param values
+    //@see https://github.com/emberjs/ember.js/issues/18981
+    //@ts-ignore
+    resetController(controller: BrowseReadController): void {
+        controller.page = null;
     }
 }
