@@ -94,45 +94,6 @@
         </li>
         <li class="nav-item">
             <DropdownMenu @horizontalPosition="auto-right" as |DD|>
-                <DD.Trigger @htmlTag="a" class="nav-link" title={{t "buttons.nav.help.name"}}>
-                    <FaIcon @icon="question" @size="lg" />
-                </DD.Trigger>
-                <DD.Content class="dropdown-menu">
-                    <a
-                        href={{this.supportUrl}}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="dropdown-action dropdown-item"
-                        {{on "click" DD.actions.close}}
-                    >
-                        <FaIcon @icon="external-link" @fixedWidth={{true}} class="text-muted" />
-                        {{t "nav.support.link"}}
-                    </a>
-                    <DropdownAction @dd={{DD}} @action={{this.openReportDataErrorModal}}>
-                        <FaIcon @icon="comment-exclamation" @fixedWidth={{true}} class="text-muted" />
-                        {{t "nav.support.reportDataError"}}
-                    </DropdownAction>
-                    <DropdownAction @dd={{DD}} @action={{this.openFeedbackModal}}>
-                        <FaIcon @icon="comment-lines" @fixedWidth={{true}} class="text-muted" />
-                        {{t "nav.support.provideFeedback"}}
-                    </DropdownAction>
-                    <DropdownAction @dd={{DD}} @action={{this.openHelpModal}}>
-                        <FaIcon @icon="hands-helping" @fixedWidth={{true}} class="text-muted" />
-                        {{t "nav.support.preferences"}}
-                    </DropdownAction>
-                    <DropdownLink @dd={{DD}} @route="browser-data">
-                        <FaIcon @icon="browser" @fixedWidth={{true}} class="text-muted" />
-                        {{t "nav.support.browserData"}}
-                    </DropdownLink>
-                    <DropdownAction @dd={{DD}} @action={{@openAboutModal}}>
-                        <FaIcon @icon="info-square" @fixedWidth={{true}} class="text-muted" />
-                        {{t "nav.user.aboutPepWeb"}}
-                    </DropdownAction>
-                </DD.Content>
-            </DropdownMenu>
-        </li>
-        <li class="nav-item">
-            <DropdownMenu @horizontalPosition="auto-right" as |DD|>
                 <DD.Trigger @htmlTag="a" class="nav-link" title={{t "buttons.nav.user.name"}}>
                     <FaIcon @icon="user" @size="lg" />
                 </DD.Trigger>
@@ -185,6 +146,45 @@
                             {{t "nav.user.login"}}
                         </DropdownAction>
                     {{/if}}
+                </DD.Content>
+            </DropdownMenu>
+        </li>
+        <li class="nav-item">
+            <DropdownMenu @horizontalPosition="auto-right" as |DD|>
+                <DD.Trigger @htmlTag="a" class="nav-link" title={{t "buttons.nav.help.name"}}>
+                    <FaIcon @icon="question" @size="lg" />
+                </DD.Trigger>
+                <DD.Content class="dropdown-menu">
+                    <a
+                        href={{this.supportUrl}}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="dropdown-action dropdown-item"
+                        {{on "click" DD.actions.close}}
+                    >
+                        <FaIcon @icon="external-link" @fixedWidth={{true}} class="text-muted" />
+                        {{t "nav.support.link"}}
+                    </a>
+                    <DropdownAction @dd={{DD}} @action={{this.openReportDataErrorModal}}>
+                        <FaIcon @icon="comment-exclamation" @fixedWidth={{true}} class="text-muted" />
+                        {{t "nav.support.reportDataError"}}
+                    </DropdownAction>
+                    <DropdownAction @dd={{DD}} @action={{this.openFeedbackModal}}>
+                        <FaIcon @icon="comment-lines" @fixedWidth={{true}} class="text-muted" />
+                        {{t "nav.support.provideFeedback"}}
+                    </DropdownAction>
+                    <DropdownAction @dd={{DD}} @action={{this.openHelpModal}}>
+                        <FaIcon @icon="hands-helping" @fixedWidth={{true}} class="text-muted" />
+                        {{t "nav.support.preferences"}}
+                    </DropdownAction>
+                    <DropdownLink @dd={{DD}} @route="browser-data">
+                        <FaIcon @icon="browser" @fixedWidth={{true}} class="text-muted" />
+                        {{t "nav.support.browserData"}}
+                    </DropdownLink>
+                    <DropdownAction @dd={{DD}} @action={{@openAboutModal}}>
+                        <FaIcon @icon="info-square" @fixedWidth={{true}} class="text-muted" />
+                        {{t "nav.user.aboutPepWeb"}}
+                    </DropdownAction>
                 </DD.Content>
             </DropdownMenu>
         </li>
