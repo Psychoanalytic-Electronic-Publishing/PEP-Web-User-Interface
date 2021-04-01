@@ -36,7 +36,7 @@ export default class AdminGeneral extends Route {
     setupController(controller: AdminGeneralController, model: Configuration, transition: Transition): void {
         super.setupController(controller, model, transition);
 
-        model.configSettings = merge(DEFAULT_BASE_CONFIGURATION, model.configSettings);
+        model.configSettings = merge({}, DEFAULT_BASE_CONFIGURATION, model.configSettings);
         const changeset = createChangeset<BaseConfiguration>(model, CONFIGURATION_GENERAL_VALIDATIONS);
         controller.changeset = changeset;
         const fields = (model.configSettings as BaseConfiguration).search.terms.defaultFields;

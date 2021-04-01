@@ -21,10 +21,11 @@ export default class AdminEditor<T> extends Component<AdminEditorArgs<T>> {
         TinymceEditorPlugins.PASTE,
         TinymceEditorPlugins.TABLE,
         TinymceEditorPlugins.TABLE_OF_CONTENTS,
-        TinymceEditorPlugins.WORD_COUNT
+        TinymceEditorPlugins.WORD_COUNT,
+        TinymceEditorPlugins.CODE
     ];
     toolbar: string[] = [
-        'bold italic | bullist numlist | hr | image | link openlink unlink | pastetext | table | emoticons'
+        'bold italic | bullist numlist | hr | image | link openlink unlink | pastetext | table | emoticons | code'
     ];
     baseUrl = `${Env.assetBaseUrl}@gavant/ember-tinymce`;
 }
