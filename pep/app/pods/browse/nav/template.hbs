@@ -6,7 +6,7 @@
                 <FlInput
                     @placeholder={{t "common.find"}}
                     @value={{this.filter}}
-                    maxlength="255"
+                    maxlength="500"
                     autocomplete="off"
                     {{on "input" (fn this.onFilter this.filter)}}
                 />
