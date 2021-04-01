@@ -54,7 +54,7 @@ export default class Browse extends PageNav(Route) {
 
         controller.journals = model.journals.toArray() ?? [];
         controller.books = model.books.toArray() ?? [];
-        controller.videos = model.videos.toArray() ?? [];
+        controller.videos = model.videos.toArray().sortBy('displayTitle') ?? [];
 
         if (this.media.isMobile) {
             this.sidebar.toggleLeftSidebar();
