@@ -48,7 +48,7 @@
     .nav-link {
         &:focus {
             outline: none;
-            box-shadow: 0 0 0 2px rgba($white, 0.2);
+            box-shadow: 0 0 0 2px rgba($color-navbar-box-shadow, 0.2);
             border-radius: 0.25rem;
         }
     }

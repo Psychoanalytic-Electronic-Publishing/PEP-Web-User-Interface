@@ -1,12 +1,14 @@
-import Component from '@glimmer/component';
+import Component from '@glint/environment-ember-loose/glimmer-component';
 
 import Document from 'pep/pods/document/model';
 
 interface DocumentSearchHitsArgs {
-    document: Document;
-    searchHitNumber: number;
-    viewNextSearchHit: () => void;
-    viewPreviousSearchHit: () => void;
+    Args: {
+        document: Document;
+        searchHitNumber: number;
+        viewNextSearchHit: () => void;
+        viewPreviousSearchHit: () => void;
+    };
 }
 
 export default class DocumentSearchHits extends Component<DocumentSearchHitsArgs> {

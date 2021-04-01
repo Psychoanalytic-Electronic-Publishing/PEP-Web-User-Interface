@@ -341,10 +341,9 @@ export default class DocumentText extends Component<DocumentTextArgs> {
                 }
             }
         } else if (type === DocumentLinkTypes.TITLE) {
-            const parent = target.parentElement;
-            if (parent) {
-                const sourceCode = parent.getAttribute('data-journal-code');
-                const volume = parent.getAttribute('data-volume');
+            if (target) {
+                const sourceCode = target.getAttribute('data-journal-code');
+                const volume = target.getAttribute('data-volume');
 
                 if (sourceCode && volume) {
                     this.router.transitionTo('browse.journal.volume', sourceCode, volume);

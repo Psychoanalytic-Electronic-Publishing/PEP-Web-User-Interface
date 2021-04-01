@@ -269,6 +269,7 @@
                                data-journal-code="{$journal-code}"
                                data-volume="{$artvol}"
                                data-page="{$artstartpg}"
+                               data-type="document-title"
                                 >
                                 <xsl:apply-templates mode="metadata" select="arttitle" />
                                 <xsl:apply-templates mode="metadata" select="artsub"/>
@@ -474,7 +475,7 @@
     </xsl:template>
 
     <xsl:template match="arttitle" mode="metadata">
-        <span class="title" data-type="document-title">
+        <span class="title pointer-events-none">
             <xsl:choose>
                 <xsl:when test="text()">
                     <xsl:apply-templates select="(node())[not(self::ftnx)]"/>
@@ -502,7 +503,7 @@
     </xsl:template>
 
     <xsl:template match="artsub" mode="metadata">
-        <span class="artsub" data-type="document-title">&#58;
+        <span class="artsub pointer-events-none">&#58;
             <xsl:choose>
                 <xsl:when test="text()">
                     <xsl:apply-templates select="(node())[not(self::ftnx)]"/>
