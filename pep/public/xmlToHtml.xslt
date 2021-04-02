@@ -308,6 +308,17 @@
             <div id="body" class="body">
                 <xsl:call-template name="assign-lang"/>
                 <xsl:apply-templates/>
+                <!-- If the body is empty AND there is a preview attribute on the artinfo tag it means we need to show a video preview -->
+                <xsl:if test="not(node()) and ../artinfo/@preview != ''">
+                    <xsl:variable name="videoUrl" select="concat('https://pep-web-video-previews.s3.amazonaws.com/', ../artinfo/@preview, '.mp4')"/>
+                    <xsl:variable name="captionUrl" select="concat('https://pep-web-video-previews.s3.amazonaws.com/', ../artinfo/@preview, '.vtt')"/>
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <video id="clip" controls='controls' preload='auto'  class="embed-responsive-item" crossorigin="anonymous">
+                            <source src="{$videoUrl}" type='video/mp4' />
+                            <track label="English" kind="subtitles" srclang="en" src="{$captionUrl}" />
+                        </video>
+                    </div>
+                </xsl:if>
             </div>
         </xsl:for-each>
 
