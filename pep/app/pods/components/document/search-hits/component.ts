@@ -8,6 +8,7 @@ interface DocumentSearchHitsArgs {
         searchHitNumber: number;
         viewNextSearchHit: () => void;
         viewPreviousSearchHit: () => void;
+        viewHitNumber: () => void;
     };
 }
 
