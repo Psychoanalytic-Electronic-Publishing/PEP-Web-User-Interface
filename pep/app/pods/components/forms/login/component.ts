@@ -1,8 +1,8 @@
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
+import Component from '@glint/environment-ember-loose/glimmer-component';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import IntlService from 'ember-intl/services/intl';
 
@@ -15,6 +15,7 @@ import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
 import LoadingBarService from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 import { onAuthenticated } from 'pep/utils/user';
 import LoginValidations from 'pep/validations/user/login';
 import { reject } from 'rsvp';
@@ -29,7 +30,7 @@ interface FormsLoginArgs {
     onClose?: () => void;
 }
 
-export default class FormsLogin extends Component<FormsLoginArgs> {
+export default class FormsLogin extends Component<BaseGlimmerSignature<FormsLoginArgs>> {
     @service configuration!: ConfigurationService;
     @service currentUser!: CurrentUserService;
     @service loadingBar!: LoadingBarService;

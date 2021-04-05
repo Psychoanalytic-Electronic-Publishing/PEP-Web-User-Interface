@@ -44,3 +44,18 @@ export const pluck = <T, K extends keyof T>(o: T, propertyNames: K[] | K): T[K][
 export const flattenEnum = <T>(e: any): T[] => {
     return Object.values(e).filter((value) => typeof value === 'string') as T[];
 };
+
+/**
+ * Workaround for https://discord.com/channels/480462759797063690/484421406659182603/827512106696966154
+ *
+ * @template T
+ */
+export type GlintTemporaryTypeFix<T> = { [K in keyof T]: T[K] };
+
+export interface BaseGlimmerSignature<T> {
+    Element: HTMLElement;
+    Args: GlintTemporaryTypeFix<T>;
+    Yields: {
+        default?: [];
+    };
+}

@@ -1,6 +1,8 @@
-import Component from '@glimmer/component';
+import Component from '@glint/environment-ember-loose/glimmer-component';
 
 import { GenericChangeset } from '@gavant/ember-validations/utilities/create-changeset';
+
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface ChangesetCheckboxArgs<T> {
     changeset: GenericChangeset<T>;
@@ -8,4 +10,4 @@ interface ChangesetCheckboxArgs<T> {
     label: string;
 }
 
-export default class ChangesetCheckbox extends Component<ChangesetCheckboxArgs<unknown>> {}
+export default class ChangesetCheckbox extends Component<BaseGlimmerSignature<ChangesetCheckboxArgs<unknown>>> {}

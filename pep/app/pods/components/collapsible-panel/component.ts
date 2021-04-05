@@ -1,10 +1,12 @@
-import Component from '@glimmer/component';
 import { action } from '@ember/object';
-import { inject as service } from '@ember/service';
 import { later } from '@ember/runloop';
+import { inject as service } from '@ember/service';
+
+import Component from '@glint/environment-ember-loose/glimmer-component';
 
 import ScrollableService from 'pep/services/scrollable';
 import { fadeTransition } from 'pep/utils/animation';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 export interface CollapsiblePanelArgs {
     isOpen: boolean;
@@ -12,7 +14,7 @@ export interface CollapsiblePanelArgs {
     toggle: (isOpen: boolean) => void;
 }
 
-export default class CollapsiblePanel extends Component<CollapsiblePanelArgs> {
+export default class CollapsiblePanel extends Component<BaseGlimmerSignature<CollapsiblePanelArgs>> {
     @service scrollable!: ScrollableService;
 
     animateDuration = 300;

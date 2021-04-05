@@ -1,4 +1,6 @@
-import Component from '@glimmer/component';
+import Component from '@glint/environment-ember-loose/glimmer-component';
+
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface ProgressSpinnerArgs {
     active: boolean;
@@ -6,7 +8,7 @@ interface ProgressSpinnerArgs {
     size?: string;
 }
 
-export default class ProgressSpinner extends Component<ProgressSpinnerArgs> {
+export default class ProgressSpinner extends Component<BaseGlimmerSignature<ProgressSpinnerArgs>> {
     get active() {
         return this.args.active ?? true;
     }

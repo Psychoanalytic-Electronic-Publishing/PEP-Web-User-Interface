@@ -1,4 +1,6 @@
-import Component from '@glimmer/component';
+import Component from '@glint/environment-ember-loose/glimmer-component';
+
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface CollapsiblePanelBodyArgs {
     isOpen: boolean;
@@ -6,4 +8,4 @@ interface CollapsiblePanelBodyArgs {
     animateDuration: number;
 }
 
-export default class CollapsiblePanelBody extends Component<CollapsiblePanelBodyArgs> {}
+export default class CollapsiblePanelBody extends Component<BaseGlimmerSignature<CollapsiblePanelBodyArgs>> {}

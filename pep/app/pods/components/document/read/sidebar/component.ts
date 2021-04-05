@@ -1,9 +1,9 @@
 import { action } from '@ember/object';
 import RouterService from '@ember/routing/router-service';
 import { inject as service } from '@ember/service';
-import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
+import Component from '@glint/environment-ember-loose/glimmer-component';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import IntlService from 'ember-intl/services/intl';
@@ -20,6 +20,7 @@ import ExportsService, { ExportType } from 'pep/services/exports';
 import PrinterService from 'pep/services/printer';
 import SearchSelection from 'pep/services/search-selection';
 import { SearchSorts, SearchSortType, transformSearchSortsToTable, transformSearchSortToAPI } from 'pep/utils/sort';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 import { resolve } from 'rsvp';
 
 interface DocumentReadSidebarArgs {
@@ -31,7 +32,7 @@ interface DocumentReadSidebarArgs {
     updateSelectedView: (searchView?: SearchView) => void;
 }
 
-export default class DocumentReadSidebar extends Component<DocumentReadSidebarArgs> {
+export default class DocumentReadSidebar extends Component<BaseGlimmerSignature<DocumentReadSidebarArgs>> {
     @service router!: RouterService;
     @service searchSelection!: SearchSelection;
     @service exports!: ExportsService;

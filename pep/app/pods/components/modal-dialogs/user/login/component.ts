@@ -1,9 +1,9 @@
 import { action } from '@ember/object';
 import RouterService from '@ember/routing/router-service';
 import { inject as service } from '@ember/service';
-import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
+import Component from '@glint/environment-ember-loose/glimmer-component';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import IntlService from 'ember-intl/services/intl';
 
@@ -15,6 +15,7 @@ import { FederatedLoginArgs } from 'pep/services/auth';
 import CurrentUserService from 'pep/services/current-user';
 import LoadingBar from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface ModalDialogsUserLoginArgs {
     onClose: () => void;
@@ -24,7 +25,7 @@ interface ModalDialogsUserLoginArgs {
     } & FederatedLoginArgs;
 }
 
-export default class ModalDialogsUserLogin extends Component<ModalDialogsUserLoginArgs> {
+export default class ModalDialogsUserLogin extends Component<BaseGlimmerSignature<ModalDialogsUserLoginArgs>> {
     @service('pep-session') session!: PepSessionService;
     @service router!: RouterService;
     @service loadingBar!: LoadingBar;

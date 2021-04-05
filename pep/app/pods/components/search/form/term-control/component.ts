@@ -1,8 +1,10 @@
 import { inject as service } from '@ember/service';
-import Component from '@glimmer/component';
+
+import Component from '@glint/environment-ember-loose/glimmer-component';
 
 import { SEARCH_TYPES, SearchTermValue } from 'pep/constants/search';
 import ConfigurationService from 'pep/services/configuration';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface SearchFormTermControlArgs {
     searchTerm: SearchTermValue;
@@ -13,7 +15,7 @@ interface SearchFormTermControlArgs {
     canRemove?: boolean;
 }
 
-export default class SearchFormTermControl extends Component<SearchFormTermControlArgs> {
+export default class SearchFormTermControl extends Component<BaseGlimmerSignature<SearchFormTermControlArgs>> {
     @service configuration!: ConfigurationService;
 
     get searchTypeOptions() {

@@ -1,13 +1,15 @@
 import { action, computed } from '@ember/object';
 import { guidFor } from '@ember/object/internals';
 import { inject as service } from '@ember/service';
-import Component from '@glimmer/component';
+
+import Component from '@glint/environment-ember-loose/glimmer-component';
+import IntlService from 'ember-intl/services/intl';
 
 import ModalService from '@gavant/ember-modals/services/modal';
-import IntlService from 'ember-intl/services/intl';
 
 import CurrentUserService from 'pep/services/current-user';
 import FastbootMediaService from 'pep/services/fastboot-media';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface HelpTooltipArgs {
     tooltip: string;
@@ -19,7 +21,7 @@ interface HelpTooltipArgs {
     tooltipContainer?: string;
 }
 
-export default class HelpTooltip extends Component<HelpTooltipArgs> {
+export default class HelpTooltip extends Component<BaseGlimmerSignature<HelpTooltipArgs>> {
     @service fastbootMedia!: FastbootMediaService;
     @service modal!: ModalService;
     @service intl!: IntlService;
@@ -67,5 +69,11 @@ export default class HelpTooltip extends Component<HelpTooltipArgs> {
                 content: this.args.tooltip
             });
         }
+    }
+}
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        HelpTooltip: typeof HelpTooltip;
     }
 }

@@ -1,7 +1,7 @@
 import { action, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
-import Component from '@glimmer/component';
 
+import Component from '@glint/environment-ember-loose/glimmer-component';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import IntlService from 'ember-intl/services/intl';
 
@@ -9,6 +9,7 @@ import { PreferenceDocumentsKey, PreferenceKey } from 'pep/constants/preferences
 import Document from 'pep/pods/document/model';
 import CurrentUserService from 'pep/services/current-user';
 import SidebarService from 'pep/services/sidebar';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 import { updateUserPreferencesDocument } from 'pep/utils/user';
 
 interface TablesCellSearchActionArgs {
@@ -17,7 +18,7 @@ interface TablesCellSearchActionArgs {
     rowValue: Document;
 }
 
-export default class TablesCellSearchAction extends Component<TablesCellSearchActionArgs> {
+export default class TablesCellSearchAction extends Component<BaseGlimmerSignature<TablesCellSearchActionArgs>> {
     @service currentUser!: CurrentUserService;
     @service sidebar!: SidebarService;
     @service notifications!: NotificationService;

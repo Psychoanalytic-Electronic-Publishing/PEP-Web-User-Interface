@@ -2,9 +2,9 @@ import { action } from '@ember/object';
 import { next } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 import { htmlSafe } from '@ember/template';
-import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
+import Component from '@glint/environment-ember-loose/glimmer-component';
 import { DS } from 'ember-data';
 
 import ModalService from '@gavant/ember-modals/services/modal';
@@ -17,6 +17,7 @@ import LoadingBarService from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
 import PreviewPaneService, { SearchPreviewMode, SearchPreviewModeId } from 'pep/services/preview-pane';
 import ScrollableService from 'pep/services/scrollable';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface SearchPreviewArgs {
     maxHeight?: number;
@@ -26,7 +27,7 @@ interface SearchPreviewArgs {
     loadDocument?: (abstract: Abstract) => void;
 }
 
-export default class SearchPreview extends Component<SearchPreviewArgs> {
+export default class SearchPreview extends Component<BaseGlimmerSignature<SearchPreviewArgs>> {
     @service('pep-session') session!: PepSessionService;
     @service auth!: AuthService;
     @service scrollable!: ScrollableService;
