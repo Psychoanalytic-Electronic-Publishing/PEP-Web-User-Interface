@@ -1,10 +1,10 @@
 <Page::Sidebar @side="right">
     <Page::Sidebar::Content @scrollableNamespace="sidebar-right">
-        {{#unless this.session.isAuthenticated}}
+        {{#if this.showLoginWidget}}
             <div class="px-2 pt-3">
                 <Page::Sidebar::Widgets::SignIn />
             </div>
-        {{/unless}}
+        {{/if}}
         <Page::Sidebar::Widgets
             @widgets={{this.rightSidebarWidgets}}
             @data={{@data}}

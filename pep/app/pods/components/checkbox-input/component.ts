@@ -1,8 +1,10 @@
-import { cleanAndDasherize } from 'pep/utils/string';
-
 import { action } from '@ember/object';
 import { guidFor } from '@ember/object/internals';
-import Component from '@glimmer/component';
+
+import Component from '@glint/environment-ember-loose/glimmer-component';
+
+import { cleanAndDasherize } from 'pep/utils/string';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface CheckboxInputArgs {
     onChange?: (newValue: boolean, event: Event) => void;
@@ -15,7 +17,7 @@ interface CheckboxInputArgs {
     name?: string;
 }
 
-export default class CheckboxInput extends Component<CheckboxInputArgs> {
+export default class CheckboxInput extends Component<BaseGlimmerSignature<CheckboxInputArgs>> {
     inputId: string = `checkbox-input-${guidFor(this)}`;
 
     get preventDefault(): boolean {

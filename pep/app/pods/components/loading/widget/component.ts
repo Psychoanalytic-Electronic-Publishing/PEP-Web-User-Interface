@@ -1,4 +1,6 @@
-import Component from '@glimmer/component';
+import Component from '@glint/environment-ember-loose/glimmer-component';
+
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface LoadingWidgetArgs {
     options?: {
@@ -6,7 +8,7 @@ interface LoadingWidgetArgs {
     };
 }
 
-export default class LoadingWidget extends Component<LoadingWidgetArgs> {
+export default class LoadingWidget extends Component<BaseGlimmerSignature<LoadingWidgetArgs>> {
     get numLines() {
         return this.args.options?.numLines ?? 3;
     }

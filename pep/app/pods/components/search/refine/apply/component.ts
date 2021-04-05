@@ -1,14 +1,15 @@
-import Component from '@glimmer/component';
-
+import Component from '@glint/environment-ember-loose/glimmer-component';
 import { TransitionArgs } from 'ember-animated';
 import move from 'ember-animated/motions/move';
+
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface SearchRefineApplyArgs {
     hasChanges: boolean;
     apply: () => void;
 }
 
-export default class SearchRefineApply extends Component<SearchRefineApplyArgs> {
+export default class SearchRefineApply extends Component<BaseGlimmerSignature<SearchRefineApplyArgs>> {
     /**
      * Transition for showing/hiding the apply bar
      * @param {TransitionArgs}

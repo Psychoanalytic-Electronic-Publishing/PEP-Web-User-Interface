@@ -1,8 +1,8 @@
 import { action, computed } from '@ember/object';
 import RouterService from '@ember/routing/router-service';
 import { inject as service } from '@ember/service';
-import Component from '@glimmer/component';
 
+import Component from '@glint/environment-ember-loose/glimmer-component';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import IntlService from 'ember-intl/services/intl';
 
@@ -11,6 +11,7 @@ import Document from 'pep/pods/document/model';
 import CurrentUserService from 'pep/services/current-user';
 import SearchSelection from 'pep/services/search-selection';
 import SidebarService from 'pep/services/sidebar';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 import { updateUserPreferencesDocument } from 'pep/utils/user';
 
 interface SearchItemBibliographicArgs {
@@ -22,7 +23,7 @@ interface SearchItemBibliographicArgs {
     showHitsInContext: boolean;
 }
 
-export default class SearchItemBibliographic extends Component<SearchItemBibliographicArgs> {
+export default class SearchItemBibliographic extends Component<BaseGlimmerSignature<SearchItemBibliographicArgs>> {
     @service currentUser!: CurrentUserService;
     @service sidebar!: SidebarService;
     @service notifications!: NotificationService;

@@ -1,8 +1,8 @@
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
+import Component from '@glint/environment-ember-loose/glimmer-component';
 import { didCancel } from 'ember-concurrency';
 import { restartableTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
@@ -13,6 +13,7 @@ import { removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-par
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import PowerSelectInfinityWithSearch from 'pep/pods/components/power-select-infinity/with-search/component';
 import Journal from 'pep/pods/journal/model';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface JournalParams {
     limit: number | null;
@@ -20,7 +21,9 @@ interface JournalParams {
     sourcename?: any;
 }
 
-export default class PowerSelectJournal extends Component<PowerSelectInfinityWithSearch<Journal>> {
+export default class PowerSelectJournal extends Component<
+    BaseGlimmerSignature<PowerSelectInfinityWithSearch<Journal>>
+> {
     @service store!: DS.Store;
 
     @tracked options!: Journal[];

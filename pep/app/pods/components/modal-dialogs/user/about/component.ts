@@ -1,10 +1,11 @@
 import { inject as service } from '@ember/service';
-import Component from '@glimmer/component';
 
+import Component from '@glint/environment-ember-loose/glimmer-component';
 import IntlService from 'ember-intl/services/intl';
 
 import { ServerStatus } from 'pep/api';
 import PepSessionService from 'pep/services/pep-session';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface ModalDialogsUserAboutArgs {
     onClose: () => void;
@@ -14,7 +15,7 @@ interface ModalDialogsUserAboutArgs {
     };
 }
 
-export default class ModalDialogsUserAbout extends Component<ModalDialogsUserAboutArgs> {
+export default class ModalDialogsUserAbout extends Component<BaseGlimmerSignature<ModalDialogsUserAboutArgs>> {
     @service intl!: IntlService;
     @service('pep-session') session!: PepSessionService;
 

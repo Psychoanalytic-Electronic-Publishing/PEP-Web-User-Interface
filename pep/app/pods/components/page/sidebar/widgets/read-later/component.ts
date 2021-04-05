@@ -1,8 +1,8 @@
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
+import Component from '@glint/environment-ember-loose/glimmer-component';
 import { restartableTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
 import DS from 'ember-data';
@@ -16,10 +16,13 @@ import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
 import PepSessionService from 'pep/services/pep-session';
 import { buildSearchQueryParams } from 'pep/utils/search';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface PageSidebarWidgetsReadLaterArgs extends PageSidebarWidgetArgs {}
 
-export default class PageSidebarWidgetsReadLater extends Component<PageSidebarWidgetsReadLaterArgs> {
+export default class PageSidebarWidgetsReadLater extends Component<
+    BaseGlimmerSignature<PageSidebarWidgetsReadLaterArgs>
+> {
     @service currentUser!: CurrentUserService;
     @service store!: DS.Store;
     @service configuration!: ConfigurationService;

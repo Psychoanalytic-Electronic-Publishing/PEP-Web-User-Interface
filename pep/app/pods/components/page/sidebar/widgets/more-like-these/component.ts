@@ -1,8 +1,8 @@
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
+import Component from '@glint/environment-ember-loose/glimmer-component';
 import { restartableTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
 import { DS } from 'ember-data';
@@ -15,10 +15,13 @@ import Document from 'pep/pods/document/model';
 import SimilarityMatch from 'pep/pods/similarity-match/model';
 import AjaxService from 'pep/services/ajax';
 import ConfigurationService from 'pep/services/configuration';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface PageSidebarWidgetsMoreLikeTheseArgs extends PageSidebarWidgetArgs {}
 
-export default class PageSidebarWidgetsMoreLikeThese extends Component<PageSidebarWidgetsMoreLikeTheseArgs> {
+export default class PageSidebarWidgetsMoreLikeThese extends Component<
+    BaseGlimmerSignature<PageSidebarWidgetsMoreLikeTheseArgs>
+> {
     @service store!: DS.Store;
     @service ajax!: AjaxService;
     @service configuration!: ConfigurationService;

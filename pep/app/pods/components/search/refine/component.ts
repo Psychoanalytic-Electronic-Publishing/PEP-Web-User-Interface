@@ -1,15 +1,16 @@
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { capitalize } from '@ember/string';
-import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
+import Component from '@glint/environment-ember-loose/glimmer-component';
 import IntlService from 'ember-intl/services/intl';
 
 import { SearchMetadata } from 'pep/api';
 import { SEARCH_FACETS, SearchFacetValue } from 'pep/constants/search';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 export interface RefineOption {
     id: string;
@@ -30,7 +31,7 @@ interface SearchRefineArgs {
     updateSelection: (newSelection: SearchFacetValue[]) => void;
 }
 
-export default class SearchRefine extends Component<SearchRefineArgs> {
+export default class SearchRefine extends Component<BaseGlimmerSignature<SearchRefineArgs>> {
     @service intl!: IntlService;
     @service configuration!: ConfigurationService;
     @service currentUser!: CurrentUserService;

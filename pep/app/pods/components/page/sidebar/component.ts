@@ -1,19 +1,18 @@
-import Component from '@glimmer/component';
-import { tracked } from '@glimmer/tracking';
-import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { next } from '@ember/runloop';
+import { inject as service } from '@ember/service';
 import { htmlSafe } from '@ember/template';
+import { tracked } from '@glimmer/tracking';
 
-import SidebarService from 'pep/services/sidebar';
-import FastbootMediaService from 'pep/services/fastboot-media';
-import { clamp } from 'pep/utils/math';
+import Component from '@glint/environment-ember-loose/glimmer-component';
+
 import {
-    SIDEBAR_HANDLE_WIDTH,
-    SIDEBAR_MAX_WIN_PCT_DESKTOP,
-    SIDEBAR_MAX_WIN_PCT_TABLET,
-    SIDEBAR_WIDTH
+    SIDEBAR_HANDLE_WIDTH, SIDEBAR_MAX_WIN_PCT_DESKTOP, SIDEBAR_MAX_WIN_PCT_TABLET, SIDEBAR_WIDTH
 } from 'pep/constants/dimensions';
+import FastbootMediaService from 'pep/services/fastboot-media';
+import SidebarService from 'pep/services/sidebar';
+import { clamp } from 'pep/utils/math';
+import { BaseGlimmerSignature, GlintTemporaryTypeFix } from 'pep/utils/types';
 
 interface PageSidebarArgs {
     side: 'left' | 'right';
@@ -22,7 +21,7 @@ interface PageSidebarArgs {
     maxWidth?: number;
 }
 
-export default class PageSidebar extends Component<PageSidebarArgs> {
+export default class PageSidebar extends Component<BaseGlimmerSignature<PageSidebarArgs>> {
     @service sidebar!: SidebarService;
     @service fastbootMedia!: FastbootMediaService;
 
@@ -157,5 +156,11 @@ export default class PageSidebar extends Component<PageSidebarArgs> {
         if (this.resizedWidth) {
             this.resizedWidth = clamp(this.resizedWidth, this.minWidth, this.maxWidth);
         }
+    }
+}
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        'Page::Sidebar': typeof PageSidebar;
     }
 }

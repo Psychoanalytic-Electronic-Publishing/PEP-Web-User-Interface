@@ -932,7 +932,7 @@
 
     <xsl:template match="ftr">
         <xsl:text>&#13;</xsl:text>
-        <div class="footer pt-1" data-class="ftr">
+        <div class="document-footer pt-1" data-class="ftr">
             <xsl:apply-templates/>
         </div>
     </xsl:template>
@@ -2610,7 +2610,6 @@
                 <xsl:text> </xsl:text>
                 <xsl:apply-templates select="nlast"/>
             </b>
-            <!--      <xsl:value-of select="."/>-->
         </xsl:for-each>
     </xsl:template>
 

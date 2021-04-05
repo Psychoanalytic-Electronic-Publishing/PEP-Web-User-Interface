@@ -1990,52 +1990,52 @@
     "@glimmer/interfaces" "^0.42.2"
     "@glimmer/util" "^0.42.2"
 
-"@glint/config@^0.4.2":
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/@glint/config/-/config-0.4.2.tgz#1ffe7d508316e5cc62dda7f5d08da7951f6c4206"
-  integrity sha512-Tz7dk4f7tECV/jfZg4d6SPhez57IlocfpOnKhsxI6FMGXckhNv7VWHimcGsjQkgUkg2pjGDMYu/ZtZoJP+JvyA==
+"@glint/config@^0.4.3":
+  version "0.4.3"
+  resolved "https://registry.yarnpkg.com/@glint/config/-/config-0.4.3.tgz#948e01eabb19f5221fd0a854dcf97f5a53a8705a"
+  integrity sha512-dUxei1G3RMG9RfUB5CQEQIf6ShQWnpLNf215GkYvkezIMlBzvvJ1gLs86VW2C7/gA7zmNUJxh6AL6BOeTJDeaQ==
   dependencies:
     cosmiconfig "^6.0.0"
     escape-string-regexp "^4.0.0"
     minimatch "^3.0.4"
     resolve "^1.17.0"
 
-"@glint/core@^0.4.2":
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/@glint/core/-/core-0.4.2.tgz#0643f334006b53f9b2ebd2e1edcb517ab7144e7a"
-  integrity sha512-KQ9ZxFPvzEDUUBx8g68uRTV85I+cseqxhZGqi8EJhr1NhRLbH25/6PQl+O71lnwh5qmPoWrCsE44WvKAu7YmIg==
+"@glint/core@^0.4.3":
+  version "0.4.3"
+  resolved "https://registry.yarnpkg.com/@glint/core/-/core-0.4.3.tgz#f72dca5e9c8b13da719277a84dd81dfc9aa2c3aa"
+  integrity sha512-1sZ7s33DD1mlX95GzdPPznIxWIO7OemdgFuTED+G4ZqagT09mDw/lHz7iI9T7A1e+7WFfjQoaqMPdcYSupP7ew==
   dependencies:
-    "@glint/config" "^0.4.2"
-    "@glint/transform" "^0.4.2"
+    "@glint/config" "^0.4.3"
+    "@glint/transform" "^0.4.3"
     resolve "^1.17.0"
     vscode-languageserver "^7.0.0"
     vscode-languageserver-textdocument "^1.0.1"
     vscode-uri "^3.0.2"
     yargs "^15.3.1"
 
-"@glint/environment-ember-loose@^0.4.2":
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/@glint/environment-ember-loose/-/environment-ember-loose-0.4.2.tgz#53b893691395210f713973e1b9a1084289cf3901"
-  integrity sha512-y85mjKvsC3SwrVKmSI3non2dnJpU81E+QiQ5a5jRQkZOzHIIM9ApvgSMiUs5yDziMVQbjMsN+oG2G+bgdAkxcA==
+"@glint/environment-ember-loose@^0.4.3":
+  version "0.4.3"
+  resolved "https://registry.yarnpkg.com/@glint/environment-ember-loose/-/environment-ember-loose-0.4.3.tgz#4373d7e140d71d474984aacc72ec4f2962c001df"
+  integrity sha512-Ae6ke5wsy6nWUWXYcb1LI+CeQms3LZl6H81fGug63XwSyn21h9W4zkFJg5mnlxwMygHy26FaBmOTM1hYxo7EQQ==
   dependencies:
-    "@glint/config" "^0.4.2"
-    "@glint/template" "^0.4.2"
+    "@glint/config" "^0.4.3"
+    "@glint/template" "^0.4.3"
 
-"@glint/template@^0.4.2":
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/@glint/template/-/template-0.4.2.tgz#307be1c30525282b49cc86d04568d63404d57981"
-  integrity sha512-UawGS6Ci9i3KZXVYqHaWTEOezQR/u2sIP5rVLoUZ/mXU+FihXgYXklp3HgJh6s+0nltTmM+ywFocrbw5hEOTIA==
+"@glint/template@^0.4.3":
+  version "0.4.3"
+  resolved "https://registry.yarnpkg.com/@glint/template/-/template-0.4.3.tgz#8be4fbaedd43729c952ed99f7d193bbcade1b13c"
+  integrity sha512-uDFD54h+U/dt+xPyveJS5ua+6TU5p6EZhuh9W0AC6QWy0eCgK0qHZ66EUCcSXhEaFDqFdXTY6k6HY+JvExcSnw==
 
-"@glint/transform@^0.4.2":
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/@glint/transform/-/transform-0.4.2.tgz#06a8325109c2e71d01362f42ed229f655892652e"
-  integrity sha512-j/CPQ5dLVzWJcE545gtC/YTdH/wllrLfewjntJn8dc/ylNw1HrR659nh9uBflNtEfUGxNivvy2Ah/teBy3iV4g==
+"@glint/transform@^0.4.3":
+  version "0.4.3"
+  resolved "https://registry.yarnpkg.com/@glint/transform/-/transform-0.4.3.tgz#918138bc708ac4230603bed3e96ca43fdccd48e7"
+  integrity sha512-JtWFNZfeb2QRqE8pq1mxD7us/kzFwIN6v/kmEib6sSvFQIVKPsEcmtHFVUNLceIHz9BSl5CmFiFSX3o3JREb/w==
   dependencies:
     "@babel/core" "^7.11.6"
     "@babel/plugin-proposal-decorators" "7.10.5"
     "@babel/preset-typescript" "^7.10.4"
     "@glimmer/syntax" "^0.68.1"
-    "@glint/config" "^0.4.2"
+    "@glint/config" "^0.4.3"
 
 "@handlebars/parser@^1.1.0":
   version "1.1.0"
@@ -2458,6 +2458,13 @@
   version "4.6.6"
   resolved "https://registry.yarnpkg.com/@types/lodash.merge/-/lodash.merge-4.6.6.tgz#b84b403c1d31bc42d51772d1cd5557fa008cd3d6"
   integrity sha512-IB90krzMf7YpfgP3u/EvZEdXVvm4e3gJbUvh5ieuI+o+XqiNEt6fCzqNRaiLlPVScLI59RxIGZMQ3+Ko/DJ8vQ==
+  dependencies:
+    "@types/lodash" "*"
+
+"@types/lodash.mergewith@^4.6.6":
+  version "4.6.6"
+  resolved "https://registry.yarnpkg.com/@types/lodash.mergewith/-/lodash.mergewith-4.6.6.tgz#c4698f5b214a433ff35cb2c75ee6ec7f99d79f10"
+  integrity sha512-RY/8IaVENjG19rxTZu9Nukqh0W2UrYgmBj5sdns4hWRZaV8PqR7wIKHFKzvOTjo4zVRV7sVI+yFhAJql12Kfqg==
   dependencies:
     "@types/lodash" "*"
 
@@ -10927,6 +10934,11 @@ lodash.merge@^4.6.0, lodash.merge@^4.6.2:
   version "4.6.2"
   resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.2.tgz#558aa53b43b661e1925a0afdfa36a9a1085fe57a"
   integrity sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==
+
+lodash.mergewith@^4.6.2:
+  version "4.6.2"
+  resolved "https://registry.yarnpkg.com/lodash.mergewith/-/lodash.mergewith-4.6.2.tgz#617121f89ac55f59047c7aec1ccd6654c6590f55"
+  integrity sha512-GK3g5RPZWTRSeLSpgP8Xhra+pnjBC56q9FZYe1d5RN3TJ35dbkGy3YqBSMbyCrlbi+CM9Z3Jk5yTL7RCsqboyQ==
 
 lodash.omit@^4.1.0, lodash.omit@^4.5.0:
   version "4.5.0"

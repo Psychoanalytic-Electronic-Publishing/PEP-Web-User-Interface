@@ -1,7 +1,7 @@
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import Component from '@glimmer/component';
 
+import Component from '@glint/environment-ember-loose/glimmer-component';
 import { timeout } from 'ember-concurrency';
 import { enqueueTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
@@ -9,13 +9,15 @@ import { taskFor } from 'ember-concurrency-ts';
 import { PreferenceKey, UserPreferences } from 'pep/constants/preferences';
 import CurrentUserService from 'pep/services/current-user';
 import PepSessionService from 'pep/services/pep-session';
-import { guard } from 'pep/utils/types';
+import { BaseGlimmerSignature, guard } from 'pep/utils/types';
 
 interface ModalDialogsHelpPreferencesArgs {
     onClose: () => void;
 }
 
-export default class ModalDialogsHelpPreferences extends Component<ModalDialogsHelpPreferencesArgs> {
+export default class ModalDialogsHelpPreferences extends Component<
+    BaseGlimmerSignature<ModalDialogsHelpPreferencesArgs>
+> {
     @service currentUser!: CurrentUserService;
     @service('pep-session') session!: PepSessionService;
 

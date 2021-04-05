@@ -1,10 +1,13 @@
-import Component from '@glimmer/component';
-import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { isBlank } from '@ember/utils';
-import { timeout, didCancel } from 'ember-concurrency';
+import { tracked } from '@glimmer/tracking';
+
+import Component from '@glint/environment-ember-loose/glimmer-component';
+import { didCancel, timeout } from 'ember-concurrency';
 import { restartableTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
+
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface PowerSelectInfinityWithSearchArgs<T> {
     options: any[];
@@ -24,7 +27,9 @@ interface PowerSelectInfinityWithSearchArgs<T> {
     loadingBelow?: boolean;
 }
 
-export default class PowerSelectInfinityWithSearch<T> extends Component<PowerSelectInfinityWithSearchArgs<T>> {
+export default class PowerSelectInfinityWithSearch<T> extends Component<
+    BaseGlimmerSignature<PowerSelectInfinityWithSearchArgs<T>>
+> {
     //config options
     searchMessage: string | null = null;
     searchDebounceDelay: number = 300;

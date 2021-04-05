@@ -210,16 +210,10 @@
                                     </div>
                                     <div class="sortable container-list col-6">
                                         <Group.container
-                                            @items={{changeset-get changeset "configSettings.global.cards.left"}}
-                                            @itemReordered={{changeset-set
-                                                changeset
-                                                "configSettings.global.cards.left"
-                                            }}
-                                            @itemAdded={{changeset-set changeset "configSettings.global.cards.left"}}
-                                            @itemRemoved={{changeset-set
-                                                changeset
-                                                "configSettings.global.cards.left"
-                                            }} as |container|
+                                            @items={{this.leftSidebarItems}}
+                                            @itemReordered={{this.updateLeftSidebarItems}}
+                                            @itemAdded={{this.updateLeftSidebarItems}}
+                                            @itemRemoved={{this.updateLeftSidebarItems}} as |container|
                                         >
                                             {{#each container.items as |item index|}}
                                                 <container.item @item={{item}}>
@@ -239,16 +233,10 @@
                                     </div>
                                     <div class="sortable container-list col-6">
                                         <Group.container
-                                            @items={{changeset-get changeset "configSettings.global.cards.right"}}
-                                            @itemReordered={{changeset-set
-                                                changeset
-                                                "configSettings.global.cards.right"
-                                            }}
-                                            @itemAdded={{changeset-set changeset "configSettings.global.cards.right"}}
-                                            @itemRemoved={{changeset-set
-                                                changeset
-                                                "configSettings.global.cards.right"
-                                            }} as |container|
+                                            @items={{this.rightSidebarItems}}
+                                            @itemReordered={{this.updateRightSidebarItems}}
+                                            @itemAdded={{this.updateRightSidebarItems}}
+                                            @itemRemoved={{this.updateRightSidebarItems}} as |container|
                                         >
                                             {{#each container.items as |item index|}}
                                                 <container.item @item={{item}}>

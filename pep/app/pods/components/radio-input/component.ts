@@ -1,6 +1,9 @@
-import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { guidFor } from '@ember/object/internals';
+
+import Component from '@glint/environment-ember-loose/glimmer-component';
+
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface RadioInputArgs {
     onChange?: (newValue: boolean, event: Event) => void;
@@ -13,7 +16,7 @@ interface RadioInputArgs {
     stopPropagation?: boolean;
 }
 
-export default class RadioInput extends Component<RadioInputArgs> {
+export default class RadioInput extends Component<BaseGlimmerSignature<RadioInputArgs>> {
     inputId: string = `radio-input-${guidFor(this)}`;
 
     get preventDefault() {

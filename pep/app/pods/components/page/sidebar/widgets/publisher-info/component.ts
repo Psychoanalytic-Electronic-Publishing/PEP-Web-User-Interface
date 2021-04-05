@@ -1,15 +1,21 @@
-import Component from '@glimmer/component';
+import { action } from '@ember/object';
+import { inject as service } from '@ember/service';
+
+import Component from '@glint/environment-ember-loose/glimmer-component';
+
+import Modal from '@gavant/ember-modals/services/modal';
+
 import { WIDGET } from 'pep/constants/sidebar';
 import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
 import Document from 'pep/pods/document/model';
-import { inject as service } from '@ember/service';
 import ConfigurationService from 'pep/services/configuration';
-import { action } from '@ember/object';
-import Modal from '@gavant/ember-modals/services/modal';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface PageSidebarWidgetsPublisherInfoArgs extends PageSidebarWidgetArgs {}
 
-export default class PageSidebarWidgetsPublisherInfo extends Component<PageSidebarWidgetsPublisherInfoArgs> {
+export default class PageSidebarWidgetsPublisherInfo extends Component<
+    BaseGlimmerSignature<PageSidebarWidgetsPublisherInfoArgs>
+> {
     @service configuration!: ConfigurationService;
     @service modal!: Modal;
 

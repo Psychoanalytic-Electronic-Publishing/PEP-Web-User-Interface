@@ -1,15 +1,17 @@
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
-import Component from '@glimmer/component';
+
+import Component from '@glint/environment-ember-loose/glimmer-component';
+import FastbootService from 'ember-cli-fastboot/services/fastboot';
+import IntlService from 'ember-intl/services/intl';
 
 import { Sorting } from '@gavant/ember-pagination/hooks/pagination';
 import { ColumnValue } from '@gavant/ember-table';
-import FastbootService from 'ember-cli-fastboot/services/fastboot';
-import IntlService from 'ember-intl/services/intl';
 
 import Document from 'pep/pods/document/model';
 import FastbootMediaService from 'pep/services/fastboot-media';
 import { SearchTableSortFields } from 'pep/utils/sort';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface TablesSearchArgs {
     containerSelector?: string;
@@ -24,7 +26,7 @@ interface TablesSearchArgs {
     sorts: Sorting[];
 }
 
-export default class TablesSearch extends Component<TablesSearchArgs> {
+export default class TablesSearch extends Component<BaseGlimmerSignature<TablesSearchArgs>> {
     @service intl!: IntlService;
     @service fastbootMedia!: FastbootMediaService;
     @service fastboot!: FastbootService;

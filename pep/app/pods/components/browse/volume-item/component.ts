@@ -1,15 +1,17 @@
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import Component from '@glimmer/component';
+
+import Component from '@glint/environment-ember-loose/glimmer-component';
 
 import SourceVolume from 'pep/pods/source-volume/model';
 import BrowseSelection from 'pep/services/browse-selection';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface BrowseVolumeItemArgs {
     item: SourceVolume;
 }
 
-export default class BrowseVolumeItem extends Component<BrowseVolumeItemArgs> {
+export default class BrowseVolumeItem extends Component<BaseGlimmerSignature<BrowseVolumeItemArgs>> {
     @service browseSelection!: BrowseSelection;
 
     /**

@@ -29,27 +29,26 @@ import PepSessionService from 'pep/services/pep-session';
 import ScrollableService from 'pep/services/scrollable';
 import ThemeService from 'pep/services/theme';
 import { buildJumpToHitsHTML, loadXSLT, parseXML } from 'pep/utils/dom';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 import { reject } from 'rsvp';
 import tippy, { Instance, Props } from 'tippy.js';
 
 interface DocumentTextArgs {
-    Args: {
-        document: Document;
-        target?: 'abstract' | 'document';
-        offsetForScroll?: number;
-        readQueryParams: {
-            q: string;
-            searchTerms: string | null;
-            facets: string | null;
-            matchSynonyms: boolean;
-        };
-        page?: string;
-        searchHitNumber?: number;
-        onGlossaryItemClick: (term: string, termResults: GlossaryTerm[]) => void;
-        viewSearch: (searchTerms: SearchQueryParams) => void;
-        documentRendered: () => void;
-        viewablePageUpdate?: (page: string) => void;
+    document: Document;
+    target?: 'abstract' | 'document';
+    offsetForScroll?: number;
+    readQueryParams: {
+        q: string;
+        searchTerms: string | null;
+        facets: string | null;
+        matchSynonyms: boolean;
     };
+    page?: string;
+    searchHitNumber?: number;
+    onGlossaryItemClick: (term: string, termResults: GlossaryTerm[]) => void;
+    viewSearch: (searchTerms: SearchQueryParams) => void;
+    documentRendered: () => void;
+    viewablePageUpdate?: (page: string) => void;
 }
 
 /**
@@ -72,7 +71,7 @@ export type DocumentTippyInstance = Instance & {
     _loaded: boolean;
 };
 
-export default class DocumentText extends Component<DocumentTextArgs> {
+export default class DocumentText extends Component<BaseGlimmerSignature<DocumentTextArgs>> {
     @service store!: DS.Store;
     @service loadingBar!: LoadingBarService;
     @service modal!: ModalService;
@@ -676,6 +675,6 @@ export default class DocumentText extends Component<DocumentTextArgs> {
 
 declare module '@glint/environment-ember-loose/registry' {
     export default interface Registry {
-        DocumentText: typeof DocumentText;
+        'Document::Text': typeof DocumentText;
     }
 }

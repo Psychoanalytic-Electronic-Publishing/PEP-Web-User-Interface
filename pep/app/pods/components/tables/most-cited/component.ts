@@ -1,11 +1,13 @@
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
-import Component from '@glimmer/component';
 
-import { ColumnValue } from '@gavant/ember-table';
+import Component from '@glint/environment-ember-loose/glimmer-component';
 import IntlService from 'ember-intl/services/intl';
 
+import { ColumnValue } from '@gavant/ember-table';
+
 import FastbootMediaService from 'pep/services/fastboot-media';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface TablesMostCitedArgs {
     rows: Document[];
@@ -14,7 +16,7 @@ interface TablesMostCitedArgs {
     isLoading: boolean;
 }
 
-export default class TablesMostCited extends Component<TablesMostCitedArgs> {
+export default class TablesMostCited extends Component<BaseGlimmerSignature<TablesMostCitedArgs>> {
     @service intl!: IntlService;
     @service fastbootMedia!: FastbootMediaService;
 

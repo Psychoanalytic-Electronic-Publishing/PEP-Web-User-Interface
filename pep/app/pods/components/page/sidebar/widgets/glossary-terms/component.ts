@@ -1,8 +1,8 @@
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { htmlSafe } from '@ember/string';
-import Component from '@glimmer/component';
 
+import Component from '@glint/environment-ember-loose/glimmer-component';
 import DS from 'ember-data';
 import IntlService from 'ember-intl/services/intl';
 
@@ -14,10 +14,13 @@ import ConfigurationService from 'pep/services/configuration';
 import LoadingBarService from 'pep/services/loading-bar';
 import NotificationsService from 'pep/services/notifications';
 import { shuffle } from 'pep/utils/array';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface PageSidebarWidgetsGlossaryTermsArgs extends PageSidebarWidgetArgs {}
 
-export default class PageSidebarWidgetsGlossaryTerms extends Component<PageSidebarWidgetsGlossaryTermsArgs> {
+export default class PageSidebarWidgetsGlossaryTerms extends Component<
+    BaseGlimmerSignature<PageSidebarWidgetsGlossaryTermsArgs>
+> {
     @service loadingBar!: LoadingBarService;
     @service store!: DS.Store;
     @service modal!: Modal;

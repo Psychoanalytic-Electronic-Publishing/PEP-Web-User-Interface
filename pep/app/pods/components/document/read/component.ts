@@ -1,8 +1,8 @@
 import { action } from '@ember/object';
 import RouterService from '@ember/routing/router-service';
 import { inject as service } from '@ember/service';
-import Component from '@glimmer/component';
 
+import Component from '@glint/environment-ember-loose/glimmer-component';
 import DS from 'ember-data';
 
 import ModalService from '@gavant/ember-modals/services/modal';
@@ -17,6 +17,7 @@ import CurrentUserService from 'pep/services/current-user';
 import LoadingBarService from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
 import { clearSearch } from 'pep/utils/search';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface DocumentReadArgs {
     model: Document;
@@ -27,7 +28,7 @@ interface DocumentReadArgs {
     documentRendered?: () => void;
 }
 
-export default class DocumentRead extends Component<DocumentReadArgs> {
+export default class DocumentRead extends Component<BaseGlimmerSignature<DocumentReadArgs>> {
     @service modal!: ModalService;
     @service router!: RouterService;
     @service configuration!: ConfigurationService;

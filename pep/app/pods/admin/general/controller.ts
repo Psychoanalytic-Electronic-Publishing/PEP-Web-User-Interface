@@ -23,6 +23,8 @@ export default class AdminGeneral extends Controller {
     @tracked changeset?: BufferedChangeset;
     @tracked saveDisabled: boolean = false;
     @tracked fields: { id: number; field: SearchTermId }[] = [];
+    @tracked leftSidebarItems: WidgetConfiguration[] = [];
+    @tracked rightSidebarItems: WidgetConfiguration[] = [];
     mirrorOptions = {
         constrainDimensions: true
     };
@@ -120,6 +122,8 @@ export default class AdminGeneral extends Controller {
                 'configSettings.search.terms.defaultFields',
                 this.fields.map((field) => field.field)
             );
+            this.changeset?.set('configSettings.global.cards.left', this.leftSidebarItems);
+            this.changeset?.set('configSettings.global.cards.right', this.rightSidebarItems);
             this.changeset?.save();
         }
     }
@@ -198,6 +202,28 @@ export default class AdminGeneral extends Controller {
     @action
     addDefaultField(): void {
         this.fields = [...this.fields, { id: this.fields.length, field: SearchTermId.ARTICLE }];
+    }
+
+    /**
+     * Update the left sidebar items
+     *
+     * @param {WidgetConfiguration[]} updates
+     * @memberof AdminGeneral
+     */
+    @action
+    updateLeftSidebarItems(updates: WidgetConfiguration[]) {
+        this.leftSidebarItems = [...updates];
+    }
+
+    /**
+     * Update the right sidebar items
+     *
+     * @param {WidgetConfiguration[]} updates
+     * @memberof AdminGeneral
+     */
+    @action
+    updateRightSidebarItems(updates: WidgetConfiguration[]) {
+        this.rightSidebarItems = [...updates];
     }
 }
 // DO NOT DELETE: this is how TypeScript knows how to look up your controllers.

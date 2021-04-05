@@ -1,13 +1,15 @@
 import { action } from '@ember/object';
 import RouterService from '@ember/routing/router-service';
 import { inject as service } from '@ember/service';
-import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
+
+import Component from '@glint/environment-ember-loose/glimmer-component';
 
 import Modal from '@gavant/ember-modals/services/modal';
 
 import { SEARCH_DEFAULT_VIEW_PERIOD } from 'pep/constants/search';
 import GlossaryTerm from 'pep/pods/glossary-term/model';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface ModalDialogsGlossaryArgs {
     onClose: () => void;
@@ -17,7 +19,7 @@ interface ModalDialogsGlossaryArgs {
     };
 }
 
-export default class ModalDialogsGlossary extends Component<ModalDialogsGlossaryArgs> {
+export default class ModalDialogsGlossary extends Component<BaseGlimmerSignature<ModalDialogsGlossaryArgs>> {
     @service router!: RouterService;
     @service modal!: Modal;
     @tracked glossaryItem = {

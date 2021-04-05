@@ -1,9 +1,11 @@
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import Component from '@glimmer/component';
+
+import Component from '@glint/environment-ember-loose/glimmer-component';
 
 import Document from 'pep/pods/document/model';
 import SearchSelection from 'pep/services/search-selection';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface TablesCellCheckboxArgs {
     cellValue: string;
@@ -14,7 +16,7 @@ interface TablesCellCheckboxArgs {
     };
 }
 
-export default class TablesCellCheckbox extends Component<TablesCellCheckboxArgs> {
+export default class TablesCellCheckbox extends Component<BaseGlimmerSignature<TablesCellCheckboxArgs>> {
     @service searchSelection!: SearchSelection;
 
     /**

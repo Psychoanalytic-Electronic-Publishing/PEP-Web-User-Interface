@@ -1,9 +1,9 @@
 import { action } from '@ember/object';
 import RouterService from '@ember/routing/router-service';
 import { inject as service } from '@ember/service';
-import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
+import Component from '@glint/environment-ember-loose/glimmer-component';
 import CookiesService from 'ember-cookies/services/cookies';
 import { DS } from 'ember-data';
 
@@ -22,10 +22,11 @@ import LoadingBarService from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
 import SidebarService from 'pep/services/sidebar';
 import { buildSearchQueryParams } from 'pep/utils/search';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface HomeArgs {}
 
-export default class Home extends Component<HomeArgs> {
+export default class Home extends Component<BaseGlimmerSignature<HomeArgs>> {
     @service sidebar!: SidebarService;
     @service modal!: ModalService;
     @service fastbootMedia!: FastbootMediaService;
@@ -190,5 +191,11 @@ export default class Home extends Component<HomeArgs> {
                 graphicContainer.className = 'card-text-container d-flex';
             }
         }
+    }
+}
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        Home: typeof Home;
     }
 }

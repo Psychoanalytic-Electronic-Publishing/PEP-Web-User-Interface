@@ -1,8 +1,9 @@
 import { action } from '@ember/object';
 import RouterService from '@ember/routing/router-service';
 import { inject as service } from '@ember/service';
-import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
+
+import Component from '@glint/environment-ember-loose/glimmer-component';
 
 import ModalService from '@gavant/ember-modals/services/modal';
 
@@ -12,12 +13,13 @@ import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService, { VIEW_DOCUMENT_FROM } from 'pep/services/current-user';
 import DrawerService from 'pep/services/drawer';
 import PepSessionService from 'pep/services/pep-session';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface PageDrawerArgs {
     openAboutModal: () => Promise<void>;
 }
 
-export default class PageDrawer extends Component<PageDrawerArgs> {
+export default class PageDrawer extends Component<BaseGlimmerSignature<PageDrawerArgs>> {
     @service drawer!: DrawerService;
     @service('pep-session') session!: PepSessionService;
     @service auth!: AuthService;

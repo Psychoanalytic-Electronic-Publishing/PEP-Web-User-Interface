@@ -1,4 +1,6 @@
-import Component from '@glimmer/component';
+import Component from '@glint/environment-ember-loose/glimmer-component';
+
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface ModalDialogsHelpTooltipArgs {
     onClose: () => void;
@@ -9,4 +11,4 @@ interface ModalDialogsHelpTooltipArgs {
     };
 }
 
-export default class ModalDialogsHelpTooltip extends Component<ModalDialogsHelpTooltipArgs> {}
+export default class ModalDialogsHelpTooltip extends Component<BaseGlimmerSignature<ModalDialogsHelpTooltipArgs>> {}

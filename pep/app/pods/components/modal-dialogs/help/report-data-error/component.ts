@@ -1,8 +1,8 @@
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
+import Component from '@glint/environment-ember-loose/glimmer-component';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import IntlService from 'ember-intl/services/intl';
 
@@ -13,6 +13,7 @@ import { DATA_ERROR_SUPPORT_RESOURCES, SupportResource } from 'pep/constants/url
 import AjaxService from 'pep/services/ajax';
 import CurrentUserService from 'pep/services/current-user';
 import LoadingBarService from 'pep/services/loading-bar';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 import REPORT_DATA_ERROR_VALIDATIONS from 'pep/validations/help/report-data-error';
 
 interface ErrorReport {
@@ -33,7 +34,9 @@ interface ModalDialogsHelpReportDataErrorArgs {
     onClose: () => void;
 }
 
-export default class ModalDialogsHelpReportDataError extends Component<ModalDialogsHelpReportDataErrorArgs> {
+export default class ModalDialogsHelpReportDataError extends Component<
+    BaseGlimmerSignature<ModalDialogsHelpReportDataErrorArgs>
+> {
     @service ajax!: AjaxService;
     @service currentUser!: CurrentUserService;
     @service loadingBar!: LoadingBarService;

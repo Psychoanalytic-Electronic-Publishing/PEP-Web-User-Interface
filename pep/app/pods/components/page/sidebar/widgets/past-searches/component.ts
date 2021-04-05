@@ -1,13 +1,17 @@
-import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 
-import AjaxService from 'pep/services/ajax';
-import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
+import Component from '@glint/environment-ember-loose/glimmer-component';
+
 import { WIDGET } from 'pep/constants/sidebar';
+import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
+import AjaxService from 'pep/services/ajax';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface PageSidebarWidgetsPastSearchesArgs extends PageSidebarWidgetArgs {}
 
-export default class PageSidebarWidgetsPastSearches extends Component<PageSidebarWidgetsPastSearchesArgs> {
+export default class PageSidebarWidgetsPastSearches extends Component<
+    BaseGlimmerSignature<PageSidebarWidgetsPastSearchesArgs>
+> {
     @service ajax!: AjaxService;
 
     get isOpen() {
