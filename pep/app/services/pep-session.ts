@@ -51,7 +51,8 @@ export default class PepSessionService extends SessionService {
         const resultString = JSON.stringify(sessionData);
         this.cookies.write(UNAUTHENTICATED_SESSION_COOKIE_NAME, resultString, {
             sameSite: ENV.cookieSameSite,
-            expires: DATE_FOREVER
+            expires: DATE_FOREVER,
+            secure: true
         });
     }
 
@@ -94,12 +95,6 @@ export default class PepSessionService extends SessionService {
         // as the built-in `authenticationSucceeded` event fires immediately after the login request returns
         this.session.trigger('authenticationAndSetupSucceeded');
         this.clearUnauthenticatedSession();
-        // dont redirect the user on login if the behavior is suppressed
-        if (this.auth.dontRedirectOnLogin) {
-            this.auth.dontRedirectOnLogin = false;
-        } else {
-            super.handleAuthentication(routeAfterAuthentication);
-        }
     }
 
     handleInvalidation(routeAfterInvalidation: string): void {
