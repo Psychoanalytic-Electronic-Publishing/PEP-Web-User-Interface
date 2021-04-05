@@ -50,3 +50,9 @@ export default class CheckboxInput extends Component<BaseGlimmerSignature<Checkb
         this.args.onChange?.(event.target.checked, event);
     }
 }
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        CheckboxInput: typeof CheckboxInput;
+    }
+}

@@ -10,7 +10,7 @@ import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface ScrollableArgs {
     namespace?: string;
-    onInsert: (element: HTMLElement) => void;
+    onInsert?: (element: HTMLElement) => void;
 }
 
 export default class Scrollable extends Component<BaseGlimmerSignature<ScrollableArgs>> {
@@ -128,5 +128,11 @@ export default class Scrollable extends Component<BaseGlimmerSignature<Scrollabl
         if (this.ps) {
             this.ps.update();
         }
+    }
+}
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        Scrollable: typeof Scrollable;
     }
 }
