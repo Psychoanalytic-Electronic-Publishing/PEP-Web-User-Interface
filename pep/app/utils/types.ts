@@ -52,6 +52,13 @@ export const flattenEnum = <T>(e: any): T[] => {
  */
 export type GlintTemporaryTypeFix<T> = { [K in keyof T]: T[K] };
 
+/**
+ * Base Signature for Glimmer component. Temporary until strict mode comes
+ *
+ * @export
+ * @interface BaseGlimmerSignature
+ * @template T
+ */
 export interface BaseGlimmerSignature<T> {
     Element: HTMLElement;
     Args: GlintTemporaryTypeFix<T>;

@@ -23,3 +23,9 @@ export default class InformationBar extends Component<BaseGlimmerSignature<Infor
         this.informationBar.hide();
     }
 }
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        InformationBar: typeof InformationBar;
+    }
+}
