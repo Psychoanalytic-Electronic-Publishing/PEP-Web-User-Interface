@@ -57,3 +57,9 @@ export default class ButtonWithTooltip extends Component<BaseGlimmerSignature<Bu
         return this.args.tooltipVisible ?? this.fastbootMedia.isLargeDevice;
     }
 }
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        'Button::WithTooltip': typeof ButtonWithTooltip;
+    }
+}

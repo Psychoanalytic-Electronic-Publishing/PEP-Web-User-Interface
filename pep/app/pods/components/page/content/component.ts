@@ -11,3 +11,9 @@ export default class PageContent extends Component<BaseGlimmerSignature<PageCont
         return this.args.scrollableNamespace ?? 'page-content';
     }
 }
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        'Page::Content': typeof PageContent;
+    }
+}

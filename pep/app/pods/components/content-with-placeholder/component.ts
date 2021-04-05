@@ -29,3 +29,9 @@ export default class ContentWithPlaceholder extends Component<BaseGlimmerSignatu
         return this.args.isLoading || (this.placeholderInFastboot && this.fastboot.isFastBoot);
     }
 }
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        ContentWithPlaceholder: typeof ContentWithPlaceholder;
+    }
+}

@@ -12,7 +12,7 @@ import {
 import FastbootMediaService from 'pep/services/fastboot-media';
 import SidebarService from 'pep/services/sidebar';
 import { clamp } from 'pep/utils/math';
-import { BaseGlimmerSignature, GlintTemporaryTypeFix } from 'pep/utils/types';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface PageSidebarArgs {
     side: 'left' | 'right';

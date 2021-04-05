@@ -7,7 +7,7 @@ import Component from '@glint/environment-ember-loose/glimmer-component';
 import { WidgetConfiguration } from 'pep/constants/configuration';
 import { WIDGET, WidgetData } from 'pep/constants/sidebar';
 import CurrentUserService from 'pep/services/current-user';
-import { BaseGlimmerSignature, GlintTemporaryTypeFix } from 'pep/utils/types';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 export interface PageSidebarWidgetsArgs {
     widgets: WidgetConfiguration[];

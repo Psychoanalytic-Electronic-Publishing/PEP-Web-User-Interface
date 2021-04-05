@@ -19,7 +19,7 @@ import CurrentUserService, { UserPreferenceErrorId } from 'pep/services/current-
  * @param {*} owner
  * @return {Promise<any>}
  */
-export async function onAuthenticated(owner: Controller | Route | Component | Service): Promise<any> {
+export async function onAuthenticated(owner: Controller | Route | Component<any> | Service): Promise<any> {
     const currentOwner = getOwner(owner);
     const currentUserService = currentOwner.lookup(`service:current-user`) as CurrentUserService;
     const notificationsService = currentOwner.lookup(`service:notifications`);
@@ -97,7 +97,7 @@ export function handleRouteAuthorization(owner: Route, abilities: string[], mode
  * @param {Document} document
  */
 export async function updateUserPreferencesDocument(
-    owner: Component | Controller,
+    owner: Component<any> | Controller,
     key: PreferenceDocumentsKey,
     document: Document
 ) {

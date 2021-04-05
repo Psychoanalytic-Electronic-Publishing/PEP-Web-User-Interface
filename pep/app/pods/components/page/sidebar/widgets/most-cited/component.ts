@@ -15,10 +15,13 @@ import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/
 import Document from 'pep/pods/document/model';
 import Router from 'pep/router';
 import ConfigurationService from 'pep/services/configuration';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface PageSidebarWidgetsMostCitedArgs extends PageSidebarWidgetArgs {}
 
-export default class PageSidebarWidgetsMostCited extends Component<PageSidebarWidgetsMostCitedArgs> {
+export default class PageSidebarWidgetsMostCited extends Component<
+    BaseGlimmerSignature<PageSidebarWidgetsMostCitedArgs>
+> {
     @service store!: DS.Store;
     @service router!: Router;
     @service fastboot!: FastbootService;

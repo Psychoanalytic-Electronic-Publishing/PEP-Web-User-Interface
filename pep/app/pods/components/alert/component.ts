@@ -38,3 +38,9 @@ export default class Alert extends Component<BaseGlimmerSignature<AlertArgs>> {
         }
     }
 }
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        Alert: typeof Alert;
+    }
+}

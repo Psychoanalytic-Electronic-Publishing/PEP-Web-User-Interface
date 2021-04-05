@@ -30,3 +30,9 @@ export default class AdminEditor<T> extends Component<BaseGlimmerSignature<Admin
     ];
     baseUrl = `${Env.assetBaseUrl}@gavant/ember-tinymce`;
 }
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        'Admin::Editor': typeof AdminEditor;
+    }
+}

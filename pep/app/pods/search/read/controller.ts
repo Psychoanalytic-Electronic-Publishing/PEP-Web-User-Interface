@@ -161,6 +161,16 @@ export default class SearchRead extends Controller {
     }
 
     /**
+     * Show or hide right arrow for search hits
+     *
+     * @readonly
+     * @memberof ReadDocument
+     */
+    get showNextSearchHitButton() {
+        return this.searchHitNumber === undefined || this.searchHitNumber < (this.document?.termCount ?? 0);
+    }
+
+    /**
      * Transform the sorting to a format the API can handle
      *
      * @param {string[]} sorts
@@ -263,7 +273,9 @@ export default class SearchRead extends Controller {
      */
     @action
     viewNextSearchHit() {
-        this.searchHitNumber = this.searchHitNumber ? this.searchHitNumber + 1 : 1;
+        if (this.showNextSearchHitButton) {
+            this.searchHitNumber = this.searchHitNumber ? this.searchHitNumber + 1 : 1;
+        }
     }
 
     /**
