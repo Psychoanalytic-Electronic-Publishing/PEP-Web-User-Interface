@@ -9,6 +9,7 @@ import NotificationService from 'ember-cli-notifications/services/notifications'
 import CookiesService from 'ember-cookies/services/cookies';
 import MetricService from 'ember-metrics/services/metrics';
 import MediaService from 'ember-responsive/services/media';
+import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 
 import ModalService from '@gavant/ember-modals/services/modal';
 
@@ -31,7 +32,14 @@ import PepSessionService from 'pep/services/pep-session';
 import SidebarService from 'pep/services/sidebar';
 import ThemeService from 'pep/services/theme';
 
-export default class Application extends PageLayout(Route) {
+/**
+ * Unforunately we need to keep the application route mixin for a little while longer
+ * @see https://discord.com/channels/480462759797063690/496695347582861334/828696746678026260
+ * @export
+ * @class Application
+ * @extends {PageLayout(Route.extend(ApplicationRouteMixin))}
+ */
+export default class Application extends PageLayout(Route.extend(ApplicationRouteMixin)) {
     routeAfterAuthentication = 'index';
 
     @service router!: RouterService;
@@ -172,6 +180,16 @@ export default class Application extends PageLayout(Route) {
         }
     }
 
+    sessionAuthenticated(routeAfterAuth: string) {
+        this.session.handleAuthentication(routeAfterAuth);
+        // dont redirect the user on login if the behavior is suppressed
+        if (this.auth.dontRedirectOnLogin) {
+            this.auth.dontRedirectOnLogin = false;
+        } else {
+            //@ts-ignore mixin - bleh
+            super.sessionAuthenticated(...arguments);
+        }
+    }
     /**
      * Top level route error event handler - If routes reject with an error
      * i.e. do not explicitly catch and handle errors return by their
