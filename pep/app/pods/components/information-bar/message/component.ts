@@ -1,7 +1,21 @@
 import Component from '@glint/environment-ember-loose/glimmer-component';
 
-import { BaseGlimmerSignature } from 'pep/utils/types';
+import { GlintTemporaryTypeFix } from 'pep/utils/types';
 
-interface InformationBarMessageArgs {}
+interface InformationBarMessageArgs {
+    message?: string;
+    close?: () => void;
+}
 
-export default class InformationBarMessage extends Component<BaseGlimmerSignature<InformationBarMessageArgs>> {}
+export interface BaseGlimmerSignature {
+    Element: HTMLElement;
+    Args: GlintTemporaryTypeFix<InformationBarMessageArgs>;
+}
+
+export default class InformationBarMessage extends Component<BaseGlimmerSignature> {}
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        'InformationBar::Message': typeof InformationBarMessage;
+    }
+}
