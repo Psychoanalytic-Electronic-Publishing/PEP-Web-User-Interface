@@ -1,20 +1,9 @@
 import Component from '@glint/environment-ember-loose/glimmer-component';
 
+import { BaseGlimmerSignature } from 'pep/utils/types';
+
 import type { ButtonArgs } from '@gavant/ember-button-basic/components/button';
-
-interface ButtonComponentArgs extends ButtonArgs {
-  [key: string]: unknown
-}
-
-export interface ButtonComponentSignature {
-    Element: HTMLButtonElement;
-    Args: ButtonComponentArgs;
-    Yields: {
-        default?: [unknown];
-    };
-}
-
-export declare class ButtonComponent extends Component<ButtonComponentSignature> {}
+export declare class ButtonComponent extends Component<BaseGlimmerSignature<ButtonArgs>> {}
 
 declare module '@glint/environment-ember-loose/registry' {
     export default interface Registry {

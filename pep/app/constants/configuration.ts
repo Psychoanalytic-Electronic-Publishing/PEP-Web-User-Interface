@@ -34,7 +34,7 @@ export interface ExpertPick {
 }
 
 export interface VideoConfiguration {
-    code: string;
+    url: string;
     aspectRatio: AspectRatio;
 }
 
@@ -62,8 +62,8 @@ export interface BaseConfiguration {
             mostViewed: {
                 limit: number;
             };
-            videoPreview: VideoConfiguration;
-            topicalVideoPreview: VideoConfiguration;
+            videoPreviews: VideoConfiguration[];
+            topicalVideoPreviews: VideoConfiguration[];
             left: WidgetConfiguration[];
             right: WidgetConfiguration[];
         };
@@ -183,16 +183,18 @@ export const DEFAULT_BASE_CONFIGURATION: BaseConfiguration = {
             mostViewed: {
                 limit: 10
             },
-            videoPreview: {
-                aspectRatio: AspectRatio.SIXTEEN_BY_NINE,
-                code:
-                    '<iframe src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2Fpepweb%2Fvideos%2F1085606578152566%2F&show_text=0" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allowFullScreen="true"></iframe>'
-            },
-            topicalVideoPreview: {
-                aspectRatio: AspectRatio.SIXTEEN_BY_NINE,
-                code:
-                    '<iframe src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2Fpepweb%2Fvideos%2F1085606578152566%2F&show_text=0" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allowFullScreen="true"></iframe>'
-            },
+            videoPreviews: [
+                {
+                    aspectRatio: AspectRatio.SIXTEEN_BY_NINE,
+                    url: 'https://pep-web-video-previews.s3.amazonaws.com/peptopauthvs.001.0027a.preview.mp4'
+                }
+            ],
+            topicalVideoPreviews: [
+                {
+                    aspectRatio: AspectRatio.SIXTEEN_BY_NINE,
+                    url: 'https://pep-web-video-previews.s3.amazonaws.com/peptopauthvs.001.0027a.preview.mp4'
+                }
+            ],
             left: [
                 { widget: WIDGET.VIDEO_PREVIEW, open: true },
                 { widget: WIDGET.TOPICAL_VIDEO_PREVIEW, open: true }

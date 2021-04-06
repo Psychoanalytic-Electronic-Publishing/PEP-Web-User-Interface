@@ -33,3 +33,9 @@ export default class CollapsiblePanel extends Component<BaseGlimmerSignature<Col
         }
     }
 }
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        CollapsiblePanel: typeof CollapsiblePanel;
+    }
+}
