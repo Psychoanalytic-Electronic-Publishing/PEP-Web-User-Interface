@@ -871,6 +871,7 @@
                     "expertPickOfTheDay": "Expert Pick of the Day"
                 },
                 "search": {
+                    "tooManyResults": "Too many results",
                     "smartSearch": "Smart Search",
                     "matchSynonyms": "Match Synonyms",
                     "limitTo": "Limit To",
