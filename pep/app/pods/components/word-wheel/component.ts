@@ -20,7 +20,7 @@ interface WordWheelArgs {
     limit?: number;
     apiField?: string;
     apiCore?: string;
-    searchType: WordWheelSearchType;
+    searchType?: WordWheelSearchType;
     onChange: (newText: string) => void;
 }
 
@@ -68,5 +68,11 @@ export default class WordWheel extends Component<BaseGlimmerSignature<WordWheelA
         }
 
         return this.suggestions;
+    }
+}
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        WordWheel: typeof WordWheel;
     }
 }

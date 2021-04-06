@@ -88,7 +88,7 @@ export default class PepSessionService extends SessionService {
         return serializeQueryParams(normalizedParams);
     }
 
-    handleAuthentication(routeAfterAuthentication: string): void {
+    handleAuthentication(_routeAfterAuthentication: string): void {
         onAuthenticated(this);
         // trigger a custom event on the session that tells us when the user is logged in
         // and all other post-login tasks (loading user record, prefs/configs setup, etc) is complete

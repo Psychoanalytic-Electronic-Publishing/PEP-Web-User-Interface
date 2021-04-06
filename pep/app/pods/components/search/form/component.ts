@@ -70,9 +70,12 @@ export default class SearchForm extends Component<BaseGlimmerSignature<SearchFor
     }
 
     get hasTooManyResults() {
-        return (
-            this.args.resultsCount && this.args.resultsCount > this.configuration.base.search.tooManyResults.threshold
-        );
+        const resultCount = this.args.resultsCount;
+        if (resultCount) {
+            return resultCount > this.configuration.base.search.tooManyResults.threshold;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -189,5 +192,11 @@ export default class SearchForm extends Component<BaseGlimmerSignature<SearchFor
     @action
     toggleLimitFields() {
         this.args.toggleLimitFields?.(!this.args.isLimitOpen);
+    }
+}
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        'Search::Form': typeof SearchForm;
     }
 }

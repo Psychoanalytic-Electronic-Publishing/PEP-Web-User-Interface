@@ -574,9 +574,26 @@
                                     </FlInput>
                                 </validator.input>
                             </div>
+                            <div class="col-12">
+                                <validator.input
+                                    @errors={{changeset.error.configSettings.search.tooManyResults.instructions.validation
+                                    }}
+                                >
+                                    <FlInput
+                                        @value={{changeset.configSettings.search.tooManyResults.instructions}}
+                                        @placeholder={{t "admin.content.help.search.tooManyResults"}}
+                                    >
+                                        <ChangesetTextarea
+                                            @changeset={{changeset}}
+                                            @path="configSettings.search.tooManyResults.instructions"
+                                        />
+                                    </FlInput>
+                                </validator.input>
+                            </div>
                         </div>
                     </div>
                 </div>
+
                 <div class="card mb-4">
                     <div class="card-body">
                         <div class="form-row">
