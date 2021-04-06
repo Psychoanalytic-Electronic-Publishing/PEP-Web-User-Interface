@@ -38,3 +38,9 @@ export default class PageSidebarWidgetsVideoPreview extends Component<
 
     widget = WIDGET.VIDEO_PREVIEW;
 }
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        'Page::Sidebar::Widgets::VideoPreview': typeof PageSidebarWidgetsVideoPreview;
+    }
+}

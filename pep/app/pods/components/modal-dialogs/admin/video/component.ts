@@ -29,3 +29,9 @@ export default class ModalDialogsAdminVideo extends Component<BaseGlimmerSignatu
         this.args.onClose();
     }
 }
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        'ModalDialogs::Admin::Video': typeof ModalDialogsAdminVideo;
+    }
+}
