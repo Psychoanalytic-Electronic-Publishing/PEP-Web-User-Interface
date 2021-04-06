@@ -1740,6 +1740,7 @@
     </xsl:template>
 
     <xsl:template match="be/pp">
+        <xsl:text>&#xA0;</xsl:text>
         <span class="bibpages pp">
             <xsl:apply-templates/>
         </span>
