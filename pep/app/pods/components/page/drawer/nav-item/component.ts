@@ -19,3 +19,9 @@ export default class PageDrawerNavItem extends Component<BaseGlimmerSignature<Pa
         return this.drawer.toggle(false);
     }
 }
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        'Page::Drawer::NavItem': typeof PageDrawerNavItem;
+    }
+}

@@ -4,6 +4,8 @@ import { inject as service } from '@ember/service';
 
 import Component from '@glint/environment-ember-loose/glimmer-component';
 
+import CollapsiblePanelBody from 'pep/pods/components/collapsible-panel/body/component';
+import CollapsiblePanelHeader from 'pep/pods/components/collapsible-panel/header/component';
 import ScrollableService from 'pep/services/scrollable';
 import { fadeTransition } from 'pep/utils/animation';
 import { BaseGlimmerSignature } from 'pep/utils/types';
@@ -14,7 +16,13 @@ export interface CollapsiblePanelArgs {
     toggle: (isOpen: boolean) => void;
 }
 
-export default class CollapsiblePanel extends Component<BaseGlimmerSignature<CollapsiblePanelArgs>> {
+interface CollapsiblePanelSignature extends Omit<BaseGlimmerSignature<CollapsiblePanelArgs>, 'Yields'> {
+    Yields: {
+        default: [{ header: typeof CollapsiblePanelHeader; body: typeof CollapsiblePanelBody }];
+    };
+}
+
+export default class CollapsiblePanel extends Component<CollapsiblePanelSignature> {
     @service scrollable!: ScrollableService;
 
     animateDuration = 300;
@@ -31,5 +39,11 @@ export default class CollapsiblePanel extends Component<BaseGlimmerSignature<Col
         if (this.args.scrollableNamespace) {
             later(() => this.scrollable.recalculate(this.args.scrollableNamespace), this.animateDuration);
         }
+    }
+}
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        CollapsiblePanel: typeof CollapsiblePanel;
     }
 }

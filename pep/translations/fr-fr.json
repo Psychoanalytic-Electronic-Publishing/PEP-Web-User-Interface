@@ -814,6 +814,10 @@
         "publisher": {
             "information": "Publisher Information"
         },
+        "video": {
+            "title": "Video Details",
+            "url": "Url"
+        },
         "common": {
             "title": "General",
             "search": {
@@ -833,12 +837,11 @@
                     "left": "Left Sidebar",
                     "right": "Right Sidebar",
                     "opened": "Opened",
-                    "videoPreview": {
-                        "title": "Video Previews",
-                        "code": "Video Preview Embed Code"
+                    "videos": {
+                        "title": "Video Previews"
                     },
-                    "topicalVideoPreview": {
-                        "code": "Topical Video Preview Embed Code"
+                    "topicalVideos": {
+                        "title": "Topical Video Previews"
                     },
                     "limitsTitle": "Widget Limits",
                     "whatsNew": {

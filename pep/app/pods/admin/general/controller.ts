@@ -10,11 +10,12 @@ import ModalService from '@gavant/ember-modals/services/modal';
 import { ColumnValue } from '@gavant/ember-table';
 import createChangeset, { GenericChangeset } from '@gavant/ember-validations/utilities/create-changeset';
 
-import { ExpertPick, WidgetConfiguration } from 'pep/constants/configuration';
+import { ExpertPick, VideoConfiguration, WidgetConfiguration } from 'pep/constants/configuration';
 import { SEARCH_TYPES, SearchTermId } from 'pep/constants/search';
 import { AdminField } from 'pep/pods/admin/general/route';
 import Configuration from 'pep/pods/configuration/model';
 import { CONFIGURATION_EXPERT_PICK_VALIDATIONS } from 'pep/validations/configuration/expert-pick';
+import { CONFIGURATION_VIDEO_VALIDATIONS } from 'pep/validations/configuration/video';
 
 export default class AdminGeneral extends Controller {
     @service intl!: IntlService;
@@ -50,6 +51,62 @@ export default class AdminGeneral extends Controller {
     }
 
     /**
+     * Open Video Modal
+     *
+     * @memberof AdminGeneral
+     */
+    @action
+    openVideoModal() {
+        const changeset = createChangeset({}, CONFIGURATION_VIDEO_VALIDATIONS);
+        this.modal.open('admin/video', {
+            changeset,
+            actions: {
+                onSave: this.createVideo
+            }
+        });
+    }
+
+    /**
+     * Open topical video modal
+     *
+     * @memberof AdminGeneral
+     */
+    @action
+    openTopicalVideoModal() {
+        const changeset = createChangeset({}, CONFIGURATION_VIDEO_VALIDATIONS);
+        this.modal.open('admin/video', {
+            changeset,
+            actions: {
+                onSave: this.createTopicalVideo
+            }
+        });
+    }
+
+    /**
+     * Create the topical lvideo object and add it to the changeset
+     *
+     * @param {VideoConfiguration} video
+     * @memberof AdminGeneral
+     */
+    @action
+    createTopicalVideo(video: VideoConfiguration): void {
+        const previews = this.changeset?.get('configSettings.global.cards.topicalVideoPreviews');
+        this.changeset?.set('configSettings.global.cards.topicalVideoPreviews', [...previews, video]);
+    }
+
+    /**
+     * Create the video object and add it to the changeset
+     *
+     * @param {VideoConfiguration} video
+     * @memberof AdminGeneral
+     */
+    @action
+    createVideo(video: VideoConfiguration): void {
+        const previews = this.changeset?.get('configSettings.global.cards.videoPreviews');
+        this.changeset?.set('configSettings.global.cards.videoPreviews', [...previews, video]);
+    }
+
+    /**
      * Create the expert pick and update the changeset
      *
      * @param {ExpertPick} expertPick
@@ -58,21 +115,46 @@ export default class AdminGeneral extends Controller {
     @action
     createExpertPick(expertPick: ExpertPick): void {
         const expertPicks = this.changeset?.get('configSettings.home.expertPicks') as ExpertPick[];
-        expertPicks.push(expertPick);
-        this.changeset?.set('configSettings.home.expertPicks', [...expertPicks]);
+        this.changeset?.set('configSettings.home.expertPicks', [...expertPicks, expertPick]);
     }
 
     /**
      * Delete the expert pick and update the changeset
      *
-     * @param {Publisher} publisher
-     * @memberof AdminLanguage
+     * @param {ExpertPick} expertPick
+     * @memberof AdminGeneral
      */
     @action
     deleteExpertPick(expertPick: ExpertPick): void {
         const expertPicks = this.changeset?.get('configSettings.home.expertPicks') as ExpertPick[];
         const filteredPicks = expertPicks.filter((item) => item !== expertPick);
-        this.changeset?.set('configSettings.home.expertPicks', [...filteredPicks]);
+        this.changeset?.set('configSettings.home.expertPicks', filteredPicks);
+    }
+
+    /**
+     * Delete the video
+     *
+     * @param {VideoConfiguration} video
+     * @memberof AdminGeneral
+     */
+    @action
+    deleteVideo(video: VideoConfiguration): void {
+        const videos: VideoConfiguration[] = this.changeset?.get('configSettings.global.cards.videoPreviews');
+        const newVideos = videos.filter((item) => item !== video);
+        this.changeset?.set('configSettings.global.cards.videoPreviews', newVideos);
+    }
+
+    /**
+     * Delete the topical video
+     *
+     * @param {VideoConfiguration} video
+     * @memberof AdminGeneral
+     */
+    @action
+    deleteTopicalVideo(video: VideoConfiguration): void {
+        const videos: VideoConfiguration[] = this.changeset?.get('configSettings.global.cards.topicalVideoPreviews');
+        const newVideos = videos.filter((item) => item !== video);
+        this.changeset?.set('configSettings.global.cards.topicalVideoPreviews', newVideos);
     }
 
     /**
@@ -80,7 +162,7 @@ export default class AdminGeneral extends Controller {
      *
      * @readonly
      * @type {ColumnValue[]}
-     * @memberof AdminLanguage
+     * @memberof AdminGeneral
      */
     @computed('deleteExpertPick')
     get columns(): ColumnValue[] {
@@ -103,6 +185,66 @@ export default class AdminGeneral extends Controller {
                 actions: [
                     {
                         action: this.deleteExpertPick,
+                        icon: 'times'
+                    }
+                ]
+            }
+        ];
+    }
+
+    /**
+     * Columns for the table. The `computed` is required
+     *
+     * @readonly
+     * @type {ColumnValue[]}
+     * @memberof AdminGeneral
+     */
+    @computed('deleteVideo')
+    get videoPreviewColumns(): ColumnValue[] {
+        return [
+            {
+                valuePath: 'url',
+                name: this.intl.t('admin.video.url'),
+                isSortable: false
+            },
+
+            {
+                cellComponent: 'tables/cell/actions',
+                textAlign: 'right',
+                cellClassNames: 'align-center',
+                actions: [
+                    {
+                        action: this.deleteVideo,
+                        icon: 'times'
+                    }
+                ]
+            }
+        ];
+    }
+
+    /**
+     * Columns for the table. The `computed` is required
+     *
+     * @readonly
+     * @type {ColumnValue[]}
+     * @memberof AdminGeneral
+     */
+    @computed('deleteTopicalVideo')
+    get topicalVideoPreviewColumns(): ColumnValue[] {
+        return [
+            {
+                valuePath: 'url',
+                name: this.intl.t('admin.video.url'),
+                isSortable: false
+            },
+
+            {
+                cellComponent: 'tables/cell/actions',
+                textAlign: 'right',
+                cellClassNames: 'align-center',
+                actions: [
+                    {
+                        action: this.deleteTopicalVideo,
                         icon: 'times'
                     }
                 ]

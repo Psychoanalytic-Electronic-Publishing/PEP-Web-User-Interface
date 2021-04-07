@@ -8,6 +8,9 @@ import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface CollapsiblePanelHeaderArgs {
     title: string;
+    isOpen?: boolean;
+    tooltip?: string;
+    toggle?: () => void;
     secondaryAction?: {
         action: () => void;
         icon: string;
@@ -18,4 +21,10 @@ interface CollapsiblePanelHeaderArgs {
 export default class CollapsiblePanelHeader extends Component<BaseGlimmerSignature<CollapsiblePanelHeaderArgs>> {
     @service fastbootMedia!: FastbootMediaService;
     @service currentUser!: CurrentUserService;
+}
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        'CollapsiblePanel::Header': typeof CollapsiblePanelHeader;
+    }
 }

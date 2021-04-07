@@ -10,7 +10,9 @@
     />
     <Panel.body class="p-1">
         <div class="embed-responsive embed-responsive-{{this.aspectRatio}}">
-            {{html-safe this.configuration.base.global.cards.topicalVideoPreview.code}}
+            <video id="clip" controls="controls" preload="auto" class="embed-responsive-item" crossorigin="anonymous">
+                <source src="{{this.video.url}}" type="video/mp4" />
+            </video>
         </div>
     </Panel.body>
 </CollapsiblePanel>
