@@ -10,7 +10,7 @@ import { DS } from 'ember-data';
 import ModalService from '@gavant/ember-modals/services/modal';
 
 import moment from 'moment';
-import { MEDIA_FILE_EXTENSION } from 'pep/constants/regex';
+import { MEDIA_FILE_EXTENSION_REGEX } from 'pep/constants/regex';
 import Abstract from 'pep/pods/abstract/model';
 import GlossaryTerm from 'pep/pods/glossary-term/model';
 import SearchDocument from 'pep/pods/search-document/model';
@@ -145,7 +145,7 @@ export default class Home extends Component<BaseGlimmerSignature<HomeArgs>> {
             const result = await this.ajax.request<{ documentID: string; graphic: string }>(
                 'Documents/Image/*?download=2'
             );
-            imageId = result.graphic.replace(MEDIA_FILE_EXTENSION, '');
+            imageId = result.graphic.replace(MEDIA_FILE_EXTENSION_REGEX, '');
         }
         const queryParams = buildSearchQueryParams({
             smartSearchTerm: `art_graphic_list: ${imageId}`

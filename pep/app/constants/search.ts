@@ -158,6 +158,7 @@ export interface SearchTermType {
     label: string;
     shortLabel?: string;
     isTypeOption: boolean;
+    quoted?: boolean;
 }
 
 /**
@@ -213,7 +214,8 @@ export const SEARCH_TYPE_AUTHOR: SearchTermType = {
     wordWheelField: 'art_authors',
     wordWheelCore: 'docs',
     label: 'search.terms.author.label',
-    isTypeOption: true
+    isTypeOption: true,
+    quoted: true
 };
 
 export const SEARCH_TYPE_TITLE: SearchTermType = {
