@@ -15,14 +15,5 @@ module('Integration | Component | modal-dialogs/admin/video', function(hooks) {
         await render(hbs`{{modal-dialogs/admin/video}}`);
 
         assert.equal(this.element.textContent?.trim(), '');
-
-        // Template block usage:
-        await render(hbs`
-      {{#modal-dialogs/admin/video}}
-        template block text
-      {{/modal-dialogs/admin/video}}
-    `);
-
-        assert.equal(this.element.textContent?.trim(), 'template block text');
     });
 });

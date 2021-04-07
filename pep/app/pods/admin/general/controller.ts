@@ -91,8 +91,7 @@ export default class AdminGeneral extends Controller {
     @action
     createTopicalVideo(video: VideoConfiguration): void {
         const previews = this.changeset?.get('configSettings.global.cards.topicalVideoPreviews');
-        previews.push(video);
-        this.changeset?.set('configSettings.global.cards.topicalVideoPreviews', [...previews]);
+        this.changeset?.set('configSettings.global.cards.topicalVideoPreviews', [...previews, video]);
     }
 
     /**
@@ -104,8 +103,7 @@ export default class AdminGeneral extends Controller {
     @action
     createVideo(video: VideoConfiguration): void {
         const previews = this.changeset?.get('configSettings.global.cards.videoPreviews');
-        previews.push(video);
-        this.changeset?.set('configSettings.global.cards.videoPreviews', [...previews]);
+        this.changeset?.set('configSettings.global.cards.videoPreviews', [...previews, video]);
     }
 
     /**
@@ -117,8 +115,7 @@ export default class AdminGeneral extends Controller {
     @action
     createExpertPick(expertPick: ExpertPick): void {
         const expertPicks = this.changeset?.get('configSettings.home.expertPicks') as ExpertPick[];
-        expertPicks.push(expertPick);
-        this.changeset?.set('configSettings.home.expertPicks', [...expertPicks]);
+        this.changeset?.set('configSettings.home.expertPicks', [...expertPicks, expertPick]);
     }
 
     /**
@@ -131,7 +128,7 @@ export default class AdminGeneral extends Controller {
     deleteExpertPick(expertPick: ExpertPick): void {
         const expertPicks = this.changeset?.get('configSettings.home.expertPicks') as ExpertPick[];
         const filteredPicks = expertPicks.filter((item) => item !== expertPick);
-        this.changeset?.set('configSettings.home.expertPicks', [...filteredPicks]);
+        this.changeset?.set('configSettings.home.expertPicks', filteredPicks);
     }
 
     /**
@@ -144,7 +141,7 @@ export default class AdminGeneral extends Controller {
     deleteVideo(video: VideoConfiguration): void {
         const videos: VideoConfiguration[] = this.changeset?.get('configSettings.global.cards.videoPreviews');
         const newVideos = videos.filter((item) => item !== video);
-        this.changeset?.set('configSettings.global.cards.videoPreviews', [...newVideos]);
+        this.changeset?.set('configSettings.global.cards.videoPreviews', newVideos);
     }
 
     /**
@@ -157,7 +154,7 @@ export default class AdminGeneral extends Controller {
     deleteTopicalVideo(video: VideoConfiguration): void {
         const videos: VideoConfiguration[] = this.changeset?.get('configSettings.global.cards.topicalVideoPreviews');
         const newVideos = videos.filter((item) => item !== video);
-        this.changeset?.set('configSettings.global.cards.topicalVideoPreviews', [...newVideos]);
+        this.changeset?.set('configSettings.global.cards.topicalVideoPreviews', newVideos);
     }
 
     /**
