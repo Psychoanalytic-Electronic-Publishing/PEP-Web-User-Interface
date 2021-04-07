@@ -44,19 +44,11 @@ export default class SearchRead extends Controller {
     @tracked shortcuts: KeyboardShortcut[] = [
         {
             keys: NEXT_ARTICLE,
-            shortcut: () => {
-                if (this.document?.sourceNext) {
-                    this.loadDocument(this.document?.sourceNext);
-                }
-            }
+            shortcut: this.loadNextDocumentInListIfAvailable
         },
         {
             keys: PREVIOUS_ARTICLE,
-            shortcut: () => {
-                if (this.document?.sourcePrevious) {
-                    this.loadDocument(this.document?.sourcePrevious);
-                }
-            }
+            shortcut: this.loadPreviousDocumentInListIfAvailable
         },
         {
             keys: NEXT_HIT,
@@ -69,19 +61,15 @@ export default class SearchRead extends Controller {
         {
             keys: NEXT_ARTICLE_FIRST_HIT,
             shortcut: async () => {
-                if (this.document?.sourceNext) {
-                    await this.loadDocument(this.document?.sourceNext);
-                    this.afterDocumentRendered = this.viewNextSearchHit;
-                }
+                await this.loadNextDocumentInListIfAvailable();
+                this.afterDocumentRendered = this.viewNextSearchHit;
             }
         },
         {
             keys: PREVIOUS_ARTICLE_FIRST_HIT,
             shortcut: async () => {
-                if (this.document?.sourcePrevious) {
-                    await this.loadDocument(this.document?.sourcePrevious);
-                    this.afterDocumentRendered = this.viewNextSearchHit;
-                }
+                await this.loadPreviousDocumentInListIfAvailable();
+                this.afterDocumentRendered = this.viewNextSearchHit;
             }
         }
     ];
@@ -110,6 +98,26 @@ export default class SearchRead extends Controller {
         { _facets: 'facets' },
         'preview'
     ];
+
+    get nextDocumentInList(): Document | undefined {
+        const currentDocument = this.document;
+        const loadedDocuments = this.paginator.models;
+        if (currentDocument) {
+            const currentDocumentIndex = loadedDocuments.findIndex((document) => document.id === currentDocument.id);
+            const nextDocument = loadedDocuments[currentDocumentIndex + 1];
+            return nextDocument;
+        }
+    }
+
+    get previousDocumentInList(): Document | undefined {
+        const currentDocument = this.document;
+        const loadedDocuments = this.paginator.models;
+        if (currentDocument) {
+            const currentDocumentIndex = loadedDocuments.findIndex((document) => document.id === currentDocument.id);
+            const nextDocument = loadedDocuments[currentDocumentIndex - 1];
+            return nextDocument;
+        }
+    }
 
     get readQueryParams() {
         return {
@@ -168,6 +176,19 @@ export default class SearchRead extends Controller {
      */
     get showNextSearchHitButton() {
         return this.searchHitNumber === undefined || this.searchHitNumber < (this.document?.termCount ?? 0);
+    }
+
+    @action
+    loadNextDocumentInListIfAvailable() {
+        if (this.nextDocumentInList) {
+            this.loadDocument(this.nextDocumentInList.id);
+        }
+    }
+    @action
+    loadPreviousDocumentInListIfAvailable() {
+        if (this.previousDocumentInList) {
+            this.loadDocument(this.previousDocumentInList);
+        }
     }
 
     /**
@@ -257,7 +278,7 @@ export default class SearchRead extends Controller {
             id = abstract.id;
         }
 
-        return this.transitionToRoute('search.read', id, {
+        this.transitionToRoute('search.read', id, {
             queryParams: {
                 q: this.q,
                 matchSynonyms: this.matchSynonyms,

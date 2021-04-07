@@ -10,3 +10,9 @@ interface PageSidebarLeftArgs {}
 export default class PageSidebarLeft extends Component<BaseGlimmerSignature<PageSidebarLeftArgs>> {
     @service sidebar!: SidebarService;
 }
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        'Page::Sidebar::Left': typeof PageSidebarLeft;
+    }
+}

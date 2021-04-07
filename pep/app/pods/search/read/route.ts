@@ -7,6 +7,7 @@ import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hooks/pagination';
 import { buildQueryParams, QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 
+import isEqual from 'lodash.isequal';
 import { WIDGET } from 'pep/constants/sidebar';
 import { PageNav } from 'pep/mixins/page-layout';
 import Document from 'pep/pods/document/model';
@@ -114,7 +115,7 @@ export default class SearchRead extends PageNav(Route) {
         }
 
         // if the query params are different - load new items, otherwise reuse if possible
-        if (!pastQueryParams || JSON.stringify(pastQueryParams) !== JSON.stringify(queryParams)) {
+        if (!pastQueryParams || !isEqual(pastQueryParams, queryParams)) {
             const params = this.paramsFor('search.read') as SearchReadParams;
             //workaround for https://github.com/emberjs/ember.js/issues/18981
             const searchTerms = params._searchTerms ? JSON.parse(params._searchTerms) : [];
