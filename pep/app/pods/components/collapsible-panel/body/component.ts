@@ -9,3 +9,9 @@ interface CollapsiblePanelBodyArgs {
 }
 
 export default class CollapsiblePanelBody extends Component<BaseGlimmerSignature<CollapsiblePanelBodyArgs>> {}
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        'CollapsiblePanel::Body': typeof CollapsiblePanelBody;
+    }
+}
