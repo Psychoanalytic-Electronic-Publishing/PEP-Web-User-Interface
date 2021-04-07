@@ -50,6 +50,11 @@ export default class AdminGeneral extends Controller {
         });
     }
 
+    /**
+     * Open Video Modal
+     *
+     * @memberof AdminGeneral
+     */
     @action
     openVideoModal() {
         const changeset = createChangeset({}, CONFIGURATION_VIDEO_VALIDATIONS);
@@ -61,6 +66,11 @@ export default class AdminGeneral extends Controller {
         });
     }
 
+    /**
+     * Open topical video modal
+     *
+     * @memberof AdminGeneral
+     */
     @action
     openTopicalVideoModal() {
         const changeset = createChangeset({}, CONFIGURATION_VIDEO_VALIDATIONS);
@@ -73,9 +83,9 @@ export default class AdminGeneral extends Controller {
     }
 
     /**
-     * Create the expert pick and update the changeset
+     * Create the topical lvideo object and add it to the changeset
      *
-     * @param {ExpertPick} expertPick
+     * @param {VideoConfiguration} video
      * @memberof AdminGeneral
      */
     @action
@@ -86,9 +96,9 @@ export default class AdminGeneral extends Controller {
     }
 
     /**
-     * Create the expert pick and update the changeset
+     * Create the video object and add it to the changeset
      *
-     * @param {ExpertPick} expertPick
+     * @param {VideoConfiguration} video
      * @memberof AdminGeneral
      */
     @action
@@ -114,8 +124,8 @@ export default class AdminGeneral extends Controller {
     /**
      * Delete the expert pick and update the changeset
      *
-     * @param {Publisher} publisher
-     * @memberof AdminLanguage
+     * @param {ExpertPick} expertPick
+     * @memberof AdminGeneral
      */
     @action
     deleteExpertPick(expertPick: ExpertPick): void {
@@ -125,28 +135,28 @@ export default class AdminGeneral extends Controller {
     }
 
     /**
-     * Delete the expert pick and update the changeset
+     * Delete the video
      *
-     * @param {Publisher} publisher
-     * @memberof AdminLanguage
+     * @param {VideoConfiguration} video
+     * @memberof AdminGeneral
      */
     @action
     deleteVideo(video: VideoConfiguration): void {
-        const videos = this.changeset?.get('configSettings.global.cards.videoPreviews');
+        const videos: VideoConfiguration[] = this.changeset?.get('configSettings.global.cards.videoPreviews');
         const newVideos = videos.filter((item) => item !== video);
         this.changeset?.set('configSettings.global.cards.videoPreviews', [...newVideos]);
     }
 
     /**
-     * Delete the expert pick and update the changeset
+     * Delete the topical video
      *
-     * @param {Publisher} publisher
-     * @memberof AdminLanguage
+     * @param {VideoConfiguration} video
+     * @memberof AdminGeneral
      */
     @action
     deleteTopicalVideo(video: VideoConfiguration): void {
-        const expertPicks = this.changeset?.get('configSettings.global.cards.topicalVideoPreviews');
-        const newVideos = expertPicks.filter((item) => item !== video);
+        const videos: VideoConfiguration[] = this.changeset?.get('configSettings.global.cards.topicalVideoPreviews');
+        const newVideos = videos.filter((item) => item !== video);
         this.changeset?.set('configSettings.global.cards.topicalVideoPreviews', [...newVideos]);
     }
 
@@ -155,7 +165,7 @@ export default class AdminGeneral extends Controller {
      *
      * @readonly
      * @type {ColumnValue[]}
-     * @memberof AdminLanguage
+     * @memberof AdminGeneral
      */
     @computed('deleteExpertPick')
     get columns(): ColumnValue[] {
@@ -190,7 +200,7 @@ export default class AdminGeneral extends Controller {
      *
      * @readonly
      * @type {ColumnValue[]}
-     * @memberof AdminLanguage
+     * @memberof AdminGeneral
      */
     @computed('deleteVideo')
     get videoPreviewColumns(): ColumnValue[] {
@@ -220,7 +230,7 @@ export default class AdminGeneral extends Controller {
      *
      * @readonly
      * @type {ColumnValue[]}
-     * @memberof AdminLanguage
+     * @memberof AdminGeneral
      */
     @computed('deleteTopicalVideo')
     get topicalVideoPreviewColumns(): ColumnValue[] {

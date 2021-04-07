@@ -814,6 +814,10 @@
         "publisher": {
             "information": "Publisher Information"
         },
+        "video": {
+            "title": "Video Details",
+            "url": "Url"
+        },
         "common": {
             "title": "General",
             "search": {
