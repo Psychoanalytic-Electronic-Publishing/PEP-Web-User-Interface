@@ -39,11 +39,11 @@ export default class PageSidebarWidgetsSignIn extends Component<BaseGlimmerSigna
 
     @tracked changeset!: GenericChangeset<LoginForm>;
     @tracked loginError = null;
-    @tracked logins = null;
-    @tracked padsForgotPasswordUrl = null;
-    @tracked genericLoginUrl = null;
-    @tracked padsLoginUrl = null;
-    @tracked padsRegisterUrl = null;
+    @tracked logins?: { URL: string; Name: string }[];
+    @tracked padsForgotPasswordUrl?: string;
+    @tracked genericLoginUrl?: string;
+    @tracked padsLoginUrl?: string;
+    @tracked padsRegisterUrl?: string;
 
     /**
      * Create the loginForm changeset.
@@ -57,27 +57,14 @@ export default class PageSidebarWidgetsSignIn extends Component<BaseGlimmerSigna
         this.changeset = changeset;
     }
 
-    /**
-     * Submits the login form and logs the user in
-     * @param {GenericChangeset<LoginForm>} changeset
-     */
-    @action
-    async login(changeset: GenericChangeset<LoginForm>) {
-        try {
-            const username = changeset.username;
-            const password = changeset.password;
-            this.loadingBar.show();
-            const response = await this.session.authenticate('authenticator:credentials', username, password);
-            this.loginError = null;
-            this.loadingBar.hide();
-            this.notifications.success(this.intl.t('login.success'));
-            await onAuthenticated(this);
-            return response;
-        } catch (err) {
-            this.loginError = err;
-            this.loadingBar.hide();
-            return reject(err);
-        }
+    get canShowLoginForm() {
+        return (
+            !!this.logins &&
+            !!this.genericLoginUrl &&
+            !!this.padsLoginUrl &&
+            !!this.padsForgotPasswordUrl &&
+            !!this.padsRegisterUrl
+        );
     }
 
     /**

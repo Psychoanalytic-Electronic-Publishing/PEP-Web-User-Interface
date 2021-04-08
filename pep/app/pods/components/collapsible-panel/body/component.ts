@@ -4,7 +4,7 @@ import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface CollapsiblePanelBodyArgs {
     isOpen: boolean;
-    transition: Generator<never, void, unknown>;
+    transition: any;
     animateDuration: number;
 }
 
@@ -13,5 +13,6 @@ export default class CollapsiblePanelBody extends Component<BaseGlimmerSignature
 declare module '@glint/environment-ember-loose/registry' {
     export default interface Registry {
         'CollapsiblePanel::Body': typeof CollapsiblePanelBody;
+        'collapsible-panel/body': typeof CollapsiblePanelBody;
     }
 }

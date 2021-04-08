@@ -10,7 +10,7 @@ interface CollapsiblePanelHeaderArgs {
     title: string;
     isOpen?: boolean;
     tooltip?: string;
-    toggle?: () => void;
+    toggle: (event: Event) => void;
     secondaryAction?: {
         action: () => void;
         icon: string;
@@ -26,5 +26,6 @@ export default class CollapsiblePanelHeader extends Component<BaseGlimmerSignatu
 declare module '@glint/environment-ember-loose/registry' {
     export default interface Registry {
         'CollapsiblePanel::Header': typeof CollapsiblePanelHeader;
+        'collapsible-panel/header': typeof CollapsiblePanelHeader;
     }
 }

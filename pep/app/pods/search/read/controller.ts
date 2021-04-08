@@ -179,13 +179,18 @@ export default class SearchRead extends Controller {
     }
 
     @action
-    loadNextDocumentInListIfAvailable() {
+    async loadNextDocumentInListIfAvailable(): Promise<void> {
         if (this.nextDocumentInList) {
             this.loadDocument(this.nextDocumentInList.id);
+        } else {
+            const results = await this.paginator.loadMoreModels();
+            if (results?.length !== 0) {
+                this.loadNextDocumentInListIfAvailable();
+            }
         }
     }
     @action
-    loadPreviousDocumentInListIfAvailable() {
+    loadPreviousDocumentInListIfAvailable(): void {
         if (this.previousDocumentInList) {
             this.loadDocument(this.previousDocumentInList);
         }

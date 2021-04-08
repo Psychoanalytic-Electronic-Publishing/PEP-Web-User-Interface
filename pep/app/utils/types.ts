@@ -66,3 +66,11 @@ export interface BaseGlimmerSignature<T> {
         default?: [];
     };
 }
+/**
+ * Helper to modify the yields property when the `BaseGlimmerSignature` wont work for you. Temporary until strict mode comes
+ *
+ * @export
+ * @interface BaseGlimmerSignature
+ * @template T
+ */
+export type ModifyYields<T, Y> = Omit<T, 'Yields'> & Y;

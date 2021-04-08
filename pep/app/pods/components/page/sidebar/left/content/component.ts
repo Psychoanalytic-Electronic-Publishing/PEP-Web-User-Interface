@@ -22,5 +22,6 @@ export default class PageSidebarLeftContent extends Component<BaseGlimmerSignatu
 declare module '@glint/environment-ember-loose/registry' {
     export default interface Registry {
         'Page::Sidebar::Left::Content': typeof PageSidebarLeftContent;
+        'page/sidebar/left/content': typeof PageSidebarLeftContent;
     }
 }
