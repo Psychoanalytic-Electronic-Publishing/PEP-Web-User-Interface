@@ -4,10 +4,10 @@ import { isEmpty, isNone } from '@ember/utils';
 
 import { QueryParamsObj, removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
 
-import { QUOTED_VALUE_REGEX } from 'pep/constants/regex';
+import { BOOLEAN_OPERATOR_REGEX, QUOTED_VALUE_REGEX } from 'pep/constants/regex';
 import {
-    SEARCH_DEFAULT_VIEW_PERIOD, SEARCH_FACETS, SEARCH_TYPES, SearchFacetId, SearchFacetValue, SearchTermValue,
-    SourceType, ViewPeriod
+    SEARCH_DEFAULT_VIEW_PERIOD, SEARCH_FACETS, SEARCH_TYPE_AUTHOR, SEARCH_TYPES, SearchFacetId, SearchFacetValue,
+    SearchTermValue, SourceType, ViewPeriod
 } from 'pep/constants/search';
 import Document from 'pep/pods/document/model';
 import ConfigurationService from 'pep/services/configuration';
@@ -128,6 +128,8 @@ export function buildSearchQueryParams(searchQueryParams: BuildSearchQueryParams
     const nonEmptyTerms = searchTerms?.filter((t) => !!t.term);
     const parascopes: string[] = [];
 
+    const authors = nonEmptyTerms?.filter((term) => term.type === SEARCH_TYPE_AUTHOR.id) ?? [];
+    const multipleAuthors = authors.length > 1;
     nonEmptyTerms?.forEach((term) => {
         const searchType = SEARCH_TYPES.findBy('id', term.type);
         if (searchType && searchType.param) {
@@ -139,6 +141,18 @@ export function buildSearchQueryParams(searchQueryParams: BuildSearchQueryParams
                 const hasMultipleWords = value.indexOf(' ') !== -1;
                 const formatted = hasMultipleWords && !isQuoted ? `"${value}"~25` : value;
                 value = `${searchType.solrField}:(${formatted})`;
+            }
+
+            const isAuthorType = searchType.id === SEARCH_TYPE_AUTHOR.id;
+            // If there is a single author with no boolean operators, wrap in quotes. If multiple authors, wrap in parenthesis.
+            // https://github.com/Psychoanalytic-Electronic-Publishing/PEP-Web-User-Interface/issues/410
+            if (
+                (searchType.quoted && !isAuthorType) ||
+                (searchType.quoted && isAuthorType && !(multipleAuthors || BOOLEAN_OPERATOR_REGEX.test(value)))
+            ) {
+                value = `"${value}"`;
+            } else if (searchType.quoted && isAuthorType && (multipleAuthors || BOOLEAN_OPERATOR_REGEX.test(value))) {
+                value = `(${value})`;
             }
 
             queryParams[p] = joinParamValues(queryParams[p], value, joinOp);
@@ -177,10 +191,12 @@ export function buildSearchQueryParams(searchQueryParams: BuildSearchQueryParams
         if (facetType && facetType.param) {
             //join all the selected facet values together
             const facetValues = facets.map((f) => (facetType?.quoteValues ? `"${f.value}"` : f.value));
-            let values = facetValues.join(facetType.paramSeparator);
+            //wrap all facets in parenthesis
+            //https://github.com/Psychoanalytic-Electronic-Publishing/PEP-Web-User-Interface/issues/410
+            let values = `(${facetValues.join(facetType.paramSeparator)})`;
 
             if (facetType.prefixValues) {
-                values = `${facetType.id}:(${values})`;
+                values = `${facetType.id}:${values}`;
             }
 
             queryParams[facetType.param] = joinParamValues(queryParams[facetType.param], values, joinOp);
