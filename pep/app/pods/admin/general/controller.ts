@@ -368,6 +368,13 @@ export default class AdminGeneral extends Controller {
         this.rightSidebarItems = [...updates];
     }
 
+    /**
+     * If the element your dragging on is a label, cancel the drag. This prevents an accidental drag
+     * when the user is trying to click on the checkbox
+     *
+     * @param {*} event
+     * @memberof AdminGeneral
+     */
     @action
     dragStart(event: any) {
         if (event.data.sensorEvent.data.target.tagName === 'LABEL') {
