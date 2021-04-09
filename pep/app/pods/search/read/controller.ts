@@ -37,6 +37,7 @@ export default class SearchRead extends Controller {
     @tracked paginator!: Pagination<Document>;
     @tracked page: string | null = null;
     @tracked searchHitNumber?: number;
+    @tracked index: number | null = null;
 
     // This becomes our model as the template wasn't updating when we changed the default model
     @tracked document?: Document;
@@ -96,7 +97,8 @@ export default class SearchRead extends Controller {
         'viewedCount',
         'viewedPeriod',
         { _facets: 'facets' },
-        'preview'
+        'preview',
+        'index'
     ];
 
     get nextDocumentInList(): Document | undefined {
@@ -126,7 +128,8 @@ export default class SearchRead extends Controller {
             facets: this._facets,
             matchSynonyms: this.matchSynonyms,
             citedCount: this.citedCount,
-            viewedCount: this.viewedCount
+            viewedCount: this.viewedCount,
+            index: this.index
         };
     }
 
@@ -233,6 +236,8 @@ export default class SearchRead extends Controller {
             highlightlimit: this.currentUser.preferences?.searchHICLimit ?? cfg.hitsInContext.limit
         });
 
+        this.index = this.paginator.models.length;
+
         return { ...params, ...searchParams };
     }
 
@@ -287,7 +292,8 @@ export default class SearchRead extends Controller {
             queryParams: {
                 q: this.q,
                 matchSynonyms: this.matchSynonyms,
-                searchTerms: this._searchTerms
+                searchTerms: this._searchTerms,
+                index: this.index
             }
         });
     }

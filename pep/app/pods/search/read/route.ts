@@ -30,6 +30,7 @@ export interface SearchReadParams {
     _searchTerms?: string;
     _facets?: string;
     page?: string;
+    index?: string;
 }
 
 export default class SearchRead extends PageNav(Route) {
@@ -46,6 +47,9 @@ export default class SearchRead extends PageNav(Route) {
 
     queryParams = {
         page: {
+            replace: true
+        },
+        index: {
             replace: true
         }
     };
@@ -143,6 +147,7 @@ export default class SearchRead extends PageNav(Route) {
                     context: controller,
                     pagingRootKey: null,
                     filterRootKey: null,
+                    limit: params.index ?? undefined,
                     sorts:
                         controller.selectedView.id === controller.tableView
                             ? ['']
@@ -217,8 +222,13 @@ export default class SearchRead extends PageNav(Route) {
         controller.document = model;
 
         if (!this.fastboot.isFastBoot) {
-            if (transition.to.queryParams.page) {
-                controller.page = transition.to.queryParams.page;
+            const page = transition.to.queryParams.page;
+            const index = transition.to.queryParams.index;
+            if (page) {
+                controller.page = page;
+            }
+            if (index) {
+                controller.index = Number(transition.to.queryParams.index);
             }
         }
     }
