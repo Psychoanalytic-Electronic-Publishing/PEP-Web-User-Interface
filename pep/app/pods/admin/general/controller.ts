@@ -367,6 +367,13 @@ export default class AdminGeneral extends Controller {
     updateRightSidebarItems(updates: WidgetConfiguration[]) {
         this.rightSidebarItems = [...updates];
     }
+
+    @action
+    dragStart(event: any) {
+        if (event.data.sensorEvent.data.target.tagName === 'LABEL') {
+            event.cancel();
+        }
+    }
 }
 // DO NOT DELETE: this is how TypeScript knows how to look up your controllers.
 declare module '@ember/controller' {
