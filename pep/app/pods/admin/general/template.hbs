@@ -131,6 +131,7 @@
                                 <SortableGroup
                                     @swapAnimation={{true}}
                                     @mirrorOptions={{this.mirrorOptions}}
+                                    @dragActions={{hash start=(fn this.dragStart)}}
                                     class="row" as |Group|
                                 >
                                     <div class="col-12">

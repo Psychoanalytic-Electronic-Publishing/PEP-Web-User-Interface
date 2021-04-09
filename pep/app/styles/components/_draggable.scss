@@ -1,4 +1,6 @@
 .sortable.container-list {
+    user-select: none;
+
     grid-area: b;
     header {
         background-color: #000;
@@ -24,7 +26,6 @@
             display: flex;
             justify-content: center;
             cursor: move;
-            user-select: none;
 
             align-items: center;
             padding: 0.8rem;
