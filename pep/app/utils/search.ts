@@ -404,10 +404,6 @@ export function buildBrowseRelatedDocumentsParams(
                     value: terms[0]
                 },
                 {
-                    id: SearchFacetId.ART_SOURCECODE,
-                    value: terms[0]
-                },
-                {
                     id: SearchFacetId.ART_VOL,
                     value: Number(terms[1]).toString()
                 }

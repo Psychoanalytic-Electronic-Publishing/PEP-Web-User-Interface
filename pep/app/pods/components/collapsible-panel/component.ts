@@ -9,9 +9,7 @@ import CollapsiblePanelBody from 'pep/pods/components/collapsible-panel/body/com
 import CollapsiblePanelHeader from 'pep/pods/components/collapsible-panel/header/component';
 import ScrollableService from 'pep/services/scrollable';
 import { fadeTransition } from 'pep/utils/animation';
-import { BaseGlimmerSignature } from 'pep/utils/types';
-
-import { ModifyYields } from '../../../utils/types';
+import { BaseGlimmerSignature, ModifyYields } from 'pep/utils/types';
 
 export interface CollapsiblePanelArgs {
     isOpen: boolean;

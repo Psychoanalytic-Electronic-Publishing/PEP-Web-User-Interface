@@ -57,16 +57,6 @@ export default class PageSidebarWidgetsSignIn extends Component<BaseGlimmerSigna
         this.changeset = changeset;
     }
 
-    get canShowLoginForm() {
-        return (
-            !!this.logins &&
-            !!this.genericLoginUrl &&
-            !!this.padsLoginUrl &&
-            !!this.padsForgotPasswordUrl &&
-            !!this.padsRegisterUrl
-        );
-    }
-
     /**
      * Load the widget login data
      */
