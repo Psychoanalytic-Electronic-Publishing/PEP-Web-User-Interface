@@ -88,15 +88,25 @@ export default class PepSessionService extends SessionService {
         return serializeQueryParams(normalizedParams);
     }
 
-    handleAuthentication(_routeAfterAuthentication: string): void {
-        onAuthenticated(this);
-        // trigger a custom event on the session that tells us when the user is logged in
-        // and all other post-login tasks (loading user record, prefs/configs setup, etc) is complete
-        // as the built-in `authenticationSucceeded` event fires immediately after the login request returns
-        this.session.trigger('authenticationAndSetupSucceeded');
-        this.clearUnauthenticatedSession();
+    /**
+     * Gets called by ESA when the user logs in
+     * Notes: Does NOT get called when your IP authed and log in manually as ESA thinks your already logged in
+     *
+     * @param {string} _routeAfterAuthentication
+     * @return {*}  {Promise<void>}
+     * @memberof PepSessionService
+     */
+    async handleAuthentication(_routeAfterAuthentication: string): Promise<void> {
+        await onAuthenticated(this);
+        this.trigger('authenticationAndSetupSucceeded');
     }
 
+    /**
+     * Gets called by ESA when the user logs out
+     *
+     * @param {string} routeAfterInvalidation
+     * @memberof PepSessionService
+     */
     handleInvalidation(routeAfterInvalidation: string): void {
         this.cookies.write(SESSION_COOKIE_NAME, JSON.stringify({ authenticated: {} }), {});
         this.cookies.write(HIDE_TOUR_COOKIE_NAME, 'true', {});

@@ -29,6 +29,7 @@ export async function onAuthenticated(owner: Controller | Route | Component<any>
     const configurationService = currentOwner.lookup(`service:configuration`);
     const session = currentOwner.lookup('service:pep-session');
     const introTour = currentOwner.lookup('service:intro-tour');
+
     try {
         // get the current user's model before transitioning from the login page
         await currentUserService.load();
@@ -45,7 +46,7 @@ export async function onAuthenticated(owner: Controller | Route | Component<any>
         introTour.show();
     }
 
-    return session.trigger('authenticationAndSetupSucceeded');
+    return session.clearUnauthenticatedSession();
 }
 
 /**

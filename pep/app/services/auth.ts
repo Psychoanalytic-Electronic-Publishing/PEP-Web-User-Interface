@@ -86,8 +86,7 @@ export default class AuthService extends Service {
                 genericLoginUrl: federatedLogins.GenericFederatedURL,
                 padsLoginUrl: federatedLogins.PaDSLogonURL,
                 padsForgotPasswordUrl: federatedLogins.PaDSPasswordResetURL,
-                padsRegisterUrl: federatedLogins.PaDSRegisterUserURL,
-                onAuthenticated: () => onAuthenticated(this)
+                padsRegisterUrl: federatedLogins.PaDSRegisterUserURL
             });
         } catch (errors) {
             this.notifications.error(errors);

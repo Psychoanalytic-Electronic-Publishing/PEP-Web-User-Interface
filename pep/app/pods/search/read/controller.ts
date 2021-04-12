@@ -26,6 +26,32 @@ export default class SearchRead extends Controller {
     @service configuration!: ConfigurationService;
     @service currentUser!: CurrentUserService;
 
+    pagingLimit = 20;
+    afterDocumentRendered: null | (() => void) = null;
+    tableView = SearchViewType.TABLE;
+    searchViews = SearchViews;
+    sorts = SearchSorts;
+
+    //workaround for bug w/array-based query param values
+    //@see https://github.com/emberjs/ember.js/issues/18981
+    //@ts-ignore
+    queryParams = [
+        'q',
+        {
+            page: {
+                scope: 'controller'
+            }
+        },
+        { _searchTerms: 'searchTerms' },
+        'matchSynonyms',
+        'citedCount',
+        'viewedCount',
+        'viewedPeriod',
+        { _facets: 'facets' },
+        'preview',
+        'index'
+    ];
+
     @tracked selectedView = SearchViews[0];
     @tracked selectedSort = SearchSorts[0];
     @tracked q: string = '';
@@ -37,6 +63,8 @@ export default class SearchRead extends Controller {
     @tracked paginator!: Pagination<Document>;
     @tracked page: string | null = null;
     @tracked searchHitNumber?: number;
+
+    @tracked index: number = this.pagingLimit;
 
     // This becomes our model as the template wasn't updating when we changed the default model
     @tracked document?: Document;
@@ -74,31 +102,6 @@ export default class SearchRead extends Controller {
         }
     ];
 
-    afterDocumentRendered: null | (() => void) = null;
-
-    tableView = SearchViewType.TABLE;
-    searchViews = SearchViews;
-    sorts = SearchSorts;
-
-    //workaround for bug w/array-based query param values
-    //@see https://github.com/emberjs/ember.js/issues/18981
-    //@ts-ignore
-    queryParams = [
-        'q',
-        {
-            page: {
-                scope: 'controller'
-            }
-        },
-        { _searchTerms: 'searchTerms' },
-        'matchSynonyms',
-        'citedCount',
-        'viewedCount',
-        'viewedPeriod',
-        { _facets: 'facets' },
-        'preview'
-    ];
-
     get nextDocumentInList(): Document | undefined {
         const currentDocument = this.document;
         const loadedDocuments = this.paginator.models;
@@ -126,7 +129,8 @@ export default class SearchRead extends Controller {
             facets: this._facets,
             matchSynonyms: this.matchSynonyms,
             citedCount: this.citedCount,
-            viewedCount: this.viewedCount
+            viewedCount: this.viewedCount,
+            index: this.index
         };
     }
 
@@ -178,14 +182,31 @@ export default class SearchRead extends Controller {
         return this.searchHitNumber === undefined || this.searchHitNumber < (this.document?.termCount ?? 0);
     }
 
+    /**
+     * Load next document in left sidebar list
+     *
+     * @return {*}  {Promise<void>}
+     * @memberof SearchRead
+     */
     @action
-    loadNextDocumentInListIfAvailable() {
+    async loadNextDocumentInListIfAvailable(): Promise<void> {
         if (this.nextDocumentInList) {
             this.loadDocument(this.nextDocumentInList.id);
+        } else {
+            const results = await this.paginator.loadMoreModels();
+            if (results && results.length !== 0) {
+                this.loadNextDocumentInListIfAvailable();
+            }
         }
     }
+
+    /**
+     * Load previous document in left sidebar list
+     *
+     * @memberof SearchRead
+     */
     @action
-    loadPreviousDocumentInListIfAvailable() {
+    loadPreviousDocumentInListIfAvailable(): void {
         if (this.previousDocumentInList) {
             this.loadDocument(this.previousDocumentInList);
         }
@@ -227,6 +248,8 @@ export default class SearchRead extends Controller {
             facetMinCount: cfg.facets.valueMinCount,
             highlightlimit: this.currentUser.preferences?.searchHICLimit ?? cfg.hitsInContext.limit
         });
+
+        this.index = this.paginator.models.length;
 
         return { ...params, ...searchParams };
     }
@@ -282,7 +305,8 @@ export default class SearchRead extends Controller {
             queryParams: {
                 q: this.q,
                 matchSynonyms: this.matchSynonyms,
-                searchTerms: this._searchTerms
+                searchTerms: this._searchTerms,
+                index: this.index
             }
         });
     }

@@ -181,10 +181,10 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
     }
 
     sessionAuthenticated(routeAfterAuth: string) {
-        this.session.handleAuthentication(routeAfterAuth);
         // dont redirect the user on login if the behavior is suppressed
         if (this.auth.dontRedirectOnLogin) {
             this.auth.dontRedirectOnLogin = false;
+            this.session.handleAuthentication(routeAfterAuth);
         } else {
             //@ts-ignore mixin - bleh
             super.sessionAuthenticated(...arguments);

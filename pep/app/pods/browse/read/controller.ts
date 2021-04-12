@@ -6,39 +6,104 @@ import { tracked } from '@glimmer/tracking';
 import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
 import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 
+import { NEXT_ARTICLE, PREVIOUS_ARTICLE } from 'pep/constants/keyboard-shortcuts';
 import { SearchView, SearchViews, SearchViewType } from 'pep/constants/search';
+import { KeyboardShortcut } from 'pep/modifiers/register-keyboard-shortcuts';
 import Document from 'pep/pods/document/model';
 import LoadingBarService from 'pep/services/loading-bar';
 import { buildBrowseRelatedDocumentsParams, buildSearchQueryParams } from 'pep/utils/search';
 import { SearchSorts, transformSearchSortToAPI } from 'pep/utils/sort';
+import { guard } from 'pep/utils/types';
 import { reject } from 'rsvp';
 
 export default class BrowseRead extends Controller {
     @service loadingBar!: LoadingBarService;
 
-    @tracked selectedView = SearchViews[0];
-    @tracked paginator!: Pagination<Document>;
-    @tracked page: string | null = null;
-
-    // This becomes our model as the template wasn't updating when we changed the default model
-    @tracked document?: Document;
-
+    tableView = SearchViewType.TABLE;
+    searchViews = SearchViews;
+    sorts = SearchSorts;
+    pagingLimit = 20;
     // @ts-ignore
     queryParams = [
         {
             page: {
                 scope: 'controller'
             }
+        },
+        'index'
+    ];
+
+    @tracked selectedView = SearchViews[0];
+    @tracked paginator!: Pagination<Document>;
+    @tracked page: string | null = null;
+    @tracked index: number = this.pagingLimit;
+
+    // This becomes our model as the template wasn't updating when we changed the default model
+    @tracked document?: Document;
+
+    @tracked shortcuts: KeyboardShortcut[] = [
+        {
+            keys: NEXT_ARTICLE,
+            shortcut: this.loadNextDocumentInListIfAvailable
+        },
+        {
+            keys: PREVIOUS_ARTICLE,
+            shortcut: this.loadPreviousDocumentInListIfAvailable
         }
     ];
 
-    tableView = SearchViewType.TABLE;
-    searchViews = SearchViews;
-    sorts = SearchSorts;
+    get nextDocumentInList(): Document | undefined {
+        const currentDocument = this.document;
+        const loadedDocuments = this.paginator.models;
+        if (currentDocument) {
+            const currentDocumentIndex = loadedDocuments.findIndex((document) => document.id === currentDocument.id);
+            const nextDocument = loadedDocuments[currentDocumentIndex + 1];
+            return nextDocument;
+        }
+    }
+
+    get previousDocumentInList(): Document | undefined {
+        const currentDocument = this.document;
+        const loadedDocuments = this.paginator.models;
+        if (currentDocument) {
+            const currentDocumentIndex = loadedDocuments.findIndex((document) => document.id === currentDocument.id);
+            const nextDocument = loadedDocuments[currentDocumentIndex - 1];
+            return nextDocument;
+        }
+    }
 
     get relatedDocumentQueryParams() {
         const params = buildBrowseRelatedDocumentsParams(this.model);
         return buildSearchQueryParams(params);
+    }
+
+    /**
+     * Load next document in left sidebar list
+     *
+     * @return {*}  {Promise<void>}
+     * @memberof BrowseRead
+     */
+    @action
+    async loadNextDocumentInListIfAvailable(): Promise<void> {
+        if (this.nextDocumentInList) {
+            this.loadDocument(this.nextDocumentInList.id);
+        } else {
+            const results = await this.paginator.loadMoreModels();
+            if (results && results.length !== 0) {
+                this.loadNextDocumentInListIfAvailable();
+            }
+        }
+    }
+    /**
+     * Load previous document in left sidebar list
+     *
+     * @memberof BrowseRead
+     */
+    @action
+    loadPreviousDocumentInListIfAvailable(): void {
+        if (this.previousDocumentInList) {
+            this.loadDocument(this.previousDocumentInList);
+        }
     }
 
     /**
@@ -63,6 +128,7 @@ export default class BrowseRead extends Controller {
     @action
     processQueryParams(params: QueryParamsObj) {
         const searchParams = this.relatedDocumentQueryParams;
+        this.index = this.paginator.models.length;
         return { ...params, ...searchParams };
     }
 
@@ -88,14 +154,22 @@ export default class BrowseRead extends Controller {
     }
 
     /**
-     * Navigate to the passed in document
+     *  Navigate to the passed in document
      *
-     * @param {Document} document
-     * @memberof ReadDocument
+     * @param {(Document | string)} abstract
+     * @memberof BrowseRead
      */
     @action
-    loadDocument(document: Document) {
-        this.transitionToRoute('browse.read', document.id);
+    loadDocument(abstract: Document | string) {
+        let id = abstract;
+        if (guard<Document>(abstract, 'id')) {
+            id = abstract.id;
+        }
+        this.transitionToRoute('browse.read', id, {
+            queryParams: {
+                index: this.index
+            }
+        });
     }
 
     /**

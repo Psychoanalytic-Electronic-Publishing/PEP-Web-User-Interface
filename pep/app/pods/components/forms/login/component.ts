@@ -21,11 +21,11 @@ import LoginValidations from 'pep/validations/user/login';
 import { reject } from 'rsvp';
 
 interface FormsLoginArgs {
-    logins: string;
-    padsForgotPasswordUrl: string;
-    genericLoginUrl: string;
-    padsLoginUrl: string;
-    padsRegisterUrl: string;
+    logins?: { URL: string; Name: string }[];
+    padsForgotPasswordUrl?: string;
+    genericLoginUrl?: string;
+    padsLoginUrl?: string;
+    padsRegisterUrl?: string;
     isModal?: boolean;
     onClose?: () => void;
 }
@@ -66,6 +66,7 @@ export default class FormsLogin extends Component<BaseGlimmerSignature<FormsLogi
     @action
     async login(changeset: GenericChangeset<LoginForm>) {
         try {
+            const isGroup = this.currentUser.user?.isGroup;
             const username = changeset.username;
             const password = changeset.password;
             this.loadingBar.show();
@@ -76,7 +77,15 @@ export default class FormsLogin extends Component<BaseGlimmerSignature<FormsLogi
                 this.args.onClose?.();
             }
             this.notifications.success(this.intl.t('login.success'));
-            await onAuthenticated(this);
+
+            // If we are a group, and we just logged in using an individual user we should re-trigger this so that the proper setup is done
+            // if we are NOT a group, the session authenticated endpoint will be called which will end up calling the `onAuthenticated` method so we shouldn't do that here
+            // We need to call this manually because ESA thinks we are already logged in (which we are)
+            if (isGroup) {
+                await onAuthenticated(this);
+                this.session.trigger('authenticationAndSetupSucceeded');
+            }
+
             return response;
         } catch (err) {
             this.loginError = err;
@@ -97,5 +106,11 @@ export default class FormsLogin extends Component<BaseGlimmerSignature<FormsLogi
             padsLoginUrl: this.args.padsLoginUrl,
             padsForgotPasswordUrl: this.args.padsForgotPasswordUrl
         });
+    }
+}
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        'Forms::Login': typeof FormsLogin;
     }
 }

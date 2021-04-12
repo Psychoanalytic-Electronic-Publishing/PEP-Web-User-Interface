@@ -33,5 +33,6 @@ export default class ContentWithPlaceholder extends Component<BaseGlimmerSignatu
 declare module '@glint/environment-ember-loose/registry' {
     export default interface Registry {
         ContentWithPlaceholder: typeof ContentWithPlaceholder;
+        'content-with-placeholder': typeof ContentWithPlaceholder;
     }
 }
