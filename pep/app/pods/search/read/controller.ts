@@ -26,6 +26,32 @@ export default class SearchRead extends Controller {
     @service configuration!: ConfigurationService;
     @service currentUser!: CurrentUserService;
 
+    pagingLimit = 20;
+    afterDocumentRendered: null | (() => void) = null;
+    tableView = SearchViewType.TABLE;
+    searchViews = SearchViews;
+    sorts = SearchSorts;
+
+    //workaround for bug w/array-based query param values
+    //@see https://github.com/emberjs/ember.js/issues/18981
+    //@ts-ignore
+    queryParams = [
+        'q',
+        {
+            page: {
+                scope: 'controller'
+            }
+        },
+        { _searchTerms: 'searchTerms' },
+        'matchSynonyms',
+        'citedCount',
+        'viewedCount',
+        'viewedPeriod',
+        { _facets: 'facets' },
+        'preview',
+        'index'
+    ];
+
     @tracked selectedView = SearchViews[0];
     @tracked selectedSort = SearchSorts[0];
     @tracked q: string = '';
@@ -37,7 +63,8 @@ export default class SearchRead extends Controller {
     @tracked paginator!: Pagination<Document>;
     @tracked page: string | null = null;
     @tracked searchHitNumber?: number;
-    @tracked index: number | null = null;
+
+    @tracked index: number = this.pagingLimit;
 
     // This becomes our model as the template wasn't updating when we changed the default model
     @tracked document?: Document;
@@ -73,32 +100,6 @@ export default class SearchRead extends Controller {
                 this.afterDocumentRendered = this.viewNextSearchHit;
             }
         }
-    ];
-
-    afterDocumentRendered: null | (() => void) = null;
-
-    tableView = SearchViewType.TABLE;
-    searchViews = SearchViews;
-    sorts = SearchSorts;
-
-    //workaround for bug w/array-based query param values
-    //@see https://github.com/emberjs/ember.js/issues/18981
-    //@ts-ignore
-    queryParams = [
-        'q',
-        {
-            page: {
-                scope: 'controller'
-            }
-        },
-        { _searchTerms: 'searchTerms' },
-        'matchSynonyms',
-        'citedCount',
-        'viewedCount',
-        'viewedPeriod',
-        { _facets: 'facets' },
-        'preview',
-        'index'
     ];
 
     get nextDocumentInList(): Document | undefined {
@@ -181,17 +182,29 @@ export default class SearchRead extends Controller {
         return this.searchHitNumber === undefined || this.searchHitNumber < (this.document?.termCount ?? 0);
     }
 
+    /**
+     * Load next document in left sidebar list
+     *
+     * @return {*}  {Promise<void>}
+     * @memberof SearchRead
+     */
     @action
     async loadNextDocumentInListIfAvailable(): Promise<void> {
         if (this.nextDocumentInList) {
             this.loadDocument(this.nextDocumentInList.id);
         } else {
             const results = await this.paginator.loadMoreModels();
-            if (results?.length !== 0) {
+            if (results && results.length !== 0) {
                 this.loadNextDocumentInListIfAvailable();
             }
         }
     }
+
+    /**
+     * Load previous document in left sidebar list
+     *
+     * @memberof SearchRead
+     */
     @action
     loadPreviousDocumentInListIfAvailable(): void {
         if (this.previousDocumentInList) {

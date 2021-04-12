@@ -20,6 +20,7 @@ import { buildBrowseRelatedDocumentsParams, buildSearchQueryParams } from 'pep/u
 
 export interface BrowseReadParams {
     document_id: string;
+    index: string;
 }
 
 export default class BrowseRead extends PageNav(Route) {
@@ -35,6 +36,9 @@ export default class BrowseRead extends PageNav(Route) {
 
     queryParams = {
         page: {
+            replace: true
+        },
+        index: {
             replace: true
         }
     };
@@ -67,11 +71,12 @@ export default class BrowseRead extends PageNav(Route) {
 
         const params = buildBrowseRelatedDocumentsParams(model);
         const searchParams = buildSearchQueryParams(params);
-
+        const controllerParams = this.paramsFor('browse.read') as { page: string; index: string };
         const queryParams = buildQueryParams({
             context: controller,
             pagingRootKey: null,
             filterRootKey: null,
+            limit: Number(controllerParams.index) + controller.pagingLimit,
             sorts:
                 controller.selectedView.id === controller.tableView
                     ? ['']
@@ -116,7 +121,7 @@ export default class BrowseRead extends PageNav(Route) {
             filterRootKey: null,
             processQueryParams: controller.processQueryParams,
             onChangeSorting: controller.onChangeSorting,
-            limit: 20
+            limit: controller.pagingLimit
         });
         this.currentUser.lastViewedDocument = {
             id: model.id,

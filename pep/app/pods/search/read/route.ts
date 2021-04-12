@@ -147,7 +147,7 @@ export default class SearchRead extends PageNav(Route) {
                     context: controller,
                     pagingRootKey: null,
                     filterRootKey: null,
-                    limit: params.index ?? undefined,
+                    limit: Number(params.index) + controller.pagingLimit,
                     sorts:
                         controller.selectedView.id === controller.tableView
                             ? ['']
@@ -212,7 +212,7 @@ export default class SearchRead extends PageNav(Route) {
             filterRootKey: null,
             processQueryParams: controller.processQueryParams,
             onChangeSorting: controller.onChangeSorting,
-            limit: 20
+            limit: controller.pagingLimit
         });
         this.currentUser.lastViewedDocument = {
             id: model.id,
