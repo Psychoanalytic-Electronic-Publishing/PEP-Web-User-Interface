@@ -21,9 +21,7 @@ import LoadingBarService from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
 import { BaseGlimmerSignature } from 'pep/utils/types';
 import { serializeQueryParams } from 'pep/utils/url';
-import { onAuthenticated } from 'pep/utils/user';
 import LoginValidations from 'pep/validations/user/login';
-import { reject } from 'rsvp';
 
 interface PageSidebarWidgetsSignInArgs {}
 

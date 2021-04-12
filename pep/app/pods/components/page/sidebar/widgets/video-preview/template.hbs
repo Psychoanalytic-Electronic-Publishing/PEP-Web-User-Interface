@@ -10,7 +10,14 @@
     />
     <Panel.body class="p-1">
         <div class="embed-responsive embed-responsive-{{this.aspectRatio}}">
-            <video id="clip" controls="controls" preload="auto" class="embed-responsive-item" crossorigin="anonymous">
+            <video
+                id="video-preview"
+                controls="controls"
+                preload="metadata"
+                class="embed-responsive-item"
+                crossorigin="anonymous"
+                poster={{this.videoPreviewThumbnail}}
+            >
                 <source src="{{this.video.url}}" type="video/mp4" />
             </video>
         </div>
