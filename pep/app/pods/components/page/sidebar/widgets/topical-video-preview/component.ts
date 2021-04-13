@@ -4,6 +4,7 @@ import Component from '@glint/environment-ember-loose/glimmer-component';
 
 import moment from 'moment';
 import { AspectRatio } from 'pep/constants/configuration';
+import { MEDIA_FILE_EXTENSION_REGEX } from 'pep/constants/regex';
 import { WIDGET } from 'pep/constants/sidebar';
 import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
 import ConfigurationService from 'pep/services/configuration';
@@ -34,6 +35,10 @@ export default class PageSidebarWidgetsTopicalVideoPreview extends Component<
 
     get aspectRatio() {
         return this.video.aspectRatio ?? AspectRatio.SIXTEEN_BY_NINE;
+    }
+
+    get videoPreviewThumbnail() {
+        return `${this.video.url.replace(MEDIA_FILE_EXTENSION_REGEX, '')}.jpg`;
     }
 
     widget = WIDGET.TOPICAL_VIDEO_PREVIEW;
