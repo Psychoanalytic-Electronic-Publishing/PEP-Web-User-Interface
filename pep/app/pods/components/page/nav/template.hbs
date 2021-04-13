@@ -181,6 +181,10 @@
                         <FaIcon @icon="browser" @fixedWidth={{true}} class="text-muted" />
                         {{t "nav.support.browserData"}}
                     </DropdownLink>
+                    <DropdownAction @dd={{DD}} @action={{@showIntroTour}}>
+                        <FaIcon @icon="directions" @fixedWidth={{true}} class="text-muted" />
+                        {{t "nav.support.showIntroTour"}}
+                    </DropdownAction>
                     <DropdownAction @dd={{DD}} @action={{@openAboutModal}}>
                         <FaIcon @icon="info-square" @fixedWidth={{true}} class="text-muted" />
                         {{t "nav.user.aboutPepWeb"}}

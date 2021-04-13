@@ -105,7 +105,7 @@ export const DEFAULT_USER_PREFERENCES: UserPreferences = {
     theme: ThemeId.DEFAULT,
     searchViewType: SearchViews[0],
     searchSortType: SearchSorts[0],
-    tourEnabled: true,
+    tourEnabled: false,
     helpDescriptionsEnabled: true,
     helpIconsEnabled: true,
     fontSize: FontSize.DEFAULT,

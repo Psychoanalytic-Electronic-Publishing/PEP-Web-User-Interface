@@ -24,6 +24,7 @@ import { KeyboardShortcut } from 'pep/modifiers/register-keyboard-shortcuts';
 import AjaxService from 'pep/services/ajax';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
+import IntroTour from 'pep/services/intro-tour';
 import LoadingBarService from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
 import SidebarService from 'pep/services/sidebar';
@@ -39,6 +40,7 @@ export default class Application extends Controller {
     @service configuration!: ConfigurationService;
     @service currentUser!: CurrentUserService;
     @service sidebar!: SidebarService;
+    @service introTour!: IntroTour;
 
     @tracked isLimitOpen: boolean = false;
     @tracked smartSearchTerm: string = '';
@@ -268,6 +270,16 @@ export default class Application extends Controller {
         } finally {
             this.loadingBar.hide();
         }
+    }
+
+    /**
+     * Show the intro tour
+     *
+     * @memberof Application
+     */
+    @action
+    showIntroTour() {
+        this.introTour.show();
     }
 }
 

@@ -23,6 +23,7 @@ import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface PageNavArgs {
     openAboutModal: () => Promise<void>;
+    showIntroTour: () => void;
 }
 
 export default class PageNav extends Component<BaseGlimmerSignature<PageNavArgs>> {
