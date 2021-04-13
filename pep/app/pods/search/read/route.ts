@@ -1,3 +1,4 @@
+import { action } from '@ember/object';
 import Transition from '@ember/routing/-private/transition';
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
@@ -10,6 +11,7 @@ import { buildQueryParams, QueryParamsObj } from '@gavant/ember-pagination/utils
 import isEqual from 'lodash.isequal';
 import { WIDGET } from 'pep/constants/sidebar';
 import { PageNav } from 'pep/mixins/page-layout';
+import { ApiServerErrorResponse } from 'pep/pods/application/adapter';
 import Document from 'pep/pods/document/model';
 import SearchDocument from 'pep/pods/search-document/model';
 import SearchReadController from 'pep/pods/search/read/controller';
@@ -250,5 +252,28 @@ export default class SearchRead extends PageNav(Route) {
         controller.page = null;
         this.searchResults = undefined;
         this.searchParams = undefined;
+    }
+
+    /**
+     * Top level route error event handler - If routes reject with an error
+     * i.e. do not explicitly catch and handle errors return by their
+     * model()/beforeModel()/afterModel() hooks, this will be invoked.
+     * Which will redirect the user as needed, depending the type of error returned
+     * @param {ApiServerErrorResponse} error
+     */
+    @action
+    error(error?: ApiServerErrorResponse): boolean {
+        if (this.fastboot.isFastBoot) {
+            this.fastboot.response.statusCode = error?.errors?.[0]?.status ?? 200;
+        }
+        if (error?.errors?.length && error?.errors?.length > 0) {
+            const status = error?.errors?.[0].status;
+            if (status === '404') {
+                this.replaceWith('four-oh-four-document', '404');
+                //marks error as being handled
+                return false;
+            }
+        }
+        return true;
     }
 }
