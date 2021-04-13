@@ -67,6 +67,7 @@ export interface BaseConfiguration {
             left: WidgetConfiguration[];
             right: WidgetConfiguration[];
         };
+        searchHelpVideoUrl: string;
     };
     home: {
         expertPicksStartDate: string;
@@ -211,7 +212,8 @@ export const DEFAULT_BASE_CONFIGURATION: BaseConfiguration = {
                 { widget: WIDGET.FAVORITES, open: false },
                 { widget: WIDGET.PUBLISHER_INFO, open: false }
             ]
-        }
+        },
+        searchHelpVideoUrl: 'https://fb.watch/4634xBWSZF/'
     },
     home: {
         expertPicksStartDate: '2019-01-07T15:14:29-0500',

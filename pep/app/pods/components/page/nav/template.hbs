@@ -155,24 +155,6 @@
                     <FaIcon @icon="question" @size="lg" />
                 </DD.Trigger>
                 <DD.Content class="dropdown-menu">
-                    <a
-                        href={{this.supportUrl}}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="dropdown-action dropdown-item"
-                        {{on "click" DD.actions.close}}
-                    >
-                        <FaIcon @icon="external-link" @fixedWidth={{true}} class="text-muted" />
-                        {{t "nav.support.link"}}
-                    </a>
-                    <DropdownAction @dd={{DD}} @action={{this.openReportDataErrorModal}}>
-                        <FaIcon @icon="comment-exclamation" @fixedWidth={{true}} class="text-muted" />
-                        {{t "nav.support.reportDataError"}}
-                    </DropdownAction>
-                    <DropdownAction @dd={{DD}} @action={{this.openFeedbackModal}}>
-                        <FaIcon @icon="comment-lines" @fixedWidth={{true}} class="text-muted" />
-                        {{t "nav.support.provideFeedback"}}
-                    </DropdownAction>
                     <DropdownAction @dd={{DD}} @action={{this.openHelpModal}}>
                         <FaIcon @icon="hands-helping" @fixedWidth={{true}} class="text-muted" />
                         {{t "nav.support.preferences"}}
@@ -185,6 +167,36 @@
                         <FaIcon @icon="directions" @fixedWidth={{true}} class="text-muted" />
                         {{t "nav.support.showIntroTour"}}
                     </DropdownAction>
+                    <a
+                        href={{this.searchHelpVideoUrl}}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="dropdown-action dropdown-item"
+                        {{on "click" DD.actions.close}}
+                    >
+                        <FaIcon @icon="external-link" @fixedWidth={{true}} class="text-muted" />
+                        {{t "nav.support.searchHelpVideo"}}
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <DropdownAction @dd={{DD}} @action={{this.openReportDataErrorModal}}>
+                        <FaIcon @icon="comment-exclamation" @fixedWidth={{true}} class="text-muted" />
+                        {{t "nav.support.reportDataError"}}
+                    </DropdownAction>
+                    <DropdownAction @dd={{DD}} @action={{this.openFeedbackModal}}>
+                        <FaIcon @icon="comment-lines" @fixedWidth={{true}} class="text-muted" />
+                        {{t "nav.support.provideFeedback"}}
+                    </DropdownAction>
+                    <div class="dropdown-divider"></div>
+                    <a
+                        href={{this.supportUrl}}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="dropdown-action dropdown-item"
+                        {{on "click" DD.actions.close}}
+                    >
+                        <FaIcon @icon="external-link" @fixedWidth={{true}} class="text-muted" />
+                        {{t "nav.support.link"}}
+                    </a>
                     <DropdownAction @dd={{DD}} @action={{@openAboutModal}}>
                         <FaIcon @icon="info-square" @fixedWidth={{true}} class="text-muted" />
                         {{t "nav.user.aboutPepWeb"}}

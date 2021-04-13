@@ -120,6 +120,26 @@
                                         </validator.input>
                                     </div>
                                 </div>
+                                <div class="form-row">
+                                    <div class="col-6">
+                                        <validator.input
+                                            @errors={{changeset.error.configSettings.global.searchHelpVideoUrl.validation
+                                            }}
+                                        >
+                                            <FlInput
+                                                @value={{changeset.configSettings.global.searchHelpVideoUrl}}
+                                                @placeholder={{t "admin.common.global.searchHelpVideoUrl"}}
+                                            >
+                                                <ChangesetInput
+                                                    @changeset={{changeset}}
+                                                    @path="configSettings.global.searchHelpVideoUrl"
+                                                    class="form-control"
+                                                    autocomplete="off"
+                                                />
+                                            </FlInput>
+                                        </validator.input>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

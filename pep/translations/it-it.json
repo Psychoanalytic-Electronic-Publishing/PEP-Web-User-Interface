@@ -65,7 +65,8 @@
             "preferences": "Help Preferences",
             "provideFeedback": "Provide Feedback",
             "browserData": "Browser Data",
-            "showIntroTour": "Feature Tour"
+            "showIntroTour": "Feature Tour",
+            "searchHelpVideo": "Search Help Video"
         },
         "admin": {
             "general": "General Settings",
