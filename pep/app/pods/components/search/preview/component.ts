@@ -1,4 +1,5 @@
 import { action } from '@ember/object';
+import RouterService from '@ember/routing/router-service';
 import { next } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 import { htmlSafe } from '@ember/template';
@@ -30,6 +31,7 @@ interface SearchPreviewArgs {
 export default class SearchPreview extends Component<BaseGlimmerSignature<SearchPreviewArgs>> {
     @service('pep-session') session!: PepSessionService;
     @service auth!: AuthService;
+    @service router!: RouterService;
     @service scrollable!: ScrollableService;
     @service loadingBar!: LoadingBarService;
     @service store!: DS.Store;
@@ -128,6 +130,14 @@ export default class SearchPreview extends Component<BaseGlimmerSignature<Search
             this.loadingBar.show();
             const abstract = await this.store.findRecord('abstract', id);
             this.result = abstract;
+        } catch (error) {
+            const status = error?.errors?.[0].status;
+            if (status === '404') {
+                if (status === '404') {
+                    this.router.replaceWith('four-oh-four-document', '404');
+                }
+            }
+            console.log(error);
         } finally {
             this.loadingBar.hide();
         }

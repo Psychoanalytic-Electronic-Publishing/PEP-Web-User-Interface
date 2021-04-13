@@ -204,6 +204,8 @@ export default class SearchIndex extends PageNav(Route) {
         // @ts-ignore
         super.resetController(controller, isExiting, transition);
         controller.previewedResult = null;
+        controller.preview = null;
+
         // clear current results meta data
         controller.resultsMeta = null;
         // reset the search form limit fields section
