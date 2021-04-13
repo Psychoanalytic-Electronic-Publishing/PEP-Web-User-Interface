@@ -32,6 +32,9 @@ type ErrorReportChangeset = GenericChangeset<ErrorReport>;
 
 interface ModalDialogsHelpReportDataErrorArgs {
     onClose: () => void;
+    options: {
+        useCurrentURL: boolean;
+    };
 }
 
 export default class ModalDialogsHelpReportDataError extends Component<
@@ -66,7 +69,7 @@ export default class ModalDialogsHelpReportDataError extends Component<
                 email: currentUser?.emailAddress ?? '',
                 problemText: '',
                 correctedText: '',
-                urlProblemPage: window.location.href,
+                urlProblemPage: args.options.useCurrentURL === false ? null : window.location.href,
                 additionalInfo: '',
                 isAuthorPublisher: false,
                 hasOriginalCopy: false

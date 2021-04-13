@@ -1060,6 +1060,12 @@
         "subtitle": "Page not found.",
         "message": "The page you are looking for might have been removed, or is temporarily unavailable. ☹ Please try again later, or contact an administrator if the problem persists."
     },
+    "fourOhFourDocument": {
+        "title": "404",
+        "subtitle": "Document not found.",
+        "report": "Report error",
+        "message": "The article or document you are looking for might not yet be on PEP Archive, or perhaps is temporarily unavailable. Please check the document information, try again later, or contact PEP if you believe this article as specified by the document ID in the URL is missing from the archive."
+    },
     "fourOhThree": {
         "title": "403",
         "subtitle": "Access forbidden.",
