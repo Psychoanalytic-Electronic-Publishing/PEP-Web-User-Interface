@@ -1,0 +1,12 @@
+{{page-title (t "fourOhFourDocument.title")}}
+<Page::Content>
+    <Page::Error
+        @heading={{t "fourOhFourDocument.title"}}
+        @subheading={{t "fourOhFourDocument.subtitle"}}
+        @message={{t "fourOhFourDocument.message"}}
+    >
+        <Button @action={{this.reportError}} class="p-2">
+            {{t "fourOhFourDocument.report"}}
+        </Button>
+    </Page::Error>
+</Page::Content>

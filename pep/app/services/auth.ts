@@ -10,7 +10,6 @@ import AjaxService from 'pep/services/ajax';
 import LoadingBarService from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
 import { serializeQueryParams } from 'pep/utils/url';
-import { onAuthenticated } from 'pep/utils/user';
 import LoginValidations from 'pep/validations/user/login';
 
 export interface FederatedLoginResponse {

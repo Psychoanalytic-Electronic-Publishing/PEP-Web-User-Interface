@@ -38,5 +38,6 @@ Router.map(function() {
     //make sure these routes are always defined last!
     this.route('five-hundred', { path: '/500' });
     this.route('four-oh-three', { path: '/403' });
+    this.route('four-oh-four-document', { path: '/document/*path' });
     this.route('four-oh-four', { path: '/*path' });
 });
