@@ -154,14 +154,40 @@
                     class="mt-1"
                 >
                     <Page::Drawer::NavItem class="mt-1">
+                        <button
+                            type="button"
+                            class="list-group-item list-group-item-action"
+                            {{on "click" this.openHelpModal}}
+                        >
+                            <FaIcon @icon="hands-helping" @fixedWidth={{true}} class="text-muted" />
+                            {{t "nav.support.preferences"}}
+                        </button>
+                    </Page::Drawer::NavItem>
+                    <Page::Drawer::NavItem class="mt-1">
+                        <LinkTo @route="browser-data" class="list-group-item list-group-item-action">
+                            <FaIcon @icon="browser" @fixedWidth={{true}} class="text-muted" />
+                            {{t "nav.support.browserData"}}
+                        </LinkTo>
+                    </Page::Drawer::NavItem>
+                    <Page::Drawer::NavItem class="mt-1">
+                        <button
+                            type="button"
+                            class="list-group-item list-group-item-action"
+                            {{on "click" @showIntroTour}}
+                        >
+                            <FaIcon @icon="directions" @fixedWidth={{true}} class="mr-2" />
+                            {{t "nav.support.showIntroTour"}}
+                        </button>
+                    </Page::Drawer::NavItem>
+                    <Page::Drawer::NavItem class="mt-1">
                         <a
-                            href={{this.supportUrl}}
+                            href={{this.searchHelpVideoUrl}}
                             target="_blank"
                             rel="noopener noreferrer"
                             class="list-group-item list-group-item-action"
                         >
                             <FaIcon @icon="external-link" @fixedWidth={{true}} class="text-muted" />
-                            {{t "nav.support.link"}}
+                            {{t "nav.support.searchHelpVideo"}}
                         </a>
                     </Page::Drawer::NavItem>
                     <Page::Drawer::NavItem class="mt-1">
@@ -185,30 +211,15 @@
                         </button>
                     </Page::Drawer::NavItem>
                     <Page::Drawer::NavItem class="mt-1">
-                        <button
-                            type="button"
+                        <a
+                            href={{this.supportUrl}}
+                            target="_blank"
+                            rel="noopener noreferrer"
                             class="list-group-item list-group-item-action"
-                            {{on "click" this.openHelpModal}}
                         >
-                            <FaIcon @icon="hands-helping" @fixedWidth={{true}} class="text-muted" />
-                            {{t "nav.support.preferences"}}
-                        </button>
-                    </Page::Drawer::NavItem>
-                    <Page::Drawer::NavItem class="mt-1">
-                        <LinkTo @route="browser-data" class="list-group-item list-group-item-action">
-                            <FaIcon @icon="browser" @fixedWidth={{true}} class="text-muted" />
-                            {{t "nav.support.browserData"}}
-                        </LinkTo>
-                    </Page::Drawer::NavItem>
-                    <Page::Drawer::NavItem class="mt-1">
-                        <button
-                            type="button"
-                            class="list-group-item list-group-item-action"
-                            {{on "click" @showIntroTour}}
-                        >
-                            <FaIcon @icon="directions" @fixedWidth={{true}} class="mr-2" />
-                            {{t "nav.user.showIntroTour"}}
-                        </button>
+                            <FaIcon @icon="external-link" @fixedWidth={{true}} class="text-muted" />
+                            {{t "nav.support.link"}}
+                        </a>
                     </Page::Drawer::NavItem>
                     <Page::Drawer::NavItem class="mt-1">
                         <button

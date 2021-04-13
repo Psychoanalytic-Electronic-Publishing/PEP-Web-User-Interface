@@ -70,8 +70,11 @@ export default class PageNav extends Component<BaseGlimmerSignature<PageNavArgs>
 
     supportUrl = SUPPORT_URL;
     facebookUrl = PEP_FACEBOOK_URL;
-
     languages = Languages;
+
+    get searchHelpVideoUrl() {
+        return this.configuration.base.global.searchHelpVideoUrl;
+    }
 
     get readDisabled() {
         return !this.currentUser.lastViewedDocument?.id;

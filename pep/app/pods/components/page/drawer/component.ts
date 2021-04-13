@@ -35,6 +35,10 @@ export default class PageDrawer extends Component<BaseGlimmerSignature<PageDrawe
     supportUrl = SUPPORT_URL;
     facebookUrl = PEP_FACEBOOK_URL;
 
+    get searchHelpVideoUrl() {
+        return this.configuration.base.global.searchHelpVideoUrl;
+    }
+
     get defaultSearchParams() {
         return this.configuration.defaultSearchParams;
     }
