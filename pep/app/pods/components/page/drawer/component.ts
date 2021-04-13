@@ -17,6 +17,7 @@ import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface PageDrawerArgs {
     openAboutModal: () => Promise<void>;
+    showIntroTour: () => void;
 }
 
 export default class PageDrawer extends Component<BaseGlimmerSignature<PageDrawerArgs>> {

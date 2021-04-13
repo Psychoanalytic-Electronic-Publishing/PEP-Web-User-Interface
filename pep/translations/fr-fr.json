@@ -64,7 +64,8 @@
             "reportDataError": "Report a data error",
             "preferences": "Help Preferences",
             "provideFeedback": "Provide Feedback",
-            "browserData": "Browser Data"
+            "browserData": "Browser Data",
+            "showIntroTour": "Feature Tour"
         },
         "admin": {
             "general": "General Settings",

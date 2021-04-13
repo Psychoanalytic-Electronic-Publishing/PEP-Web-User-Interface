@@ -19,15 +19,15 @@ export default class DocumentActionsDownload extends Component<BaseGlimmerSignat
     @service exports!: ExportsService;
 
     get downloadUrlEpub() {
-        return `${DOCUMENT_EPUB_BASE_URL}/${this.args.document.id}`;
+        return `${DOCUMENT_EPUB_BASE_URL}/${this.args.document.id}/`;
     }
 
     get downloadUrlPdf() {
-        return `${DOCUMENT_PDF_BASE_URL}/${this.args.document.id}`;
+        return `${DOCUMENT_PDF_BASE_URL}/${this.args.document.id}/`;
     }
 
     get downloadUrlPdfOrig() {
-        return `${DOCUMENT_PDFORIG_BASE_URL}/${this.args.document.id}`;
+        return `${DOCUMENT_PDFORIG_BASE_URL}/${this.args.document.id}/`;
     }
 
     get iconOnly() {

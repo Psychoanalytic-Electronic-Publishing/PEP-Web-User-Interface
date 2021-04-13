@@ -12,7 +12,7 @@
     </div>
     {{outlet "footer"}}
 </div>
-<Page::Drawer @openAboutModal={{this.openAboutModal}} />
+<Page::Drawer @openAboutModal={{this.openAboutModal}} showIntroTour={{this.showIntroTour}} />
 <NotificationContainer @position="top" />
 <ModalOutlet />
 <InformationBar class="app-information-bar" />
