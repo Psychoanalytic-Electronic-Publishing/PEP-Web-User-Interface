@@ -146,6 +146,9 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
     async setupController(controller: ApplicationController, model: any, transition: Transition): Promise<void> {
         super.setupController(controller, model, transition);
         const hideTour = this.cookies.read(HIDE_TOUR_COOKIE_NAME);
+        if (this.currentUser.user?.isGroup) {
+            this.auth.openLoginModal(true);
+        }
         if (this.currentUser.preferences?.tourEnabled && !hideTour) {
             this.introTour.show();
         }
