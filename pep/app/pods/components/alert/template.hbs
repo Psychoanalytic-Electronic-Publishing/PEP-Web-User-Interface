@@ -6,7 +6,7 @@
         initialInsertion=this.animateInitialInsert
     }}
         <div class="alert alert-{{@type}}" role="alert" ...attributes {{did-update this.onIsShownUpdate @isShown}}>
-            {{#if hasBlock}}
+            {{#if (has-block)}}
                 {{yield}}
             {{else}}
                 <div class="d-flex">

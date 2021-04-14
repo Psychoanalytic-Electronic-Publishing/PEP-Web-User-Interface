@@ -4,14 +4,16 @@
     class="{{unless @isModal "mt-4"}}" as |changeset validator|
 >
     {{#@wrapperComponent}}
-        {{html-safe this.cardInfo.body}}
+        {{#if @isModal}}
+            {{html-safe this.cardInfo.body}}
+        {{/if}}
         <Alert
             @isShown={{bool this.loginError}}
             @message={{html-safe this.loginError}}
             @type="danger"
             @icon="exclamation-circle"
         />
-        <div class="form-row mt-4">
+        <div class="form-row {{if @isModal " mt-4" " mb-4"}}">
             <div class="{{if @isModal " col-sm-8" " col-12"}}">
                 <validator.input @errors={{changeset.error.username.validation}} class="input-validator-compact">
                     <FlInput @value={{changeset.username}} @placeholder={{t "login.username"}} maxlength="128" />
@@ -64,6 +66,9 @@
                 {{/unless}}
             </div>
         </div>
+        {{#unless @isModal}}
+            {{html-safe this.cardInfo.body}}
+        {{/unless}}
     {{/@wrapperComponent}}
     {{yield changeset validator}}
 </FormValidator>
