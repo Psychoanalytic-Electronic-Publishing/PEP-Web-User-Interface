@@ -48,7 +48,7 @@
         "@gavant/ember-template-lint-forms": "^0.0.2",
         "@gavant/ember-tinymce": "^0.0.6",
         "@gavant/ember-validations": "^2.1.2",
-        "@gavant/glint-template-types": "^0.0.5",
+        "@gavant/glint-template-types": "^0.0.6",
         "@glimmer/component": "^1.0.4",
         "@glimmer/tracking": "^1.0.4",
         "@glint/core": "^0.4.5",
