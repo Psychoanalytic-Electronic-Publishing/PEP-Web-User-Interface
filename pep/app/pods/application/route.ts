@@ -111,7 +111,6 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
                 // loaded back up, we would be logged out and the cookie would mysteriously be removed. We work around this by writing the our own cookie
                 // and then getting that cookie and setting it as the simple auth cookie to force auth state.
                 this.cookies.write(FASTBOOT_SESSION_WORKAROUND_COOKIE_NAME, this.cookies.read(SESSION_COOKIE_NAME), {});
-                console.log(`BeforeModel unauthed sessionID: ${this.session?.getUnauthenticatedSession()?.SessionId}`);
             } catch (errors) {
                 this.session.invalidate();
             }

@@ -3,7 +3,6 @@ import { inject as service } from '@ember/service';
 import classic from 'ember-classic-decorator';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import CookiesService from 'ember-cookies/services/cookies';
-import isFastBoot from 'ember-simple-auth/index';
 import SessionService from 'ember-simple-auth/services/session';
 
 import { removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
@@ -11,12 +10,10 @@ import { removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-par
 import { PepSecureAuthenticatedData } from 'pep/api';
 import ENV from 'pep/config/environment';
 import { HIDE_TOUR_COOKIE_NAME, SESSION_COOKIE_NAME, UNAUTHENTICATED_SESSION_COOKIE_NAME } from 'pep/constants/cookies';
-import { DATE_FOREVER } from 'pep/constants/dates';
+import { MAX_AGE } from 'pep/constants/dates';
 import AuthService from 'pep/services/auth';
 import { serializeQueryParams } from 'pep/utils/url';
 import { onAuthenticated } from 'pep/utils/user';
-
-import { MAX_AGE } from '../constants/dates';
 
 export interface AuthenticatedData {
     authenticated: PepSecureAuthenticatedData;
@@ -35,7 +32,6 @@ export default class PepSessionService extends SessionService {
     @service cookies!: CookiesService;
     @service auth!: AuthService;
     @service fastboot!: FastbootService;
-    fastbootUnauthenticatedSessionId?: PepSecureAuthenticatedData;
 
     /**
      * Get logged in sessionId if it exists, or logged out sessionId if it does not
@@ -63,7 +59,8 @@ export default class PepSessionService extends SessionService {
     }
 
     /**
-     * Get the unauthed session data
+     * Get the unauthed session data. If we are in fastboot we no longer get this data from the cookie as it keeps disappearing.
+     * Ember Cookies seems to store the fastboot cookies in a cache so we go directly there.
      *
      * @returns {(PepSecureAuthenticatedData | undefined)}
      * @memberof PepSessionService
@@ -71,13 +68,9 @@ export default class PepSessionService extends SessionService {
     getUnauthenticatedSession(): PepSecureAuthenticatedData | undefined {
         if (this.fastboot.isFastBoot) {
             const cachedFastbootCookies = this.cookies._fastBootCookiesCache;
-
             const cookie = cachedFastbootCookies[UNAUTHENTICATED_SESSION_COOKIE_NAME];
             if (cookie?.value) {
-                console.log(`Cookie from cache: ${JSON.stringify(cookie)}`);
                 const value = this.cookies._decodeValue(cookie.value, false);
-                console.log(`Cookie Value: ${JSON.stringify(value)}`);
-                // const cookie = this.cookies.read(UNAUTHENTICATED_SESSION_COOKIE_NAME);
                 return cookie ? JSON.parse(value) : undefined;
             }
         } else {
@@ -93,8 +86,9 @@ export default class PepSessionService extends SessionService {
      */
     clearUnauthenticatedSession() {
         this.cookies.clear(UNAUTHENTICATED_SESSION_COOKIE_NAME, {
-            secure: ENV.cookieSecure,
-            sameSite: ENV.cookieSameSite
+            sameSite: ENV.cookieSameSite,
+            maxAge: MAX_AGE,
+            secure: ENV.cookieSecure
         });
     }
 

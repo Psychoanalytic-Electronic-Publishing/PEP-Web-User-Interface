@@ -8,7 +8,7 @@ import IntlService from 'ember-intl/services/intl';
 
 import ENV from 'pep/config/environment';
 import { USER_PREFERENCES_COOKIE_NAME } from 'pep/constants/cookies';
-import { DATE_FOREVER } from 'pep/constants/dates';
+import { MAX_AGE } from 'pep/constants/dates';
 import {
     COOKIE_PREFERENCES, DEFAULT_USER_PREFERENCES, LOCALSTORAGE_PREFERENCES, PreferenceChangeset, PreferenceDocumentsKey,
     PreferenceKey, USER_PREFERENCES_LS_PREFIX, UserPreferences
@@ -24,8 +24,6 @@ import PepSessionService from 'pep/services/pep-session';
 import { addClass, removeClass } from 'pep/utils/dom';
 import { reject } from 'rsvp';
 import Result, { err, ok } from 'true-myth/result';
-
-import { MAX_AGE } from '../constants/dates';
 
 export enum VIEW_DOCUMENT_FROM {
     SEARCH = 'search',

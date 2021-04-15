@@ -60,12 +60,6 @@ export default class Application extends DS.RESTAdapter.extend(FastbootAdapter) 
         query?: {} | undefined
     ): string {
         const url = super.buildURL(modelName, id, snapshot, requestType, query);
-        console.log(`Application adapter making request to : ${url}`);
-        console.log(
-            `Application adapter getting unauthenticated session : ${JSON.stringify(
-                this.session.getUnauthenticatedSession()
-            )}`
-        );
         return appendTrailingSlash(url);
     }
 
@@ -82,9 +76,6 @@ export default class Application extends DS.RESTAdapter.extend(FastbootAdapter) 
         } else {
             headers['client-session'] = this.session?.getUnauthenticatedSession()?.SessionId ?? '';
         }
-        console.log(
-            `Application adapter get headers sessionID returns: ${this.session?.getUnauthenticatedSession()?.SessionId}`
-        );
 
         if (this.fastboot.isFastBoot) {
             const fastbootHeaders = this.fastboot.request.headers;
