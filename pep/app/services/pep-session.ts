@@ -1,7 +1,9 @@
 import { inject as service } from '@ember/service';
 
 import classic from 'ember-classic-decorator';
+import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import CookiesService from 'ember-cookies/services/cookies';
+import isFastBoot from 'ember-simple-auth/index';
 import SessionService from 'ember-simple-auth/services/session';
 
 import { removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
@@ -32,6 +34,8 @@ export interface AuthenticatedData {
 export default class PepSessionService extends SessionService {
     @service cookies!: CookiesService;
     @service auth!: AuthService;
+    @service fastboot!: FastbootService;
+    fastbootUnauthenticatedSessionId?: PepSecureAuthenticatedData;
 
     /**
      * Get logged in sessionId if it exists, or logged out sessionId if it does not
@@ -65,8 +69,19 @@ export default class PepSessionService extends SessionService {
      * @memberof PepSessionService
      */
     getUnauthenticatedSession(): PepSecureAuthenticatedData | undefined {
-        const cookie = this.cookies.read(UNAUTHENTICATED_SESSION_COOKIE_NAME);
-        return cookie ? JSON.parse(cookie) : undefined;
+        if (this.fastboot.isFastBoot) {
+            const cachedFastbootCookies = this.cookies._fastBootCookiesCache;
+
+            const cookie = cachedFastbootCookies[UNAUTHENTICATED_SESSION_COOKIE_NAME];
+            console.log(`Cookie from cache: ${JSON.stringify(cookie)}`);
+            const value = this.cookies._decodeValue(cookie.value, false);
+            console.log(`Cookie Value: ${JSON.stringify(value)}`);
+            // const cookie = this.cookies.read(UNAUTHENTICATED_SESSION_COOKIE_NAME);
+            return cookie ? JSON.parse(value) : undefined;
+        } else {
+            const cookie = this.cookies.read(UNAUTHENTICATED_SESSION_COOKIE_NAME);
+            return cookie ? JSON.parse(cookie) : undefined;
+        }
     }
 
     /**
