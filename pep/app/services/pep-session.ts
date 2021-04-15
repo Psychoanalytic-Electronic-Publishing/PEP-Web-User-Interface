@@ -54,8 +54,7 @@ export default class PepSessionService extends SessionService {
         this.cookies.write(UNAUTHENTICATED_SESSION_COOKIE_NAME, resultString, {
             sameSite: ENV.cookieSameSite,
             maxAge: MAX_AGE,
-            secure: ENV.cookieSecure,
-            raw: true
+            secure: ENV.cookieSecure
         });
     }
 
