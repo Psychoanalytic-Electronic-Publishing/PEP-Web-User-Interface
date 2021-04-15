@@ -17,5 +17,7 @@ declare module 'ember-cookies/services/cookies' {
         write(name: string, value: string, options: CookieWriteOptions): void;
         clear(name: string, options: CookieWriteOptions): void;
         exists(name: string): boolean;
+        _fastBootCookiesCache: { [key: string]: { value: string } };
+        _decodeValue: (value: string, raw: boolean) => string;
     }
 }

@@ -8,7 +8,7 @@ import IntlService from 'ember-intl/services/intl';
 
 import ENV from 'pep/config/environment';
 import { USER_PREFERENCES_COOKIE_NAME } from 'pep/constants/cookies';
-import { DATE_FOREVER } from 'pep/constants/dates';
+import { MAX_AGE } from 'pep/constants/dates';
 import {
     COOKIE_PREFERENCES, DEFAULT_USER_PREFERENCES, LOCALSTORAGE_PREFERENCES, PreferenceChangeset, PreferenceDocumentsKey,
     PreferenceKey, USER_PREFERENCES_LS_PREFIX, UserPreferences
@@ -287,9 +287,10 @@ export default class CurrentUserService extends Service {
             if (updatedCookie) {
                 const newCookie = JSON.stringify(cookieValues);
                 this.cookies.write(USER_PREFERENCES_COOKIE_NAME, newCookie, {
-                    secure: ENV.cookieSecure,
                     sameSite: ENV.cookieSameSite,
-                    expires: DATE_FOREVER
+                    maxAge: MAX_AGE,
+                    secure: ENV.cookieSecure,
+                    raw: true
                 });
             }
 
