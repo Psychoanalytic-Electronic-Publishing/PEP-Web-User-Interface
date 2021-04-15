@@ -14,6 +14,8 @@ import AuthService from 'pep/services/auth';
 import { serializeQueryParams } from 'pep/utils/url';
 import { onAuthenticated } from 'pep/utils/user';
 
+import { MAX_AGE } from '../constants/dates';
+
 export interface AuthenticatedData {
     authenticated: PepSecureAuthenticatedData;
 }
@@ -51,8 +53,7 @@ export default class PepSessionService extends SessionService {
         const resultString = JSON.stringify(sessionData);
         this.cookies.write(UNAUTHENTICATED_SESSION_COOKIE_NAME, resultString, {
             sameSite: ENV.cookieSameSite,
-            expires: DATE_FOREVER,
-            secure: true
+            maxAge: MAX_AGE
         });
     }
 

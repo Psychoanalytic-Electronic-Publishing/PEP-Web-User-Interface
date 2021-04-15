@@ -25,6 +25,8 @@ import { addClass, removeClass } from 'pep/utils/dom';
 import { reject } from 'rsvp';
 import Result, { err, ok } from 'true-myth/result';
 
+import { MAX_AGE } from '../constants/dates';
+
 export enum VIEW_DOCUMENT_FROM {
     SEARCH = 'search',
     OTHER = 'other'
@@ -287,9 +289,8 @@ export default class CurrentUserService extends Service {
             if (updatedCookie) {
                 const newCookie = JSON.stringify(cookieValues);
                 this.cookies.write(USER_PREFERENCES_COOKIE_NAME, newCookie, {
-                    secure: ENV.cookieSecure,
                     sameSite: ENV.cookieSameSite,
-                    expires: DATE_FOREVER
+                    maxAge: MAX_AGE
                 });
             }
 
