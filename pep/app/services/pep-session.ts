@@ -73,11 +73,13 @@ export default class PepSessionService extends SessionService {
             const cachedFastbootCookies = this.cookies._fastBootCookiesCache;
 
             const cookie = cachedFastbootCookies[UNAUTHENTICATED_SESSION_COOKIE_NAME];
-            console.log(`Cookie from cache: ${JSON.stringify(cookie)}`);
-            const value = this.cookies._decodeValue(cookie.value, false);
-            console.log(`Cookie Value: ${JSON.stringify(value)}`);
-            // const cookie = this.cookies.read(UNAUTHENTICATED_SESSION_COOKIE_NAME);
-            return cookie ? JSON.parse(value) : undefined;
+            if (cookie?.value) {
+                console.log(`Cookie from cache: ${JSON.stringify(cookie)}`);
+                const value = this.cookies._decodeValue(cookie.value, false);
+                console.log(`Cookie Value: ${JSON.stringify(value)}`);
+                // const cookie = this.cookies.read(UNAUTHENTICATED_SESSION_COOKIE_NAME);
+                return cookie ? JSON.parse(value) : undefined;
+            }
         } else {
             const cookie = this.cookies.read(UNAUTHENTICATED_SESSION_COOKIE_NAME);
             return cookie ? JSON.parse(cookie) : undefined;
