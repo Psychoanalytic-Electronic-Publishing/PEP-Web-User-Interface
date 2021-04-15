@@ -290,7 +290,8 @@ export default class CurrentUserService extends Service {
                 const newCookie = JSON.stringify(cookieValues);
                 this.cookies.write(USER_PREFERENCES_COOKIE_NAME, newCookie, {
                     sameSite: ENV.cookieSameSite,
-                    maxAge: MAX_AGE
+                    maxAge: MAX_AGE,
+                    secure: ENV.cookieSecure
                 });
             }
 

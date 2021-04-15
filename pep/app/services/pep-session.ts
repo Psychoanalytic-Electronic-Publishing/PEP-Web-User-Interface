@@ -53,7 +53,8 @@ export default class PepSessionService extends SessionService {
         const resultString = JSON.stringify(sessionData);
         this.cookies.write(UNAUTHENTICATED_SESSION_COOKIE_NAME, resultString, {
             sameSite: ENV.cookieSameSite,
-            maxAge: MAX_AGE
+            maxAge: MAX_AGE,
+            secure: ENV.cookieSecure
         });
     }
 
