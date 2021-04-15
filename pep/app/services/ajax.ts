@@ -38,6 +38,9 @@ export default class AjaxService extends Service {
         } else {
             headers['client-session'] = this.session?.getUnauthenticatedSession()?.SessionId ?? '';
         }
+        console.log(
+            `Ajax service get headers sessionID returns: ${this.session?.getUnauthenticatedSession()?.SessionId}`
+        );
         if (this.fastboot.isFastBoot) {
             const fastbootHeaders = this.fastboot.request.headers;
             const xForwardedFor = (fastbootHeaders.get('X-Forwarded-For') as string) ?? '';
@@ -71,10 +74,17 @@ export default class AjaxService extends Service {
      * @returns {Promise}
      */
     async request<T>(url: string, options: RequestInitWithSlash = { appendTrailingSlash: true }): Promise<T> {
+        console.log(`Making request to: ${url}`);
+        console.log(
+            `Call to getAuthenticatedSession in ip ajax service returns: ${JSON.stringify(
+                this.session.getUnauthenticatedSession()
+            )}`
+        );
         setProperties(options, {
             credentials: 'include',
             headers: { ...this.headers, ...(options.headers || {}) }
         });
+        console.log(`options for request: ${JSON.stringify(options)}`);
 
         const baseUrl = /^https?\:\/\//.test(url) ? '' : `${this.host}/${this.namespace}/`;
         let requestUrl = `${baseUrl}${url.replace(/^\//, '')}`;
@@ -85,6 +95,7 @@ export default class AjaxService extends Service {
         const responseHeaders = this.parseHeaders(response.headers);
         const result = await this.handleResponse(response.status, responseHeaders, response);
         if (this.isSuccess(response.status) && guard(result, 'status')) {
+            console.log(`Request to ${url} was successful`);
             const isNoContent = this.normalizeStatus(response.status) === 204;
             if (isNoContent) {
                 return result as any;
@@ -92,6 +103,7 @@ export default class AjaxService extends Service {
                 return (await result.json()) as T;
             }
         } else {
+            console.log(`Request to ${url} was failure`);
             return reject(result);
         }
     }

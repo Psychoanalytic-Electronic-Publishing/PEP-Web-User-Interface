@@ -22,6 +22,7 @@ export default class IpAuthenticator extends CredentialsAuthenticator {
     async authenticate(): Promise<PepSecureAuthenticatedData> {
         return new RSVP.Promise((resolve, reject) => {
             try {
+                console.log(`In IP authenticator`);
                 const sessionData = this.session.getUnauthenticatedSession();
                 let url = `${ENV.authBaseUrl}/Authenticate/ip`;
 
@@ -50,12 +51,20 @@ export default class IpAuthenticator extends CredentialsAuthenticator {
                     .then(
                         (response) => {
                             run(() => {
+                                console.log(`Have IP authenticate response: ${JSON.stringify(response)}`);
                                 if (response.IsValidLogon) {
+                                    console.log(`Is valid login`);
                                     this.session.clearUnauthenticatedSession();
                                     response.SessionType = sessionType;
                                     resolve(response);
                                 } else {
+                                    console.log(`Is not valid login`);
                                     this.session.setUnauthenticatedSession(response);
+                                    console.log(
+                                        `Call to getAuthenticatedSession in ip authenticator returns: ${JSON.stringify(
+                                            this.session.getUnauthenticatedSession()
+                                        )}`
+                                    );
                                     reject(response.ReasonStr);
                                 }
                             });
