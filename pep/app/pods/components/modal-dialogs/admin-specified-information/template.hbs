@@ -1,0 +1,8 @@
+<ModalDialog @onClose={{@onClose}} @size="lg" @clickOutsideToClose={{false}} as |Modal|>
+    <Modal.body>
+        {{html-safe @options.information.value}}
+    </Modal.body>
+    <Modal.footer class="justify-content-between align-items-center">
+        <Button @type="primary" @label={{t "common.close"}} @action={{@onClose}} />
+    </Modal.footer>
+</ModalDialog>

@@ -9,20 +9,26 @@ import ModalService from '@gavant/ember-modals/services/modal';
 import { ColumnValue } from '@gavant/ember-table';
 import createChangeset, { GenericChangeset } from '@gavant/ember-validations/utilities/create-changeset';
 
-import { ContentConfiguration, Publisher, TourConfiguration } from 'pep/constants/configuration';
+import {
+    AdminSpecifiedInformation, ContentConfiguration, Publisher, TourConfiguration
+} from 'pep/constants/configuration';
 import { Language } from 'pep/constants/lang';
 import { TourStepId } from 'pep/constants/tour';
 import FastbootMediaService from 'pep/services/fastboot-media';
+import { Paths } from 'pep/utils/types';
+import { CONFIGURATION_ADMIN_SPECIFIED_INFORMATION } from 'pep/validations/configuration/admin-specified-information';
 import { CONFIGURATION_PUBLISHER_VALIDATIONS } from 'pep/validations/configuration/publisher';
 import { CONFIGURATION_TOUR_STEP_VALIDATIONS } from 'pep/validations/configuration/tour-step';
 
 export type TourConfigWithId = TourConfiguration & { id: TourStepId };
+
+type LanguageModel = { configSettings: ContentConfiguration };
 export default class AdminLanguage extends Controller {
     @service intl!: IntlService;
     @service fastbootMedia!: FastbootMediaService;
     @service modal!: ModalService;
 
-    @tracked changeset?: GenericChangeset<ContentConfiguration>;
+    @tracked changeset?: GenericChangeset<LanguageModel>;
     @tracked language?: Language;
     @tracked tour: TourConfigWithId[] = [];
 
@@ -102,6 +108,46 @@ export default class AdminLanguage extends Controller {
     }
 
     /**
+     * Columns for the table. The `computed` is required
+     *
+     * @readonly
+     * @type {ColumnValue[]}
+     * @memberof AdminLanguage
+     */
+    @computed('deleteAdminSpecifiedInformation', 'deletePublisher', 'openEditAdminSpecifiedInformation')
+    get adminSpecifiedInformationColumns(): ColumnValue[] {
+        return [
+            {
+                valuePath: 'id',
+                name: this.intl.t('admin.content.global.adminSpecifiedInformation.id'),
+                isSortable: false
+            },
+
+            {
+                name: this.intl.t('admin.content.global.adminSpecifiedInformation.value'),
+                valuePath: 'value',
+                cellComponent: 'tables/cell/html',
+                isSortable: true
+            },
+            {
+                cellComponent: 'tables/cell/actions',
+                textAlign: 'right',
+                cellClassNames: 'align-center',
+                actions: [
+                    {
+                        action: this.openEditAdminSpecifiedInformation,
+                        icon: 'edit'
+                    },
+                    {
+                        action: this.deleteAdminSpecifiedInformation,
+                        icon: 'times'
+                    }
+                ]
+            }
+        ];
+    }
+
+    /**
      * Save the english admin items
      *
      * @memberof AdminLanguage
@@ -120,6 +166,33 @@ export default class AdminLanguage extends Controller {
         );
         this.changeset?.set('configSettings.global.tour', tour);
         this.changeset?.save();
+    }
+
+    /**
+     * Open the create admin specified information item modal
+     *
+     * @memberof AdminLanguage
+     */
+    @action
+    openCreateAdminSpecifiedInformation(): void {
+        const changeset = createChangeset({}, CONFIGURATION_ADMIN_SPECIFIED_INFORMATION);
+        this.modal.open('admin/admin-specified-information', {
+            changeset,
+            actions: {
+                onSave: this.createAdminSpecifiedInformation
+            }
+        });
+    }
+
+    @action
+    openEditAdminSpecifiedInformation(item: AdminSpecifiedInformation): void {
+        const changeset = createChangeset(item, CONFIGURATION_ADMIN_SPECIFIED_INFORMATION);
+        this.modal.open('admin/admin-specified-information', {
+            changeset,
+            actions: {
+                onSave: this.editAdminSpecifiedInformation
+            }
+        });
     }
 
     /**
@@ -190,6 +263,39 @@ export default class AdminLanguage extends Controller {
     }
 
     /**
+     *
+     *
+     * @param {AdminSpecifiedInformation} publisher
+     * @memberof AdminLanguage
+     */
+    @action
+    editAdminSpecifiedInformation(item: AdminSpecifiedInformation): void {
+        this.editConfigItem('configSettings.global.adminSpecifiedInformationItems', item, 'id');
+    }
+
+    /**
+     *
+     *
+     * @param {AdminSpecifiedInformation} item
+     * @memberof AdminLanguage
+     */
+    @action
+    createAdminSpecifiedInformation(item: AdminSpecifiedInformation): void {
+        this.createConfigItem('configSettings.global.adminSpecifiedInformationItems', item);
+    }
+
+    /**
+     *
+     *
+     * @param {AdminSpecifiedInformation} item
+     * @memberof AdminLanguage
+     */
+    @action
+    deleteAdminSpecifiedInformation(item: AdminSpecifiedInformation): void {
+        this.deleteConfigItem('configSettings.global.adminSpecifiedInformationItems', item, 'id');
+    }
+
+    /**
      * Edit the publisher and update the changeset
      *
      * @param {Publisher} publisher
@@ -197,15 +303,7 @@ export default class AdminLanguage extends Controller {
      */
     @action
     editPublisher(publisher: Publisher): void {
-        const publishers = this.changeset?.get('configSettings.global.publishers') as Publisher[];
-        const newPublishers = publishers.map((item) => {
-            if (item.sourceCode === publisher.sourceCode) {
-                return publisher;
-            } else {
-                return item;
-            }
-        });
-        this.changeset?.set('configSettings.global.publishers', newPublishers);
+        this.editConfigItem('configSettings.global.publishers', publisher, 'sourceCode');
     }
 
     /**
@@ -216,9 +314,7 @@ export default class AdminLanguage extends Controller {
      */
     @action
     createPublisher(publisher: Publisher): void {
-        const publishers = this.changeset?.get('configSettings.global.publishers') as Publisher[];
-        publishers.push(publisher);
-        this.changeset?.set('configSettings.global.publishers', [...publishers]);
+        this.createConfigItem('configSettings.global.publishers', publisher);
     }
 
     /**
@@ -229,9 +325,60 @@ export default class AdminLanguage extends Controller {
      */
     @action
     deletePublisher(publisher: Publisher): void {
-        const publishers = this.changeset?.get('configSettings.global.publishers') as Publisher[];
-        const filteredPublishers = publishers.filter((item) => item.sourceCode !== publisher.sourceCode);
-        this.changeset?.set('configSettings.global.publishers', [...filteredPublishers]);
+        this.deleteConfigItem('configSettings.global.publishers', publisher, 'sourceCode');
+    }
+
+    /**
+     * Add item to config by specifying path and the item
+     *
+     * @private
+     * @template T
+     * @param {Paths<LanguageModel>} path
+     * @param {T} item
+     * @memberof AdminLanguage
+     */
+    private createConfigItem<T>(path: Paths<LanguageModel>, item: T) {
+        const items = this.changeset?.get(path) as T[];
+        items.push(item);
+        this.changeset?.set(path, [...items]);
+    }
+
+    /**
+     * Edit item in config
+     *
+     * @private
+     * @template T
+     * @param {Paths<LanguageModel>} path
+     * @param {T} itemToEdit
+     * @param {keyof T} propertyToCompare
+     * @memberof AdminLanguage
+     */
+    private editConfigItem<T>(path: Paths<LanguageModel>, itemToEdit: T, propertyToCompare: keyof T) {
+        const items = this.changeset?.get(path) as T[];
+        const modifiedItems = items.map((item) => {
+            if (item[propertyToCompare] === itemToEdit[propertyToCompare]) {
+                return itemToEdit;
+            } else {
+                return item;
+            }
+        });
+        this.changeset?.set(path, modifiedItems);
+    }
+
+    /**
+     * Delete item in config
+     *
+     * @private
+     * @template T
+     * @param {Paths<LanguageModel>} path
+     * @param {T} itemToDelete
+     * @param {keyof T} propertyToCompare
+     * @memberof AdminLanguage
+     */
+    private deleteConfigItem<T>(path: Paths<LanguageModel>, itemToDelete: T, propertyToCompare: keyof T) {
+        const items = this.changeset?.get(path) as T[];
+        const filteredItems = items.filter((item) => item[propertyToCompare] !== itemToDelete[propertyToCompare]);
+        this.changeset?.set(path, [...filteredItems]);
     }
 }
 

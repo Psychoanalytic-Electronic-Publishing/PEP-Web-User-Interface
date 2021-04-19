@@ -49,9 +49,10 @@ export default class Application extends Controller {
     @tracked viewedCount: string = '';
     @tracked viewedPeriod: ViewPeriod = ViewPeriod.PAST_WEEK;
     @tracked searchTerms: SearchTermValue[] = [];
-    openNotificationModal?: boolean = false;
+    @tracked openNotificationModal?: boolean = false;
+    @tracked information?: string | null;
 
-    queryParams = ['openNotificationModal'];
+    queryParams = ['openNotificationModal', 'information'];
 
     shortcuts: KeyboardShortcut[] = [
         {
