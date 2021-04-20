@@ -377,7 +377,7 @@ export default class AdminLanguage extends Controller {
     private deleteConfigItem<T>(path: Paths<LanguageModel>, itemToDelete: T, propertyToCompare: keyof T) {
         const items = this.changeset?.get(path) as T[];
         const filteredItems = items.filter((item) => item[propertyToCompare] !== itemToDelete[propertyToCompare]);
-        this.changeset?.set(path, [...filteredItems]);
+        this.changeset?.set(path, filteredItems);
     }
 }
 
