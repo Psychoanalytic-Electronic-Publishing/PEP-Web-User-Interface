@@ -820,6 +820,11 @@
             "title": "Video Details",
             "url": "Url"
         },
+        "adminSpecifiedInformation": {
+            "title": "Admin Specified Information",
+            "id": "ID",
+            "value": "Value"
+        },
         "common": {
             "title": "General",
             "search": {
@@ -913,6 +918,11 @@
                 }
             },
             "global": {
+                "adminSpecifiedInformation": {
+                    "id": "ID",
+                    "value": "Value",
+                    "title": "Admin specified information"
+                },
                 "tour": {
                     "title": "Tour Steps",
                     "table": {

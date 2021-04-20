@@ -155,6 +155,15 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
         if (controller.openNotificationModal === true) {
             this.modal.open('whats-new/subscription', {});
         }
+        if (controller.information) {
+            const valueFromConfig = this.configuration.content.global.adminSpecifiedInformationItems.find(
+                (item) => item.id === controller.information
+            );
+            if (valueFromConfig) {
+                this.modal.open('admin-specified-information', { information: valueFromConfig });
+                controller.information = null;
+            }
+        }
     }
 
     /**
