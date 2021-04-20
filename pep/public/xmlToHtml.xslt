@@ -249,11 +249,7 @@
                 </xsl:for-each>
             </div>
 
-            <div class="keywords">
-                <xsl:for-each select="artinfo">
-                    <xsl:apply-templates mode="metadata" select="artkwds"/>
-                </xsl:for-each>
-            </div>
+
 
             <xsl:for-each select="artinfo">
                 <div id="{$this-article}-artinfo" class="artinfo" data-arttype="{@arttype}" data-journal="{@j}">
@@ -302,6 +298,12 @@
                 <xsl:apply-templates/>
             </div>
         </xsl:for-each>
+
+        <div class="keywords mx-5 mt-2 mb-4">
+            <xsl:for-each select="artinfo">
+                <xsl:apply-templates mode="metadata" select="artkwds"/>
+            </xsl:for-each>
+        </div>
 
         <!-- body -->
         <xsl:for-each select="body">
@@ -528,10 +530,10 @@
     </xsl:template>
 
     <xsl:template match="artkwds" mode="metadata">
-        <div class="artkwds small mb-2">
-            <span class="mr-1">
+        <div class="artkwds mb-2">
+            <strong class="mr-1">
                 Keywords:
-            </span>
+            </strong>
             <xsl:for-each select="//impx[@type='KEYWORD']">
                 <a class="keyword" >
                     <xsl:attribute name="data-type">
