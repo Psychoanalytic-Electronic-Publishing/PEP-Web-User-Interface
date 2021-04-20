@@ -4,8 +4,17 @@
     class="{{unless @isModal "mt-4"}}" as |changeset validator|
 >
     {{#@wrapperComponent}}
-        {{#if @isModal}}
+        {{#if (and @isModal (not this.currentUser.user.isGroup))}}
             {{html-safe this.cardInfo.body}}
+        {{/if}}
+        {{#if this.currentUser.user.isGroup}}
+            <div class="mb-2">
+                {{t
+                    "login.groupInformation"
+                    org=this.currentUser.user.userFullName
+                    method=this.currentUser.loginMethodTranslation
+                }}
+            </div>
         {{/if}}
         <Alert
             @isShown={{bool this.loginError}}
@@ -66,9 +75,9 @@
                 {{/unless}}
             </div>
         </div>
-        {{#unless @isModal}}
+        {{#if (and (not this.currentUser.user.isGroup) (not @isModal))}}
             {{html-safe this.cardInfo.body}}
-        {{/unless}}
+        {{/if}}
     {{/@wrapperComponent}}
     {{yield changeset validator}}
 </FormValidator>
