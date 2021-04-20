@@ -339,8 +339,7 @@ export default class AdminLanguage extends Controller {
      */
     private createConfigItem<T>(path: Paths<LanguageModel>, item: T) {
         const items = this.changeset?.get(path) as T[];
-        items.push(item);
-        this.changeset?.set(path, [...items]);
+        this.changeset?.set(path, [...items, item]);
     }
 
     /**
