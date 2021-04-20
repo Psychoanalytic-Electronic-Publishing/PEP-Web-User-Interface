@@ -25,6 +25,7 @@ import AuthService from 'pep/services/auth';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
 import DrawerService from 'pep/services/drawer';
+import InformationBarService from 'pep/services/information-bar';
 import IntroTour from 'pep/services/intro-tour';
 import LangService from 'pep/services/lang';
 import LoadingBarService from 'pep/services/loading-bar';
@@ -59,6 +60,7 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
     @service drawer!: DrawerService;
     @service introTour!: IntroTour;
     @service modal!: ModalService;
+    @service informationBar!: InformationBarService;
 
     constructor() {
         super(...arguments);
@@ -146,9 +148,7 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
     async setupController(controller: ApplicationController, model: any, transition: Transition): Promise<void> {
         super.setupController(controller, model, transition);
         const hideTour = this.cookies.read(HIDE_TOUR_COOKIE_NAME);
-        if (this.currentUser.user?.isGroup) {
-            this.auth.openLoginModal(true);
-        }
+
         if (this.currentUser.preferences?.tourEnabled && !hideTour) {
             this.introTour.show();
         }

@@ -121,11 +121,15 @@ export default class CurrentUserService extends Service {
         return isGroup ? this.intl.t('user.login.individual') : '';
     }
 
-    get logoutTypeLabel() {
-        const isGroup = this.user?.isGroup ?? false;
+    get loginMethodTranslation() {
         const loginMethod = USER_LOGIN_METHODS.findBy('id', this.user?.loggedInMethod);
         const methodTranslation = loginMethod?.logoutLabel ?? loginMethod?.label;
-        const method = methodTranslation ? this.intl.t(methodTranslation) : '';
+        return methodTranslation ? this.intl.t(methodTranslation) : '';
+    }
+
+    get logoutTypeLabel() {
+        const isGroup = this.user?.isGroup ?? false;
+        const method = this.loginMethodTranslation;
         return isGroup ? this.intl.t('user.login.logoutType', { method }) : '';
     }
 

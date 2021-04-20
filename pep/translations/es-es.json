@@ -541,12 +541,13 @@
         "success": "You are now logged in.",
         "forgotPassword": "Forgot Password?",
         "genericError": "Unable to login. There is a problem behind the scenes, and we are looking into it. Please try again later.",
-        "federatedLogin": "Federated Login",
+        "federatedLogin": "Federated/OpenAthens Login",
         "notARegisteredUser": "Not a registered user?",
-        "clickToRegister": "Click here to register"
+        "clickToRegister": "Click here to register",
+        "groupInformation": "You have been granted partial access to PEP via {org} based on {method}. To have full access please login or create an account."
     },
     "federatedLogin": {
-        "title": "Federated Login",
+        "title": "Federated/OpenAthens Login",
         "info": "Psychoanalytic Electronic Publishing supports logins from the following federations and institutions. If you have a login through one of these services, please click on the link to gain access to your subscription",
         "forgotPassword": "Forgot Password?",
         "genericError": "Unable to login. There is a problem behind the scenes, and we are looking into it. Please try again later.",
