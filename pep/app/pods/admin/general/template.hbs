@@ -73,6 +73,38 @@
                                                 />
                                             </FlInput>
                                         </validator.input>
+                                        <validator.input
+                                            @errors={{changeset.error.configSettings.global.cards.glossary.limit.search.validation
+                                            }}
+                                        >
+                                            <FlInput
+                                                @value={{changeset.configSettings.global.cards.glossary.limit.search}}
+                                                @placeholder={{t "admin.common.global.cards.glossary.searchLimit"}}
+                                            >
+                                                <ChangesetInput
+                                                    @changeset={{changeset}}
+                                                    @path="configSettings.global.cards.glossary.limit.search"
+                                                    class="form-control"
+                                                    autocomplete="off"
+                                                />
+                                            </FlInput>
+                                        </validator.input>
+                                        <validator.input
+                                            @errors={{changeset.error.configSettings.global.cards.glossary.limit.read.validation
+                                            }}
+                                        >
+                                            <FlInput
+                                                @value={{changeset.configSettings.global.cards.glossary.limit.read}}
+                                                @placeholder={{t "admin.common.global.cards.glossary.readLimit"}}
+                                            >
+                                                <ChangesetInput
+                                                    @changeset={{changeset}}
+                                                    @path="configSettings.global.cards.glossary.limit.read"
+                                                    class="form-control"
+                                                    autocomplete="off"
+                                                />
+                                            </FlInput>
+                                        </validator.input>
                                     </div>
                                 </div>
                             </div>

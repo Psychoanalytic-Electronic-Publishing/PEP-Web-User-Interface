@@ -3,6 +3,8 @@ import { WIDGET } from 'pep/constants/sidebar';
 import { TourStepId } from 'pep/constants/tour';
 import { WordWheelSearchType } from 'pep/pods/components/word-wheel/component';
 
+import { GlossaryWidgetLocation } from './sidebar';
+
 /**
  * Widget configuration - tells us which widget and whether its open
  *
@@ -66,6 +68,11 @@ export interface BaseConfiguration {
             };
             mostViewed: {
                 limit: number;
+            };
+            glossary: {
+                limit: {
+                    [L in GlossaryWidgetLocation]: number;
+                };
             };
             videoPreviews: VideoConfiguration[];
             topicalVideoPreviews: VideoConfiguration[];
@@ -181,6 +188,12 @@ export const BASE_CONFIG_NAME = 'common';
 export const DEFAULT_BASE_CONFIGURATION: BaseConfiguration = {
     global: {
         cards: {
+            glossary: {
+                limit: {
+                    [GlossaryWidgetLocation.SEARCH]: 15,
+                    [GlossaryWidgetLocation.READ]: 15
+                }
+            },
             whatsNew: {
                 limit: 10
             },

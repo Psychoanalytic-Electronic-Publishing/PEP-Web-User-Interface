@@ -60,7 +60,6 @@
       "app/**/*",
       "tests/**/*",
       "types/**/*",
-      "lib/tippy",
-      "node_modules/@gavant/glint-template-types/**/*"
+      "lib/tippy"
     ]
   }

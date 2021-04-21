@@ -22,7 +22,7 @@ import {
     SEARCH_DEFAULT_VIEW_PERIOD, SEARCH_TYPE_ARTICLE, SearchFacetValue, SearchTermValue, SearchViews, SearchViewType,
     ViewPeriod
 } from 'pep/constants/search';
-import { WIDGET } from 'pep/constants/sidebar';
+import { GlossaryWidgetLocation, WIDGET } from 'pep/constants/sidebar';
 import Abstract from 'pep/pods/abstract/model';
 import Document from 'pep/pods/document/model';
 import AjaxService from 'pep/services/ajax';
@@ -507,7 +507,10 @@ export default class SearchIndex extends Controller {
             }
 
             this.sidebar.update({
-                [WIDGET.GLOSSARY_TERMS]: this.resultsMeta?.facetCounts.facet_fields.glossary_group_terms,
+                [WIDGET.GLOSSARY_TERMS]: {
+                    terms: this.resultsMeta?.facetCounts.facet_fields.glossary_group_terms,
+                    location: GlossaryWidgetLocation.SEARCH
+                },
                 [WIDGET.RELATED_DOCUMENTS]: undefined,
                 [WIDGET.MORE_LIKE_THESE]: undefined
             });

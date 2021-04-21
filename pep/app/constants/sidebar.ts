@@ -125,3 +125,8 @@ export const WIDGETS = [
     WHATS_NEW
 ];
 export type WidgetData = Partial<Record<WIDGET, any>>;
+
+export enum GlossaryWidgetLocation {
+    SEARCH = 'search',
+    READ = 'read'
+}
