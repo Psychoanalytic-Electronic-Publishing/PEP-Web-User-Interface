@@ -10,7 +10,7 @@ import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hoo
 import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
 
 import { SearchMetadata } from 'pep/api';
-import { WIDGET } from 'pep/constants/sidebar';
+import { GlossaryWidgetLocation, WIDGET } from 'pep/constants/sidebar';
 import { PageNav } from 'pep/mixins/page-layout';
 import Document from 'pep/pods/document/model';
 import SearchController from 'pep/pods/search/index/controller';
@@ -180,7 +180,10 @@ export default class SearchIndex extends PageNav(Route) {
         this.sidebar.update({
             [WIDGET.RELATED_DOCUMENTS]: undefined,
             [WIDGET.MORE_LIKE_THESE]: undefined,
-            [WIDGET.GLOSSARY_TERMS]: this.resultsMeta?.facetCounts.facet_fields.glossary_group_terms
+            [WIDGET.GLOSSARY_TERMS]: {
+                terms: this.resultsMeta?.facetCounts.facet_fields.glossary_group_terms,
+                location: GlossaryWidgetLocation.SEARCH
+            }
         });
 
         // workaround for bug w/array-based query param values

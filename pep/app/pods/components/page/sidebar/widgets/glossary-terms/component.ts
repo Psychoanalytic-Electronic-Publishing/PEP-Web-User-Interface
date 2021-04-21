@@ -8,13 +8,15 @@ import IntlService from 'ember-intl/services/intl';
 
 import Modal from '@gavant/ember-modals/services/modal';
 
-import { WIDGET } from 'pep/constants/sidebar';
+import { GlossaryWidgetLocation, WIDGET } from 'pep/constants/sidebar';
 import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
 import ConfigurationService from 'pep/services/configuration';
 import LoadingBarService from 'pep/services/loading-bar';
 import NotificationsService from 'pep/services/notifications';
 import { shuffle } from 'pep/utils/array';
 import { BaseGlimmerSignature } from 'pep/utils/types';
+
+import { GlossaryWidgetLocations } from '../../../../../../constants/sidebar';
 
 interface PageSidebarWidgetsGlossaryTermsArgs extends PageSidebarWidgetArgs {}
 
@@ -38,12 +40,15 @@ export default class PageSidebarWidgetsGlossaryTerms extends Component<
      * @memberof PageSidebarWidgetsGlossaryTerms
      */
     get data() {
-        const data = this.args.data[this.widget] ?? {};
+        const model: { terms: object; location: GlossaryWidgetLocation } = this.args.data[this.widget] ?? {};
+        const size = this.configuration.base.global.cards.glossary.limit[model.location];
+        const data = model.terms ?? {};
         //convert from an object with values to an array with label and values
-        const glossaryGroupTerms = Object.entries(data).map((entry) => ({
+        const allGlossaryGroupTerms = Object.entries(data).map((entry) => ({
             label: entry[0],
             count: entry[1] as number
         }));
+        const glossaryGroupTerms = allGlossaryGroupTerms.slice(0, size);
         //find the max and min of the array
         const { max, min } = glossaryGroupTerms.reduce(
             (prev, next) => {

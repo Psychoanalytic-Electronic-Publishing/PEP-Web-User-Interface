@@ -9,7 +9,7 @@ import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hoo
 import { buildQueryParams, QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 
 import isEqual from 'lodash.isequal';
-import { WIDGET } from 'pep/constants/sidebar';
+import { GlossaryWidgetLocation, WIDGET } from 'pep/constants/sidebar';
 import { PageNav } from 'pep/mixins/page-layout';
 import { ApiServerErrorResponse } from 'pep/pods/application/adapter';
 import Document from 'pep/pods/document/model';
@@ -105,7 +105,10 @@ export default class SearchRead extends PageNav(Route) {
         this.sidebar.update({
             [WIDGET.RELATED_DOCUMENTS]: model,
             [WIDGET.MORE_LIKE_THESE]: model,
-            [WIDGET.GLOSSARY_TERMS]: model?.meta?.facetCounts.facet_fields.glossary_group_terms,
+            [WIDGET.GLOSSARY_TERMS]: {
+                terms: model?.meta?.facetCounts.facet_fields.glossary_group_terms,
+                location: GlossaryWidgetLocation.READ
+            },
             [WIDGET.PUBLISHER_INFO]: model
         });
 
