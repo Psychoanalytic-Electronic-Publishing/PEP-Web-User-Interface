@@ -6,7 +6,7 @@
 >
     <Modal.header @title={{t "preferences.title"}} />
     <Modal.body>
-        <p class="{{~if this.session.isAuthenticated " text-muted mb-3" " font-size-secondary mb-0"}}">
+        <p class="{{if this.session.isAuthenticated " text-muted mb-3" " font-size-secondary mb-0"}}">
             {{t "preferences.info"}}
         </p>
         {{#unless this.session.isAuthenticated}}
@@ -98,6 +98,15 @@
                                 @value={{this.searchHicLimit}}
                                 maxlength="2"
                                 {{on "input" this.updateHicLimit}}
+                            />
+                        </div>
+                    </div>
+                    <div class="form-row mb-3">
+                        <div class="col-sm-8">
+                            <CheckboxInput
+                                @checked={{this.currentUser.preferences.userSearchFormSticky}}
+                                @onChange={{fn this.updatePreference this.userSearchFormStickyKey}}
+                                @label={{t "preferences.search.userSearchFormSticky.label"}}
                             />
                         </div>
                     </div>

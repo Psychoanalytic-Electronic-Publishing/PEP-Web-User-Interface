@@ -56,8 +56,7 @@ export default class DocumentRead extends Component<BaseGlimmerSignature<Documen
      */
     @action
     viewSearch(search: SearchQueryParams) {
-        // TODO improve this typing
-        clearSearch(this as any, this.configuration, this.currentUser);
+        clearSearch(this);
         this.router.transitionTo('search', {
             queryParams: {
                 ...this.configuration.defaultSearchParams,

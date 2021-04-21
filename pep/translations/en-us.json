@@ -626,6 +626,9 @@
                 "select": "Select your desired behavior",
                 "enabled": "Display a preview pane",
                 "disabled": "Open the full document"
+            },
+            "userSearchFormSticky": {
+                "label": "Sticky search form"
             }
         },
         "sidebar": {

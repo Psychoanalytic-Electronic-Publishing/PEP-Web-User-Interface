@@ -40,6 +40,7 @@ export default class ModalDialogsUserPreferences extends Component<
     searchEnabledKey = PreferenceKey.SEARCH_PREVIEW_ENABLED;
     hicLimit = PreferenceKey.SEARCH_HIC_LIMIT;
     glossaryFormattingEnabledKey = PreferenceKey.GLOSSARY_FORMATTING_ENABLED;
+    userSearchFormStickyKey = PreferenceKey.USER_SEARCH_FORM_STICKY;
 
     get widgets() {
         return WIDGETS.map((widget) => ({
