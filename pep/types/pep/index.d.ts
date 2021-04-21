@@ -1,11 +1,6 @@
-import Component from '@glint/environment-ember-loose/ember-component';
 import '@glint/environment-ember-loose/registry';
 import Ember from 'ember';
 import DS from 'ember-data';
-
-import {
-    FlipProp, IconName, IconPrefix, PullProp, RotateProp, SizeProp, Transform
-} from '@fortawesome/fontawesome-svg-core';
 
 declare global {
     interface Array<T> extends Ember.ArrayPrototypeExtensions<T> {}
@@ -35,22 +30,3 @@ declare global {
 }
 
 export {};
-
-export interface FaIconComponentSignature {
-    Element: SVGElement;
-    Args: {
-        icon: IconName;
-        prefix?: IconPrefix;
-        size?: SizeProp;
-        rotation?: RotateProp;
-        pull?: PullProp;
-        pulse?: boolean;
-        border?: boolean;
-        flip?: FlipProp;
-        fixedWidth?: boolean;
-        transform?: Transform;
-        symbol?: boolean;
-    };
-}
-
-export class FaIconComponent extends Component<FaIconComponentSignature> {}

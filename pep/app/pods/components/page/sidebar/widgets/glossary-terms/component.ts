@@ -16,8 +16,6 @@ import NotificationsService from 'pep/services/notifications';
 import { shuffle } from 'pep/utils/array';
 import { BaseGlimmerSignature } from 'pep/utils/types';
 
-import { GlossaryWidgetLocations } from '../../../../../../constants/sidebar';
-
 interface PageSidebarWidgetsGlossaryTermsArgs extends PageSidebarWidgetArgs {}
 
 export default class PageSidebarWidgetsGlossaryTerms extends Component<

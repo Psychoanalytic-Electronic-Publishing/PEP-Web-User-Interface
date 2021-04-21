@@ -130,15 +130,3 @@ export enum GlossaryWidgetLocation {
     SEARCH = 'search',
     READ = 'read'
 }
-
-export const GlossaryWidgetSearchLocation = {
-    id: GlossaryWidgetLocation.SEARCH,
-    value: 'searchLimit'
-};
-
-export const GlossaryWidgetReadLocation = {
-    id: GlossaryWidgetLocation.READ,
-    value: 'readLimit'
-};
-
-export const GlossaryWidgetLocations = [GlossaryWidgetSearchLocation, GlossaryWidgetReadLocation];
