@@ -626,6 +626,9 @@
                 "enabled": "Display a preview pane",
                 "disabled": "Open the full document",
                 "labelName": "on-search-result-selection"
+            },
+            "userSearchFormSticky": {
+                "label": "Sticky search form"
             }
         },
         "sidebar": {
@@ -860,6 +863,10 @@
                     },
                     "mostViewed": {
                         "limit": "Most viewed result limit"
+                    },
+                    "glossary": {
+                        "searchLimit": "Glossary limit when searching",
+                        "readLimit": "Glossary limit when reading"
                     }
                 }
             },

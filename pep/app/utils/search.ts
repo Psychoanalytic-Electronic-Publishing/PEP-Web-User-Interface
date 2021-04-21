@@ -10,8 +10,10 @@ import {
     SearchTermValue, SourceType, ViewPeriod
 } from 'pep/constants/search';
 import Document from 'pep/pods/document/model';
+import SearchIndexController from 'pep/pods/search/index/controller';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
+import { guard } from 'pep/utils/types';
 
 /**
  * Search params that come from the sidebar search form
@@ -298,27 +300,28 @@ export function copySearchToController(toController: Controller & SearchControll
 }
 
 /**
- *
+ * Clear search from current context and the search index controller
  *
  * @export
- * @param {(Controller & SearchController)} controller
- * @param {ConfigurationService} configuration
- * @param {CurrentUserService} user
+ * @param {*} owner
  */
-export function clearSearch(
-    controller: Controller & SearchController,
-    configuration: ConfigurationService,
-    user: CurrentUserService
-): void {
-    const searchController = getOwner(controller).lookup(`controller:search.index`);
+export function clearSearch(owner: any): void {
+    const configuration: ConfigurationService = getOwner(owner).lookup('service:configuration');
+    const user: CurrentUserService = getOwner(owner).lookup('service:currentUser');
+    const searchController: SearchIndexController = getOwner(owner).lookup('controller:search.index');
     const cfg = configuration.base.search;
     const preferences = user.preferences;
-    const terms = preferences?.searchTermFields ?? cfg.terms.defaultFields;
-    const isLimitOpen = preferences?.searchLimitIsShown ?? cfg.limitFields.isShown;
+    const terms =
+        (preferences?.userSearchFormSticky ? preferences?.searchTermFields : cfg.terms.defaultFields) ??
+        cfg.terms.defaultFields;
+    const isLimitOpen =
+        (preferences?.userSearchFormSticky ? preferences?.searchLimitIsShown : cfg.limitFields.isShown) ??
+        cfg.limitFields.isShown;
+
     const blankTerms = terms.map((f) => ({ type: f, term: '' }));
 
-    const controllers = [controller, searchController];
-    controllers.forEach((controller, index) => {
+    const controllers: [any, SearchIndexController] = [owner, searchController];
+    controllers.forEach((controller) => {
         controller.smartSearchTerm = '';
         controller.matchSynonyms = false;
         controller.citedCount = '';
@@ -326,17 +329,36 @@ export function clearSearch(
         controller.viewedPeriod = SEARCH_DEFAULT_VIEW_PERIOD;
         controller.isLimitOpen = isLimitOpen;
         controller.searchTerms = blankTerms;
-        if (index === 1) {
-            controller.q = '';
-            controller.currentSmartSearchTerm = '';
-            controller.currentSearchTerms = blankTerms;
-            controller.currentMatchSynonyms = false;
-            controller.currentCitedCount = '';
-            controller.currentViewedCount = '';
-            controller.currentViewedPeriod = SEARCH_DEFAULT_VIEW_PERIOD;
-            controller.currentFacets = [];
+        if (guard<SearchIndexController>(controller, 'currentSmartSearchTerm')) {
+            clearSearchIndexControllerSearch(controller);
         }
     });
+}
+
+/**
+ * Clear the search from the search index controller
+ *
+ * @export
+ * @param {SearchIndexController} controller
+ */
+export function clearSearchIndexControllerSearch(controller: SearchIndexController): void {
+    const configuration: ConfigurationService = getOwner(controller).lookup('service:configuration');
+    const user: CurrentUserService = getOwner(controller).lookup('service:currentUser');
+    const cfg = configuration.base.search;
+    const preferences = user.preferences;
+    const terms =
+        (preferences?.userSearchFormSticky ? preferences?.searchTermFields : cfg.terms.defaultFields) ??
+        cfg.terms.defaultFields;
+    const blankTerms = terms.map((f) => ({ type: f, term: '' }));
+
+    controller.q = '';
+    controller.currentSmartSearchTerm = '';
+    controller.currentSearchTerms = blankTerms;
+    controller.currentMatchSynonyms = false;
+    controller.currentCitedCount = '';
+    controller.currentViewedCount = '';
+    controller.currentViewedPeriod = SEARCH_DEFAULT_VIEW_PERIOD;
+    controller.currentFacets = [];
 }
 
 /**

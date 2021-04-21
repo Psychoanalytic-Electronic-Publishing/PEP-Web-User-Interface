@@ -36,7 +36,7 @@ import PrinterService from 'pep/services/printer';
 import ScrollableService from 'pep/services/scrollable';
 import SearchSelection from 'pep/services/search-selection';
 import SidebarService from 'pep/services/sidebar';
-import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
+import { buildSearchQueryParams, clearSearchIndexControllerSearch, hasSearchQuery } from 'pep/utils/search';
 import { SearchSorts, SearchSortType, transformSearchSortsToTable, transformSearchSortToAPI } from 'pep/utils/sort';
 import { hash } from 'rsvp';
 
@@ -351,20 +351,7 @@ export default class SearchIndex extends Controller {
      */
     @action
     clearSearch() {
-        const cfg = this.configuration.base.search;
-        const prefs = this.currentUser.preferences;
-        const terms = prefs?.searchTermFields ?? cfg.terms.defaultFields;
-        const isLimitOpen = prefs?.searchLimitIsShown ?? cfg.limitFields.isShown;
-
-        this.q = '';
-        this.currentSmartSearchTerm = '';
-        this.currentMatchSynonyms = false;
-        this.currentCitedCount = '';
-        this.currentViewedCount = '';
-        this.currentViewedPeriod = ViewPeriod.PAST_WEEK;
-        this.isLimitOpen = isLimitOpen;
-        this.currentSearchTerms = terms.map((f) => ({ type: f, term: '' }));
-        this.currentFacets = [];
+        clearSearchIndexControllerSearch(this);
         taskFor(this.updateRefineMetadata).perform(true, 0);
         this.paginator.clearModels();
         this.searchSelection.clear();
@@ -536,10 +523,12 @@ export default class SearchIndex extends Controller {
     @restartableTask
     *updateSearchFormPrefs() {
         yield timeout(500);
-        yield this.currentUser.updatePrefs({
-            [PreferenceKey.SEARCH_LIMIT_IS_SHOWN]: this.isLimitOpen,
-            [PreferenceKey.SEARCH_TERM_FIELDS]: this.currentSearchTerms.map((t) => t.type)
-        });
+        if (this.currentUser.preferences?.userSearchFormSticky) {
+            yield this.currentUser.updatePrefs({
+                [PreferenceKey.SEARCH_LIMIT_IS_SHOWN]: this.isLimitOpen,
+                [PreferenceKey.SEARCH_TERM_FIELDS]: this.currentSearchTerms.map((t) => t.type)
+            });
+        }
     }
 
     /**

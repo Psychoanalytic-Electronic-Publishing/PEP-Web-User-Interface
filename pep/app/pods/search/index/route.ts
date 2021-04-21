@@ -137,8 +137,13 @@ export default class SearchIndex extends PageNav(Route) {
     setupController(controller: SearchController, model: RecordArrayWithMeta<Document>) {
         const cfg = this.configuration.base.search;
         const prefs = this.currentUser.preferences;
-        const terms = prefs?.searchTermFields ?? cfg.terms.defaultFields;
-        const isLimitOpen = prefs?.searchLimitIsShown ?? cfg.limitFields.isShown;
+        const terms =
+            (prefs?.userSearchFormSticky ? prefs?.searchTermFields : cfg.terms.defaultFields) ??
+            cfg.terms.defaultFields;
+        const isLimitOpen =
+            (prefs?.userSearchFormSticky ? prefs?.searchLimitIsShown : cfg.limitFields.isShown) ??
+            cfg.limitFields.isShown;
+
         //map the query params to current search values to populate the form
         controller.currentSmartSearchTerm = controller.q;
         controller.currentMatchSynonyms = controller.matchSynonyms;
@@ -214,7 +219,10 @@ export default class SearchIndex extends PageNav(Route) {
         // reset the search form limit fields section
         const cfg = this.configuration.base.search;
         const prefs = this.currentUser.preferences;
-        controller.isLimitOpen = prefs?.searchLimitIsShown ?? cfg.limitFields.isShown;
+
+        controller.isLimitOpen =
+            (prefs?.userSearchFormSticky ? prefs?.searchLimitIsShown : cfg.limitFields.isShown) ??
+            cfg.limitFields.isShown;
     }
 
     /**

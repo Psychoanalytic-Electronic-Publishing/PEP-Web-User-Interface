@@ -159,7 +159,7 @@ export default class Application extends Controller {
      */
     @action
     clearSearch() {
-        clearSearch(this, this.configuration, this.currentUser);
+        clearSearch(this);
     }
 
     /**
@@ -244,10 +244,12 @@ export default class Application extends Controller {
     @restartableTask
     *updateSearchFormPrefs() {
         yield timeout(500);
-        yield this.currentUser.updatePrefs({
-            [PreferenceKey.SEARCH_LIMIT_IS_SHOWN]: this.isLimitOpen,
-            [PreferenceKey.SEARCH_TERM_FIELDS]: this.searchTerms.map((t) => t.type)
-        });
+        if (this.currentUser.preferences?.userSearchFormSticky) {
+            yield this.currentUser.updatePrefs({
+                [PreferenceKey.SEARCH_LIMIT_IS_SHOWN]: this.isLimitOpen,
+                [PreferenceKey.SEARCH_TERM_FIELDS]: this.searchTerms.map((t) => t.type)
+            });
+        }
     }
 
     /**
