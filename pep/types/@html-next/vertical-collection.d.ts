@@ -1,9 +1,9 @@
-import ArrayProxy from '@ember/array/proxy';
+import NativeArray from '@ember/array/-private/native-array';
 
 import Component from '@glint/environment-ember-loose/ember-component';
 
 export interface VerticalCollectionArgs<T> {
-    items: ArrayProxy<T> | T[];
+    items: NativeArray<T> | T[];
     tagName?: string;
     key?: string;
     estimateHeight: number;
