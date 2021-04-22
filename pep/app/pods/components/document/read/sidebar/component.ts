@@ -25,7 +25,7 @@ import { resolve } from 'rsvp';
 
 interface DocumentReadSidebarArgs {
     selectedDocument: Document;
-    paginator: Pagination<Document>;
+    paginator: Pagination<Document, { fullCount: number; description: string }>;
     selectedView: SearchView;
     hitsInContextAvailable: boolean;
     loadDocument: (document: Document) => void;
@@ -56,7 +56,7 @@ export default class DocumentReadSidebar extends Component<BaseGlimmerSignature<
     }
 
     get showHitsInContext() {
-        return this.currentUser.preferences?.searchHICEnabled;
+        return this.currentUser.preferences?.searchHICEnabled ?? false;
     }
 
     /**
@@ -241,5 +241,11 @@ export default class DocumentReadSidebar extends Component<BaseGlimmerSignature<
     @action
     onChangeSorting(sorts: string[]) {
         return resolve(transformSearchSortToAPI(sorts));
+    }
+}
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        'Document::Read::Sidebar': typeof DocumentReadSidebar;
     }
 }
