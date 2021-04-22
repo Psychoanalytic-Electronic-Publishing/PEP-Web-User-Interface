@@ -6,7 +6,7 @@ import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import IntlService from 'ember-intl/services/intl';
 
 import { Sorting } from '@gavant/ember-pagination/hooks/pagination';
-import { ColumnValue } from '@gavant/ember-table';
+import { ColumnValue, TableSort } from '@gavant/ember-table';
 
 import Document from 'pep/pods/document/model';
 import FastbootMediaService from 'pep/services/fastboot-media';
@@ -18,12 +18,15 @@ interface TablesSearchArgs {
     hasMoreRows: boolean;
     headerStickyOffset?: string;
     isLoading: boolean;
-    loadMoreRows: () => Document[];
-    onLinkClick: (document: Document) => void;
     rows: Document[];
     showHitsInContext: boolean;
     document: Document;
-    sorts: Sorting[];
+    sorts?: TableSort[];
+    key?: string;
+    idForFirstItem?: string;
+    loadMoreRows: () => Promise<Document[]> | undefined;
+    onLinkClick: (document: Document) => void;
+    updateSorts: (newSorts: Sorting[]) => Promise<Document[]>;
 }
 
 export default class TablesSearch extends Component<BaseGlimmerSignature<TablesSearchArgs>> {
@@ -103,5 +106,11 @@ export default class TablesSearch extends Component<BaseGlimmerSignature<TablesS
                 staticWidth: 50
             }
         ];
+    }
+}
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        'Tables::Search': typeof TablesSearch;
     }
 }

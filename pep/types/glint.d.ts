@@ -4,6 +4,9 @@ import DropdownLink from '@gavant/glint-template-types/types/@gavant/ember-boots
 import ButtonComponent from '@gavant/glint-template-types/types/@gavant/ember-button-basic/component';
 import ButtonSpinnerComponent from '@gavant/glint-template-types/types/@gavant/ember-button-spinner/component';
 import ModalDialog from '@gavant/glint-template-types/types/@gavant/gavant-ember-modals/modal-dialog';
+import AnimatedContainer from '@gavant/glint-template-types/types/ember-animated/animated-container';
+import { AnimatedEachCurly } from '@gavant/glint-template-types/types/ember-animated/animated-each';
+import { AnimatedIfCurly } from '@gavant/glint-template-types/types/ember-animated/animated-if';
 import Dropdown from '@gavant/glint-template-types/types/ember-basic-dropdown/dropdown';
 import TranslationHelper from '@gavant/glint-template-types/types/ember-intl/translation-helper';
 import DidInsertModifier from '@gavant/glint-template-types/types/ember-render-modifiers/did-insert';
@@ -12,6 +15,8 @@ import And from '@gavant/glint-template-types/types/ember-truth-helpers/and';
 import Eq from '@gavant/glint-template-types/types/ember-truth-helpers/eq';
 import Not from '@gavant/glint-template-types/types/ember-truth-helpers/not';
 import Or from '@gavant/glint-template-types/types/ember-truth-helpers/or';
+
+import VerticalCollection from '@html-next/vertical-collection';
 
 declare module '@glint/environment-ember-loose/registry' {
     export default interface Registry {
@@ -27,9 +32,13 @@ declare module '@glint/environment-ember-loose/registry' {
         Button: typeof ButtonComponent;
         t: typeof TranslationHelper;
         ModalDialog: typeof ModalDialog;
+        AnimatedContainer: typeof AnimatedContainer;
+        'animated-if': typeof AnimatedIfCurly;
+        'animated-each': typeof AnimatedEachCurly;
         and: typeof And;
         eq: typeof Eq;
         or: typeof Or;
         not: typeof Not;
+        VerticalCollection: typeof VerticalCollection;
     }
 }

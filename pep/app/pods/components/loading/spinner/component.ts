@@ -9,3 +9,9 @@ interface LoadingSpinnerArgs {
 }
 
 export default class LoadingSpinner extends Component<BaseGlimmerSignature<LoadingSpinnerArgs>> {}
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        'Loading::Spinner': typeof LoadingSpinner;
+    }
+}

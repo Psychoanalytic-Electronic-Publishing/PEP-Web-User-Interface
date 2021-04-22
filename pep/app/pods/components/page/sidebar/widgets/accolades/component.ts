@@ -12,3 +12,9 @@ export default class PageSidebarWidgetsAccolades extends Component<
 > {
     @service configuration!: ConfigurationService;
 }
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        'Page::Sidebar::Widgets::Accolades': typeof PageSidebarWidgetsAccolades;
+    }
+}

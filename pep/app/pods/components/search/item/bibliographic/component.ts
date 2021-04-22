@@ -137,3 +137,9 @@ export default class SearchItemBibliographic extends Component<BaseGlimmerSignat
         this.args.openResult(document);
     }
 }
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        'Search::Item::Bibliographic': typeof SearchItemBibliographic;
+    }
+}
