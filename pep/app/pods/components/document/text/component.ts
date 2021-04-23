@@ -63,7 +63,8 @@ export enum DocumentTooltipSelectors {
     NEW_AUTHOR = '.newauthortip',
     AUTHOR_TIP = '.authortip',
     FOOTNOTE = '.ftnx',
-    TRANSLATION = '.translation'
+    TRANSLATION = '.translation',
+    NOTE_TIP = '.notetip'
 }
 
 export type DocumentTippyInstance = Instance & {
@@ -535,6 +536,18 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
             if (node) {
                 tippy(item, {
                     content: node.innerHTML,
+                    ...this.tippyOptions
+                });
+            }
+        });
+
+        const notes = this.containerElement?.querySelectorAll(DocumentTooltipSelectors.NOTE_TIP);
+        notes?.forEach((item) => {
+            const node = item?.querySelector(`.peppopuptext`);
+            if (node) {
+                tippy(item, {
+                    content: node.innerHTML,
+                    placement: 'right',
                     ...this.tippyOptions
                 });
             }

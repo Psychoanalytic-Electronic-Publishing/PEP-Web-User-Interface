@@ -9,7 +9,9 @@ import { removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-par
 
 import { PepSecureAuthenticatedData } from 'pep/api';
 import ENV from 'pep/config/environment';
-import { HIDE_TOUR_COOKIE_NAME, SESSION_COOKIE_NAME, UNAUTHENTICATED_SESSION_COOKIE_NAME } from 'pep/constants/cookies';
+import {
+    COOKIE_PATH, HIDE_TOUR_COOKIE_NAME, SESSION_COOKIE_NAME, UNAUTHENTICATED_SESSION_COOKIE_NAME
+} from 'pep/constants/cookies';
 import { MAX_AGE } from 'pep/constants/dates';
 import AuthService from 'pep/services/auth';
 import { serializeQueryParams } from 'pep/utils/url';
@@ -54,7 +56,8 @@ export default class PepSessionService extends SessionService {
         this.cookies.write(UNAUTHENTICATED_SESSION_COOKIE_NAME, resultString, {
             sameSite: ENV.cookieSameSite,
             maxAge: MAX_AGE,
-            secure: ENV.cookieSecure
+            secure: ENV.cookieSecure,
+            path: COOKIE_PATH
         });
     }
 
