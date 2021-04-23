@@ -1552,6 +1552,21 @@
         </div>
     </xsl:template>
 
+    <xsl:template match="notex">
+        <span class="peppopup notetip" >
+            <a href="#note-information">
+                <sup>
+                    <xsl:apply-templates/>
+                </sup>
+            </a>
+            <xsl:text></xsl:text>
+            <br></br>
+            <span class="peppopuptext" hidden="True" role="dialog">
+                <xsl:value-of select="key('element-by-id', @r)/p" />
+            </span>
+        </span>
+    </xsl:template>
+
     <xsl:template match="dictentrygrp">
         <div class="dictentrygrp" id='{@id}'>
             <xsl:apply-templates/>
