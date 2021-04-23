@@ -64,7 +64,10 @@ export enum DocumentTooltipSelectors {
     AUTHOR_TIP = '.authortip',
     FOOTNOTE = '.ftnx',
     TRANSLATION = '.translation',
-    NOTE_TIP = '.notetip'
+    NOTE_TIP = '.notetip',
+    TITTLE_HELP = '.art-title',
+    BANNER_HELP = '.banner img',
+    AUTHOR_HELP = '.author'
 }
 
 export type DocumentTippyInstance = Instance & {
@@ -92,6 +95,7 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
     containerElement?: HTMLElement;
     scrollableElement?: Element | null;
     defaultOffsetForScroll = -95;
+    tippyHelpDelay: [number, null] = [2000, null];
 
     tippyOptions = {
         theme: 'light',
@@ -647,6 +651,37 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
                         }
                     });
                 }
+            });
+        }
+
+        const title = this.containerElement?.querySelector(DocumentTooltipSelectors.TITTLE_HELP);
+        if (title) {
+            tippy(title, {
+                content: this.intl.t('document.text.help.title'),
+                ...this.tippyOptions,
+                delay: this.tippyHelpDelay
+            });
+        }
+
+        const banner = this.containerElement?.querySelector(DocumentTooltipSelectors.BANNER_HELP);
+        if (banner) {
+            tippy(banner, {
+                content: this.intl.t('document.text.help.journalBanner'),
+                ...this.tippyOptions,
+                delay: this.tippyHelpDelay
+            });
+        }
+
+        const authors = this.containerElement?.querySelectorAll(DocumentTooltipSelectors.AUTHOR_HELP);
+        if (authors) {
+            authors?.forEach((item) => {
+                const parent = item.parentElement;
+                tippy(item, {
+                    appendTo: () => document.body,
+                    content: this.intl.t('document.text.help.author'),
+                    ...this.tippyOptions,
+                    delay: this.tippyHelpDelay
+                });
             });
         }
     }
