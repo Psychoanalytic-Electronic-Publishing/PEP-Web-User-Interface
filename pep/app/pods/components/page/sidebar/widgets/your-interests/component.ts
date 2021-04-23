@@ -3,11 +3,11 @@ import { inject as service } from '@ember/service';
 import Component from '@glint/environment-ember-loose/glimmer-component';
 
 import { WIDGET } from 'pep/constants/sidebar';
-import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
+import { BasePageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
 import AjaxService from 'pep/services/ajax';
 import { BaseGlimmerSignature } from 'pep/utils/types';
 
-interface PageSidebarWidgetsYourInterestsArgs extends PageSidebarWidgetArgs {}
+interface PageSidebarWidgetsYourInterestsArgs extends BasePageSidebarWidgetArgs {}
 
 export default class PageSidebarWidgetsYourInterests extends Component<
     BaseGlimmerSignature<PageSidebarWidgetsYourInterestsArgs>

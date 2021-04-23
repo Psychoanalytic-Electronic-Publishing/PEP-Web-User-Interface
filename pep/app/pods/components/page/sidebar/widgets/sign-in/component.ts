@@ -86,3 +86,9 @@ export default class PageSidebarWidgetsSignIn extends Component<BaseGlimmerSigna
         taskFor(this.loadResults).perform();
     }
 }
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        'Page::Sidebar::Widgets::SignIn': typeof PageSidebarWidgetsSignIn;
+    }
+}

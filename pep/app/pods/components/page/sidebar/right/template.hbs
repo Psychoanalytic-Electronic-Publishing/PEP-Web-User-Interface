@@ -4,12 +4,8 @@
             <div class="px-2 pt-3">
                 <Page::Sidebar::Widgets::SignIn />
             </div>
+        {{else}}
+            <Page::Sidebar::Widgets @widgets={{this.rightSidebarWidgets}} @data={{@data}} class="pt-3" />
         {{/if}}
-        <Page::Sidebar::Widgets
-            @widgets={{this.rightSidebarWidgets}}
-            @data={{@data}}
-            @signInCardInfo={{this.signInCardInfo}}
-            class="pt-3"
-        />
     </Page::Sidebar::Content>
 </Page::Sidebar>

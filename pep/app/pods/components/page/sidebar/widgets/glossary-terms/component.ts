@@ -9,14 +9,14 @@ import IntlService from 'ember-intl/services/intl';
 import Modal from '@gavant/ember-modals/services/modal';
 
 import { GlossaryWidgetLocation, WIDGET } from 'pep/constants/sidebar';
-import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
+import { BasePageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
 import ConfigurationService from 'pep/services/configuration';
 import LoadingBarService from 'pep/services/loading-bar';
 import NotificationsService from 'pep/services/notifications';
 import { shuffle } from 'pep/utils/array';
 import { BaseGlimmerSignature } from 'pep/utils/types';
 
-interface PageSidebarWidgetsGlossaryTermsArgs extends PageSidebarWidgetArgs {}
+interface PageSidebarWidgetsGlossaryTermsArgs extends BasePageSidebarWidgetArgs {}
 
 export default class PageSidebarWidgetsGlossaryTerms extends Component<
     BaseGlimmerSignature<PageSidebarWidgetsGlossaryTermsArgs>

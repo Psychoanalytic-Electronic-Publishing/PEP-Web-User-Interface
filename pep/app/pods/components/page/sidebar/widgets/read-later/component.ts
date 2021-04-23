@@ -10,7 +10,7 @@ import DS from 'ember-data';
 import { PreferenceKey } from 'pep/constants/preferences';
 import { SearchFacetId } from 'pep/constants/search';
 import { WIDGET } from 'pep/constants/sidebar';
-import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
+import { BasePageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
 import Document from 'pep/pods/document/model';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
@@ -18,7 +18,7 @@ import PepSessionService from 'pep/services/pep-session';
 import { buildSearchQueryParams } from 'pep/utils/search';
 import { BaseGlimmerSignature } from 'pep/utils/types';
 
-interface PageSidebarWidgetsReadLaterArgs extends PageSidebarWidgetArgs {}
+interface PageSidebarWidgetsReadLaterArgs extends BasePageSidebarWidgetArgs {}
 
 export default class PageSidebarWidgetsReadLater extends Component<
     BaseGlimmerSignature<PageSidebarWidgetsReadLaterArgs>

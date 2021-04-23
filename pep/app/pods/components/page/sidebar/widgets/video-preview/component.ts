@@ -6,11 +6,11 @@ import moment from 'moment';
 import { AspectRatio } from 'pep/constants/configuration';
 import { MEDIA_FILE_EXTENSION_REGEX } from 'pep/constants/regex';
 import { WIDGET } from 'pep/constants/sidebar';
-import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
+import { BasePageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
 import ConfigurationService from 'pep/services/configuration';
 import { BaseGlimmerSignature } from 'pep/utils/types';
 
-interface PageSidebarWidgetsVideoPreviewArgs extends PageSidebarWidgetArgs {}
+interface PageSidebarWidgetsVideoPreviewArgs extends BasePageSidebarWidgetArgs {}
 
 export default class PageSidebarWidgetsVideoPreview extends Component<
     BaseGlimmerSignature<PageSidebarWidgetsVideoPreviewArgs>

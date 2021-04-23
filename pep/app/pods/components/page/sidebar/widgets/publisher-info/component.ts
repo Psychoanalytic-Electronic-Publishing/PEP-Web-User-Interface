@@ -6,12 +6,12 @@ import Component from '@glint/environment-ember-loose/glimmer-component';
 import Modal from '@gavant/ember-modals/services/modal';
 
 import { WIDGET } from 'pep/constants/sidebar';
-import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
+import { BasePageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
 import Document from 'pep/pods/document/model';
 import ConfigurationService from 'pep/services/configuration';
 import { BaseGlimmerSignature } from 'pep/utils/types';
 
-interface PageSidebarWidgetsPublisherInfoArgs extends PageSidebarWidgetArgs {}
+interface PageSidebarWidgetsPublisherInfoArgs extends BasePageSidebarWidgetArgs {}
 
 export default class PageSidebarWidgetsPublisherInfo extends Component<
     BaseGlimmerSignature<PageSidebarWidgetsPublisherInfoArgs>

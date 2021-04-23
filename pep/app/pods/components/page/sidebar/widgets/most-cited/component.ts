@@ -11,13 +11,13 @@ import DS from 'ember-data';
 
 import { WIDGET } from 'pep/constants/sidebar';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
-import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
+import { BasePageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
 import Document from 'pep/pods/document/model';
 import Router from 'pep/router';
 import ConfigurationService from 'pep/services/configuration';
 import { BaseGlimmerSignature } from 'pep/utils/types';
 
-interface PageSidebarWidgetsMostCitedArgs extends PageSidebarWidgetArgs {}
+interface PageSidebarWidgetsMostCitedArgs extends BasePageSidebarWidgetArgs {}
 
 export default class PageSidebarWidgetsMostCited extends Component<
     BaseGlimmerSignature<PageSidebarWidgetsMostCitedArgs>
