@@ -10,13 +10,13 @@ import DS from 'ember-data';
 import { SearchFacetId } from 'pep/constants/search';
 import { WIDGET } from 'pep/constants/sidebar';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
-import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
+import { BasePageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
 import Document from 'pep/pods/document/model';
 import ConfigurationService from 'pep/services/configuration';
 import { buildSearchQueryParams } from 'pep/utils/search';
 import { BaseGlimmerSignature } from 'pep/utils/types';
 
-interface PageSidebarWidgetsExpertPicksArgs extends PageSidebarWidgetArgs {}
+interface PageSidebarWidgetsExpertPicksArgs extends BasePageSidebarWidgetArgs {}
 
 export default class PageSidebarWidgetsExpertPicks extends Component<
     BaseGlimmerSignature<PageSidebarWidgetsExpertPicksArgs>

@@ -9,17 +9,17 @@ import { WIDGET, WidgetData } from 'pep/constants/sidebar';
 import CurrentUserService from 'pep/services/current-user';
 import { BaseGlimmerSignature } from 'pep/utils/types';
 
-export interface PageSidebarWidgetsArgs {
+export interface PageSidebarWidgetArgs {
     widgets: WidgetConfiguration[];
     data: WidgetData;
 }
 
-export interface PageSidebarWidgetArgs extends PageSidebarWidgetsArgs {
+export interface BasePageSidebarWidgetArgs extends PageSidebarWidgetArgs {
     toggleIsOpen: (widget: WIDGET) => void;
     openWidgets: WIDGET[];
 }
 
-export default class PageSidebarWidgets extends Component<BaseGlimmerSignature<PageSidebarWidgetsArgs>> {
+export default class PageSidebarWidgets extends Component<BaseGlimmerSignature<PageSidebarWidgetArgs>> {
     @service currentUser!: CurrentUserService;
 
     @tracked
