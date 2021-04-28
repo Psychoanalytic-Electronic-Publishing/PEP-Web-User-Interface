@@ -11,8 +11,12 @@ module('Integration | Component | changeset-checkbox', function(hooks) {
     test('it renders', async function(assert) {
         // Set any properties with this.set('myProperty', 'value');
         // Handle any actions with this.set('myAction', function(val) { ... });
-
-        await render(hbs`{{changeset-checkbox}}`);
+        this.set('changeset', {
+            get() {
+                return '';
+            }
+        });
+        await render(hbs`<ChangesetCheckbox @changeset={{this.changeset}}  />`);
 
         assert.equal(this.element.textContent?.trim(), '');
     });

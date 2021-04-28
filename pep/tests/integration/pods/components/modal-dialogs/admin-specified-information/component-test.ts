@@ -14,6 +14,6 @@ module('Integration | Component | modal-dialogs/admin-specified-information', fu
 
         await render(hbs`{{modal-dialogs/admin-specified-information}}`);
 
-        assert.equal(this.element.textContent?.trim(), '');
+        assert.equal(this.element.textContent?.trim(), 'Missing translation "common.close" for locale "en-us"');
     });
 });

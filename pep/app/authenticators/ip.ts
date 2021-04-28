@@ -1,4 +1,4 @@
-import { run } from '@ember/runloop';
+import { run, scheduleOnce } from '@ember/runloop';
 
 import classic from 'ember-classic-decorator';
 
@@ -53,6 +53,19 @@ export default class IpAuthenticator extends CredentialsAuthenticator {
                                 if (response.IsValidLogon) {
                                     this.session.clearUnauthenticatedSession();
                                     response.SessionType = sessionType;
+
+                                    const expiresAt = this._absolutizeExpirationTime(response['SessionExpires']);
+
+                                    if (expiresAt) {
+                                        response['expiresAt'] = expiresAt;
+                                    }
+                                    if (expiresAt) {
+                                        scheduleOnce('afterRender', this, '_scheduleAuthenticationInvalidation', [
+                                            response['SessionExpires'],
+                                            expiresAt,
+                                            response
+                                        ]);
+                                    }
                                     resolve(response);
                                 } else {
                                     this.session.setUnauthenticatedSession(response);

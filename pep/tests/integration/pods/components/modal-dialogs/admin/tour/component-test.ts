@@ -11,9 +11,13 @@ module('Integration | Component | modal-dialogs/admin/tour', function(hooks) {
     test('it renders', async function(assert) {
         // Set any properties with this.set('myProperty', 'value');
         // Handle any actions with this.set('myAction', function(val) { ... });
+        this.set('options', {
+            changeset: {
+                get() {}
+            }
+        });
+        await render(hbs`<ModalDialogs::Admin::Tour @options={{this.options}} />`);
 
-        await render(hbs`{{modal-dialogs/admin/tour}}`);
-
-        assert.equal(this.element.textContent?.trim(), '');
+        assert.ok(this.element.textContent?.trim());
     });
 });
