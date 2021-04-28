@@ -675,7 +675,6 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
         const authors = this.containerElement?.querySelectorAll(DocumentTooltipSelectors.AUTHOR_HELP);
         if (authors) {
             authors?.forEach((item) => {
-                const parent = item.parentElement;
                 tippy(item, {
                     appendTo: () => document.body,
                     content: this.intl.t('document.text.help.author'),

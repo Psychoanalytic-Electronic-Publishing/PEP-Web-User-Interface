@@ -230,18 +230,6 @@ export default class DocumentReadSidebar extends Component<BaseGlimmerSignature<
         const selectedView = SearchViews.find((item) => item.id === id);
         this.args.updateSelectedView(selectedView);
     }
-
-    /**
-     * Transform the sorting to a format the API can handle
-     *
-     * @param {string[]} sorts
-     * @returns
-     * @memberof DocumentReadSidebar
-     */
-    @action
-    onChangeSorting(sorts: string[]) {
-        return resolve(transformSearchSortToAPI(sorts));
-    }
 }
 
 declare module '@glint/environment-ember-loose/registry' {

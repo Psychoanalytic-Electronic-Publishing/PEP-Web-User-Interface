@@ -254,7 +254,11 @@ export default class SearchIndex extends Controller {
      */
     @action
     async onChangeSorting(sorts: string[]) {
-        return transformSearchSortToAPI(sorts);
+        if (this.selectedView.id === SearchViewType.TABLE) {
+            return transformSearchSortToAPI(sorts);
+        } else {
+            return sorts;
+        }
     }
 
     get tableSorts() {

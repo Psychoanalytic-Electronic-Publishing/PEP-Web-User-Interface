@@ -9,7 +9,7 @@ import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 import {
     NEXT_ARTICLE, NEXT_ARTICLE_FIRST_HIT, NEXT_HIT, PREVIOUS_ARTICLE, PREVIOUS_ARTICLE_FIRST_HIT, PREVIOUS_HIT
 } from 'pep/constants/keyboard-shortcuts';
-import { SEARCH_DEFAULT_VIEW_PERIOD, SearchViews, SearchViewType, ViewPeriod } from 'pep/constants/search';
+import { SEARCH_DEFAULT_VIEW_PERIOD, SearchView, SearchViews, SearchViewType, ViewPeriod } from 'pep/constants/search';
 import { KeyboardShortcut } from 'pep/modifiers/register-keyboard-shortcuts';
 import Abstract from 'pep/pods/abstract/model';
 import Document from 'pep/pods/document/model';
@@ -221,7 +221,11 @@ export default class SearchRead extends Controller {
      */
     @action
     async onChangeSorting(sorts: string[]) {
-        return transformSearchSortToAPI(sorts);
+        if (this.selectedView.id === SearchViewType.TABLE) {
+            return transformSearchSortToAPI(sorts);
+        } else {
+            return sorts;
+        }
     }
 
     /**
@@ -282,10 +286,8 @@ export default class SearchRead extends Controller {
      * @memberof Search
      */
     @action
-    updateSelectedView(event: HTMLElementEvent<HTMLSelectElement>) {
-        const id = event.target.value as SearchViewType;
-        const selectedView = SearchViews.find((item) => item.id === id);
-        this.selectedView = selectedView!;
+    updateSelectedView(selectedView: SearchView) {
+        this.selectedView = selectedView;
     }
 
     /**
