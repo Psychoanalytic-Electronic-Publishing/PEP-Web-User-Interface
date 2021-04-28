@@ -12,15 +12,15 @@ module('Integration | Component | browse/sidebar-item', function(hooks) {
         // Set any properties with this.set('myProperty', 'value');
         // Handle any actions with this.set('myAction', function(val) { ... });
 
-        await render(hbs`{{browse/sidebar-item}}`);
+        await render(hbs`<Browse::SidebarItem />`);
 
         assert.equal(this.element.textContent?.trim(), '');
 
         // Template block usage:
         await render(hbs`
-      {{#browse/sidebar-item}}
+      <Browse::SidebarItem>
         template block text
-      {{/browse/sidebar-item}}
+      </Browse::SidebarItem>
     `);
 
         assert.equal(this.element.textContent?.trim(), 'template block text');

@@ -14,6 +14,6 @@ module('Integration | Helper | is-development', function(hooks) {
 
         await render(hbs`{{is-development inputValue}}`);
 
-        assert.equal(this.element.textContent?.trim(), true);
+        assert.equal(this.element.textContent?.trim(), 'false');
     });
 });
