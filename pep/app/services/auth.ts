@@ -75,9 +75,6 @@ export default class AuthService extends Service {
                     appendTrailingSlash: false
                 }
             );
-            if (modalOptions.closeOpenModal) {
-                await this.modal.close();
-            }
             this.modal.open('user/login', {
                 ...modalOptions,
                 changeset,
@@ -87,6 +84,9 @@ export default class AuthService extends Service {
                 padsForgotPasswordUrl: federatedLogins.PaDSPasswordResetURL,
                 padsRegisterUrl: federatedLogins.PaDSRegisterUserURL
             });
+            if (modalOptions.closeOpenModal) {
+                await this.modal.close();
+            }
         } catch (errors) {
             this.notifications.error(errors);
         } finally {

@@ -124,8 +124,10 @@ export default class CredentialsAuthenticator extends BaseAuthenticator {
         const params = serializeQueryParams({ SessionId: data.SessionId });
         const serverTokenRevocationEndpoint = `${ENV.authBaseUrl}/Users/Logout?${params}`;
         function success(this: any, resolve: any) {
-            run.cancel(this._authenticationInvalidationTimeout);
-            delete this._authenticationInvalidationTimeout;
+            if (this._authenticationInvalidationTimeout) {
+                run.cancel(this._authenticationInvalidationTimeout);
+                delete this._authenticationInvalidationTimeout;
+            }
             resolve();
         }
         return new RSVP.Promise((resolve) => {

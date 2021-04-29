@@ -59,13 +59,7 @@ export default class IpAuthenticator extends CredentialsAuthenticator {
                                     if (expiresAt) {
                                         response['expiresAt'] = expiresAt;
                                     }
-                                    if (expiresAt) {
-                                        scheduleOnce('afterRender', this, '_scheduleAuthenticationInvalidation', [
-                                            response['SessionExpires'],
-                                            expiresAt,
-                                            response
-                                        ]);
-                                    }
+
                                     resolve(response);
                                 } else {
                                     this.session.setUnauthenticatedSession(response);
