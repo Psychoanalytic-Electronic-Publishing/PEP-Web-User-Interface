@@ -14,11 +14,17 @@ import Modal from '@gavant/ember-modals/services/modal';
 
 import { ServerStatus } from 'pep/api';
 import ENV from 'pep/config/environment';
+import {
+    CLEAR_SEARCH, ESCAPE, NAVIGATE_TO_BROWSE, NAVIGATE_TO_HOME, NAVIGATE_TO_SEARCH, TOGGLE_GLOSSARY_HIGHLIGHTING,
+    TOGGLE_HIC, TOGGLE_LEFT_SIDEBAR, TOGGLE_RIGHT_SIDEBAR, TOGGLE_SIDEBARS
+} from 'pep/constants/keyboard-shortcuts';
 import { PreferenceKey } from 'pep/constants/preferences';
 import { SEARCH_DEFAULT_VIEW_PERIOD, SEARCH_TYPE_ARTICLE, SearchTermValue, ViewPeriod } from 'pep/constants/search';
+import { KeyboardShortcut } from 'pep/modifiers/register-keyboard-shortcuts';
 import AjaxService from 'pep/services/ajax';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
+import IntroTour from 'pep/services/intro-tour';
 import LoadingBarService from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
 import SidebarService from 'pep/services/sidebar';
@@ -34,6 +40,7 @@ export default class Application extends Controller {
     @service configuration!: ConfigurationService;
     @service currentUser!: CurrentUserService;
     @service sidebar!: SidebarService;
+    @service introTour!: IntroTour;
 
     @tracked isLimitOpen: boolean = false;
     @tracked smartSearchTerm: string = '';
@@ -42,6 +49,87 @@ export default class Application extends Controller {
     @tracked viewedCount: string = '';
     @tracked viewedPeriod: ViewPeriod = ViewPeriod.PAST_WEEK;
     @tracked searchTerms: SearchTermValue[] = [];
+    @tracked openNotificationModal?: boolean = false;
+    @tracked information?: string | null;
+
+    queryParams = ['openNotificationModal', 'information'];
+
+    shortcuts: KeyboardShortcut[] = [
+        {
+            keys: NAVIGATE_TO_BROWSE,
+            shortcut: () => {
+                this.transitionToRoute('browse');
+            }
+        },
+        {
+            keys: NAVIGATE_TO_HOME,
+            shortcut: () => {
+                this.transitionToRoute('index');
+            }
+        },
+        {
+            keys: NAVIGATE_TO_SEARCH,
+            shortcut: () => {
+                this.transitionToRoute('search');
+            }
+        },
+        {
+            keys: CLEAR_SEARCH,
+            shortcut: () => {
+                this.clearSearch();
+            }
+        },
+        {
+            keys: TOGGLE_SIDEBARS,
+            shortcut: () => {
+                const areBothOpen = this.sidebar.leftSidebarIsOpen && this.sidebar.rightSidebarIsOpen;
+                this.sidebar.toggleAll(areBothOpen ? false : true);
+            }
+        },
+        {
+            keys: TOGGLE_LEFT_SIDEBAR,
+            shortcut: () => {
+                this.sidebar.toggleLeftSidebar(!this.sidebar.leftSidebarIsOpen);
+            }
+        },
+        {
+            keys: TOGGLE_RIGHT_SIDEBAR,
+            shortcut: () => {
+                this.sidebar.toggleRightSidebar(!this.sidebar.rightSidebarIsOpen);
+            }
+        },
+        {
+            keys: TOGGLE_GLOSSARY_HIGHLIGHTING,
+            shortcut: () => {
+                if (this.currentUser.preferences) {
+                    const currentValue = this.currentUser.preferences?.glossaryFormattingEnabled;
+                    this.currentUser.updatePrefs({ [PreferenceKey.GLOSSARY_FORMATTING_ENABLED]: !currentValue });
+                }
+            }
+        },
+        {
+            keys: TOGGLE_HIC,
+            shortcut: () => {
+                if (this.currentUser.preferences) {
+                    const currentValue = this.currentUser.preferences?.searchHICEnabled;
+                    this.currentUser.updatePrefs({ [PreferenceKey.SEARCH_HIC_ENABLED]: !currentValue });
+                }
+            }
+        },
+        {
+            keys: ESCAPE,
+            shortcut: () => {
+                const active = document.activeElement;
+                const enteringText = ['INPUT', 'TEXTAREA', 'SELECT'].includes(active?.tagName ?? '');
+                if (enteringText) {
+                    (active as HTMLInputElement)?.blur();
+                }
+            },
+            options: {
+                allowInInput: true
+            }
+        }
+    ];
 
     /**
      * Submits the application/nav sidebar's search form and transitions the
@@ -71,7 +159,7 @@ export default class Application extends Controller {
      */
     @action
     clearSearch() {
-        clearSearch(this, this.configuration, this.currentUser);
+        clearSearch(this);
     }
 
     /**
@@ -156,10 +244,12 @@ export default class Application extends Controller {
     @restartableTask
     *updateSearchFormPrefs() {
         yield timeout(500);
-        yield this.currentUser.updatePrefs({
-            [PreferenceKey.SEARCH_LIMIT_IS_SHOWN]: this.isLimitOpen,
-            [PreferenceKey.SEARCH_TERM_FIELDS]: this.searchTerms.map((t) => t.type)
-        });
+        if (this.currentUser.preferences?.userSearchFormSticky) {
+            yield this.currentUser.updatePrefs({
+                [PreferenceKey.SEARCH_LIMIT_IS_SHOWN]: this.isLimitOpen,
+                [PreferenceKey.SEARCH_TERM_FIELDS]: this.searchTerms.map((t) => t.type)
+            });
+        }
     }
 
     /**
@@ -183,6 +273,16 @@ export default class Application extends Controller {
         } finally {
             this.loadingBar.hide();
         }
+    }
+
+    /**
+     * Show the intro tour
+     *
+     * @memberof Application
+     */
+    @action
+    showIntroTour() {
+        this.introTour.show();
     }
 }
 

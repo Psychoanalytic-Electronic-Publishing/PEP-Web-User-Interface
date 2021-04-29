@@ -1,14 +1,15 @@
 import { action } from '@ember/object';
 import RouterService from '@ember/routing/router-service';
 import { inject as service } from '@ember/service';
-import Component from '@glimmer/component';
 
+import Component from '@glint/environment-ember-loose/glimmer-component';
 import DS from 'ember-data';
 
 import ModalService from '@gavant/ember-modals/services/modal';
 
 import Document from 'pep/pods/document/model';
 import GlossaryTerm from 'pep/pods/glossary-term/model';
+import { SearchQueryParams } from 'pep/pods/search/index/route';
 import { SearchReadParams } from 'pep/pods/search/read/route';
 import AuthService from 'pep/services/auth';
 import ConfigurationService from 'pep/services/configuration';
@@ -16,6 +17,7 @@ import CurrentUserService from 'pep/services/current-user';
 import LoadingBarService from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
 import { clearSearch } from 'pep/utils/search';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface DocumentReadArgs {
     model: Document;
@@ -23,9 +25,10 @@ interface DocumentReadArgs {
     searchQueryParams?: SearchReadParams;
     searchHitNumber?: number;
     onAuthenticated: () => void;
+    documentRendered?: () => void;
 }
 
-export default class DocumentRead extends Component<DocumentReadArgs> {
+export default class DocumentRead extends Component<BaseGlimmerSignature<DocumentReadArgs>> {
     @service modal!: ModalService;
     @service router!: RouterService;
     @service configuration!: ConfigurationService;
@@ -52,13 +55,12 @@ export default class DocumentRead extends Component<DocumentReadArgs> {
      * @memberof ReadDocument
      */
     @action
-    viewSearch(searchTerms: string) {
-        // TODO improve this typing
-        clearSearch(this as any, this.configuration, this.currentUser);
+    viewSearch(search: SearchQueryParams) {
+        clearSearch(this);
         this.router.transitionTo('search', {
             queryParams: {
                 ...this.configuration.defaultSearchParams,
-                searchTerms
+                ...search
             }
         });
     }
@@ -76,5 +78,10 @@ export default class DocumentRead extends Component<DocumentReadArgs> {
             results,
             term
         });
+    }
+
+    @action
+    documentRendered() {
+        this.args.documentRendered?.();
     }
 }

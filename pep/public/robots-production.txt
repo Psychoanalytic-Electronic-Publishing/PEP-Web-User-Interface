@@ -1,3 +1,5 @@
 # http://www.robotstxt.org
 User-agent: *
 Disallow:
+
+Sitemap: https://pep-web-google.s3.amazonaws.com/sitemapindex.xml

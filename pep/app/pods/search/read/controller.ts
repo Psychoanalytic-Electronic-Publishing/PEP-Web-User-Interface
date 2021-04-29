@@ -6,7 +6,11 @@ import { tracked } from '@glimmer/tracking';
 import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
 import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 
-import { SEARCH_DEFAULT_VIEW_PERIOD, SearchViews, SearchViewType, ViewPeriod } from 'pep/constants/search';
+import {
+    NEXT_ARTICLE, NEXT_ARTICLE_FIRST_HIT, NEXT_HIT, PREVIOUS_ARTICLE, PREVIOUS_ARTICLE_FIRST_HIT, PREVIOUS_HIT
+} from 'pep/constants/keyboard-shortcuts';
+import { SEARCH_DEFAULT_VIEW_PERIOD, SearchView, SearchViews, SearchViewType, ViewPeriod } from 'pep/constants/search';
+import { KeyboardShortcut } from 'pep/modifiers/register-keyboard-shortcuts';
 import Abstract from 'pep/pods/abstract/model';
 import Document from 'pep/pods/document/model';
 import ConfigurationService from 'pep/services/configuration';
@@ -14,12 +18,39 @@ import CurrentUserService from 'pep/services/current-user';
 import LoadingBarService from 'pep/services/loading-bar';
 import { buildSearchQueryParams } from 'pep/utils/search';
 import { SearchSorts, transformSearchSortToAPI } from 'pep/utils/sort';
+import { guard } from 'pep/utils/types';
 import { reject } from 'rsvp';
 
 export default class SearchRead extends Controller {
     @service loadingBar!: LoadingBarService;
     @service configuration!: ConfigurationService;
     @service currentUser!: CurrentUserService;
+
+    pagingLimit = 20;
+    afterDocumentRendered: null | (() => void) = null;
+    tableView = SearchViewType.TABLE;
+    searchViews = SearchViews;
+    sorts = SearchSorts;
+
+    //workaround for bug w/array-based query param values
+    //@see https://github.com/emberjs/ember.js/issues/18981
+    //@ts-ignore
+    queryParams = [
+        'q',
+        {
+            page: {
+                scope: 'controller'
+            }
+        },
+        { _searchTerms: 'searchTerms' },
+        'matchSynonyms',
+        'citedCount',
+        'viewedCount',
+        'viewedPeriod',
+        { _facets: 'facets' },
+        'preview',
+        'index'
+    ];
 
     @tracked selectedView = SearchViews[0];
     @tracked selectedSort = SearchSorts[0];
@@ -33,27 +64,63 @@ export default class SearchRead extends Controller {
     @tracked page: string | null = null;
     @tracked searchHitNumber?: number;
 
+    @tracked index: number = this.pagingLimit;
+
     // This becomes our model as the template wasn't updating when we changed the default model
     @tracked document?: Document;
 
-    tableView = SearchViewType.TABLE;
-    searchViews = SearchViews;
-    sorts = SearchSorts;
-
-    //workaround for bug w/array-based query param values
-    //@see https://github.com/emberjs/ember.js/issues/18981
-    //@ts-ignore
-    queryParams = [
-        'q',
-        'page',
-        { _searchTerms: 'searchTerms' },
-        'matchSynonyms',
-        'citedCount',
-        'viewedCount',
-        'viewedPeriod',
-        { _facets: 'facets' },
-        'preview'
+    @tracked shortcuts: KeyboardShortcut[] = [
+        {
+            keys: NEXT_ARTICLE,
+            shortcut: this.loadNextDocumentInListIfAvailable
+        },
+        {
+            keys: PREVIOUS_ARTICLE,
+            shortcut: this.loadPreviousDocumentInListIfAvailable
+        },
+        {
+            keys: NEXT_HIT,
+            shortcut: this.viewNextSearchHit
+        },
+        {
+            keys: PREVIOUS_HIT,
+            shortcut: this.viewPreviousSearchHit
+        },
+        {
+            keys: NEXT_ARTICLE_FIRST_HIT,
+            shortcut: async () => {
+                await this.loadNextDocumentInListIfAvailable();
+                this.afterDocumentRendered = this.viewNextSearchHit;
+            }
+        },
+        {
+            keys: PREVIOUS_ARTICLE_FIRST_HIT,
+            shortcut: async () => {
+                await this.loadPreviousDocumentInListIfAvailable();
+                this.afterDocumentRendered = this.viewNextSearchHit;
+            }
+        }
     ];
+
+    get nextDocumentInList(): Document | undefined {
+        const currentDocument = this.document;
+        const loadedDocuments = this.paginator.models;
+        if (currentDocument) {
+            const currentDocumentIndex = loadedDocuments.findIndex((document) => document.id === currentDocument.id);
+            const nextDocument = loadedDocuments[currentDocumentIndex + 1];
+            return nextDocument;
+        }
+    }
+
+    get previousDocumentInList(): Document | undefined {
+        const currentDocument = this.document;
+        const loadedDocuments = this.paginator.models;
+        if (currentDocument) {
+            const currentDocumentIndex = loadedDocuments.findIndex((document) => document.id === currentDocument.id);
+            const nextDocument = loadedDocuments[currentDocumentIndex - 1];
+            return nextDocument;
+        }
+    }
 
     get readQueryParams() {
         return {
@@ -63,7 +130,7 @@ export default class SearchRead extends Controller {
             matchSynonyms: this.matchSynonyms,
             citedCount: this.citedCount,
             viewedCount: this.viewedCount,
-            page: null
+            index: this.index
         };
     }
 
@@ -106,6 +173,46 @@ export default class SearchRead extends Controller {
     }
 
     /**
+     * Show or hide right arrow for search hits
+     *
+     * @readonly
+     * @memberof ReadDocument
+     */
+    get showNextSearchHitButton() {
+        return this.searchHitNumber === undefined || this.searchHitNumber < (this.document?.termCount ?? 0);
+    }
+
+    /**
+     * Load next document in left sidebar list
+     *
+     * @return {*}  {Promise<void>}
+     * @memberof SearchRead
+     */
+    @action
+    async loadNextDocumentInListIfAvailable(): Promise<void> {
+        if (this.nextDocumentInList) {
+            this.loadDocument(this.nextDocumentInList.id);
+        } else {
+            const results = await this.paginator.loadMoreModels();
+            if (results && results.length !== 0) {
+                this.loadNextDocumentInListIfAvailable();
+            }
+        }
+    }
+
+    /**
+     * Load previous document in left sidebar list
+     *
+     * @memberof SearchRead
+     */
+    @action
+    loadPreviousDocumentInListIfAvailable(): void {
+        if (this.previousDocumentInList) {
+            this.loadDocument(this.previousDocumentInList);
+        }
+    }
+
+    /**
      * Transform the sorting to a format the API can handle
      *
      * @param {string[]} sorts
@@ -114,7 +221,11 @@ export default class SearchRead extends Controller {
      */
     @action
     async onChangeSorting(sorts: string[]) {
-        return transformSearchSortToAPI(sorts);
+        if (this.selectedView.id === SearchViewType.TABLE) {
+            return transformSearchSortToAPI(sorts);
+        } else {
+            return sorts;
+        }
     }
 
     /**
@@ -141,6 +252,8 @@ export default class SearchRead extends Controller {
             facetMinCount: cfg.facets.valueMinCount,
             highlightlimit: this.currentUser.preferences?.searchHICLimit ?? cfg.hitsInContext.limit
         });
+
+        this.index = this.paginator.models.length;
 
         return { ...params, ...searchParams };
     }
@@ -173,10 +286,8 @@ export default class SearchRead extends Controller {
      * @memberof Search
      */
     @action
-    updateSelectedView(event: HTMLElementEvent<HTMLSelectElement>) {
-        const id = event.target.value as SearchViewType;
-        const selectedView = SearchViews.find((item) => item.id === id);
-        this.selectedView = selectedView!;
+    updateSelectedView(selectedView: SearchView) {
+        this.selectedView = selectedView;
     }
 
     /**
@@ -186,13 +297,18 @@ export default class SearchRead extends Controller {
      * @memberof ReadDocument
      */
     @action
-    loadDocument(abstract: Abstract) {
-        this.transitionToRoute('search.read', abstract.id, {
+    loadDocument(abstract: Abstract | string) {
+        let id = abstract;
+        if (guard<Abstract>(abstract, 'id')) {
+            id = abstract.id;
+        }
+
+        this.transitionToRoute('search.read', id, {
             queryParams: {
                 q: this.q,
                 matchSynonyms: this.matchSynonyms,
                 searchTerms: this._searchTerms,
-                page: null
+                index: this.index
             }
         });
     }
@@ -204,7 +320,9 @@ export default class SearchRead extends Controller {
      */
     @action
     viewNextSearchHit() {
-        this.searchHitNumber = this.searchHitNumber ? this.searchHitNumber + 1 : 1;
+        if (this.showNextSearchHitButton) {
+            this.searchHitNumber = this.searchHitNumber ? this.searchHitNumber + 1 : 1;
+        }
     }
 
     /**
@@ -231,6 +349,28 @@ export default class SearchRead extends Controller {
     viewSearchHitNumber(number: number) {
         this.searchHitNumber = undefined;
         this.searchHitNumber = number;
+    }
+
+    /**
+     * Document was rendered, so now we need to call the afterDocumentRendered function we saved
+     *
+     * @memberof SearchRead
+     */
+    @action
+    documentRendered() {
+        this.afterDocumentRendered?.();
+        this.afterDocumentRendered = null;
+    }
+
+    /**
+     * Update the page when the scroll changes
+     *
+     * @param {string} page
+     * @memberof SearchRead
+     */
+    @action
+    viewablePageUpdate(page: string) {
+        this.page = page;
     }
 }
 

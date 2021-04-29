@@ -4,13 +4,17 @@ import { isEmpty, isNone } from '@ember/utils';
 
 import { QueryParamsObj, removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
 
-import { QUOTED_VALUE_REGEX } from 'pep/constants/regex';
+import { BOOLEAN_OPERATOR_REGEX, QUOTED_VALUE_REGEX } from 'pep/constants/regex';
 import {
-    SEARCH_DEFAULT_VIEW_PERIOD, SEARCH_FACETS, SEARCH_TYPES, SearchFacetId, SearchFacetValue, SearchTermValue,
-    ViewPeriod
+    SEARCH_DEFAULT_VIEW_PERIOD, SEARCH_FACETS, SEARCH_TYPE_AUTHOR, SEARCH_TYPES, SearchFacetId, SearchFacetValue,
+    SearchTermValue, SourceType, ViewPeriod
 } from 'pep/constants/search';
+import ApplicationController from 'pep/pods/application/controller';
+import Document from 'pep/pods/document/model';
+import SearchIndexController from 'pep/pods/search/index/controller';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
+import { guard } from 'pep/utils/types';
 
 /**
  * Search params that come from the sidebar search form
@@ -127,6 +131,8 @@ export function buildSearchQueryParams(searchQueryParams: BuildSearchQueryParams
     const nonEmptyTerms = searchTerms?.filter((t) => !!t.term);
     const parascopes: string[] = [];
 
+    const authors = nonEmptyTerms?.filter((term) => term.type === SEARCH_TYPE_AUTHOR.id) ?? [];
+    const multipleAuthors = authors.length > 1;
     nonEmptyTerms?.forEach((term) => {
         const searchType = SEARCH_TYPES.findBy('id', term.type);
         if (searchType && searchType.param) {
@@ -138,6 +144,18 @@ export function buildSearchQueryParams(searchQueryParams: BuildSearchQueryParams
                 const hasMultipleWords = value.indexOf(' ') !== -1;
                 const formatted = hasMultipleWords && !isQuoted ? `"${value}"~25` : value;
                 value = `${searchType.solrField}:(${formatted})`;
+            }
+
+            const isAuthorType = searchType.id === SEARCH_TYPE_AUTHOR.id;
+            // If there is a single author with no boolean operators, wrap in quotes. If multiple authors, wrap in parenthesis.
+            // https://github.com/Psychoanalytic-Electronic-Publishing/PEP-Web-User-Interface/issues/410
+            if (
+                (searchType.quoted && !isAuthorType) ||
+                (searchType.quoted && isAuthorType && !(multipleAuthors || BOOLEAN_OPERATOR_REGEX.test(value)))
+            ) {
+                value = `"${value}"`;
+            } else if (searchType.quoted && isAuthorType && (multipleAuthors || BOOLEAN_OPERATOR_REGEX.test(value))) {
+                value = `(${value})`;
             }
 
             queryParams[p] = joinParamValues(queryParams[p], value, joinOp);
@@ -176,10 +194,12 @@ export function buildSearchQueryParams(searchQueryParams: BuildSearchQueryParams
         if (facetType && facetType.param) {
             //join all the selected facet values together
             const facetValues = facets.map((f) => (facetType?.quoteValues ? `"${f.value}"` : f.value));
-            let values = facetValues.join(facetType.paramSeparator);
+            //wrap all facets in parenthesis
+            //https://github.com/Psychoanalytic-Electronic-Publishing/PEP-Web-User-Interface/issues/410
+            let values = `(${facetValues.join(facetType.paramSeparator)})`;
 
             if (facetType.prefixValues) {
-                values = `${facetType.id}:(${values})`;
+                values = `${facetType.id}:${values}`;
             }
 
             queryParams[facetType.param] = joinParamValues(queryParams[facetType.param], values, joinOp);
@@ -281,45 +301,67 @@ export function copySearchToController(toController: Controller & SearchControll
 }
 
 /**
- *
+ * Clear search from current context and the search index controller
  *
  * @export
- * @param {(Controller & SearchController)} controller
- * @param {ConfigurationService} configuration
- * @param {CurrentUserService} user
+ * @param {*} owner
  */
-export function clearSearch(
-    controller: Controller & SearchController,
-    configuration: ConfigurationService,
-    user: CurrentUserService
-): void {
-    const searchController = getOwner(controller).lookup(`controller:search.index`);
+export function clearSearch(owner: any): void {
+    const configuration: ConfigurationService = getOwner(owner).lookup('service:configuration');
+    const user: CurrentUserService = getOwner(owner).lookup('service:currentUser');
+    const searchController: SearchIndexController = getOwner(owner).lookup('controller:search.index');
+    const applicationController: ApplicationController = getOwner(owner).lookup('controller:application');
     const cfg = configuration.base.search;
     const preferences = user.preferences;
-    const terms = preferences?.searchTermFields ?? cfg.terms.defaultFields;
-    const isLimitOpen = preferences?.searchLimitIsShown ?? cfg.limitFields.isShown;
+    const terms =
+        (preferences?.userSearchFormSticky ? preferences?.searchTermFields : cfg.terms.defaultFields) ??
+        cfg.terms.defaultFields;
+    const isLimitOpen =
+        (preferences?.userSearchFormSticky ? preferences?.searchLimitIsShown : cfg.limitFields.isShown) ??
+        cfg.limitFields.isShown;
+
     const blankTerms = terms.map((f) => ({ type: f, term: '' }));
 
-    const controllers = [controller, searchController];
-    controllers.forEach((controller, index) => {
-        controller.smartSearchTerm = '';
+    const controllers: [ApplicationController, SearchIndexController] = [applicationController, searchController];
+    controllers.forEach((controller) => {
         controller.matchSynonyms = false;
         controller.citedCount = '';
         controller.viewedCount = '';
         controller.viewedPeriod = SEARCH_DEFAULT_VIEW_PERIOD;
         controller.isLimitOpen = isLimitOpen;
         controller.searchTerms = blankTerms;
-        if (index === 1) {
-            controller.q = '';
-            controller.currentSmartSearchTerm = '';
-            controller.currentSearchTerms = blankTerms;
-            controller.currentMatchSynonyms = false;
-            controller.currentCitedCount = '';
-            controller.currentViewedCount = '';
-            controller.currentViewedPeriod = SEARCH_DEFAULT_VIEW_PERIOD;
-            controller.currentFacets = [];
+        if (guard<SearchIndexController>(controller, 'currentSmartSearchTerm')) {
+            clearSearchIndexControllerSearch(controller);
+        } else {
+            controller.smartSearchTerm = '';
         }
     });
+}
+
+/**
+ * Clear the search from the search index controller
+ *
+ * @export
+ * @param {SearchIndexController} controller
+ */
+export function clearSearchIndexControllerSearch(controller: SearchIndexController): void {
+    const configuration: ConfigurationService = getOwner(controller).lookup('service:configuration');
+    const user: CurrentUserService = getOwner(controller).lookup('service:currentUser');
+    const cfg = configuration.base.search;
+    const preferences = user.preferences;
+    const terms =
+        (preferences?.userSearchFormSticky ? preferences?.searchTermFields : cfg.terms.defaultFields) ??
+        cfg.terms.defaultFields;
+    const blankTerms = terms.map((f) => ({ type: f, term: '' }));
+
+    controller.q = '';
+    controller.currentSmartSearchTerm = '';
+    controller.currentSearchTerms = blankTerms;
+    controller.currentMatchSynonyms = false;
+    controller.currentCitedCount = '';
+    controller.currentViewedCount = '';
+    controller.currentViewedPeriod = SEARCH_DEFAULT_VIEW_PERIOD;
+    controller.currentFacets = [];
 }
 
 /**
@@ -360,7 +402,7 @@ export function getSearchQueryParams(toController: Controller): any {
  * }}
  */
 export function buildBrowseRelatedDocumentsParams(
-    id: string
+    model: Document
 ): {
     facetValues: {
         id: SearchFacetId;
@@ -368,18 +410,30 @@ export function buildBrowseRelatedDocumentsParams(
     }[];
     abstract: boolean;
 } {
-    const terms = id.split('.');
-    return {
-        facetValues: [
-            {
-                id: SearchFacetId.ART_SOURCECODE,
-                value: terms[0]
-            },
-            {
-                id: SearchFacetId.ART_VOL,
-                value: Number(terms[1]).toString()
-            }
-        ],
-        abstract: false
-    };
+    if (model.sourceType === SourceType.VIDEO_STREAM) {
+        return {
+            facetValues: [
+                {
+                    id: SearchFacetId.ART_SOURCETYPE,
+                    value: SourceType.VIDEO_STREAM
+                }
+            ],
+            abstract: false
+        };
+    } else {
+        const terms = model.id.split('.');
+        return {
+            facetValues: [
+                {
+                    id: SearchFacetId.ART_SOURCECODE,
+                    value: terms[0]
+                },
+                {
+                    id: SearchFacetId.ART_VOL,
+                    value: Number(terms[1]).toString()
+                }
+            ],
+            abstract: false
+        };
+    }
 }

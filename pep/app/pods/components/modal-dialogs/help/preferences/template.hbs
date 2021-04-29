@@ -1,11 +1,16 @@
-<ModalDialog @onClose={{@onClose}} @size="md" @clickOutsideToClose={{false}} @closable={{not this.updatePreferenceTask.isRunning}} as |Modal|>
+<ModalDialog
+    @onClose={{@onClose}}
+    @size="md"
+    @clickOutsideToClose={{false}}
+    @closable={{not this.updatePreferenceTask.isRunning}} as |Modal|
+>
     <Modal.header @title={{t "preferences.title"}} />
     <Modal.body>
         <p class="text-muted">
             {{t "help.preferences.info"}}
         </p>
         <div class="mb-4">
-            <h6 class="{{~if this.session.isAuthenticated " mb-3" " mb-0"}}">
+            <h6 class="{{if this.session.isAuthenticated " mb-3" " mb-0"}}">
                 {{t "help.preferences.general.heading"}}
             </h6>
             {{#unless this.session.isAuthenticated}}
@@ -13,7 +18,7 @@
                     {{t "preferences.changesNotSaved"}}
                 </p>
             {{/unless}}
-            <div class="mb-2">
+            {{!-- <div class="mb-2">
                 <div class="form-row">
                     <div class="col-sm-12">
                         <CheckboxInput
@@ -26,7 +31,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
             <div class="mb-2">
                 <div class="form-row">
                     <div class="col-sm-12">
@@ -78,8 +83,16 @@
     </Modal.body>
     <Modal.footer>
         {{#if this.updatePreferenceTask.isRunning}}
-            <small class="text-muted font-weight-bold mr-auto">{{t "common.saving"}}</small>
+            <small class="text-muted font-weight-bold mr-auto">
+                {{t "common.saving"}}
+            </small>
         {{/if}}
-        <Button @type="primary" @label={{t "common.done"}} @wide={{true}} @action={{this.done}} @disabled={{this.updatePreferenceTask.isRunning}} />
+        <Button
+            @type="primary"
+            @label={{t "common.done"}}
+            @wide={{true}}
+            @action={{this.done}}
+            @disabled={{this.updatePreferenceTask.isRunning}}
+        />
     </Modal.footer>
 </ModalDialog>

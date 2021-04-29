@@ -8,7 +8,7 @@ import IntlService from 'ember-intl/services/intl';
 
 import ENV from 'pep/config/environment';
 import { USER_PREFERENCES_COOKIE_NAME } from 'pep/constants/cookies';
-import { DATE_FOREVER } from 'pep/constants/dates';
+import { MAX_AGE } from 'pep/constants/dates';
 import {
     COOKIE_PREFERENCES, DEFAULT_USER_PREFERENCES, LOCALSTORAGE_PREFERENCES, PreferenceChangeset, PreferenceDocumentsKey,
     PreferenceKey, USER_PREFERENCES_LS_PREFIX, UserPreferences
@@ -53,8 +53,12 @@ export default class CurrentUserService extends Service {
 
     @tracked user: User | null = null;
     @tracked preferences?: UserPreferences;
-    @tracked lastViewedDocumentId?: string;
-    @tracked lastViewedDocumentFrom?: VIEW_DOCUMENT_FROM;
+
+    @tracked lastViewedDocument?: {
+        id: string;
+        from: VIEW_DOCUMENT_FROM;
+        page?: string;
+    };
 
     /**
      * Available text justification options
@@ -117,11 +121,15 @@ export default class CurrentUserService extends Service {
         return isGroup ? this.intl.t('user.login.individual') : '';
     }
 
-    get logoutTypeLabel() {
-        const isGroup = this.user?.isGroup ?? false;
+    get loginMethodTranslation() {
         const loginMethod = USER_LOGIN_METHODS.findBy('id', this.user?.loggedInMethod);
         const methodTranslation = loginMethod?.logoutLabel ?? loginMethod?.label;
-        const method = methodTranslation ? this.intl.t(methodTranslation) : '';
+        return methodTranslation ? this.intl.t(methodTranslation) : '';
+    }
+
+    get logoutTypeLabel() {
+        const isGroup = this.user?.isGroup ?? false;
+        const method = this.loginMethodTranslation;
         return isGroup ? this.intl.t('user.login.logoutType', { method }) : '';
     }
 
@@ -283,9 +291,9 @@ export default class CurrentUserService extends Service {
             if (updatedCookie) {
                 const newCookie = JSON.stringify(cookieValues);
                 this.cookies.write(USER_PREFERENCES_COOKIE_NAME, newCookie, {
-                    secure: ENV.cookieSecure,
                     sameSite: ENV.cookieSameSite,
-                    expires: DATE_FOREVER
+                    maxAge: MAX_AGE,
+                    secure: ENV.cookieSecure
                 });
             }
 

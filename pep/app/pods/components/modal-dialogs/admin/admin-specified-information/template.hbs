@@ -1,0 +1,24 @@
+<ModalDialog @onClose={{@onClose}} @size="lg" @clickOutsideToClose={{false}} as |Modal|>
+    <Modal.header @title={{t "admin.adminSpecifiedInformation.title"}} />
+    <FormValidator @changeset={{@options.changeset}} @submit={{this.update}} as |changeset validator|>
+        <Modal.body>
+            <validator.input @errors={{changeset.error.id.validation}}>
+                <FlInput @value={{changeset.id}} @placeholder={{t "admin.adminSpecifiedInformation.id"}}>
+                    <ChangesetInput @changeset={{changeset}} @path="id" class="form-control" autocomplete="off" />
+                </FlInput>
+            </validator.input>
+            <validator.input
+                @errors={{changeset.error.value.validation}}
+                @label={{true}}
+                @hasFocusedOut={{true}}
+                @fieldLabel={{t "admin.adminSpecifiedInformation.value"}}
+            >
+                <Admin::Editor @changeset={{changeset}} @path="value" />
+            </validator.input>
+        </Modal.body>
+        <Modal.footer>
+            <Button @type="link" @label={{t "common.cancel"}} @action={{@onClose}} />
+            <ButtonSpinner @type="primary" @label={{t "common.update"}} @wide={{true}} @action={{validator.submit}} />
+        </Modal.footer>
+    </FormValidator>
+</ModalDialog>

@@ -1,16 +1,18 @@
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import Component from '@glimmer/component';
+
+import Component from '@glint/environment-ember-loose/glimmer-component';
 
 import ENV from 'pep/config/environment';
 import PepSessionService from 'pep/services/pep-session';
 import PrinterService from 'pep/services/printer';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface DocumentActionsPrintArgs {
     id: string;
 }
 
-export default class DocumentActionsPrint extends Component<DocumentActionsPrintArgs> {
+export default class DocumentActionsPrint extends Component<BaseGlimmerSignature<DocumentActionsPrintArgs>> {
     @service('pep-session') session!: PepSessionService;
     @service printer!: PrinterService;
 

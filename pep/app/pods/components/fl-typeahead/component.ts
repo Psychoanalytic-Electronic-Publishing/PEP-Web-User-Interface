@@ -1,14 +1,15 @@
 import { action } from '@ember/object';
 import { next } from '@ember/runloop';
-import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
+import Component from '@glint/environment-ember-loose/glimmer-component';
 import { Dropdown } from 'ember-basic-dropdown/addon/components/basic-dropdown';
 import { timeout } from 'ember-concurrency';
 import { restartableTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
 
 import { getCaretPosition } from 'pep/utils/dom';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 const KEYCODE_TAB = 9;
 const KEYCODE_ENTER = 13;
@@ -38,7 +39,7 @@ interface FlTypeaheadArgs {
     loadSuggestions: (currentWord: string, currentText: string) => Promise<FlTypeaheadSuggestion[]>;
 }
 
-export default class FlTypeahead extends Component<FlTypeaheadArgs> {
+export default class FlTypeahead extends Component<BaseGlimmerSignature<FlTypeaheadArgs>> {
     inputElement?: HTMLInputElement;
     lastCaretPosition: number = 0;
     suggestDebounceDelay: number = 250;

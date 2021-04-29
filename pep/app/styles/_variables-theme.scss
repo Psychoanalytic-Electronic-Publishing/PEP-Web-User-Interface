@@ -19,6 +19,7 @@ $color-muted-select-text: #666666 !default;
 $color-sidebar-bg: lighten($color-backdrop, 2%);
 $color-footer-bg: $color-brand-primary !default;
 $color-navbar-toggle: saturate(lighten($color-brand-primary, 20%), 20%) !default;
+$color-navbar-box-shadow: #fff;
 $color-drawer-bg: $color-brand-primary !default;
 $color-help-tooltip-foreground: #a2aeb9 !default;
 $color-help-tooltip-background: $color-primary-background !default;

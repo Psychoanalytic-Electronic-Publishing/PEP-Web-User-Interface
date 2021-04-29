@@ -1,5 +1,7 @@
-import Component from '@glimmer/component';
+import Component from '@glint/environment-ember-loose/glimmer-component';
+
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface TabsListArgs {}
 
-export default class TabsList extends Component<TabsListArgs> {}
+export default class TabsList extends Component<BaseGlimmerSignature<TabsListArgs>> {}

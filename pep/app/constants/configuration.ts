@@ -3,6 +3,8 @@ import { WIDGET } from 'pep/constants/sidebar';
 import { TourStepId } from 'pep/constants/tour';
 import { WordWheelSearchType } from 'pep/pods/components/word-wheel/component';
 
+import { GlossaryWidgetLocation } from './sidebar';
+
 /**
  * Widget configuration - tells us which widget and whether its open
  *
@@ -34,13 +36,18 @@ export interface ExpertPick {
 }
 
 export interface VideoConfiguration {
-    code: string;
+    url: string;
     aspectRatio: AspectRatio;
 }
 
 export interface TourConfiguration {
     title: string;
     text: string;
+}
+
+export interface AdminSpecifiedInformation {
+    id: string;
+    value: string;
 }
 
 /**
@@ -62,11 +69,17 @@ export interface BaseConfiguration {
             mostViewed: {
                 limit: number;
             };
-            videoPreview: VideoConfiguration;
-            topicalVideoPreview: VideoConfiguration;
+            glossary: {
+                limit: {
+                    [L in GlossaryWidgetLocation]: number;
+                };
+            };
+            videoPreviews: VideoConfiguration[];
+            topicalVideoPreviews: VideoConfiguration[];
             left: WidgetConfiguration[];
             right: WidgetConfiguration[];
         };
+        searchHelpVideoUrl: string;
     };
     home: {
         expertPicksStartDate: string;
@@ -121,6 +134,7 @@ export interface ContentConfiguration {
         signInCard: {
             body: string;
         };
+        adminSpecifiedInformationItems: AdminSpecifiedInformation[];
     };
     home: {
         intro: {
@@ -174,6 +188,12 @@ export const BASE_CONFIG_NAME = 'common';
 export const DEFAULT_BASE_CONFIGURATION: BaseConfiguration = {
     global: {
         cards: {
+            glossary: {
+                limit: {
+                    [GlossaryWidgetLocation.SEARCH]: 15,
+                    [GlossaryWidgetLocation.READ]: 15
+                }
+            },
             whatsNew: {
                 limit: 10
             },
@@ -183,16 +203,18 @@ export const DEFAULT_BASE_CONFIGURATION: BaseConfiguration = {
             mostViewed: {
                 limit: 10
             },
-            videoPreview: {
-                aspectRatio: AspectRatio.SIXTEEN_BY_NINE,
-                code:
-                    '<iframe src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2Fpepweb%2Fvideos%2F1085606578152566%2F&show_text=0" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allowFullScreen="true"></iframe>'
-            },
-            topicalVideoPreview: {
-                aspectRatio: AspectRatio.SIXTEEN_BY_NINE,
-                code:
-                    '<iframe src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2Fpepweb%2Fvideos%2F1085606578152566%2F&show_text=0" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allowFullScreen="true"></iframe>'
-            },
+            videoPreviews: [
+                {
+                    aspectRatio: AspectRatio.SIXTEEN_BY_NINE,
+                    url: 'https://pep-web-video-previews.s3.amazonaws.com/peptopauthvs.001.0027a.preview.mp4'
+                }
+            ],
+            topicalVideoPreviews: [
+                {
+                    aspectRatio: AspectRatio.SIXTEEN_BY_NINE,
+                    url: 'https://pep-web-video-previews.s3.amazonaws.com/peptopauthvs.001.0027a.preview.mp4'
+                }
+            ],
             left: [
                 { widget: WIDGET.VIDEO_PREVIEW, open: true },
                 { widget: WIDGET.TOPICAL_VIDEO_PREVIEW, open: true }
@@ -209,7 +231,8 @@ export const DEFAULT_BASE_CONFIGURATION: BaseConfiguration = {
                 { widget: WIDGET.FAVORITES, open: false },
                 { widget: WIDGET.PUBLISHER_INFO, open: false }
             ]
-        }
+        },
+        searchHelpVideoUrl: 'https://fb.watch/4634xBWSZF/'
     },
     home: {
         expertPicksStartDate: '2019-01-07T15:14:29-0500',
@@ -380,7 +403,8 @@ export const DEFAULT_CONTENT_CONFIGURATION: ContentConfiguration = {
         signInCard: {
             body:
                 'This is the Psychoanalytic Electronic Publishing Archive full text database. It is freely available for everyone to search, view tables of contents, and view abstracts and summaries. However you will need a paid subscription in order to view the full text of articles.<br><br>All users can register to get a username and access password that will let you save your application preferences, customize the information displayed by the interface, and save bookmarks and favorites. University, group, and federation users need to register to get an individual login to save their preferences as well.'
-        }
+        },
+        adminSpecifiedInformationItems: []
     },
     home: {
         intro: {

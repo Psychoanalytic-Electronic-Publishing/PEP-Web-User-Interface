@@ -1,5 +1,5 @@
 {{page-title (t "read.title" title=this.document.title)}}
-<Page::Content>
+<Page::Content {{register-keyboard-shortcuts shortcuts=this.shortcuts}}>
     <div class="pb-3 px-4">
         <div class="sticky-top bg-body py-2">
             <div class="d-flex justify-content-between align-items-center">
@@ -16,6 +16,11 @@
                 </div>
             </div>
         </div>
-        <Document::Read @model={{this.document}} @page={{this.page}} @onAuthenticated={{this.onAuthenticated}} />
+        <Document::Read
+            @model={{this.document}}
+            @page={{this.page}}
+            @onAuthenticated={{this.onAuthenticated}}
+            @viewablePageUpdate={{this.viewablePageUpdate}}
+        />
     </div>
 </Page::Content>

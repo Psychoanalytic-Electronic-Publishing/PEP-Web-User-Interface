@@ -73,7 +73,7 @@
     <xsl:param name="glossaryTermFormattingEnabled" />
 
     <xsl:variable name="fa-right-arrow">
-        <svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" role="img" focusable="false" aria-hidden="true" data-icon="arrow-right" data-prefix="fal" id="ember488" class="pointer-events-none svg-inline--fa fa-arrow-right fa-w-14 ember-view"><path fill="currentColor" d="M216.464 36.465l-7.071 7.07c-4.686 4.686-4.686 12.284 0 16.971L387.887 239H12c-6.627 0-12 5.373-12 12v10c0 6.627 5.373 12 12 12h375.887L209.393 451.494c-4.686 4.686-4.686 12.284 0 16.971l7.071 7.07c4.686 4.686 12.284 4.686 16.97 0l211.051-211.05c4.686-4.686 4.686-12.284 0-16.971L233.434 36.465c-4.686-4.687-12.284-4.687-16.97 0z"></path>
+        <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img" focusable="false" aria-hidden="true" data-icon="arrow-circle-right" data-prefix="fas" id="ember279" class="pointer-events-none svg-inline--fa fa-arrow-circle-right fa-w-16 ember-view"><path fill="currentColor" d="M256 8c137 0 248 111 248 248S393 504 256 504 8 393 8 256 119 8 256 8zm-28.9 143.6l75.5 72.4H120c-13.3 0-24 10.7-24 24v16c0 13.3 10.7 24 24 24h182.6l-75.5 72.4c-9.7 9.3-9.9 24.8-.4 34.3l11 10.9c9.4 9.4 24.6 9.4 33.9 0L404.3 273c9.4-9.4 9.4-24.6 0-33.9L271.6 106.3c-9.4-9.4-24.6-9.4-33.9 0l-11 10.9c-9.5 9.6-9.3 25.1.4 34.4z"></path>
         </svg>
     </xsl:variable>
     <xsl:variable name="fa-information">
@@ -92,12 +92,16 @@
         <svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" role="img" focusable="false" aria-hidden="true" data-icon="book" data-prefix="fal" id="ember349" class="svg-inline--fa fa-book fa-w-14 ember-view"><path fill="currentColor" d="M356 160H188c-6.6 0-12-5.4-12-12v-8c0-6.6 5.4-12 12-12h168c6.6 0 12 5.4 12 12v8c0 6.6-5.4 12-12 12zm12 52v-8c0-6.6-5.4-12-12-12H188c-6.6 0-12 5.4-12 12v8c0 6.6 5.4 12 12 12h168c6.6 0 12-5.4 12-12zm64.7 268h3.3c6.6 0 12 5.4 12 12v8c0 6.6-5.4 12-12 12H80c-44.2 0-80-35.8-80-80V80C0 35.8 35.8 0 80 0h344c13.3 0 24 10.7 24 24v368c0 10-6.2 18.6-14.9 22.2-3.6 16.1-4.4 45.6-.4 65.8zM128 384h288V32H128v352zm-96 16c13.4-10 30-16 48-16h16V32H80c-26.5 0-48 21.5-48 48v320zm372.3 80c-3.1-20.4-2.9-45.2 0-64H80c-64 0-64 64 0 64h324.3z"></path>
         </svg>
     </xsl:variable>
-    <xsl:variable name="fa-robot">
-        <svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg" role="img" focusable="false" aria-hidden="true" data-icon="robot" data-prefix="fal" id="ember313" class="pointer-events-none svg-inline--fa fa-robot fa-w-20 ember-view"><path fill="currentColor" d="M192,416h64V384H192ZM576,224H544V192a95.99975,95.99975,0,0,0-96-96H336V16a16,16,0,0,0-32,0V96H192a95.99975,95.99975,0,0,0-96,96v32H64a31.99908,31.99908,0,0,0-32,32V384a32.00033,32.00033,0,0,0,32,32H96a95.99975,95.99975,0,0,0,96,96H448a95.99975,95.99975,0,0,0,96-96h32a32.00033,32.00033,0,0,0,32-32V256A31.99908,31.99908,0,0,0,576,224ZM96,384H64V256H96Zm416,32a64.18916,64.18916,0,0,1-64,64H192a64.18916,64.18916,0,0,1-64-64V192a63.99942,63.99942,0,0,1,64-64H448a63.99942,63.99942,0,0,1,64,64Zm64-32H544V256h32ZM416,192a64,64,0,1,0,64,64A64.07333,64.07333,0,0,0,416,192Zm0,96a32,32,0,1,1,32-32A31.97162,31.97162,0,0,1,416,288ZM384,416h64V384H384Zm-96,0h64V384H288ZM224,192a64,64,0,1,0,64,64A64.07333,64.07333,0,0,0,224,192Zm0,96a32,32,0,1,1,32-32A31.97162,31.97162,0,0,1,224,288Z"></path>
+    <xsl:variable name="fa-link">
+        <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img" focusable="false" aria-hidden="true" data-icon="link" data-prefix="fal" id="ember280" class="pointer-events-none svg-inline--fa fa-link fa-w-16 ember-view"><path fill="currentColor" d="M301.148 394.702l-79.2 79.19c-50.778 50.799-133.037 50.824-183.84 0-50.799-50.778-50.824-133.037 0-183.84l79.19-79.2a132.833 132.833 0 0 1 3.532-3.403c7.55-7.005 19.795-2.004 20.208 8.286.193 4.807.598 9.607 1.216 14.384.481 3.717-.746 7.447-3.397 10.096-16.48 16.469-75.142 75.128-75.3 75.286-36.738 36.759-36.731 96.188 0 132.94 36.759 36.738 96.188 36.731 132.94 0l79.2-79.2.36-.36c36.301-36.672 36.14-96.07-.37-132.58-8.214-8.214-17.577-14.58-27.585-19.109-4.566-2.066-7.426-6.667-7.134-11.67a62.197 62.197 0 0 1 2.826-15.259c2.103-6.601 9.531-9.961 15.919-7.28 15.073 6.324 29.187 15.62 41.435 27.868 50.688 50.689 50.679 133.17 0 183.851zm-90.296-93.554c12.248 12.248 26.362 21.544 41.435 27.868 6.388 2.68 13.816-.68 15.919-7.28a62.197 62.197 0 0 0 2.826-15.259c.292-5.003-2.569-9.604-7.134-11.67-10.008-4.528-19.371-10.894-27.585-19.109-36.51-36.51-36.671-95.908-.37-132.58l.36-.36 79.2-79.2c36.752-36.731 96.181-36.738 132.94 0 36.731 36.752 36.738 96.181 0 132.94-.157.157-58.819 58.817-75.3 75.286-2.651 2.65-3.878 6.379-3.397 10.096a163.156 163.156 0 0 1 1.216 14.384c.413 10.291 12.659 15.291 20.208 8.286a131.324 131.324 0 0 0 3.532-3.403l79.19-79.2c50.824-50.803 50.799-133.062 0-183.84-50.802-50.824-133.062-50.799-183.84 0l-79.2 79.19c-50.679 50.682-50.688 133.163 0 183.851z"></path>
         </svg>
     </xsl:variable>
     <xsl:variable name="fa-language">
         <svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg" role="img" focusable="false" aria-hidden="true" data-icon="language" data-prefix="fal" id="ember323" class="svg-inline--fa fa-language fa-w-20 ember-view"><path fill="currentColor" d="M616 96H24c-13.255 0-24 10.745-24 24v272c0 13.255 10.745 24 24 24h592c13.255 0 24-10.745 24-24V120c0-13.255-10.745-24-24-24zM304 384H32V128h272v256zm304 0H336V128h272v256zM91.088 352h10.34a12 12 0 0 0 11.397-8.243l13.508-40.973h67.335l13.508 40.973A12.001 12.001 0 0 0 218.573 352h10.339c8.276 0 14.067-8.18 11.319-15.985l-59.155-168A12 12 0 0 0 169.757 160h-19.513a12 12 0 0 0-11.319 8.014l-59.155 168C77.021 343.82 82.812 352 91.088 352zm60.663-128.991c3.787-10.818 8.113-29.747 8.113-29.747h.541s4.057 18.929 7.572 29.747l17.036 51.38h-50.298l17.036-51.38zM384 212v-8c0-6.627 5.373-12 12-12h68v-20c0-6.627 5.373-12 12-12h8c6.627 0 12 5.373 12 12v20h68c6.627 0 12 5.373 12 12v8c0 6.627-5.373 12-12 12h-15.699c-7.505 24.802-23.432 50.942-44.896 74.842 10.013 9.083 20.475 17.265 30.924 24.086 5.312 3.467 6.987 10.475 3.84 15.982l-3.987 6.976c-3.429 6.001-11.188 7.844-16.993 4.091-13.145-8.5-25.396-18.237-36.56-28.5-11.744 10.454-24.506 20.146-37.992 28.68-5.761 3.646-13.409 1.698-16.791-4.221l-3.972-6.95c-3.197-5.594-1.379-12.672 4.058-16.129 11.382-7.237 22.22-15.428 32.24-24.227-10.026-11.272-18.671-22.562-25.687-33.033-3.833-5.721-2.11-13.48 3.803-17.01l6.867-4.099c5.469-3.264 12.55-1.701 16.092 3.592 6.379 9.531 13.719 18.947 21.677 27.953 15.017-16.935 26.721-34.905 33.549-52.033H396c-6.627 0-12-5.373-12-12z"></path>
+        </svg>
+    </xsl:variable>
+    <xsl:variable name="fa-question">
+        <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img" focusable="false" aria-hidden="true" data-icon="question-circle" data-prefix="fal" id="ember280" class="svg-inline--fa fa-question-circle fa-w-16 ember-view"><path fill="currentColor" d="M256 340c-15.464 0-28 12.536-28 28s12.536 28 28 28 28-12.536 28-28-12.536-28-28-28zm7.67-24h-16c-6.627 0-12-5.373-12-12v-.381c0-70.343 77.44-63.619 77.44-107.408 0-20.016-17.761-40.211-57.44-40.211-29.144 0-44.265 9.649-59.211 28.692-3.908 4.98-11.054 5.995-16.248 2.376l-13.134-9.15c-5.625-3.919-6.86-11.771-2.645-17.177C185.658 133.514 210.842 116 255.67 116c52.32 0 97.44 29.751 97.44 80.211 0 67.414-77.44 63.849-77.44 107.408V304c0 6.627-5.373 12-12 12zM256 40c118.621 0 216 96.075 216 216 0 119.291-96.61 216-216 216-119.244 0-216-96.562-216-216 0-119.203 96.602-216 216-216m0-32C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8z"></path>
         </svg>
     </xsl:variable>
 
@@ -245,6 +249,8 @@
                 </xsl:for-each>
             </div>
 
+
+
             <xsl:for-each select="artinfo">
                 <div id="{$this-article}-artinfo" class="artinfo" data-arttype="{@arttype}" data-journal="{@j}">
 
@@ -259,6 +265,7 @@
                                data-journal-code="{$journal-code}"
                                data-volume="{$artvol}"
                                data-page="{$artstartpg}"
+                               data-type="document-title"
                                 >
                                 <xsl:apply-templates mode="metadata" select="arttitle" />
                                 <xsl:apply-templates mode="metadata" select="artsub"/>
@@ -270,7 +277,7 @@
                     </div>
 
                     <xsl:apply-templates mode="metadata" select="artauth"/>
-                    <xsl:apply-templates mode="metadata" select="artkwds"/>
+
 
                     <!--<xsl:apply-templates/>-->
                 </div>
@@ -292,11 +299,28 @@
             </div>
         </xsl:for-each>
 
+        <div class="keywords mx-5 mt-2 mb-4">
+            <xsl:for-each select="artinfo">
+                <xsl:apply-templates mode="metadata" select="artkwds"/>
+            </xsl:for-each>
+        </div>
+
         <!-- body -->
         <xsl:for-each select="body">
             <div id="body" class="body">
                 <xsl:call-template name="assign-lang"/>
                 <xsl:apply-templates/>
+                <!-- If the body is empty AND there is a preview attribute on the artinfo tag it means we need to show a video preview -->
+                <xsl:if test="not(node()) and ../artinfo/@preview != ''">
+                    <xsl:variable name="videoUrl" select="concat('https://pep-web-video-previews.s3.amazonaws.com/', ../artinfo/@preview, '.mp4')"/>
+                    <xsl:variable name="captionUrl" select="concat('https://pep-web-video-previews.s3.amazonaws.com/', ../artinfo/@preview, '.vtt')"/>
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <video id="clip" controls='controls' preload='auto'  class="embed-responsive-item" crossorigin="anonymous">
+                            <source src="{$videoUrl}" type='video/mp4' />
+                            <track label="English" kind="subtitles" srclang="en" src="{$captionUrl}" />
+                        </video>
+                    </div>
+                </xsl:if>
             </div>
         </xsl:for-each>
 
@@ -464,7 +488,7 @@
     </xsl:template>
 
     <xsl:template match="arttitle" mode="metadata">
-        <span class="title" data-type="document-title">
+        <span class="title pointer-events-none">
             <xsl:choose>
                 <xsl:when test="text()">
                     <xsl:apply-templates select="(node())[not(self::ftnx)]"/>
@@ -492,7 +516,7 @@
     </xsl:template>
 
     <xsl:template match="artsub" mode="metadata">
-        <span class="artsub" data-type="document-title">&#58;
+        <span class="artsub pointer-events-none">&#58;
             <xsl:choose>
                 <xsl:when test="text()">
                     <xsl:apply-templates select="(node())[not(self::ftnx)]"/>
@@ -506,13 +530,23 @@
     </xsl:template>
 
     <xsl:template match="artkwds" mode="metadata">
-        <div class="artkwds">
+        <div class="artkwds mb-2">
+            <strong class="mr-1">
+                Keywords:
+            </strong>
             <xsl:for-each select="//impx[@type='KEYWORD']">
-                <xsl:value-of select="."/>
-                <xsl:if test="position() != last()">
-                    <xsl:text>, </xsl:text>
-                </xsl:if>
-                <!--        <xsl:apply-templates />-->
+                <a class="keyword" >
+                    <xsl:attribute name="data-type">
+                        <xsl:value-of select="@type"/>
+                    </xsl:attribute>
+                    <xsl:attribute name="data-keyword">
+                        <xsl:value-of select="."/>
+                    </xsl:attribute>
+                    <xsl:value-of select="."/>
+                    <xsl:if test="position() != last()">
+                        <xsl:text>, </xsl:text>
+                    </xsl:if>
+                </a>
             </xsl:for-each>
         </div>
     </xsl:template>
@@ -540,6 +574,11 @@
     </xsl:template>
 
     <!--PEPKBD3 Author Information-->
+    <!-- Documents needed to test the roles correctly
+         AJP.063.0149A [3 authors, 1 autaff, no affid] = 3 authors, 1 autaff
+         ZBK.061.0001A [2 authors, 10 in-collaboration, 2 translated by, 1 forwarded by, 3 autaff, 3 affids] = show 2 authors with autaff, 10 collabs, 2 translated by with autaff and 1 forwarwd by
+         RFP.053.1405A [1 author, 1 autaff, no affid] = show 1 author and 1 autaff
+    -->
     <xsl:template match="artauth/aut" mode="metadata">
 
         <div class="author-grouping" data-grouping="{@role}">
@@ -712,7 +751,8 @@
                         </div>
                     </a>
                 </xsl:when>
-                <xsl:when test="count(key('role', @role)) = 1 and count(../autaff) = 1">
+
+                <xsl:when test="count(../autaff) = 1">
                     <xsl:text> </xsl:text>
                     <a class="peppopup authortip" href="#author-information">
                         <xsl:copy-of select="$fa-information" />
@@ -728,11 +768,10 @@
                                             <xsl:apply-templates mode="metadata" select="nfirst"/>
                                             <xsl:apply-templates mode="metadata" select="nlast"/>
                                         </p>
-                                        <xsl:apply-templates mode="metadata" select="../autaff"/>
                                         <xsl:apply-templates mode="metadata" select="nbio"/>
                                     </div>
-
                                 </xsl:for-each>
+                                <xsl:apply-templates mode="metadata" select="../autaff"/>
                             </div>
                         </div>
                     </a>
@@ -818,6 +857,9 @@
 
 
     <xsl:template match="ndeg" mode="metadata">
+
+        <xsl:variable name="phdBefore" select="'PHD'" />
+        <xsl:variable name="phdAfter" select="'PhD'" />
         <xsl:choose>
             <xsl:when test="@other"> <!-- then i test if the attr exists -->
                 <span class="ndeg" data-dgr="{@dgr}" data-other="{@other}">
@@ -828,7 +870,7 @@
             <xsl:otherwise>
                 <span class="ndeg" data-dgr="{@dgr}" data-other="{@other}">
                     <xsl:text> </xsl:text> <!-- space character -->
-                    <xsl:value-of select="@dgr"/>
+                    <xsl:value-of select="translate(@dgr, $phdBefore, $phdAfter)"/>
                 </span>
             </xsl:otherwise>
         </xsl:choose>
@@ -892,7 +934,7 @@
 
     <xsl:template match="ftr">
         <xsl:text>&#13;</xsl:text>
-        <div class="footer pt-1" data-class="ftr">
+        <div class="document-footer pt-1" data-class="ftr">
             <xsl:apply-templates/>
         </div>
     </xsl:template>
@@ -1510,6 +1552,21 @@
         </div>
     </xsl:template>
 
+    <xsl:template match="notex">
+        <span class="peppopup notetip" >
+            <a href="#note-information">
+                <sup>
+                    <xsl:apply-templates/>
+                </sup>
+            </a>
+            <xsl:text></xsl:text>
+            <br></br>
+            <span class="peppopuptext" hidden="True" role="dialog">
+                <xsl:value-of select="key('element-by-id', @r)/p" />
+            </span>
+        </span>
+    </xsl:template>
+
     <xsl:template match="dictentrygrp">
         <div class="dictentrygrp" id='{@id}'>
             <xsl:apply-templates/>
@@ -1601,10 +1658,10 @@
                     <xsl:attribute name="data-document-id">
                         <xsl:value-of select="@rxcf"/>
                     </xsl:attribute>
-                    <xsl:copy-of select="$fa-robot" />
+                    <xsl:copy-of select="$fa-link" />
                 </a>
                 <span class="bibx-related-info ml-1">
-                    <xsl:copy-of select="$fa-information" />
+                    <xsl:copy-of select="$fa-question" />
                 </span>
             </xsl:if>
         </span>
@@ -1629,10 +1686,10 @@
                     <xsl:attribute name="data-document-id">
                         <xsl:value-of select="@rxcf"/>
                     </xsl:attribute>
-                    <xsl:copy-of select="$fa-robot" />
+                    <xsl:copy-of select="$fa-link" />
                 </a>
                 <span class="bibx-related-info ml-1">
-                    <xsl:copy-of select="$fa-information" />
+                    <xsl:copy-of select="$fa-question" />
                 </span>
             </xsl:if>
         </p>
@@ -1655,11 +1712,19 @@
 
 
     <xsl:template match="be/y">
-        <xsl:text>&#13;</xsl:text>
         <span class="bibyear y">
             <xsl:apply-templates/>
         </span>
     </xsl:template>
+
+
+    <xsl:template match="be/bst">
+        <xsl:text>&#13;</xsl:text>
+        <span class="bibyear bst">
+            <xsl:apply-templates/>
+        </span>
+    </xsl:template>
+
 
 
     <xsl:template match="be/t">
@@ -1677,14 +1742,22 @@
         </span>
     </xsl:template>
 
+    <xsl:template match="be/v">
+        <xsl:text>&#xA0;</xsl:text>
+        <span class="bibjournal v">
+            <xsl:apply-templates/>
+        </span>
+    </xsl:template>
 
     <xsl:template match="be/bp">
+        <xsl:text>&#xA0;</xsl:text>
         <span class="bibpublisher bp">
             <xsl:apply-templates/>
         </span>
     </xsl:template>
 
     <xsl:template match="be/pp">
+        <xsl:text>&#xA0;</xsl:text>
         <span class="bibpages pp">
             <xsl:apply-templates/>
         </span>
@@ -2555,7 +2628,6 @@
                 <xsl:text> </xsl:text>
                 <xsl:apply-templates select="nlast"/>
             </b>
-            <!--      <xsl:value-of select="."/>-->
         </xsl:for-each>
     </xsl:template>
 

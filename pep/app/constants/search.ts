@@ -40,6 +40,19 @@ export enum ViewPeriod {
 }
 
 /**
+ * Source type for document
+ *
+ * @export
+ * @enum {number}
+ */
+export enum SourceType {
+    BOOK = 'book',
+    JOURNAL = 'journal',
+    VIDEO_STREAM = 'videostream',
+    SPECIAL = 'special'
+}
+
+/**
  * Search term fields for the "fielded search" search form inputs
  * @export
  * @enum {string}
@@ -145,6 +158,7 @@ export interface SearchTermType {
     label: string;
     shortLabel?: string;
     isTypeOption: boolean;
+    quoted?: boolean;
 }
 
 /**
@@ -200,7 +214,8 @@ export const SEARCH_TYPE_AUTHOR: SearchTermType = {
     wordWheelField: 'art_authors',
     wordWheelCore: 'docs',
     label: 'search.terms.author.label',
-    isTypeOption: true
+    isTypeOption: true,
+    quoted: true
 };
 
 export const SEARCH_TYPE_TITLE: SearchTermType = {
@@ -323,19 +338,19 @@ export const SEARCH_FACET_SOURCETYPE: SearchFacetType = {
     dynamicValues: false,
     values: [
         {
-            id: 'book',
+            id: SourceType.BOOK,
             label: 'search.facets.art_sourcetype.values.book'
         },
         {
-            id: 'journal',
+            id: SourceType.JOURNAL,
             label: 'search.facets.art_sourcetype.values.journal'
         },
         {
-            id: 'videostream',
+            id: SourceType.VIDEO_STREAM,
             label: 'search.facets.art_sourcetype.values.videostream'
         },
         {
-            id: 'special',
+            id: SourceType.SPECIAL,
             label: 'search.facets.art_sourcetype.values.special'
         }
     ]

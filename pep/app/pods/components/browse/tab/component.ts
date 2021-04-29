@@ -1,4 +1,6 @@
-import Component from '@glimmer/component';
+import Component from '@glint/environment-ember-loose/glimmer-component';
+
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface BrowseTabArgs {
     filter: string;
@@ -6,4 +8,4 @@ interface BrowseTabArgs {
     icon: string;
 }
 
-export default class BrowseTab extends Component<BrowseTabArgs> {}
+export default class BrowseTab extends Component<BaseGlimmerSignature<BrowseTabArgs>> {}

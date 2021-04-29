@@ -35,26 +35,28 @@
                                             class="search-results-control-help"
                                         />
                                     </div>
-                                    <div class="search-results-control">
-                                        <div class="d-flex align-items-center">
-                                            <span class="search-results-control-label text-muted">
-                                                {{t "search.sort.label"}}
-                                            </span>
-                                            <select
-                                                class="custom-select custom-select-sm text-truncate"
-                                                {{on "change" this.updateSort}}
-                                            >
-                                                {{#each this.sorts as |sort|}}
-                                                    <option
-                                                        value={{sort.id}}
-                                                        selected={{eq sort.id this.selectedSort.id}}
-                                                    >
-                                                        {{sort.label}}
-                                                    </option>
-                                                {{/each}}
-                                            </select>
+                                    {{#if (not (eq this.selectedView.id this.tableView))}}
+                                        <div class="search-results-control">
+                                            <div class="d-flex align-items-center">
+                                                <span class="search-results-control-label text-muted">
+                                                    {{t "search.sort.label"}}
+                                                </span>
+                                                <select
+                                                    class="custom-select custom-select-sm text-truncate"
+                                                    {{on "change" this.updateSort}}
+                                                >
+                                                    {{#each this.sorts as |sort|}}
+                                                        <option
+                                                            value={{sort.id}}
+                                                            selected={{eq sort.id this.selectedSort.id}}
+                                                        >
+                                                            {{sort.label}}
+                                                        </option>
+                                                    {{/each}}
+                                                </select>
+                                            </div>
                                         </div>
-                                    </div>
+                                    {{/if}}
                                     <div class="search-results-control">
                                         <div class="d-flex align-items-center">
                                             <span class="search-results-control-label text-muted">
@@ -163,7 +165,7 @@
                                         @tagName="ul"
                                         @containerSelector=".page-content-inner"
                                         @class="list-unstyled"
-                                        @estimateHeight={{100}}
+                                        @estimateHeight={{if this.currentUser.preferences.searchHICEnabled 100 20}}
                                         @renderAll={{this.fastboot.isFastBoot}}
                                         @lastReached={{this.paginator.loadMoreModels}} as |result|
                                     >

@@ -1,23 +1,25 @@
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
+
+import Component from '@glint/environment-ember-loose/glimmer-component';
 
 import { WidgetConfiguration } from 'pep/constants/configuration';
 import { WIDGET, WidgetData } from 'pep/constants/sidebar';
 import CurrentUserService from 'pep/services/current-user';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
-export interface PageSidebarWidgetsArgs {
+export interface PageSidebarWidgetArgs {
     widgets: WidgetConfiguration[];
     data: WidgetData;
 }
 
-export interface PageSidebarWidgetArgs extends PageSidebarWidgetsArgs {
+export interface BasePageSidebarWidgetArgs extends PageSidebarWidgetArgs {
     toggleIsOpen: (widget: WIDGET) => void;
     openWidgets: WIDGET[];
 }
 
-export default class PageSidebarWidgets extends Component<PageSidebarWidgetsArgs> {
+export default class PageSidebarWidgets extends Component<BaseGlimmerSignature<PageSidebarWidgetArgs>> {
     @service currentUser!: CurrentUserService;
 
     @tracked
@@ -60,5 +62,11 @@ export default class PageSidebarWidgets extends Component<PageSidebarWidgetsArgs
         } else {
             this.openWidgets = [...Object.values(WIDGET).filter((k) => typeof k === 'string')] as WIDGET[];
         }
+    }
+}
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        'Page::Sidebar::Widgets': typeof PageSidebarWidgets;
     }
 }

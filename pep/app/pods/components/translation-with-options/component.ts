@@ -1,14 +1,16 @@
 import { inject as service } from '@ember/service';
-import Component from '@glimmer/component';
 
+import Component from '@glint/environment-ember-loose/glimmer-component';
 import IntlService from 'ember-intl/services/intl';
+
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface TranslationWithOptionsArgs {
     path: string;
     options: object;
 }
 
-export default class TranslationWithOptions extends Component<TranslationWithOptionsArgs> {
+export default class TranslationWithOptions extends Component<BaseGlimmerSignature<TranslationWithOptionsArgs>> {
     @service intl!: IntlService;
 
     /**

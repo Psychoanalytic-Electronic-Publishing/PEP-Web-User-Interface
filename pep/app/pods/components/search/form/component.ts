@@ -1,8 +1,8 @@
 import { action, computed, setProperties } from '@ember/object';
 import { later, next } from '@ember/runloop';
 import { inject as service } from '@ember/service';
-import Component from '@glimmer/component';
 
+import Component from '@glint/environment-ember-loose/glimmer-component';
 import IntlService from 'ember-intl/services/intl';
 
 import { SEARCH_TYPES, SearchTermId, SearchTermValue, VIEW_PERIODS, ViewPeriod } from 'pep/constants/search';
@@ -11,6 +11,7 @@ import CurrentUserService from 'pep/services/current-user';
 import PepSessionService from 'pep/services/pep-session';
 import ScrollableService from 'pep/services/scrollable';
 import { fadeTransition } from 'pep/utils/animation';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 import { SEARCH_TYPE_ARTICLE } from '../../../../constants/search';
 
@@ -33,7 +34,7 @@ interface SearchFormArgs {
     resetForm: () => void;
 }
 
-export default class SearchForm extends Component<SearchFormArgs> {
+export default class SearchForm extends Component<BaseGlimmerSignature<SearchFormArgs>> {
     @service scrollable!: ScrollableService;
     @service intl!: IntlService;
     @service configuration!: ConfigurationService;
@@ -69,9 +70,12 @@ export default class SearchForm extends Component<SearchFormArgs> {
     }
 
     get hasTooManyResults() {
-        return (
-            this.args.resultsCount && this.args.resultsCount > this.configuration.base.search.tooManyResults.threshold
-        );
+        const resultCount = this.args.resultsCount;
+        if (resultCount) {
+            return resultCount > this.configuration.base.search.tooManyResults.threshold;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -188,5 +192,11 @@ export default class SearchForm extends Component<SearchFormArgs> {
     @action
     toggleLimitFields() {
         this.args.toggleLimitFields?.(!this.args.isLimitOpen);
+    }
+}
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        'Search::Form': typeof SearchForm;
     }
 }

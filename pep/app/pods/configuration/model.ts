@@ -11,7 +11,7 @@ export default class Configuration extends DS.Model {
     // should this model's `configSettings` attr be directly accessed in
     // the rest of the application.
     @alwaysSend
-    @attr()
+    @attr
     configSettings!: any;
 }
 

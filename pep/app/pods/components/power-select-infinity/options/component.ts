@@ -1,5 +1,7 @@
 import OptionsComponent from 'ember-power-select/components/power-select/options';
 
+import { BaseGlimmerSignature } from 'pep/utils/types';
+
 interface PowerSelectInfinityOptionsArgs {
     items: any[];
     extra: {
@@ -12,4 +14,6 @@ interface PowerSelectInfinityOptionsArgs {
     optionsClass?: string;
 }
 
-export default class PowerSelectInfinityOptions extends OptionsComponent<PowerSelectInfinityOptionsArgs> {}
+export default class PowerSelectInfinityOptions extends OptionsComponent<
+    BaseGlimmerSignature<PowerSelectInfinityOptionsArgs>
+> {}

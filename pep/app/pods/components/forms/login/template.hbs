@@ -1,14 +1,29 @@
-<FormValidator @changeset={{this.changeset}} @submit={{this.login}} class="{{~unless @isModal "mt-4"}}" as |changeset validator|>
+<FormValidator
+    @changeset={{this.changeset}}
+    @submit={{this.login}}
+    class="{{unless @isModal "mt-4"}}" as |changeset validator|
+>
     {{#@wrapperComponent}}
-        {{html-safe this.cardInfo.body}}
+        {{#if (and @isModal (not this.currentUser.user.isGroup))}}
+            {{html-safe this.cardInfo.body}}
+        {{/if}}
+        {{#if this.currentUser.user.isGroup}}
+            <div class="mb-2">
+                {{t
+                    "login.groupInformation"
+                    org=this.currentUser.user.userFullName
+                    method=this.currentUser.loginMethodTranslation
+                }}
+            </div>
+        {{/if}}
         <Alert
             @isShown={{bool this.loginError}}
-            @message={{this.loginError}}
+            @message={{html-safe this.loginError}}
             @type="danger"
             @icon="exclamation-circle"
         />
-        <div class="form-row mt-4">
-            <div class="{{~if @isModal " col-sm-8" " col-12"}}">
+        <div class="form-row {{if @isModal " mt-4" " mb-4"}}">
+            <div class="{{if @isModal " col-sm-8" " col-12"}}">
                 <validator.input @errors={{changeset.error.username.validation}} class="input-validator-compact">
                     <FlInput @value={{changeset.username}} @placeholder={{t "login.username"}} maxlength="128" />
                 </validator.input>
@@ -60,6 +75,9 @@
                 {{/unless}}
             </div>
         </div>
+        {{#if (and (not this.currentUser.user.isGroup) (not @isModal))}}
+            {{html-safe this.cardInfo.body}}
+        {{/if}}
     {{/@wrapperComponent}}
     {{yield changeset validator}}
 </FormValidator>

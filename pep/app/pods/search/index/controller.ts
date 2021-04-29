@@ -22,7 +22,7 @@ import {
     SEARCH_DEFAULT_VIEW_PERIOD, SEARCH_TYPE_ARTICLE, SearchFacetValue, SearchTermValue, SearchViews, SearchViewType,
     ViewPeriod
 } from 'pep/constants/search';
-import { WIDGET } from 'pep/constants/sidebar';
+import { GlossaryWidgetLocation, WIDGET } from 'pep/constants/sidebar';
 import Abstract from 'pep/pods/abstract/model';
 import Document from 'pep/pods/document/model';
 import AjaxService from 'pep/services/ajax';
@@ -36,7 +36,9 @@ import PrinterService from 'pep/services/printer';
 import ScrollableService from 'pep/services/scrollable';
 import SearchSelection from 'pep/services/search-selection';
 import SidebarService from 'pep/services/sidebar';
-import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
+import {
+    buildSearchQueryParams, clearSearch, clearSearchIndexControllerSearch, hasSearchQuery
+} from 'pep/utils/search';
 import { SearchSorts, SearchSortType, transformSearchSortsToTable, transformSearchSortToAPI } from 'pep/utils/sort';
 import { hash } from 'rsvp';
 
@@ -254,7 +256,11 @@ export default class SearchIndex extends Controller {
      */
     @action
     async onChangeSorting(sorts: string[]) {
-        return transformSearchSortToAPI(sorts);
+        if (this.selectedView.id === SearchViewType.TABLE) {
+            return transformSearchSortToAPI(sorts);
+        } else {
+            return sorts;
+        }
     }
 
     get tableSorts() {
@@ -351,20 +357,7 @@ export default class SearchIndex extends Controller {
      */
     @action
     clearSearch() {
-        const cfg = this.configuration.base.search;
-        const prefs = this.currentUser.preferences;
-        const terms = prefs?.searchTermFields ?? cfg.terms.defaultFields;
-        const isLimitOpen = prefs?.searchLimitIsShown ?? cfg.limitFields.isShown;
-
-        this.q = '';
-        this.currentSmartSearchTerm = '';
-        this.currentMatchSynonyms = false;
-        this.currentCitedCount = '';
-        this.currentViewedCount = '';
-        this.currentViewedPeriod = ViewPeriod.PAST_WEEK;
-        this.isLimitOpen = isLimitOpen;
-        this.currentSearchTerms = terms.map((f) => ({ type: f, term: '' }));
-        this.currentFacets = [];
+        clearSearch(this);
         taskFor(this.updateRefineMetadata).perform(true, 0);
         this.paginator.clearModels();
         this.searchSelection.clear();
@@ -507,7 +500,10 @@ export default class SearchIndex extends Controller {
             }
 
             this.sidebar.update({
-                [WIDGET.GLOSSARY_TERMS]: this.resultsMeta?.facetCounts.facet_fields.glossary_group_terms,
+                [WIDGET.GLOSSARY_TERMS]: {
+                    terms: this.resultsMeta?.facetCounts.facet_fields.glossary_group_terms,
+                    location: GlossaryWidgetLocation.SEARCH
+                },
                 [WIDGET.RELATED_DOCUMENTS]: undefined,
                 [WIDGET.MORE_LIKE_THESE]: undefined
             });
@@ -533,10 +529,12 @@ export default class SearchIndex extends Controller {
     @restartableTask
     *updateSearchFormPrefs() {
         yield timeout(500);
-        yield this.currentUser.updatePrefs({
-            [PreferenceKey.SEARCH_LIMIT_IS_SHOWN]: this.isLimitOpen,
-            [PreferenceKey.SEARCH_TERM_FIELDS]: this.currentSearchTerms.map((t) => t.type)
-        });
+        if (this.currentUser.preferences?.userSearchFormSticky) {
+            yield this.currentUser.updatePrefs({
+                [PreferenceKey.SEARCH_LIMIT_IS_SHOWN]: this.isLimitOpen,
+                [PreferenceKey.SEARCH_TERM_FIELDS]: this.currentSearchTerms.map((t) => t.type)
+            });
+        }
     }
 
     /**

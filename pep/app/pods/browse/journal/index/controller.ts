@@ -18,6 +18,10 @@ export default class BrowseJournalIndex extends Controller {
         const code = this.sourcecode;
         return this.configuration.content.global.publishers.find((publisher) => publisher.sourceCode === code);
     }
+
+    get showEmbargoInformation() {
+        return this.publisherInformation?.embargoYears !== '0';
+    }
 }
 
 // DO NOT DELETE: this is how TypeScript knows how to look up your controllers.

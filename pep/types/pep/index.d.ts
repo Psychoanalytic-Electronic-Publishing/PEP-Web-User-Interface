@@ -1,3 +1,4 @@
+import '@glint/environment-ember-loose/registry';
 import Ember from 'ember';
 import DS from 'ember-data';
 

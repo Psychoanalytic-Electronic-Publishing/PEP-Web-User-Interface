@@ -64,7 +64,9 @@
             "reportDataError": "Report a Data Error",
             "preferences": "Help Preferences",
             "provideFeedback": "Provide Feedback",
-            "browserData": "Browser Data"
+            "browserData": "Browser Data",
+            "showIntroTour": "Feature Tour",
+            "searchHelpVideo": "Search Help Video"
         },
         "admin": {
             "general": "General Settings",
@@ -539,12 +541,13 @@
         "success": "You are now logged in.",
         "forgotPassword": "Forgot Password?",
         "genericError": "Unable to login. There is a problem behind the scenes, and we are looking into it. Please try again later.",
-        "federatedLogin": "Federated Login",
+        "federatedLogin": "Federated/OpenAthens Login",
         "notARegisteredUser": "Not a registered user?",
-        "clickToRegister": "Click here to register"
+        "clickToRegister": "Click here to register",
+        "groupInformation": "You have been granted partial access to PEP via {org} based on {method}. To have full access please login or create an account."
     },
     "federatedLogin": {
-        "title": "Federated Login",
+        "title": "Federated/OpenAthens Login",
         "info": "Psychoanalytic Electronic Publishing supports logins from the following federations and institutions. If you have a login through one of these services, please click on the link to gain access to your subscription",
         "forgotPassword": "Forgot Password?",
         "genericError": "Unable to login. There is a problem behind the scenes, and we are looking into it. Please try again later.",
@@ -623,6 +626,9 @@
                 "select": "Select your desired behavior",
                 "enabled": "Display a preview pane",
                 "disabled": "Open the full document"
+            },
+            "userSearchFormSticky": {
+                "label": "Sticky search form"
             }
         },
         "sidebar": {
@@ -775,7 +781,12 @@
     },
     "document": {
         "text": {
-            "relatedBibliography": "This specific reference was not found to match any articles on PEP. However, using artificial intelligence, our software has found a reference which appears related, or may in some cases be a republication of the same article. '<div class=\"text-muted small mt-2\">'Disclaimer: This link is provided with the intent of possibly providing a relevant match where none would otherwise be provided. As it is by nature imprecise, and we are still refining the matching methods, not all references may actually be a close enough match to meet your needs'</div>'",
+            "help": {
+                "title": "Click on the title to view the article in the source Table of Contents.",
+                "author": "Click on the author name to view other articles by this author",
+                "journalBanner": "Click on the journal banner to see other volumes for this source"
+            },
+            "relatedBibliography": "<p>This specific reference was not found to match any articles on PEP. However, using artificial intelligence, our software has found a reference which appears related, or may in some cases be a republication of the same article.</p> '<p class=\"text-muted small mt-2\">'Disclaimer: This link is provided with the intent of possibly providing a relevant match where none would otherwise be provided. As it is by nature imprecise, and we are still refining the matching methods, not all references may actually be a close enough match to meet your needs'</p>'",
             "error": "Failed to load the document. Please contact a PEP administrator for assistance."
         }
     },
@@ -783,7 +794,9 @@
         "codes": {
             "enUS": "English",
             "esES": "Spanish",
-            "frFR": "French"
+            "frFR": "French",
+            "deDE": "German",
+            "itIT": "Italian"
         }
     },
     "theme": {
@@ -812,6 +825,15 @@
         "publisher": {
             "information": "Publisher Information"
         },
+        "video": {
+            "title": "Video Details",
+            "url": "Url"
+        },
+        "adminSpecifiedInformation": {
+            "title": "Admin Specified Information",
+            "id": "ID",
+            "value": "Value"
+        },
         "common": {
             "title": "General",
             "search": {
@@ -827,16 +849,16 @@
                 }
             },
             "global": {
+                "searchHelpVideoUrl": "Search Help Video URL",
                 "cards": {
                     "left": "Left Sidebar",
                     "right": "Right Sidebar",
                     "opened": "Opened",
-                    "videoPreview": {
-                        "title": "Video Previews",
-                        "code": "Video Preview Embed Code"
+                    "videos": {
+                        "title": "Video Previews"
                     },
-                    "topicalVideoPreview": {
-                        "code": "Topical Video Preview Embed Code"
+                    "topicalVideos": {
+                        "title": "Topical Video Previews"
                     },
                     "limitsTitle": "Widget Limits",
                     "whatsNew": {
@@ -847,6 +869,10 @@
                     },
                     "mostViewed": {
                         "limit": "Most viewed result limit"
+                    },
+                    "glossary": {
+                        "searchLimit": "Glossary limit when searching",
+                        "readLimit": "Glossary limit when reading"
                     }
                 }
             },
@@ -869,6 +895,7 @@
                     "expertPickOfTheDay": "Expert Pick of the Day"
                 },
                 "search": {
+                    "tooManyResults": "Too many results",
                     "smartSearch": "Smart Search",
                     "matchSynonyms": "Match Synonyms",
                     "limitTo": "Limit To",
@@ -904,6 +931,11 @@
                 }
             },
             "global": {
+                "adminSpecifiedInformation": {
+                    "id": "ID",
+                    "value": "Value",
+                    "title": "Admin specified information"
+                },
                 "tour": {
                     "title": "Tour Steps",
                     "table": {
@@ -1053,6 +1085,12 @@
         "title": "404",
         "subtitle": "Page not found.",
         "message": "The page you are looking for might have been removed, or is temporarily unavailable. ☹ Please try again later, or contact an administrator if the problem persists."
+    },
+    "fourOhFourDocument": {
+        "title": "404",
+        "subtitle": "Document not found.",
+        "report": "Report error",
+        "message": "The article or document you are looking for might not yet be on PEP Archive, or perhaps is temporarily unavailable. Please check the document information, try again later, or contact PEP if you believe this article as specified by the document ID in the URL is missing from the archive."
     },
     "fourOhThree": {
         "title": "403",

@@ -1,8 +1,9 @@
 import { action } from '@ember/object';
 import RouterService from '@ember/routing/router-service';
 import { inject as service } from '@ember/service';
-import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
+
+import Component from '@glint/environment-ember-loose/glimmer-component';
 
 import ModalService from '@gavant/ember-modals/services/modal';
 
@@ -12,12 +13,14 @@ import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService, { VIEW_DOCUMENT_FROM } from 'pep/services/current-user';
 import DrawerService from 'pep/services/drawer';
 import PepSessionService from 'pep/services/pep-session';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface PageDrawerArgs {
     openAboutModal: () => Promise<void>;
+    showIntroTour: () => void;
 }
 
-export default class PageDrawer extends Component<PageDrawerArgs> {
+export default class PageDrawer extends Component<BaseGlimmerSignature<PageDrawerArgs>> {
     @service drawer!: DrawerService;
     @service('pep-session') session!: PepSessionService;
     @service auth!: AuthService;
@@ -32,12 +35,16 @@ export default class PageDrawer extends Component<PageDrawerArgs> {
     supportUrl = SUPPORT_URL;
     facebookUrl = PEP_FACEBOOK_URL;
 
+    get searchHelpVideoUrl() {
+        return this.configuration.base.global.searchHelpVideoUrl;
+    }
+
     get defaultSearchParams() {
         return this.configuration.defaultSearchParams;
     }
 
     get readDisabled() {
-        return !this.currentUser.lastViewedDocumentId;
+        return !this.currentUser.lastViewedDocument?.id;
     }
 
     /**
@@ -118,11 +125,11 @@ export default class PageDrawer extends Component<PageDrawerArgs> {
      */
     @action
     viewRead() {
-        if (this.currentUser.lastViewedDocumentId) {
-            if (this.currentUser.lastViewedDocumentFrom === VIEW_DOCUMENT_FROM.SEARCH) {
-                this.router.transitionTo('search.read', this.currentUser.lastViewedDocumentId);
+        if (this.currentUser.lastViewedDocument) {
+            if (this.currentUser.lastViewedDocument.from === VIEW_DOCUMENT_FROM.SEARCH) {
+                this.router.transitionTo('search.read', this.currentUser.lastViewedDocument.id);
             } else {
-                this.router.transitionTo('browse.read', this.currentUser.lastViewedDocumentId);
+                this.router.transitionTo('browse.read', this.currentUser.lastViewedDocument.id);
             }
         }
     }

@@ -1,14 +1,16 @@
-import Component from '@glimmer/component';
-import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
-import { htmlSafe } from '@ember/template';
 import { inject as service } from '@ember/service';
+import { htmlSafe } from '@ember/template';
+import { tracked } from '@glimmer/tracking';
+
+import Component from '@glint/environment-ember-loose/glimmer-component';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 
+import { DRAG_BAR_THICKNESS, FOOT_BAR_HEIGHT, NAV_BAR_HEIGHT } from 'pep/constants/dimensions';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
-import { getElementOffset, ElementOffset, getEventOffset } from 'pep/utils/dom';
+import { ElementOffset, getElementOffset, getEventOffset } from 'pep/utils/dom';
 import { clamp } from 'pep/utils/math';
-import { NAV_BAR_HEIGHT, FOOT_BAR_HEIGHT, DRAG_BAR_THICKNESS } from 'pep/constants/dimensions';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface DragBarArgs {
     orientation?: 'vertical' | 'horizontal';
@@ -26,7 +28,7 @@ interface DragBarArgs {
     onDragEnd?: (endPosition: number, event: MouseEvent | TouchEvent) => void;
 }
 
-export default class DragBar extends Component<DragBarArgs> {
+export default class DragBar extends Component<BaseGlimmerSignature<DragBarArgs>> {
     @service fastboot!: FastbootService;
 
     @tracked dragBarPosition: number | null = null;

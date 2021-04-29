@@ -43,6 +43,8 @@ export default class Document extends DS.Model {
     @attr('string') rankField!: string; // TODO if this is a search-only attr, move to SearchDocument
     @attr('string') relatedrx!: string;
     @attr('string') score!: number; // TODO if this is a search-only attr, move to SearchDocument
+    @attr('string') sourceNext!: string;
+    @attr('string') sourcePrevious!: string;
     @attr('string') sourceTitle!: string;
     @attr('string') sourceType!: string;
     @attr() stat!: object;

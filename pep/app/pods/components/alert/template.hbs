@@ -5,13 +5,8 @@
         duration=this.animateDuration
         initialInsertion=this.animateInitialInsert
     }}
-        <div
-            class="alert alert-{{@type}}"
-            role="alert"
-            {{did-update this.onIsShownUpdate @isShown}}
-            ...attributes
-        >
-            {{#if hasBlock}}
+        <div class="alert alert-{{@type}}" role="alert" ...attributes {{did-update this.onIsShownUpdate @isShown}}>
+            {{#if (has-block)}}
                 {{yield}}
             {{else}}
                 <div class="d-flex">
@@ -20,7 +15,9 @@
                             <FaIcon @icon={{@icon}} @size="lg" />
                         </span>
                     {{/if}}
-                    <span>{{@message}}</span>
+                    <span>
+                        {{@message}}
+                    </span>
                 </div>
             {{/if}}
         </div>

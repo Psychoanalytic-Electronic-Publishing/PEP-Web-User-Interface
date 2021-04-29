@@ -1,9 +1,9 @@
 import { action } from '@ember/object';
 import RouterService from '@ember/routing/router-service';
 import { inject as service } from '@ember/service';
-import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
+import Component from '@glint/environment-ember-loose/glimmer-component';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import IntlService from 'ember-intl/services/intl';
@@ -19,19 +19,19 @@ import CurrentUserService from 'pep/services/current-user';
 import ExportsService, { ExportType } from 'pep/services/exports';
 import PrinterService from 'pep/services/printer';
 import SearchSelection from 'pep/services/search-selection';
-import { SearchSorts, SearchSortType, transformSearchSortsToTable, transformSearchSortToAPI } from 'pep/utils/sort';
-import { resolve } from 'rsvp';
+import { SearchSorts, SearchSortType, transformSearchSortsToTable } from 'pep/utils/sort';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface DocumentReadSidebarArgs {
     selectedDocument: Document;
-    paginator: Pagination<Document>;
+    paginator: Pagination<Document, { fullCount: number; description: string }>;
     selectedView: SearchView;
     hitsInContextAvailable: boolean;
     loadDocument: (document: Document) => void;
     updateSelectedView: (searchView?: SearchView) => void;
 }
 
-export default class DocumentReadSidebar extends Component<DocumentReadSidebarArgs> {
+export default class DocumentReadSidebar extends Component<BaseGlimmerSignature<DocumentReadSidebarArgs>> {
     @service router!: RouterService;
     @service searchSelection!: SearchSelection;
     @service exports!: ExportsService;
@@ -42,7 +42,6 @@ export default class DocumentReadSidebar extends Component<DocumentReadSidebarAr
     @service configuration!: ConfigurationService;
     @service currentUser!: CurrentUserService;
 
-    @tracked showHitsInContext = this.currentUser.preferences?.searchHICEnabled;
     @tracked selectedSort = SearchSorts[0];
 
     readLaterKey = PreferenceKey.READ_LATER;
@@ -53,6 +52,10 @@ export default class DocumentReadSidebar extends Component<DocumentReadSidebarAr
 
     get isLoadingRoute(): boolean {
         return /loading$/.test(this.router.currentRouteName);
+    }
+
+    get showHitsInContext() {
+        return this.currentUser.preferences?.searchHICEnabled ?? false;
     }
 
     /**
@@ -100,7 +103,7 @@ export default class DocumentReadSidebar extends Component<DocumentReadSidebarAr
         if (!value) {
             await this.args.paginator.loadMoreModels();
         }
-        this.showHitsInContext = value;
+        this.currentUser.updatePrefs({ [PreferenceKey.SEARCH_HIC_ENABLED]: value });
     }
 
     /**
@@ -226,16 +229,10 @@ export default class DocumentReadSidebar extends Component<DocumentReadSidebarAr
         const selectedView = SearchViews.find((item) => item.id === id);
         this.args.updateSelectedView(selectedView);
     }
+}
 
-    /**
-     * Transform the sorting to a format the API can handle
-     *
-     * @param {string[]} sorts
-     * @returns
-     * @memberof DocumentReadSidebar
-     */
-    @action
-    onChangeSorting(sorts: string[]) {
-        return resolve(transformSearchSortToAPI(sorts));
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        'Document::Read::Sidebar': typeof DocumentReadSidebar;
     }
 }

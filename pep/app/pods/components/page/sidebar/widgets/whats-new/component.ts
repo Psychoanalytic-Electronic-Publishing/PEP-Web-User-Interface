@@ -1,9 +1,9 @@
 import { action } from '@ember/object';
 import { later } from '@ember/runloop';
 import { inject as service } from '@ember/service';
-import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
+import Component from '@glint/environment-ember-loose/glimmer-component';
 import { restartableTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
 import DS from 'ember-data';
@@ -12,13 +12,16 @@ import Modal from '@gavant/ember-modals/services/modal';
 
 import { WIDGET } from 'pep/constants/sidebar';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
-import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
+import { BasePageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
 import WhatsNew from 'pep/pods/whats-new/model';
 import ConfigurationService from 'pep/services/configuration';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
-interface PageSidebarWidgetsWhatsNewArgs extends PageSidebarWidgetArgs {}
+interface PageSidebarWidgetsWhatsNewArgs extends BasePageSidebarWidgetArgs {}
 
-export default class PageSidebarWidgetsWhatsNew extends Component<PageSidebarWidgetsWhatsNewArgs> {
+export default class PageSidebarWidgetsWhatsNew extends Component<
+    BaseGlimmerSignature<PageSidebarWidgetsWhatsNewArgs>
+> {
     @service configuration!: ConfigurationService;
     @service store!: DS.Store;
     @service modal!: Modal;

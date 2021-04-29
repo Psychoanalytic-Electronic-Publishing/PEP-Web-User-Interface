@@ -1,9 +1,11 @@
 import { action } from '@ember/object';
-import Component from '@glimmer/component';
 
+import Component from '@glint/environment-ember-loose/glimmer-component';
 import { Step } from 'ember-shepherd/services/tour';
 
 import { GenericChangeset } from '@gavant/ember-validations/utilities/create-changeset';
+
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface ModalDialogsAdminTourArgs {
     onClose: () => void;
@@ -13,7 +15,7 @@ interface ModalDialogsAdminTourArgs {
     };
 }
 
-export default class ModalDialogsAdminTour extends Component<ModalDialogsAdminTourArgs> {
+export default class ModalDialogsAdminTour extends Component<BaseGlimmerSignature<ModalDialogsAdminTourArgs>> {
     /**
      * Update the tour step
      *

@@ -1,11 +1,13 @@
-import Component from '@glimmer/component';
+import Component from '@glint/environment-ember-loose/glimmer-component';
+
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface TabsTabArgs {
     id: string;
     selected: string;
 }
 
-export default class TabsTab extends Component<TabsTabArgs> {
+export default class TabsTab extends Component<BaseGlimmerSignature<TabsTabArgs>> {
     get isActive() {
         return this.args.id === this.args.selected;
     }

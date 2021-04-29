@@ -25,6 +25,7 @@ $document-paragraph-indent: 1.5rem;
         font-weight: bold;
         margin-top: 1rem;
         margin-bottom: 1rem;
+        font-size: 1.2rem;
     }
     a {
         text-decoration: none;
@@ -43,7 +44,6 @@ $document-paragraph-indent: 1.5rem;
         &.bibx {
             font-weight: bold;
             position: relative;
-            bottom: 1px;
         }
         &.def,
         &.figx,
@@ -238,7 +238,7 @@ $document-paragraph-indent: 1.5rem;
             display: flex;
             justify-content: center;
         }
-        &.footer {
+        &.document-footer {
             position: relative;
             &::before {
                 content: '';

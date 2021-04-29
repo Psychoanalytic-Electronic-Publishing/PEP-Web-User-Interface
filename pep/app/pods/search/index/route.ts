@@ -10,7 +10,7 @@ import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hoo
 import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
 
 import { SearchMetadata } from 'pep/api';
-import { WIDGET } from 'pep/constants/sidebar';
+import { GlossaryWidgetLocation, WIDGET } from 'pep/constants/sidebar';
 import { PageNav } from 'pep/mixins/page-layout';
 import Document from 'pep/pods/document/model';
 import SearchController from 'pep/pods/search/index/controller';
@@ -20,14 +20,19 @@ import SidebarService from 'pep/services/sidebar';
 import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
 
 export interface SearchIndexParams {
-    q: string;
-    matchSynonyms: boolean;
+    q?: string;
+    matchSynonyms?: boolean;
     preview?: string;
     citedCount?: string;
     viewedCount?: string;
     viewedPeriod?: number;
     _searchTerms?: string;
     _facets?: string;
+}
+
+export interface SearchQueryParams extends Omit<SearchIndexParams, '_searchTerms' | '_facets'> {
+    searchTerms?: string;
+    facets?: string;
 }
 
 export default class SearchIndex extends PageNav(Route) {
@@ -132,8 +137,13 @@ export default class SearchIndex extends PageNav(Route) {
     setupController(controller: SearchController, model: RecordArrayWithMeta<Document>) {
         const cfg = this.configuration.base.search;
         const prefs = this.currentUser.preferences;
-        const terms = prefs?.searchTermFields ?? cfg.terms.defaultFields;
-        const isLimitOpen = prefs?.searchLimitIsShown ?? cfg.limitFields.isShown;
+        const terms =
+            (prefs?.userSearchFormSticky ? prefs?.searchTermFields : cfg.terms.defaultFields) ??
+            cfg.terms.defaultFields;
+        const isLimitOpen =
+            (prefs?.userSearchFormSticky ? prefs?.searchLimitIsShown : cfg.limitFields.isShown) ??
+            cfg.limitFields.isShown;
+
         //map the query params to current search values to populate the form
         controller.currentSmartSearchTerm = controller.q;
         controller.currentMatchSynonyms = controller.matchSynonyms;
@@ -175,7 +185,10 @@ export default class SearchIndex extends PageNav(Route) {
         this.sidebar.update({
             [WIDGET.RELATED_DOCUMENTS]: undefined,
             [WIDGET.MORE_LIKE_THESE]: undefined,
-            [WIDGET.GLOSSARY_TERMS]: this.resultsMeta?.facetCounts.facet_fields.glossary_group_terms
+            [WIDGET.GLOSSARY_TERMS]: {
+                terms: this.resultsMeta?.facetCounts.facet_fields.glossary_group_terms,
+                location: GlossaryWidgetLocation.SEARCH
+            }
         });
 
         // workaround for bug w/array-based query param values
@@ -199,12 +212,17 @@ export default class SearchIndex extends PageNav(Route) {
         // @ts-ignore
         super.resetController(controller, isExiting, transition);
         controller.previewedResult = null;
+        controller.preview = null;
+
         // clear current results meta data
         controller.resultsMeta = null;
         // reset the search form limit fields section
         const cfg = this.configuration.base.search;
         const prefs = this.currentUser.preferences;
-        controller.isLimitOpen = prefs?.searchLimitIsShown ?? cfg.limitFields.isShown;
+
+        controller.isLimitOpen =
+            (prefs?.userSearchFormSticky ? prefs?.searchLimitIsShown : cfg.limitFields.isShown) ??
+            cfg.limitFields.isShown;
     }
 
     /**

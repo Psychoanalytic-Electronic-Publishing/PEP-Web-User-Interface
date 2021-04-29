@@ -16,7 +16,7 @@
                     @placeholder={{or this.termContentConfig.prompt (t "search.form.terms.label")}}
                     @value={{@searchTerm.term}}
                     class="search-form-term-control-field-text"
-                    maxlength="255"
+                    maxlength="500"
                     autocomplete="off"
                     {{on "input" (fn @onTermTextChange @searchTerm)}}
                 />

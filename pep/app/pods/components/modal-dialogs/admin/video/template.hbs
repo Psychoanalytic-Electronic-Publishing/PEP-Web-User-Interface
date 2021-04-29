@@ -1,0 +1,16 @@
+<ModalDialog @onClose={{@onClose}} @size="sm" @clickOutsideToClose={{false}} as |Modal|>
+    <Modal.header @title={{t "admin.video.title"}} />
+    <FormValidator @changeset={{@options.changeset}} @submit={{this.update}} as |changeset validator|>
+        <Modal.body>
+            <validator.input @errors={{changeset.error.url.validation}}>
+                <FlInput @value={{changeset.url}} @placeholder={{t "admin.video.url"}}>
+                    <ChangesetInput @changeset={{changeset}} @path="url" class="form-control" autocomplete="off" />
+                </FlInput>
+            </validator.input>
+        </Modal.body>
+        <Modal.footer>
+            <Button @type="link" @label={{t "common.cancel"}} @action={{@onClose}} />
+            <ButtonSpinner @type="primary" @label={{t "common.update"}} @wide={{true}} @action={{validator.submit}} />
+        </Modal.footer>
+    </FormValidator>
+</ModalDialog>

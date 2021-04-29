@@ -1,17 +1,23 @@
+import { action } from '@ember/object';
 import Transition from '@ember/routing/-private/transition';
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 
+import FastbootService from 'ember-cli-fastboot/services/fastboot';
+
 import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hooks/pagination';
 import { buildQueryParams, QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 
-import { WIDGET } from 'pep/constants/sidebar';
+import isEqual from 'lodash.isequal';
+import { GlossaryWidgetLocation, WIDGET } from 'pep/constants/sidebar';
 import { PageNav } from 'pep/mixins/page-layout';
+import { ApiServerErrorResponse } from 'pep/pods/application/adapter';
 import Document from 'pep/pods/document/model';
 import SearchDocument from 'pep/pods/search-document/model';
 import SearchReadController from 'pep/pods/search/read/controller';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService, { VIEW_DOCUMENT_FROM } from 'pep/services/current-user';
+import ScrollableService from 'pep/services/scrollable';
 import SidebarService from 'pep/services/sidebar';
 import { buildSearchQueryParams, copyToController, hasSearchQuery } from 'pep/utils/search';
 import { serializeQueryParams } from 'pep/utils/url';
@@ -26,12 +32,15 @@ export interface SearchReadParams {
     _searchTerms?: string;
     _facets?: string;
     page?: string;
+    index?: string;
 }
 
 export default class SearchRead extends PageNav(Route) {
     @service configuration!: ConfigurationService;
     @service sidebar!: SidebarService;
     @service currentUser!: CurrentUserService;
+    @service scrollable!: ScrollableService;
+    @service fastboot!: FastbootService;
 
     navController = 'search.read';
     searchResults?: Document[];
@@ -40,6 +49,9 @@ export default class SearchRead extends PageNav(Route) {
 
     queryParams = {
         page: {
+            replace: true
+        },
+        index: {
             replace: true
         }
     };
@@ -93,7 +105,10 @@ export default class SearchRead extends PageNav(Route) {
         this.sidebar.update({
             [WIDGET.RELATED_DOCUMENTS]: model,
             [WIDGET.MORE_LIKE_THESE]: model,
-            [WIDGET.GLOSSARY_TERMS]: model?.meta?.facetCounts.facet_fields.glossary_group_terms,
+            [WIDGET.GLOSSARY_TERMS]: {
+                terms: model?.meta?.facetCounts.facet_fields.glossary_group_terms,
+                location: GlossaryWidgetLocation.READ
+            },
             [WIDGET.PUBLISHER_INFO]: model
         });
 
@@ -109,7 +124,7 @@ export default class SearchRead extends PageNav(Route) {
         }
 
         // if the query params are different - load new items, otherwise reuse if possible
-        if (!pastQueryParams || JSON.stringify(pastQueryParams) !== JSON.stringify(queryParams)) {
+        if (!pastQueryParams || !isEqual(pastQueryParams, queryParams)) {
             const params = this.paramsFor('search.read') as SearchReadParams;
             //workaround for https://github.com/emberjs/ember.js/issues/18981
             const searchTerms = params._searchTerms ? JSON.parse(params._searchTerms) : [];
@@ -137,6 +152,7 @@ export default class SearchRead extends PageNav(Route) {
                     context: controller,
                     pagingRootKey: null,
                     filterRootKey: null,
+                    limit: Number(params.index) + controller.pagingLimit,
                     sorts:
                         controller.selectedView.id === controller.tableView
                             ? ['']
@@ -181,7 +197,7 @@ export default class SearchRead extends PageNav(Route) {
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
     //@ts-ignore
-    setupController(controller: SearchReadController, model: Document) {
+    setupController(controller: SearchReadController, model: Document, transition: Transition) {
         //workaround for bug w/array-based query param values
         //@see https://github.com/emberjs/ember.js/issues/18981
         //@ts-ignore
@@ -201,12 +217,25 @@ export default class SearchRead extends PageNav(Route) {
             filterRootKey: null,
             processQueryParams: controller.processQueryParams,
             onChangeSorting: controller.onChangeSorting,
-            limit: 20
+            limit: controller.pagingLimit
         });
-        this.currentUser.lastViewedDocumentId = model.id;
-        this.currentUser.lastViewedDocumentFrom = VIEW_DOCUMENT_FROM.SEARCH;
+        this.currentUser.lastViewedDocument = {
+            id: model.id,
+            from: VIEW_DOCUMENT_FROM.SEARCH
+        };
         controller.searchHitNumber = undefined;
         controller.document = model;
+
+        if (!this.fastboot.isFastBoot) {
+            const page = transition.to.queryParams.page;
+            const index = transition.to.queryParams.index;
+            if (page) {
+                controller.page = page;
+            }
+            if (index) {
+                controller.index = Number(transition.to.queryParams.index);
+            }
+        }
     }
 
     /**
@@ -223,8 +252,31 @@ export default class SearchRead extends PageNav(Route) {
         //@see https://github.com/emberjs/ember.js/issues/18981
         //@ts-ignore
         super.resetController(controller, isExiting, transition);
+        controller.page = null;
         this.searchResults = undefined;
         this.searchParams = undefined;
-        controller.page = null;
+    }
+
+    /**
+     * Top level route error event handler - If routes reject with an error
+     * i.e. do not explicitly catch and handle errors return by their
+     * model()/beforeModel()/afterModel() hooks, this will be invoked.
+     * Which will redirect the user as needed, depending the type of error returned
+     * @param {ApiServerErrorResponse} error
+     */
+    @action
+    error(error?: ApiServerErrorResponse): boolean {
+        if (this.fastboot.isFastBoot) {
+            this.fastboot.response.statusCode = error?.errors?.[0]?.status ?? 200;
+        }
+        if (error?.errors?.length && error?.errors?.length > 0) {
+            const status = error?.errors?.[0].status;
+            if (status === '404') {
+                this.replaceWith('four-oh-four-document', '404');
+                //marks error as being handled
+                return false;
+            }
+        }
+        return true;
     }
 }

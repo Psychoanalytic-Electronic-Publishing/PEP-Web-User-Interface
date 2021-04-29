@@ -12,8 +12,13 @@ module('Integration | Component | modal-dialogs/admin/publisher', function(hooks
         // Set any properties with this.set('myProperty', 'value');
         // Handle any actions with this.set('myAction', function(val) { ... });
 
-        await render(hbs`{{modal-dialogs/admin/publisher}}`);
+        this.set('options', {
+            changeset: {
+                get() {}
+            }
+        });
+        await render(hbs`<ModalDialogs::Admin::Publisher @options={{this.options}} />`);
 
-        assert.equal(this.element.textContent?.trim(), '');
+        assert.ok(this.element.textContent?.trim());
     });
 });

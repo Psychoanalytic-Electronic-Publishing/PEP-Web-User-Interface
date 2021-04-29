@@ -1,10 +1,12 @@
 import { action } from '@ember/object';
 import { later } from '@ember/runloop';
 import { inject as service } from '@ember/service';
-import Component from '@glimmer/component';
+
+import Component from '@glint/environment-ember-loose/glimmer-component';
 
 import ScrollableService from 'pep/services/scrollable';
 import { fadeTransition } from 'pep/utils/animation';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface AlertArgs {
     isShown: boolean;
@@ -15,7 +17,7 @@ interface AlertArgs {
     animateInitialInsert?: boolean;
 }
 
-export default class Alert extends Component<AlertArgs> {
+export default class Alert extends Component<BaseGlimmerSignature<AlertArgs>> {
     @service scrollable!: ScrollableService;
 
     animateDuration = 300;
@@ -34,5 +36,11 @@ export default class Alert extends Component<AlertArgs> {
         if (this.args.scrollableNamespace) {
             later(() => this.scrollable.recalculate(this.args.scrollableNamespace), this.animateDuration);
         }
+    }
+}
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        Alert: typeof Alert;
     }
 }

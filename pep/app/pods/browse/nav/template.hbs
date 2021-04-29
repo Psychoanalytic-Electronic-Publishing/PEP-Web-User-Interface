@@ -6,7 +6,7 @@
                 <FlInput
                     @placeholder={{t "common.find"}}
                     @value={{this.filter}}
-                    maxlength="255"
+                    maxlength="500"
                     autocomplete="off"
                     {{on "input" (fn this.onFilter this.filter)}}
                 />
@@ -100,22 +100,6 @@
                             </div>
                         {{/if}}
                         <h5>
-                            {{t "browse.selection.books.glossaries"}}
-                        </h5>
-                        {{#if this.filteredBooks.glossaries}}
-                            <ul class="list-unstyled">
-                                {{#each this.filteredBooks.glossaries as |result|}}
-                                    <Browse::SidebarItem @item={{result}} @route="browse.read">
-                                        {{result.title}}
-                                    </Browse::SidebarItem>
-                                {{/each}}
-                            </ul>
-                        {{else}}
-                            <div class="text-muted small">
-                                {{t "browse.selection.search.noResults" term=this.filter}}
-                            </div>
-                        {{/if}}
-                        <h5>
                             {{t "browse.selection.books.other"}}
                         </h5>
                         {{#if this.filteredBooks.others}}
@@ -156,8 +140,8 @@
                                 @estimateHeight={{100}}
                                 @renderAll={{this.fastboot.isFastBoot}} as |result|
                             >
-                                <Browse::SidebarItem @item={{result}} @route="browse.read">
-                                    {{result.title}}
+                                <Browse::SidebarItem @item={{result}} @route="browse.read" class="video-sidebar-item">
+                                    {{html-safe result.displayTitle}}
                                 </Browse::SidebarItem>
                             </VerticalCollection>
                         {{else}}

@@ -28,7 +28,8 @@ export enum PreferenceKey {
     VISIBLE_WIDGETS = 'visibleWidgets',
     TRANSLATION_CONCORDANCE = 'translationConcordanceEnabled',
     GLOSSARY_FORMATTING_ENABLED = 'glossaryFormattingEnabled',
-    TEXT_JUSTIFICATION = 'textJustification'
+    TEXT_JUSTIFICATION = 'textJustification',
+    USER_SEARCH_FORM_STICKY = 'userSearchFormSticky'
 }
 
 export interface UserPreferences {
@@ -52,6 +53,7 @@ export interface UserPreferences {
     translationConcordanceEnabled: boolean;
     glossaryFormattingEnabled: boolean;
     textJustification: TextJustificationId;
+    userSearchFormSticky: boolean;
 }
 
 export type PreferenceChangeset = Partial<UserPreferences>;
@@ -79,7 +81,8 @@ export const COOKIE_PREFERENCES: PreferenceKey[] = [
     PreferenceKey.HELP_DESCRIPTIONS_ENABLED,
     PreferenceKey.HELP_ICONS_ENABLED,
     PreferenceKey.FONT_SIZE,
-    PreferenceKey.VISIBLE_WIDGETS
+    PreferenceKey.VISIBLE_WIDGETS,
+    PreferenceKey.USER_SEARCH_FORM_STICKY
 ];
 
 /**
@@ -105,12 +108,13 @@ export const DEFAULT_USER_PREFERENCES: UserPreferences = {
     theme: ThemeId.DEFAULT,
     searchViewType: SearchViews[0],
     searchSortType: SearchSorts[0],
-    tourEnabled: true,
+    tourEnabled: false,
     helpDescriptionsEnabled: true,
     helpIconsEnabled: true,
     fontSize: FontSize.DEFAULT,
     visibleWidgets: flattenEnum(WIDGET),
     translationConcordanceEnabled: true,
     glossaryFormattingEnabled: false,
-    textJustification: TextJustificationId.LEFT
+    textJustification: TextJustificationId.LEFT,
+    userSearchFormSticky: false
 };

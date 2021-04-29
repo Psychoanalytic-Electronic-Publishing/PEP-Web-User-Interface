@@ -1,10 +1,10 @@
 import { action, computed } from '@ember/object';
 import RouterService from '@ember/routing/router-service';
-import { next, scheduleOnce } from '@ember/runloop';
+import { next, run, scheduleOnce } from '@ember/runloop';
 import { inject as service } from '@ember/service';
-import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
+import Component from '@glint/environment-ember-loose/glimmer-component';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import { DS } from 'ember-data';
 import IntlService from 'ember-intl/services/intl';
@@ -21,12 +21,15 @@ import {
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import Document from 'pep/pods/document/model';
 import GlossaryTerm from 'pep/pods/glossary-term/model';
+import { SearchQueryParams } from 'pep/pods/search/index/route';
 import AjaxService from 'pep/services/ajax';
 import CurrentUserService from 'pep/services/current-user';
 import LoadingBarService from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
+import ScrollableService from 'pep/services/scrollable';
 import ThemeService from 'pep/services/theme';
 import { buildJumpToHitsHTML, loadXSLT, parseXML } from 'pep/utils/dom';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 import { reject } from 'rsvp';
 import tippy, { Instance, Props } from 'tippy.js';
 
@@ -43,7 +46,7 @@ interface DocumentTextArgs {
     page?: string;
     searchHitNumber?: number;
     onGlossaryItemClick: (term: string, termResults: GlossaryTerm[]) => void;
-    viewSearch: (searchTerms: string) => void;
+    viewSearch: (searchTerms: SearchQueryParams) => void;
     documentRendered: () => void;
     viewablePageUpdate?: (page: string) => void;
 }
@@ -60,7 +63,11 @@ export enum DocumentTooltipSelectors {
     NEW_AUTHOR = '.newauthortip',
     AUTHOR_TIP = '.authortip',
     FOOTNOTE = '.ftnx',
-    TRANSLATION = '.translation'
+    TRANSLATION = '.translation',
+    NOTE_TIP = '.notetip',
+    TITTLE_HELP = '.art-title',
+    BANNER_HELP = '.banner img',
+    AUTHOR_HELP = '.author'
 }
 
 export type DocumentTippyInstance = Instance & {
@@ -68,25 +75,27 @@ export type DocumentTippyInstance = Instance & {
     _loaded: boolean;
 };
 
-export default class DocumentText extends Component<DocumentTextArgs> {
+export default class DocumentText extends Component<BaseGlimmerSignature<DocumentTextArgs>> {
     @service store!: DS.Store;
     @service loadingBar!: LoadingBarService;
     @service modal!: ModalService;
     @service notifications!: NotificationService;
     @service intl!: IntlService;
-    @service theme!: ThemeService;
+    @service declare theme: ThemeService;
     @service router!: RouterService;
     @service currentUser!: CurrentUserService;
     @service('pep-session') session!: PepSessionService;
     @service ajax!: AjaxService;
+    @service scrollable!: ScrollableService;
 
     @tracked xml?: XMLDocument;
     @tracked visiblePages: string[] = [];
-    @tracked pageTracking = true;
+    @tracked pageTracking = false;
 
     containerElement?: HTMLElement;
     scrollableElement?: Element | null;
     defaultOffsetForScroll = -95;
+    tippyHelpDelay: [number, null] = [2000, null];
 
     tippyOptions = {
         theme: 'light',
@@ -99,13 +108,6 @@ export default class DocumentText extends Component<DocumentTextArgs> {
         }
     };
 
-    constructor(owner: unknown, args: DocumentTextArgs) {
-        super(owner, args);
-        const target = args.target ?? (args.document.accessLimited ? 'abstract' : 'document');
-        const text = args.document[target];
-        this.generateDocument(text);
-    }
-
     private get scrollOffset() {
         return this.args.offsetForScroll ?? this.defaultOffsetForScroll;
     }
@@ -115,10 +117,22 @@ export default class DocumentText extends Component<DocumentTextArgs> {
         const document = await this.parseDocumentText(text);
         if (document) {
             this.xml = document;
-            if (this.args.documentRendered) {
-                next(this, this.args.documentRendered);
-            }
+            next(this, this.documentRendered);
         }
+    }
+
+    async documentRendered() {
+        run(() => {
+            this.scrollable.scrollToTop('page-content');
+        });
+        run(async () => {
+            this.args.documentRendered?.();
+
+            if (this.args.page) {
+                await this.scrollToPageOrTarget(this.args.page);
+            }
+            this.pageTracking = true;
+        });
     }
 
     /**
@@ -302,7 +316,9 @@ export default class DocumentText extends Component<DocumentTextArgs> {
             const firstName = target?.querySelector('.nfirst')?.innerHTML;
             const lastName = target?.querySelector('.nlast')?.innerHTML;
             const name = `${firstName} ${lastName}`;
-            this.args.viewSearch(JSON.stringify([{ term: name, type: SearchTermId.AUTHOR, value: name }]));
+            this.args.viewSearch({
+                searchTerms: JSON.stringify([{ term: name, type: SearchTermId.AUTHOR, value: name }])
+            });
         } else if (type === DocumentLinkTypes.SEARCH_HIT_TEXT) {
             const possibleTermNode = target.parentElement?.parentElement;
             if (possibleTermNode) {
@@ -329,14 +345,18 @@ export default class DocumentText extends Component<DocumentTextArgs> {
                 }
             }
         } else if (type === DocumentLinkTypes.TITLE) {
-            const parent = target.parentElement;
-            if (parent) {
-                const sourceCode = parent.getAttribute('data-journal-code');
-                const volume = parent.getAttribute('data-volume');
+            if (target) {
+                const sourceCode = target.getAttribute('data-journal-code');
+                const volume = target.getAttribute('data-volume');
 
                 if (sourceCode && volume) {
                     this.router.transitionTo('browse.journal.volume', sourceCode, volume);
                 }
+            }
+        } else if (type === DocumentLinkTypes.KEYWORD) {
+            const keyword = target.getAttribute('data-keyword');
+            if (keyword) {
+                this.args.viewSearch({ q: keyword });
             }
         }
     }
@@ -469,10 +489,6 @@ export default class DocumentText extends Component<DocumentTextArgs> {
         this.containerElement = element;
         this.scrollableElement = this.containerElement?.closest('.page-content-inner');
         scheduleOnce('afterRender', this, this.attachTooltips);
-        if (this.args.page) {
-            console.log(this.args.page);
-            await this.scrollToPageOrTarget(this.args.page);
-        }
         const observer = new IntersectionObserver(
             (entries) => {
                 if (this.pageTracking) {
@@ -524,6 +540,18 @@ export default class DocumentText extends Component<DocumentTextArgs> {
             if (node) {
                 tippy(item, {
                     content: node.innerHTML,
+                    ...this.tippyOptions
+                });
+            }
+        });
+
+        const notes = this.containerElement?.querySelectorAll(DocumentTooltipSelectors.NOTE_TIP);
+        notes?.forEach((item) => {
+            const node = item?.querySelector(`.peppopuptext`);
+            if (node) {
+                tippy(item, {
+                    content: node.innerHTML,
+                    placement: 'right',
                     ...this.tippyOptions
                 });
             }
@@ -625,6 +653,36 @@ export default class DocumentText extends Component<DocumentTextArgs> {
                 }
             });
         }
+
+        const title = this.containerElement?.querySelector(DocumentTooltipSelectors.TITTLE_HELP);
+        if (title) {
+            tippy(title, {
+                content: this.intl.t('document.text.help.title'),
+                ...this.tippyOptions,
+                delay: this.tippyHelpDelay
+            });
+        }
+
+        const banner = this.containerElement?.querySelector(DocumentTooltipSelectors.BANNER_HELP);
+        if (banner) {
+            tippy(banner, {
+                content: this.intl.t('document.text.help.journalBanner'),
+                ...this.tippyOptions,
+                delay: this.tippyHelpDelay
+            });
+        }
+
+        const authors = this.containerElement?.querySelectorAll(DocumentTooltipSelectors.AUTHOR_HELP);
+        if (authors) {
+            authors?.forEach((item) => {
+                tippy(item, {
+                    appendTo: () => document.body,
+                    content: this.intl.t('document.text.help.author'),
+                    ...this.tippyOptions,
+                    delay: this.tippyHelpDelay
+                });
+            });
+        }
     }
 
     /**
@@ -659,5 +717,11 @@ export default class DocumentText extends Component<DocumentTextArgs> {
      */
     willDestroy(): void {
         this.pageTracking = false;
+    }
+}
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        'Document::Text': typeof DocumentText;
     }
 }

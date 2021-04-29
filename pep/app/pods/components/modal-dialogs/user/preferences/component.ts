@@ -1,8 +1,8 @@
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
+import Component from '@glint/environment-ember-loose/glimmer-component';
 import { timeout } from 'ember-concurrency';
 import { enqueueTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
@@ -18,14 +18,16 @@ import LangService from 'pep/services/lang';
 import NotificationsService from 'pep/services/notifications';
 import PepSessionService from 'pep/services/pep-session';
 import ThemeService from 'pep/services/theme';
-import { guard } from 'pep/utils/types';
+import { BaseGlimmerSignature, guard } from 'pep/utils/types';
 import { Result } from 'true-myth/result';
 
 interface ModalDialogsUserPreferencesArgs {
     onClose: () => void;
 }
 
-export default class ModalDialogsUserPreferences extends Component<ModalDialogsUserPreferencesArgs> {
+export default class ModalDialogsUserPreferences extends Component<
+    BaseGlimmerSignature<ModalDialogsUserPreferencesArgs>
+> {
     @service theme!: ThemeService;
     @service currentUser!: CurrentUserService;
     @service intl!: IntlService;
@@ -38,6 +40,7 @@ export default class ModalDialogsUserPreferences extends Component<ModalDialogsU
     searchEnabledKey = PreferenceKey.SEARCH_PREVIEW_ENABLED;
     hicLimit = PreferenceKey.SEARCH_HIC_LIMIT;
     glossaryFormattingEnabledKey = PreferenceKey.GLOSSARY_FORMATTING_ENABLED;
+    userSearchFormStickyKey = PreferenceKey.USER_SEARCH_FORM_STICKY;
 
     get widgets() {
         return WIDGETS.map((widget) => ({

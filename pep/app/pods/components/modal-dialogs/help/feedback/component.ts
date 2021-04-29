@@ -1,18 +1,21 @@
+import { action } from '@ember/object';
+import { inject as service } from '@ember/service';
+import { tracked } from '@glimmer/tracking';
+
+import Component from '@glint/environment-ember-loose/glimmer-component';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import IntlService from 'ember-intl/services/intl';
 import UserAgentService from 'ember-useragent/services/user-agent';
+
+import createChangeset, { GenericChangeset } from '@gavant/ember-validations/utilities/create-changeset';
+
 import ENV from 'pep/config/environment';
 import FEEDBACK_TYPES, { FEEDBACK_TYPE_FEEDBACK, FeedbackType, FeedbackTypeId } from 'pep/constants/feedback-types';
 import AjaxService from 'pep/services/ajax';
 import CurrentUserService from 'pep/services/current-user';
 import LoadingBarService from 'pep/services/loading-bar';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 import FEEDBACK_VALIDATIONS from 'pep/validations/help/feedback';
-
-import { action } from '@ember/object';
-import { inject as service } from '@ember/service';
-import createChangeset, { GenericChangeset } from '@gavant/ember-validations/utilities/create-changeset';
-import Component from '@glimmer/component';
-import { tracked } from '@glimmer/tracking';
 
 interface Feedback {
     subject: string;
@@ -29,7 +32,7 @@ interface ModalDialogsHelpFeedbackArgs {
     onClose: () => void;
 }
 
-export default class ModalDialogsHelpFeedback extends Component<ModalDialogsHelpFeedbackArgs> {
+export default class ModalDialogsHelpFeedback extends Component<BaseGlimmerSignature<ModalDialogsHelpFeedbackArgs>> {
     @service userAgent!: UserAgentService;
     @service loadingBar!: LoadingBarService;
     @service notifications!: NotificationService;

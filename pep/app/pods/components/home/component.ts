@@ -1,18 +1,20 @@
 import { action } from '@ember/object';
 import RouterService from '@ember/routing/router-service';
 import { inject as service } from '@ember/service';
-import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
+import Component from '@glint/environment-ember-loose/glimmer-component';
 import CookiesService from 'ember-cookies/services/cookies';
 import { DS } from 'ember-data';
 
 import ModalService from '@gavant/ember-modals/services/modal';
 
 import moment from 'moment';
+import { MEDIA_FILE_EXTENSION_REGEX } from 'pep/constants/regex';
 import Abstract from 'pep/pods/abstract/model';
 import GlossaryTerm from 'pep/pods/glossary-term/model';
 import SearchDocument from 'pep/pods/search-document/model';
+import AjaxService from 'pep/services/ajax';
 import AuthService from 'pep/services/auth';
 import ConfigurationService from 'pep/services/configuration';
 import FastbootMediaService from 'pep/services/fastboot-media';
@@ -20,10 +22,11 @@ import LoadingBarService from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
 import SidebarService from 'pep/services/sidebar';
 import { buildSearchQueryParams } from 'pep/utils/search';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface HomeArgs {}
 
-export default class Home extends Component<HomeArgs> {
+export default class Home extends Component<BaseGlimmerSignature<HomeArgs>> {
     @service sidebar!: SidebarService;
     @service modal!: ModalService;
     @service fastbootMedia!: FastbootMediaService;
@@ -34,6 +37,7 @@ export default class Home extends Component<HomeArgs> {
     @service router!: RouterService;
     @service loadingBar!: LoadingBarService;
     @service cookies!: CookiesService;
+    @service ajax!: AjaxService;
 
     /**
      * The approximate width where the graphic
@@ -44,6 +48,7 @@ export default class Home extends Component<HomeArgs> {
 
     @tracked model?: Abstract;
     @tracked imageArticle?: SearchDocument;
+    @tracked imageId?: string;
 
     get intro() {
         return this.configuration.content.home.intro;
@@ -133,12 +138,22 @@ export default class Home extends Component<HomeArgs> {
     async loadModel(): Promise<void> {
         const result = await this.store.findRecord('abstract', this.expertPick.articleId);
         this.model = result;
+        let imageId = this.expertPick.imageId;
+
+        // if there was no expert pick image then load a random one
+        if (!imageId || imageId === '*') {
+            const result = await this.ajax.request<{ documentID: string; graphic: string }>(
+                'Documents/Image/*?download=2'
+            );
+            imageId = result.graphic.replace(MEDIA_FILE_EXTENSION_REGEX, '');
+        }
         const queryParams = buildSearchQueryParams({
-            smartSearchTerm: `art_graphic_list: ${this.expertPick.imageId}`
+            smartSearchTerm: `art_graphic_list: ${imageId}`
         });
         const imageArticleResults = await this.store.query('search-document', queryParams);
         const imageArticle = imageArticleResults.toArray()[0];
         this.imageArticle = imageArticle;
+        this.imageId = imageId;
     }
 
     /**
@@ -176,5 +191,11 @@ export default class Home extends Component<HomeArgs> {
                 graphicContainer.className = 'card-text-container d-flex';
             }
         }
+    }
+}
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        Home: typeof Home;
     }
 }

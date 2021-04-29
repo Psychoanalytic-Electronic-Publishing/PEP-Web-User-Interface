@@ -1,12 +1,14 @@
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
-import { removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
+import Component from '@glint/environment-ember-loose/glimmer-component';
 import DS from 'ember-data';
 
+import { removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
+
 import { FlTypeaheadSuggestion } from 'pep/pods/components/fl-typeahead/component';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 export enum WordWheelSearchType {
     WORD = 'word',
@@ -18,11 +20,11 @@ interface WordWheelArgs {
     limit?: number;
     apiField?: string;
     apiCore?: string;
-    searchType: WordWheelSearchType;
+    searchType?: WordWheelSearchType;
     onChange: (newText: string) => void;
 }
 
-export default class WordWheel extends Component<WordWheelArgs> {
+export default class WordWheel extends Component<BaseGlimmerSignature<WordWheelArgs>> {
     @service store!: DS.Store;
 
     @tracked suggestions: FlTypeaheadSuggestion[] = [];
@@ -66,5 +68,11 @@ export default class WordWheel extends Component<WordWheelArgs> {
         }
 
         return this.suggestions;
+    }
+}
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        WordWheel: typeof WordWheel;
     }
 }

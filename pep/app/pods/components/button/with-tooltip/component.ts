@@ -1,7 +1,9 @@
-import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 
+import Component from '@glint/environment-ember-loose/glimmer-component';
+
 import FastbootMediaService from 'pep/services/fastboot-media';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface ButtonWithTooltipArgs {
     label?: string;
@@ -19,7 +21,7 @@ interface ButtonWithTooltipArgs {
     tooltipVisible?: boolean;
 }
 
-export default class ButtonWithTooltip extends Component<ButtonWithTooltipArgs> {
+export default class ButtonWithTooltip extends Component<BaseGlimmerSignature<ButtonWithTooltipArgs>> {
     @service fastbootMedia!: FastbootMediaService;
 
     get tooltipSide() {
@@ -53,5 +55,11 @@ export default class ButtonWithTooltip extends Component<ButtonWithTooltipArgs> 
      */
     get tooltipVisible() {
         return this.args.tooltipVisible ?? this.fastbootMedia.isLargeDevice;
+    }
+}
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        'Button::WithTooltip': typeof ButtonWithTooltip;
     }
 }

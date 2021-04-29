@@ -11,8 +11,13 @@ module('Integration | Component | admin/editor', function(hooks) {
     test('it renders', async function(assert) {
         // Set any properties with this.set('myProperty', 'value');
         // Handle any actions with this.set('myAction', function(val) { ... });
+        this.set('changeset', {
+            get() {
+                return '';
+            }
+        });
 
-        await render(hbs`{{admin/editor}}`);
+        await render(hbs`<Admin::Editor @changeset={{this.changeset}} />`);
 
         assert.equal(this.element.textContent?.trim(), '');
     });

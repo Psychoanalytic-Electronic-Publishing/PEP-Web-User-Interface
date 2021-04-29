@@ -33,7 +33,7 @@ export default class AdminLanguage extends Route {
      */
     setupController(controller: AdminLanguageController, model: Configuration, transition: Transition): void {
         super.setupController(controller, model, transition);
-        model.configSettings = merge(DEFAULT_CONTENT_CONFIGURATION, model.configSettings);
+        model.configSettings = merge({}, DEFAULT_CONTENT_CONFIGURATION, model.configSettings);
         controller.changeset = createChangeset(model, CONFIGURATION_LANGUAGE_VALIDATIONS);
         const langId = model.configName as LanguageCode;
         controller.language = Languages.findBy('code', langId);

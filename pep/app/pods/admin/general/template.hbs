@@ -15,72 +15,7 @@
                         @action={{validator.submit}}
                     />
                 </div>
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <div class="form-row">
-                            <div class="col-12">
-                                <h4 class="border-bottom mb-3">
-                                    {{t "admin.common.global.cards.videoPreview.title"}}
-                                </h4>
-                                <validator.input
-                                    @errors={{changeset.error.configSettings.global.cards.videoPreview.code.validation}}
-                                    @label={{true}}
-                                >
-                                    <FlInput
-                                        @value={{changeset.configSettings.global.cards.videoPreview.code}}
-                                        @placeholder={{t "admin.common.global.cards.videoPreview.code"}}
-                                    >
-                                        <textarea
-                                            value={{changeset-get
-                                                changeset
-                                                "configSettings.global.cards.videoPreview.code"
-                                            }}
-                                            class="form-control"
-                                            autocomplete="off"
-                                            rows="5"
-                                            {{on
-                                                "input"
-                                                (event-value
-                                                    (changeset-set
-                                                        changeset "configSettings.global.cards.videoPreview.code"
-                                                    )
-                                                )
-                                            }}
-                                        ></textarea>
-                                    </FlInput>
-                                </validator.input>
-                                <validator.input
-                                    @errors={{changeset.error.configSettings.global.cards.topicalVideoPreview.code.validation
-                                    }}
-                                    @label={{true}}
-                                >
-                                    <FlInput
-                                        @value={{changeset.configSettings.global.cards.topicalVideoPreview.code}}
-                                        @placeholder={{t "admin.common.global.cards.topicalVideoPreview.code"}}
-                                    >
-                                        <textarea
-                                            value={{changeset-get
-                                                changeset
-                                                "configSettings.global.cards.topicalVideoPreview.code"
-                                            }}
-                                            class="form-control"
-                                            autocomplete="off"
-                                            rows="5"
-                                            {{on
-                                                "input"
-                                                (event-value
-                                                    (changeset-set
-                                                        changeset "configSettings.global.cards.topicalVideoPreview.code"
-                                                    )
-                                                )
-                                            }}
-                                        ></textarea>
-                                    </FlInput>
-                                </validator.input>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
                 <div class="card mb-4">
                     <div class="card-body">
                         <div class="form-row">
@@ -138,6 +73,38 @@
                                                 />
                                             </FlInput>
                                         </validator.input>
+                                        <validator.input
+                                            @errors={{changeset.error.configSettings.global.cards.glossary.limit.search.validation
+                                            }}
+                                        >
+                                            <FlInput
+                                                @value={{changeset.configSettings.global.cards.glossary.limit.search}}
+                                                @placeholder={{t "admin.common.global.cards.glossary.searchLimit"}}
+                                            >
+                                                <ChangesetInput
+                                                    @changeset={{changeset}}
+                                                    @path="configSettings.global.cards.glossary.limit.search"
+                                                    class="form-control"
+                                                    autocomplete="off"
+                                                />
+                                            </FlInput>
+                                        </validator.input>
+                                        <validator.input
+                                            @errors={{changeset.error.configSettings.global.cards.glossary.limit.read.validation
+                                            }}
+                                        >
+                                            <FlInput
+                                                @value={{changeset.configSettings.global.cards.glossary.limit.read}}
+                                                @placeholder={{t "admin.common.global.cards.glossary.readLimit"}}
+                                            >
+                                                <ChangesetInput
+                                                    @changeset={{changeset}}
+                                                    @path="configSettings.global.cards.glossary.limit.read"
+                                                    class="form-control"
+                                                    autocomplete="off"
+                                                />
+                                            </FlInput>
+                                        </validator.input>
                                     </div>
                                 </div>
                             </div>
@@ -185,6 +152,26 @@
                                         </validator.input>
                                     </div>
                                 </div>
+                                <div class="form-row">
+                                    <div class="col-6">
+                                        <validator.input
+                                            @errors={{changeset.error.configSettings.global.searchHelpVideoUrl.validation
+                                            }}
+                                        >
+                                            <FlInput
+                                                @value={{changeset.configSettings.global.searchHelpVideoUrl}}
+                                                @placeholder={{t "admin.common.global.searchHelpVideoUrl"}}
+                                            >
+                                                <ChangesetInput
+                                                    @changeset={{changeset}}
+                                                    @path="configSettings.global.searchHelpVideoUrl"
+                                                    class="form-control"
+                                                    autocomplete="off"
+                                                />
+                                            </FlInput>
+                                        </validator.input>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -196,6 +183,7 @@
                                 <SortableGroup
                                     @swapAnimation={{true}}
                                     @mirrorOptions={{this.mirrorOptions}}
+                                    @dragActions={{hash start=(fn this.dragStart)}}
                                     class="row" as |Group|
                                 >
                                     <div class="col-12">
@@ -210,16 +198,10 @@
                                     </div>
                                     <div class="sortable container-list col-6">
                                         <Group.container
-                                            @items={{changeset-get changeset "configSettings.global.cards.left"}}
-                                            @itemReordered={{changeset-set
-                                                changeset
-                                                "configSettings.global.cards.left"
-                                            }}
-                                            @itemAdded={{changeset-set changeset "configSettings.global.cards.left"}}
-                                            @itemRemoved={{changeset-set
-                                                changeset
-                                                "configSettings.global.cards.left"
-                                            }} as |container|
+                                            @items={{this.leftSidebarItems}}
+                                            @itemReordered={{this.updateLeftSidebarItems}}
+                                            @itemAdded={{this.updateLeftSidebarItems}}
+                                            @itemRemoved={{this.updateLeftSidebarItems}} as |container|
                                         >
                                             {{#each container.items as |item index|}}
                                                 <container.item @item={{item}}>
@@ -239,16 +221,10 @@
                                     </div>
                                     <div class="sortable container-list col-6">
                                         <Group.container
-                                            @items={{changeset-get changeset "configSettings.global.cards.right"}}
-                                            @itemReordered={{changeset-set
-                                                changeset
-                                                "configSettings.global.cards.right"
-                                            }}
-                                            @itemAdded={{changeset-set changeset "configSettings.global.cards.right"}}
-                                            @itemRemoved={{changeset-set
-                                                changeset
-                                                "configSettings.global.cards.right"
-                                            }} as |container|
+                                            @items={{this.rightSidebarItems}}
+                                            @itemReordered={{this.updateRightSidebarItems}}
+                                            @itemAdded={{this.updateRightSidebarItems}}
+                                            @itemRemoved={{this.updateRightSidebarItems}} as |container|
                                         >
                                             {{#each container.items as |item index|}}
                                                 <container.item @item={{item}}>
@@ -351,6 +327,51 @@
                                     @containerSelector=".page-content-inner"
                                     @columns={{this.columns}}
                                     @rows={{changeset.configSettings.home.expertPicks}}
+                                    @fillMode="nth-column"
+                                    @fillColumnIndex={{0}}
+                                    @renderAllRows={{this.fastboot.isFastBoot}}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="col-12">
+                                <h4 class="d-flex justify-content-between align-items-center border-bottom mb-3 pb-1">
+                                    {{t "admin.common.global.cards.videos.title"}}
+                                    <Button @action={{this.openVideoModal}} @icon="plus" @iconSize="lg" class="p-1" />
+                                </h4>
+                                <Table
+                                    @containerSelector=".page-content-inner"
+                                    @columns={{this.videoPreviewColumns}}
+                                    @rows={{changeset.configSettings.global.cards.videoPreviews}}
+                                    @fillMode="nth-column"
+                                    @fillColumnIndex={{0}}
+                                    @renderAllRows={{this.fastboot.isFastBoot}}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="col-12">
+                                <h4 class="d-flex justify-content-between align-items-center border-bottom mb-3 pb-1">
+                                    {{t "admin.common.global.cards.topicalVideos.title"}}
+                                    <Button
+                                        @action={{this.openTopicalVideoModal}}
+                                        @icon="plus"
+                                        @iconSize="lg"
+                                        class="p-1"
+                                    />
+                                </h4>
+                                <Table
+                                    @containerSelector=".page-content-inner"
+                                    @columns={{this.topicalVideoPreviewColumns}}
+                                    @rows={{changeset.configSettings.global.cards.topicalVideoPreviews}}
                                     @fillMode="nth-column"
                                     @fillColumnIndex={{0}}
                                     @renderAllRows={{this.fastboot.isFastBoot}}

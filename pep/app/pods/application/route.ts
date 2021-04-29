@@ -9,6 +9,9 @@ import NotificationService from 'ember-cli-notifications/services/notifications'
 import CookiesService from 'ember-cookies/services/cookies';
 import MetricService from 'ember-metrics/services/metrics';
 import MediaService from 'ember-responsive/services/media';
+import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
+
+import ModalService from '@gavant/ember-modals/services/modal';
 
 import { PepSecureAuthenticatedData } from 'pep/api';
 import {
@@ -22,6 +25,7 @@ import AuthService from 'pep/services/auth';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
 import DrawerService from 'pep/services/drawer';
+import InformationBarService from 'pep/services/information-bar';
 import IntroTour from 'pep/services/intro-tour';
 import LangService from 'pep/services/lang';
 import LoadingBarService from 'pep/services/loading-bar';
@@ -29,7 +33,14 @@ import PepSessionService from 'pep/services/pep-session';
 import SidebarService from 'pep/services/sidebar';
 import ThemeService from 'pep/services/theme';
 
-export default class Application extends PageLayout(Route) {
+/**
+ * Unforunately we need to keep the application route mixin for a little while longer
+ * @see https://discord.com/channels/480462759797063690/496695347582861334/828696746678026260
+ * @export
+ * @class Application
+ * @extends {PageLayout(Route.extend(ApplicationRouteMixin))}
+ */
+export default class Application extends PageLayout(Route.extend(ApplicationRouteMixin)) {
     routeAfterAuthentication = 'index';
 
     @service router!: RouterService;
@@ -48,6 +59,8 @@ export default class Application extends PageLayout(Route) {
     @service cookies!: CookiesService;
     @service drawer!: DrawerService;
     @service introTour!: IntroTour;
+    @service modal!: ModalService;
+    @service informationBar!: InformationBarService;
 
     constructor() {
         super(...arguments);
@@ -135,8 +148,21 @@ export default class Application extends PageLayout(Route) {
     async setupController(controller: ApplicationController, model: any, transition: Transition): Promise<void> {
         super.setupController(controller, model, transition);
         const hideTour = this.cookies.read(HIDE_TOUR_COOKIE_NAME);
+
         if (this.currentUser.preferences?.tourEnabled && !hideTour) {
             this.introTour.show();
+        }
+        if (controller.openNotificationModal === true) {
+            this.modal.open('whats-new/subscription', {});
+        }
+        if (controller.information) {
+            const valueFromConfig = this.configuration.content.global.adminSpecifiedInformationItems.find(
+                (item) => item.id === controller.information
+            );
+            if (valueFromConfig) {
+                this.modal.open('admin-specified-information', { information: valueFromConfig });
+                controller.information = null;
+            }
         }
     }
 
@@ -166,6 +192,16 @@ export default class Application extends PageLayout(Route) {
         }
     }
 
+    sessionAuthenticated(routeAfterAuth: string) {
+        // dont redirect the user on login if the behavior is suppressed
+        if (this.auth.dontRedirectOnLogin) {
+            this.auth.dontRedirectOnLogin = false;
+            this.session.handleAuthentication(routeAfterAuth);
+        } else {
+            //@ts-ignore mixin - bleh
+            super.sessionAuthenticated(...arguments);
+        }
+    }
     /**
      * Top level route error event handler - If routes reject with an error
      * i.e. do not explicitly catch and handle errors return by their

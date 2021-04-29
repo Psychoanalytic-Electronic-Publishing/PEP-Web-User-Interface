@@ -3,8 +3,8 @@ import Controller from '@ember/controller';
 import Route from '@ember/routing/route';
 import RouterService from '@ember/routing/router-service';
 import Service from '@ember/service';
-import Component from '@glimmer/component';
 
+import Component from '@glint/environment-ember-loose/glimmer-component';
 import ModelRegistry from 'ember-data/types/registries/model';
 
 import { PreferenceDocumentsKey, PreferenceKey } from 'pep/constants/preferences';
@@ -19,7 +19,7 @@ import CurrentUserService, { UserPreferenceErrorId } from 'pep/services/current-
  * @param {*} owner
  * @return {Promise<any>}
  */
-export async function onAuthenticated(owner: Controller | Route | Component | Service): Promise<any> {
+export async function onAuthenticated(owner: Controller | Route | Component<any> | Service): Promise<any> {
     const currentOwner = getOwner(owner);
     const currentUserService = currentOwner.lookup(`service:current-user`) as CurrentUserService;
     const notificationsService = currentOwner.lookup(`service:notifications`);
@@ -29,6 +29,7 @@ export async function onAuthenticated(owner: Controller | Route | Component | Se
     const configurationService = currentOwner.lookup(`service:configuration`);
     const session = currentOwner.lookup('service:pep-session');
     const introTour = currentOwner.lookup('service:intro-tour');
+
     try {
         // get the current user's model before transitioning from the login page
         await currentUserService.load();
@@ -45,7 +46,7 @@ export async function onAuthenticated(owner: Controller | Route | Component | Se
         introTour.show();
     }
 
-    return session.trigger('authenticationAndSetupSucceeded');
+    return session.clearUnauthenticatedSession();
 }
 
 /**
@@ -97,7 +98,7 @@ export function handleRouteAuthorization(owner: Route, abilities: string[], mode
  * @param {Document} document
  */
 export async function updateUserPreferencesDocument(
-    owner: Component | Controller,
+    owner: Component<any> | Controller,
     key: PreferenceDocumentsKey,
     document: Document
 ) {

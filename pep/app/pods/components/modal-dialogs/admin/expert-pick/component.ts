@@ -1,9 +1,11 @@
 import { action } from '@ember/object';
-import Component from '@glimmer/component';
+
+import Component from '@glint/environment-ember-loose/glimmer-component';
 
 import { GenericChangeset } from '@gavant/ember-validations/utilities/create-changeset';
 
 import { Publisher } from 'pep/constants/configuration';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface ModalDialogsAdminExpertPickArgs {
     onClose: () => void;
@@ -13,7 +15,9 @@ interface ModalDialogsAdminExpertPickArgs {
     };
 }
 
-export default class ModalDialogsAdminExpertPick extends Component<ModalDialogsAdminExpertPickArgs> {
+export default class ModalDialogsAdminExpertPick extends Component<
+    BaseGlimmerSignature<ModalDialogsAdminExpertPickArgs>
+> {
     /**
      * Update the Publisher changeset, call save and then close the modal
      *

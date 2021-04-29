@@ -1,23 +1,26 @@
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { htmlSafe } from '@ember/string';
-import Component from '@glimmer/component';
 
+import Component from '@glint/environment-ember-loose/glimmer-component';
 import DS from 'ember-data';
 import IntlService from 'ember-intl/services/intl';
 
 import Modal from '@gavant/ember-modals/services/modal';
 
-import { WIDGET } from 'pep/constants/sidebar';
-import { PageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
+import { GlossaryWidgetLocation, WIDGET } from 'pep/constants/sidebar';
+import { BasePageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
 import ConfigurationService from 'pep/services/configuration';
 import LoadingBarService from 'pep/services/loading-bar';
 import NotificationsService from 'pep/services/notifications';
 import { shuffle } from 'pep/utils/array';
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
-interface PageSidebarWidgetsGlossaryTermsArgs extends PageSidebarWidgetArgs {}
+interface PageSidebarWidgetsGlossaryTermsArgs extends BasePageSidebarWidgetArgs {}
 
-export default class PageSidebarWidgetsGlossaryTerms extends Component<PageSidebarWidgetsGlossaryTermsArgs> {
+export default class PageSidebarWidgetsGlossaryTerms extends Component<
+    BaseGlimmerSignature<PageSidebarWidgetsGlossaryTermsArgs>
+> {
     @service loadingBar!: LoadingBarService;
     @service store!: DS.Store;
     @service modal!: Modal;
@@ -35,12 +38,15 @@ export default class PageSidebarWidgetsGlossaryTerms extends Component<PageSideb
      * @memberof PageSidebarWidgetsGlossaryTerms
      */
     get data() {
-        const data = this.args.data[this.widget] ?? {};
+        const model: { terms: object; location: GlossaryWidgetLocation } = this.args.data[this.widget] ?? {};
+        const size = this.configuration.base.global.cards.glossary.limit[model.location];
+        const data = model.terms ?? {};
         //convert from an object with values to an array with label and values
-        const glossaryGroupTerms = Object.entries(data).map((entry) => ({
+        const allGlossaryGroupTerms = Object.entries(data).map((entry) => ({
             label: entry[0],
             count: entry[1] as number
         }));
+        const glossaryGroupTerms = allGlossaryGroupTerms.slice(0, size);
         //find the max and min of the array
         const { max, min } = glossaryGroupTerms.reduce(
             (prev, next) => {

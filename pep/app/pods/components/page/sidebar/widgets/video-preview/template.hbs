@@ -9,10 +9,17 @@
         @tooltip={{this.configuration.content.global.cards.videoPreview.help}}
     />
     <Panel.body class="p-1">
-        <div
-            class="embed-responsive embed-responsive-{{this.configuration.base.global.cards.videoPreview.aspectRatio}}"
-        >
-            {{html-safe this.configuration.base.global.cards.videoPreview.code}}
+        <div class="embed-responsive embed-responsive-{{this.aspectRatio}}">
+            <video
+                id="video-preview"
+                controls="controls"
+                preload="metadata"
+                class="embed-responsive-item"
+                crossorigin="anonymous"
+                poster={{this.videoPreviewThumbnail}}
+            >
+                <source src="{{this.video.url}}" type="video/mp4" />
+            </video>
         </div>
     </Panel.body>
 </CollapsiblePanel>

@@ -1,7 +1,10 @@
 import { action } from '@ember/object';
-import Component from '@glimmer/component';
+
+import Component from '@glint/environment-ember-loose/glimmer-component';
 
 import { ColumnValue } from '@gavant/ember-table';
+
+import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface TablesCellDocumentLinkArgs {
     rowValue: Document;
@@ -11,7 +14,7 @@ interface TablesCellDocumentLinkArgs {
     };
 }
 
-export default class TablesCellDocumentLink extends Component<TablesCellDocumentLinkArgs> {
+export default class TablesCellDocumentLink extends Component<BaseGlimmerSignature<TablesCellDocumentLinkArgs>> {
     /**
      * Prevent the default link action and pass the document up
      *
