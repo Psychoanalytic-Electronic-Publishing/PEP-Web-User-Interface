@@ -19,9 +19,8 @@ import CurrentUserService from 'pep/services/current-user';
 import ExportsService, { ExportType } from 'pep/services/exports';
 import PrinterService from 'pep/services/printer';
 import SearchSelection from 'pep/services/search-selection';
-import { SearchSorts, SearchSortType, transformSearchSortsToTable, transformSearchSortToAPI } from 'pep/utils/sort';
+import { SearchSorts, SearchSortType, transformSearchSortsToTable } from 'pep/utils/sort';
 import { BaseGlimmerSignature } from 'pep/utils/types';
-import { resolve } from 'rsvp';
 
 interface DocumentReadSidebarArgs {
     selectedDocument: Document;

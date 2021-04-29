@@ -52,35 +52,10 @@ module('Unit | Authenticator | credentials-authenticator', function(hooks) {
         assert.deepEqual(sessionData, result);
     });
 
-    test('Authentication successful', async function(assert) {
-        const authenticator = this.owner.lookup('authenticator:credentials');
-
-        const result = await authenticator.authenticate('Test6', 'Zedra001');
-
-        assert.equal(result.IsValidLogon, true);
-    });
-
-    test('Unauthenticated session cleared after successful auth', async function(assert) {
-        const authenticator = this.owner.lookup('authenticator:credentials');
-        const session = this.owner.lookup('service:pep-session');
-
-        const expirationTime = authenticator._absolutizeExpirationTime(expiresIn);
-        const sessionData = { expiresAt: expirationTime, SessionId: '123', IsValidLogon: true };
-        session.setUnauthenticatedSession(sessionData);
-
-        let unauthenticatedSession = session.getUnauthenticatedSession();
-        assert.equal(unauthenticatedSession.SessionId, '123');
-
-        await authenticator.authenticate('Test6', 'Zedra001');
-        unauthenticatedSession = session.getUnauthenticatedSession();
-
-        assert.notOk(unauthenticatedSession);
-    });
-
     test('Authentication failure', async function(assert) {
         const authenticator = this.owner.lookup('authenticator:credentials');
         const session = this.owner.lookup('service:pep-session');
-        await assert.rejects(authenticator.authenticate('Test6', 'Zedra0010'));
+        await assert.rejects(authenticator.authenticate('Test', 'TestPassword'));
 
         const unauthenticatedSession = session.getUnauthenticatedSession();
         assert.equal(unauthenticatedSession.IsValidLogon, false);
