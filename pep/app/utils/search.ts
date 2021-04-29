@@ -9,6 +9,7 @@ import {
     SEARCH_DEFAULT_VIEW_PERIOD, SEARCH_FACETS, SEARCH_TYPE_AUTHOR, SEARCH_TYPES, SearchFacetId, SearchFacetValue,
     SearchTermValue, SourceType, ViewPeriod
 } from 'pep/constants/search';
+import ApplicationController from 'pep/pods/application/controller';
 import Document from 'pep/pods/document/model';
 import SearchIndexController from 'pep/pods/search/index/controller';
 import ConfigurationService from 'pep/services/configuration';
@@ -309,6 +310,7 @@ export function clearSearch(owner: any): void {
     const configuration: ConfigurationService = getOwner(owner).lookup('service:configuration');
     const user: CurrentUserService = getOwner(owner).lookup('service:currentUser');
     const searchController: SearchIndexController = getOwner(owner).lookup('controller:search.index');
+    const applicationController: ApplicationController = getOwner(owner).lookup('controller:application');
     const cfg = configuration.base.search;
     const preferences = user.preferences;
     const terms =
@@ -320,9 +322,8 @@ export function clearSearch(owner: any): void {
 
     const blankTerms = terms.map((f) => ({ type: f, term: '' }));
 
-    const controllers: [any, SearchIndexController] = [owner, searchController];
+    const controllers: [ApplicationController, SearchIndexController] = [applicationController, searchController];
     controllers.forEach((controller) => {
-        controller.smartSearchTerm = '';
         controller.matchSynonyms = false;
         controller.citedCount = '';
         controller.viewedCount = '';
@@ -331,6 +332,8 @@ export function clearSearch(owner: any): void {
         controller.searchTerms = blankTerms;
         if (guard<SearchIndexController>(controller, 'currentSmartSearchTerm')) {
             clearSearchIndexControllerSearch(controller);
+        } else {
+            controller.smartSearchTerm = '';
         }
     });
 }
