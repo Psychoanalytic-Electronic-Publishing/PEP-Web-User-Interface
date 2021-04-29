@@ -50,7 +50,7 @@ export default class CredentialsAuthenticator extends BaseAuthenticator {
      *
      * @param {string} username
      * @param {string} password
-     * @return {*}
+     * @return {*}  {Promise<PepSecureAuthenticatedData>}
      * @memberof CredentialsAuthenticator
      */
     authenticate(username: string, password: string): Promise<PepSecureAuthenticatedData> {
@@ -115,6 +115,10 @@ export default class CredentialsAuthenticator extends BaseAuthenticator {
 
     /**
      * Invalidates the local session and logs the user out
+     *
+     * @param {PepSecureAuthenticatedData} data
+     * @return {*}  {Promise<void>}
+     * @memberof CredentialsAuthenticator
      */
     async invalidate(data: PepSecureAuthenticatedData): Promise<void> {
         const params = serializeQueryParams({ SessionId: data.SessionId });
@@ -148,6 +152,13 @@ export default class CredentialsAuthenticator extends BaseAuthenticator {
         });
     }
 
+    /**
+     * Restore the session using the passed in data
+     *
+     * @param {PepSecureAuthenticatedData} data
+     * @return {*}  {(Promise<PepSecureAuthenticatedData | undefined>)}
+     * @memberof CredentialsAuthenticator
+     */
     restore(data: PepSecureAuthenticatedData): Promise<PepSecureAuthenticatedData | undefined> {
         return new RSVP.Promise((resolve, reject) => {
             const now = new Date().getTime();
@@ -164,6 +175,14 @@ export default class CredentialsAuthenticator extends BaseAuthenticator {
         });
     }
 
+    /**
+     * Schedule the invalidation. We dont refresh the token, but when the session expires we should manually clear everything
+     *
+     * @param {number} expiresIn
+     * @param {number} expiresAt
+     * @param {PepSecureAuthenticatedData} data
+     * @memberof CredentialsAuthenticator
+     */
     _scheduleAuthenticationInvalidation(expiresIn: number, expiresAt: number, data: PepSecureAuthenticatedData): void {
         const now = new Date().getTime();
         if (!expiresAt && expiresIn) {
@@ -187,11 +206,25 @@ export default class CredentialsAuthenticator extends BaseAuthenticator {
         }
     }
 
+    /**
+     * Handle the invalidation when the session expires due to timeout.
+     *
+     * @param {PepSecureAuthenticatedData} data
+     * @return {*}  {Promise<void>}
+     * @memberof CredentialsAuthenticator
+     */
     async _authenticationInvalidation(data: PepSecureAuthenticatedData): Promise<void> {
         await this.invalidate(data);
         this.session.handleInvalidation('/');
     }
 
+    /**
+     * Calculate the expiresAt time from the expiresIn time
+     *
+     * @param {number} expiresIn
+     * @return {*}  {(number | undefined)}
+     * @memberof CredentialsAuthenticator
+     */
     _absolutizeExpirationTime(expiresIn: number): number | undefined {
         if (expiresIn) {
             return new Date(new Date().getTime() + expiresIn * 1000).getTime();
