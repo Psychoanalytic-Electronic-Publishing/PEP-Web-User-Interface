@@ -55,7 +55,7 @@
     },
     "include": [
       "app/**/*",
-    //   "tests/**/*",
+      "tests/**/*",
       "types/**/*",
       "lib/tippy"
     ]
