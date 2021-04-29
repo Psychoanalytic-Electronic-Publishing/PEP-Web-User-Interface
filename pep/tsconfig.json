@@ -50,9 +50,6 @@
         "@glimmer/tracking": [
           "node_modules/ember-cached-decorator-polyfill",
           "node_modules/@glimmer/tracking/dist/types"
-        ],
-        "@glint/environment-ember-loose/registry": [
-          "node_modules/@glint/environment-ember-loose/registry"
         ]
       }
     },

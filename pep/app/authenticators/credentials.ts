@@ -1,13 +1,15 @@
 import { run } from '@ember/runloop';
+import { EmberRunTimer } from '@ember/runloop/types';
 import { inject as service } from '@ember/service';
 import { htmlSafe } from '@ember/string';
 import { isEmpty } from '@ember/utils';
 
+import Ember from 'ember';
 import classic from 'ember-classic-decorator';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import CookiesService from 'ember-cookies/services/cookies';
 import IntlService from 'ember-intl/services/intl';
-import OAuth2PasswordGrant from 'ember-simple-auth/authenticators/oauth2-password-grant';
+import BaseAuthenticator from 'ember-simple-auth/authenticators/base';
 
 import { PepSecureAuthenticatedData } from 'pep/api';
 import ENV from 'pep/config/environment';
@@ -29,7 +31,7 @@ export interface AuthError {
 }
 
 @classic
-export default class CredentialsAuthenticator extends OAuth2PasswordGrant {
+export default class CredentialsAuthenticator extends BaseAuthenticator {
     @service ajax!: AjaxService;
     @service intl!: IntlService;
     @service('pep-session') session!: PepSessionService;
@@ -40,13 +42,15 @@ export default class CredentialsAuthenticator extends OAuth2PasswordGrant {
         'Content-Type': 'application/json'
     };
 
+    _authenticationInvalidationTimeout?: EmberRunTimer;
+
     /**
      * Authenticates and logs the user in as well as schedules a session expiration based on the
      * SessionExpires number that is sent back in the result
      *
      * @param {string} username
      * @param {string} password
-     * @return {*}
+     * @return {*}  {Promise<PepSecureAuthenticatedData>}
      * @memberof CredentialsAuthenticator
      */
     authenticate(username: string, password: string): Promise<PepSecureAuthenticatedData> {
@@ -75,6 +79,19 @@ export default class CredentialsAuthenticator extends OAuth2PasswordGrant {
                                 if (response.IsValidLogon) {
                                     this.session.clearUnauthenticatedSession();
                                     response.SessionType = SessionType.CREDENTIALS;
+                                    const expiresAt = this._absolutizeExpirationTime(response['SessionExpires']);
+
+                                    if (expiresAt) {
+                                        response['expiresAt'] = expiresAt;
+                                    }
+
+                                    if (expiresAt) {
+                                        this._scheduleAuthenticationInvalidation(
+                                            response['SessionExpires'],
+                                            expiresAt,
+                                            response
+                                        );
+                                    }
                                     resolve(response);
                                 } else {
                                     this.session.setUnauthenticatedSession(response);
@@ -98,25 +115,17 @@ export default class CredentialsAuthenticator extends OAuth2PasswordGrant {
 
     /**
      * Invalidates the local session and logs the user out
+     *
+     * @param {PepSecureAuthenticatedData} data
+     * @return {*}  {Promise<void>}
+     * @memberof CredentialsAuthenticator
      */
     async invalidate(data: PepSecureAuthenticatedData): Promise<void> {
-        // try {
-        //     const params = serializeQueryParams({ SessionId: data.SessionId });
-        //     await this.ajax.request(`${ENV.authBaseUrl}/Users/Logout?${params}`, {
-        //         method: 'POST',
-        //         headers: this.authenticationHeaders
-        //     });
-        //     return resolve();
-        // } catch (errors) {
-        //     return resolve();
-        // } finally {
-        //     this._cancelTimeout();
-        // }
         const params = serializeQueryParams({ SessionId: data.SessionId });
         const serverTokenRevocationEndpoint = `${ENV.authBaseUrl}/Users/Logout?${params}`;
         function success(this: any, resolve: any) {
-            run.cancel(this._cancelTimeout);
-            delete this._cancelTimeout;
+            run.cancel(this._authenticationInvalidationTimeout);
+            delete this._authenticationInvalidationTimeout;
             resolve();
         }
         return new RSVP.Promise((resolve) => {
@@ -143,19 +152,82 @@ export default class CredentialsAuthenticator extends OAuth2PasswordGrant {
         });
     }
 
-    restore(data: any) {
+    /**
+     * Restore the session using the passed in data
+     *
+     * @param {PepSecureAuthenticatedData} data
+     * @return {*}  {(Promise<PepSecureAuthenticatedData | undefined>)}
+     * @memberof CredentialsAuthenticator
+     */
+    restore(data: PepSecureAuthenticatedData): Promise<PepSecureAuthenticatedData | undefined> {
         return new RSVP.Promise((resolve, reject) => {
             const now = new Date().getTime();
-
             if (!isEmpty(data['expiresAt']) && data['expiresAt'] < now) {
                 reject();
             } else {
-                if (!data.SessionId) {
+                if (!data.IsValidLogon) {
                     reject();
                 } else {
+                    this._scheduleAuthenticationInvalidation(data['SessionExpires'], data['expiresAt'], data);
                     resolve(data);
                 }
             }
         });
+    }
+
+    /**
+     * Schedule the invalidation. We dont refresh the token, but when the session expires we should manually clear everything
+     *
+     * @param {number} expiresIn
+     * @param {number} expiresAt
+     * @param {PepSecureAuthenticatedData} data
+     * @memberof CredentialsAuthenticator
+     */
+    _scheduleAuthenticationInvalidation(expiresIn: number, expiresAt: number, data: PepSecureAuthenticatedData): void {
+        const now = new Date().getTime();
+        if (!expiresAt && expiresIn) {
+            expiresAt = new Date(now + expiresIn * 1000).getTime();
+        }
+
+        if (expiresAt && expiresAt > now) {
+            if (this._authenticationInvalidationTimeout) {
+                run.cancel(this._authenticationInvalidationTimeout);
+                delete this._authenticationInvalidationTimeout;
+            }
+
+            if (!Ember.testing) {
+                this._authenticationInvalidationTimeout = run.later(
+                    this,
+                    this._authenticationInvalidation,
+                    data,
+                    expiresAt - now
+                );
+            }
+        }
+    }
+
+    /**
+     * Handle the invalidation when the session expires due to timeout.
+     *
+     * @param {PepSecureAuthenticatedData} data
+     * @return {*}  {Promise<void>}
+     * @memberof CredentialsAuthenticator
+     */
+    async _authenticationInvalidation(data: PepSecureAuthenticatedData): Promise<void> {
+        await this.invalidate(data);
+        this.session.handleInvalidation('/');
+    }
+
+    /**
+     * Calculate the expiresAt time from the expiresIn time
+     *
+     * @param {number} expiresIn
+     * @return {*}  {(number | undefined)}
+     * @memberof CredentialsAuthenticator
+     */
+    _absolutizeExpirationTime(expiresIn: number): number | undefined {
+        if (expiresIn) {
+            return new Date(new Date().getTime() + expiresIn * 1000).getTime();
+        }
     }
 }
