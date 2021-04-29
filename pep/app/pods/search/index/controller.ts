@@ -36,7 +36,9 @@ import PrinterService from 'pep/services/printer';
 import ScrollableService from 'pep/services/scrollable';
 import SearchSelection from 'pep/services/search-selection';
 import SidebarService from 'pep/services/sidebar';
-import { buildSearchQueryParams, clearSearchIndexControllerSearch, hasSearchQuery } from 'pep/utils/search';
+import {
+    buildSearchQueryParams, clearSearch, clearSearchIndexControllerSearch, hasSearchQuery
+} from 'pep/utils/search';
 import { SearchSorts, SearchSortType, transformSearchSortsToTable, transformSearchSortToAPI } from 'pep/utils/sort';
 import { hash } from 'rsvp';
 
@@ -355,7 +357,7 @@ export default class SearchIndex extends Controller {
      */
     @action
     clearSearch() {
-        clearSearchIndexControllerSearch(this);
+        clearSearch(this);
         taskFor(this.updateRefineMetadata).perform(true, 0);
         this.paginator.clearModels();
         this.searchSelection.clear();
