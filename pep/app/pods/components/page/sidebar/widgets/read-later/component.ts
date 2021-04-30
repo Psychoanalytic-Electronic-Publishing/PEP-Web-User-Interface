@@ -56,7 +56,10 @@ export default class PageSidebarWidgetsReadLater extends Component<
                 facetValues: queryItems
             });
             const results = yield this.store.query('document', params);
-            this.results = results.toArray();
+            const resortedArrayByPreference = results.toArray().sort(function(a: Document, b: Document) {
+                return ids.indexOf(a.id) - ids.indexOf(b.id);
+            });
+            this.results = resortedArrayByPreference;
         } else {
             this.results = [];
         }

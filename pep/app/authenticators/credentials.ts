@@ -18,7 +18,7 @@ import AjaxService from 'pep/services/ajax';
 import PepSessionService from 'pep/services/pep-session';
 import { guard } from 'pep/utils/types';
 import { serializeQueryParams } from 'pep/utils/url';
-import RSVP from 'rsvp';
+import RSVP, { resolve } from 'rsvp';
 
 export enum SessionType {
     CREDENTIALS = 'credentials',
@@ -86,11 +86,7 @@ export default class CredentialsAuthenticator extends BaseAuthenticator {
                                     }
 
                                     if (expiresAt) {
-                                        this._scheduleAuthenticationInvalidation(
-                                            response['SessionExpires'],
-                                            expiresAt,
-                                            response
-                                        );
+                                        this._scheduleAuthenticationInvalidation(response['SessionExpires'], expiresAt);
                                     }
                                     resolve(response);
                                 } else {
@@ -123,35 +119,24 @@ export default class CredentialsAuthenticator extends BaseAuthenticator {
     async invalidate(data: PepSecureAuthenticatedData): Promise<void> {
         const params = serializeQueryParams({ SessionId: data.SessionId });
         const serverTokenRevocationEndpoint = `${ENV.authBaseUrl}/Users/Logout?${params}`;
-        function success(this: any, resolve: any) {
+
+        try {
+            await this.ajax.request(serverTokenRevocationEndpoint, {
+                method: 'POST',
+                headers: this.authenticationHeaders
+            });
             if (this._authenticationInvalidationTimeout) {
                 run.cancel(this._authenticationInvalidationTimeout);
                 delete this._authenticationInvalidationTimeout;
             }
-            resolve();
-        }
-        return new RSVP.Promise((resolve) => {
-            if (isEmpty(serverTokenRevocationEndpoint)) {
-                success.apply(this, [resolve]);
-            } else {
-                const requests: Promise<any>[] = [];
-                ['SessionId'].forEach((tokenType) => {
-                    const token = data[tokenType as keyof PepSecureAuthenticatedData];
-                    if (!isEmpty(token)) {
-                        requests.push(
-                            this.ajax.request(serverTokenRevocationEndpoint, {
-                                method: 'POST',
-                                headers: this.authenticationHeaders
-                            })
-                        );
-                    }
-                });
-                const succeed = () => {
-                    success.apply(this, [resolve]);
-                };
-                RSVP.all(requests).then(succeed, succeed);
+            return resolve();
+        } catch (errors) {
+            if (this._authenticationInvalidationTimeout) {
+                run.cancel(this._authenticationInvalidationTimeout);
+                delete this._authenticationInvalidationTimeout;
             }
-        });
+            return resolve();
+        }
     }
 
     /**
@@ -170,7 +155,7 @@ export default class CredentialsAuthenticator extends BaseAuthenticator {
                 if (!data.IsValidLogon) {
                     reject();
                 } else {
-                    this._scheduleAuthenticationInvalidation(data['SessionExpires'], data['expiresAt'], data);
+                    this._scheduleAuthenticationInvalidation(data['SessionExpires'], data['expiresAt']);
                     resolve(data);
                 }
             }
@@ -182,42 +167,26 @@ export default class CredentialsAuthenticator extends BaseAuthenticator {
      *
      * @param {number} expiresIn
      * @param {number} expiresAt
-     * @param {PepSecureAuthenticatedData} data
      * @memberof CredentialsAuthenticator
      */
-    _scheduleAuthenticationInvalidation(expiresIn: number, expiresAt: number, data: PepSecureAuthenticatedData): void {
-        const now = new Date().getTime();
-        if (!expiresAt && expiresIn) {
-            expiresAt = new Date(now + expiresIn * 1000).getTime();
-        }
-
-        if (expiresAt && expiresAt > now) {
-            if (this._authenticationInvalidationTimeout) {
-                run.cancel(this._authenticationInvalidationTimeout);
-                delete this._authenticationInvalidationTimeout;
+    _scheduleAuthenticationInvalidation(expiresIn: number, expiresAt: number): void {
+        if (!this.fastboot.isFastBoot) {
+            const now = new Date().getTime();
+            if (!expiresAt && expiresIn) {
+                expiresAt = new Date(now + expiresIn * 1000).getTime();
             }
 
-            if (!Ember.testing) {
-                this._authenticationInvalidationTimeout = run.later(
-                    this,
-                    this._authenticationInvalidation,
-                    data,
-                    expiresAt - now
-                );
+            if (expiresAt && expiresAt > now) {
+                if (this._authenticationInvalidationTimeout) {
+                    run.cancel(this._authenticationInvalidationTimeout);
+                    delete this._authenticationInvalidationTimeout;
+                }
+
+                if (!Ember.testing) {
+                    this._authenticationInvalidationTimeout = run.later(this.session, 'invalidate', expiresAt - now);
+                }
             }
         }
-    }
-
-    /**
-     * Handle the invalidation when the session expires due to timeout.
-     *
-     * @param {PepSecureAuthenticatedData} data
-     * @return {*}  {Promise<void>}
-     * @memberof CredentialsAuthenticator
-     */
-    async _authenticationInvalidation(data: PepSecureAuthenticatedData): Promise<void> {
-        await this.invalidate(data);
-        this.session.handleInvalidation('/');
     }
 
     /**
