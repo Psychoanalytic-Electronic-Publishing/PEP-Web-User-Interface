@@ -2,14 +2,19 @@ import { inject as service } from '@ember/service';
 
 import Component from '@glint/environment-ember-loose/glimmer-component';
 
+import { ButtonArgs } from '@gavant/ember-button-basic/components/button';
+
 import FastbootMediaService from 'pep/services/fastboot-media';
 import { BaseGlimmerSignature } from 'pep/utils/types';
 
+import { IconName, IconPrefix } from '@fortawesome/fontawesome-svg-core';
+
 interface ButtonWithTooltipArgs {
     label?: string;
-    icon?: string;
-    iconSize?: string;
-    type?: string;
+    icon?: IconName;
+    iconPrefix?: IconPrefix;
+    iconSize?: ButtonArgs['iconSize'];
+    type?: ButtonArgs['type'];
     action: () => void;
     containerClass?: string;
     tooltip: string;

@@ -21,3 +21,9 @@ export default class Image extends Component<BaseGlimmerSignature<ImageArgs>> {
         return src;
     }
 }
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        Image: typeof Image;
+    }
+}

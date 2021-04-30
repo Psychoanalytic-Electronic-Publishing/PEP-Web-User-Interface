@@ -12,3 +12,9 @@ export default class DocumentImage extends Component<BaseGlimmerSignature<Docume
         return `${DOCUMENT_IMG_BASE_URL}/${this.args.id}/`;
     }
 }
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        'Document::Image': typeof DocumentImage;
+    }
+}

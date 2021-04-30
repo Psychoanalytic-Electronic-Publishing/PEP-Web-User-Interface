@@ -7,7 +7,7 @@ import IntlService from 'ember-intl/services/intl';
 import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface ContentWithPlaceholderArgs {
-    isLoading: boolean;
+    isLoading?: boolean;
     placeholderInFastboot?: boolean;
     placeholderComponent?: string;
     options?: object;

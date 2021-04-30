@@ -12,7 +12,7 @@ interface AdminEditorArgs<T> {
 }
 
 export default class AdminEditor<T> extends Component<BaseGlimmerSignature<AdminEditorArgs<T>>> {
-    plugins: string[] = [
+    plugins: TinymceEditorPlugins[] = [
         TinymceEditorPlugins.ADV_LIST,
         TinymceEditorPlugins.EMOTICONS,
         TinymceEditorPlugins.HORIZONTAL_RULE,

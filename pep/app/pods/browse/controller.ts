@@ -11,8 +11,6 @@ import Journal from 'pep/pods/journal/model';
 import Video from 'pep/pods/video/model';
 import { SortedBooks } from 'pep/utils/browse';
 
-import { getFreudGWVolumes, getFreudSEVolumes } from '../../utils/browse';
-
 export enum BrowseTabs {
     JOURNALS = 'journals',
     BOOKS = 'books',
@@ -29,28 +27,6 @@ export default class Browse extends Controller {
     @tracked filter = '';
 
     tabs = BrowseTabs;
-
-    /**
-     * Parse the GW document to get the volumes with their titles
-     *
-     * @readonly
-     * @memberof Browse
-     */
-    @cached
-    get gwVolumes() {
-        return getFreudGWVolumes(this.model.gw.document);
-    }
-
-    /**
-     * Parse the SE document to get the volumes with their titles
-     *
-     * @readonly
-     * @memberof Browse
-     */
-    @cached
-    get seVolumes() {
-        return getFreudSEVolumes(this.model.se.document);
-    }
 
     /**
      * Filtered Books - Takes the all the books, and separates them by if the are freud (GW or SE book code),
@@ -92,9 +68,7 @@ export default class Browse extends Controller {
             }
         );
         books.freudsCollectedWorks.GW.title = `${books.freudsCollectedWorks.GW?.books[0]?.authors} ${books.freudsCollectedWorks.GW?.books[0]?.title}`;
-        books.freudsCollectedWorks.GW.volumes = this.gwVolumes ?? [];
         books.freudsCollectedWorks.SE.title = `${books.freudsCollectedWorks.SE?.books[0]?.authors} ${books.freudsCollectedWorks.SE?.books[0]?.title}`;
-        books.freudsCollectedWorks.SE.volumes = this.seVolumes ?? [];
         books.others = books.others.sortBy('authors');
         return books;
     }

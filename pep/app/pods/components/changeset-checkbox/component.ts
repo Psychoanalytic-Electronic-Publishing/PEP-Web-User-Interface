@@ -11,3 +11,9 @@ interface ChangesetCheckboxArgs<T> {
 }
 
 export default class ChangesetCheckbox extends Component<BaseGlimmerSignature<ChangesetCheckboxArgs<unknown>>> {}
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        ChangesetCheckbox: typeof ChangesetCheckbox;
+    }
+}

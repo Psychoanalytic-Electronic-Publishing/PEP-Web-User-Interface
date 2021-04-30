@@ -36,9 +36,7 @@ import PrinterService from 'pep/services/printer';
 import ScrollableService from 'pep/services/scrollable';
 import SearchSelection from 'pep/services/search-selection';
 import SidebarService from 'pep/services/sidebar';
-import {
-    buildSearchQueryParams, clearSearch, clearSearchIndexControllerSearch, hasSearchQuery
-} from 'pep/utils/search';
+import { buildSearchQueryParams, clearSearch, hasSearchQuery } from 'pep/utils/search';
 import { SearchSorts, SearchSortType, transformSearchSortsToTable, transformSearchSortToAPI } from 'pep/utils/sort';
 import { hash } from 'rsvp';
 

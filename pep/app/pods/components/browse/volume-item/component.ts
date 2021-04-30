@@ -9,6 +9,7 @@ import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface BrowseVolumeItemArgs {
     item: SourceVolume;
+    openResult: (id: string) => void;
 }
 
 export default class BrowseVolumeItem extends Component<BaseGlimmerSignature<BrowseVolumeItemArgs>> {

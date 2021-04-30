@@ -8,11 +8,13 @@ import ScrollableService from 'pep/services/scrollable';
 import { fadeTransition } from 'pep/utils/animation';
 import { BaseGlimmerSignature } from 'pep/utils/types';
 
+import { IconName } from '@fortawesome/fontawesome-svg-core';
+
 interface AlertArgs {
     isShown: boolean;
     type: 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info' | 'light' | 'dark';
     message?: string;
-    icon?: string;
+    icon?: IconName;
     scrollableNamespace?: string;
     animateInitialInsert?: boolean;
 }
