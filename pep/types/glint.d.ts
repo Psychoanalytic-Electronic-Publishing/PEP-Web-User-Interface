@@ -1,3 +1,7 @@
+import ChangesetGet from 'ember-changeset/changeset-get';
+import ChangesetSet from 'ember-changeset/changeset-set';
+
+import TinymceEditor from '@gavant/ember-tinymce/tinymce-editor';
 import FaIconComponent from '@gavant/glint-template-types/types/@fortawesome/ember-fontawesome/fa-icon';
 import DropdownAction from '@gavant/glint-template-types/types/@gavant/ember-bootstrap-dropdown/dropdown-action';
 import DropdownLink from '@gavant/glint-template-types/types/@gavant/ember-bootstrap-dropdown/dropdown-link';
@@ -51,5 +55,8 @@ declare module '@glint/environment-ember-loose/registry' {
         InputValidator: typeof InputValidator;
         FormValidator: typeof FormValidator;
         ChangesetInput: typeof ChangesetInput;
+        TinymceEditor: typeof TinymceEditor;
+        'changeset-get': typeof ChangesetGet;
+        'changeset-set': typeof ChangesetSet;
     }
 }

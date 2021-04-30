@@ -38,8 +38,6 @@ export default class Browse extends PageNav(Route) {
             limit: 1000
         });
         return hash({
-            gw: this.store.findRecord('document', GW_VOLUME_DOCUMENT_ID),
-            se: this.store.findRecord('document', SE_VOLUME_DOCUMENT_ID),
             videos: this.store.query('video', {
                 ...removeEmptyQueryParams(apiQueryParams),
                 streams: false

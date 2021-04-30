@@ -74,12 +74,14 @@
                                     <div class="expert-pick-graphic-container d-flex flex-column">
                                         <Button
                                             @action={{this.readImageDocument}}
-                                            @type="none"
+                                            @type="link"
                                             class="mb-1 px-0 mr-md-auto mr-0"
                                             name={{t "buttons.expertPickImage.name" id=this.imageId}}
                                             aria-label={{t "buttons.expertPickImage.ariaLabel" id=this.imageId}}
                                         >
-                                            <Document::Image @id={{this.imageId}} class="rounded img-fluid" />
+                                            {{#if this.imageId}}
+                                                <Document::Image @id={{this.imageId}} class="rounded img-fluid" />
+                                            {{/if}}
                                         </Button>
                                         <a
                                             href={{this.imageArticleUrl}}

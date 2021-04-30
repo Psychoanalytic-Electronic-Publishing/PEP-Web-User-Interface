@@ -12,6 +12,7 @@ interface CheckboxInputArgs {
     checked?: boolean;
     disabled?: boolean;
     label?: string;
+    labelClass?: string;
     preventDefault?: boolean;
     stopPropagation?: boolean;
     name?: string;

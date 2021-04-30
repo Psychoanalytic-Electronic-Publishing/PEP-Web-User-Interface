@@ -10,3 +10,9 @@ interface ChangesetTextareaArgs<T> {
 }
 
 export default class ChangesetTextarea extends Component<BaseGlimmerSignature<ChangesetTextareaArgs<unknown>>> {}
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        ChangesetTextarea: typeof ChangesetTextarea;
+    }
+}
