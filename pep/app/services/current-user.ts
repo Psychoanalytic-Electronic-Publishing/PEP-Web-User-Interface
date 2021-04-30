@@ -330,7 +330,7 @@ export default class CurrentUserService extends Service {
     addPreferenceDocument(key: PreferenceDocumentsKey, documentId: string) {
         let currentDocs = this.getPreferenceDocuments(key);
         if (!currentDocs.includes(documentId)) {
-            currentDocs = [...currentDocs, documentId];
+            currentDocs = [documentId, ...currentDocs];
         }
         return this.updatePrefs({
             [key]: currentDocs
