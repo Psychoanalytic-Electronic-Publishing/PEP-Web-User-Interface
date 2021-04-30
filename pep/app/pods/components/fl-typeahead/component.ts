@@ -32,7 +32,7 @@ interface WordSelection {
 interface FlTypeaheadArgs {
     placeholder: string;
     menuClassName?: string;
-    value: string;
+    value?: string;
     suggestions?: FlTypeaheadSuggestion[];
     onChange: (currentText: string, event: HTMLElementEvent<HTMLInputElement>) => void;
     onSelectSuggestion: (newText: string, suggestion: FlTypeaheadSuggestion) => void;
@@ -139,16 +139,12 @@ export default class FlTypeahead extends Component<BaseGlimmerSignature<FlTypeah
      * @param {HTMLElementEvent<HTMLButtonElement>} event
      */
     @action
-    onSelectSuggestion(
-        suggestion: FlTypeaheadSuggestion,
-        dropdown: Dropdown,
-        event?: HTMLElementEvent<HTMLButtonElement>
-    ) {
+    onSelectSuggestion(suggestion: FlTypeaheadSuggestion, dropdown: Dropdown, event?: MouseEvent) {
         // insert only the missing portion of the selected suggestion
         // and insert it only for the "current word" relative to the caret position
         // in case their are multiple instances of the word and/or the caret is in
         // the middle of the current text value
-        const currentText = this.args.value;
+        const currentText = this.args.value ?? '';
         const currentWord = this.getCurrentWordFromCaret(currentText, this.lastCaretPosition);
         const wordRegex = new RegExp(`^${currentWord.word}`, 'i');
         const insertText = suggestion.text.replace(wordRegex, '');
@@ -159,7 +155,7 @@ export default class FlTypeahead extends Component<BaseGlimmerSignature<FlTypeah
         this.focusedSuggestion = null;
         this.args.onSelectSuggestion(newText, suggestion);
         // clear the current suggestions and close the dropdown
-        this.args.loadSuggestions('', this.args.value);
+        this.args.loadSuggestions('', this.args.value ?? '');
         dropdown.actions.close(event, true);
         next(this, () => this.refocusInput(newCaretPos));
         if (event) {
@@ -234,5 +230,11 @@ export default class FlTypeahead extends Component<BaseGlimmerSignature<FlTypeah
         }
 
         return { word, startIndex, endIndex };
+    }
+}
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        FlTypeahead: typeof FlTypeahead;
     }
 }

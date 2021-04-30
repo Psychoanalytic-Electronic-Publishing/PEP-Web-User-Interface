@@ -7,7 +7,7 @@ import { ButtonArgs } from '@gavant/ember-button-basic/components/button';
 import FastbootMediaService from 'pep/services/fastboot-media';
 import { BaseGlimmerSignature } from 'pep/utils/types';
 
-import { IconName, IconPrefix, SizeProp } from '@fortawesome/fontawesome-svg-core';
+import { IconName, IconPrefix } from '@fortawesome/fontawesome-svg-core';
 
 interface ButtonWithTooltipArgs {
     label?: string;

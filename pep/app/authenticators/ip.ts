@@ -1,4 +1,4 @@
-import { run, scheduleOnce } from '@ember/runloop';
+import { run } from '@ember/runloop';
 
 import classic from 'ember-classic-decorator';
 

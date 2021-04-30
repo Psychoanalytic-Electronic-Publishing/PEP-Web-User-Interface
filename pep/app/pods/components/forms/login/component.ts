@@ -2,12 +2,19 @@ import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 
+import { ComponentLike } from '@glint/environment-ember-loose';
 import Component from '@glint/environment-ember-loose/glimmer-component';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import IntlService from 'ember-intl/services/intl';
 
 import Modal from '@gavant/ember-modals/services/modal';
 import createChangeset, { GenericChangeset } from '@gavant/ember-validations/utilities/create-changeset';
+import {
+    FormValidatorChildSignature
+} from '@gavant/glint-template-types/types/@gavant/gavant-ember-validations/form-validator/child';
+import {
+    InputValidatorSignature
+} from '@gavant/glint-template-types/types/@gavant/gavant-ember-validations/input-validator';
 
 import AjaxService from 'pep/services/ajax';
 import { LoginForm } from 'pep/services/auth';
@@ -15,7 +22,6 @@ import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
 import LoadingBarService from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
-import { BaseGlimmerSignature } from 'pep/utils/types';
 import { onAuthenticated } from 'pep/utils/user';
 import LoginValidations from 'pep/validations/user/login';
 import { reject } from 'rsvp';
@@ -28,9 +34,23 @@ interface FormsLoginArgs {
     padsRegisterUrl?: string;
     isModal?: boolean;
     onClose?: () => void;
+    wrapperComponent: ComponentLike<any>;
 }
 
-export default class FormsLogin extends Component<BaseGlimmerSignature<FormsLoginArgs>> {
+interface Validator {
+    submit: (event: Event) => Promise<undefined>;
+    input: ComponentLike<InputValidatorSignature>;
+    child: ComponentLike<FormValidatorChildSignature<unknown>>;
+}
+
+interface FormsLoginSignature {
+    Args: FormsLoginArgs;
+    Yields: {
+        default: [GenericChangeset<LoginForm>, Validator];
+    };
+}
+
+export default class FormsLogin extends Component<FormsLoginSignature> {
     @service configuration!: ConfigurationService;
     @service currentUser!: CurrentUserService;
     @service loadingBar!: LoadingBarService;

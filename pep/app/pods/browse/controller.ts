@@ -11,8 +11,6 @@ import Journal from 'pep/pods/journal/model';
 import Video from 'pep/pods/video/model';
 import { SortedBooks } from 'pep/utils/browse';
 
-import { getFreudGWVolumes, getFreudSEVolumes } from '../../utils/browse';
-
 export enum BrowseTabs {
     JOURNALS = 'journals',
     BOOKS = 'books',

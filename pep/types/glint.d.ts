@@ -11,6 +11,7 @@ import FlInput from '@gavant/glint-template-types/types/@gavant/ember-floating-l
 import FlSelect from '@gavant/glint-template-types/types/@gavant/ember-floating-labels/fl-select';
 import FlTextarea from '@gavant/glint-template-types/types/@gavant/ember-floating-labels/fl-textarea';
 import ModalDialog from '@gavant/glint-template-types/types/@gavant/gavant-ember-modals/modal-dialog';
+import ModalDialogBody from '@gavant/glint-template-types/types/@gavant/gavant-ember-modals/modal-dialog/body';
 import ChangesetInput from '@gavant/glint-template-types/types/@gavant/gavant-ember-validations/changeset-input';
 import FormValidator from '@gavant/glint-template-types/types/@gavant/gavant-ember-validations/form-validator';
 import InputValidator from '@gavant/glint-template-types/types/@gavant/gavant-ember-validations/input-validator';
@@ -33,7 +34,6 @@ declare module '@glint/environment-ember-loose/registry' {
         'did-update': typeof DidUpdateModifier;
         FaIcon: typeof FaIconComponent;
         'fa-icon': typeof FaIconComponent;
-        Dropdown: typeof Dropdown;
         DropdownMenu: typeof Dropdown;
         DropdownAction: typeof DropdownAction;
         DropdownLink: typeof DropdownLink;
@@ -58,5 +58,7 @@ declare module '@glint/environment-ember-loose/registry' {
         TinymceEditor: typeof TinymceEditor;
         'changeset-get': typeof ChangesetGet;
         'changeset-set': typeof ChangesetSet;
+        BasicDropdown: typeof Dropdown;
+        'modal-dialog/body': typeof ModalDialogBody;
     }
 }

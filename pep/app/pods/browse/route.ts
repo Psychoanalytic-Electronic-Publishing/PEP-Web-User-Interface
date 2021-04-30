@@ -7,7 +7,6 @@ import MediaService from 'ember-responsive/services/media';
 
 import { buildQueryParams, removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
 
-import { GW_VOLUME_DOCUMENT_ID, SE_VOLUME_DOCUMENT_ID } from 'pep/constants/books';
 import { PageNav } from 'pep/mixins/page-layout';
 import Book from 'pep/pods/book/model';
 import BrowseController from 'pep/pods/browse/controller';

@@ -1,8 +1,4 @@
-<FormValidator
-    @changeset={{this.changeset}}
-    @submit={{this.login}}
-    class="{{unless @isModal "mt-4"}}" as |changeset validator|
->
+<FormValidator @changeset={{this.changeset}} @submit={{this.login}} as |changeset validator|>
     {{#@wrapperComponent}}
         {{#if (and @isModal (not this.currentUser.user.isGroup))}}
             {{html-safe this.cardInfo.body}}
