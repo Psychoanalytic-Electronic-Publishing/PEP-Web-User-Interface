@@ -181,3 +181,9 @@ export default class PageNav extends Component<BaseGlimmerSignature<PageNavArgs>
         return this.modal.open('help/feedback', {});
     }
 }
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        PageNav: typeof PageNav;
+    }
+}

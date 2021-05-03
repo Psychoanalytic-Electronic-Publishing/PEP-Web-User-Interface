@@ -15,6 +15,7 @@ import { PepSecureAuthenticatedData } from 'pep/api';
 import ENV from 'pep/config/environment';
 import { SESSION_COOKIE_NAME } from 'pep/constants/cookies';
 import AjaxService from 'pep/services/ajax';
+import InformationBarService from 'pep/services/information-bar';
 import PepSessionService from 'pep/services/pep-session';
 import { guard } from 'pep/utils/types';
 import { serializeQueryParams } from 'pep/utils/url';
@@ -32,11 +33,12 @@ export interface AuthError {
 
 @classic
 export default class CredentialsAuthenticator extends BaseAuthenticator {
-    @service ajax!: AjaxService;
-    @service intl!: IntlService;
-    @service('pep-session') session!: PepSessionService;
-    @service fastboot!: FastbootService;
-    @service cookies!: CookiesService;
+    @service declare ajax: AjaxService;
+    @service declare intl: IntlService;
+    @service('pep-session') declare session: PepSessionService;
+    @service declare fastboot: FastbootService;
+    @service declare cookies: CookiesService;
+    @service declare informationBar: InformationBarService;
 
     authenticationHeaders: { [key: string]: any } = {
         'Content-Type': 'application/json'
@@ -183,10 +185,16 @@ export default class CredentialsAuthenticator extends BaseAuthenticator {
                 }
 
                 if (!Ember.testing) {
-                    this._authenticationInvalidationTimeout = run.later(this.session, 'invalidate', expiresAt - now);
+                    this._authenticationInvalidationTimeout = run.later(this, 'invalidateByTimeout', expiresAt - now);
                 }
             }
         }
+    }
+
+    invalidateByTimeout() {
+        this.informationBar.show('relogin');
+        this.session.redirectOnLogout = false;
+        this.session.invalidate();
     }
 
     /**

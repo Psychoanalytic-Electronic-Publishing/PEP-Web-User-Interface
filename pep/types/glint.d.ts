@@ -26,6 +26,7 @@ import AnimatedContainer from '@gavant/glint-template-types/types/ember-animated
 import { AnimatedEachCurly } from '@gavant/glint-template-types/types/ember-animated/animated-each';
 import { AnimatedIfCurly } from '@gavant/glint-template-types/types/ember-animated/animated-if';
 import Dropdown from '@gavant/glint-template-types/types/ember-basic-dropdown/dropdown';
+import ContentPlaceholders from '@gavant/glint-template-types/types/ember-content-placeholders/content-placeholders';
 import TranslationHelper from '@gavant/glint-template-types/types/ember-intl/translation-helper';
 import DidInsertModifier from '@gavant/glint-template-types/types/ember-render-modifiers/did-insert';
 import DidUpdateModifier from '@gavant/glint-template-types/types/ember-render-modifiers/did-update';
@@ -69,5 +70,6 @@ declare module '@glint/environment-ember-loose/registry' {
         'changeset-set': typeof ChangesetSet;
         BasicDropdown: typeof Dropdown;
         'modal-dialog/body': typeof ModalDialogBody;
+        ContentPlaceholders: typeof ContentPlaceholders;
     }
 }

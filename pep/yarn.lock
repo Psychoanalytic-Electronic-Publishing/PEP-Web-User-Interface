@@ -1452,10 +1452,10 @@
     ember-cli-typescript "^4.1.0"
     ember-decorators "^6.1.1"
 
-"@gavant/glint-template-types@^0.0.12":
-  version "0.0.12"
-  resolved "https://registry.yarnpkg.com/@gavant/glint-template-types/-/glint-template-types-0.0.12.tgz#fca96643cf122e74566cc55e15eb6bb5c172446a"
-  integrity sha512-Zf9Tkh4qcOY8ela6QQno+wNylRnmBJlohTQWdD7ZdF/tggCJ0UokURzN5qXNHiYhbY3xW7zosAAs2E+/+JderA==
+"@gavant/glint-template-types@^0.0.14":
+  version "0.0.14"
+  resolved "https://registry.yarnpkg.com/@gavant/glint-template-types/-/glint-template-types-0.0.14.tgz#691f553d38cdbff8e124f1aa99b7b61a99923286"
+  integrity sha512-2945oP0b3qQa2X/ff0Z4l/Zkv7oWiSmkNrlK6XIZ3P5T0F7GEv0eVzGWRmPbh8vlg/QrDR02Oy7yxcR3GDNqdw==
 
 "@glimmer/compiler@^0.27.0":
   version "0.27.0"

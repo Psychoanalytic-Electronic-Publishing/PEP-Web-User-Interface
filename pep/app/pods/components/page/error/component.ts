@@ -9,3 +9,9 @@ interface PageErrorArgs {
 }
 
 export default class PageError extends Component<BaseGlimmerSignature<PageErrorArgs>> {}
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        PageError: typeof PageError;
+    }
+}

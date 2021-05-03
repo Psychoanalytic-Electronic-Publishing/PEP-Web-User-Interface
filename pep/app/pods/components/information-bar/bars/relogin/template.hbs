@@ -1,0 +1,12 @@
+<span class="mr-0 mr-sm-5 my-2 my-sm-0 d-flex">
+    {{t "informationBars.relogin.title"}}
+</span>
+<div class="d-flex">
+    <Button
+        @type="primary"
+        @wide={{true}}
+        @action={{this.login}}
+        @label={{t "informationBars.relogin.buttons.signIn"}}
+    />
+    <Button @type="link" @action={{this.cancel}} @label={{t "common.cancel"}} />
+</div>

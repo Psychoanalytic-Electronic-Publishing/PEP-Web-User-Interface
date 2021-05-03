@@ -31,7 +31,7 @@ export default class PowerSelectInfinityWithSearch<T> extends Component<
     BaseGlimmerSignature<PowerSelectInfinityWithSearchArgs<T>>
 > {
     //config options
-    searchMessage: string | null = null;
+    searchMessage?: string;
     searchDebounceDelay: number = 300;
     matchTriggerWidth: boolean = true;
     bufferSize: number = 0;
@@ -121,5 +121,11 @@ export default class PowerSelectInfinityWithSearch<T> extends Component<
             }
             return [];
         }
+    }
+}
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        'PowerSelectInfinity::WithSearch': typeof PowerSelectInfinityWithSearch;
     }
 }

@@ -11,10 +11,7 @@
         @tooltip={{this.configuration.content.global.cards.favorites.help}}
     />
     <Panel.body>
-        <ContentWithPlaceholder
-            @placeholderComponent="loading/widget"
-            @isLoading={{this.loadFromUserPreferences.isRunning}}
-        >
+        <ContentWithPlaceholder @placeholderComponent="loading/widget">
             <ul class="list-unstyled">
                 {{#if this.session.isAuthenticated}}
                     {{#each this.results as |result|}}

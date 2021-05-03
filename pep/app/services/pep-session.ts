@@ -35,6 +35,7 @@ export default class PepSessionService extends SessionService {
     @service auth!: AuthService;
     @service fastboot!: FastbootService;
 
+    redirectOnLogout = true;
     /**
      * Get logged in sessionId if it exists, or logged out sessionId if it does not
      *
@@ -125,7 +126,10 @@ export default class PepSessionService extends SessionService {
     handleInvalidation(routeAfterInvalidation: string): void {
         this.cookies.write(SESSION_COOKIE_NAME, JSON.stringify({ authenticated: {} }), {});
         this.cookies.write(HIDE_TOUR_COOKIE_NAME, 'true', {});
-        super.handleInvalidation(routeAfterInvalidation);
+        if (this.redirectOnLogout) {
+            super.handleInvalidation(routeAfterInvalidation);
+        }
+        this.redirectOnLogout = true;
     }
 }
 

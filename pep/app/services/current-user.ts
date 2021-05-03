@@ -424,7 +424,7 @@ export default class CurrentUserService extends Service {
             if (!configAlreadyExists && configs) {
                 updatedConfigs = [...configs, configuration];
             } else if (configs) {
-                const arrayWithoutConfig = configs.filter((item) => item.widget === configuration.widget);
+                const arrayWithoutConfig = configs.filter((item) => item.widget !== configuration.widget);
                 updatedConfigs = [...arrayWithoutConfig, configuration];
             }
         });
