@@ -158,7 +158,10 @@
         },
         "form": {
             "heading": "Search for Documents",
-            "smartSearch": "SmartSearch: What are you looking for?",
+            "smartSearch": {
+                "heading": "Smart Search",
+                "label": "What are you looking for?"
+            },
             "savedSearch": {
                 "label": "Saved searches",
                 "mine": "My saved searches",
