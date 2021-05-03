@@ -9,13 +9,8 @@ import IntlService from 'ember-intl/services/intl';
 
 import Modal from '@gavant/ember-modals/services/modal';
 import createChangeset, { GenericChangeset } from '@gavant/ember-validations/utilities/create-changeset';
-import {
-    FormValidatorChildSignature
-} from '@gavant/glint-template-types/types/@gavant/gavant-ember-validations/form-validator/child';
-import {
-    InputValidatorSignature
-} from '@gavant/glint-template-types/types/@gavant/gavant-ember-validations/input-validator';
 
+import { FormValidatorChildLikeComponent, InputValidatorLikeComponent } from 'glint';
 import AjaxService from 'pep/services/ajax';
 import { LoginForm } from 'pep/services/auth';
 import ConfigurationService from 'pep/services/configuration';
@@ -39,8 +34,8 @@ interface FormsLoginArgs {
 
 interface Validator {
     submit: (event: Event) => Promise<undefined>;
-    input: ComponentLike<InputValidatorSignature>;
-    child: ComponentLike<FormValidatorChildSignature<unknown>>;
+    input: InputValidatorLikeComponent;
+    child: FormValidatorChildLikeComponent;
 }
 
 interface FormsLoginSignature {
