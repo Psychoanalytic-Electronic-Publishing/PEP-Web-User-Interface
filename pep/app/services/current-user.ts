@@ -7,6 +7,7 @@ import DS from 'ember-data';
 import IntlService from 'ember-intl/services/intl';
 
 import ENV from 'pep/config/environment';
+import { WidgetConfiguration } from 'pep/constants/configuration';
 import { USER_PREFERENCES_COOKIE_NAME } from 'pep/constants/cookies';
 import { MAX_AGE } from 'pep/constants/dates';
 import {
@@ -412,5 +413,22 @@ export default class CurrentUserService extends Service {
      */
     updateTextJustification(textJustification: TextJustificationId) {
         return this.updatePrefs({ [PreferenceKey.TEXT_JUSTIFICATION]: textJustification });
+    }
+
+    modifyWidgetConfigurations(widgetConfigurations: WidgetConfiguration[]) {
+        const configs = this.preferences?.widgetConfigurations;
+        let updatedConfigs = configs;
+        widgetConfigurations.forEach((configuration) => {
+            const configAlreadyExists = configs?.find((item) => item.widget === configuration.widget) ?? false;
+
+            if (!configAlreadyExists && configs) {
+                updatedConfigs = [...configs, configuration];
+            } else if (configs) {
+                const arrayWithoutConfig = configs.filter((item) => item.widget === configuration.widget);
+                updatedConfigs = [...arrayWithoutConfig, configuration];
+            }
+        });
+
+        return this.updatePrefs({ [PreferenceKey.WIDGET_CONFIGURATIONS]: updatedConfigs });
     }
 }

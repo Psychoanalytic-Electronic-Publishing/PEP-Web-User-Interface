@@ -1,4 +1,5 @@
 import ENV from 'pep/config/environment';
+import { DEFAULT_BASE_CONFIGURATION, WidgetConfiguration } from 'pep/constants/configuration';
 import { LanguageCode } from 'pep/constants/lang';
 import { SearchTermId } from 'pep/constants/search';
 import { WIDGET } from 'pep/constants/sidebar';
@@ -29,7 +30,8 @@ export enum PreferenceKey {
     TRANSLATION_CONCORDANCE = 'translationConcordanceEnabled',
     GLOSSARY_FORMATTING_ENABLED = 'glossaryFormattingEnabled',
     TEXT_JUSTIFICATION = 'textJustification',
-    USER_SEARCH_FORM_STICKY = 'userSearchFormSticky'
+    USER_SEARCH_FORM_STICKY = 'userSearchFormSticky',
+    WIDGET_CONFIGURATIONS = 'widgetConfigurations'
 }
 
 export interface UserPreferences {
@@ -49,11 +51,12 @@ export interface UserPreferences {
     helpDescriptionsEnabled: boolean;
     helpIconsEnabled: boolean;
     fontSize: FontSize;
-    visibleWidgets: WIDGET[];
     translationConcordanceEnabled: boolean;
     glossaryFormattingEnabled: boolean;
     textJustification: TextJustificationId;
     userSearchFormSticky: boolean;
+    visibleWidgets: WIDGET[];
+    widgetConfigurations: WidgetConfiguration[];
 }
 
 export type PreferenceChangeset = Partial<UserPreferences>;
@@ -82,7 +85,8 @@ export const COOKIE_PREFERENCES: PreferenceKey[] = [
     PreferenceKey.HELP_ICONS_ENABLED,
     PreferenceKey.FONT_SIZE,
     PreferenceKey.VISIBLE_WIDGETS,
-    PreferenceKey.USER_SEARCH_FORM_STICKY
+    PreferenceKey.USER_SEARCH_FORM_STICKY,
+    PreferenceKey.WIDGET_CONFIGURATIONS
 ];
 
 /**
@@ -97,6 +101,9 @@ export const LOCALSTORAGE_PREFERENCES: PreferenceKey[] = [
     PreferenceKey.TOUR_ENABLED,
     PreferenceKey.TRANSLATION_CONCORDANCE
 ];
+
+const leftWidgetsOpenByDefault = DEFAULT_BASE_CONFIGURATION.global.cards.left.filter((widget) => widget.open);
+const rightWidgetsOpenByDefault = DEFAULT_BASE_CONFIGURATION.global.cards.right.filter((widget) => widget.open);
 
 export const DEFAULT_USER_PREFERENCES: UserPreferences = {
     favorites: [],
@@ -116,5 +123,6 @@ export const DEFAULT_USER_PREFERENCES: UserPreferences = {
     translationConcordanceEnabled: true,
     glossaryFormattingEnabled: false,
     textJustification: TextJustificationId.LEFT,
-    userSearchFormSticky: false
+    userSearchFormSticky: false,
+    widgetConfigurations: [...leftWidgetsOpenByDefault, ...rightWidgetsOpenByDefault]
 };
