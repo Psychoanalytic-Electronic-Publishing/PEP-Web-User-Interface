@@ -31,5 +31,5 @@ jobs:
           npm config set '//npm.fontawesome.com/:_authToken' "${{ secrets.FONTAWESOME_NPM_AUTH_TOKEN }}"
           yarn install --frozen-lockfile
         working-directory: 'pep'
-      - run: yarn ember:test
+      - run: yarn test:ember
         working-directory: 'pep'
