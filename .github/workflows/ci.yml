@@ -27,6 +27,6 @@ jobs:
             ${{ runner.os }}-yarn-
         working-directory: 'pep'
       - run: yarn install --frozen-lockfile
-          working-directory: 'pep'
+        working-directory: 'pep'
       - run: yarn ember:test
-          working-directory: 'pep'
+        working-directory: 'pep'
