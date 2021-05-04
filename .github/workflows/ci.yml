@@ -25,7 +25,6 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
-        working-directory: 'pep'
       - run: yarn install --frozen-lockfile
         working-directory: 'pep'
       - run: yarn ember:test
