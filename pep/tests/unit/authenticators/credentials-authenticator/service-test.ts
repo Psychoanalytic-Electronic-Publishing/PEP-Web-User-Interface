@@ -102,7 +102,6 @@ module('Unit | Authenticator | credentials-authenticator', function(hooks) {
 
     //     await authenticator.authenticate('Test', 'TestPassword');
     //     unauthenticatedSession = session.getUnauthenticatedSession();
-    //     console.log(`Unathenticated session: ${JSON.stringify(unauthenticatedSession)}`);
     //     assert.notOk(unauthenticatedSession);
     // });
 });
