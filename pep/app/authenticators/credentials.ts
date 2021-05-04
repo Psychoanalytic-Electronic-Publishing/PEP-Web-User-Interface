@@ -191,6 +191,12 @@ export default class CredentialsAuthenticator extends BaseAuthenticator {
         }
     }
 
+    /**
+     * Invalidate the session when the timeout is passed. We need to take a different path than the normal invalidate due to client
+     * wanting a warning they have been logged out and an easy way to log back in
+     *
+     * @memberof CredentialsAuthenticator
+     */
     invalidateByTimeout() {
         this.informationBar.show('relogin');
         this.session.redirectOnLogout = false;

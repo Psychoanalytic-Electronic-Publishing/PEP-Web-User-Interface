@@ -1,6 +1,6 @@
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import { cached, tracked } from '@glimmer/tracking';
+import { tracked } from '@glimmer/tracking';
 
 import Component from '@glint/environment-ember-loose/glimmer-component';
 import { restartableTask } from 'ember-concurrency-decorators';
@@ -35,11 +35,6 @@ export default class PageSidebarWidgetsFavorites extends Component<
     }
 
     widget = WIDGET.FAVORITES;
-
-    @cached
-    get favoritesLength() {
-        return this.currentUser.preferences?.favorites?.length;
-    }
 
     /**
      * Load the documents that have been favorited by the user from local storage
