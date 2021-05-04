@@ -25,7 +25,11 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
-      - run: yarn install --frozen-lockfile
+      - name: Install Dependencies
+        run: |
+          npm config set '@fortawesome:registry=https://npm.fontawesome.com/'
+          npm config set '//npm.fontawesome.com/:_authToken' "${{ secrets.FONTAWESOME_NPM_AUTH_TOKEN }}"
+          yarn install --frozen-lockfile
         working-directory: 'pep'
       - run: yarn ember:test
         working-directory: 'pep'
