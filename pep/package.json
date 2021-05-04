@@ -19,7 +19,7 @@
         "start": "NODE_TLS_REJECT_UNAUTHORIZED='0' ember serve",
         "start-fastboot-server": "node ./node/lambda.js",
         "test": "npm-run-all lint:* test:*",
-        "test:ember": "ember test"
+        "test:ember": "ember test --ssl=false"
     },
     "dependencies": {
         "abortcontroller-polyfill": "^1.4.0",
