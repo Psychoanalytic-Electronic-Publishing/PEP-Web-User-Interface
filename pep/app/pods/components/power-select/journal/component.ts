@@ -64,9 +64,13 @@ export default class PowerSelectJournal extends Component<
     @action
     @dontRunInFastboot
     async loadInitialPage() {
-        const results = await taskFor(this.load).perform();
-        this.options = results;
-        return results;
+        try {
+            const results = await taskFor(this.load).perform();
+            this.options = results;
+            return results;
+        } catch (errors) {
+            //catch errors
+        }
     }
 
     /**
