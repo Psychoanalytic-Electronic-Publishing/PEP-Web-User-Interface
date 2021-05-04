@@ -65,42 +65,32 @@ export default class CredentialsAuthenticator extends BaseAuthenticator {
                 if (sessionId) {
                     url = `${url}?${params}`;
                 }
+                this.makeRequest(url, username, password).then(
+                    (response) => {
+                        run(() => {
+                            if (response.IsValidLogon) {
+                                this.session.clearUnauthenticatedSession();
+                                response.SessionType = SessionType.CREDENTIALS;
+                                const expiresAt = this._absolutizeExpirationTime(response['SessionExpires']);
 
-                this.ajax
-                    .request<PepSecureAuthenticatedData>(url, {
-                        method: 'POST',
-                        headers: this.authenticationHeaders,
-                        body: this.ajax.stringifyData({
-                            UserName: username,
-                            Password: password
-                        })
-                    })
-                    .then(
-                        (response) => {
-                            run(() => {
-                                if (response.IsValidLogon) {
-                                    this.session.clearUnauthenticatedSession();
-                                    response.SessionType = SessionType.CREDENTIALS;
-                                    const expiresAt = this._absolutizeExpirationTime(response['SessionExpires']);
-
-                                    if (expiresAt) {
-                                        response['expiresAt'] = expiresAt;
-                                    }
-
-                                    if (expiresAt) {
-                                        this._scheduleAuthenticationInvalidation(response['SessionExpires'], expiresAt);
-                                    }
-                                    resolve(response);
-                                } else {
-                                    this.session.setUnauthenticatedSession(response);
-                                    reject(response.ReasonStr);
+                                if (expiresAt) {
+                                    response['expiresAt'] = expiresAt;
                                 }
-                            });
-                        },
-                        (response) => {
-                            run(null, reject, response);
-                        }
-                    );
+
+                                if (expiresAt) {
+                                    this._scheduleAuthenticationInvalidation(response['SessionExpires'], expiresAt);
+                                }
+                                resolve(response);
+                            } else {
+                                this.session.setUnauthenticatedSession(response);
+                                reject(response.ReasonStr);
+                            }
+                        });
+                    },
+                    (response) => {
+                        run(null, reject, response);
+                    }
+                );
             } catch (errors) {
                 if (guard<AuthError>(errors, 'payload')) {
                     return reject(htmlSafe(errors.payload?.ReasonStr ?? this.intl.t('login.error')));
@@ -108,6 +98,26 @@ export default class CredentialsAuthenticator extends BaseAuthenticator {
                     return reject(this.intl.t('login.genericError'));
                 }
             }
+        });
+    }
+
+    /**
+     * Function to make the request and get the `PepSecureAuthenticatedData`
+     *
+     * @param {string} url
+     * @param {string} username
+     * @param {string} password
+     * @return {*}
+     * @memberof CredentialsAuthenticator
+     */
+    makeRequest(url: string, username: string, password: string) {
+        return this.ajax.request<PepSecureAuthenticatedData>(url, {
+            method: 'POST',
+            headers: this.authenticationHeaders,
+            body: this.ajax.stringifyData({
+                UserName: username,
+                Password: password
+            })
         });
     }
 

@@ -4,6 +4,7 @@ import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 
 import Component from '@glint/environment-ember-loose/glimmer-component';
+import NotificationService from 'ember-cli-notifications/services/notifications';
 import CookiesService from 'ember-cookies/services/cookies';
 import { DS } from 'ember-data';
 
@@ -38,6 +39,7 @@ export default class Home extends Component<BaseGlimmerSignature<HomeArgs>> {
     @service loadingBar!: LoadingBarService;
     @service cookies!: CookiesService;
     @service ajax!: AjaxService;
+    @service notifications!: NotificationService;
 
     /**
      * The approximate width where the graphic
@@ -136,24 +138,28 @@ export default class Home extends Component<BaseGlimmerSignature<HomeArgs>> {
      */
     @action
     async loadModel(): Promise<void> {
-        const result = await this.store.findRecord('abstract', this.expertPick.articleId);
-        this.model = result;
-        let imageId = this.expertPick.imageId;
+        try {
+            const result = await this.store.findRecord('abstract', this.expertPick.articleId);
+            this.model = result;
+            let imageId = this.expertPick.imageId;
 
-        // if there was no expert pick image then load a random one
-        if (!imageId || imageId === '*') {
-            const result = await this.ajax.request<{ documentID: string; graphic: string }>(
-                'Documents/Image/*?download=2'
-            );
-            imageId = result.graphic.replace(MEDIA_FILE_EXTENSION_REGEX, '');
+            // if there was no expert pick image then load a random one
+            if (!imageId || imageId === '*') {
+                const result = await this.ajax.request<{ documentID: string; graphic: string }>(
+                    'Documents/Image/*?download=2'
+                );
+                imageId = result.graphic.replace(MEDIA_FILE_EXTENSION_REGEX, '');
+            }
+            const queryParams = buildSearchQueryParams({
+                smartSearchTerm: `art_graphic_list: ${imageId}`
+            });
+            const imageArticleResults = await this.store.query('search-document', queryParams);
+            const imageArticle = imageArticleResults.toArray()[0];
+            this.imageArticle = imageArticle;
+            this.imageId = imageId;
+        } catch (errors) {
+            this.notifications.error(errors);
         }
-        const queryParams = buildSearchQueryParams({
-            smartSearchTerm: `art_graphic_list: ${imageId}`
-        });
-        const imageArticleResults = await this.store.query('search-document', queryParams);
-        const imageArticle = imageArticleResults.toArray()[0];
-        this.imageArticle = imageArticle;
-        this.imageId = imageId;
     }
 
     /**
