@@ -264,59 +264,72 @@ export default class CurrentUserService extends Service {
     ): Promise<Result<UserPreferences | undefined, UserPreferenceError>> {
         if (this.user?.userType === UserType.GROUP || !this.session.isAuthenticated) {
             this.informationBar.show('settings-auth');
-            const error: UserPreferenceError = {
-                id:
-                    this.user?.userType === UserType.GROUP
-                        ? UserPreferenceErrorId.GROUP
-                        : UserPreferenceErrorId.UNAUTHENTICATED
-            };
-            return err(error);
-        } else {
-            const keys = Object.keys(prefValues) as PreferenceKey[];
-            const cookie = this.cookies.read(USER_PREFERENCES_COOKIE_NAME);
-            const cookieValues = cookie ? JSON.parse(cookie) : {};
-            let updatedCookie = false;
-
-            keys.forEach((key) => {
-                if (COOKIE_PREFERENCES.includes(key)) {
-                    updatedCookie = true;
-                    cookieValues[key] = prefValues[key];
-                } else if (LOCALSTORAGE_PREFERENCES.includes(key)) {
-                    const value = JSON.stringify(prefValues[key]);
-                    if (!this.fastboot.isFastBoot) {
-                        localStorage.setItem(`${USER_PREFERENCES_LS_PREFIX}_${key}`, value);
-                    }
-                }
-            });
-
-            if (updatedCookie) {
-                const newCookie = JSON.stringify(cookieValues);
-                this.cookies.write(USER_PREFERENCES_COOKIE_NAME, newCookie, {
-                    sameSite: ENV.cookieSameSite,
-                    maxAge: MAX_AGE,
-                    secure: ENV.cookieSecure
-                });
-            }
-
-            // if the user is logged in, apply the new prefs locally, then save the user
-            if (this.session.isAuthenticated && this.user) {
-                const oldUserPrefs = this.user?.clientSettings ?? {};
-                const newUserPrefs = Object.assign(
-                    {},
-                    DEFAULT_USER_PREFERENCES,
-                    oldUserPrefs,
-                    prefValues
-                ) as UserPreferences;
-                this.user.clientSettings = newUserPrefs;
-                this.setup();
-                await this.user.save();
-                return ok(this.preferences);
-
-                // otherwise, just apply the prefs locally (cookies/localstorage)
+            const hasWidgetConfigurationChanges =
+                prefValues[PreferenceKey.WIDGET_CONFIGURATIONS] && Object.keys(prefValues).length === 1;
+            if (hasWidgetConfigurationChanges) {
+                return this._updatePrefs(prefValues);
             } else {
-                this.setup();
-                return ok(this.preferences);
+                this.informationBar.show('settings-auth');
+                const error: UserPreferenceError = {
+                    id:
+                        this.user?.userType === UserType.GROUP
+                            ? UserPreferenceErrorId.GROUP
+                            : UserPreferenceErrorId.UNAUTHENTICATED
+                };
+                return err(error);
             }
+        } else {
+            return this._updatePrefs(prefValues);
+        }
+    }
+
+    async _updatePrefs(
+        prefValues: PreferenceChangeset
+    ): Promise<Result<UserPreferences | undefined, UserPreferenceError>> {
+        const keys = Object.keys(prefValues) as PreferenceKey[];
+        const cookie = this.cookies.read(USER_PREFERENCES_COOKIE_NAME);
+        const cookieValues = cookie ? JSON.parse(cookie) : {};
+        let updatedCookie = false;
+
+        keys.forEach((key) => {
+            if (COOKIE_PREFERENCES.includes(key)) {
+                updatedCookie = true;
+                cookieValues[key] = prefValues[key];
+            } else if (LOCALSTORAGE_PREFERENCES.includes(key)) {
+                const value = JSON.stringify(prefValues[key]);
+                if (!this.fastboot.isFastBoot) {
+                    localStorage.setItem(`${USER_PREFERENCES_LS_PREFIX}_${key}`, value);
+                }
+            }
+        });
+
+        if (updatedCookie) {
+            const newCookie = JSON.stringify(cookieValues);
+            this.cookies.write(USER_PREFERENCES_COOKIE_NAME, newCookie, {
+                sameSite: ENV.cookieSameSite,
+                maxAge: MAX_AGE,
+                secure: ENV.cookieSecure
+            });
+        }
+
+        // if the user is logged in, apply the new prefs locally, then save the user
+        if (this.session.isAuthenticated && this.user) {
+            const oldUserPrefs = this.user?.clientSettings ?? {};
+            const newUserPrefs = Object.assign(
+                {},
+                DEFAULT_USER_PREFERENCES,
+                oldUserPrefs,
+                prefValues
+            ) as UserPreferences;
+            this.user.clientSettings = newUserPrefs;
+            this.setup();
+            await this.user.save();
+            return ok(this.preferences);
+
+            // otherwise, just apply the prefs locally (cookies/localstorage)
+        } else {
+            this.setup();
+            return ok(this.preferences);
         }
     }
 
@@ -415,11 +428,18 @@ export default class CurrentUserService extends Service {
         return this.updatePrefs({ [PreferenceKey.TEXT_JUSTIFICATION]: textJustification });
     }
 
+    /**
+     * Modify the widget configurations (whether the user has opened or closed the widget pane)
+     *
+     * @param {WidgetConfiguration[]} widgetConfigurations
+     * @return {*}
+     * @memberof CurrentUserService
+     */
     modifyWidgetConfigurations(widgetConfigurations: WidgetConfiguration[]) {
         const configs = this.preferences?.widgetConfigurations;
         let updatedConfigs = configs;
         widgetConfigurations.forEach((configuration) => {
-            const configAlreadyExists = configs?.find((item) => item.widget === configuration.widget) ?? false;
+            const configAlreadyExists = configs?.some((item) => item.widget === configuration.widget);
 
             if (!configAlreadyExists && configs) {
                 updatedConfigs = [...configs, configuration];

@@ -59,6 +59,11 @@ export default class InformationBarBarsRelogin extends Component<BaseGlimmerSign
         this.auth.openLoginModal(true);
     }
 
+    /**
+     * Handle cancel - close the information bar and go to the index route
+     *
+     * @memberof InformationBarBarsRelogin
+     */
     @action
     cancel() {
         this.session.handleInvalidation('/');
