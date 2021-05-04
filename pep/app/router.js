@@ -15,11 +15,14 @@ Router.map(function() {
     });
     this.route('browse', function() {
         this.route('videos');
-        this.route('journal', { path: '/:pep_code/volumes' }, function() {
+        this.route('journal', { path: 'journal/:pep_code/volumes' }, function() {
             this.route('volume', { path: '/:volume_number' });
         });
 
         this.route('book', function() {
+            this.route('volumes', { path: '/:pep_code/volumes' }, function() {
+                this.route('volume', { path: '/:volume_number' });
+            });
             this.route('gw');
             this.route('se');
         });

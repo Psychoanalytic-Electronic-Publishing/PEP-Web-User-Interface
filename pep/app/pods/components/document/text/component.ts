@@ -16,7 +16,7 @@ import ENV from 'pep/config/environment';
 import { DOCUMENT_IMG_BASE_URL, DocumentLinkTypes } from 'pep/constants/documents';
 import {
     HIT_MARKER_END, HIT_MARKER_END_OUTPUT_HTML, HIT_MARKER_START, HIT_MARKER_START_OUTPUT_HTML,
-    POSSIBLE_INVALID_SEARCH_HITS, SEARCH_HIT_MARKER_REGEX, SearchTermId
+    POSSIBLE_INVALID_SEARCH_HITS, SEARCH_HIT_MARKER_REGEX, SearchTermId, SourceType
 } from 'pep/constants/search';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import Document from 'pep/pods/document/model';
@@ -166,6 +166,7 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
                 processor.setParameter('', 'clientId', ENV.clientId);
                 processor.setParameter('', 'journalName', this.args.document.sourceTitle);
                 processor.setParameter('', 'imageUrl', DOCUMENT_IMG_BASE_URL);
+                processor.setParameter('', 'isBook', this.args.document.sourceType === SourceType.BOOK);
                 processor.importStylesheet(xslt);
                 const transformedDocument = (processor.transformToFragment(xml, document) as unknown) as XMLDocument;
                 return transformedDocument;
@@ -341,7 +342,11 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
             if (parent) {
                 const sourceCode = parent.getAttribute('data-journal-code');
                 if (sourceCode) {
-                    this.router.transitionTo('browse.journal', sourceCode);
+                    if (this.args.document.sourceType === SourceType.BOOK) {
+                        this.router.transitionTo('browse.book.volumes', sourceCode);
+                    } else {
+                        this.router.transitionTo('browse.journal', sourceCode);
+                    }
                 }
             }
         } else if (type === DocumentLinkTypes.TITLE) {
