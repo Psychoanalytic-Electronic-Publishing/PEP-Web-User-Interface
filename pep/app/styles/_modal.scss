@@ -22,6 +22,9 @@
         }
     }
 }
+.tox-tinymce-aux {
+    z-index: $z-notifications - 1 !important;
+}
 
 .slide-card {
     @include media-breakpoint-down(sm) {
