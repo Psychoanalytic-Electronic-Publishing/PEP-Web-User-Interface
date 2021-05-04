@@ -816,6 +816,12 @@
             "buttons": {
                 "signIn": "Sign in"
             }
+        },
+        "relogin": {
+            "title": "You have been logged out. To continue your session, please sign in.",
+            "buttons": {
+                "signIn": "Sign in"
+            }
         }
     },
     "alt": {

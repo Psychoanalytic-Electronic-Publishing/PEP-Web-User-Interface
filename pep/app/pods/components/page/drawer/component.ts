@@ -134,3 +134,9 @@ export default class PageDrawer extends Component<BaseGlimmerSignature<PageDrawe
         }
     }
 }
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        PageDrawer: typeof PageDrawer;
+    }
+}

@@ -1,6 +1,5 @@
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import { tracked } from '@glimmer/tracking';
 
 import Component from '@glint/environment-ember-loose/glimmer-component';
 
@@ -22,9 +21,22 @@ export interface BasePageSidebarWidgetArgs extends PageSidebarWidgetArgs {
 export default class PageSidebarWidgets extends Component<BaseGlimmerSignature<PageSidebarWidgetArgs>> {
     @service currentUser!: CurrentUserService;
 
-    @tracked
-    openWidgets: WIDGET[] = this.args.widgets?.filter((widget) => widget.open).map((widget) => widget.widget) ?? [];
-
+    get openWidgets(): WIDGET[] {
+        const allWidgets = this.args.widgets;
+        const userWidgetConfigurations = this.currentUser.preferences?.widgetConfigurations;
+        const userOverridenWidgets = allWidgets.map((widgetConfiguration) => {
+            const userSavedConfiguration = userWidgetConfigurations?.find(
+                (item) => item.widget === widgetConfiguration.widget
+            );
+            if (userSavedConfiguration) {
+                return userSavedConfiguration;
+            } else {
+                return widgetConfiguration;
+            }
+        });
+        const openedWidgets = userOverridenWidgets.filter((widget) => widget.open).map((widget) => widget.widget) ?? [];
+        return openedWidgets;
+    }
     /**
      * Getter that decides when we show close all
      *
@@ -44,9 +56,19 @@ export default class PageSidebarWidgets extends Component<BaseGlimmerSignature<P
     @action
     toggleIsOpen(widget: WIDGET) {
         if (this.openWidgets.includes(widget)) {
-            this.openWidgets = this.openWidgets.filter((item) => item !== widget);
+            this.currentUser.modifyWidgetConfigurations([
+                {
+                    widget,
+                    open: false
+                }
+            ]);
         } else {
-            this.openWidgets = [...this.openWidgets, widget];
+            this.currentUser.modifyWidgetConfigurations([
+                {
+                    widget,
+                    open: true
+                }
+            ]);
         }
     }
 
@@ -57,10 +79,23 @@ export default class PageSidebarWidgets extends Component<BaseGlimmerSignature<P
      */
     @action
     toggleAll() {
+        const widgets = [...Object.values(WIDGET).filter((k) => typeof k === 'string')] as WIDGET[];
         if (this.showCloseAll) {
-            this.openWidgets = [];
+            const widgetConfigurations = widgets.map((widget) => {
+                return {
+                    widget,
+                    open: false
+                };
+            });
+            this.currentUser.modifyWidgetConfigurations(widgetConfigurations);
         } else {
-            this.openWidgets = [...Object.values(WIDGET).filter((k) => typeof k === 'string')] as WIDGET[];
+            const widgetConfigurations = widgets.map((widget) => {
+                return {
+                    widget,
+                    open: true
+                };
+            });
+            this.currentUser.modifyWidgetConfigurations(widgetConfigurations);
         }
     }
 }

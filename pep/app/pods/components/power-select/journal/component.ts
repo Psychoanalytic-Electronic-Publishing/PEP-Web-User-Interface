@@ -96,3 +96,9 @@ export default class PowerSelectJournal extends Component<
         return results;
     }
 }
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        'PowerSelect::Journal': typeof PowerSelectJournal;
+    }
+}

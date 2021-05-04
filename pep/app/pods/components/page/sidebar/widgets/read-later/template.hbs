@@ -4,17 +4,14 @@
     @toggle={{fn @toggleIsOpen this.widget}}
     class="mb-2"
     {{did-insert this.onElementChange}}
-    {{did-update this.onElementChange this.currentUser.preferences}} as |Panel|
+    {{did-update this.onElementChange this.currentUser.preferences.readLater}} as |Panel|
 >
     <Panel.header
         @title={{t "relatedInfo.widgets.readLater.title"}}
         @tooltip={{this.configuration.content.global.cards.readLater.help}}
     />
     <Panel.body>
-        <ContentWithPlaceholder
-            @placeholderComponent="loading/widget"
-            @isLoading={{this.loadFromUserPreferences.isRunning}}
-        >
+        <ContentWithPlaceholder @placeholderComponent="loading/widget">
             <ul class="list-unstyled">
                 {{#if this.session.isAuthenticated}}
                     {{#each this.results as |result|}}
