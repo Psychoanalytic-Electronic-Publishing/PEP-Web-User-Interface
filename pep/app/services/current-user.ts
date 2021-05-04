@@ -283,6 +283,13 @@ export default class CurrentUserService extends Service {
         }
     }
 
+    /**
+     * Private update prefs method - not to be used by other classes
+     *
+     * @param {PreferenceChangeset} prefValues
+     * @return {*}  {(Promise<Result<UserPreferences | undefined, UserPreferenceError>>)}
+     * @memberof CurrentUserService
+     */
     async _updatePrefs(
         prefValues: PreferenceChangeset
     ): Promise<Result<UserPreferences | undefined, UserPreferenceError>> {
