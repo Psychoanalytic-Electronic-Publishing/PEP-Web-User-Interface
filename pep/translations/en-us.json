@@ -370,12 +370,6 @@
                 "title": "Volume {number} ({year})"
             }
         },
-        "book": {
-            "title": "{name}",
-            "volume": {
-                "title": "Volume {number} ({year})"
-            }
-        },
         "gw": {
             "volumes": "Freud, S. (1991). GESAMMELTE WERKE: CHRONOLOGISCH GEORDNET. Imago Publishing Co., Ltd., London."
         },
