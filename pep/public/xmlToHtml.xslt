@@ -314,8 +314,9 @@
                 <xsl:if test="not(node()) and ../artinfo/@preview != ''">
                     <xsl:variable name="videoUrl" select="concat('https://pep-web-video-previews.s3.amazonaws.com/', ../artinfo/@preview, '.mp4')"/>
                     <xsl:variable name="captionUrl" select="concat('https://pep-web-video-previews.s3.amazonaws.com/', ../artinfo/@preview, '.vtt')"/>
+                    <xsl:variable name="posterUrl" select="concat('https://pep-web-video-previews.s3.amazonaws.com/', ../artinfo/@preview, '.jpg')"/>
                     <div class="embed-responsive embed-responsive-16by9">
-                        <video id="clip" controls='controls' preload='auto'  class="embed-responsive-item" crossorigin="anonymous">
+                        <video id="clip" controls='controls' preload='auto'  class="embed-responsive-item" crossorigin="anonymous" poster="{$posterUrl}">
                             <source src="{$videoUrl}" type='video/mp4' />
                             <track label="English" kind="subtitles" srclang="en" src="{$captionUrl}" />
                         </video>
