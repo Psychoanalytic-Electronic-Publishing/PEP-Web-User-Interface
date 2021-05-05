@@ -342,9 +342,7 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
             if (parent) {
                 const sourceCode = parent.getAttribute('data-journal-code');
                 if (sourceCode) {
-                    if (this.args.document.sourceType === SourceType.BOOK) {
-                        this.router.transitionTo('browse.book.volumes', sourceCode);
-                    } else {
+                    if (this.args.document.sourceType === SourceType.JOURNAL) {
                         this.router.transitionTo('browse.journal', sourceCode);
                     }
                 }
@@ -669,7 +667,7 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
         }
 
         const banner = this.containerElement?.querySelector(DocumentTooltipSelectors.BANNER_HELP);
-        if (banner) {
+        if (banner && this.args.document.sourceType === SourceType.JOURNAL) {
             tippy(banner, {
                 content: this.intl.t('document.text.help.journalBanner'),
                 ...this.tippyOptions,

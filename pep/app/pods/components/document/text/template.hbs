@@ -1,6 +1,8 @@
 {{! template-lint-disable no-invalid-interactive }}
 <div
     class="document-text
+        {{@document.sourceType}}
+
 
 
         {{if this.currentUser.preferences.glossaryFormattingEnabled "glossary-highlight"}}

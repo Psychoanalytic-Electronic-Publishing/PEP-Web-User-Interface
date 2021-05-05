@@ -230,7 +230,7 @@
                 <a class="toc-link" data-journal-code="{$journal-code}">
                     <xsl:choose>
                         <xsl:when test="$isBook">
-                            <xsl:attribute name="href">/browse/book/{$journal-code}/volumes</xsl:attribute>
+                            <xsl:attribute name="href"></xsl:attribute>
                         </xsl:when>
                         <xsl:otherwise>
                             <xsl:attribute name="href">/browse/journal/{$journal-code}/volumes</xsl:attribute>
