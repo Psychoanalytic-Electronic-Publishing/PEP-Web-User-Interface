@@ -2,6 +2,13 @@ $document-font-size: 1rem;
 $document-paragraph-indent: 1.5rem;
 
 .document-text {
+    &.book {
+        .banner {
+            a {
+                cursor: auto;
+            }
+        }
+    }
     .search-hit-selected {
         animation-name: flash-animation;
         animation-duration: 0.75s;
