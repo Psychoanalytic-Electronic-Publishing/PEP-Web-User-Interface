@@ -17,6 +17,6 @@
         {{yield}}
     </button>
     {{#if @tooltip}}
-        <HelpTooltip @tooltip={{@tooltip}} class="widget-tooltip mr-2" />
+        <HelpTooltip @tooltip={{html-safe @tooltip}} class="widget-tooltip mr-2" />
     {{/if}}
 </div>
