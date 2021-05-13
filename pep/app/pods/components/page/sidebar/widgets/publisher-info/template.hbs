@@ -10,7 +10,7 @@
         @tooltip={{this.configuration.content.global.cards.publisherInfo.help}}
     />
     <Panel.body>
-        {{#if this.data.PEPCode}}
+        {{#if this.data}}
             {{html-safe this.publisherInformation.previewHTML}}
         {{else}}
             <div class="py-3 mb-0 text-center text-muted">

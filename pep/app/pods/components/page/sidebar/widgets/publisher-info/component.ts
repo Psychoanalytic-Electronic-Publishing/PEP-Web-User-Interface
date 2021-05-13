@@ -9,7 +9,7 @@ import { WIDGET } from 'pep/constants/sidebar';
 import { BasePageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
 import Document from 'pep/pods/document/model';
 import ConfigurationService from 'pep/services/configuration';
-import { BaseGlimmerSignature } from 'pep/utils/types';
+import { BaseGlimmerSignature, guard } from 'pep/utils/types';
 
 interface PageSidebarWidgetsPublisherInfoArgs extends BasePageSidebarWidgetArgs {}
 
@@ -19,12 +19,12 @@ export default class PageSidebarWidgetsPublisherInfo extends Component<
     @service configuration!: ConfigurationService;
     @service modal!: Modal;
 
-    get data(): Document {
+    get data(): Document | Document['PEPCode'] {
         return this.args.data[this.widget];
     }
 
     get publisherInformation() {
-        const code = this.data.PEPCode;
+        const code = guard<Document>(this.data, 'PEPCode') ? this.data.PEPCode : this.data;
         return this.configuration.content.global.publishers.find((publisher) => publisher.sourceCode === code);
     }
 

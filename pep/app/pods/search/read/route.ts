@@ -255,6 +255,12 @@ export default class SearchRead extends PageNav(Route) {
         controller.page = null;
         this.searchResults = undefined;
         this.searchParams = undefined;
+        this.sidebar.update({
+            [WIDGET.RELATED_DOCUMENTS]: null,
+            [WIDGET.MORE_LIKE_THESE]: null,
+            [WIDGET.GLOSSARY_TERMS]: null,
+            [WIDGET.PUBLISHER_INFO]: null
+        });
     }
 
     /**

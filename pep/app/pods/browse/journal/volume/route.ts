@@ -1,17 +1,22 @@
 import Transition from '@ember/routing/-private/transition';
 import Route from '@ember/routing/route';
+import { inject as service } from '@ember/service';
 
 import { RecordArrayWithMeta } from '@gavant/ember-pagination/hooks/pagination';
 
+import { WIDGET } from 'pep/constants/sidebar';
 import { BrowseJournalParams } from 'pep/pods/browse/journal/route';
 import BrowseJournalVolumeController from 'pep/pods/browse/journal/volume/controller';
 import Journal from 'pep/pods/journal/model';
 import SourceVolume from 'pep/pods/source-volume/model';
+import SidebarService from 'pep/services/sidebar';
 
 export interface BrowseJournalVolumeParams {
     volume_number: string;
 }
 export default class BrowseJournalVolume extends Route {
+    @service sidebar!: SidebarService;
+
     model(params: BrowseJournalVolumeParams) {
         const journalParams = this.paramsFor('browse.journal') as BrowseJournalParams;
 
@@ -38,9 +43,14 @@ export default class BrowseJournalVolume extends Route {
         controller.sourcecode = journalParams.pep_code;
         controller.meta = model.meta;
         controller.volumeInformation = volumes.findBy('id', routeParams.volume_number);
+
+        this.sidebar.update({
+            [WIDGET.PUBLISHER_INFO]: journalParams.pep_code
+        });
     }
 
-    resetController(controller: BrowseJournalVolumeController, isExiting: boolean): void {
+    resetController(controller: BrowseJournalVolumeController, isExiting: boolean, transition: Transition): void {
+        super.resetController(controller, isExiting, transition);
         if (isExiting) {
             controller.sourcecode = undefined;
             controller.journal = undefined;
