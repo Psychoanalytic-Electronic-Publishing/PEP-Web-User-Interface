@@ -1,3 +1,5 @@
-.ember-popover-inner {
-    max-width: 250px;
+.ember-popover {
+    &-inner {
+        max-width: 250px;
+    }
 }
