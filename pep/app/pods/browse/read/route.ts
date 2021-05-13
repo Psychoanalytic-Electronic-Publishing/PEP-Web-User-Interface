@@ -62,16 +62,6 @@ export default class BrowseRead extends PageNav(Route) {
      */
     async afterModel(model: Document, transition: Transition) {
         super.afterModel(model, transition);
-        this.sidebar.update({
-            [WIDGET.RELATED_DOCUMENTS]: model,
-            [WIDGET.MORE_LIKE_THESE]: model,
-            [WIDGET.GLOSSARY_TERMS]: {
-                terms: model?.meta?.facetCounts.facet_fields.glossary_group_terms,
-                location: GlossaryWidgetLocation.READ
-            },
-            [WIDGET.PUBLISHER_INFO]: model
-        });
-
         const controller = this.controllerFor(this.routeName) as BrowseReadController;
 
         const params = buildBrowseRelatedDocumentsParams(model);
@@ -139,6 +129,16 @@ export default class BrowseRead extends PageNav(Route) {
                 controller.page = transition.to.queryParams.page;
             }
         }
+
+        this.sidebar.update({
+            [WIDGET.RELATED_DOCUMENTS]: model,
+            [WIDGET.MORE_LIKE_THESE]: model,
+            [WIDGET.GLOSSARY_TERMS]: {
+                terms: model?.meta?.facetCounts.facet_fields.glossary_group_terms,
+                location: GlossaryWidgetLocation.READ
+            },
+            [WIDGET.PUBLISHER_INFO]: model
+        });
     }
 
     /**
@@ -152,8 +152,18 @@ export default class BrowseRead extends PageNav(Route) {
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
     //@ts-ignore
-    resetController(controller: BrowseReadController): void {
+    resetController(controller: BrowseReadController, isExiting: boolean, transition: Transition): void {
+        // @ts-ignore
+        super.resetController(controller, isExiting, transition);
         controller.page = null;
+        if (isExiting) {
+            this.sidebar.update({
+                [WIDGET.RELATED_DOCUMENTS]: null,
+                [WIDGET.MORE_LIKE_THESE]: null,
+                [WIDGET.GLOSSARY_TERMS]: null,
+                [WIDGET.PUBLISHER_INFO]: null
+            });
+        }
     }
 
     /**
