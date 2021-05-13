@@ -21,10 +21,10 @@ export default class BrowseJournal extends Route {
     /**
      * Reset controller
      *
-     * @param {BrowseJournalIndexController} controller
+     * @param {Controller} controller
      * @param {boolean} isExiting
      * @param {Transition} transition
-     * @memberof BrowseJournalIndex
+     * @memberof BrowseJournal
      */
     resetController(controller: Controller, isExiting: boolean, transition: Transition) {
         super.resetController(controller, isExiting, transition);
