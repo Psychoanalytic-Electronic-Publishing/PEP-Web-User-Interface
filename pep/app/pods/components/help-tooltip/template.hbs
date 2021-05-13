@@ -16,8 +16,8 @@
             </span>
         {{/unless}}
         {{#unless this.isModalView}}
-            <EmberTooltip
-                @text={{@tooltip}}
+            <EmberPopover
+                @text={{html-safe @tooltip}}
                 @class={{@tooltipClass}}
                 @side={{this.tooltipSide}}
                 @spacing={{this.tooltipSpacing}}
