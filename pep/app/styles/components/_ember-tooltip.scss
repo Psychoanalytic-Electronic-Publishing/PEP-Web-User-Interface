@@ -1,4 +1,31 @@
 .ember-popover {
+    background-color: #2f3136;
+    border-color: darken(#2f3136, 5%);
+    color: #dbdddc;
+    &[x-placement^='right'] {
+        .ember-popover-arrow {
+            border-right-color: darken(#2f3136, 5%) !important;
+        }
+    }
+    &[x-placement^='left'] {
+        .ember-popover-arrow {
+            border-left-color: darken(#2f3136, 5%) !important;
+        }
+    }
+    &[x-placement^='top'] {
+        .ember-popover-arrow {
+            border-top-color: darken(#2f3136, 5%) !important;
+        }
+    }
+    &[x-placement^='bottom'] {
+        .ember-popover-arrow {
+            border-bottom-color: darken(#2f3136, 5%) !important;
+        }
+    }
+    a {
+        color: #6a81ae;
+    }
+
     &-inner {
         max-width: 250px;
     }

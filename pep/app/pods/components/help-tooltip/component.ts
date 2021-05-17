@@ -56,6 +56,14 @@ export default class HelpTooltip extends Component<BaseGlimmerSignature<HelpTool
         return this.args.tooltipContainer ?? 'body';
     }
 
+    popperOptions = {
+        modifiers: {
+            preventOverflow: {
+                escapeWithReference: false
+            }
+        }
+    };
+
     /**
      * Opens the help tooltip modal with the given content/title when the
      * content is clicked if modal view is active
