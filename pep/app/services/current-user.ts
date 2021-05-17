@@ -11,11 +11,22 @@ import { WidgetConfiguration } from 'pep/constants/configuration';
 import { USER_PREFERENCES_COOKIE_NAME } from 'pep/constants/cookies';
 import { MAX_AGE } from 'pep/constants/dates';
 import {
-    COOKIE_PREFERENCES, DEFAULT_USER_PREFERENCES, LOCALSTORAGE_PREFERENCES, PreferenceChangeset, PreferenceDocumentsKey,
-    PreferenceKey, USER_PREFERENCES_LS_PREFIX, UserPreferences
+    COOKIE_PREFERENCES,
+    DEFAULT_USER_PREFERENCES,
+    LOCALSTORAGE_PREFERENCES,
+    PreferenceChangeset,
+    PreferenceDocumentsKey,
+    PreferenceKey,
+    USER_PREFERENCES_LS_PREFIX,
+    UserPreferences
 } from 'pep/constants/preferences';
 import {
-    AvailableFontSizes, FONT_SIZE_DEFAULT, FontSize, TEXT_LEFT, TextJustificationId, TextJustifications
+    AvailableFontSizes,
+    FONT_SIZE_DEFAULT,
+    FontSize,
+    TEXT_LEFT,
+    TextJustificationId,
+    TextJustifications
 } from 'pep/constants/text';
 import USER_LOGIN_METHODS from 'pep/constants/user';
 import User, { UserType } from 'pep/pods/user/model';
@@ -446,12 +457,12 @@ export default class CurrentUserService extends Service {
         const configs = this.preferences?.widgetConfigurations;
         let updatedConfigs = configs;
         widgetConfigurations.forEach((configuration) => {
-            const configAlreadyExists = configs?.some((item) => item.widget === configuration.widget);
+            const configAlreadyExists = updatedConfigs?.some((item) => item.widget === configuration.widget);
 
-            if (!configAlreadyExists && configs) {
-                updatedConfigs = [...configs, configuration];
-            } else if (configs) {
-                const arrayWithoutConfig = configs.filter((item) => item.widget !== configuration.widget);
+            if (!configAlreadyExists && updatedConfigs) {
+                updatedConfigs = [...updatedConfigs, configuration];
+            } else if (updatedConfigs) {
+                const arrayWithoutConfig = updatedConfigs.filter((item) => item.widget !== configuration.widget);
                 updatedConfigs = [...arrayWithoutConfig, configuration];
             }
         });
