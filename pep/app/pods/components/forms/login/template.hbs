@@ -7,8 +7,8 @@
             <div class="mb-2">
                 {{t
                     "login.groupInformation"
-                    org=this.currentUser.user.userFullName
-                    method=this.currentUser.loginMethodTranslation
+                    method=this.groupLoginMethod
+                    htmlSafe=true
                 }}
             </div>
         {{/if}}
