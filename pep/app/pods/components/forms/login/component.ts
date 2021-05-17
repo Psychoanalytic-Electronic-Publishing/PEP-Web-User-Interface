@@ -11,6 +11,7 @@ import Modal from '@gavant/ember-modals/services/modal';
 import createChangeset, { GenericChangeset } from '@gavant/ember-validations/utilities/create-changeset';
 
 import { FormValidatorChildLikeComponent, InputValidatorLikeComponent } from 'glint';
+import USER_LOGIN_METHODS, { LOGIN_FEDERATED, LOGIN_IP } from 'pep/constants/user';
 import AjaxService from 'pep/services/ajax';
 import { LoginForm } from 'pep/services/auth';
 import ConfigurationService from 'pep/services/configuration';
@@ -60,6 +61,17 @@ export default class FormsLogin extends Component<FormsLoginSignature> {
 
     get cardInfo() {
         return this.configuration.content.global.signInCard;
+    }
+
+    get groupLoginMethod() {
+        const loginMethod = USER_LOGIN_METHODS.findBy('id', this.currentUser.user?.loggedInMethod);
+        if (loginMethod === LOGIN_IP) {
+            return this.intl.t('user.login.component.ip');
+        } else if (loginMethod === LOGIN_FEDERATED) {
+            return this.intl.t('user.login.component.federated');
+        } else {
+            return this.intl.t('user.login.component.referral');
+        }
     }
 
     /**
