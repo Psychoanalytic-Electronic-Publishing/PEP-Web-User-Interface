@@ -66,11 +66,11 @@ export default class FormsLogin extends Component<FormsLoginSignature> {
     get groupLoginMethod() {
         const loginMethod = USER_LOGIN_METHODS.findBy('id', this.currentUser.user?.loggedInMethod);
         if (loginMethod === LOGIN_IP) {
-            return this.intl.t('user.login.component.ip');
+            return this.intl.t('login.component.ip');
         } else if (loginMethod === LOGIN_FEDERATED) {
-            return this.intl.t('user.login.component.federated');
+            return this.intl.t('login.component.federated');
         } else {
-            return this.intl.t('user.login.component.referral');
+            return this.intl.t('login.component.referral');
         }
     }
 
