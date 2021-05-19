@@ -64,6 +64,7 @@ export default class ModalDialogsHelpFeedback extends Component<BaseGlimmerSigna
         const feedbackChangeset = createChangeset<Feedback>(
             {
                 reporterName: currentUser?.userFullName ?? '',
+                reporterEmail: currentUser?.emailAddress ?? '',
                 subject: '',
                 description: '',
                 url: window.location.href,
