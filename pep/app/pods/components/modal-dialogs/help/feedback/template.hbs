@@ -19,6 +19,11 @@
                         <FlInput @value={{changeset.reporterName}} @placeholder={{t "feedback.form.fullName"}} maxlength="128" />
                     </Validator.input>
                 </div>
+                <div class="col-sm-8">
+                    <Validator.input @errors={{changeset.error.reporterEmail.validation}} class="input-validator-compact">
+                        <FlInput @value={{changeset.reporterEmail}} @placeholder={{t "feedback.form.email"}} maxlength="128" />
+                    </Validator.input>
+                </div>
             </div>
             <div class="form-row">
                 <div class="col-sm-6">

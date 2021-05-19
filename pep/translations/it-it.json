@@ -774,7 +774,8 @@
             "url": "URL *",
             "selectFeedbackType": "Select a feedback type",
             "type": "Type",
-            "fullName": "Full Name *"
+            "fullName": "Full Name *",
+            "email": "Email Address *"
         },
         "feedbackTypes": {
             "feedback": "Feedback",
