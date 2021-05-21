@@ -9,6 +9,7 @@ import { groupCountsByRange, SearchFacetCounts } from 'pep/utils/search';
  * @type SearchTermParam
  */
 export type SearchTermParam =
+    | 'facetquery'
     | 'fulltext1'
     | 'paratext'
     | 'parascope'
@@ -507,7 +508,7 @@ export const SEARCH_FACET_SOURCE_CODE: SearchFacetType = {
     paramSeparator: ' OR ',
     label: 'search.facets.source_code.label',
     dynamicValues: true,
-    prefixValues: false,
+    prefixValues: true,
     values: []
 };
 
@@ -517,7 +518,7 @@ export const SEARCH_FACET_VOLUME: SearchFacetType = {
     paramSeparator: ' OR ',
     label: 'search.facets.volume.label',
     dynamicValues: true,
-    prefixValues: false,
+    prefixValues: true,
     values: []
 };
 
@@ -589,6 +590,8 @@ export const SEARCH_FACET_AUTHOR: SearchFacetType = {
     paramSeparator: ' OR ',
     label: 'search.facets.art_authors.label',
     dynamicValues: true,
+    prefixValues: true,
+    quoteValues: true,
     values: []
 };
 
