@@ -10,8 +10,19 @@ module('Unit | Utility | search', function(hooks) {
         synonyms: false
     };
 
-    const assertBuildQueryParamsResults = (assert: Assert, result: QueryParamsObj, expected: any) => {
-        assert.deepEqual(result, Object.assign({}, defaultSearchQueryParamsReturn, expected));
+    const assertBuildQueryParamsResults = (
+        assert: Assert,
+        assertObject: {
+            message?: string;
+            result: QueryParamsObj;
+            expected: any;
+        }
+    ) => {
+        assert.deepEqual(
+            assertObject.result,
+            Object.assign({}, defaultSearchQueryParamsReturn, assertObject.expected),
+            assertObject.message
+        );
     };
 
     test('Empty object returns abstract true and synonyms false', function(assert) {
@@ -20,8 +31,8 @@ module('Unit | Utility | search', function(hooks) {
         assert.deepEqual(result, defaultSearchQueryParamsReturn);
     });
 
-    test('Single author facets works', function(assert) {
-        const result = buildSearchQueryParams({
+    test('Search Facets works', function(assert) {
+        const singleAuthorFacet = buildSearchQueryParams({
             facetValues: [
                 {
                     id: 'art_authors',
@@ -29,31 +40,15 @@ module('Unit | Utility | search', function(hooks) {
                 }
             ]
         });
-        assertBuildQueryParamsResults(assert, result, {
-            facetquery: 'art_authors:("Baker, E")'
+        assertBuildQueryParamsResults(assert, {
+            message: 'Single Author facet works',
+            result: singleAuthorFacet,
+            expected: {
+                facetquery: 'art_authors:("Baker, E")'
+            }
         });
-    });
 
-    test('Multiple author facets works', function(assert) {
-        const result = buildSearchQueryParams({
-            facetValues: [
-                {
-                    id: 'art_authors',
-                    value: 'Baker, E'
-                },
-                {
-                    id: 'art_authors',
-                    value: 'Baker, A'
-                }
-            ]
-        });
-        assertBuildQueryParamsResults(assert, result, {
-            facetquery: 'art_authors:("Baker, E" OR "Baker, A")'
-        });
-    });
-
-    test('Multiple author facets + source title', function(assert) {
-        const result = buildSearchQueryParams({
+        const multipleAuthorFacets = buildSearchQueryParams({
             facetValues: [
                 {
                     id: 'art_authors',
@@ -62,25 +57,19 @@ module('Unit | Utility | search', function(hooks) {
                 {
                     id: 'art_authors',
                     value: 'Baker, A'
-                },
-                {
-                    id: 'art_sourcetitleabbr',
-                    value: 'test'
                 }
             ]
         });
 
-        assertBuildQueryParamsResults(assert, result, {
-            facetquery: 'art_authors:("Baker, E" OR "Baker, A") AND art_sourcetitleabbr:("test")'
+        assertBuildQueryParamsResults(assert, {
+            message: 'Multiple Author facets works',
+            result: multipleAuthorFacets,
+            expected: {
+                facetquery: 'art_authors:("Baker, E" OR "Baker, A")'
+            }
         });
-    });
 
-    test('Multiple author facets + multiple author search', function(assert) {
-        const result = buildSearchQueryParams({
-            searchTerms: [
-                { type: SearchTermId.AUTHOR, term: 'Freud' },
-                { type: SearchTermId.AUTHOR, term: 'Test' }
-            ],
+        const authorsAndSourceTitle = buildSearchQueryParams({
             facetValues: [
                 {
                     id: 'art_authors',
@@ -97,9 +86,12 @@ module('Unit | Utility | search', function(hooks) {
             ]
         });
 
-        assertBuildQueryParamsResults(assert, result, {
-            author: '(Freud) AND (Test)',
-            facetquery: 'art_authors:("Baker, E" OR "Baker, A") AND art_sourcetitleabbr:("test")'
+        assertBuildQueryParamsResults(assert, {
+            message: 'Multiple Author facets and single source title works',
+            result: authorsAndSourceTitle,
+            expected: {
+                facetquery: 'art_authors:("Baker, E" OR "Baker, A") AND art_sourcetitleabbr:("test")'
+            }
         });
     });
 
@@ -108,11 +100,67 @@ module('Unit | Utility | search', function(hooks) {
             searchTerms: [{ type: SearchTermId.ARTICLE, term: 'test' }]
         });
 
-        assertBuildQueryParamsResults(assert, result, {
-            abstract: true,
-            fulltext1: 'body_xml:(test)',
-            parascope: 'doc',
-            synonyms: false
+        assertBuildQueryParamsResults(assert, {
+            result,
+            expected: {
+                abstract: true,
+                fulltext1: 'body_xml:(test)',
+                parascope: 'doc',
+                synonyms: false
+            }
+        });
+    });
+
+    test('Author search works', function(assert) {
+        const singleAuthorSearch = buildSearchQueryParams({
+            searchTerms: [{ type: SearchTermId.AUTHOR, term: 'Freud' }]
+        });
+
+        assertBuildQueryParamsResults(assert, {
+            message: 'Single author search works',
+            result: singleAuthorSearch,
+            expected: {
+                author: '"Freud"'
+            }
+        });
+
+        const multipleAuthorSearch = buildSearchQueryParams({
+            searchTerms: [
+                { type: SearchTermId.AUTHOR, term: 'Freud' },
+                { type: SearchTermId.AUTHOR, term: 'Test' }
+            ]
+        });
+
+        assertBuildQueryParamsResults(assert, {
+            message: 'Multiple author search works',
+            result: multipleAuthorSearch,
+            expected: {
+                author: '(Freud) AND (Test)'
+            }
+        });
+
+        const orAuthorSearch = buildSearchQueryParams({
+            searchTerms: [{ type: SearchTermId.AUTHOR, term: 'Freud OR Test' }]
+        });
+
+        assertBuildQueryParamsResults(assert, {
+            message: 'OR author search works',
+            result: orAuthorSearch,
+            expected: {
+                author: '(Freud OR Test)'
+            }
+        });
+
+        const orAuthorSearchWithInitials = buildSearchQueryParams({
+            searchTerms: [{ type: SearchTermId.AUTHOR, term: 'Freud, J OR Test, M' }]
+        });
+
+        assertBuildQueryParamsResults(assert, {
+            message: 'OR author search works with initials',
+            result: orAuthorSearchWithInitials,
+            expected: {
+                author: '(Freud, J OR Test, M)'
+            }
         });
     });
 
@@ -121,10 +169,13 @@ module('Unit | Utility | search', function(hooks) {
             searchTerms: [{ type: SearchTermId.CITED, term: 'test' }]
         });
 
-        assertBuildQueryParamsResults(assert, result, {
-            abstract: true,
-            citecount: 'test',
-            synonyms: false
+        assertBuildQueryParamsResults(assert, {
+            result,
+            expected: {
+                abstract: true,
+                citecount: 'test',
+                synonyms: false
+            }
         });
     });
 
@@ -133,11 +184,14 @@ module('Unit | Utility | search', function(hooks) {
             searchTerms: [{ type: SearchTermId.DIALOG, term: 'test' }]
         });
 
-        assertBuildQueryParamsResults(assert, result, {
-            abstract: true,
-            fulltext1: 'dialogs_xml:(test)',
-            parascope: 'dialogs',
-            synonyms: false
+        assertBuildQueryParamsResults(assert, {
+            result,
+            expected: {
+                abstract: true,
+                fulltext1: 'dialogs_xml:(test)',
+                parascope: 'dialogs',
+                synonyms: false
+            }
         });
     });
 
@@ -146,11 +200,14 @@ module('Unit | Utility | search', function(hooks) {
             searchTerms: [{ type: SearchTermId.DREAM, term: 'test' }]
         });
 
-        assertBuildQueryParamsResults(assert, result, {
-            abstract: true,
-            fulltext1: 'dreams_xml:(test)',
-            parascope: 'dreams',
-            synonyms: false
+        assertBuildQueryParamsResults(assert, {
+            result,
+            expected: {
+                abstract: true,
+                fulltext1: 'dreams_xml:(test)',
+                parascope: 'dreams',
+                synonyms: false
+            }
         });
     });
 
@@ -159,9 +216,12 @@ module('Unit | Utility | search', function(hooks) {
             searchTerms: [{ type: SearchTermId.END_YEAR, term: 'test' }]
         });
 
-        assertBuildQueryParamsResults(assert, result, {
-            abstract: true,
-            synonyms: false
+        assertBuildQueryParamsResults(assert, {
+            result,
+            expected: {
+                abstract: true,
+                synonyms: false
+            }
         });
     });
 
@@ -170,10 +230,13 @@ module('Unit | Utility | search', function(hooks) {
             searchTerms: [{ type: SearchTermId.EVERYWHERE, term: 'test' }]
         });
 
-        assertBuildQueryParamsResults(assert, result, {
-            abstract: true,
-            fulltext1: 'text:(test)',
-            synonyms: false
+        assertBuildQueryParamsResults(assert, {
+            result,
+            expected: {
+                abstract: true,
+                fulltext1: 'text:(test)',
+                synonyms: false
+            }
         });
     });
 
@@ -182,10 +245,13 @@ module('Unit | Utility | search', function(hooks) {
             searchTerms: [{ type: SearchTermId.QUOTE, term: 'test' }]
         });
 
-        assertBuildQueryParamsResults(assert, result, {
-            abstract: true,
-            fulltext1: 'quotes_xml:(test)',
-            synonyms: false
+        assertBuildQueryParamsResults(assert, {
+            result,
+            expected: {
+                abstract: true,
+                fulltext1: 'quotes_xml:(test)',
+                synonyms: false
+            }
         });
     });
 
@@ -194,11 +260,14 @@ module('Unit | Utility | search', function(hooks) {
             searchTerms: [{ type: SearchTermId.REFERENCE, term: 'test' }]
         });
 
-        assertBuildQueryParamsResults(assert, result, {
-            abstract: true,
-            fulltext1: 'references_xml:(test)',
-            parascope: 'biblios',
-            synonyms: false
+        assertBuildQueryParamsResults(assert, {
+            result,
+            expected: {
+                abstract: true,
+                fulltext1: 'references_xml:(test)',
+                parascope: 'biblios',
+                synonyms: false
+            }
         });
     });
 
@@ -207,10 +276,13 @@ module('Unit | Utility | search', function(hooks) {
             searchTerms: [{ type: SearchTermId.START_YEAR, term: 'test' }]
         });
 
-        assertBuildQueryParamsResults(assert, result, {
-            abstract: true,
-            startyear: 'test',
-            synonyms: false
+        assertBuildQueryParamsResults(assert, {
+            result,
+            expected: {
+                abstract: true,
+                startyear: 'test',
+                synonyms: false
+            }
         });
     });
 
@@ -219,10 +291,13 @@ module('Unit | Utility | search', function(hooks) {
             searchTerms: [{ type: SearchTermId.TITLE, term: 'test' }]
         });
 
-        assertBuildQueryParamsResults(assert, result, {
-            abstract: true,
-            synonyms: false,
-            title: 'test'
+        assertBuildQueryParamsResults(assert, {
+            result,
+            expected: {
+                abstract: true,
+                synonyms: false,
+                title: 'test'
+            }
         });
     });
 
@@ -231,10 +306,13 @@ module('Unit | Utility | search', function(hooks) {
             searchTerms: [{ type: SearchTermId.VIEWED, term: 'test' }]
         });
 
-        assertBuildQueryParamsResults(assert, result, {
-            abstract: true,
-            synonyms: false,
-            viewcount: 'test'
+        assertBuildQueryParamsResults(assert, {
+            result,
+            expected: {
+                abstract: true,
+                synonyms: false,
+                viewcount: 'test'
+            }
         });
     });
 });
