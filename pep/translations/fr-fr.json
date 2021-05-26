@@ -977,7 +977,8 @@
                 },
                 "signInCard": {
                     "title": "Carte de connexion",
-                    "body": "Corps de la carte de connexion"
+                    "body": "Corps de la carte de connexion",
+                    "groupInformation": "Group Information Header"
                 }
             },
             "home": {

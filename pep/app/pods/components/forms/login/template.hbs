@@ -5,11 +5,7 @@
         {{/if}}
         {{#if this.currentUser.user.isGroup}}
             <div class="mb-2">
-                {{t
-                    "login.groupInformation"
-                    method=this.groupLoginMethod
-                    htmlSafe=true
-                }}
+                {{html-safe this.cardInfo.groupInformation}}
             </div>
         {{/if}}
         <Alert

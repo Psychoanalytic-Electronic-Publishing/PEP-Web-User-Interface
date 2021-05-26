@@ -51,6 +51,17 @@
                                     {{t "admin.content.global.signInCard.title"}}
                                 </h4>
                                 <validator.input
+                                    @errors={{changeset.error.configSettings.home.signInCard.groupInformation.validation}}
+                                    @label={{true}}
+                                    @hasFocusedOut={{true}}
+                                    @fieldLabel={{t "admin.content.global.signInCard.groupInformation"}}
+                                >
+                                    <Admin::Editor
+                                        @changeset={{changeset}}
+                                        @path="configSettings.global.signInCard.groupInformation"
+                                    />
+                                </validator.input>
+                                <validator.input
                                     @errors={{changeset.error.configSettings.home.signInCard.body.validation}}
                                     @label={{true}}
                                     @hasFocusedOut={{true}}
