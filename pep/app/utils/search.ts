@@ -202,7 +202,9 @@ export function buildSearchQueryParams(searchQueryParams: BuildSearchQueryParams
         const facets = groupedFacets[id];
         if (facetType && facetType.param) {
             //join all the selected facet values together
-            const facetValues = facets.map((f) => (facetType?.quoteValues ? `"${f.value}"` : f.value));
+            let facetValues = facets.map((f) => (facetType?.quoteValues ? `"${f.value}"` : f.value));
+            facetValues = facetValues.map((facet) => (facetType.formatCounts ? `[${facet}]` : facet));
+
             //wrap all facets in parenthesis
             //https://github.com/Psychoanalytic-Electronic-Publishing/PEP-Web-User-Interface/issues/410
             let values = `(${facetValues.join(facetType.paramSeparator)})`;

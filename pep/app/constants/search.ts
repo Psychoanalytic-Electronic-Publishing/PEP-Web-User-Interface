@@ -337,6 +337,7 @@ export const SEARCH_FACET_SOURCETYPE: SearchFacetType = {
     paramSeparator: ' OR ',
     label: 'search.facets.art_sourcetype.label',
     dynamicValues: false,
+    prefixValues: true,
     values: [
         {
             id: SourceType.BOOK,
@@ -385,6 +386,7 @@ export const SEARCH_FACET_TYPE: SearchFacetType = {
     paramSeparator: ' OR ',
     label: 'search.facets.art_type.label',
     dynamicValues: false,
+    prefixValues: true,
     values: [
         {
             id: 'ABS',
@@ -439,6 +441,7 @@ export const SEARCH_FACET_LANG: SearchFacetType = {
     paramSeparator: ',',
     label: 'search.facets.art_lang.label',
     dynamicValues: false,
+    prefixValues: true,
     values: [
         {
             id: 'cs',
@@ -549,10 +552,11 @@ export const SEARCH_FACET_DECADE: SearchFacetType = {
     paramSeparator: ' OR ',
     label: 'search.facets.art_year_int.label',
     dynamicValues: true,
+    prefixValues: true,
     values: [],
-    formatCounts: (counts: SearchFacetCounts) => groupCountsByRange(counts, 10),
+    formatCounts: (counts: SearchFacetCounts) => groupCountsByRange(counts, 10, ' TO '),
     formatOption: (opt: string, intl: IntlService) =>
-        intl.t('search.facets.art_year_int.option', { year: opt.split('-')?.[0]?.trim() })
+        intl.t('search.facets.art_year_int.option', { year: opt.split('TO')?.[0]?.trim() })
 };
 
 export const SEARCH_FACET_CITATION: SearchFacetType = {
@@ -561,14 +565,12 @@ export const SEARCH_FACET_CITATION: SearchFacetType = {
     paramSeparator: ' OR ',
     label: 'search.facets.art_cited_5.label',
     dynamicValues: true,
+    prefixValues: true,
     values: [],
-    formatCounts: (counts: SearchFacetCounts) => groupCountsByRange(counts, 10, ' TO ', ' IN 5'),
+    formatCounts: (counts: SearchFacetCounts) => groupCountsByRange(counts, 10, ' TO '),
     formatOption: (opt: string, intl: IntlService) =>
         intl.t('search.facets.art_cited_5.option', {
-            range: opt
-                .replace('TO', '-')
-                .replace('IN 5', '')
-                .trim()
+            range: opt.replace('TO', '-').trim()
         })
 };
 
@@ -578,6 +580,7 @@ export const SEARCH_FACET_VIEW: SearchFacetType = {
     paramSeparator: ' OR ',
     label: 'search.facets.art_views_last12mos.label',
     dynamicValues: true,
+    prefixValues: true,
     values: [],
     formatCounts: (counts: SearchFacetCounts) => groupCountsByRange(counts, 10, ' TO '),
     formatOption: (opt: string, intl: IntlService) =>
