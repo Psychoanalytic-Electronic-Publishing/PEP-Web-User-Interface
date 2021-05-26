@@ -6,8 +6,15 @@ import { QueryParamsObj, removeEmptyQueryParams } from '@gavant/ember-pagination
 
 import { BOOLEAN_OPERATOR_REGEX, QUOTED_VALUE_REGEX } from 'pep/constants/regex';
 import {
-    SEARCH_DEFAULT_VIEW_PERIOD, SEARCH_FACETS, SEARCH_TYPE_AUTHOR, SEARCH_TYPES, SearchFacetId, SearchFacetValue,
-    SearchTermValue, SourceType, ViewPeriod
+    SEARCH_DEFAULT_VIEW_PERIOD,
+    SEARCH_FACETS,
+    SEARCH_TYPE_AUTHOR,
+    SEARCH_TYPES,
+    SearchFacetId,
+    SearchFacetValue,
+    SearchTermValue,
+    SourceType,
+    ViewPeriod
 } from 'pep/constants/search';
 import ApplicationController from 'pep/pods/application/controller';
 import Document from 'pep/pods/document/model';
@@ -40,6 +47,7 @@ interface SearchQueryStrParams {
     citecount?: string;
     viewcount?: string;
     viewperiod?: string;
+    facetquery?: string;
 }
 
 /**
@@ -116,6 +124,7 @@ export function buildSearchQueryParams(searchQueryParams: BuildSearchQueryParams
     } = searchQueryParams;
 
     const queryParams: SearchQueryParams = {
+        facetquery: '',
         facetfields: !isEmpty(facetFields) ? facetFields.join(',') : null,
         facetlimit: facetLimit,
         facetmincount: facetMinCount,
@@ -193,7 +202,9 @@ export function buildSearchQueryParams(searchQueryParams: BuildSearchQueryParams
         const facets = groupedFacets[id];
         if (facetType && facetType.param) {
             //join all the selected facet values together
-            const facetValues = facets.map((f) => (facetType?.quoteValues ? `"${f.value}"` : f.value));
+            let facetValues = facets.map((f) => (facetType?.quoteValues ? `"${f.value}"` : f.value));
+            facetValues = facetValues.map((facet) => (facetType.formatCounts ? `[${facet}]` : facet));
+
             //wrap all facets in parenthesis
             //https://github.com/Psychoanalytic-Electronic-Publishing/PEP-Web-User-Interface/issues/410
             let values = `(${facetValues.join(facetType.paramSeparator)})`;
@@ -202,7 +213,7 @@ export function buildSearchQueryParams(searchQueryParams: BuildSearchQueryParams
                 values = `${facetType.id}:${values}`;
             }
 
-            queryParams[facetType.param] = joinParamValues(queryParams[facetType.param], values, joinOp);
+            queryParams['facetquery'] = joinParamValues(queryParams['facetquery'], values, joinOp);
         }
     });
 
