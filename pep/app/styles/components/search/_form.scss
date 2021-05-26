@@ -12,6 +12,20 @@
         &-field {
             position: relative;
 
+            .floating-label {
+                .fl-placeholder-label {
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    max-width: calc(100% - 7.5rem);
+                }
+                &.fl-has-focus-or-content {
+                    .fl-placeholder-label {
+                        max-width: 100%;
+                    }
+                }
+            }
+
             &-text {
                 padding-right: 6.75rem;
             }
