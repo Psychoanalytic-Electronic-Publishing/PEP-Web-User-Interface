@@ -22,8 +22,8 @@
                     {{/if}}
                 </div>
             </div>
-            <div class="d-flex justify-content-between align-items-center mb-2">
-                <p class="text-muted mb-0">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+                <p class="text-muted mb-0 pr-2">
                     {{t "search.form.terms.heading"}}
                 </p>
                 <div class="d-flex align-items-center">
@@ -32,7 +32,7 @@
                         @icon={{if @isLimitOpen "chevron-up" "chevron-down"}}
                         @type="link"
                         @action={{this.toggleLimitFields}}
-                        class="p-0 font-size-secondary"
+                        class="p-0 font-size-secondary text-truncate"
                     />
                     {{#if this.configuration.content.search.limitTo.help}}
                         <HelpTooltip @tooltip={{this.configuration.content.search.limitTo.help}} />
@@ -51,7 +51,7 @@
                                 autocomplete="off"
                                 {{on "input" this.onLimitTextChange}}
                             />
-                            <span class="font-size-secondary text-nowrap">
+                            <span class="font-size-secondary">
                                 {{t "search.form.additional.cited.times"}}
                             </span>
                         </div>
@@ -64,11 +64,11 @@
                                 autocomplete="off"
                                 {{on "input" this.onLimitTextChange}}
                             />
-                            <span class="font-size-secondary text-nowrap">
+                            <span class="font-size-secondary flex-grow-1">
                                 {{t "search.form.additional.viewed.times"}}
                             </span>
                             <select
-                                class="custom-select custom-select-sm text-truncate ml-1 mr-2"
+                                class="custom-select custom-select-sm text-truncate ml-1 mr-2 w-auto"
                                 {{on "change" this.onViewedPeriodChange}}
                             >
                                 {{#each this.viewPeriodOptions as |period|}}
