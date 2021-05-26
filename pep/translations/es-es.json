@@ -977,7 +977,8 @@
                 },
                 "signInCard": {
                     "title": "Sign In Card",
-                    "body": "Sign In Card Body"
+                    "body": "Sign In Card Body",
+                    "groupInformation": "Group Information Header"
                 }
             },
             "home": {

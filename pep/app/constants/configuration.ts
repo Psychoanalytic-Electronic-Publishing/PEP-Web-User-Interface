@@ -132,6 +132,7 @@ export interface ContentConfiguration {
             };
         };
         signInCard: {
+            groupInformation: string;
             body: string;
         };
         adminSpecifiedInformationItems: AdminSpecifiedInformation[];
@@ -401,6 +402,8 @@ export const DEFAULT_CONTENT_CONFIGURATION: ContentConfiguration = {
             }
         },
         signInCard: {
+            groupInformation:
+                'You have been granted full archive access to PEP because your institution has a valid subscription based on what is called a “Referral/Federated-OpenAthens/IP Address” logon. But to be able to alter the look and feel of the site, save papers, searches and favorites and many other things, you need to become a registered user (which is free). You do that once, then access this site direct using the personal login you create. (Every 90 days you need to come in via your university/institute to re-validate). If you already have a log-in on the PaDS system, use that.  Click <a href="http://support.pep-web.org/login-help" target="_blank">here</a> for more details.',
             body:
                 'This is the Psychoanalytic Electronic Publishing Archive full text database. It is freely available for everyone to search, view tables of contents, and view abstracts and summaries. However you will need a paid subscription in order to view the full text of articles.<br><br>All users can register to get a username and access password that will let you save your application preferences, customize the information displayed by the interface, and save bookmarks and favorites. University, group, and federation users need to register to get an individual login to save their preferences as well.'
         },
