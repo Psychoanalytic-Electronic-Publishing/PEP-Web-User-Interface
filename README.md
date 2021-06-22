@@ -13,6 +13,7 @@ You will need the following things properly installed on your computer.
 * [Yarn](https://yarnpkg.com/)
 * [Ember CLI](https://ember-cli.com/)
 * [Google Chrome](https://google.com/chrome/)
+* [Font Awesome Pro Liscence](https://fontawesome.com/license)
 
 ## Installation
 
@@ -20,9 +21,13 @@ You will need the following things properly installed on your computer.
 * `cd pep`
 * `yarn install`
 
+## SSL Certificate
+By default we run this project with SSL. You will either need to run the server without SSL (see below) or generate a [self signed cert](https://devcenter.heroku.com/articles/ssl-certificate-sel). 
+
 ## Running / Development
 
-* `ember serve`
+* With SSL `yarn start`
+* without SSL `ember serve –ssl=false`
 * Visit your app at [http://localhost:4200](http://localhost:4200).
 * Visit your tests at [http://localhost:4200/tests](http://localhost:4200/tests).
 
