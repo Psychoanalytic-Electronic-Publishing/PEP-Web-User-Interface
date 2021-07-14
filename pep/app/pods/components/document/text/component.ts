@@ -15,8 +15,14 @@ import animateScrollTo from 'animated-scroll-to';
 import ENV from 'pep/config/environment';
 import { DOCUMENT_IMG_BASE_URL, DocumentLinkTypes } from 'pep/constants/documents';
 import {
-    HIT_MARKER_END, HIT_MARKER_END_OUTPUT_HTML, HIT_MARKER_START, HIT_MARKER_START_OUTPUT_HTML,
-    POSSIBLE_INVALID_SEARCH_HITS, SEARCH_HIT_MARKER_REGEX, SearchTermId, SourceType
+    HIT_MARKER_END,
+    HIT_MARKER_END_OUTPUT_HTML,
+    HIT_MARKER_START,
+    HIT_MARKER_START_OUTPUT_HTML,
+    POSSIBLE_INVALID_SEARCH_HITS,
+    SEARCH_HIT_MARKER_REGEX,
+    SearchTermId,
+    SourceType
 } from 'pep/constants/search';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import Document from 'pep/pods/document/model';
@@ -698,7 +704,7 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
      */
     @action
     async loadTranslation(paraLangId?: string | null, paraLangRx?: string | null) {
-        let url = `Documents/Concordance?return_format=XML`;
+        let url = `Documents/Concordance/?return_format=XML`;
         if (paraLangId) {
             url += `&paralangid=${paraLangId}`;
         }
