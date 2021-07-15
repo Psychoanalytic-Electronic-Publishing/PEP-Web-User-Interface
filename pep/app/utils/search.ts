@@ -145,7 +145,7 @@ export function buildSearchQueryParams(searchQueryParams: BuildSearchQueryParams
     nonEmptyTerms?.forEach((term) => {
         const searchType = SEARCH_TYPES.findBy('id', term.type);
         if (searchType && searchType.param) {
-            let value = term.term.trim();
+            let value = term.term.replace(':', ' ').trim();
             const p = searchType.param as keyof SearchQueryStrParams;
 
             if (searchType.solrField) {
