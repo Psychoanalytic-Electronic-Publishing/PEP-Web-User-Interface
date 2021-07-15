@@ -430,4 +430,20 @@ module('Unit | Utility | search', function() {
             }
         });
     });
+
+    test('Article search removes colons', function(assert) {
+        const result = buildSearchQueryParams({
+            searchTerms: [{ type: SearchTermId.ARTICLE, term: 'test:two' }]
+        });
+
+        assertBuildQueryParamsResults(assert, {
+            result,
+            expected: {
+                abstract: true,
+                fulltext1: 'body_xml:("test two"~25)',
+                parascope: 'doc',
+                synonyms: false
+            }
+        });
+    });
 });
