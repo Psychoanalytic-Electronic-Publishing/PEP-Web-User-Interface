@@ -70,7 +70,9 @@ export enum SearchTermId {
     START_YEAR = 'startYear',
     END_YEAR = 'endYear',
     CITED = 'cited',
-    VIEWED = 'viewed'
+    VIEWED = 'viewed',
+    VOLUME = 'volume',
+    SOURCE_CODE = 'sourcecode'
 }
 
 /**
@@ -289,6 +291,20 @@ export const SEARCH_TYPE_START_YEAR: SearchTermType = {
     isTypeOption: true
 };
 
+export const SEARCH_TYPE_VOLUME: SearchTermType = {
+    id: SearchTermId.VOLUME,
+    param: 'volume',
+    label: 'search.terms.startYear.label',
+    isTypeOption: false
+};
+
+export const SEARCH_TYPE_SOURCE_CODE: SearchTermType = {
+    id: SearchTermId.SOURCE_CODE,
+    param: 'sourcecode',
+    label: 'search.terms.startYear.label',
+    isTypeOption: false
+};
+
 // Note: not being used, only using startyear for now
 // export const SEARCH_TYPE_END_YEAR: SearchTermType = {
 //     id: SearchTermId.END_YEAR,
@@ -324,7 +340,9 @@ export const SEARCH_TYPES: SearchTermType[] = [
     SEARCH_TYPE_REFERENCE,
     SEARCH_TYPE_TITLE,
     SEARCH_TYPE_VIEWED,
-    SEARCH_TYPE_START_YEAR
+    SEARCH_TYPE_START_YEAR,
+    SEARCH_TYPE_VOLUME,
+    SEARCH_TYPE_SOURCE_CODE
 ];
 
 /**
