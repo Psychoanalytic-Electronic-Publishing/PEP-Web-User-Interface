@@ -42,6 +42,7 @@ import tippy, { Instance, Props } from 'tippy.js';
 interface DocumentTextArgs {
     document: Document;
     target?: 'abstract' | 'document';
+    scrollableServiceTarget?: string;
     offsetForScroll?: number;
     readQueryParams: {
         q: string;
@@ -100,6 +101,7 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
 
     containerElement?: HTMLElement;
     scrollableElement?: Element | null;
+    scrollableServiceTarget?: string | null = this.args.scrollableServiceTarget;
     defaultOffsetForScroll = -95;
     tippyHelpDelay: [number, null] = [2000, null];
 
@@ -129,8 +131,11 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
 
     async documentRendered() {
         run(() => {
-            this.scrollable.scrollToTop('page-content');
+            if (this.scrollableServiceTarget) {
+                this.scrollable.scrollToTop(this.scrollableServiceTarget);
+            }
         });
+
         run(async () => {
             this.args.documentRendered?.();
 
