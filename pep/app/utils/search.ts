@@ -12,6 +12,7 @@ import {
     SEARCH_TYPES,
     SearchFacetId,
     SearchFacetValue,
+    SearchTermId,
     SearchTermValue,
     SourceType,
     ViewPeriod
@@ -415,10 +416,11 @@ export function getSearchQueryParams(toController: Controller): any {
 export function buildBrowseRelatedDocumentsParams(
     model: Document
 ): {
-    facetValues: {
+    facetValues?: {
         id: SearchFacetId;
         value: string;
     }[];
+    searchTerms?: SearchTermValue[];
     abstract: boolean;
 } {
     if (model.sourceType === SourceType.VIDEO_STREAM) {
@@ -434,14 +436,14 @@ export function buildBrowseRelatedDocumentsParams(
     } else {
         const terms = model.id.split('.');
         return {
-            facetValues: [
+            searchTerms: [
                 {
-                    id: SearchFacetId.ART_SOURCECODE,
-                    value: terms[0]
+                    type: SearchTermId.VOLUME,
+                    term: typeof terms[1] === 'string' ? terms[1] : Number(terms[1]).toString()
                 },
                 {
-                    id: SearchFacetId.ART_VOL,
-                    value: Number(terms[1]).toString()
+                    type: SearchTermId.SOURCE_CODE,
+                    term: terms[0]
                 }
             ],
             abstract: false
