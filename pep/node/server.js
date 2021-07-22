@@ -13,7 +13,7 @@ module.exports = function(emberDistPath) {
         res.sendFile(`${emberDistPath}/assets/images/favicons/favicon.ico`);
     });
 
-    server.all('/toc', (req, res) => {
+    server.all('/toc.php', (req, res) => {
         const journal = req.query.journal;
         const volume = req.query.volume;
         if (volume) {
@@ -23,7 +23,7 @@ module.exports = function(emberDistPath) {
         }
     });
 
-    server.all('/document', (req, res) => {
+    server.all('/document.php', (req, res) => {
         const id = req.query.id;
         res.redirect(301, `/browse/document/${id}`);
     });
