@@ -6,6 +6,7 @@ import DS from 'ember-data';
 import FastbootAdapter from 'ember-data-storefront/mixins/fastboot-adapter';
 
 import ENV from 'pep/config/environment';
+import { IS_AUTH_HEADER } from 'pep/constants/headers';
 import PepSessionService from 'pep/services/pep-session';
 import { appendTrailingSlash, serializeQueryParams } from 'pep/utils/url';
 import { reject } from 'rsvp';
@@ -73,8 +74,10 @@ export default class Application extends DS.RESTAdapter.extend(FastbootAdapter) 
         if (this.session.isAuthenticated && this.session.data?.authenticated) {
             const { SessionId } = this.session.data.authenticated;
             headers['client-session'] = SessionId ?? '';
+            headers[IS_AUTH_HEADER] = true;
         } else {
             headers['client-session'] = this.session?.getUnauthenticatedSession()?.SessionId ?? '';
+            headers[IS_AUTH_HEADER] = false;
         }
 
         if (this.fastboot.isFastBoot) {
