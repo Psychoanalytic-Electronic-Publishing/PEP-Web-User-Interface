@@ -5,6 +5,7 @@ import FastbootService from 'ember-cli-fastboot/services/fastboot';
 
 import fetch from 'fetch';
 import ENV from 'pep/config/environment';
+import { IS_AUTH_HEADER } from 'pep/constants/headers';
 import PepSessionService from 'pep/services/pep-session';
 import { guard } from 'pep/utils/types';
 import { appendTrailingSlash } from 'pep/utils/url';
@@ -35,8 +36,10 @@ export default class AjaxService extends Service {
         if (this.session.isAuthenticated && this.session.data) {
             const { SessionId } = this.session.data.authenticated;
             headers['client-session'] = SessionId ?? '';
+            headers[IS_AUTH_HEADER] = true;
         } else {
             headers['client-session'] = this.session?.getUnauthenticatedSession()?.SessionId ?? '';
+            headers[IS_AUTH_HEADER] = false;
         }
         if (this.fastboot.isFastBoot) {
             const fastbootHeaders = this.fastboot.request.headers;
