@@ -64,6 +64,7 @@ export default class DocumentSerializer extends ApplicationSerializerMixin(
         if (payload?.documentList) {
             payload.documentList.responseSet = payload.documentList.responseSet.map((item: any) => {
                 const doc = transformDocument(item);
+                // Check and see if our document has had its access checked elsewhere. If it has, those are the values we want to use
                 const record = store.peekRecord('document', doc.documentID);
                 if (record && record.accessChecked) {
                     doc.accessLimited = record.accessLimited;
