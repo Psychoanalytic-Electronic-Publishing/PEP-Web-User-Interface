@@ -5,7 +5,10 @@ import attr from 'ember-data/attr';
 import { belongsTo } from 'ember-data/relationships';
 
 import {
-    HTML_BODY_REGEX, INVALID_ABSTRACT_PREVIEW_TAGS, INVALID_ABSTRACT_TAGS, SEARCH_STRING_REGEX,
+    HTML_BODY_REGEX,
+    INVALID_ABSTRACT_PREVIEW_TAGS,
+    INVALID_ABSTRACT_TAGS,
+    SEARCH_STRING_REGEX,
     SEARCH_STRING_TERMS_REGEX
 } from 'pep/constants/regex';
 import SimilarityMatch from 'pep/pods/similarity-match/model';
@@ -14,6 +17,7 @@ export default class Document extends DS.Model {
     // attributes
     @attr('string') abstract!: string;
     @attr('string') accessClassification!: string;
+    @attr('string') accessChecked!: boolean;
     @attr('boolean') accessLimited!: boolean;
     @attr('boolean') accessLimitedCurrentContent!: boolean;
     @attr('string') accessLimitedDescription!: string;
