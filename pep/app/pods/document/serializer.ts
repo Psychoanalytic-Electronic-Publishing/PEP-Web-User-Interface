@@ -1,9 +1,10 @@
-import DS from 'ember-data';
 import { camelize } from '@ember/string';
+
+import DS from 'ember-data';
 import { pluralize } from 'ember-inflector';
-import DocumentModel from 'pep/pods/document/model';
 
 import ApplicationSerializerMixin from 'pep/mixins/application-serializer';
+import DocumentModel from 'pep/pods/document/model';
 
 /**
  * Build correctly formatted similarity match items based on what the API sends
@@ -61,9 +62,16 @@ export default class DocumentSerializer extends ApplicationSerializerMixin(
     ) {
         const modelKey = pluralize(camelize(primaryModelClass.modelName));
         if (payload?.documentList) {
-            payload.documentList.responseSet = payload.documentList.responseSet.map((item: any) =>
-                transformDocument(item)
-            );
+            payload.documentList.responseSet = payload.documentList.responseSet.map((item: any) => {
+                const doc = transformDocument(item);
+                // Check and see if our document has had its access checked elsewhere. If it has, those are the values we want to use
+                const record = store.peekRecord('document', doc.documentID);
+                if (record && record.accessChecked) {
+                    doc.accessLimited = record.accessLimited;
+                    doc.accessChecked = record.accessChecked;
+                }
+                return doc;
+            });
 
             payload.meta = payload.documentList.responseInfo;
             payload[modelKey] = payload.documentList.responseSet;

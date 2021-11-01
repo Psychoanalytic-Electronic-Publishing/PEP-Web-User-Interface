@@ -7,15 +7,15 @@ import { restartableTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
 import DS from 'ember-data';
 
-import { SearchFacetId } from 'pep/constants/search';
 import { WIDGET } from 'pep/constants/sidebar';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import { BasePageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';
 import Document from 'pep/pods/document/model';
+import DocumentSerializer from 'pep/pods/document/serializer';
 import AjaxService from 'pep/services/ajax';
 import ConfigurationService from 'pep/services/configuration';
-import { buildSearchQueryParams } from 'pep/utils/search';
 import { BaseGlimmerSignature } from 'pep/utils/types';
+import { serializeQueryParams } from 'pep/utils/url';
 
 interface PageSidebarWidgetsRelatedDocumentsArgs extends BasePageSidebarWidgetArgs {}
 
@@ -43,17 +43,19 @@ export default class PageSidebarWidgetsRelatedDocuments extends Component<
      */
     @restartableTask
     *loadResults(relatedrx: string) {
-        const params = buildSearchQueryParams({
-            facetValues: [
-                {
-                    id: SearchFacetId.ART_QUAL,
-                    value: relatedrx
-                }
-            ]
+        const queryParms = serializeQueryParams({
+            relatedToThis: relatedrx
         });
+        const results = yield this.ajax.request(`/Database/RelatedToThis?${queryParms}`);
+        const serializer = this.store.serializerFor('document') as DocumentSerializer;
+        const modelClass = this.store.modelFor('document');
 
-        const results = yield this.store.query('document', params);
-        this.results = results.toArray();
+        // @ts-ignore types are wrong here - this works
+        const normalizedResponse = serializer.normalizeArrayResponse(this.store, modelClass, results, this.data.id);
+
+        const response = this.store.push(normalizedResponse);
+
+        this.results = response;
     }
 
     /**
