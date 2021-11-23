@@ -16,10 +16,6 @@ export default class DocumentActionsPrint extends Component<BaseGlimmerSignature
     @service('pep-session') session!: PepSessionService;
     @service printer!: PrinterService;
 
-    get canPrint(): boolean {
-        return true;
-    }
-
     /**
      * Print the document
      *
