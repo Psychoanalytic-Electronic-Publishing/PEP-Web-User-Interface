@@ -92,7 +92,10 @@
                                     @action={{this.viewDocument}}
                                     class="mr-2"
                                 />
-                                <Document::Actions::Download @document={{this.result}} />
+                                {{!-- template-lint-disable simple-unless --}}
+                                {{#unless (or this.result.accessLimited (not this.result.download))}}
+                                    <Document::Actions::Download @document={{this.result}} />
+                                {{/unless}}
                             {{/if}}
                         </div>
                     </div>

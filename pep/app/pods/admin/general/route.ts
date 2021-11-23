@@ -20,6 +20,7 @@ export default class AdminGeneral extends Route {
      * Load the base config
      *
      * @return {*}  {Promise<Configuration>}
+     *
      * @memberof AdminGeneral
      */
     model(): Promise<Configuration> {
