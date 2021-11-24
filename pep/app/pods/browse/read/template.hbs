@@ -7,12 +7,13 @@
                     {{this.document.documentRef}}
                 </p>
                 <div class="d-flex align-items-center">
-                    {{#unless this.document.accessLimited}}
+                    {{!-- template-lint-disable simple-unless --}}
+                    {{#if this.document.canDownload}}
                         <div class="flex-shrink-0">
                             <Document::Actions::Download @document={{this.document}} @iconOnly={{true}} />
                             <Document::Actions::Print @id={{this.document.id}} />
                         </div>
-                    {{/unless}}
+                    {{/if}}
                 </div>
             </div>
         </div>
