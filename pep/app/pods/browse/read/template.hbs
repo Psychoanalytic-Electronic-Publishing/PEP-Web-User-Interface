@@ -8,12 +8,12 @@
                 </p>
                 <div class="d-flex align-items-center">
                     {{!-- template-lint-disable simple-unless --}}
-                    {{#unless (or this.document.accessLimited (not this.document.download))}}
+                    {{#if this.document.canDownload}}
                         <div class="flex-shrink-0">
                             <Document::Actions::Download @document={{this.document}} @iconOnly={{true}} />
                             <Document::Actions::Print @id={{this.document.id}} />
                         </div>
-                    {{/unless}}
+                    {{/if}}
                 </div>
             </div>
         </div>
