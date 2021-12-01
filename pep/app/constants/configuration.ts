@@ -80,6 +80,7 @@ export interface BaseConfiguration {
             right: WidgetConfiguration[];
         };
         searchHelpVideoUrl: string;
+        notificationMessage?: string;
     };
     home: {
         expertPicksStartDate: string;
@@ -136,6 +137,7 @@ export interface ContentConfiguration {
             body: string;
         };
         adminSpecifiedInformationItems: AdminSpecifiedInformation[];
+        notificationMessage?: string;
     };
     home: {
         intro: {
