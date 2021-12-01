@@ -865,6 +865,10 @@
             },
             "global": {
                 "searchHelpVideoUrl": "Rechercher l'URL d'une vidéo d'aide",
+                "notifications": {
+                    "title": "",
+                    "message": ""
+                },
                 "cards": {
                     "left": "Barre latérale gauche",
                     "right": "Barre latérale droite",
@@ -946,6 +950,10 @@
                 }
             },
             "global": {
+                "notifications": {
+                    "title": "",
+                    "message": ""
+                },
                 "adminSpecifiedInformation": {
                     "id": "ID",
                     "value": "Valeur",

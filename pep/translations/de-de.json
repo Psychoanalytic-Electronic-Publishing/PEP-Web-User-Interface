@@ -865,6 +865,10 @@
             },
             "global": {
                 "searchHelpVideoUrl": "URL des Suchhilfe-Videos",
+                "notifications": {
+                    "title": "",
+                    "message": ""
+                },
                 "cards": {
                     "left": "Seitenleiste links",
                     "right": "Seitenleiste rechts",
@@ -946,6 +950,10 @@
                 }
             },
             "global": {
+                "notifications": {
+                    "title": "",
+                    "message": ""
+                },
                 "adminSpecifiedInformation": {
                     "id": "ID",
                     "value": "Wert",
