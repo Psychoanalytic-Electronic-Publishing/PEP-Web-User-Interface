@@ -2,7 +2,13 @@
     background: $color-information-bar-bg;
     transition: opacity 0.2s;
     background-clip: padding-box;
-    overflow: hidden;
     will-change: opacity;
     z-index: $z-information-bar;
+    &.information-over-modal {
+        z-index: 9999999;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+    }
 }
