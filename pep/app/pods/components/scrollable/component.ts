@@ -90,11 +90,17 @@ export default class Scrollable extends Component<BaseGlimmerSignature<Scrollabl
      * @memberof Scrollable
      */
     reinitialize(namespace?: string) {
-        if ((!namespace || this.args.namespace === namespace) && this.ps && this.scrollElement) {
+        if ((this.media.isMobile || this.media.isTablet) && this.scrollElement) {
             // @ts-ignore https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style#setting_styles
             this.scrollElement.style = '';
             this.teardown();
-            this.setup(this.scrollElement);
+        } else {
+            if ((!namespace || this.args.namespace === namespace) && this.ps && this.scrollElement) {
+                // @ts-ignore https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style#setting_styles
+                this.scrollElement.style = '';
+                this.teardown();
+                this.setup(this.scrollElement);
+            }
         }
     }
 
