@@ -31,6 +31,7 @@ $color-drawer-bg: $color-brand-primary;
 $color-help-tooltip-foreground: #a2aeb9;
 $color-help-tooltip-background: $color-primary-background;
 $color-search-item-bg: darken($color-backdrop, 5%);
+$color-information-bar-bg: darken($color-backdrop, 5%);
 $gradient-primary: linear-gradient(
     to right,
     $color-brand-primary 0,
