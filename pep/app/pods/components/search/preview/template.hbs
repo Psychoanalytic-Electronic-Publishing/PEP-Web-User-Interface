@@ -93,9 +93,7 @@
                                     class="mr-2"
                                 />
 
-                                {{#if this.result.canDownload}}
-                                    <Document::Actions::Download @document={{this.result}} />
-                                {{/if}}
+                                <Document::Actions::Download @document={{this.result}} />
                             {{/if}}
                         </div>
                     </div>
