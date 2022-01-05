@@ -1,10 +1,20 @@
-<DropdownMenu @horizontalPosition="auto-right" as |DD|>
+<DropdownMenu @horizontalPosition="auto-right" @disabled={{not @enabled}} as |DD|>
     <DD.Trigger @htmlTag="button" class="btn btn-link px-2">
-        <FaIcon @icon="download" @size="lg" @prefix="fas" />
+        <FaIcon @icon="download" @size="lg" @prefix="{{if @enabled 'fas' 'fal'}}" />
         {{#unless this.iconOnly}}
             {{t "search.preview.download.label"}}
             <FaIcon @icon="angle-down" class="ml-1 text-muted" />
         {{/unless}}
+        {{#if (not @enabled)}}
+            <EmberTooltip
+                @text={{html-safe this.configuration.content.global.access.download.help}}
+                @popperContainer="body"
+                @side="bottom"
+                @spacing={{5}}
+                @effect="slide"
+                @innerClass=""
+            />
+        {{/if}}
     </DD.Trigger>
     <DD.Content class="dropdown-menu">
         <DropdownAction @dd={{DD}} @action={{fn this.downloadDocument this.downloadUrlEpub}}>

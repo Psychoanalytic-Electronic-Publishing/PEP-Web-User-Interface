@@ -40,13 +40,10 @@
                     {{this.document.documentRef}}
                 </p>
                 <div class="align-items-center">
-                    {{!-- template-lint-disable simple-unless --}}
-                    {{#unless this.document.accessLimited}}
-                        <div class="flex-shrink-0">
-                            <Document::Actions::Download @document={{this.document}} @iconOnly={{true}} />
-                            <Document::Actions::Print @id={{this.document.id}} />
-                        </div>
-                    {{/unless}}
+                    <div class="flex-shrink-0">
+                        <Document::Actions::Download @document={{this.document}} @iconOnly={{true}} @enabled={{this.document.canDownload}} />
+                        <Document::Actions::Print @id={{this.document.id}} @enabled={{this.document.canDownload}} />
+                    </div>
                 </div>
             </div>
         </div>

@@ -913,6 +913,10 @@
                 "home": {
                     "expertPickOfTheDay": "La sélection du jour de l'expert"
                 },
+                "access": {
+                    "download": "",
+                    "print": ""
+                },
                 "search": {
                     "tooManyResults": "Trop de résultats",
                     "smartSearch": "Recherche intelligente",

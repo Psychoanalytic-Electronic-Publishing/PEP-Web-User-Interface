@@ -913,6 +913,10 @@
                 "home": {
                     "expertPickOfTheDay": "Expert Pick of the Day"
                 },
+                "access": {
+                    "download": "Download access denied message",
+                    "print": "Print access denied message"
+                },
                 "search": {
                     "tooManyResults": "Too many results",
                     "smartSearch": "Smart Search",

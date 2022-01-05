@@ -5,18 +5,21 @@ import Component from '@glint/environment-ember-loose/glimmer-component';
 
 import { DOCUMENT_EPUB_BASE_URL, DOCUMENT_PDF_BASE_URL, DOCUMENT_PDFORIG_BASE_URL } from 'pep/constants/documents';
 import Document from 'pep/pods/document/model';
+import ConfigurationService from 'pep/services/configuration';
 import ExportsService from 'pep/services/exports';
 import PepSessionService from 'pep/services/pep-session';
 import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface DocumentActionsDownloadArgs {
     document: Document;
+    enabled: boolean;
     iconOnly: boolean;
 }
 
 export default class DocumentActionsDownload extends Component<BaseGlimmerSignature<DocumentActionsDownloadArgs>> {
-    @service('pep-session') session!: PepSessionService;
-    @service exports!: ExportsService;
+    @service('pep-session') declare session: PepSessionService;
+    @service declare configuration: ConfigurationService;
+    @service declare exports: ExportsService;
 
     get downloadUrlEpub() {
         return `${DOCUMENT_EPUB_BASE_URL}/${this.args.document.id}/`;

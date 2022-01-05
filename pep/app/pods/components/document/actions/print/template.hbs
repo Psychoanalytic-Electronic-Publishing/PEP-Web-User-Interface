@@ -3,6 +3,6 @@
     @type="link"
     @icon="print"
     @iconSize="lg"
-    @tooltip={{t "common.print"}}
+    @tooltip={{if @enabled (t "common.print") (html-safe this.configuration.content.global.access.print.help)}}
     class="p-1"
 />

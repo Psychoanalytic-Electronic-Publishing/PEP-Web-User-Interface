@@ -93,7 +93,7 @@
                                     class="mr-2"
                                 />
 
-                                <Document::Actions::Download @document={{this.result}} />
+                                <Document::Actions::Download @document={{this.result}} @enabled={{this.result.canDownload}} />
                             {{/if}}
                         </div>
                     </div>
