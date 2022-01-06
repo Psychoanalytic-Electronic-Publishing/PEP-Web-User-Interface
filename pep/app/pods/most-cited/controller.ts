@@ -3,9 +3,10 @@ import { action, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 
+import IntlService from 'ember-intl/services/intl';
+
 import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
 import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
-import IntlService from 'ember-intl/services/intl';
 
 import { PossiblePeriodValues, PossiblePubPeriodValues, PUBPERIODS } from 'pep/constants/sidebar';
 import { QueryParams } from 'pep/hooks/useQueryParams';
@@ -14,6 +15,7 @@ import Journal from 'pep/pods/journal/model';
 import ConfigurationService from 'pep/services/configuration';
 import FastbootMediaService from 'pep/services/fastboot-media';
 import LoadingBarService from 'pep/services/loading-bar';
+import PepSessionService from 'pep/services/pep-session';
 import ScrollableService from 'pep/services/scrollable';
 import SidebarService from 'pep/services/sidebar';
 import { documentCSVUrl } from 'pep/utils/url';
@@ -21,12 +23,13 @@ import { documentCSVUrl } from 'pep/utils/url';
 import { PUBPERIOD_ALL_YEARS } from '../../constants/sidebar';
 
 export default class MostCited extends Controller {
-    @service loadingBar!: LoadingBarService;
-    @service fastbootMedia!: FastbootMediaService;
-    @service sidebar!: SidebarService;
-    @service intl!: IntlService;
-    @service configuration!: ConfigurationService;
-    @service scrollable!: ScrollableService;
+    @service declare loadingBar: LoadingBarService;
+    @service declare fastbootMedia: FastbootMediaService;
+    @service declare sidebar: SidebarService;
+    @service declare intl: IntlService;
+    @service declare configuration: ConfigurationService;
+    @service declare scrollable: ScrollableService;
+    @service('pep-session') declare session: PepSessionService;
 
     queryParams = ['author', 'title', 'pubperiod', 'sourcename', 'citeperiod'];
     @tracked searchQueryParams!: QueryParams;
@@ -178,7 +181,7 @@ export default class MostCited extends Controller {
             }
         });
         delete queryParams.limit;
-        window.location.href = documentCSVUrl(this.store, queryParams);
+        window.location.href = documentCSVUrl(this.store, queryParams, this.session);
     }
 }
 
