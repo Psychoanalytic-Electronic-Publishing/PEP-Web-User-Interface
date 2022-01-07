@@ -630,6 +630,38 @@
                                     </FlInput>
                                 </validator.input>
                             </div>
+                            <div class="col-12">
+                                <validator.input
+                                    @errors={{changeset.error.configSettings.global.access.print.help.validation
+                                    }}
+                                >
+                                    <FlInput
+                                        @value={{changeset.configSettings.global.access.print.help}}
+                                        @placeholder={{t "admin.content.help.access.print"}}
+                                    >
+                                        <ChangesetTextarea
+                                            @changeset={{changeset}}
+                                            @path="configSettings.global.access.print.help"
+                                        />
+                                    </FlInput>
+                                </validator.input>
+                            </div>
+                            <div class="col-12">
+                                <validator.input
+                                    @errors={{changeset.error.configSettings.global.access.download.help.validation
+                                    }}
+                                >
+                                    <FlInput
+                                        @value={{changeset.configSettings.global.access.download.help}}
+                                        @placeholder={{t "admin.content.help.access.download"}}
+                                    >
+                                        <ChangesetTextarea
+                                            @changeset={{changeset}}
+                                            @path="configSettings.global.access.download.help"
+                                        />
+                                    </FlInput>
+                                </validator.input>
+                            </div>
                         </div>
                     </div>
                 </div>
