@@ -7,7 +7,12 @@ import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
 import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 
 import {
-    NEXT_ARTICLE, NEXT_ARTICLE_FIRST_HIT, NEXT_HIT, PREVIOUS_ARTICLE, PREVIOUS_ARTICLE_FIRST_HIT, PREVIOUS_HIT
+    NEXT_ARTICLE,
+    NEXT_ARTICLE_FIRST_HIT,
+    NEXT_HIT,
+    PREVIOUS_ARTICLE,
+    PREVIOUS_ARTICLE_FIRST_HIT,
+    PREVIOUS_HIT,
 } from 'pep/constants/keyboard-shortcuts';
 import { SEARCH_DEFAULT_VIEW_PERIOD, SearchView, SearchViews, SearchViewType, ViewPeriod } from 'pep/constants/search';
 import { KeyboardShortcut } from 'pep/modifiers/register-keyboard-shortcuts';
@@ -63,7 +68,7 @@ export default class SearchRead extends Controller {
     @tracked paginator!: Pagination<Document>;
     @tracked page: string | null = null;
     @tracked searchHitNumber?: number;
-
+    @tracked discussionVisible: boolean = false;
     @tracked index: number = this.pagingLimit;
 
     // This becomes our model as the template wasn't updating when we changed the default model
@@ -101,6 +106,10 @@ export default class SearchRead extends Controller {
             }
         }
     ];
+
+    get hasDiscussionEnabled() {
+        return this.document?.PEPCode === 'IJPOPEN';
+    }
 
     get nextDocumentInList(): Document | undefined {
         const currentDocument = this.document;
@@ -371,6 +380,16 @@ export default class SearchRead extends Controller {
     @action
     viewablePageUpdate(page: string) {
         this.page = page;
+    }
+
+    /**
+     * Toggle comments visibility
+     *
+     * @memberof SearchRead
+     */
+    @action
+    toggleComments() {
+        this.discussionVisible = !this.discussionVisible;
     }
 }
 

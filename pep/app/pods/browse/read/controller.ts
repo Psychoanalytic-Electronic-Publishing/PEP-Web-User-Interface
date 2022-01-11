@@ -37,6 +37,7 @@ export default class BrowseRead extends Controller {
     @tracked paginator!: Pagination<Document>;
     @tracked page: string | null = null;
     @tracked index: number = this.pagingLimit;
+    @tracked discussionVisible: boolean = false;
 
     // This becomes our model as the template wasn't updating when we changed the default model
     @tracked document?: Document;
@@ -75,6 +76,10 @@ export default class BrowseRead extends Controller {
     get relatedDocumentQueryParams() {
         const params = buildBrowseRelatedDocumentsParams(this.model);
         return buildSearchQueryParams(params);
+    }
+
+    get hasDiscussionEnabled() {
+        return this.document?.PEPCode === 'IJPOPEN';
     }
 
     /**
@@ -170,6 +175,7 @@ export default class BrowseRead extends Controller {
                 index: this.index
             }
         });
+        this.discussionVisible = false;
     }
 
     /**
@@ -192,6 +198,16 @@ export default class BrowseRead extends Controller {
     @action
     viewablePageUpdate(page: string) {
         this.page = page;
+    }
+
+    /**
+     * Toggle comments visibility
+     *
+     * @memberof BrowseRead
+     */
+    @action
+    toggleComments() {
+        this.discussionVisible = !this.discussionVisible;
     }
 }
 // DO NOT DELETE: this is how TypeScript knows how to look up your controllers.

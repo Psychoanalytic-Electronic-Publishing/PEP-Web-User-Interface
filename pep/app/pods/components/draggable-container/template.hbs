@@ -1,0 +1,51 @@
+<div
+        class="draggable-container draggable-container-{{this.mode.id}} {{if this.isDragResizing " is-drag-resizing"}}"
+        ...attributes
+    >
+    <DragBar
+        @orientation="horizontal"
+        @maxClientY={{84}}
+        @onDragStart={{this.onDragStart}}
+        @onDragMove={{this.onDragMove}}
+        @onDragEnd={{this.onDragEnd}}
+    />
+    <div class="d-flex flex-column border-bottom">
+        <div class="d-flex align-items-center justify-content-end py-2 px-2">
+            <div class="d-flex flex-nowrap">
+                <Button::WithTooltip
+                    @type={{if this.isFitMode "primary" "link"}}
+                    @icon="expand-alt"
+                    @action={{fn this.setMode (if this.isFitMode "custom" "fit")}}
+                    @tooltip={{t (if this.isFitMode "search.preview.fit.off" "search.preview.fit.on")}}
+                    @containerClass="mr-2"
+                    class="py-0 px-1"
+                />
+                <Button::WithTooltip
+                    @type="link"
+                    @icon={{if this.isMinimizedMode "window-maximize" "window-minimize"}}
+                    @action={{fn this.setMode (if this.isMinimizedMode "maximized" "minimized")}}
+                    @tooltip={{t
+                        (if this.isMinimizedMode "search.preview.maximize" "search.preview.minimize")
+                    }}
+                    @containerClass="mr-2"
+                    class="py-0 px-1"
+                />
+                <Button::WithTooltip
+                    @icon="times"
+                    @type="link"
+                    @action={{this.close}}
+                    @tooltip={{t "common.close"}}
+                    class="py-0 px-1"
+                />
+            </div>
+        </div>
+    </div>
+    <div
+        class="draggable-container-scrollable p-2"
+        style={{this.styles}}
+    >
+        <div class="draggable-container-inner"  {{did-insert this.onElementInsert}}>
+            {{yield}}
+        </div>
+    </div>
+</div>

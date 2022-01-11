@@ -390,7 +390,8 @@
                 "alt": "Imagen del artículo {id}"
             },
             "searchHits": " {current} de {total}"
-        }
+        },
+        "comments": ""
     },
     "relatedInfo": {
         "title": "Información relacionada",
