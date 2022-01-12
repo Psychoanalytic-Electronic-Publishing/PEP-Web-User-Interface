@@ -6,6 +6,7 @@ import { tracked } from '@glimmer/tracking';
 import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
 import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 
+import { IJP_OPEN_CODE } from 'pep/constants/books';
 import { NEXT_ARTICLE, PREVIOUS_ARTICLE } from 'pep/constants/keyboard-shortcuts';
 import { SearchView, SearchViews, SearchViewType } from 'pep/constants/search';
 import { KeyboardShortcut } from 'pep/modifiers/register-keyboard-shortcuts';
@@ -79,7 +80,7 @@ export default class BrowseRead extends Controller {
     }
 
     get hasDiscussionEnabled() {
-        return this.document?.PEPCode === 'IJPOPEN';
+        return this.document?.PEPCode === IJP_OPEN_CODE;
     }
 
     /**

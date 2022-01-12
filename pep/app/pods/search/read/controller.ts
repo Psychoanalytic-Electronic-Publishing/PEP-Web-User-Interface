@@ -6,6 +6,7 @@ import { tracked } from '@glimmer/tracking';
 import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
 import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 
+import { IJP_OPEN_CODE } from 'pep/constants/books';
 import {
     NEXT_ARTICLE,
     NEXT_ARTICLE_FIRST_HIT,
@@ -108,7 +109,7 @@ export default class SearchRead extends Controller {
     ];
 
     get hasDiscussionEnabled() {
-        return this.document?.PEPCode === 'IJPOPEN';
+        return this.document?.PEPCode === IJP_OPEN_CODE;
     }
 
     get nextDocumentInList(): Document | undefined {
