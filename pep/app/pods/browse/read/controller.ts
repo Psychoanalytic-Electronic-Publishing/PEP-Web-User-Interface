@@ -6,6 +6,7 @@ import { tracked } from '@glimmer/tracking';
 import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
 import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 
+import { IJP_OPEN_CODE } from 'pep/constants/books';
 import { NEXT_ARTICLE, PREVIOUS_ARTICLE } from 'pep/constants/keyboard-shortcuts';
 import { SearchView, SearchViews, SearchViewType } from 'pep/constants/search';
 import { KeyboardShortcut } from 'pep/modifiers/register-keyboard-shortcuts';
@@ -37,6 +38,7 @@ export default class BrowseRead extends Controller {
     @tracked paginator!: Pagination<Document>;
     @tracked page: string | null = null;
     @tracked index: number = this.pagingLimit;
+    @tracked discussionVisible: boolean = false;
 
     // This becomes our model as the template wasn't updating when we changed the default model
     @tracked document?: Document;
@@ -75,6 +77,10 @@ export default class BrowseRead extends Controller {
     get relatedDocumentQueryParams() {
         const params = buildBrowseRelatedDocumentsParams(this.model);
         return buildSearchQueryParams(params);
+    }
+
+    get hasDiscussionEnabled() {
+        return this.document?.PEPCode === IJP_OPEN_CODE;
     }
 
     /**
@@ -170,6 +176,7 @@ export default class BrowseRead extends Controller {
                 index: this.index
             }
         });
+        this.discussionVisible = false;
     }
 
     /**
@@ -192,6 +199,16 @@ export default class BrowseRead extends Controller {
     @action
     viewablePageUpdate(page: string) {
         this.page = page;
+    }
+
+    /**
+     * Toggle comments visibility
+     *
+     * @memberof BrowseRead
+     */
+    @action
+    toggleComments() {
+        this.discussionVisible = !this.discussionVisible;
     }
 }
 // DO NOT DELETE: this is how TypeScript knows how to look up your controllers.
