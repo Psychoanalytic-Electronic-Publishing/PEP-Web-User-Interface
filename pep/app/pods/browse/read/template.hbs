@@ -15,7 +15,7 @@
                                 @icon="comments"
                                 @iconSize="lg"
                                 @iconPrefix={{if this.discussionVisible 'fas' 'fal'}}
-                                @tooltip={{if @enabled (t "common.print") (html-safe this.configuration.content.global.access.print.help)}}
+                                @tooltip={{t "read.comments"}}
                                 class="p-1"
                             />
                         {{/if}}

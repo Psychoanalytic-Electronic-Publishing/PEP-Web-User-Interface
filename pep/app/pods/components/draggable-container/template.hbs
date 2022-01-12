@@ -43,6 +43,7 @@
     <div
         class="draggable-container-scrollable p-2"
         style={{this.styles}}
+        {{did-insert this.onScrollableInsert}}
     >
         <div class="draggable-container-inner"  {{did-insert this.onElementInsert}}>
             {{yield}}
