@@ -32,6 +32,7 @@ export default class Scrollable extends Component<BaseGlimmerSignature<Scrollabl
         this.handleMediaChange();
         this.media.on('mediaChanged', this, this.handleMediaChange);
         this.scrollable.on('recalculate', this, this.handleRecalculate);
+        this.scrollable.on('reinitialize', this, this.reinitialize);
         this.scrollable.on('scrollToTop', this, this.handleScrollToTop);
     }
 
@@ -41,6 +42,7 @@ export default class Scrollable extends Component<BaseGlimmerSignature<Scrollabl
     willDestroy() {
         this.media.off('mediaChanged', this, this.handleMediaChange);
         this.scrollable.off('recalculate', this, this.handleRecalculate);
+        this.scrollable.off('reinitialize', this, this.reinitialize);
         this.scrollable.off('scrollToTop', this, this.handleScrollToTop);
         this.teardown();
     }
@@ -77,6 +79,28 @@ export default class Scrollable extends Component<BaseGlimmerSignature<Scrollabl
     handleRecalculate(namespace?: string) {
         if ((!namespace || this.args.namespace === namespace) && this.ps) {
             this.ps.update();
+        }
+    }
+
+    /**
+     * Reinitialize the scrollbar instance by removing the style PerfectScrollbar has added
+     * and teardown the instance and then re-set it up
+     *
+     * @param {string} [namespace]
+     * @memberof Scrollable
+     */
+    reinitialize(namespace?: string) {
+        if ((this.media.isMobile || this.media.isTablet) && this.scrollElement) {
+            // @ts-ignore https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style#setting_styles
+            this.scrollElement.style = '';
+            this.teardown();
+        } else {
+            if ((!namespace || this.args.namespace === namespace) && this.ps && this.scrollElement) {
+                // @ts-ignore https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style#setting_styles
+                this.scrollElement.style = '';
+                this.teardown();
+                this.setup(this.scrollElement);
+            }
         }
     }
 

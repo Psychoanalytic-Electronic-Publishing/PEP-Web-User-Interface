@@ -40,6 +40,9 @@ declare const config: {
     storefront: {
         maxAge: number;
     };
+    disqus: {
+        shortname: string;
+    };
     'ember-cli-notifications': {
         autoClear: boolean;
         clearDuration: number;

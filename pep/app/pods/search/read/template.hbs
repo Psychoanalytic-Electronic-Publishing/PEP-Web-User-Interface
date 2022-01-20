@@ -1,63 +1,80 @@
 {{page-title (t "read.title" title=this.document.title)}}
-<Page::Content {{register-keyboard-shortcuts shortcuts=this.shortcuts}}>
-    <div class="pb-3 px-4">
-        <div class="sticky-top bg-body py-2 document-nav">
-            <div
-                class="d-flex
+<Page::Content {{register-keyboard-shortcuts shortcuts=this.shortcuts}} @scrollable={{false}} class="page-content-sectioned">
+    <div class="read-content-container page-content-section flex-fill">
+        <Scrollable @namespace="read-content-container" class="page-content-inner pb-3 px-4">
+            <div class="sticky-top bg-body py-2 document-nav">
+                <div
+                    class="d-flex
 
 
-                    {{if this.paginator.metadata.fullCount "justify-content-between" "justify-content-end"}}
+                        {{if this.paginator.metadata.fullCount "justify-content-between" "justify-content-end"}}
 
 
-                     align-items-center"
-            >
-                {{#if this.paginator.metadata.fullCount}}
-                    <LinkTo
-                        @route="search"
-                        @query={{hash
-                            q=this.q
-                            matchSynonyms=this.matchSynonyms
-                            searchTerms=this._searchTerms
-                            facets=this._facets
-                        }}
-                    >
-                        <FaIcon @icon="arrow-left" />
-                        {{t "read.document.backToSearch"}}
-                    </LinkTo>
-                {{/if}}
-                <div class="align-items-center d-flex">
-                    <Document::SearchHits
-                        @document={{this.document}}
-                        @searchHitNumber={{this.searchHitNumber}}
-                        @viewPreviousSearchHit={{this.viewPreviousSearchHit}}
-                        @viewNextSearchHit={{this.viewNextSearchHit}}
-                        @viewHitNumber={{this.viewSearchHitNumber}}
-                    />
-                </div>
-            </div>
-            <div class="d-flex justify-content-between align-items-center">
-                <p class="document-nav-ref small text-muted {{if this.document.accessLimited " mb-2" " mb-0"}}">
-                    {{this.document.documentRef}}
-                </p>
-                <div class="align-items-center">
-                    {{!-- template-lint-disable simple-unless --}}
-                    {{#if this.document.canDownload}}
-                        <div class="flex-shrink-0">
-                            <Document::Actions::Download @document={{this.document}} @iconOnly={{true}} />
-                            <Document::Actions::Print @id={{this.document.id}} />
-                        </div>
+                        align-items-center"
+                >
+                    {{#if this.paginator.metadata.fullCount}}
+                        <LinkTo
+                            @route="search"
+                            @query={{hash
+                                q=this.q
+                                matchSynonyms=this.matchSynonyms
+                                searchTerms=this._searchTerms
+                                facets=this._facets
+                            }}
+                        >
+                            <FaIcon @icon="arrow-left" />
+                            {{t "read.document.backToSearch"}}
+                        </LinkTo>
                     {{/if}}
+                    <div class="align-items-center d-flex">
+                        <Document::SearchHits
+                            @document={{this.document}}
+                            @searchHitNumber={{this.searchHitNumber}}
+                            @viewPreviousSearchHit={{this.viewPreviousSearchHit}}
+                            @viewNextSearchHit={{this.viewNextSearchHit}}
+                            @viewHitNumber={{this.viewSearchHitNumber}}
+                        />
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <p class="document-nav-ref small text-muted {{if this.document.accessLimited " mb-2" " mb-0"}}">
+                        {{this.document.documentRef}}
+                    </p>
+                    <div class="align-items-center">
+                        <div class="flex-shrink-0">
+                            {{#if this.hasDiscussionEnabled}}
+                                <Button::WithTooltip
+                                    @action={{this.toggleComments}}
+                                    @type="link"
+                                    @icon="comments"
+                                    @iconSize="lg"
+                                    @iconPrefix={{if this.discussionVisible 'fas' 'fal'}}
+                                    @tooltip={{t "read.comments"}}
+                                    class="p-1"
+                                />
+                            {{/if}}
+                            <Document::Actions::Download @document={{this.document}} @iconOnly={{true}} @enabled={{this.document.canDownload}} />
+                            <Document::Actions::Print @id={{this.document.id}} @enabled={{this.document.canDownload}} />
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <Document::Read
-            @model={{this.document}}
-            @page={{this.page}}
-            @onAuthenticated={{this.onAuthenticated}}
-            @searchQueryParams={{this.readQueryParams}}
-            @searchHitNumber={{this.searchHitNumber}}
-            @documentRendered={{this.documentRendered}}
-            @viewablePageUpdate={{this.viewablePageUpdate}}
-        />
+            <Document::Read
+                @model={{this.document}}
+                @page={{this.page}}
+                @onAuthenticated={{this.onAuthenticated}}
+                @searchQueryParams={{this.readQueryParams}}
+                @searchHitNumber={{this.searchHitNumber}}
+                @documentRendered={{this.documentRendered}}
+                @viewablePageUpdate={{this.viewablePageUpdate}}
+            />
+        </Scrollable>
     </div>
+    {{#if (and this.hasDiscussionEnabled this.discussionVisible)}}
+        <div class="page-content-section">
+            <DraggableContainer @close={{this.toggleComments}}>
+                <Disqus::Comments @identifier={{this.document.id}}/>
+            </DraggableContainer>
+        </div>
+    {{/if}}
 </Page::Content>

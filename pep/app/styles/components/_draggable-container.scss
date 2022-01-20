@@ -1,0 +1,35 @@
+.draggable-container {
+    flex-shrink: 0;
+    background-color: $color-preview-background;
+    box-shadow: 0 -10px 6px -4px rgba($black, 0.1);
+    transition: $duration-search-preview-toggle ease height;
+
+    &.is-drag-resizing {
+        transition: none;
+    }
+
+    &-minimized {
+        .draggable-container-scrollable {
+            height: 10rem;
+        }
+    }
+
+    &-maximized {
+        box-shadow: none;
+        .draggable-container-scrollable {
+            height: 80vh;
+        }
+    }
+
+    &-fit {
+        .draggable-container-scrollable {
+            max-height: 80vh;
+        }
+    }
+    .frontmatter {
+        display: none;
+    }
+    &-scrollable {
+        overflow: auto;
+    }
+}

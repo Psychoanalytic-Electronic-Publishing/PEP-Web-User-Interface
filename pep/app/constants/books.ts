@@ -4,3 +4,4 @@ export const FREUD_SE_CODE = 'SE';
 
 export const GW_VOLUME_DOCUMENT_ID = 'GW.000.0000A';
 export const SE_VOLUME_DOCUMENT_ID = 'SE.000.0000A';
+export const IJP_OPEN_CODE = 'IJPOPEN';

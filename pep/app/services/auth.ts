@@ -84,7 +84,7 @@ export default class AuthService extends Service {
                 padsForgotPasswordUrl: federatedLogins.PaDSPasswordResetURL,
                 padsRegisterUrl: federatedLogins.PaDSRegisterUserURL
             });
-            if (modalOptions.closeOpenModal) {
+            if (modalOptions.closeOpenModal && this.modal.modals.length) {
                 await this.modal.close();
             }
         } catch (errors) {

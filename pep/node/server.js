@@ -5,6 +5,11 @@ const express = require('express');
 const server = express();
 
 module.exports = function(emberDistPath) {
+    // Uncomment to run locally
+    // server.all('/translations/*', function(req, res, next) {
+    //     res.sendFile(`${emberDistPath}${req.url}`);
+    // });
+
     //common files served from the site root
     server.all('/robots.txt', (req, res) => {
         res.sendFile(`${emberDistPath}${process.env.ROBOTS_DIST_PATH || '/robots-development.txt'}`);
@@ -27,6 +32,16 @@ module.exports = function(emberDistPath) {
         const id = req.query.id;
         res.redirect(301, `/browse/document/${id}`);
     });
+
+    // Uncomment to run locally
+    // server.all('/assets/*', (req, res) => {
+    //     // console.log(req.url)
+    //     res.sendFile(`${emberDistPath}${req.url}`);
+    // });
+    // server.all('/*', (req, res) => {
+    //     console.log(req.url);
+    //     res.sendFile(`${emberDistPath}/index.html`);
+    // });
 
     server.all(
         '/*',

@@ -19,6 +19,35 @@
                         <div class="form-row">
                             <div class="col-12">
                                 <h4 class="border-bottom mb-3">
+                                    {{t "admin.content.global.notifications.title"}}
+                                </h4>
+                                <div class="form-row">
+                                    <div class="col-12">
+                                        <validator.input
+                                            @errors={{changeset.error.configSettings.global.notifications.validation
+                                            }}
+                                        >
+                                            <FlInput
+                                                @value={{changeset.configSettings.global.notificationMessage}}
+                                                @placeholder={{t "admin.content.global.notifications.message"}}
+                                            >
+                                                <ChangesetTextarea
+                                                    @changeset={{changeset}}
+                                                    @path="configSettings.global.notificationMessage"
+                                                />
+                                            </FlInput>
+                                        </validator.input>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="col-12">
+                                <h4 class="border-bottom mb-3">
                                     {{t "admin.content.home.intro.title"}}
                                 </h4>
                                 <validator.input
@@ -597,6 +626,38 @@
                                         <ChangesetTextarea
                                             @changeset={{changeset}}
                                             @path="configSettings.search.tooManyResults.instructions"
+                                        />
+                                    </FlInput>
+                                </validator.input>
+                            </div>
+                            <div class="col-12">
+                                <validator.input
+                                    @errors={{changeset.error.configSettings.global.access.print.help.validation
+                                    }}
+                                >
+                                    <FlInput
+                                        @value={{changeset.configSettings.global.access.print.help}}
+                                        @placeholder={{t "admin.content.help.access.print"}}
+                                    >
+                                        <ChangesetTextarea
+                                            @changeset={{changeset}}
+                                            @path="configSettings.global.access.print.help"
+                                        />
+                                    </FlInput>
+                                </validator.input>
+                            </div>
+                            <div class="col-12">
+                                <validator.input
+                                    @errors={{changeset.error.configSettings.global.access.download.help.validation
+                                    }}
+                                >
+                                    <FlInput
+                                        @value={{changeset.configSettings.global.access.download.help}}
+                                        @placeholder={{t "admin.content.help.access.download"}}
+                                    >
+                                        <ChangesetTextarea
+                                            @changeset={{changeset}}
+                                            @path="configSettings.global.access.download.help"
                                         />
                                     </FlInput>
                                 </validator.input>
