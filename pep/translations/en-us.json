@@ -390,7 +390,8 @@
                 "alt": "Article image {id}"
             },
             "searchHits": " {current} of {total}"
-        }
+        },
+        "comments": "Comments"
     },
     "relatedInfo": {
         "title": "Related Info",
@@ -865,6 +866,10 @@
             },
             "global": {
                 "searchHelpVideoUrl": "Search Help Video URL",
+                "notifications": {
+                    "title": "Global Notifications",
+                    "message": "Message"
+                },
                 "cards": {
                     "left": "Left Sidebar",
                     "right": "Right Sidebar",
@@ -909,6 +914,10 @@
                 "home": {
                     "expertPickOfTheDay": "Expert Pick of the Day"
                 },
+                "access": {
+                    "download": "Download access denied message",
+                    "print": "Print access denied message"
+                },
                 "search": {
                     "tooManyResults": "Too many results",
                     "smartSearch": "Smart Search",
@@ -946,6 +955,10 @@
                 }
             },
             "global": {
+                "notifications": {
+                    "title": "Global Notifications",
+                    "message": "Language specific message"
+                },
                 "adminSpecifiedInformation": {
                     "id": "ID",
                     "value": "Value",

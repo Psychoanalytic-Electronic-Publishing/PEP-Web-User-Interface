@@ -87,6 +87,10 @@ module.exports = function(environment) {
             maxAge: 10
         },
 
+        disqus: {
+            shortname: process.env.DISQUS_SHORTNAME
+        },
+
         //deployment environment-specific variables
         buildVersion: process.env.BUILD_VERSION,
         userPreferencesVersion: process.env.USER_PREFERENCES_VERSION,

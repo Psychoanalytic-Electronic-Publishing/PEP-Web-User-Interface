@@ -15,7 +15,35 @@
                         @action={{validator.submit}}
                     />
                 </div>
-
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="col-12">
+                                <h4 class="border-bottom mb-3">
+                                    {{t "admin.common.global.notifications.title"}}
+                                </h4>
+                                <div class="form-row">
+                                    <div class="col-12">
+                                        <validator.input
+                                            @errors={{changeset.error.configSettings.global.notifications.validation
+                                            }}
+                                        >
+                                            <FlInput
+                                                @value={{changeset.configSettings.global.notificationMessage}}
+                                                @placeholder={{t "admin.common.global.notifications.message"}}
+                                            >
+                                                <ChangesetTextarea
+                                                    @changeset={{changeset}}
+                                                    @path="configSettings.global.notificationMessage"
+                                                />
+                                            </FlInput>
+                                        </validator.input>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="card mb-4">
                     <div class="card-body">
                         <div class="form-row">

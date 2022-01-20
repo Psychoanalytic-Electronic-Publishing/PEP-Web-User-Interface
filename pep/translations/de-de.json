@@ -390,7 +390,8 @@
                 "alt": "Artikelbild {id}"
             },
             "searchHits": " {current} von {total}"
-        }
+        },
+        "comments": ""
     },
     "relatedInfo": {
         "title": "Zugehörige Informationen",
@@ -865,6 +866,10 @@
             },
             "global": {
                 "searchHelpVideoUrl": "URL des Suchhilfe-Videos",
+                "notifications": {
+                    "title": "",
+                    "message": ""
+                },
                 "cards": {
                     "left": "Seitenleiste links",
                     "right": "Seitenleiste rechts",
@@ -909,6 +914,10 @@
                 "home": {
                     "expertPickOfTheDay": "Expertenempfehlung des Tages"
                 },
+                "access": {
+                    "download": "",
+                    "print": ""
+                },
                 "search": {
                     "tooManyResults": "Zu viele Ergebnisse",
                     "smartSearch": "Intelligente Suche",
@@ -946,6 +955,10 @@
                 }
             },
             "global": {
+                "notifications": {
+                    "title": "",
+                    "message": ""
+                },
                 "adminSpecifiedInformation": {
                     "id": "ID",
                     "value": "Wert",

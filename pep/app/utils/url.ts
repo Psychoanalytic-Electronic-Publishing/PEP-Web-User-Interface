@@ -1,5 +1,7 @@
-import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 import DS from 'ember-data';
+import { SessionService } from 'ember-simple-auth/services/session';
+
+import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 
 const RBRACKET = /\[\]$/;
 
@@ -93,10 +95,10 @@ export function appendTrailingSlash(url: string): string {
  * @param {QueryParamsObj} queryParams
  * @returns {string}
  */
-export function documentCSVUrl(store: DS.Store, queryParams: QueryParamsObj) {
+export function documentCSVUrl(store: DS.Store, queryParams: QueryParamsObj, session: SessionService) {
     const adapter = store.adapterFor('document');
     const url = adapter.urlForQuery({ queryType: queryParams.queryType }, 'document');
     delete queryParams.limit;
     queryParams.download = true;
-    return `${url}?${serializeQueryParams(queryParams)}`;
+    return `${url}/?${serializeQueryParams(queryParams)}&${session.downloadAuthParams}`;
 }
