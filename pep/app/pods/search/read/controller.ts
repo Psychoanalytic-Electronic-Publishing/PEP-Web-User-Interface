@@ -15,6 +15,7 @@ import {
     PREVIOUS_ARTICLE_FIRST_HIT,
     PREVIOUS_HIT,
 } from 'pep/constants/keyboard-shortcuts';
+import { PreferenceKey } from 'pep/constants/preferences';
 import { SEARCH_DEFAULT_VIEW_PERIOD, SearchView, SearchViews, SearchViewType, ViewPeriod } from 'pep/constants/search';
 import { KeyboardShortcut } from 'pep/modifiers/register-keyboard-shortcuts';
 import Abstract from 'pep/pods/abstract/model';
@@ -22,15 +23,17 @@ import Document from 'pep/pods/document/model';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
 import LoadingBarService from 'pep/services/loading-bar';
+import PepSessionService from 'pep/services/pep-session';
 import { buildSearchQueryParams } from 'pep/utils/search';
 import { SearchSorts, transformSearchSortToAPI } from 'pep/utils/sort';
 import { guard } from 'pep/utils/types';
 import { reject } from 'rsvp';
 
 export default class SearchRead extends Controller {
-    @service loadingBar!: LoadingBarService;
-    @service configuration!: ConfigurationService;
-    @service currentUser!: CurrentUserService;
+    @service declare loadingBar: LoadingBarService;
+    @service declare configuration: ConfigurationService;
+    @service declare currentUser: CurrentUserService;
+    @service('pep-session') declare session: PepSessionService;
 
     pagingLimit = 20;
     afterDocumentRendered: null | (() => void) = null;
@@ -69,7 +72,6 @@ export default class SearchRead extends Controller {
     @tracked paginator!: Pagination<Document>;
     @tracked page: string | null = null;
     @tracked searchHitNumber?: number;
-    @tracked discussionVisible: boolean = false;
     @tracked index: number = this.pagingLimit;
 
     // This becomes our model as the template wasn't updating when we changed the default model
@@ -390,7 +392,9 @@ export default class SearchRead extends Controller {
      */
     @action
     toggleComments() {
-        this.discussionVisible = !this.discussionVisible;
+        this.currentUser.updatePrefs({
+            [PreferenceKey.COMMENTS_ENABLED]: !this.currentUser.preferences?.commentsEnabled
+        });
     }
 }
 

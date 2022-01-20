@@ -640,6 +640,10 @@
                 "label": "Anhaftendes Suchformular"
             }
         },
+        "comments": {
+            "label": "",
+            "enabled": ""
+        },
         "sidebar": {
             "heading": "Seitenleiste",
             "widgets": {

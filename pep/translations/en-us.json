@@ -640,6 +640,10 @@
                 "label": "Sticky search form"
             }
         },
+        "comments": {
+            "label": "IJP Open Comments",
+            "enabled": "Visible"
+        },
         "sidebar": {
             "heading": "Sidebar",
             "widgets": {

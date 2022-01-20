@@ -640,6 +640,10 @@
                 "label": "Modulo di ricerca \"post-it\""
             }
         },
+        "comments": {
+            "label": "",
+            "enabled": ""
+        },
         "sidebar": {
             "heading": "Barra laterale",
             "widgets": {

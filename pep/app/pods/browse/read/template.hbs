@@ -14,7 +14,7 @@
                                 @type="link"
                                 @icon="comments"
                                 @iconSize="lg"
-                                @iconPrefix={{if this.discussionVisible 'fas' 'fal'}}
+                                @iconPrefix={{if this.currentUser.preferences.commentsEnabled 'fas' 'fal'}}
                                 @tooltip={{t "read.comments"}}
                                 class="p-1"
                             />
@@ -32,9 +32,13 @@
             />
         </Scrollable>
     </div>
-    {{#if (and this.hasDiscussionEnabled this.discussionVisible)}}
+    {{#if (and this.session.isAuthenticated this.hasDiscussionEnabled this.currentUser.preferences.commentsEnabled)}}
         <div class="page-content-section">
-            <DraggableContainer @close={{this.toggleComments}}>
+            <DraggableContainer
+                @close={{this.toggleComments}}
+                @initialHeight={{this.currentUser.preferences.commentsPanelHeight}}
+                @initialModeId={{this.currentUser.preferences.commentsPanelMode}}
+                @onPanelChange={{this.onPanelChange}}>
                 <Disqus::Comments @identifier={{this.document.id}}/>
             </DraggableContainer>
         </div>

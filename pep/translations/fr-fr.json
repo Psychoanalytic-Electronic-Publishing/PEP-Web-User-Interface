@@ -640,6 +640,10 @@
                 "label": "Formulaire de recherche persistante"
             }
         },
+        "comments": {
+            "label": "",
+            "enabled": ""
+        },
         "sidebar": {
             "heading": "Barre latérale",
             "widgets": {
