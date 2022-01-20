@@ -1,3 +1,4 @@
+import { later } from '@ember/runloop';
 import Service, { inject as service } from '@ember/service';
 
 import HeadDataService from 'ember-cli-head/services/head-data';
@@ -7,12 +8,14 @@ import { PreferenceKey } from 'pep/constants/preferences';
 import THEMES, { THEME_DEFAULT, ThemeId } from 'pep/constants/themes';
 import CurrentUserService from 'pep/services/current-user';
 import PepSessionService from 'pep/services/pep-session';
+import ScrollableService from 'pep/services/scrollable';
 
 export default class ThemeService extends Service {
     @service headData!: HeadDataService;
     @service('pep-session') session!: PepSessionService;
     @service intl!: IntlService;
     @service currentUser!: CurrentUserService;
+    @service scrollable!: ScrollableService;
 
     allThemes = THEMES;
 
@@ -31,6 +34,9 @@ export default class ThemeService extends Service {
      * Sets the currently selected theme CSS in the page <head>. Only gets run in fastboot
      */
     setup() {
+        this.headData.set('onCSSLoad', () => {
+            later(() => this.scrollable.reinitialize(), 500);
+        });
         this.headData.set('themePath', this.currentTheme.cssPath);
     }
 

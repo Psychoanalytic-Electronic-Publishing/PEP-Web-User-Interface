@@ -390,7 +390,8 @@
                 "alt": "Immagine dell'articolo {id}"
             },
             "searchHits": " {current} di {total}"
-        }
+        },
+        "comments": ""
     },
     "relatedInfo": {
         "title": "Informazioni correlate",
@@ -865,6 +866,10 @@
             },
             "global": {
                 "searchHelpVideoUrl": "URL del video guida per la ricerca",
+                "notifications": {
+                    "title": "",
+                    "message": ""
+                },
                 "cards": {
                     "left": "Barra laterale sinistra",
                     "right": "Barra laterale destra",
@@ -909,6 +914,10 @@
                 "home": {
                     "expertPickOfTheDay": "Scelta del giorno da parte degli esperti"
                 },
+                "access": {
+                    "download": "",
+                    "print": ""
+                },
                 "search": {
                     "tooManyResults": "Troppi risultati",
                     "smartSearch": "Ricerca intelligente",
@@ -946,6 +955,10 @@
                 }
             },
             "global": {
+                "notifications": {
+                    "title": "",
+                    "message": ""
+                },
                 "adminSpecifiedInformation": {
                     "id": "ID",
                     "value": "Valore",

@@ -1,5 +1,5 @@
 {{#animated-if this.informationBar.messageComponent use=this.transition}}
-    <div class="information-bar">
+    <div class="information-bar {{if this.modal.modalIsOpen "information-over-modal"}}">
         <div class="inner d-flex flex-wrap justify-content-center align-items-center px-3 py-1">
             <InformationBar::Message @message={{this.informationBar.messageComponent}} @close={{this.close}} />
         </div>

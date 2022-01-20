@@ -1,5 +1,9 @@
 <div class="page-content" role="main" ...attributes>
-    <Scrollable @namespace={{this.scrollableNamespace}} class="page-content-inner">
+    {{#if this.scrollable}}
+        <Scrollable @namespace={{this.scrollableNamespace}} class="page-content-inner">
+            {{yield}}
+        </Scrollable>
+    {{else}}
         {{yield}}
-    </Scrollable>
+    {{/if}}
 </div>

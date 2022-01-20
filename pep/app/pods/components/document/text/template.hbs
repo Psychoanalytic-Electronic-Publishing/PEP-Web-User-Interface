@@ -14,7 +14,7 @@
     {{did-insert this.parseDocument}}
     {{did-update this.setupListeners this.text}}
     {{did-update this.parseDocument @document}}
-    {{did-update this.parseDocument this.currentUser.preferences.translationConcordanceEnabled}}
+    {{did-value-update this.parseDocument this.currentUser.preferences.translationConcordanceEnabled}}
     {{did-update (fn this.scrollToSearchHit @searchHitNumber) @searchHitNumber}}
 >
     {{html-safe this.text}}
