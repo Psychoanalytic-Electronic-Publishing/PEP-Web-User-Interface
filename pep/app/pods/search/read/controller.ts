@@ -15,7 +15,7 @@ import {
     PREVIOUS_ARTICLE_FIRST_HIT,
     PREVIOUS_HIT,
 } from 'pep/constants/keyboard-shortcuts';
-import { PreferenceKey } from 'pep/constants/preferences';
+import { PreferenceKey, UserPreferences } from 'pep/constants/preferences';
 import { SEARCH_DEFAULT_VIEW_PERIOD, SearchView, SearchViews, SearchViewType, ViewPeriod } from 'pep/constants/search';
 import { KeyboardShortcut } from 'pep/modifiers/register-keyboard-shortcuts';
 import Abstract from 'pep/pods/abstract/model';
@@ -24,6 +24,7 @@ import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
 import LoadingBarService from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
+import { SearchPreviewModeId } from 'pep/services/preview-pane';
 import { buildSearchQueryParams } from 'pep/utils/search';
 import { SearchSorts, transformSearchSortToAPI } from 'pep/utils/sort';
 import { guard } from 'pep/utils/types';
@@ -73,6 +74,7 @@ export default class SearchRead extends Controller {
     @tracked page: string | null = null;
     @tracked searchHitNumber?: number;
     @tracked index: number = this.pagingLimit;
+    @tracked containerMaxHeight = 0;
 
     // This becomes our model as the template wasn't updating when we changed the default model
     @tracked document?: Document;
@@ -395,6 +397,32 @@ export default class SearchRead extends Controller {
         this.currentUser.updatePrefs({
             [PreferenceKey.COMMENTS_ENABLED]: !this.currentUser.preferences?.commentsEnabled
         });
+    }
+
+    /**
+     * On height change, save it to the preferences
+     *
+     * @param {number} height
+     * @memberof BrowseRead
+     */
+    @action
+    onPanelChange(id: SearchPreviewModeId, height?: number) {
+        const updates: Partial<UserPreferences> = {};
+        updates[PreferenceKey.COMMENTS_PANEL_MODE] = id;
+        if (height) {
+            updates[PreferenceKey.COMMENTS_PANEL_HEIGHT] = height;
+        }
+
+        this.currentUser.updatePrefs(updates);
+    }
+
+    /**
+     * Sets the max height of the search preview pane
+     * @param {HTMLElement} element
+     */
+    @action
+    updateContainerMaxHeight(element: HTMLElement) {
+        this.containerMaxHeight = element.offsetHeight - 100;
     }
 }
 

@@ -27,7 +27,7 @@ interface DraggableContainerArgs {
     height?: number;
     close?: () => void;
     loadDocument?: (abstract: Abstract) => void;
-    onPanelChange?: (id: SearchPreviewModeId, height: number) => void;
+    onPanelChange?: (id: SearchPreviewModeId, height?: number) => void;
 }
 
 export default class DraggableContainer extends Component<BaseGlimmerSignature<DraggableContainerArgs>> {
@@ -112,13 +112,14 @@ export default class DraggableContainer extends Component<BaseGlimmerSignature<D
             this.updateFitHeight();
         } else if (mode === SearchPreviewModeId.CUSTOM) {
             previewMode.options = {
-                height: this.fitHeight
+                height: this.args.initialHeight ?? this.adjustedFitHeight
             };
+            this.fitHeight = this.args.initialHeight ?? this.adjustedFitHeight;
         }
 
         this.mode = previewMode;
 
-        this.args.onPanelChange?.(this.mode.id, this.fitHeight);
+        this.args.onPanelChange?.(this.mode.id, mode !== SearchPreviewModeId.FIT ? this.adjustedFitHeight : undefined);
     }
 
     /**
@@ -128,6 +129,7 @@ export default class DraggableContainer extends Component<BaseGlimmerSignature<D
     close() {
         this.args.close?.();
         this.fitHeight = 0;
+        this.args.onPanelChange?.(this.mode.id, this.adjustedFitHeight);
     }
 
     /**
@@ -135,7 +137,7 @@ export default class DraggableContainer extends Component<BaseGlimmerSignature<D
      */
     @action
     onDragStart() {
-        if (!this.isCustomMode && this.scrollableElement) {
+        if (this.scrollableElement) {
             this.fitHeight = this.scrollableElement.offsetHeight;
             this.mode = {
                 id: SearchPreviewModeId.CUSTOM,
@@ -147,6 +149,7 @@ export default class DraggableContainer extends Component<BaseGlimmerSignature<D
 
         this.startingDragHeight = this.fitHeight;
         this.isDragResizing = true;
+        this.args.onPanelChange?.(this.mode.id, this.adjustedFitHeight);
     }
 
     /**
@@ -174,6 +177,6 @@ export default class DraggableContainer extends Component<BaseGlimmerSignature<D
             }
         };
 
-        this.args.onPanelChange?.(this.mode.id, this.fitHeight);
+        this.args.onPanelChange?.(this.mode.id, this.adjustedFitHeight);
     }
 }

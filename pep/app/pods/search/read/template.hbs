@@ -1,5 +1,9 @@
 {{page-title (t "read.title" title=this.document.title)}}
-<Page::Content {{register-keyboard-shortcuts shortcuts=this.shortcuts}} @scrollable={{false}} class="page-content-sectioned">
+<Page::Content
+    {{did-insert this.updateContainerMaxHeight}}
+    {{did-resize this.updateContainerMaxHeight debounce=250}}
+    {{register-keyboard-shortcuts shortcuts=this.shortcuts}}
+    @scrollable={{false}} class="page-content-sectioned">
     <div class="read-content-container page-content-section flex-fill">
         <Scrollable @namespace="read-content-container" class="page-content-inner pb-3 px-4">
             <div class="sticky-top bg-body py-2 document-nav">
@@ -72,7 +76,12 @@
     </div>
     {{#if (and this.session.isAuthenticated this.hasDiscussionEnabled this.currentUser.preferences.commentsEnabled)}}
         <div class="page-content-section">
-            <DraggableContainer @close={{this.toggleComments}}>
+            <DraggableContainer
+                @close={{this.toggleComments}}
+                @initialHeight={{this.currentUser.preferences.commentsPanelHeight}}
+                @initialModeId={{this.currentUser.preferences.commentsPanelMode}}
+                @onPanelChange={{this.onPanelChange}}
+                @maxHeight={{this.containerMaxHeight}}>
                 <Disqus::Comments @identifier={{this.document.id}}/>
             </DraggableContainer>
         </div>
