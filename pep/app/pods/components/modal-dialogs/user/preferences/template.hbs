@@ -134,6 +134,18 @@
                         </fieldset>
                     </div>
                 </div>
+                <div class="form-row">
+                    <fieldset class="col-sm-8">
+                        <legend class="text-muted mb-2 radio-input-legend">
+                            {{t "preferences.comments.label"}}
+                        </legend>
+                        <CheckboxInput
+                            @checked={{this.currentUser.preferences.commentsEnabled}}
+                            @onChange={{fn this.updatePreference this.commentsEnabledKey}}
+                            @label={{t "preferences.comments.enabled"}}
+                        />
+                    </fieldset>
+                </div>
             </div>
             <div class="col-sm-6 col-lg-4 border-left">
                 <div class="mb-4">

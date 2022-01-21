@@ -83,7 +83,7 @@ export default class DisqusComments extends Component<DisqusCommentsSignature> {
         disqusEmbed.setAttribute('async', 'true');
         disqusEmbed.setAttribute('src', `https://${shortname}.disqus.com/${fileName}.js`);
         disqusEmbed.setAttribute('data-timestamp', new Date().toString());
-        disqusEmbed.onload = (script) => {
+        disqusEmbed.onload = () => {
             this.reset();
         };
         head.appendChild(disqusEmbed);

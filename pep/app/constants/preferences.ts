@@ -31,7 +31,10 @@ export enum PreferenceKey {
     GLOSSARY_FORMATTING_ENABLED = 'glossaryFormattingEnabled',
     TEXT_JUSTIFICATION = 'textJustification',
     USER_SEARCH_FORM_STICKY = 'userSearchFormSticky',
-    WIDGET_CONFIGURATIONS = 'widgetConfigurations'
+    WIDGET_CONFIGURATIONS = 'widgetConfigurations',
+    COMMENTS_ENABLED = 'commentsEnabled',
+    COMMENTS_PANEL_HEIGHT = 'commentsPanelHeight',
+    COMMENTS_PANEL_MODE = 'commentsPanelMode'
 }
 
 export interface UserPreferences {
@@ -57,6 +60,9 @@ export interface UserPreferences {
     userSearchFormSticky: boolean;
     visibleWidgets: WIDGET[];
     widgetConfigurations: WidgetConfiguration[];
+    commentsEnabled: boolean;
+    commentsPanelHeight?: number;
+    commentsPanelMode?: string;
 }
 
 export type PreferenceChangeset = Partial<UserPreferences>;
@@ -99,7 +105,10 @@ export const LOCALSTORAGE_PREFERENCES: PreferenceKey[] = [
     PreferenceKey.READ_LATER,
     PreferenceKey.SEARCH_PREVIEW_ENABLED,
     PreferenceKey.TOUR_ENABLED,
-    PreferenceKey.TRANSLATION_CONCORDANCE
+    PreferenceKey.TRANSLATION_CONCORDANCE,
+    PreferenceKey.COMMENTS_ENABLED,
+    PreferenceKey.COMMENTS_PANEL_HEIGHT,
+    PreferenceKey.COMMENTS_PANEL_MODE
 ];
 
 const leftWidgetsOpenByDefault = DEFAULT_BASE_CONFIGURATION.global.cards.left.filter((widget) => widget.open);
@@ -124,5 +133,6 @@ export const DEFAULT_USER_PREFERENCES: UserPreferences = {
     glossaryFormattingEnabled: false,
     textJustification: TextJustificationId.LEFT,
     userSearchFormSticky: false,
-    widgetConfigurations: [...leftWidgetsOpenByDefault, ...rightWidgetsOpenByDefault]
+    widgetConfigurations: [...leftWidgetsOpenByDefault, ...rightWidgetsOpenByDefault],
+    commentsEnabled: true
 };

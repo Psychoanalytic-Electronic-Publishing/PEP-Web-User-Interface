@@ -8,17 +8,23 @@ import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 
 import { IJP_OPEN_CODE } from 'pep/constants/books';
 import { NEXT_ARTICLE, PREVIOUS_ARTICLE } from 'pep/constants/keyboard-shortcuts';
+import { PreferenceKey, UserPreferences } from 'pep/constants/preferences';
 import { SearchView, SearchViews, SearchViewType } from 'pep/constants/search';
 import { KeyboardShortcut } from 'pep/modifiers/register-keyboard-shortcuts';
 import Document from 'pep/pods/document/model';
+import CurrentUserService from 'pep/services/current-user';
 import LoadingBarService from 'pep/services/loading-bar';
+import PepSessionService from 'pep/services/pep-session';
+import { SearchPreviewModeId } from 'pep/services/preview-pane';
 import { buildBrowseRelatedDocumentsParams, buildSearchQueryParams } from 'pep/utils/search';
 import { SearchSorts, transformSearchSortToAPI } from 'pep/utils/sort';
 import { guard } from 'pep/utils/types';
 import { reject } from 'rsvp';
 
 export default class BrowseRead extends Controller {
-    @service loadingBar!: LoadingBarService;
+    @service declare loadingBar: LoadingBarService;
+    @service declare currentUser: CurrentUserService;
+    @service('pep-session') declare session: PepSessionService;
 
     tableView = SearchViewType.TABLE;
     searchViews = SearchViews;
@@ -38,7 +44,7 @@ export default class BrowseRead extends Controller {
     @tracked paginator!: Pagination<Document>;
     @tracked page: string | null = null;
     @tracked index: number = this.pagingLimit;
-    @tracked discussionVisible: boolean = false;
+    @tracked containerMaxHeight = 0;
 
     // This becomes our model as the template wasn't updating when we changed the default model
     @tracked document?: Document;
@@ -176,7 +182,6 @@ export default class BrowseRead extends Controller {
                 index: this.index
             }
         });
-        this.discussionVisible = false;
     }
 
     /**
@@ -208,7 +213,35 @@ export default class BrowseRead extends Controller {
      */
     @action
     toggleComments() {
-        this.discussionVisible = !this.discussionVisible;
+        this.currentUser.updatePrefs({
+            [PreferenceKey.COMMENTS_ENABLED]: !this.currentUser.preferences?.commentsEnabled
+        });
+    }
+
+    /**
+     * On height change, save it to the preferences
+     *
+     * @param {number} height
+     * @memberof BrowseRead
+     */
+    @action
+    onPanelChange(id: SearchPreviewModeId, height?: number) {
+        const updates: Partial<UserPreferences> = {};
+        updates[PreferenceKey.COMMENTS_PANEL_MODE] = id;
+        if (height) {
+            updates[PreferenceKey.COMMENTS_PANEL_HEIGHT] = height;
+        }
+
+        this.currentUser.updatePrefs(updates);
+    }
+
+    /**
+     * Sets the max height of the search preview pane
+     * @param {HTMLElement} element
+     */
+    @action
+    updateContainerMaxHeight(element: HTMLElement) {
+        this.containerMaxHeight = element.offsetHeight - 100;
     }
 }
 // DO NOT DELETE: this is how TypeScript knows how to look up your controllers.

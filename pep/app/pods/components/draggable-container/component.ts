@@ -15,16 +15,19 @@ import Abstract from 'pep/pods/abstract/model';
 import AuthService from 'pep/services/auth';
 import LoadingBarService from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
-import PreviewPaneService, { SearchPreviewMode, SearchPreviewModeId } from 'pep/services/preview-pane';
+import { SearchPreviewMode, SearchPreviewModeId } from 'pep/services/preview-pane';
 import ScrollableService from 'pep/services/scrollable';
 import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface DraggableContainerArgs {
+    initialHeight?: number;
+    initialModeId?: SearchPreviewModeId;
     maxHeight?: number;
     resultId?: string;
     height?: number;
     close?: () => void;
     loadDocument?: (abstract: Abstract) => void;
+    onPanelChange?: (id: SearchPreviewModeId, height?: number) => void;
 }
 
 export default class DraggableContainer extends Component<BaseGlimmerSignature<DraggableContainerArgs>> {
@@ -36,11 +39,11 @@ export default class DraggableContainer extends Component<BaseGlimmerSignature<D
     @service declare store: DS.Store;
     @service declare modal: ModalService;
 
-    @tracked fitHeight: number = 0;
+    @tracked fitHeight: number = this.args.initialModeId === SearchPreviewModeId.FIT ? 0 : this.args.initialHeight ?? 0;
     @tracked isDragResizing: boolean = false;
     @tracked result?: Abstract;
     @tracked mode: { id: SearchPreviewModeId; options?: any } = {
-        id: SearchPreviewModeId.FIT
+        id: this.args.initialModeId ?? SearchPreviewModeId.FIT
     };
 
     innerElement: HTMLElement | null = null;
@@ -109,11 +112,14 @@ export default class DraggableContainer extends Component<BaseGlimmerSignature<D
             this.updateFitHeight();
         } else if (mode === SearchPreviewModeId.CUSTOM) {
             previewMode.options = {
-                height: this.fitHeight
+                height: this.args.initialHeight ?? this.adjustedFitHeight
             };
+            this.fitHeight = this.args.initialHeight ?? this.adjustedFitHeight;
         }
 
         this.mode = previewMode;
+
+        this.args.onPanelChange?.(this.mode.id, mode !== SearchPreviewModeId.FIT ? this.adjustedFitHeight : undefined);
     }
 
     /**
@@ -123,6 +129,7 @@ export default class DraggableContainer extends Component<BaseGlimmerSignature<D
     close() {
         this.args.close?.();
         this.fitHeight = 0;
+        this.args.onPanelChange?.(this.mode.id, this.adjustedFitHeight);
     }
 
     /**
@@ -130,7 +137,7 @@ export default class DraggableContainer extends Component<BaseGlimmerSignature<D
      */
     @action
     onDragStart() {
-        if (!this.isCustomMode && this.scrollableElement) {
+        if (this.scrollableElement) {
             this.fitHeight = this.scrollableElement.offsetHeight;
             this.mode = {
                 id: SearchPreviewModeId.CUSTOM,
@@ -142,6 +149,7 @@ export default class DraggableContainer extends Component<BaseGlimmerSignature<D
 
         this.startingDragHeight = this.fitHeight;
         this.isDragResizing = true;
+        this.args.onPanelChange?.(this.mode.id, this.adjustedFitHeight);
     }
 
     /**
@@ -168,5 +176,7 @@ export default class DraggableContainer extends Component<BaseGlimmerSignature<D
                 height: this.fitHeight
             }
         };
+
+        this.args.onPanelChange?.(this.mode.id, this.adjustedFitHeight);
     }
 }
