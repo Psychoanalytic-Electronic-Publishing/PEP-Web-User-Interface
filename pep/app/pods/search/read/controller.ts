@@ -201,15 +201,14 @@ export default class SearchRead extends Controller {
      *
      * @memberof SearchRead
      */
-    setup() {
+    addAuthenticatedListener() {
         this.session.on('authenticationAndSetupSucceeded', this.onAuthenticated);
     }
 
     /**
      * Removes the auth succeeded event listener on destroy of controller
      */
-    willDestroy() {
-        super.willDestroy();
+    removeAuthenticateListener() {
         this.session.off('authenticationAndSetupSucceeded', this.onAuthenticated);
     }
 

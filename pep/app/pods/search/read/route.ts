@@ -237,7 +237,7 @@ export default class SearchRead extends PageNav(Route) {
             }
         }
 
-        controller.setup();
+        controller.addAuthenticatedListener();
     }
 
     /**
@@ -263,6 +263,10 @@ export default class SearchRead extends PageNav(Route) {
             [WIDGET.GLOSSARY_TERMS]: null,
             [WIDGET.PUBLISHER_INFO]: null
         });
+
+        if (isExiting) {
+            controller.removeAuthenticateListener();
+        }
     }
 
     /**
