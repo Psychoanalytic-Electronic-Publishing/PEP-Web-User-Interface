@@ -236,6 +236,8 @@ export default class SearchRead extends PageNav(Route) {
                 controller.index = Number(transition.to.queryParams.index);
             }
         }
+
+        controller.setup();
     }
 
     /**

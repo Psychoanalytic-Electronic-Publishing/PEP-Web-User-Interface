@@ -139,6 +139,8 @@ export default class BrowseRead extends PageNav(Route) {
             },
             [WIDGET.PUBLISHER_INFO]: model
         });
+
+        controller.setup();
     }
 
     /**
