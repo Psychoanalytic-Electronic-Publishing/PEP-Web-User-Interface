@@ -139,6 +139,8 @@ export default class BrowseRead extends PageNav(Route) {
             },
             [WIDGET.PUBLISHER_INFO]: model
         });
+
+        controller.addAuthenticatedListener();
     }
 
     /**
@@ -157,6 +159,7 @@ export default class BrowseRead extends PageNav(Route) {
         super.resetController(controller, isExiting, transition);
         controller.page = null;
         if (isExiting) {
+            controller.removeAuthenticateListener();
             this.sidebar.update({
                 [WIDGET.RELATED_DOCUMENTS]: null,
                 [WIDGET.MORE_LIKE_THESE]: null,

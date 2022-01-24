@@ -90,6 +90,22 @@ export default class BrowseRead extends Controller {
     }
 
     /**
+     * Sets up the session authenticated to refresh the document
+     *
+     * @memberof SearchRead
+     */
+    addAuthenticatedListener() {
+        this.session.on('authenticationAndSetupSucceeded', this.onAuthenticated);
+    }
+
+    /**
+     * Removes the auth succeeded event listener on destroy of controller
+     */
+    removeAuthenticateListener() {
+        this.session.off('authenticationAndSetupSucceeded', this.onAuthenticated);
+    }
+
+    /**
      * Load next document in left sidebar list
      *
      * @return {*}  {Promise<void>}

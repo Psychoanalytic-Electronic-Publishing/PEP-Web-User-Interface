@@ -236,6 +236,8 @@ export default class SearchRead extends PageNav(Route) {
                 controller.index = Number(transition.to.queryParams.index);
             }
         }
+
+        controller.addAuthenticatedListener();
     }
 
     /**
@@ -261,6 +263,10 @@ export default class SearchRead extends PageNav(Route) {
             [WIDGET.GLOSSARY_TERMS]: null,
             [WIDGET.PUBLISHER_INFO]: null
         });
+
+        if (isExiting) {
+            controller.removeAuthenticateListener();
+        }
     }
 
     /**
