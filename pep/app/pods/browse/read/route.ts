@@ -125,8 +125,13 @@ export default class BrowseRead extends PageNav(Route) {
 
         controller.document = model;
         if (!this.fastboot.isFastBoot) {
-            if (transition.to.queryParams.page) {
-                controller.page = transition.to.queryParams.page;
+            if (
+                transition.to.name === transition.from?.name &&
+                transition.to.queryParams.page === transition.from?.queryParams.page
+            ) {
+                controller.page = null;
+            } else {
+                controller.page = transition.to.queryParams.page ?? null;
             }
         }
 
