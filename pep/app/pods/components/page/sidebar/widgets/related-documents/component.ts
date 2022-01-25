@@ -65,14 +65,14 @@ export default class PageSidebarWidgetsRelatedDocuments extends Component<
     @dontRunInFastboot
     onElementInsert() {
         if (this.data?.relatedrx) {
-            taskFor(this.loadResults).perform(this.data?.relatedrx);
+            taskFor(this.loadResults).perform(this.data?.id);
         }
     }
 
     @action
     onDataUpdate() {
         if (this.data?.relatedrx) {
-            taskFor(this.loadResults).perform(this.data?.relatedrx);
+            taskFor(this.loadResults).perform(this.data?.id);
         } else {
             this.results = [];
         }
