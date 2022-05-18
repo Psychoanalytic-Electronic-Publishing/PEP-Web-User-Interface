@@ -53,7 +53,7 @@ export default class PageSidebarWidgetsRelatedDocuments extends Component<
         // @ts-ignore types are wrong here - this works
         const normalizedResponse = serializer.normalizeArrayResponse(this.store, modelClass, results, this.data.id);
 
-        const response = this.store.push(normalizedResponse);
+        const response = this.store.push(normalizedResponse) as Document[];
 
         this.results = response;
     }

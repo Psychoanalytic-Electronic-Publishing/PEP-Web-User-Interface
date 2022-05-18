@@ -288,6 +288,54 @@ export function groupCountsByRange(
 }
 
 /**
+ * Group numerical facet count values by a given range array. For citations this is [0, [1, 5], [6, 9], [10, 25], [26, Infinity]]
+ * https://github.com/Psychoanalytic-Electronic-Publishing/PEP-Web-User-Interface/issues/618
+ *
+ * @export
+ * @param {SearchFacetCounts} counts
+ * @param {((number | number[])[])} ranges
+ * @param {string} [separator='-']
+ * @param {string} [postfix='']
+ * @return {*}  {SearchFacetCounts}
+ */
+export function groupCountsByRanges(
+    counts: SearchFacetCounts,
+    ranges: (number | number[])[],
+    separator: string = '-',
+    postfix: string = ''
+): SearchFacetCounts {
+    const countsByRanges: SearchFacetCounts = {};
+    ranges.forEach((range) => {
+        if (Array.isArray(range)) {
+            const start = range[0];
+            const end = range[1];
+            let key = `${start}${separator}${end}${postfix}`;
+            if (end === Infinity) {
+                key = `${start}+${postfix}`;
+            }
+            countsByRanges[key] = 0;
+            Object.keys(counts).forEach((id) => {
+                const v = Number(id);
+                if (v >= start && v <= end) {
+                    countsByRanges[key] = counts[`${v}`] + countsByRanges[key];
+                }
+            });
+        } else {
+            const key = `${range}${postfix}`;
+            countsByRanges[key] = 0;
+            Object.keys(counts).forEach((id) => {
+                const v = Number(id);
+                if (v === range) {
+                    countsByRanges[key] = counts[`${v}`] + countsByRanges[key];
+                }
+            });
+        }
+    });
+
+    return countsByRanges;
+}
+
+/**
  *
  *
  * @export

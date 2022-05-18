@@ -1,7 +1,7 @@
 import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 
 import { SEARCH_FACETS, SearchFacetId, SearchTermId } from 'pep/constants/search';
-import { buildSearchQueryParams } from 'pep/utils/search';
+import { buildSearchQueryParams, groupCountsByRanges } from 'pep/utils/search';
 import { module, test } from 'qunit';
 
 module('Unit | Utility | search', function() {
@@ -444,6 +444,26 @@ module('Unit | Utility | search', function() {
                 parascope: 'doc',
                 synonyms: false
             }
+        });
+    });
+
+    test('groupCountsByRanges works', function(assert) {
+        const counts = {
+            '0': 20,
+            '1': 1,
+            '4': 1
+        };
+
+        const groups = [0, [1, 5], [6, 9], [10, 25], [26, Infinity]];
+
+        const result = groupCountsByRanges(counts, groups, ' TO ');
+
+        assert.deepEqual(result, {
+            '0': 20,
+            '1 TO 5': 2,
+            '10 TO 25': 0,
+            '26+': 0,
+            '6 TO 9': 0
         });
     });
 });
