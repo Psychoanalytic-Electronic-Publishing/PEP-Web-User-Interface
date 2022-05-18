@@ -6,6 +6,7 @@
                 <FlInput
                     @placeholder={{t "common.find"}}
                     @value={{this.filter}}
+                    @containerClass="flex-grow-1 ml-3"
                     maxlength="500"
                     autocomplete="off"
                     {{on "input" (fn this.onFilter this.filter)}}
