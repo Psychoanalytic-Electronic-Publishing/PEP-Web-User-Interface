@@ -240,7 +240,8 @@ export const DEFAULT_BASE_CONFIGURATION: BaseConfiguration = {
                 { widget: WIDGET.MORE_LIKE_THESE, open: false },
                 { widget: WIDGET.READ_LATER, open: false },
                 { widget: WIDGET.FAVORITES, open: false },
-                { widget: WIDGET.PUBLISHER_INFO, open: false }
+                { widget: WIDGET.PUBLISHER_INFO, open: false },
+                { widget: WIDGET.WHO_CITED_THIS, open: false }
             ]
         },
         searchHelpVideoUrl: 'https://fb.watch/4634xBWSZF/'
@@ -409,6 +410,9 @@ export const DEFAULT_CONTENT_CONFIGURATION: ContentConfiguration = {
             },
             [WIDGET.PUBLISHER_INFO]: {
                 help: 'Publisher information for the current document your viewing will appear here.'
+            },
+            [WIDGET.WHO_CITED_THIS]: {
+                help: 'List of documents who cited this document will appear here.'
             }
         },
         signInCard: {

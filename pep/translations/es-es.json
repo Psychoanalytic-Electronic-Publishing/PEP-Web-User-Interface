@@ -465,6 +465,11 @@
                 "title": "Vídeo temático",
                 "help": "Vea el último vídeo de actualidad en nuestro sistema aquí."
             },
+            "whoCitedThis": {
+                "title": "",
+                "noResults": "",
+                "help": ""
+            },
             "whatsNew": {
                 "title": "¿Qué hay de nuevo?",
                 "issue": "Número de edición {issueNum}, vol. {volNum} • {updatedDate}",
@@ -946,6 +951,7 @@
                 "cards": {
                     "viewPreview": "«Widget» de vista previa de vídeo",
                     "topicalVideoPreview": "«Widget» de vista previa de vídeo temático",
+                    "whoCitedThis": "",
                     "whatsNew": "«Widget» de novedades",
                     "mostCited": "«Widget» de más citados",
                     "mostViewed": "«Widget» de más vistos",

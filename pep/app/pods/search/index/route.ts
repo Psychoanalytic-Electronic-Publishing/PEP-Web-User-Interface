@@ -185,6 +185,7 @@ export default class SearchIndex extends PageNav(Route) {
         this.sidebar.update({
             [WIDGET.RELATED_DOCUMENTS]: undefined,
             [WIDGET.MORE_LIKE_THESE]: undefined,
+            [WIDGET.WHO_CITED_THIS]: undefined,
             [WIDGET.GLOSSARY_TERMS]: {
                 terms: this.resultsMeta?.facetCounts.facet_fields.glossary_group_terms,
                 location: GlossaryWidgetLocation.SEARCH

@@ -465,6 +465,11 @@
                 "title": "Thematisches Video",
                 "help": "Sehen Sie sich hier das neueste thematische Video in unserem System an."
             },
+            "whoCitedThis": {
+                "title": "",
+                "noResults": "",
+                "help": ""
+            },
             "whatsNew": {
                 "title": "Was ist neu?",
                 "issue": "Ausgabe Nr.{issueNum}, Band {volNum} • {updatedDate}",
@@ -946,6 +951,7 @@
                 "cards": {
                     "viewPreview": "Videovorschau-Widget",
                     "topicalVideoPreview": "Thematisches Videovorschau-Widget",
+                    "whoCitedThis": "",
                     "whatsNew": "Neuigkeiten-Widget",
                     "mostCited": "Am-meisten-zitiert-Widget",
                     "mostViewed": "Am-meisten-aufgerufen-Widget",
