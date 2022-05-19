@@ -1,7 +1,7 @@
 import IntlService from 'ember-intl/services/intl';
 
 import { DocumentLinkTypes } from 'pep/constants/documents';
-import { groupCountsByRange, SearchFacetCounts } from 'pep/utils/search';
+import { groupCountsByRange, groupCountsByRanges, SearchFacetCounts } from 'pep/utils/search';
 
 /**
  * Accepted query param fields for the /v2/Database/Search endpoint
@@ -585,7 +585,8 @@ export const SEARCH_FACET_CITATION: SearchFacetType = {
     dynamicValues: true,
     prefixValues: true,
     values: [],
-    formatCounts: (counts: SearchFacetCounts) => groupCountsByRange(counts, 10, ' TO '),
+    formatCounts: (counts: SearchFacetCounts) =>
+        groupCountsByRanges(counts, [0, [1, 5], [6, 9], [10, 25], [26, Infinity]], ' TO '),
     formatOption: (opt: string, intl: IntlService) =>
         intl.t('search.facets.art_cited_5.option', {
             range: opt.replace('TO', '-').trim()
