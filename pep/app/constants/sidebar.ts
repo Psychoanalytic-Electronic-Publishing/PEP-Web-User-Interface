@@ -33,7 +33,8 @@ export enum WIDGET {
     VIDEO_PREVIEW = 'videoPreview',
     WHATS_NEW = 'whatsNew',
     YOUR_INTERESTS = 'yourInterests',
-    PUBLISHER_INFO = 'publisherInfo'
+    PUBLISHER_INFO = 'publisherInfo',
+    WHO_CITED_THIS = 'whoCitedThis'
 }
 
 export interface WidgetItem {
@@ -109,6 +110,10 @@ export const TOPICAL_VIDEO_PREVIEW: WidgetItem = {
     id: WIDGET.TOPICAL_VIDEO_PREVIEW,
     label: 'relatedInfo.widgets.topicalVideoPreview.title'
 };
+export const WHO_CITED_THIS: WidgetItem = {
+    id: WIDGET.WHO_CITED_THIS,
+    label: 'relatedInfo.widgets.whoCitedThis.title'
+};
 
 export const WIDGETS = [
     EXPERT_PICKS,
@@ -122,7 +127,8 @@ export const WIDGETS = [
     READ_LATER,
     RELATED_DOCUMENTS,
     TOPICAL_VIDEO_PREVIEW,
-    WHATS_NEW
+    WHATS_NEW,
+    WHO_CITED_THIS
 ];
 export type WidgetData = Partial<Record<WIDGET, any>>;
 

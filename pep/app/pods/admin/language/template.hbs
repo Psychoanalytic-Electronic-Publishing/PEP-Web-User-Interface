@@ -523,6 +523,22 @@
                             </div>
                             <div class="col-12">
                                 <validator.input
+                                    @errors={{changeset.error.configSettings.global.cards.whoCitedThis.help.validation
+                                    }}
+                                >
+                                    <FlInput
+                                        @value={{changeset.configSettings.global.cards.whoCitedThis.help}}
+                                        @placeholder={{t "admin.content.help.cards.whoCitedThis"}}
+                                    >
+                                        <ChangesetTextarea
+                                            @changeset={{changeset}}
+                                            @path="configSettings.global.cards.whoCitedThis.help"
+                                        />
+                                    </FlInput>
+                                </validator.input>
+                            </div>
+                            <div class="col-12">
+                                <validator.input
                                     @errors={{changeset.error.configSettings.global.cards.expertPicks.help.validation}}
                                 >
                                     <FlInput

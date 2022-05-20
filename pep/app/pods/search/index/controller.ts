@@ -19,7 +19,12 @@ import { DEFAULT_BASE_CONFIGURATION } from 'pep/constants/configuration';
 import { PreferenceKey } from 'pep/constants/preferences';
 import { TITLE_REGEX } from 'pep/constants/regex';
 import {
-    SEARCH_DEFAULT_VIEW_PERIOD, SEARCH_TYPE_ARTICLE, SearchFacetValue, SearchTermValue, SearchViews, SearchViewType,
+    SEARCH_DEFAULT_VIEW_PERIOD,
+    SEARCH_TYPE_ARTICLE,
+    SearchFacetValue,
+    SearchTermValue,
+    SearchViews,
+    SearchViewType,
     ViewPeriod
 } from 'pep/constants/search';
 import { GlossaryWidgetLocation, WIDGET } from 'pep/constants/sidebar';
@@ -503,7 +508,8 @@ export default class SearchIndex extends Controller {
                     location: GlossaryWidgetLocation.SEARCH
                 },
                 [WIDGET.RELATED_DOCUMENTS]: undefined,
-                [WIDGET.MORE_LIKE_THESE]: undefined
+                [WIDGET.MORE_LIKE_THESE]: undefined,
+                [WIDGET.WHO_CITED_THIS]: undefined
             });
 
             return this.resultsMeta;
@@ -549,7 +555,8 @@ export default class SearchIndex extends Controller {
             this.preview = result.id;
             this.sidebar.update({
                 [WIDGET.MORE_LIKE_THESE]: result,
-                [WIDGET.RELATED_DOCUMENTS]: result
+                [WIDGET.RELATED_DOCUMENTS]: result,
+                [WIDGET.WHO_CITED_THIS]: result
             });
         } else {
             this.transitionToRoute('search.read', result.id, {
@@ -567,7 +574,8 @@ export default class SearchIndex extends Controller {
         this.previewedResult = null;
         this.sidebar.update({
             [WIDGET.MORE_LIKE_THESE]: undefined,
-            [WIDGET.RELATED_DOCUMENTS]: undefined
+            [WIDGET.RELATED_DOCUMENTS]: undefined,
+            [WIDGET.WHO_CITED_THIS]: undefined
         });
     }
 

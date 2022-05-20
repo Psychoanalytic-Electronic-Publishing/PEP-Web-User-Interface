@@ -142,7 +142,8 @@ export default class BrowseRead extends PageNav(Route) {
                 terms: model?.meta?.facetCounts.facet_fields.glossary_group_terms,
                 location: GlossaryWidgetLocation.READ
             },
-            [WIDGET.PUBLISHER_INFO]: model
+            [WIDGET.PUBLISHER_INFO]: model,
+            [WIDGET.WHO_CITED_THIS]: model
         });
 
         controller.addAuthenticatedListener();
@@ -169,7 +170,8 @@ export default class BrowseRead extends PageNav(Route) {
                 [WIDGET.RELATED_DOCUMENTS]: null,
                 [WIDGET.MORE_LIKE_THESE]: null,
                 [WIDGET.GLOSSARY_TERMS]: null,
-                [WIDGET.PUBLISHER_INFO]: null
+                [WIDGET.PUBLISHER_INFO]: null,
+                [WIDGET.WHO_CITED_THIS]: null
             });
         }
     }
