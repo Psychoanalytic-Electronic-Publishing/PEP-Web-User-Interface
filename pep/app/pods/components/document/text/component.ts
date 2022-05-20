@@ -261,6 +261,7 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
         const attributes = eventTarget.attributes;
         let type = this.getNodeType(eventTarget);
         let target = eventTarget;
+        // Safari will sometimes get a different target than chrome, so we try to find the closest data type or type data attribute and use that
         if (!type) {
             const dataTypeElement = eventTarget.querySelector('[data-type]') as HTMLElement;
             const typeElement = eventTarget.querySelector('[type]') as HTMLElement;
