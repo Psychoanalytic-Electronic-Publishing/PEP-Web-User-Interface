@@ -28,17 +28,6 @@ export default class Alert extends Component<BaseGlimmerSignature<AlertArgs>> {
     get animateInitialInsert() {
         return this.args.animateInitialInsert ?? true;
     }
-
-    /**
-     * Recalculates the alert's parent <Scrollable>'s scroll height on show/hide
-     * if a scrollable namespace is provided
-     */
-    @action
-    onIsShownUpdate() {
-        if (this.args.scrollableNamespace) {
-            later(() => this.scrollable.recalculate(this.args.scrollableNamespace), this.animateDuration);
-        }
-    }
 }
 
 declare module '@glint/environment-ember-loose/registry' {

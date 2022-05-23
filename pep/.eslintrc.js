@@ -94,9 +94,6 @@ module.exports = {
         ],
         'prettier/prettier': 'error'
     },
-    globals: {
-        PerfectScrollbar: true
-    },
     overrides: [
         // node files
         {

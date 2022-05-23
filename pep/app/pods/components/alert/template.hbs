@@ -5,7 +5,7 @@
         duration=this.animateDuration
         initialInsertion=this.animateInitialInsert
     }}
-        <div class="alert alert-{{@type}}" role="alert" ...attributes {{did-update this.onIsShownUpdate @isShown}}>
+        <div class="alert alert-{{@type}}" role="alert" ...attributes>
             {{#if (has-block)}}
                 {{yield}}
             {{else}}

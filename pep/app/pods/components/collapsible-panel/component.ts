@@ -44,9 +44,6 @@ export default class CollapsiblePanel extends Component<
     toggle(event: Event): void {
         event.preventDefault();
         this.args.toggle(!this.args.isOpen);
-        if (this.args.scrollableNamespace) {
-            later(() => this.scrollable.recalculate(this.args.scrollableNamespace), this.animateDuration);
-        }
     }
 }
 
