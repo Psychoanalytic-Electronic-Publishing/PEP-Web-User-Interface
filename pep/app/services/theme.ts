@@ -34,9 +34,6 @@ export default class ThemeService extends Service {
      * Sets the currently selected theme CSS in the page <head>. Only gets run in fastboot
      */
     setup() {
-        this.headData.set('onCSSLoad', () => {
-            later(() => this.scrollable.reinitialize(), 500);
-        });
         this.headData.set('themePath', this.currentTheme.cssPath);
     }
 

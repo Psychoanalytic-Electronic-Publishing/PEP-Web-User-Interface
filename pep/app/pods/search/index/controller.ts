@@ -297,7 +297,6 @@ export default class SearchIndex extends Controller {
                 meta: taskFor(this.updateRefineMetadata).perform(false, 0)
             });
             this.loadingBar.hide();
-            this.scrollable.recalculate('sidebar-left');
             return results.documents;
         } catch (err) {
             this.loadingBar.hide();

@@ -119,7 +119,6 @@ export default class SearchForm extends Component<BaseGlimmerSignature<SearchFor
                 type: SEARCH_TYPE_ARTICLE.id,
                 term: ''
             });
-            later(() => this.scrollable.recalculate('sidebar-left'), this.animateDuration);
         }
     }
 
@@ -129,7 +128,6 @@ export default class SearchForm extends Component<BaseGlimmerSignature<SearchFor
     @action
     removeSearchTerm(searchTerm: SearchTermValue) {
         this.args.removeSearchTerm(searchTerm);
-        later(() => this.scrollable.recalculate('sidebar-left'), this.animateDuration);
     }
 
     /**
