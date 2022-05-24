@@ -1,4 +1,5 @@
 import Controller from '@ember/controller';
+import { Route } from '@ember/routing';
 
 export type ConcreteSubclass<T> = new (...args: any[]) => T;
 export type ControllerInstance = ConcreteSubclass<Controller>;
@@ -148,3 +149,13 @@ type PathsRecursion<T, D extends number = 10> = [D] extends [never] ?  never : T
  */
 export type Paths<T, D extends number = 10> = ParseRecursionToken<PathsRecursion<T,D>>;
 
+
+
+/**
+ * Use this to declare a model property on the controller that is based upon the passed in route.
+ * ```
+ * e.g.
+ * declare model: RouteModel<LoginRoute>;
+ * ```
+ */
+ export type RouteModel<T extends Route> = Awaited<ReturnType<T['model']>>;

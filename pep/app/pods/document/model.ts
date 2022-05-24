@@ -26,7 +26,7 @@ export default class Document extends DS.Model {
     @attr('string') authorMast!: string;
     @attr('number') docLevel!: number;
     @attr('string') docType!: string;
-    @attr('string') declare document: string;
+    @attr('string') document!: string;
     @attr('string') documentInfoXML!: string;
     @attr('string') documentMetaXML!: string;
     @attr('string') documentRef!: string;

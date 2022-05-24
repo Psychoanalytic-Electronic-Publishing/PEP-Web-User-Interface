@@ -42,7 +42,7 @@ export default class PageSidebarWidgetsRelatedDocuments extends Component<
      * Load the widget results data
      */
     @restartableTask
-    *loadResults(relatedrx: string) {
+    *loadResults(relatedrx: string): Generator<Promise<unknown>, void, Document[]> {
         const queryParms = serializeQueryParams({
             relatedToThis: relatedrx
         });

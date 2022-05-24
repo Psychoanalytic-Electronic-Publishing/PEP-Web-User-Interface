@@ -1,3 +1,4 @@
+import '@glint/environment-ember-loose/native-integration';
 import '@glint/environment-ember-loose/registry';
 import Ember from 'ember';
 import DS from 'ember-data';
@@ -27,6 +28,9 @@ declare global {
         target: T;
         currentTarget: T;
     };
+    interface Navigator {
+        msSaveBlob?: (blob: any, defaultName?: string) => boolean;
+    }
 }
 
 export {};

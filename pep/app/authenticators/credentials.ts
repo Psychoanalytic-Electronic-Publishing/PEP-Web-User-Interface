@@ -1,7 +1,7 @@
 import { run } from '@ember/runloop';
 import { EmberRunTimer } from '@ember/runloop/types';
 import { inject as service } from '@ember/service';
-import { htmlSafe } from '@ember/string';
+import { htmlSafe } from '@ember/template';
 import { isEmpty } from '@ember/utils';
 
 import Ember from 'ember';

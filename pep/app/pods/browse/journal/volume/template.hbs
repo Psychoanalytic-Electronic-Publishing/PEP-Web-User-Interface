@@ -104,6 +104,18 @@
                                                 {{/if}}
                                                 <Browse::VolumeItem @item={{model}} @openResult={{this.openResult}} />
                                             {{/each}}
+                                            {{#each issue.groups as |group|}}
+                                                {{#if group.title}}
+                                                    <h5>
+                                                        <strong>
+                                                            {{group.title}}
+                                                        </strong>
+                                                    </h5>
+                                                {{/if}}
+                                                {{#each group.models as |model|}}
+                                                    <Browse::VolumeItem @item={{model}} @openResult={{this.openResult}} />
+                                                {{/each}}
+                                            {{/each}}
                                         </ol>
                                     {{/each}}
                                 </div>

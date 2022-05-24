@@ -59,7 +59,7 @@ export default class PageSidebarWidgetsSignIn extends Component<BaseGlimmerSigna
      * Load the widget login data
      */
     @restartableTask
-    *loadResults() {
+    *loadResults(): Generator<Promise<FederatedLoginResponse>, void, FederatedLoginResponse> {
         const session = this.session.isAuthenticated
             ? this.session.data?.authenticated?.SessionId
             : this.session.getUnauthenticatedSession()?.SessionId;

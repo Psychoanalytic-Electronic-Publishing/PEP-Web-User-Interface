@@ -1,3 +1,4 @@
+import ArrayProxy from '@ember/array/proxy';
 import { action } from '@ember/object';
 import { later } from '@ember/runloop';
 import { inject as service } from '@ember/service';
@@ -39,7 +40,11 @@ export default class PageSidebarWidgetsWhatsNew extends Component<
      * Load the widget results data
      */
     @restartableTask
-    *loadResults() {
+    *loadResults(): Generator<
+        DS.AdapterPopulatedRecordArray<WhatsNew> & DS.PromiseArray<WhatsNew, ArrayProxy<WhatsNew>>,
+        void,
+        DS.AdapterPopulatedRecordArray<WhatsNew>
+    > {
         const results = yield this.store.query('whats-new', {
             days_back: 30,
             limit: this.configuration.base.global.cards.whatsNew.limit
