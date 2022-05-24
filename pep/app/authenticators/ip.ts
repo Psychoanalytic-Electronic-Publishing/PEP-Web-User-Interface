@@ -1,11 +1,11 @@
 import { run } from '@ember/runloop';
+import { htmlSafe } from '@ember/template';
 
 import classic from 'ember-classic-decorator';
 
 import { PepSecureAuthenticatedData } from 'pep/api';
 import CredentialsAuthenticator, { AuthError, SessionType } from 'pep/authenticators/credentials';
 import ENV from 'pep/config/environment';
-import htmlSafe from 'pep/helpers/html-safe';
 import { guard } from 'pep/utils/types';
 import { serializeQueryParams } from 'pep/utils/url';
 import RSVP from 'rsvp';
