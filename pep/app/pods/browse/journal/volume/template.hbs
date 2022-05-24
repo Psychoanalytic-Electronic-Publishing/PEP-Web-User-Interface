@@ -87,36 +87,41 @@
                         <div class="browse m-5">
                             <ContentWithPlaceholder @isLoading={{not this.model}}>
                                 <div class="container-fluid">
-                                    {{#each this.sortedModels as |issue|}}
-                                        {{#if issue.title}}
-                                            <h5>
-                                                <strong>
-                                                    {{issue.title}}
-                                                </strong>
-                                            </h5>
-                                        {{/if}}
-                                        <ol class="list-unstyled">
-                                            {{#each issue.models as |model|}}
-                                                {{#if model.newSectionName}}
-                                                    <li>
-                                                        {{model.newSectionName}}
-                                                    </li>
-                                                {{/if}}
-                                                <Browse::VolumeItem @item={{model}} @openResult={{this.openResult}} />
-                                            {{/each}}
-                                            {{#each issue.groups as |group|}}
-                                                {{#if group.title}}
-                                                    <h5>
-                                                        <strong>
-                                                            {{group.title}}
-                                                        </strong>
-                                                    </h5>
-                                                {{/if}}
-                                                {{#each group.models as |model|}}
+                                    {{#each this.sortedModels as |mappedIssue|}}
+                                        {{#let (get-array-index mappedIssue 1) as |issue|}}
+                                            {{#if issue.title}}
+                                                <h5>
+                                                    <strong>
+                                                        {{issue.title}}
+                                                    </strong>
+                                                </h5>
+                                            {{/if}}
+
+                                            <ol class="list-unstyled">
+                                                {{#each issue.models as |model|}}
+                                                    {{#if model.newSectionName}}
+                                                        <li>
+                                                            {{model.newSectionName}}
+                                                        </li>
+                                                    {{/if}}
                                                     <Browse::VolumeItem @item={{model}} @openResult={{this.openResult}} />
                                                 {{/each}}
-                                            {{/each}}
-                                        </ol>
+                                                {{#each issue.groups as |mappedGroup|}}
+                                                    {{#let (get-array-index mappedGroup 1) as |group|}}
+                                                        {{#if group.title}}
+                                                            <h5>
+                                                                <strong>
+                                                                    {{group.title}}
+                                                                </strong>
+                                                            </h5>
+                                                        {{/if}}
+                                                        {{#each group.models as |model|}}
+                                                            <Browse::VolumeItem @item={{model}} @openResult={{this.openResult}} />
+                                                        {{/each}}
+                                                    {{/let}}
+                                                {{/each}}
+                                            </ol>
+                                        {{/let}}
                                     {{/each}}
                                 </div>
                             </ContentWithPlaceholder>
