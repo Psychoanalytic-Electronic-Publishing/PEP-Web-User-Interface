@@ -7,6 +7,7 @@ import IntlService from 'ember-intl/services/intl';
 import moment, { Moment } from 'moment';
 import { SERVER_DATE_FORMAT } from 'pep/constants/dates';
 import { DEFAULT_USER_PREFERENCES, UserPreferences } from 'pep/constants/preferences';
+import { LoginMethod } from 'pep/constants/user';
 import { alwaysSend } from 'pep/decorators/models';
 
 export enum UserType {
@@ -60,7 +61,7 @@ export default class User extends DS.Model {
 
     @alwaysSend
     @attr('string')
-    loggedInMethod!: string;
+    loggedInMethod!: LoginMethod;
 
     @alwaysSend
     @attr('string')

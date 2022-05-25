@@ -97,7 +97,7 @@ export default class BrowseRead extends PageNav(Route) {
     //workaround for bug w/array-based query param values
     //@see https://github.com/emberjs/ember.js/issues/18981
     //@ts-ignore
-    setupController(controller: BrowseReadController, model: Document, transition: Transition) {
+    setupController(controller: BrowseReadController, model: Document, transition: Transition): any {
         //workaround for bug w/array-based query param values
         //@see https://github.com/emberjs/ember.js/issues/18981
         //@ts-ignore

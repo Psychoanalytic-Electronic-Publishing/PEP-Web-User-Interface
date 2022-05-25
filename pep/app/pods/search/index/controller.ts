@@ -1,3 +1,4 @@
+import ArrayProxy from '@ember/array/proxy';
 import Controller from '@ember/controller';
 import { action, setProperties } from '@ember/object';
 import { inject as service } from '@ember/service';
@@ -6,9 +7,10 @@ import { tracked } from '@glimmer/tracking';
 
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import NotificationService from 'ember-cli-notifications/services/notifications';
-import { didCancel, timeout } from 'ember-concurrency';
+import { didCancel, timeout, Yieldable } from 'ember-concurrency';
 import { restartableTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
+import DS from 'ember-data';
 import IntlService from 'ember-intl/services/intl';
 
 import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
@@ -30,6 +32,7 @@ import {
 import { GlossaryWidgetLocation, WIDGET } from 'pep/constants/sidebar';
 import Abstract from 'pep/pods/abstract/model';
 import Document from 'pep/pods/document/model';
+import SearchDocument from 'pep/pods/search-document/model';
 import AjaxService from 'pep/services/ajax';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
@@ -470,7 +473,16 @@ export default class SearchIndex extends Controller {
      * @returns {SearchMetadata | null}
      */
     @restartableTask
-    *updateRefineMetadata(showLoading: boolean = true, debounceTimeout = 250) {
+    *updateRefineMetadata(
+        showLoading: boolean = true,
+        debounceTimeout = 250
+    ): Generator<
+        | Yieldable<void>
+        | (DS.AdapterPopulatedRecordArray<SearchDocument> &
+              DS.PromiseArray<SearchDocument, ArrayProxy<SearchDocument>>),
+        SearchMetadata | null | undefined,
+        DS.AdapterPopulatedRecordArray<SearchDocument>
+    > {
         try {
             yield timeout(debounceTimeout);
 

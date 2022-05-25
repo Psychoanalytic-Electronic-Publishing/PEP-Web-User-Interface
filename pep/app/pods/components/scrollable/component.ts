@@ -1,19 +1,24 @@
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
+import Component from '@glimmer/component';
 
-import Component from '@glint/environment-ember-loose/glimmer-component';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import MediaService from 'ember-responsive/services/media';
 
 import ScrollableService from 'pep/services/scrollable';
-import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface ScrollableArgs {
     namespace?: string;
     onInsert?: (element: HTMLElement) => void;
 }
 
-export default class Scrollable extends Component<BaseGlimmerSignature<ScrollableArgs>> {
+interface ScrollableSignature {
+    Args: ScrollableArgs;
+    Blocks: { default: [] };
+    Element: HTMLDivElement;
+}
+
+export default class Scrollable extends Component<ScrollableSignature> {
     @service media!: MediaService;
     @service fastboot!: FastbootService;
     @service scrollable!: ScrollableService;

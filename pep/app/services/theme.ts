@@ -1,4 +1,3 @@
-import { later } from '@ember/runloop';
 import Service, { inject as service } from '@ember/service';
 
 import HeadDataService from 'ember-cli-head/services/head-data';

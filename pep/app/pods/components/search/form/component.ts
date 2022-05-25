@@ -1,5 +1,5 @@
 import { action, computed, setProperties } from '@ember/object';
-import { later, next } from '@ember/runloop';
+import { next } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 
 import Component from '@glint/environment-ember-loose/glimmer-component';

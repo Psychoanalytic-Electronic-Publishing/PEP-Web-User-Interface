@@ -8,6 +8,7 @@ import IntlService from 'ember-intl/services/intl';
 
 import { TITLE_REGEX } from 'pep/constants/regex';
 import Abstract from 'pep/pods/abstract/model';
+import VolumeRoute from 'pep/pods/browse/journal/volume/route';
 import Journal from 'pep/pods/journal/model';
 import SourceVolume from 'pep/pods/source-volume/model';
 import Volume from 'pep/pods/volume/model';
@@ -15,9 +16,17 @@ import BrowseSelection from 'pep/services/browse-selection';
 import CurrentUserService from 'pep/services/current-user';
 import ExportsService, { ExportType } from 'pep/services/exports';
 import PrinterService from 'pep/services/printer';
+import { RouteModel } from 'pep/utils/types';
 
 interface Issue {
     title?: string;
+    groups: Map<
+        string,
+        {
+            title?: string;
+            models: SourceVolume[];
+        }
+    >;
     models: SourceVolume[];
 }
 
@@ -37,6 +46,8 @@ export default class BrowseJournalVolume extends Controller {
     @tracked sourcecode?: string;
     @tracked journal?: Journal;
 
+    declare model: RouteModel<VolumeRoute>;
+
     /**
      * If items are selected, use that for the export/print data. Otherwise use the paginator
      *
@@ -44,9 +55,7 @@ export default class BrowseJournalVolume extends Controller {
      * @memberof BrowseJournalVolume
      */
     get exportedData() {
-        return this.browseSelection.includedRecords.length
-            ? this.browseSelection.includedRecords
-            : (this.model as SourceVolume[]);
+        return this.browseSelection.includedRecords.length ? this.browseSelection.includedRecords : this.model;
     }
 
     queryParams = ['preview'];
@@ -59,37 +68,54 @@ export default class BrowseJournalVolume extends Controller {
      */
     @cached
     get sortedModels() {
-        const model = this.model as SourceVolume[];
-        const models = model.reduce<{
-            [key: string]: Issue;
-        }>(
-            (sortedModels, sourceVolume) => {
-                const issue = sourceVolume.issue;
-                if (issue) {
-                    if (!sortedModels[issue]) {
-                        sortedModels[issue] = {
-                            title: sourceVolume.issueTitle,
-                            models: [sourceVolume]
-                        };
-                    } else {
-                        sortedModels[issue].models.push(sourceVolume);
-                    }
-                } else {
-                    sortedModels.withoutIssues.models.push(sourceVolume);
+        const models = this.model.reduce<Map<string, Issue>>((volumes, sourceVolume) => {
+            let issue = `Issue ${sourceVolume.issue}`;
+            if (sourceVolume.issueTitle) {
+                issue += ` - ${sourceVolume.issueTitle}`;
+            }
+            const groupInIssue = sourceVolume.newSectionName;
+            if (issue) {
+                // If we have no key for this issue yet, create it
+                if (issue && !volumes.has(issue)) {
+                    volumes.set(issue, {
+                        title: issue,
+                        groups: new Map(),
+                        models: []
+                    });
                 }
-                return sortedModels;
-            },
-            {
-                withoutIssues: {
-                    models: []
+
+                // If we have no key for this group in this issue yet, create it
+                if (groupInIssue && !volumes.get(issue)?.groups.has(groupInIssue)) {
+                    volumes.get(issue)?.groups.set(groupInIssue, {
+                        title: groupInIssue,
+                        models: []
+                    });
+                }
+
+                if (issue && groupInIssue) {
+                    volumes
+                        .get(issue)
+                        ?.groups.get(groupInIssue)
+                        ?.models.push(sourceVolume);
+                } else {
+                    volumes.get(issue)?.models.push(sourceVolume);
+                }
+            } else {
+                if (volumes.has('withoutIssues')) {
+                    volumes.get('withoutIssues')?.models.push(sourceVolume);
+                } else {
+                    volumes.set('withoutIssues', {
+                        title: 'withoutIssues',
+                        groups: new Map(),
+                        models: [sourceVolume]
+                    });
                 }
             }
-        );
-        const result = Object.keys(models).map((key) => {
-            return models[key];
-        });
 
-        return result;
+            return volumes;
+        }, new Map());
+
+        return models;
     }
 
     /**
@@ -195,7 +221,7 @@ export default class BrowseJournalVolume extends Controller {
      */
     @action
     print() {
-        const data = this.exportedData;
+        const data = this.exportedData as SourceVolume[];
         const html = this.printer.dataToBibliographicHTML(data);
         this.printer.printHTML(html);
     }

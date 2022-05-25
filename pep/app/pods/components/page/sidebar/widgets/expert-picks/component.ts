@@ -1,3 +1,4 @@
+import ArrayProxy from '@ember/array/proxy';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
@@ -35,7 +36,11 @@ export default class PageSidebarWidgetsExpertPicks extends Component<
      * Load the widget results data
      */
     @restartableTask
-    *loadResults() {
+    *loadResults(): Generator<
+        DS.AdapterPopulatedRecordArray<Document> & DS.PromiseArray<Document, ArrayProxy<Document>>,
+        void,
+        DS.AdapterPopulatedRecordArray<Document>
+    > {
         const queryItems = this.configuration.base.home.expertPicks.map((item) => {
             return {
                 id: SearchFacetId.ART_ID,

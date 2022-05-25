@@ -1,3 +1,4 @@
+import ArrayProxy from '@ember/array/proxy';
 import { action } from '@ember/object';
 import { later } from '@ember/runloop';
 import { inject as service } from '@ember/service';
@@ -40,7 +41,11 @@ export default class PageSidebarWidgetsMostViewed extends Component<
      * Load the widget results data
      */
     @restartableTask
-    *loadResults() {
+    *loadResults(): Generator<
+        DS.AdapterPopulatedRecordArray<Document> & DS.PromiseArray<Document, ArrayProxy<Document>>,
+        void,
+        DS.AdapterPopulatedRecordArray<Document>
+    > {
         const results = yield this.store.query('document', {
             queryType: 'MostViewed',
             viewperiod: 2,

@@ -42,7 +42,7 @@ export default class PageSidebarWidgetsWhoCitedThis extends Component<
      * Load the widget results data
      */
     @restartableTask
-    *loadResults(id: string) {
+    *loadResults(id: string): Generator<Promise<unknown>, void> {
         const queryParms = serializeQueryParams({
             citedid: id
         });

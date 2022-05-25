@@ -1,3 +1,4 @@
+import ArrayProxy from '@ember/array/proxy';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
@@ -42,7 +43,11 @@ export default class PageSidebarWidgetsReadLater extends Component<
      * @memberof PageSidebarWidgetsReadLater
      */
     @restartableTask
-    *loadFromUserPreferences() {
+    *loadFromUserPreferences(): Generator<
+        DS.AdapterPopulatedRecordArray<Document> & DS.PromiseArray<Document, ArrayProxy<Document>>,
+        void,
+        DS.AdapterPopulatedRecordArray<Document>
+    > {
         const ids = this.currentUser.getPreferenceDocuments(PreferenceKey.READ_LATER);
         if (ids.length) {
             const queryItems = ids.map((id) => {

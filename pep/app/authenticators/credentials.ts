@@ -1,7 +1,7 @@
-import { run } from '@ember/runloop';
+import { cancel, later, run } from '@ember/runloop';
 import { EmberRunTimer } from '@ember/runloop/types';
 import { inject as service } from '@ember/service';
-import { htmlSafe } from '@ember/string';
+import { htmlSafe } from '@ember/template';
 import { isEmpty } from '@ember/utils';
 
 import Ember from 'ember';
@@ -138,13 +138,13 @@ export default class CredentialsAuthenticator extends BaseAuthenticator {
                 headers: this.authenticationHeaders
             });
             if (this._authenticationInvalidationTimeout) {
-                run.cancel(this._authenticationInvalidationTimeout);
+                cancel(this._authenticationInvalidationTimeout);
                 delete this._authenticationInvalidationTimeout;
             }
             return resolve();
         } catch (errors) {
             if (this._authenticationInvalidationTimeout) {
-                run.cancel(this._authenticationInvalidationTimeout);
+                cancel(this._authenticationInvalidationTimeout);
                 delete this._authenticationInvalidationTimeout;
             }
             return resolve();
@@ -190,12 +190,12 @@ export default class CredentialsAuthenticator extends BaseAuthenticator {
 
             if (expiresAt && expiresAt > now) {
                 if (this._authenticationInvalidationTimeout) {
-                    run.cancel(this._authenticationInvalidationTimeout);
+                    cancel(this._authenticationInvalidationTimeout);
                     delete this._authenticationInvalidationTimeout;
                 }
 
                 if (!Ember.testing) {
-                    this._authenticationInvalidationTimeout = run.later(this, 'invalidateByTimeout', expiresAt - now);
+                    this._authenticationInvalidationTimeout = later(this, this.invalidateByTimeout, expiresAt - now);
                 }
             }
         }

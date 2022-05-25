@@ -4,6 +4,7 @@ import { isEmpty, isNone } from '@ember/utils';
 
 import { QueryParamsObj, removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
 
+import { EmberOwner } from 'global';
 import { BOOLEAN_OPERATOR_REGEX, QUOTED_VALUE_REGEX } from 'pep/constants/regex';
 import {
     SEARCH_DEFAULT_VIEW_PERIOD,
@@ -199,7 +200,7 @@ export function buildSearchQueryParams(searchQueryParams: BuildSearchQueryParams
     );
 
     Object.keys(groupedFacets).forEach((id) => {
-        const facetType = SEARCH_FACETS.findBy('id', id);
+        const facetType = SEARCH_FACETS.findBy('id', id as SearchFacetId);
         const facets = groupedFacets[id];
         if (facetType && facetType.param) {
             //join all the selected facet values together
@@ -343,9 +344,10 @@ export function groupCountsByRanges(
  * @param {Search} searchController
  */
 export function copySearchToController(toController: Controller & SearchController): void {
-    const searchController = getOwner(toController).lookup(`controller:search.index`);
-    const config: ConfigurationService = getOwner(toController).lookup('service:configuration');
-    const user: CurrentUserService = getOwner(toController).lookup('service:currentUser');
+    const owner = getOwner(toController) as EmberOwner;
+    const searchController = owner.lookup(`controller:search.index`) as SearchIndexController;
+    const config: ConfigurationService = owner.lookup('service:configuration') as ConfigurationService;
+    const user: CurrentUserService = owner.lookup('service:currentUser') as CurrentUserService;
     const preferences = user.preferences;
     const defaultFields = preferences?.searchTermFields ?? config.base.search.terms.defaultFields;
     const defaultTerms = defaultFields.map((f) => ({ type: f, term: '' }));
@@ -367,10 +369,15 @@ export function copySearchToController(toController: Controller & SearchControll
  * @param {*} owner
  */
 export function clearSearch(owner: any): void {
-    const configuration: ConfigurationService = getOwner(owner).lookup('service:configuration');
-    const user: CurrentUserService = getOwner(owner).lookup('service:currentUser');
-    const searchController: SearchIndexController = getOwner(owner).lookup('controller:search.index');
-    const applicationController: ApplicationController = getOwner(owner).lookup('controller:application');
+    const ownerInstance = getOwner(owner) as EmberOwner;
+    const configuration: ConfigurationService = ownerInstance.lookup('service:configuration') as ConfigurationService;
+    const user: CurrentUserService = ownerInstance.lookup('service:currentUser') as CurrentUserService;
+    const searchController: SearchIndexController = ownerInstance.lookup(
+        'controller:search.index'
+    ) as SearchIndexController;
+    const applicationController: ApplicationController = ownerInstance.lookup(
+        'controller:application'
+    ) as ApplicationController;
     const cfg = configuration.base.search;
     const preferences = user.preferences;
     const terms =
@@ -405,8 +412,9 @@ export function clearSearch(owner: any): void {
  * @param {SearchIndexController} controller
  */
 export function clearSearchIndexControllerSearch(controller: SearchIndexController): void {
-    const configuration: ConfigurationService = getOwner(controller).lookup('service:configuration');
-    const user: CurrentUserService = getOwner(controller).lookup('service:currentUser');
+    const owner = getOwner(controller) as EmberOwner;
+    const configuration: ConfigurationService = owner.lookup('service:configuration') as ConfigurationService;
+    const user: CurrentUserService = owner.lookup('service:currentUser') as CurrentUserService;
     const cfg = configuration.base.search;
     const preferences = user.preferences;
     const terms =
@@ -444,7 +452,8 @@ export function copyToController<ControllerInstance>(object: any, controller: Co
  * @return {*}
  */
 export function getSearchQueryParams(toController: Controller): any {
-    const searchController = getOwner(toController).lookup(`controller:search.index`) as Controller & SearchController;
+    const searchController = (getOwner(toController) as EmberOwner).lookup(`controller:search.index`) as Controller &
+        SearchController;
     return searchController.queryParams;
 }
 

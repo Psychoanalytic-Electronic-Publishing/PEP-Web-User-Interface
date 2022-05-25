@@ -44,7 +44,7 @@ export default class PageSidebarWidgetsMoreLikeThese extends Component<
      * calls without similarity matches and this one keeps getting overridden
      */
     @restartableTask
-    *loadSimilarFromDocument() {
+    *loadSimilarFromDocument(): Generator<Promise<unknown>, void, unknown> {
         if (this.data?.id) {
             const results = yield this.ajax.request(
                 `/Database/MoreLikeThis?morelikethis=${this.data.id}&similarcount=${this.similarCount}`

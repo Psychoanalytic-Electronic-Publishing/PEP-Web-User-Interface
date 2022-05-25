@@ -6,11 +6,19 @@ import Service from '@ember/service';
 
 import Component from '@glint/environment-ember-loose/glimmer-component';
 import ModelRegistry from 'ember-data/types/registries/model';
+import IntlService from 'ember-intl/services/intl';
 
+import { EmberOwner } from 'global';
 import { PreferenceDocumentsKey, PreferenceKey } from 'pep/constants/preferences';
 import Document from 'pep/pods/document/model';
 import CanService from 'pep/services/can';
+import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService, { UserPreferenceErrorId } from 'pep/services/current-user';
+import IntroTour from 'pep/services/intro-tour';
+import LangService from 'pep/services/lang';
+import NotificationsService from 'pep/services/notifications';
+import PepSessionService from 'pep/services/pep-session';
+import ThemeService from 'pep/services/theme';
 
 /**
  * Functionality for loading user and configs after authentication
@@ -20,15 +28,15 @@ import CurrentUserService, { UserPreferenceErrorId } from 'pep/services/current-
  * @return {Promise<any>}
  */
 export async function onAuthenticated(owner: Controller | Route | Component<any> | Service): Promise<any> {
-    const currentOwner = getOwner(owner);
+    const currentOwner = getOwner(owner) as EmberOwner;
     const currentUserService = currentOwner.lookup(`service:current-user`) as CurrentUserService;
-    const notificationsService = currentOwner.lookup(`service:notifications`);
-    const intlService = currentOwner.lookup(`service:intl`);
-    const themeService = currentOwner.lookup(`service:theme`);
-    const langService = currentOwner.lookup(`service:lang`);
-    const configurationService = currentOwner.lookup(`service:configuration`);
-    const session = currentOwner.lookup('service:pep-session');
-    const introTour = currentOwner.lookup('service:intro-tour');
+    const notificationsService = currentOwner.lookup(`service:notifications`) as NotificationsService;
+    const intlService = currentOwner.lookup(`service:intl`) as IntlService;
+    const themeService = currentOwner.lookup(`service:theme`) as ThemeService;
+    const langService = currentOwner.lookup(`service:lang`) as LangService;
+    const configurationService = currentOwner.lookup(`service:configuration`) as ConfigurationService;
+    const session = currentOwner.lookup('service:pep-session') as PepSessionService;
+    const introTour = currentOwner.lookup('service:intro-tour') as IntroTour;
 
     try {
         // get the current user's model before transitioning from the login page
@@ -59,7 +67,7 @@ export async function onAuthenticated(owner: Controller | Route | Component<any>
  * @return {*}  {boolean}
  */
 export function canAccessRoute(owner: Route, abilities: string[], model?: ModelRegistry): boolean {
-    const currentOwner = getOwner(owner);
+    const currentOwner = getOwner(owner) as EmberOwner;
     const canService = currentOwner.lookup(`service:can`) as CanService;
     let access = true;
     for (const ability of abilities) {
@@ -81,7 +89,7 @@ export function canAccessRoute(owner: Route, abilities: string[], model?: ModelR
  * @param {ModelRegistry} [model]
  */
 export function handleRouteAuthorization(owner: Route, abilities: string[], model?: ModelRegistry): void {
-    const currentOwner = getOwner(owner);
+    const currentOwner = getOwner(owner) as EmberOwner;
     const routerService = currentOwner.lookup(`service:router`) as RouterService;
     const access = canAccessRoute(owner, abilities, model);
     if (!access) {
@@ -107,9 +115,10 @@ export async function updateUserPreferencesDocument(
             intl.t(`search.item.notifications.failure.${key === PreferenceKey.FAVORITES ? 'favorites' : 'readLater'}`)
         );
     };
-    const notifications = getOwner(owner).lookup('service:notifications');
-    const user = getOwner(owner).lookup('service:currentUser');
-    const intl = getOwner(owner).lookup('service:intl');
+    const ownerInstance = getOwner(owner) as EmberOwner;
+    const notifications = ownerInstance.lookup('service:notifications') as NotificationsService;
+    const user = ownerInstance.lookup('service:currentUser') as CurrentUserService;
+    const intl = ownerInstance.lookup('service:intl') as IntlService;
     try {
         if (user.hasPreferenceDocument(key, document.id)) {
             const result = await user.removePreferenceDocument(key, document.id);
