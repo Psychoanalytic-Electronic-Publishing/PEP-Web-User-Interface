@@ -69,7 +69,10 @@ export default class BrowseJournalVolume extends Controller {
     @cached
     get sortedModels() {
         const models = this.model.reduce<Map<string, Issue>>((volumes, sourceVolume) => {
-            const issue = `Issue ${sourceVolume.issue} - ${sourceVolume.issueTitle}`;
+            let issue = `Issue ${sourceVolume.issue}`;
+            if (sourceVolume.issueTitle) {
+                issue += ` - ${sourceVolume.issueTitle}`;
+            }
             const groupInIssue = sourceVolume.newSectionName;
             if (issue) {
                 // If we have no key for this issue yet, create it
