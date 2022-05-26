@@ -25,8 +25,7 @@
                                 <div class="form-row">
                                     <div class="col-12">
                                         <validator.input
-                                            @errors={{changeset.error.configSettings.global.notifications.validation
-                                            }}
+                                            @errors={{changeset.error.configSettings.global.notifications.validation}}
                                         >
                                             <FlInput
                                                 @value={{changeset.configSettings.global.notificationMessage}}
@@ -54,8 +53,7 @@
                                 <div class="form-row">
                                     <div class="col-3">
                                         <validator.input
-                                            @errors={{changeset.error.configSettings.global.cards.whatsNew.limit.validation
-                                            }}
+                                            @errors={{changeset.error.configSettings.global.cards.whatsNew.limit.validation}}
                                         >
                                             <FlInput
                                                 @value={{changeset.configSettings.global.cards.whatsNew.limit}}
@@ -70,8 +68,7 @@
                                             </FlInput>
                                         </validator.input>
                                         <validator.input
-                                            @errors={{changeset.error.configSettings.global.cards.mostCited.limit.validation
-                                            }}
+                                            @errors={{changeset.error.configSettings.global.cards.mostCited.limit.validation}}
                                         >
                                             <FlInput
                                                 @value={{changeset.configSettings.global.cards.mostCited.limit}}
@@ -86,8 +83,7 @@
                                             </FlInput>
                                         </validator.input>
                                         <validator.input
-                                            @errors={{changeset.error.configSettings.global.cards.mostViewed.limit.validation
-                                            }}
+                                            @errors={{changeset.error.configSettings.global.cards.mostViewed.limit.validation}}
                                         >
                                             <FlInput
                                                 @value={{changeset.configSettings.global.cards.mostViewed.limit}}
@@ -102,8 +98,7 @@
                                             </FlInput>
                                         </validator.input>
                                         <validator.input
-                                            @errors={{changeset.error.configSettings.global.cards.glossary.limit.search.validation
-                                            }}
+                                            @errors={{changeset.error.configSettings.global.cards.glossary.limit.search.validation}}
                                         >
                                             <FlInput
                                                 @value={{changeset.configSettings.global.cards.glossary.limit.search}}
@@ -118,8 +113,7 @@
                                             </FlInput>
                                         </validator.input>
                                         <validator.input
-                                            @errors={{changeset.error.configSettings.global.cards.glossary.limit.read.validation
-                                            }}
+                                            @errors={{changeset.error.configSettings.global.cards.glossary.limit.read.validation}}
                                         >
                                             <FlInput
                                                 @value={{changeset.configSettings.global.cards.glossary.limit.read}}
@@ -149,8 +143,7 @@
                                 <div class="form-row">
                                     <div class="col-3">
                                         <validator.input
-                                            @errors={{changeset.error.configSettings.search.hitsInContext.limit.validation
-                                            }}
+                                            @errors={{changeset.error.configSettings.search.hitsInContext.limit.validation}}
                                         >
                                             <FlInput
                                                 @value={{changeset.configSettings.search.hitsInContext.limit}}
@@ -169,8 +162,7 @@
                                 <div class="form-row">
                                     <div class="col-3">
                                         <validator.input
-                                            @errors={{changeset.error.configSettings.search.limitFields.isShown.validation
-                                            }}
+                                            @errors={{changeset.error.configSettings.search.limitFields.isShown.validation}}
                                         >
                                             <ChangesetCheckbox
                                                 @changeset={{changeset}}
@@ -183,8 +175,7 @@
                                 <div class="form-row">
                                     <div class="col-6">
                                         <validator.input
-                                            @errors={{changeset.error.configSettings.global.searchHelpVideoUrl.validation
-                                            }}
+                                            @errors={{changeset.error.configSettings.global.searchHelpVideoUrl.validation}}
                                         >
                                             <FlInput
                                                 @value={{changeset.configSettings.global.searchHelpVideoUrl}}
@@ -212,7 +203,8 @@
                                     @swapAnimation={{true}}
                                     @mirrorOptions={{this.mirrorOptions}}
                                     @dragActions={{hash start=(fn this.dragStart)}}
-                                    class="row" as |Group|
+                                    class="row"
+                                    as |Group|
                                 >
                                     <div class="col-12">
                                         <div class="row">
@@ -229,7 +221,8 @@
                                             @items={{this.leftSidebarItems}}
                                             @itemReordered={{this.updateLeftSidebarItems}}
                                             @itemAdded={{this.updateLeftSidebarItems}}
-                                            @itemRemoved={{this.updateLeftSidebarItems}} as |container|
+                                            @itemRemoved={{this.updateLeftSidebarItems}}
+                                            as |container|
                                         >
                                             {{#each container.items as |item index|}}
                                                 <container.item @item={{item}}>
@@ -252,7 +245,8 @@
                                             @items={{this.rightSidebarItems}}
                                             @itemReordered={{this.updateRightSidebarItems}}
                                             @itemAdded={{this.updateRightSidebarItems}}
-                                            @itemRemoved={{this.updateRightSidebarItems}} as |container|
+                                            @itemRemoved={{this.updateRightSidebarItems}}
+                                            as |container|
                                         >
                                             {{#each container.items as |item index|}}
                                                 <container.item @item={{item}}>
@@ -287,7 +281,8 @@
                                 <SortableGroup
                                     @swapAnimation={{true}}
                                     @mirrorOptions={{this.mirrorOptions}}
-                                    class="row" as |Group|
+                                    class="row"
+                                    as |Group|
                                 >
                                     <h4 class="col-12 d-flex justify-content-between align-items-center">
                                         {{t "admin.common.search.terms.defaults"}}
@@ -301,7 +296,8 @@
                                     <div class="sortable container-list col-12">
                                         <Group.container
                                             @items={{this.fields}}
-                                            @itemReordered={{this.updateFields}} as |container|
+                                            @itemReordered={{this.updateFields}}
+                                            as |container|
                                         >
                                             {{#each container.items as |item index|}}
                                                 <container.item @item={{item}}>
@@ -359,6 +355,28 @@
                                     @fillColumnIndex={{0}}
                                     @renderAllRows={{this.fastboot.isFastBoot}}
                                 />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="col-12">
+                                <h4 class="d-flex justify-content-between align-items-center border-bottom mb-3 pb-1">
+                                    Embargo Date
+                                </h4>
+                                <PowerCalendar
+                                    @center={{this.calendarCenter}}
+                                    @onCenterChange={{action (mut this.calendarCenterDate) value="date"}}
+                                    @selected={{this.embargoDate}}
+                                    @onSelect={{this.onEmbargoDateChange}}
+                                    class="power-calendar-large"
+                                    as |calendar|
+                                >
+                                    <calendar.Nav />
+                                    <calendar.Days />
+                                </PowerCalendar>
                             </div>
                         </div>
                     </div>

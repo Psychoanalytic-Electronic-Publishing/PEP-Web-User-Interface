@@ -14,6 +14,10 @@ export default class BrowseJournalIndex extends Controller {
     @tracked sourcecode?: string;
     @tracked journal?: Journal;
 
+    get embargoPublicationDate() {
+        return this.configuration.base.global.embargoDate;
+    }
+
     get publisherInformation() {
         const code = this.sourcecode;
         return this.configuration.content.global.publishers.find((publisher) => publisher.sourceCode === code);
