@@ -1,8 +1,8 @@
 import { action } from '@ember/object';
 import { isBlank } from '@ember/utils';
+import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
-import Component from '@glint/environment-ember-loose/glimmer-component';
 import { didCancel, timeout, Yieldable } from 'ember-concurrency';
 import { restartableTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';

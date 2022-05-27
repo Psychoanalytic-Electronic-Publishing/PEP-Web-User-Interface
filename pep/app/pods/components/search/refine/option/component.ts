@@ -1,4 +1,4 @@
-import Component from '@glint/environment-ember-loose/glimmer-component';
+import Component from '@glimmer/component';
 
 import { SearchFacetValue } from 'pep/constants/search';
 import { RefineOption } from 'pep/pods/components/search/refine/component';

@@ -1,14 +1,14 @@
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
+import Component from '@glimmer/component';
 
 import { ComponentWithBoundArgs } from '@glint/environment-ember-loose';
-import Component from '@glint/environment-ember-loose/glimmer-component';
 
 import CollapsiblePanelBody from 'pep/pods/components/collapsible-panel/body/component';
 import CollapsiblePanelHeader from 'pep/pods/components/collapsible-panel/header/component';
 import ScrollableService from 'pep/services/scrollable';
 import { fadeTransition } from 'pep/utils/animation';
-import { BaseGlimmerSignature, ModifyYields } from 'pep/utils/types';
+import { BaseGlimmerSignature, ModifyBlocks } from 'pep/utils/types';
 
 export interface CollapsiblePanelArgs {
     isOpen: boolean;
@@ -16,8 +16,8 @@ export interface CollapsiblePanelArgs {
     toggle: (isOpen: boolean) => void;
 }
 
-interface CollapsiblePanelYields {
-    Yields: {
+interface CollapsiblePanelBlocks {
+    Blocks: {
         default: [
             {
                 header: ComponentWithBoundArgs<typeof CollapsiblePanelHeader, 'isOpen' | 'toggle'>;
@@ -28,7 +28,7 @@ interface CollapsiblePanelYields {
 }
 
 export default class CollapsiblePanel extends Component<
-    ModifyYields<BaseGlimmerSignature<CollapsiblePanelArgs>, CollapsiblePanelYields>
+    ModifyBlocks<BaseGlimmerSignature<CollapsiblePanelArgs>, CollapsiblePanelBlocks>
 > {
     @service scrollable!: ScrollableService;
 

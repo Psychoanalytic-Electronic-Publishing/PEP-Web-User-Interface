@@ -2,12 +2,14 @@ import { action } from '@ember/object';
 import { next } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 import { htmlSafe } from '@ember/template';
+import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
-import Component from '@glint/environment-ember-loose/glimmer-component';
-
 import {
-    SIDEBAR_HANDLE_WIDTH, SIDEBAR_MAX_WIN_PCT_DESKTOP, SIDEBAR_MAX_WIN_PCT_TABLET, SIDEBAR_WIDTH
+    SIDEBAR_HANDLE_WIDTH,
+    SIDEBAR_MAX_WIN_PCT_DESKTOP,
+    SIDEBAR_MAX_WIN_PCT_TABLET,
+    SIDEBAR_WIDTH
 } from 'pep/constants/dimensions';
 import FastbootMediaService from 'pep/services/fastboot-media';
 import SidebarService from 'pep/services/sidebar';

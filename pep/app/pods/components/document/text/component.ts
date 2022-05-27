@@ -2,9 +2,9 @@ import { action, computed } from '@ember/object';
 import RouterService from '@ember/routing/router-service';
 import { next, run, scheduleOnce } from '@ember/runloop';
 import { inject as service } from '@ember/service';
+import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
-import Component from '@glint/environment-ember-loose/glimmer-component';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import { DS } from 'ember-data';
 import IntlService from 'ember-intl/services/intl';
@@ -179,7 +179,7 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
                 processor.setParameter('', 'imageUrl', DOCUMENT_IMG_BASE_URL);
                 processor.setParameter('', 'isBook', this.args.document.sourceType === SourceType.BOOK);
                 processor.importStylesheet(xslt);
-                const transformedDocument = (processor.transformToFragment(xml, document) as unknown) as XMLDocument;
+                const transformedDocument = processor.transformToFragment(xml, document) as unknown as XMLDocument;
                 return transformedDocument;
             }
             return reject(this.notifications.error(this.intl.t('document.text.error')));

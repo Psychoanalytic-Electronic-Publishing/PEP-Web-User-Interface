@@ -3,8 +3,8 @@ import Controller from '@ember/controller';
 import Route from '@ember/routing/route';
 import RouterService from '@ember/routing/router-service';
 import Service from '@ember/service';
+import Component from '@glimmer/component';
 
-import Component from '@glint/environment-ember-loose/glimmer-component';
 import ModelRegistry from 'ember-data/types/registries/model';
 import IntlService from 'ember-intl/services/intl';
 

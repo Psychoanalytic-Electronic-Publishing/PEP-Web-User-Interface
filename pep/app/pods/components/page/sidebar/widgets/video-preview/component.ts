@@ -1,6 +1,5 @@
 import { inject } from '@ember/service';
-
-import Component from '@glint/environment-ember-loose/glimmer-component';
+import Component from '@glimmer/component';
 
 import moment from 'moment';
 import { AspectRatio } from 'pep/constants/configuration';

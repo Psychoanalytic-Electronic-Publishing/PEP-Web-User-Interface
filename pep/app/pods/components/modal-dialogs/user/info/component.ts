@@ -1,7 +1,6 @@
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-
-import Component from '@glint/environment-ember-loose/glimmer-component';
+import Component from '@glimmer/component';
 
 import CurrentUserService from 'pep/services/current-user';
 import PepSessionService from 'pep/services/pep-session';

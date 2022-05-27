@@ -1,6 +1,6 @@
 import { action } from '@ember/object';
 
-import Component from '@glint/environment-ember-loose/glimmer-component';
+import Component from '@glimmer/component';
 
 import { ColumnValue } from '@gavant/ember-table';
 
