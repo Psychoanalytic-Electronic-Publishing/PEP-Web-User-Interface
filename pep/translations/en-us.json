@@ -879,6 +879,9 @@
                     "title": "Global Notifications",
                     "message": "Message"
                 },
+                "embargoDate": {
+                    "title": "Embargo Date"
+                },
                 "cards": {
                     "left": "Left Sidebar",
                     "right": "Right Sidebar",

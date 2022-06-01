@@ -879,6 +879,9 @@
                     "title": "",
                     "message": ""
                 },
+                "embargoDate": {
+                    "title": ""
+                },
                 "cards": {
                     "left": "Barre latérale gauche",
                     "right": "Barre latérale droite",
