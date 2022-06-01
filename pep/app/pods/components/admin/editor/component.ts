@@ -1,4 +1,4 @@
-import Component from '@glint/environment-ember-loose/glimmer-component';
+import Component from '@glimmer/component';
 
 import { TinymceEditorPlugins } from '@gavant/ember-tinymce/components/tinymce-editor';
 import { GenericChangeset } from '@gavant/ember-validations/utilities/create-changeset';

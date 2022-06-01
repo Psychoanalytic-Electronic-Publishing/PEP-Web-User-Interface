@@ -1,4 +1,4 @@
-import Component from '@glint/environment-ember-loose/glimmer-component';
+import Component from '@glimmer/component';
 
 import Document from 'pep/pods/document/model';
 import { BaseGlimmerSignature } from 'pep/utils/types';

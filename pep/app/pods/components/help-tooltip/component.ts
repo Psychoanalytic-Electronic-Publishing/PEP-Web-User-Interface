@@ -1,8 +1,8 @@
 import { action, computed } from '@ember/object';
 import { guidFor } from '@ember/object/internals';
 import { inject as service } from '@ember/service';
+import Component from '@glimmer/component';
 
-import Component from '@glint/environment-ember-loose/glimmer-component';
 import IntlService from 'ember-intl/services/intl';
 
 import ModalService from '@gavant/ember-modals/services/modal';

@@ -1,0 +1,13 @@
+.ember-power-calendar {
+    .ember-power-calendar-day {
+        color: #bbb;
+        &--current-month {
+            color: #656D78;
+            background-color: #F5F7FA;
+        }
+    }
+}
+
+.power-calendar-large {
+    @include ember-power-calendar($cell-size: 70px);
+}

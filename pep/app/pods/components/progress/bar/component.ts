@@ -1,6 +1,5 @@
 import { inject as service } from '@ember/service';
-
-import Component from '@glint/environment-ember-loose/glimmer-component';
+import Component from '@glimmer/component';
 
 import LoadingBar from 'pep/services/loading-bar';
 import { BaseGlimmerSignature } from 'pep/utils/types';

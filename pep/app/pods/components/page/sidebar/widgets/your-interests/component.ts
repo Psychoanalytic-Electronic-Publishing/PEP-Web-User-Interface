@@ -1,6 +1,5 @@
 import { inject as service } from '@ember/service';
-
-import Component from '@glint/environment-ember-loose/glimmer-component';
+import Component from '@glimmer/component';
 
 import { WIDGET } from 'pep/constants/sidebar';
 import { BasePageSidebarWidgetArgs } from 'pep/pods/components/page/sidebar/widgets/component';

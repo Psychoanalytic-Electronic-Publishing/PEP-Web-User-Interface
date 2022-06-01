@@ -1,8 +1,8 @@
 import { action, computed } from '@ember/object';
 import RouterService from '@ember/routing/router-service';
 import { inject as service } from '@ember/service';
+import Component from '@glimmer/component';
 
-import Component from '@glint/environment-ember-loose/glimmer-component';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import IntlService from 'ember-intl/services/intl';
 
@@ -121,7 +121,7 @@ export default class SearchItemBibliographic extends Component<BaseGlimmerSignat
      * @memberof SearchItem
      */
     toggleDocument(key: PreferenceDocumentsKey, document: Document) {
-        return updateUserPreferencesDocument(this, key, document);
+        return updateUserPreferencesDocument(this as any, key, document);
     }
 
     /**

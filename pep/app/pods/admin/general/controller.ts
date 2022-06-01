@@ -3,7 +3,6 @@ import { action, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 
-import { BufferedChangeset } from 'ember-changeset/types';
 import IntlService from 'ember-intl/services/intl';
 
 import ModalService from '@gavant/ember-modals/services/modal';
@@ -12,8 +11,9 @@ import createChangeset, { GenericChangeset } from '@gavant/ember-validations/uti
 
 import { ExpertPick, VideoConfiguration, WidgetConfiguration } from 'pep/constants/configuration';
 import { SEARCH_TYPES, SearchTermId } from 'pep/constants/search';
-import { AdminField } from 'pep/pods/admin/general/route';
+import AdminGeneralRoute, { AdminField } from 'pep/pods/admin/general/route';
 import Configuration from 'pep/pods/configuration/model';
+import { RouteModel } from 'pep/utils/types';
 import { CONFIGURATION_EXPERT_PICK_VALIDATIONS } from 'pep/validations/configuration/expert-pick';
 import { CONFIGURATION_VIDEO_VALIDATIONS } from 'pep/validations/configuration/video';
 
@@ -21,11 +21,14 @@ export default class AdminGeneral extends Controller {
     @service intl!: IntlService;
     @service modal!: ModalService;
 
-    @tracked changeset?: BufferedChangeset;
+    declare model: RouteModel<AdminGeneralRoute>;
+
+    @tracked changeset?: GenericChangeset<Configuration>;
     @tracked saveDisabled: boolean = false;
     @tracked fields: { id: number; field: SearchTermId }[] = [];
     @tracked leftSidebarItems: WidgetConfiguration[] = [];
     @tracked rightSidebarItems: WidgetConfiguration[] = [];
+    @tracked calendarCenterDate?: Date;
     mirrorOptions = {
         constrainDimensions: true
     };
@@ -34,6 +37,13 @@ export default class AdminGeneral extends Controller {
         return SEARCH_TYPES.filter((t) => t.isTypeOption);
     }
 
+    get calendarCenter() {
+        return new Date(this.calendarCenterDate ?? this.model.configSettings.global.embargoDate);
+    }
+
+    get embargoDate() {
+        return new Date(this.changeset?.configSettings.global.embargoDate);
+    }
     /**
      * Open the expert pick modal
      *
@@ -380,6 +390,11 @@ export default class AdminGeneral extends Controller {
         if (event.data.sensorEvent.data.target.tagName === 'LABEL') {
             event.cancel();
         }
+    }
+
+    @action
+    onEmbargoDateChange(value: { date: Date }) {
+        this.changeset?.set(`configSettings.global.embargoDate`, value.date);
     }
 }
 // DO NOT DELETE: this is how TypeScript knows how to look up your controllers.

@@ -1,4 +1,4 @@
-import Component from '@glint/environment-ember-loose/glimmer-component';
+import Component from '@glimmer/component';
 
 import { DOCUMENT_IMG_BASE_URL } from 'pep/constants/documents';
 import { BaseGlimmerSignature } from 'pep/utils/types';

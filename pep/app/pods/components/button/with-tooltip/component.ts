@@ -1,11 +1,9 @@
 import { inject as service } from '@ember/service';
-
-import Component from '@glint/environment-ember-loose/glimmer-component';
+import Component from '@glimmer/component';
 
 import { ButtonArgs } from '@gavant/ember-button-basic/components/button';
 
 import FastbootMediaService from 'pep/services/fastboot-media';
-import { BaseGlimmerSignature } from 'pep/utils/types';
 
 import { IconName, IconPrefix } from '@fortawesome/fontawesome-svg-core';
 
@@ -26,7 +24,13 @@ interface ButtonWithTooltipArgs {
     tooltipVisible?: boolean;
 }
 
-export default class ButtonWithTooltip extends Component<BaseGlimmerSignature<ButtonWithTooltipArgs>> {
+interface ButtonWithTooltipSignature {
+    Args: ButtonWithTooltipArgs;
+    Element: HTMLElement;
+    Blocks: [];
+}
+
+export default class ButtonWithTooltip extends Component<ButtonWithTooltipSignature> {
     @service fastbootMedia!: FastbootMediaService;
 
     get tooltipSide() {

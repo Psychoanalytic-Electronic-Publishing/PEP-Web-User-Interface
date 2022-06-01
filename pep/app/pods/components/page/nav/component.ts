@@ -1,15 +1,20 @@
 import { action } from '@ember/object';
 import RouterService from '@ember/routing/router-service';
 import { inject as service } from '@ember/service';
+import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
-import Component from '@glint/environment-ember-loose/glimmer-component';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 
 import ModalService from '@gavant/ember-modals/services/modal';
 
 import {
-    LOGOUT, NAVIGATE_TO_READ, OPEN_LOGIN, OPEN_USER_MENU, OPEN_USER_PREFERENCES, SECRET_DAVE_CODE
+    LOGOUT,
+    NAVIGATE_TO_READ,
+    OPEN_LOGIN,
+    OPEN_USER_MENU,
+    OPEN_USER_PREFERENCES,
+    SECRET_DAVE_CODE
 } from 'pep/constants/keyboard-shortcuts';
 import { Languages } from 'pep/constants/lang';
 import { PEP_FACEBOOK_URL, SUPPORT_URL } from 'pep/constants/urls';

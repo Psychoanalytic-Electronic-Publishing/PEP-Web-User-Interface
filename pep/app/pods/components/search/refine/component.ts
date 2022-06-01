@@ -1,9 +1,9 @@
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { capitalize } from '@ember/string';
+import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
-import Component from '@glint/environment-ember-loose/glimmer-component';
 import IntlService from 'ember-intl/services/intl';
 
 import { SearchMetadata } from 'pep/api';

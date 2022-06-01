@@ -39,7 +39,7 @@ export default class AdminGeneral extends Route {
         super.setupController(controller, model, transition);
 
         model.configSettings = mergeWith({}, DEFAULT_BASE_CONFIGURATION, model.configSettings, mergingCustomizer);
-        const changeset = createChangeset<BaseConfiguration>(model, CONFIGURATION_GENERAL_VALIDATIONS);
+        const changeset = createChangeset<Configuration>(model, CONFIGURATION_GENERAL_VALIDATIONS);
         controller.changeset = changeset;
         const fields = (model.configSettings as BaseConfiguration).search.terms.defaultFields;
         controller.fields = fields.map((field, index) => {

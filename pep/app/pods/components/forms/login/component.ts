@@ -1,9 +1,9 @@
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
+import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
 import { ComponentLike } from '@glint/environment-ember-loose';
-import Component from '@glint/environment-ember-loose/glimmer-component';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import IntlService from 'ember-intl/services/intl';
 
@@ -41,7 +41,7 @@ interface Validator {
 
 interface FormsLoginSignature {
     Args: FormsLoginArgs;
-    Yields: {
+    Blocks: {
         default: [GenericChangeset<LoginForm>, Validator];
     };
 }
