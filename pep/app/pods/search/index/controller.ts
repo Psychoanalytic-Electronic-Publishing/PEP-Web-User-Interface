@@ -18,6 +18,7 @@ import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 
 import { SearchMetadata } from 'pep/api';
 import { DEFAULT_BASE_CONFIGURATION } from 'pep/constants/configuration';
+import { OpenUrlSearchKeys } from 'pep/constants/open-url';
 import { PreferenceKey } from 'pep/constants/preferences';
 import { TITLE_REGEX } from 'pep/constants/regex';
 import {
@@ -75,7 +76,8 @@ export default class SearchIndex extends Controller {
         'viewedCount',
         'viewedPeriod',
         { _facets: 'facets' },
-        'preview'
+        'preview',
+        ...OpenUrlSearchKeys
     ];
 
     /**
@@ -92,7 +94,7 @@ export default class SearchIndex extends Controller {
     @tracked citedCount: string = '';
     @tracked viewedCount: string = '';
     @tracked viewedPeriod: ViewPeriod = SEARCH_DEFAULT_VIEW_PERIOD;
-    @tracked paginator!: Pagination<Document>;
+    @tracked declare paginator: Pagination<Document, { fullCount: number; description: string }>;
 
     @tracked currentSmartSearchTerm: string = '';
     @tracked currentSearchTerms: SearchTermValue[] = [];
@@ -126,7 +128,7 @@ export default class SearchIndex extends Controller {
     //@see https://github.com/emberjs/ember.js/issues/18981
     @tracked _searchTerms: string | null = null;
 
-    get searchTerms() {
+    get searchTerms(): SearchTermValue[] {
         if (!this._searchTerms) {
             return [];
         } else {

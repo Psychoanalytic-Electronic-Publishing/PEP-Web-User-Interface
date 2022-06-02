@@ -85,3 +85,9 @@ export default class DocumentRead extends Component<BaseGlimmerSignature<Documen
         this.args.documentRendered?.();
     }
 }
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        'Document::Read': typeof DocumentRead;
+    }
+}

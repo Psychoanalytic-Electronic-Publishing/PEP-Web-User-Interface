@@ -5,6 +5,7 @@ import { isEmpty, isNone } from '@ember/utils';
 import { QueryParamsObj, removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
 
 import { EmberOwner } from 'global';
+import { OpenUrlSearchKey } from 'pep/constants/open-url';
 import { BOOLEAN_OPERATOR_REGEX, QUOTED_VALUE_REGEX } from 'pep/constants/regex';
 import {
     SEARCH_DEFAULT_VIEW_PERIOD,
@@ -239,6 +240,28 @@ export function joinParamValues(
 }
 
 /**
+ * Join advanced param values
+ *
+ * @export
+ * @param {(string | undefined)} currentParam
+ * @param {(string | string[])} newParam
+ * @param {('AND' | 'OR')} [joinOperator='AND']
+ * @return {*}  {string}
+ */
+export function joinAdvancedParamValues(
+    currentParam: string | undefined,
+    newParam: string | string[],
+    joinOperator: 'AND' | 'OR' = 'AND'
+): string {
+    if (currentParam === 'adv::') {
+        return `${currentParam}${newParam}`;
+    } else {
+        return `${currentParam ? `${currentParam} ${joinOperator} ` : ''}${newParam}`;
+    }
+    // return `${currentParam && currentParam !== 'adv::' ? `${currentParam} ${joinOperator} ` : ''}${newParam}`;
+}
+
+/**
  * A "blank" search request could have any of the params in the `exclude` arg
  * If there are params besides that, it is a valid search form submission
  * @export
@@ -470,9 +493,7 @@ export function getSearchQueryParams(toController: Controller): any {
  *     abstract: boolean;
  * }}
  */
-export function buildBrowseRelatedDocumentsParams(
-    model: Document
-): {
+export function buildBrowseRelatedDocumentsParams(model: Document): {
     facetValues?: {
         id: SearchFacetId;
         value: string;
@@ -506,4 +527,79 @@ export function buildBrowseRelatedDocumentsParams(
             abstract: false
         };
     }
+}
+
+export function convertOpenURLToSearchParams(params: Record<OpenUrlSearchKey, string>): QueryParamsObj {
+    const searchTerms: SearchTermValue[] = [];
+    let q = 'adv::';
+    if (params.aufirst) {
+        searchTerms.push({
+            type: SearchTermId.AUTHOR,
+            term: params.aufirst
+        });
+    }
+    if (params.aulast) {
+        searchTerms.push({
+            type: SearchTermId.AUTHOR,
+            term: params.aulast
+        });
+    }
+
+    if (params.title) {
+        searchTerms.push({
+            type: SearchTermId.SOURCE_NAME,
+            term: params.title
+        });
+    }
+
+    if (params.atitle) {
+        searchTerms.push({
+            type: SearchTermId.TITLE,
+            term: params.atitle
+        });
+    }
+
+    if (params.volume) {
+        searchTerms.push({
+            type: SearchTermId.VOLUME,
+            term: params.volume
+        });
+    }
+
+    if (params.issue) {
+        searchTerms.push({
+            type: SearchTermId.ISSUE,
+            term: params.issue
+        });
+    }
+
+    if (params.date) {
+        searchTerms.push({
+            type: SearchTermId.START_YEAR,
+            term: params.date
+        });
+    }
+
+    if (params.issn) {
+        q = joinAdvancedParamValues(q, `art_issn:${params.issn}`);
+    }
+
+    if (params.eissn) {
+        q = joinAdvancedParamValues(q, `art_eissn:${params.eissn}`);
+    }
+
+    if (params.isbn) {
+        q = joinAdvancedParamValues(q, `art_isbn:${params.isbn}`);
+    }
+
+    if (params.spage || params.epage) {
+        q = joinAdvancedParamValues(q, `art_pgrg:${params.spage ?? '*'}-${params.epage ?? '*'}`);
+    }
+
+    const queryParams = {
+        q,
+        searchTerms: !isEmpty(searchTerms) ? JSON.stringify(searchTerms) : null
+    };
+
+    return queryParams;
 }

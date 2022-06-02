@@ -99,7 +99,7 @@
                                         >
                                             <FaIcon @icon="clipboard" @size="lg" @prefix="fas" />
                                         </CopyButton>
-                                        <Button
+                                        <Button::WithTooltip
                                             @action={{this.print}}
                                             @type="link"
                                             @icon="print"
@@ -167,7 +167,8 @@
                                         @class="list-unstyled"
                                         @estimateHeight={{if this.currentUser.preferences.searchHICEnabled 100 20}}
                                         @renderAll={{this.fastboot.isFastBoot}}
-                                        @lastReached={{this.paginator.loadMoreModels}} as |result|
+                                        @lastReached={{this.paginator.loadMoreModels}}
+                                        as |result|
                                     >
                                         <Search::Item::Bibliographic
                                             @item={{result}}

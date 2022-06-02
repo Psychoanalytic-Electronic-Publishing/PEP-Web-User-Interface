@@ -180,3 +180,9 @@ export default class DraggableContainer extends Component<BaseGlimmerSignature<D
         this.args.onPanelChange?.(this.mode.id, this.adjustedFitHeight);
     }
 }
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        DraggableContainer: typeof DraggableContainer;
+    }
+}

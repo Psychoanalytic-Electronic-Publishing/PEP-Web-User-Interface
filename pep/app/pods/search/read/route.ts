@@ -161,9 +161,10 @@ export default class SearchRead extends PageNav(Route) {
                     processQueryParams: (params) => ({ ...params, ...searchParams })
                 });
 
-                const response = (await this.store.query('search-document', queryParams)) as RecordArrayWithMeta<
-                    SearchDocument
-                >;
+                const response = (await this.store.query(
+                    'search-document',
+                    queryParams
+                )) as RecordArrayWithMeta<SearchDocument>;
                 results = response.toArray();
                 resultsMeta = response.meta;
             }
@@ -205,7 +206,7 @@ export default class SearchRead extends PageNav(Route) {
         super.setupController(controller, model);
 
         copyToController(this.searchParams, controller);
-        controller.paginator = usePagination<Document, any>({
+        controller.paginator = usePagination<Document, { fullCount: number }>({
             context: controller,
             modelName: 'search-document',
             models: this.searchResults ?? [],
