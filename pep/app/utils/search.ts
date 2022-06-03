@@ -259,7 +259,6 @@ export function joinAdvancedParamValues(
     } else {
         return `${currentParam ? `${currentParam} ${joinOperator} ` : ''}${newParam}`;
     }
-    // return `${currentParam && currentParam !== 'adv::' ? `${currentParam} ${joinOperator} ` : ''}${newParam}`;
 }
 
 /**
