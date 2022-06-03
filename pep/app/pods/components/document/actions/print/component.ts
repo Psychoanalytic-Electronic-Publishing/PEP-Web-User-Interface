@@ -29,3 +29,9 @@ export default class DocumentActionsPrint extends Component<BaseGlimmerSignature
         this.printer.printElement(url);
     }
 }
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        'Document::Actions::Print': typeof DocumentActionsPrint;
+    }
+}

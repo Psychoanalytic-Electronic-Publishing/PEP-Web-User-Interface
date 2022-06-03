@@ -5,8 +5,10 @@ import { isEmpty, isNone } from '@ember/utils';
 import { QueryParamsObj, removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
 
 import { EmberOwner } from 'global';
+import { OpenUrlSearchKey } from 'pep/constants/open-url';
 import { BOOLEAN_OPERATOR_REGEX, QUOTED_VALUE_REGEX } from 'pep/constants/regex';
 import {
+    AdvancedSearchStartText,
     SEARCH_DEFAULT_VIEW_PERIOD,
     SEARCH_FACETS,
     SEARCH_TYPE_AUTHOR,
@@ -236,6 +238,27 @@ export function joinParamValues(
     joinOperator: 'AND' | 'OR' = 'AND'
 ): string {
     return `${currentParam ? `${currentParam} ${joinOperator} ` : ''}${newParam}`;
+}
+
+/**
+ * Join advanced param values
+ *
+ * @export
+ * @param {(string | undefined)} currentParam
+ * @param {(string | string[])} newParam
+ * @param {('AND' | 'OR')} [joinOperator='AND']
+ * @return {*}  {string}
+ */
+export function joinAdvancedParamValues(
+    currentParam: string | undefined,
+    newParam: string | string[],
+    joinOperator: 'AND' | 'OR' = 'AND'
+): string {
+    if (currentParam === 'adv::') {
+        return `${currentParam}${newParam}`;
+    } else {
+        return `${currentParam ? `${currentParam} ${joinOperator} ` : ''}${newParam}`;
+    }
 }
 
 /**
@@ -470,9 +493,7 @@ export function getSearchQueryParams(toController: Controller): any {
  *     abstract: boolean;
  * }}
  */
-export function buildBrowseRelatedDocumentsParams(
-    model: Document
-): {
+export function buildBrowseRelatedDocumentsParams(model: Document): {
     facetValues?: {
         id: SearchFacetId;
         value: string;
@@ -506,4 +527,99 @@ export function buildBrowseRelatedDocumentsParams(
             abstract: false
         };
     }
+}
+
+export function convertOpenURLToSearchParams(params: Partial<Record<OpenUrlSearchKey, string>>): QueryParamsObj {
+    const searchTerms: SearchTermValue[] = [];
+    let q = AdvancedSearchStartText;
+
+    if (params.artnum) {
+        searchTerms.push({
+            type: SearchTermId.SOURCE_CODE,
+            term: params.artnum
+        });
+    }
+
+    if (params.aufirst) {
+        searchTerms.push({
+            type: SearchTermId.AUTHOR,
+            term: params.aufirst
+        });
+    }
+    if (params.aulast) {
+        searchTerms.push({
+            type: SearchTermId.AUTHOR,
+            term: params.aulast
+        });
+    }
+
+    if (params.title) {
+        searchTerms.push({
+            type: SearchTermId.SOURCE_NAME,
+            term: params.title
+        });
+    }
+
+    if (params.atitle) {
+        searchTerms.push({
+            type: SearchTermId.TITLE,
+            term: params.atitle
+        });
+    }
+
+    if (params.volume) {
+        searchTerms.push({
+            type: SearchTermId.VOLUME,
+            term: params.volume
+        });
+    }
+
+    if (params.issue) {
+        searchTerms.push({
+            type: SearchTermId.ISSUE,
+            term: params.issue
+        });
+    }
+
+    if (params.date) {
+        searchTerms.push({
+            type: SearchTermId.START_YEAR,
+            term: params.date
+        });
+    }
+
+    if (params.stitle) {
+        searchTerms.push({
+            type: SearchTermId.SOURCE_NAME,
+            term: params.stitle
+        });
+    }
+
+    if (params.issn) {
+        q = joinAdvancedParamValues(q, `art_issn:${params.issn}`);
+    }
+
+    if (params.eissn) {
+        q = joinAdvancedParamValues(q, `art_eissn:${params.eissn}`);
+    }
+
+    if (params.isbn) {
+        q = joinAdvancedParamValues(q, `art_isbn:${params.isbn}`);
+    }
+
+    if (params.pages) {
+        const pages = params.pages.split('-');
+        q = joinAdvancedParamValues(q, `art_pgrg:${pages[0]}-${pages[1]}`);
+    }
+
+    if (params.spage || params.epage) {
+        q = joinAdvancedParamValues(q, `art_pgrg:${params.spage ?? '*'}-${params.epage ?? '*'}`);
+    }
+
+    const queryParams = {
+        q: q === AdvancedSearchStartText ? '' : q,
+        searchTerms: !isEmpty(searchTerms) ? JSON.stringify(searchTerms) : null
+    };
+
+    return queryParams;
 }

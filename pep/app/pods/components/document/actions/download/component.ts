@@ -47,3 +47,9 @@ export default class DocumentActionsDownload extends Component<BaseGlimmerSignat
         this.exports.downloadItem(`${url}?${this.session.downloadAuthParams}`, 'Document');
     }
 }
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        'Document::Actions::Download': typeof DocumentActionsDownload;
+    }
+}

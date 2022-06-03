@@ -8,7 +8,7 @@ interface DocumentSearchHitsArgs {
     searchHitNumber: number;
     viewNextSearchHit: () => void;
     viewPreviousSearchHit: () => void;
-    viewHitNumber: () => void;
+    viewHitNumber: Function;
 }
 
 export default class DocumentSearchHits extends Component<BaseGlimmerSignature<DocumentSearchHitsArgs>> {

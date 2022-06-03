@@ -1,10 +1,11 @@
 import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 
+import { OpenUrlSearchKey } from 'pep/constants/open-url';
 import { SEARCH_FACETS, SearchFacetId, SearchTermId } from 'pep/constants/search';
-import { buildSearchQueryParams, groupCountsByRanges } from 'pep/utils/search';
+import { buildSearchQueryParams, convertOpenURLToSearchParams, groupCountsByRanges } from 'pep/utils/search';
 import { module, test } from 'qunit';
 
-module('Unit | Utility | search', function() {
+module('Unit | Utility | search', function () {
     const defaultSearchQueryParamsReturn = {
         abstract: true,
         synonyms: false
@@ -25,13 +26,13 @@ module('Unit | Utility | search', function() {
         );
     };
 
-    test('Empty object returns abstract true and synonyms false', function(assert) {
+    test('Empty object returns abstract true and synonyms false', function (assert) {
         const result = buildSearchQueryParams({});
 
         assert.deepEqual(result, defaultSearchQueryParamsReturn);
     });
 
-    test('Single search facets works', function(assert) {
+    test('Single search facets works', function (assert) {
         const allFacets = SEARCH_FACETS;
         assert.expect(allFacets.length);
 
@@ -162,7 +163,7 @@ module('Unit | Utility | search', function() {
         });
     });
 
-    test('Multiple search facets works', function(assert) {
+    test('Multiple search facets works', function (assert) {
         const multipleAuthorFacets = buildSearchQueryParams({
             facetValues: [
                 {
@@ -210,7 +211,7 @@ module('Unit | Utility | search', function() {
         });
     });
 
-    test('Article search works', function(assert) {
+    test('Article search works', function (assert) {
         const result = buildSearchQueryParams({
             searchTerms: [{ type: SearchTermId.ARTICLE, term: 'test' }]
         });
@@ -226,7 +227,7 @@ module('Unit | Utility | search', function() {
         });
     });
 
-    test('Author search works', function(assert) {
+    test('Author search works', function (assert) {
         const singleAuthorSearch = buildSearchQueryParams({
             searchTerms: [{ type: SearchTermId.AUTHOR, term: 'Freud' }]
         });
@@ -279,7 +280,7 @@ module('Unit | Utility | search', function() {
         });
     });
 
-    test('Cited search works', function(assert) {
+    test('Cited search works', function (assert) {
         const result = buildSearchQueryParams({
             searchTerms: [{ type: SearchTermId.CITED, term: 'test' }]
         });
@@ -294,7 +295,7 @@ module('Unit | Utility | search', function() {
         });
     });
 
-    test('Dialog search works', function(assert) {
+    test('Dialog search works', function (assert) {
         const result = buildSearchQueryParams({
             searchTerms: [{ type: SearchTermId.DIALOG, term: 'test' }]
         });
@@ -310,7 +311,7 @@ module('Unit | Utility | search', function() {
         });
     });
 
-    test('Dream search works', function(assert) {
+    test('Dream search works', function (assert) {
         const result = buildSearchQueryParams({
             searchTerms: [{ type: SearchTermId.DREAM, term: 'test' }]
         });
@@ -326,7 +327,7 @@ module('Unit | Utility | search', function() {
         });
     });
 
-    test('End Year search works', function(assert) {
+    test('End Year search works', function (assert) {
         const result = buildSearchQueryParams({
             searchTerms: [{ type: SearchTermId.END_YEAR, term: 'test' }]
         });
@@ -340,7 +341,7 @@ module('Unit | Utility | search', function() {
         });
     });
 
-    test('Everywhere search works', function(assert) {
+    test('Everywhere search works', function (assert) {
         const result = buildSearchQueryParams({
             searchTerms: [{ type: SearchTermId.EVERYWHERE, term: 'test' }]
         });
@@ -355,7 +356,7 @@ module('Unit | Utility | search', function() {
         });
     });
 
-    test('Quote search works', function(assert) {
+    test('Quote search works', function (assert) {
         const result = buildSearchQueryParams({
             searchTerms: [{ type: SearchTermId.QUOTE, term: 'test' }]
         });
@@ -370,7 +371,7 @@ module('Unit | Utility | search', function() {
         });
     });
 
-    test('Reference search works', function(assert) {
+    test('Reference search works', function (assert) {
         const result = buildSearchQueryParams({
             searchTerms: [{ type: SearchTermId.REFERENCE, term: 'test' }]
         });
@@ -386,7 +387,7 @@ module('Unit | Utility | search', function() {
         });
     });
 
-    test('Start year search works', function(assert) {
+    test('Start year search works', function (assert) {
         const result = buildSearchQueryParams({
             searchTerms: [{ type: SearchTermId.START_YEAR, term: 'test' }]
         });
@@ -401,7 +402,7 @@ module('Unit | Utility | search', function() {
         });
     });
 
-    test('Title search works', function(assert) {
+    test('Title search works', function (assert) {
         const result = buildSearchQueryParams({
             searchTerms: [{ type: SearchTermId.TITLE, term: 'test' }]
         });
@@ -416,7 +417,7 @@ module('Unit | Utility | search', function() {
         });
     });
 
-    test('Viewed search works', function(assert) {
+    test('Viewed search works', function (assert) {
         const result = buildSearchQueryParams({
             searchTerms: [{ type: SearchTermId.VIEWED, term: 'test' }]
         });
@@ -431,7 +432,7 @@ module('Unit | Utility | search', function() {
         });
     });
 
-    test('Article search removes colons', function(assert) {
+    test('Article search removes colons', function (assert) {
         const result = buildSearchQueryParams({
             searchTerms: [{ type: SearchTermId.ARTICLE, term: 'test:two' }]
         });
@@ -447,7 +448,7 @@ module('Unit | Utility | search', function() {
         });
     });
 
-    test('groupCountsByRanges works', function(assert) {
+    test('groupCountsByRanges works', function (assert) {
         const counts = {
             '0': 20,
             '1': 1,
@@ -465,5 +466,189 @@ module('Unit | Utility | search', function() {
             '26+': 0,
             '6 TO 9': 0
         });
+    });
+
+    test('OpenURL conversion works', function (assert) {
+        const artnumResult = convertOpenURLToSearchParams({ [OpenUrlSearchKey.ART_NUM]: 'test' });
+
+        assert.deepEqual(
+            artnumResult,
+            {
+                q: '',
+                searchTerms: '[{"type":"sourcecode","term":"test"}]'
+            },
+            'artnum works'
+        );
+
+        const auFirstResult = convertOpenURLToSearchParams({ [OpenUrlSearchKey.AU_FIRST]: 'test' });
+
+        assert.deepEqual(
+            auFirstResult,
+            {
+                q: '',
+                searchTerms: '[{"type":"author","term":"test"}]'
+            },
+            'aufirst works'
+        );
+
+        const auLastResult = convertOpenURLToSearchParams({ [OpenUrlSearchKey.AU_LAST]: 'test' });
+
+        assert.deepEqual(
+            auLastResult,
+            {
+                q: '',
+                searchTerms: '[{"type":"author","term":"test"}]'
+            },
+            'aulast works'
+        );
+
+        const aTitleResult = convertOpenURLToSearchParams({ [OpenUrlSearchKey.A_TITLE]: 'test' });
+
+        assert.deepEqual(
+            aTitleResult,
+            {
+                q: '',
+                searchTerms: '[{"type":"title","term":"test"}]'
+            },
+            'atitle works'
+        );
+
+        const dateResult = convertOpenURLToSearchParams({ [OpenUrlSearchKey.DATE]: '1987-1989' });
+
+        assert.deepEqual(
+            dateResult,
+            {
+                q: '',
+                searchTerms: '[{"type":"startYear","term":"1987-1989"}]'
+            },
+            'date works'
+        );
+
+        const eISSNResult = convertOpenURLToSearchParams({ [OpenUrlSearchKey.E_ISSN]: '2' });
+
+        assert.deepEqual(
+            eISSNResult,
+            {
+                q: 'adv::art_eissn:2',
+                searchTerms: null
+            },
+            'eissn works'
+        );
+
+        const ePageResult = convertOpenURLToSearchParams({ [OpenUrlSearchKey.E_PAGE]: '2' });
+
+        assert.deepEqual(
+            ePageResult,
+
+            {
+                q: 'adv::art_pgrg:*-2',
+                searchTerms: null
+            },
+            'epage works'
+        );
+
+        const isbnResult = convertOpenURLToSearchParams({ [OpenUrlSearchKey.ISBN]: '2' });
+
+        assert.deepEqual(
+            isbnResult,
+            {
+                q: 'adv::art_isbn:2',
+                searchTerms: null
+            },
+            'isbn works'
+        );
+
+        const issnResult = convertOpenURLToSearchParams({ [OpenUrlSearchKey.ISSN]: '2' });
+
+        assert.deepEqual(
+            issnResult,
+            {
+                q: 'adv::art_issn:2',
+                searchTerms: null
+            },
+            'issn works'
+        );
+
+        const issueResult = convertOpenURLToSearchParams({ [OpenUrlSearchKey.ISSUE]: '2' });
+
+        assert.deepEqual(
+            issueResult,
+            {
+                q: '',
+                searchTerms: '[{"type":"issue","term":"2"}]'
+            },
+            'issue works'
+        );
+
+        const pagesResult = convertOpenURLToSearchParams({ [OpenUrlSearchKey.PAGES]: '2-4' });
+
+        assert.deepEqual(
+            pagesResult,
+            {
+                q: 'adv::art_pgrg:2-4',
+                searchTerms: null
+            },
+            'pages works'
+        );
+
+        const spageResult = convertOpenURLToSearchParams({ [OpenUrlSearchKey.S_PAGE]: '2' });
+
+        assert.deepEqual(
+            spageResult,
+            {
+                q: 'adv::art_pgrg:2-*',
+                searchTerms: null
+            },
+            'spage works'
+        );
+
+        const stitleResult = convertOpenURLToSearchParams({ [OpenUrlSearchKey.S_TITLE]: 'test' });
+
+        assert.deepEqual(
+            stitleResult,
+            {
+                q: '',
+                searchTerms: '[{"type":"sourcename","term":"test"}]'
+            },
+            'stitle works'
+        );
+
+        const titleResult = convertOpenURLToSearchParams({ [OpenUrlSearchKey.TITLE]: 'test' });
+
+        assert.deepEqual(
+            titleResult,
+            {
+                q: '',
+                searchTerms: '[{"type":"sourcename","term":"test"}]'
+            },
+            'title works'
+        );
+
+        const volumeResult = convertOpenURLToSearchParams({ [OpenUrlSearchKey.VOLUME]: '2' });
+
+        assert.deepEqual(
+            volumeResult,
+            {
+                q: '',
+                searchTerms: '[{"type":"volume","term":"2"}]'
+            },
+            'volume works'
+        );
+
+        const multipleResult = convertOpenURLToSearchParams({
+            [OpenUrlSearchKey.VOLUME]: '2',
+            [OpenUrlSearchKey.ISSN]: '2',
+            [OpenUrlSearchKey.PAGES]: '2-4',
+            [OpenUrlSearchKey.AU_FIRST]: 'test'
+        });
+
+        assert.deepEqual(
+            multipleResult,
+            {
+                q: 'adv::art_issn:2 AND art_pgrg:2-4',
+                searchTerms: '[{"type":"author","term":"test"},{"type":"volume","term":"2"}]'
+            },
+            'multiple params works'
+        );
     });
 });

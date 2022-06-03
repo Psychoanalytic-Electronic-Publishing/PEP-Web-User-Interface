@@ -3,6 +3,7 @@ import IntlService from 'ember-intl/services/intl';
 import { DocumentLinkTypes } from 'pep/constants/documents';
 import { groupCountsByRange, groupCountsByRanges, SearchFacetCounts } from 'pep/utils/search';
 
+export const AdvancedSearchStartText = 'adv::';
 /**
  * Accepted query param fields for the /v2/Database/Search endpoint
  * @export
@@ -72,7 +73,9 @@ export enum SearchTermId {
     CITED = 'cited',
     VIEWED = 'viewed',
     VOLUME = 'volume',
-    SOURCE_CODE = 'sourcecode'
+    SOURCE_CODE = 'sourcecode',
+    ISSUE = 'issue',
+    SOURCE_NAME = 'sourcename'
 }
 
 /**
@@ -305,6 +308,20 @@ export const SEARCH_TYPE_SOURCE_CODE: SearchTermType = {
     isTypeOption: false
 };
 
+export const SEARCH_TYPE_ISSUE: SearchTermType = {
+    id: SearchTermId.ISSUE,
+    param: 'issue',
+    label: 'search.terms.issue.label',
+    isTypeOption: false
+};
+
+export const SEARCH_TYPE_SOURCE_NAME: SearchTermType = {
+    id: SearchTermId.SOURCE_NAME,
+    param: 'sourcename',
+    label: 'search.terms.sourceName.label',
+    isTypeOption: false
+};
+
 // Note: not being used, only using startyear for now
 // export const SEARCH_TYPE_END_YEAR: SearchTermType = {
 //     id: SearchTermId.END_YEAR,
@@ -342,7 +359,9 @@ export const SEARCH_TYPES: SearchTermType[] = [
     SEARCH_TYPE_VIEWED,
     SEARCH_TYPE_START_YEAR,
     SEARCH_TYPE_VOLUME,
-    SEARCH_TYPE_SOURCE_CODE
+    SEARCH_TYPE_SOURCE_CODE,
+    SEARCH_TYPE_ISSUE,
+    SEARCH_TYPE_SOURCE_NAME
 ];
 
 /**

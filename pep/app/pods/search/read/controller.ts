@@ -13,7 +13,7 @@ import {
     NEXT_HIT,
     PREVIOUS_ARTICLE,
     PREVIOUS_ARTICLE_FIRST_HIT,
-    PREVIOUS_HIT,
+    PREVIOUS_HIT
 } from 'pep/constants/keyboard-shortcuts';
 import { PreferenceKey, UserPreferences } from 'pep/constants/preferences';
 import { SEARCH_DEFAULT_VIEW_PERIOD, SearchView, SearchViews, SearchViewType, ViewPeriod } from 'pep/constants/search';
@@ -70,14 +70,19 @@ export default class SearchRead extends Controller {
     @tracked viewedCount: string = '';
     @tracked viewedPeriod: ViewPeriod = SEARCH_DEFAULT_VIEW_PERIOD;
     @tracked _searchTerms: string | null = null;
-    @tracked paginator!: Pagination<Document>;
+    @tracked declare paginator: Pagination<
+        Document,
+        {
+            fullCount: number;
+        }
+    >;
     @tracked page: string | null = null;
     @tracked searchHitNumber?: number;
     @tracked index: number = this.pagingLimit;
     @tracked containerMaxHeight = 0;
 
     // This becomes our model as the template wasn't updating when we changed the default model
-    @tracked document?: Document;
+    @tracked declare document: Document;
 
     @tracked shortcuts: KeyboardShortcut[] = [
         {
