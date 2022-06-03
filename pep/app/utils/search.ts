@@ -8,6 +8,7 @@ import { EmberOwner } from 'global';
 import { OpenUrlSearchKey } from 'pep/constants/open-url';
 import { BOOLEAN_OPERATOR_REGEX, QUOTED_VALUE_REGEX } from 'pep/constants/regex';
 import {
+    AdvancedSearchStartText,
     SEARCH_DEFAULT_VIEW_PERIOD,
     SEARCH_FACETS,
     SEARCH_TYPE_AUTHOR,
@@ -529,9 +530,17 @@ export function buildBrowseRelatedDocumentsParams(model: Document): {
     }
 }
 
-export function convertOpenURLToSearchParams(params: Record<OpenUrlSearchKey, string>): QueryParamsObj {
+export function convertOpenURLToSearchParams(params: Partial<Record<OpenUrlSearchKey, string>>): QueryParamsObj {
     const searchTerms: SearchTermValue[] = [];
-    let q = 'adv::';
+    let q = AdvancedSearchStartText;
+
+    if (params.artnum) {
+        searchTerms.push({
+            type: SearchTermId.SOURCE_CODE,
+            term: params.artnum
+        });
+    }
+
     if (params.aufirst) {
         searchTerms.push({
             type: SearchTermId.AUTHOR,
@@ -580,6 +589,13 @@ export function convertOpenURLToSearchParams(params: Record<OpenUrlSearchKey, st
         });
     }
 
+    if (params.stitle) {
+        searchTerms.push({
+            type: SearchTermId.SOURCE_NAME,
+            term: params.stitle
+        });
+    }
+
     if (params.issn) {
         q = joinAdvancedParamValues(q, `art_issn:${params.issn}`);
     }
@@ -592,12 +608,17 @@ export function convertOpenURLToSearchParams(params: Record<OpenUrlSearchKey, st
         q = joinAdvancedParamValues(q, `art_isbn:${params.isbn}`);
     }
 
+    if (params.pages) {
+        const pages = params.pages.split('-');
+        q = joinAdvancedParamValues(q, `art_pgrg:${pages[0]}-${pages[1]}`);
+    }
+
     if (params.spage || params.epage) {
         q = joinAdvancedParamValues(q, `art_pgrg:${params.spage ?? '*'}-${params.epage ?? '*'}`);
     }
 
     const queryParams = {
-        q,
+        q: q === AdvancedSearchStartText ? '' : q,
         searchTerms: !isEmpty(searchTerms) ? JSON.stringify(searchTerms) : null
     };
 

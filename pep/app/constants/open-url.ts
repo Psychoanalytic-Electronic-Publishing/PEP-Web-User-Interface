@@ -17,9 +17,7 @@ export enum OpenUrlSearchKey {
     DATE = 'date',
     SORT = 'sort',
     LIMIT = 'limit',
-    OFFSET = 'offset',
-    CLIENT_ID = 'client-id',
-    CLIENT_SESSION = 'client-session'
+    OFFSET = 'offset'
 }
 
 export const OpenUrlSearchKeys = [
@@ -41,7 +39,5 @@ export const OpenUrlSearchKeys = [
     OpenUrlSearchKey.DATE,
     OpenUrlSearchKey.SORT,
     OpenUrlSearchKey.LIMIT,
-    OpenUrlSearchKey.OFFSET,
-    OpenUrlSearchKey.CLIENT_ID,
-    OpenUrlSearchKey.CLIENT_SESSION
+    OpenUrlSearchKey.OFFSET
 ];

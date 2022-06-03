@@ -3,6 +3,7 @@ import IntlService from 'ember-intl/services/intl';
 import { DocumentLinkTypes } from 'pep/constants/documents';
 import { groupCountsByRange, groupCountsByRanges, SearchFacetCounts } from 'pep/utils/search';
 
+export const AdvancedSearchStartText = 'adv::';
 /**
  * Accepted query param fields for the /v2/Database/Search endpoint
  * @export
