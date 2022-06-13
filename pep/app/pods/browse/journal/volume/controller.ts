@@ -74,7 +74,7 @@ export default class BrowseJournalVolume extends Controller {
                 issue += ` - ${sourceVolume.issueTitle}`;
             }
             const groupInIssue = sourceVolume.newSectionName;
-            if (issue) {
+            if (sourceVolume.issue) {
                 // If we have no key for this issue yet, create it
                 if (issue && !volumes.has(issue)) {
                     volumes.set(issue, {
@@ -93,10 +93,7 @@ export default class BrowseJournalVolume extends Controller {
                 }
 
                 if (issue && groupInIssue) {
-                    volumes
-                        .get(issue)
-                        ?.groups.get(groupInIssue)
-                        ?.models.push(sourceVolume);
+                    volumes.get(issue)?.groups.get(groupInIssue)?.models.push(sourceVolume);
                 } else {
                     volumes.get(issue)?.models.push(sourceVolume);
                 }
@@ -105,7 +102,7 @@ export default class BrowseJournalVolume extends Controller {
                     volumes.get('withoutIssues')?.models.push(sourceVolume);
                 } else {
                     volumes.set('withoutIssues', {
-                        title: 'withoutIssues',
+                        title: '',
                         groups: new Map(),
                         models: [sourceVolume]
                     });
