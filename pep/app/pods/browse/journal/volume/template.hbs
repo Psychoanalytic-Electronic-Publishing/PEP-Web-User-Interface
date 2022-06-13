@@ -104,19 +104,23 @@
                                                             {{model.newSectionName}}
                                                         </li>
                                                     {{/if}}
-                                                    <Browse::VolumeItem @item={{model}} @openResult={{this.openResult}} />
+                                                    <Browse::VolumeItem
+                                                        @item={{model}}
+                                                        @openResult={{this.openResult}}
+                                                    />
                                                 {{/each}}
                                                 {{#each issue.groups as |mappedGroup|}}
                                                     {{#let (get-array-index mappedGroup 1) as |group|}}
                                                         {{#if group.title}}
                                                             <h5>
-                                                                <strong>
-                                                                    {{group.title}}
-                                                                </strong>
+                                                                {{group.title}}
                                                             </h5>
                                                         {{/if}}
                                                         {{#each group.models as |model|}}
-                                                            <Browse::VolumeItem @item={{model}} @openResult={{this.openResult}} />
+                                                            <Browse::VolumeItem
+                                                                @item={{model}}
+                                                                @openResult={{this.openResult}}
+                                                            />
                                                         {{/each}}
                                                     {{/let}}
                                                 {{/each}}
