@@ -606,10 +606,13 @@ export const SEARCH_FACET_CITATION: SearchFacetType = {
     values: [],
     formatCounts: (counts: SearchFacetCounts) =>
         groupCountsByRanges(counts, [0, [1, 5], [6, 9], [10, 25], [26, Infinity]], ' TO '),
-    formatOption: (opt: string, intl: IntlService) =>
-        intl.t('search.facets.art_cited_5.option', {
-            range: opt.replace('TO', '-').trim()
-        })
+    formatOption: (opt: string, intl: IntlService) => {
+        const to = opt.replace('TO', '-');
+        const formatted = to.replace('-  *', '+');
+        return intl.t('search.facets.art_cited_5.option', {
+            range: formatted.trim()
+        });
+    }
 };
 
 export const SEARCH_FACET_VIEW: SearchFacetType = {

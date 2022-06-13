@@ -463,7 +463,7 @@ module('Unit | Utility | search', function () {
             '0': 20,
             '1 TO 5': 2,
             '10 TO 25': 0,
-            '26+': 0,
+            '26  TO  *': 0,
             '6 TO 9': 0
         });
     });

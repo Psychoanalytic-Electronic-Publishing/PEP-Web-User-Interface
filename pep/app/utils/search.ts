@@ -207,7 +207,15 @@ export function buildSearchQueryParams(searchQueryParams: BuildSearchQueryParams
         if (facetType && facetType.param) {
             //join all the selected facet values together
             let facetValues = facets.map((f) => (facetType?.quoteValues ? `"${f.value}"` : f.value));
-            facetValues = facetValues.map((facet) => (facetType.formatCounts ? `[${facet}]` : facet));
+            //This comes from the fact that we might have a single value instead of a group of values for ART_CITED_5
+            //via https://github.com/Psychoanalytic-Electronic-Publishing/PEP-Web-User-Interface/issues/618
+            if (facetType.id === SearchFacetId.ART_CITED_5) {
+                facetValues = facetValues.map((facet, index) =>
+                    facet.indexOf(' ') === -1 ? facet : facetType.formatCounts ? `[${facet}]` : facet
+                );
+            } else {
+                facetValues = facetValues.map((facet) => (facetType.formatCounts ? `[${facet}]` : facet));
+            }
 
             //wrap all facets in parenthesis
             //https://github.com/Psychoanalytic-Electronic-Publishing/PEP-Web-User-Interface/issues/410
@@ -335,7 +343,7 @@ export function groupCountsByRanges(
             const end = range[1];
             let key = `${start}${separator}${end}${postfix}`;
             if (end === Infinity) {
-                key = `${start}+${postfix}`;
+                key = `${start} ${separator} *${postfix}`;
             }
             countsByRanges[key] = 0;
             Object.keys(counts).forEach((id) => {
