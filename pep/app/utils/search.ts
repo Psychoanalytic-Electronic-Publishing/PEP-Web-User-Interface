@@ -541,13 +541,6 @@ export function convertOpenURLToSearchParams(params: Partial<Record<OpenUrlSearc
     const searchTerms: SearchTermValue[] = [];
     let q = AdvancedSearchStartText;
 
-    if (params.artnum) {
-        searchTerms.push({
-            type: SearchTermId.SOURCE_CODE,
-            term: params.artnum
-        });
-    }
-
     if (params.aufirst) {
         searchTerms.push({
             type: SearchTermId.AUTHOR,
@@ -601,6 +594,10 @@ export function convertOpenURLToSearchParams(params: Partial<Record<OpenUrlSearc
             type: SearchTermId.SOURCE_NAME,
             term: params.stitle
         });
+    }
+
+    if (params.artnum) {
+        q = joinAdvancedParamValues(q, `art_id:${params.artnum}`);
     }
 
     if (params.issn) {

@@ -474,8 +474,8 @@ module('Unit | Utility | search', function () {
         assert.deepEqual(
             artnumResult,
             {
-                q: '',
-                searchTerms: '[{"type":"sourcecode","term":"test"}]'
+                q: 'adv::art_id:test',
+                searchTerms: null
             },
             'artnum works'
         );
