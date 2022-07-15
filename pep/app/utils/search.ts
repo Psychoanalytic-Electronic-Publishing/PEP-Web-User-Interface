@@ -600,12 +600,8 @@ export function convertOpenURLToSearchParams(params: Partial<Record<OpenUrlSearc
         q = joinAdvancedParamValues(q, `art_id:${params.artnum}`);
     }
 
-    if (params.issn) {
-        q = joinAdvancedParamValues(q, `art_issn:${params.issn}`);
-    }
-
-    if (params.eissn) {
-        q = joinAdvancedParamValues(q, `art_eissn:${params.eissn}`);
+    if (params.issn || params.eissn) {
+        q = joinAdvancedParamValues(q, `art_issn:${params.issn ?? params.eissn}`);
     }
 
     if (params.isbn) {
@@ -613,8 +609,13 @@ export function convertOpenURLToSearchParams(params: Partial<Record<OpenUrlSearc
     }
 
     if (params.pages) {
-        const pages = params.pages.split('-');
-        q = joinAdvancedParamValues(q, `art_pgrg:${pages[0]}-${pages[1]}`);
+        const hasSeperator = params.pages.indexOf('-') > -1;
+        if (hasSeperator) {
+            const pages = params.pages.split('-');
+            q = joinAdvancedParamValues(q, `art_pgrg:${pages[0]}-${pages[1]}`);
+        } else {
+            q = joinAdvancedParamValues(q, `art_pgrg:${params.pages}`);
+        }
     }
 
     if (params.spage || params.epage) {

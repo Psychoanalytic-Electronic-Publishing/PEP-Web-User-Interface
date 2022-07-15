@@ -529,7 +529,7 @@ module('Unit | Utility | search', function () {
         assert.deepEqual(
             eISSNResult,
             {
-                q: 'adv::art_eissn:2',
+                q: 'adv::art_issn:2',
                 searchTerms: null
             },
             'eissn works'
@@ -589,6 +589,17 @@ module('Unit | Utility | search', function () {
                 searchTerms: null
             },
             'pages works'
+        );
+
+        const singlePageResult = convertOpenURLToSearchParams({ [OpenUrlSearchKey.PAGES]: '2' });
+
+        assert.deepEqual(
+            singlePageResult,
+            {
+                q: 'adv::art_pgrg:2',
+                searchTerms: null
+            },
+            'single page works'
         );
 
         const spageResult = convertOpenURLToSearchParams({ [OpenUrlSearchKey.S_PAGE]: '2' });
