@@ -1,15 +1,11 @@
 {{! template-lint-disable no-invalid-interactive }}
+
 <div
     class="document-text
         {{@document.sourceType}}
-
-
-
-        {{if this.currentUser.preferences.glossaryFormattingEnabled "glossary-highlight"}}
-
-
-
-        {{this.currentUser.textJustification.class}}"
+        {{if this.currentUser.preferences.glossaryFormattingEnabled 'glossary-highlight'}}
+        {{this.currentUser.textJustification.class}}
+        {{if @hasWatermark 'has-watermark'}}"
     {{on "click" this.onDocumentClick}}
     {{did-insert this.parseDocument}}
     {{did-update this.setupListeners this.text}}

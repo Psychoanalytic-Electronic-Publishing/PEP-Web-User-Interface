@@ -2,6 +2,31 @@ $document-font-size: 1rem;
 $document-paragraph-indent: 1.5rem;
 
 .document-text {
+    position: relative;
+    overflow: hidden;
+    z-index: 0;
+    &.has-watermark {
+        .pep-abstract-preview &::before {
+            position: absolute;
+        }
+        &::before {
+            content: "";
+            position: fixed;
+            width: 36vw;
+            height: 36vh;
+            top: 50%;
+            left: 50%;
+            margin-left: -18vw;
+            margin-top: -18vh;
+            background-image: url(/assets/images/watermark.png);
+            transform: rotate(-45deg);
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.25;
+        }
+    }
+
     &.book {
         .banner {
             a {
@@ -321,7 +346,8 @@ $document-paragraph-indent: 1.5rem;
     }
 
     .bibentry {
-        background-color: $color-primary-background;
+        // Removing this for IJP watermark.
+        // background-color: $color-primary-background;
         margin-left: 1.5rem;
         text-indent: -1.5rem;
     }
