@@ -25,8 +25,6 @@
 @import "../../assets/scss/variables/variables";
 @import "../../assets/scss/variables/components-variables";
 
-// Perfect Scrollbar
-
 // Core
 // ------------------------------
 // layouts
@@ -50,7 +48,6 @@
 
 // Plugins
 // ------------------------------
-@import "plugins/menu/perfect-scrollbar/ps-custom";
 @import "plugins/ui/breakpoints";
 @import "plugins/editors/editors";
 // TODO:A: Set this scss page specific

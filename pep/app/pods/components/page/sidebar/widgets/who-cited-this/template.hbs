@@ -1,0 +1,32 @@
+<CollapsiblePanel
+    @scrollableNamespace="sidebar-right"
+    @isOpen={{this.isOpen}}
+    @toggle={{fn @toggleIsOpen this.widget}}
+    class="mb-2"
+    {{did-insert this.onElementInsert}}
+    {{did-update this.onDataUpdate this.data}} as |Panel|
+>
+    <Panel.header
+        @title={{t "relatedInfo.widgets.whoCitedThis.title"}}
+        @tooltip={{this.configuration.content.global.cards.whoCitedThis.help}}
+    />
+    <Panel.body>
+        <ContentWithPlaceholder @placeholderComponent="loading/widget" @isLoading={{this.loadResults.isRunning}}>
+            <ul class="list-unstyled">
+                {{#each this.results as |result|}}
+                    <li class="mb-2">
+                        <div>
+                            <LinkTo @route="browse.read" @model={{result.id}}>
+                                {{html-safe result.documentRef}}
+                            </LinkTo>
+                        </div>
+                    </li>
+                {{else}}
+                    <li class="py-3 mb-0 text-center text-muted">
+                        {{t "relatedInfo.widgets.whoCitedThis.noResults"}}
+                    </li>
+                {{/each}}
+            </ul>
+        </ContentWithPlaceholder>
+    </Panel.body>
+</CollapsiblePanel>

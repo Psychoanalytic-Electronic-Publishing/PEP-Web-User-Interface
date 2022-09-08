@@ -1,12 +1,13 @@
 import { action } from '@ember/object';
 import RouterService from '@ember/routing/router-service';
 import { inject as service } from '@ember/service';
+import Component from '@glimmer/component';
 
-import Component from '@glint/environment-ember-loose/glimmer-component';
 import DS from 'ember-data';
 
 import ModalService from '@gavant/ember-modals/services/modal';
 
+import { IJP_OPEN_CODE } from 'pep/constants/books';
 import Document from 'pep/pods/document/model';
 import GlossaryTerm from 'pep/pods/glossary-term/model';
 import { SearchQueryParams } from 'pep/pods/search/index/route';
@@ -37,6 +38,10 @@ export default class DocumentRead extends Component<BaseGlimmerSignature<Documen
     @service loadingBar!: LoadingBarService;
     @service store!: DS.Store;
     @service('pep-session') session!: PepSessionService;
+
+    get hasWatermark() {
+        return this.args.model.PEPCode === IJP_OPEN_CODE;
+    }
 
     /**
      * Opens the login modal dialog
@@ -83,5 +88,11 @@ export default class DocumentRead extends Component<BaseGlimmerSignature<Documen
     @action
     documentRendered() {
         this.args.documentRendered?.();
+    }
+}
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        'Document::Read': typeof DocumentRead;
     }
 }

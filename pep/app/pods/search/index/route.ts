@@ -1,5 +1,6 @@
 import Transition from '@ember/routing/-private/transition';
 import Route from '@ember/routing/route';
+import RouterService from '@ember/routing/router-service';
 import { next } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 import { isEmpty } from '@ember/utils';
@@ -10,6 +11,8 @@ import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hoo
 import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
 
 import { SearchMetadata } from 'pep/api';
+import { OpenUrlSearchKey } from 'pep/constants/open-url';
+import { SEARCH_TYPES } from 'pep/constants/search';
 import { GlossaryWidgetLocation, WIDGET } from 'pep/constants/sidebar';
 import { PageNav } from 'pep/mixins/page-layout';
 import Document from 'pep/pods/document/model';
@@ -17,7 +20,7 @@ import SearchController from 'pep/pods/search/index/controller';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
 import SidebarService from 'pep/services/sidebar';
-import { buildSearchQueryParams, hasSearchQuery } from 'pep/utils/search';
+import { buildSearchQueryParams, convertOpenURLToSearchParams, hasSearchQuery } from 'pep/utils/search';
 
 export interface SearchIndexParams {
     q?: string;
@@ -30,16 +33,21 @@ export interface SearchIndexParams {
     _facets?: string;
 }
 
+export type SearchIndexOpenUrlParams = SearchIndexParams & {
+    [key in OpenUrlSearchKey]: string;
+};
+
 export interface SearchQueryParams extends Omit<SearchIndexParams, '_searchTerms' | '_facets'> {
     searchTerms?: string;
     facets?: string;
 }
 
 export default class SearchIndex extends PageNav(Route) {
-    @service sidebar!: SidebarService;
-    @service fastboot!: FastbootService;
-    @service configuration!: ConfigurationService;
-    @service currentUser!: CurrentUserService;
+    @service declare sidebar: SidebarService;
+    @service declare fastboot: FastbootService;
+    @service declare configuration: ConfigurationService;
+    @service declare currentUser: CurrentUserService;
+    @service declare router: RouterService;
 
     navController = 'search.index';
     resultsMeta: SearchMetadata | null = null;
@@ -73,10 +81,28 @@ export default class SearchIndex extends PageNav(Route) {
     };
 
     /**
+     * Redirect to handle openURL search params. Ideally this would be put in the before model, however there is a bug in ember that currently prevents it from working
+     *
+     * @param {*} _model
+     * @param {Transition<unknown>} transition
+     * @return {*}  {Promise<void>}
+     * @memberof SearchIndex
+     */
+    async redirect(_model, transition: Transition<unknown>): Promise<void> {
+        if (transition.to.queryParams.sid) {
+            transition.abort();
+            const params = transition.to.queryParams as Record<OpenUrlSearchKey, string>;
+            const searchParams = convertOpenURLToSearchParams(params);
+            const queryParams = { queryParams: searchParams };
+            await this.router.transitionTo('search.index', queryParams);
+        }
+    }
+
+    /**
      * Fetches the search results
      * @param {SearchIndexParams} params
      */
-    model(params: SearchIndexParams) {
+    model(params: SearchIndexOpenUrlParams) {
         const searchParams = this.buildQueryParams(params);
         // if no search was submitted, don't fetch any results
         if (hasSearchQuery(searchParams)) {
@@ -91,7 +117,11 @@ export default class SearchIndex extends PageNav(Route) {
                         : [this.currentUser.preferences?.searchSortType.id ?? ''],
                 processQueryParams: (params) => ({ ...params, ...searchParams, user: true })
             });
-            return this.store.query('search-document', queryParams);
+            return this.store.query('search-document', queryParams, {
+                adapterOptions: {
+                    openUrl: true
+                }
+            });
         } else {
             return [];
         }
@@ -150,9 +180,10 @@ export default class SearchIndex extends PageNav(Route) {
         controller.currentCitedCount = controller.citedCount;
         controller.currentViewedCount = controller.viewedCount;
         controller.currentViewedPeriod = controller.viewedPeriod;
+        // Filter the current search terms based on if they should be shown in the search form
         controller.currentSearchTerms = isEmpty(controller.searchTerms)
             ? terms.map((f) => ({ type: f, term: '' }))
-            : controller.searchTerms;
+            : controller.searchTerms.filter((f) => SEARCH_TYPES.find((item) => item.id === f.type)?.isTypeOption);
         controller.currentFacets = controller.facets;
 
         // pass the search result meta data into the controller
@@ -167,7 +198,13 @@ export default class SearchIndex extends PageNav(Route) {
             controller.isLimitOpen = true;
         }
 
-        controller.paginator = usePagination<Document>({
+        controller.paginator = usePagination<
+            Document,
+            {
+                fullCount: number;
+                description: string;
+            }
+        >({
             context: controller,
             modelName: 'search-document',
             models: model.toArray(),
@@ -185,6 +222,7 @@ export default class SearchIndex extends PageNav(Route) {
         this.sidebar.update({
             [WIDGET.RELATED_DOCUMENTS]: undefined,
             [WIDGET.MORE_LIKE_THESE]: undefined,
+            [WIDGET.WHO_CITED_THIS]: undefined,
             [WIDGET.GLOSSARY_TERMS]: {
                 terms: this.resultsMeta?.facetCounts.facet_fields.glossary_group_terms,
                 location: GlossaryWidgetLocation.SEARCH

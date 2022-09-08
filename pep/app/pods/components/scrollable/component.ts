@@ -1,24 +1,28 @@
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
+import Component from '@glimmer/component';
 
-import Component from '@glint/environment-ember-loose/glimmer-component';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import MediaService from 'ember-responsive/services/media';
 
 import ScrollableService from 'pep/services/scrollable';
-import { BaseGlimmerSignature } from 'pep/utils/types';
 
 interface ScrollableArgs {
     namespace?: string;
     onInsert?: (element: HTMLElement) => void;
 }
 
-export default class Scrollable extends Component<BaseGlimmerSignature<ScrollableArgs>> {
+interface ScrollableSignature {
+    Args: ScrollableArgs;
+    Blocks: { default: [] };
+    Element: HTMLDivElement;
+}
+
+export default class Scrollable extends Component<ScrollableSignature> {
     @service media!: MediaService;
     @service fastboot!: FastbootService;
     @service scrollable!: ScrollableService;
 
-    ps: PerfectScrollbar | null = null;
     scrollElement: HTMLElement | null = null;
     resizeDebounceDelay: number = 250;
 
@@ -29,10 +33,6 @@ export default class Scrollable extends Component<BaseGlimmerSignature<Scrollabl
      */
     constructor(owner: unknown, args: ScrollableArgs) {
         super(owner, args);
-        this.handleMediaChange();
-        this.media.on('mediaChanged', this, this.handleMediaChange);
-        this.scrollable.on('recalculate', this, this.handleRecalculate);
-        this.scrollable.on('reinitialize', this, this.reinitialize);
         this.scrollable.on('scrollToTop', this, this.handleScrollToTop);
     }
 
@@ -40,68 +40,7 @@ export default class Scrollable extends Component<BaseGlimmerSignature<Scrollabl
      * Destroy PerfectScrollbar instance and remove listeners
      */
     willDestroy() {
-        this.media.off('mediaChanged', this, this.handleMediaChange);
-        this.scrollable.off('recalculate', this, this.handleRecalculate);
-        this.scrollable.off('reinitialize', this, this.reinitialize);
         this.scrollable.off('scrollToTop', this, this.handleScrollToTop);
-        this.teardown();
-    }
-
-    /**
-     * Setup the perfect scrollbar instance
-     * @param {HTMLElement} element
-     */
-    setup(element: HTMLElement | null) {
-        if (element && !this.ps && !this.fastboot.isFastBoot) {
-            const ps = new PerfectScrollbar(element, {
-                //@see https://github.com/mdbootstrap/perfect-scrollbar#options
-                wheelSpeed: 1
-            });
-            this.ps = ps;
-        }
-    }
-
-    /**
-     * Destroy the perfect scrollbar instance
-     */
-    teardown() {
-        if (this.ps) {
-            this.ps.destroy();
-            this.ps = null;
-        }
-    }
-
-    /**
-     * Recalculates the PerfectScrollbar scroll height when
-     * receiving an event from the Scrollable service
-     * @param {String} namespace
-     */
-    handleRecalculate(namespace?: string) {
-        if ((!namespace || this.args.namespace === namespace) && this.ps) {
-            this.ps.update();
-        }
-    }
-
-    /**
-     * Reinitialize the scrollbar instance by removing the style PerfectScrollbar has added
-     * and teardown the instance and then re-set it up
-     *
-     * @param {string} [namespace]
-     * @memberof Scrollable
-     */
-    reinitialize(namespace?: string) {
-        if ((this.media.isMobile || this.media.isTablet) && this.scrollElement) {
-            // @ts-ignore https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style#setting_styles
-            this.scrollElement.style = '';
-            this.teardown();
-        } else {
-            if ((!namespace || this.args.namespace === namespace) && this.ps && this.scrollElement) {
-                // @ts-ignore https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style#setting_styles
-                this.scrollElement.style = '';
-                this.teardown();
-                this.setup(this.scrollElement);
-            }
-        }
     }
 
     /**
@@ -116,42 +55,12 @@ export default class Scrollable extends Component<BaseGlimmerSignature<Scrollabl
     }
 
     /**
-     * Handles changes to the device media/size
-     * Disable perfect-scrollbar in mobile as it doesnt support momentum scrolling
-     */
-    handleMediaChange() {
-        if (this.media.isMobile || this.media.isTablet) {
-            this.teardown();
-        } else {
-            this.setup(this.scrollElement);
-        }
-    }
-
-    /**
      * Setup the perfect scrollbar instance on render
      * @param {HTMLElement} element
      */
     @action
     onElementInsert(element: HTMLElement) {
         this.scrollElement = element;
-        if (!this.media.isMobile && !this.media.isTablet) {
-            this.setup(element);
-        }
-
-        if (this.args.onInsert) {
-            this.args.onInsert(element);
-        }
-    }
-
-    /**
-     * When the container element resizes, make sure the PerfectScrollbar
-     * instance is updated with the new scroll height
-     */
-    @action
-    onResize() {
-        if (this.ps) {
-            this.ps.update();
-        }
     }
 }
 

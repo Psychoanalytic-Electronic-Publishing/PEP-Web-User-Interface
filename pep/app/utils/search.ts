@@ -4,8 +4,11 @@ import { isEmpty, isNone } from '@ember/utils';
 
 import { QueryParamsObj, removeEmptyQueryParams } from '@gavant/ember-pagination/utils/query-params';
 
+import { EmberOwner } from 'global';
+import { OpenUrlSearchKey } from 'pep/constants/open-url';
 import { BOOLEAN_OPERATOR_REGEX, QUOTED_VALUE_REGEX } from 'pep/constants/regex';
 import {
+    AdvancedSearchStartText,
     SEARCH_DEFAULT_VIEW_PERIOD,
     SEARCH_FACETS,
     SEARCH_TYPE_AUTHOR,
@@ -199,12 +202,20 @@ export function buildSearchQueryParams(searchQueryParams: BuildSearchQueryParams
     );
 
     Object.keys(groupedFacets).forEach((id) => {
-        const facetType = SEARCH_FACETS.findBy('id', id);
+        const facetType = SEARCH_FACETS.findBy('id', id as SearchFacetId);
         const facets = groupedFacets[id];
         if (facetType && facetType.param) {
             //join all the selected facet values together
             let facetValues = facets.map((f) => (facetType?.quoteValues ? `"${f.value}"` : f.value));
-            facetValues = facetValues.map((facet) => (facetType.formatCounts ? `[${facet}]` : facet));
+            //This comes from the fact that we might have a single value instead of a group of values for ART_CITED_5
+            //via https://github.com/Psychoanalytic-Electronic-Publishing/PEP-Web-User-Interface/issues/618
+            if (facetType.id === SearchFacetId.ART_CITED_5) {
+                facetValues = facetValues.map((facet, index) =>
+                    facet.indexOf(' ') === -1 ? facet : facetType.formatCounts ? `[${facet}]` : facet
+                );
+            } else {
+                facetValues = facetValues.map((facet) => (facetType.formatCounts ? `[${facet}]` : facet));
+            }
 
             //wrap all facets in parenthesis
             //https://github.com/Psychoanalytic-Electronic-Publishing/PEP-Web-User-Interface/issues/410
@@ -235,6 +246,27 @@ export function joinParamValues(
     joinOperator: 'AND' | 'OR' = 'AND'
 ): string {
     return `${currentParam ? `${currentParam} ${joinOperator} ` : ''}${newParam}`;
+}
+
+/**
+ * Join advanced param values
+ *
+ * @export
+ * @param {(string | undefined)} currentParam
+ * @param {(string | string[])} newParam
+ * @param {('AND' | 'OR')} [joinOperator='AND']
+ * @return {*}  {string}
+ */
+export function joinAdvancedParamValues(
+    currentParam: string | undefined,
+    newParam: string | string[],
+    joinOperator: 'AND' | 'OR' = 'AND'
+): string {
+    if (currentParam === 'adv::') {
+        return `${currentParam}${newParam}`;
+    } else {
+        return `${currentParam ? `${currentParam} ${joinOperator} ` : ''}${newParam}`;
+    }
 }
 
 /**
@@ -288,6 +320,54 @@ export function groupCountsByRange(
 }
 
 /**
+ * Group numerical facet count values by a given range array. For citations this is [0, [1, 5], [6, 9], [10, 25], [26, Infinity]]
+ * https://github.com/Psychoanalytic-Electronic-Publishing/PEP-Web-User-Interface/issues/618
+ *
+ * @export
+ * @param {SearchFacetCounts} counts
+ * @param {((number | number[])[])} ranges
+ * @param {string} [separator='-']
+ * @param {string} [postfix='']
+ * @return {*}  {SearchFacetCounts}
+ */
+export function groupCountsByRanges(
+    counts: SearchFacetCounts,
+    ranges: (number | number[])[],
+    separator: string = '-',
+    postfix: string = ''
+): SearchFacetCounts {
+    const countsByRanges: SearchFacetCounts = {};
+    ranges.forEach((range) => {
+        if (Array.isArray(range)) {
+            const start = range[0];
+            const end = range[1];
+            let key = `${start}${separator}${end}${postfix}`;
+            if (end === Infinity) {
+                key = `${start} ${separator} *${postfix}`;
+            }
+            countsByRanges[key] = 0;
+            Object.keys(counts).forEach((id) => {
+                const v = Number(id);
+                if (v >= start && v <= end) {
+                    countsByRanges[key] = counts[`${v}`] + countsByRanges[key];
+                }
+            });
+        } else {
+            const key = `${range}${postfix}`;
+            countsByRanges[key] = 0;
+            Object.keys(counts).forEach((id) => {
+                const v = Number(id);
+                if (v === range) {
+                    countsByRanges[key] = counts[`${v}`] + countsByRanges[key];
+                }
+            });
+        }
+    });
+
+    return countsByRanges;
+}
+
+/**
  *
  *
  * @export
@@ -295,9 +375,10 @@ export function groupCountsByRange(
  * @param {Search} searchController
  */
 export function copySearchToController(toController: Controller & SearchController): void {
-    const searchController = getOwner(toController).lookup(`controller:search.index`);
-    const config: ConfigurationService = getOwner(toController).lookup('service:configuration');
-    const user: CurrentUserService = getOwner(toController).lookup('service:currentUser');
+    const owner = getOwner(toController) as EmberOwner;
+    const searchController = owner.lookup(`controller:search.index`) as SearchIndexController;
+    const config: ConfigurationService = owner.lookup('service:configuration') as ConfigurationService;
+    const user: CurrentUserService = owner.lookup('service:currentUser') as CurrentUserService;
     const preferences = user.preferences;
     const defaultFields = preferences?.searchTermFields ?? config.base.search.terms.defaultFields;
     const defaultTerms = defaultFields.map((f) => ({ type: f, term: '' }));
@@ -319,10 +400,15 @@ export function copySearchToController(toController: Controller & SearchControll
  * @param {*} owner
  */
 export function clearSearch(owner: any): void {
-    const configuration: ConfigurationService = getOwner(owner).lookup('service:configuration');
-    const user: CurrentUserService = getOwner(owner).lookup('service:currentUser');
-    const searchController: SearchIndexController = getOwner(owner).lookup('controller:search.index');
-    const applicationController: ApplicationController = getOwner(owner).lookup('controller:application');
+    const ownerInstance = getOwner(owner) as EmberOwner;
+    const configuration: ConfigurationService = ownerInstance.lookup('service:configuration') as ConfigurationService;
+    const user: CurrentUserService = ownerInstance.lookup('service:currentUser') as CurrentUserService;
+    const searchController: SearchIndexController = ownerInstance.lookup(
+        'controller:search.index'
+    ) as SearchIndexController;
+    const applicationController: ApplicationController = ownerInstance.lookup(
+        'controller:application'
+    ) as ApplicationController;
     const cfg = configuration.base.search;
     const preferences = user.preferences;
     const terms =
@@ -357,8 +443,9 @@ export function clearSearch(owner: any): void {
  * @param {SearchIndexController} controller
  */
 export function clearSearchIndexControllerSearch(controller: SearchIndexController): void {
-    const configuration: ConfigurationService = getOwner(controller).lookup('service:configuration');
-    const user: CurrentUserService = getOwner(controller).lookup('service:currentUser');
+    const owner = getOwner(controller) as EmberOwner;
+    const configuration: ConfigurationService = owner.lookup('service:configuration') as ConfigurationService;
+    const user: CurrentUserService = owner.lookup('service:currentUser') as CurrentUserService;
     const cfg = configuration.base.search;
     const preferences = user.preferences;
     const terms =
@@ -396,7 +483,8 @@ export function copyToController<ControllerInstance>(object: any, controller: Co
  * @return {*}
  */
 export function getSearchQueryParams(toController: Controller): any {
-    const searchController = getOwner(toController).lookup(`controller:search.index`) as Controller & SearchController;
+    const searchController = (getOwner(toController) as EmberOwner).lookup(`controller:search.index`) as Controller &
+        SearchController;
     return searchController.queryParams;
 }
 
@@ -413,9 +501,7 @@ export function getSearchQueryParams(toController: Controller): any {
  *     abstract: boolean;
  * }}
  */
-export function buildBrowseRelatedDocumentsParams(
-    model: Document
-): {
+export function buildBrowseRelatedDocumentsParams(model: Document): {
     facetValues?: {
         id: SearchFacetId;
         value: string;
@@ -449,4 +535,97 @@ export function buildBrowseRelatedDocumentsParams(
             abstract: false
         };
     }
+}
+
+export function convertOpenURLToSearchParams(params: Partial<Record<OpenUrlSearchKey, string>>): QueryParamsObj {
+    const searchTerms: SearchTermValue[] = [];
+    let q = AdvancedSearchStartText;
+
+    if (params.aufirst) {
+        searchTerms.push({
+            type: SearchTermId.AUTHOR,
+            term: params.aufirst
+        });
+    }
+    if (params.aulast) {
+        searchTerms.push({
+            type: SearchTermId.AUTHOR,
+            term: params.aulast
+        });
+    }
+
+    if (params.title) {
+        searchTerms.push({
+            type: SearchTermId.SOURCE_NAME,
+            term: params.title
+        });
+    }
+
+    if (params.atitle) {
+        searchTerms.push({
+            type: SearchTermId.TITLE,
+            term: params.atitle
+        });
+    }
+
+    if (params.volume) {
+        searchTerms.push({
+            type: SearchTermId.VOLUME,
+            term: params.volume
+        });
+    }
+
+    if (params.issue) {
+        searchTerms.push({
+            type: SearchTermId.ISSUE,
+            term: params.issue
+        });
+    }
+
+    if (params.date) {
+        searchTerms.push({
+            type: SearchTermId.START_YEAR,
+            term: params.date
+        });
+    }
+
+    if (params.stitle) {
+        searchTerms.push({
+            type: SearchTermId.SOURCE_NAME,
+            term: params.stitle
+        });
+    }
+
+    if (params.artnum) {
+        q = joinAdvancedParamValues(q, `art_id:${params.artnum}`);
+    }
+
+    if (params.issn || params.eissn) {
+        q = joinAdvancedParamValues(q, `art_issn:${params.issn ?? params.eissn}`);
+    }
+
+    if (params.isbn) {
+        q = joinAdvancedParamValues(q, `art_isbn:${params.isbn}`);
+    }
+
+    if (params.pages) {
+        const hasSeperator = params.pages.indexOf('-') > -1;
+        if (hasSeperator) {
+            const pages = params.pages.split('-');
+            q = joinAdvancedParamValues(q, `art_pgrg:${pages[0]}-${pages[1]}`);
+        } else {
+            q = joinAdvancedParamValues(q, `art_pgrg:${params.pages}`);
+        }
+    }
+
+    if (params.spage || params.epage) {
+        q = joinAdvancedParamValues(q, `art_pgrg:${params.spage ?? '*'}-${params.epage ?? '*'}`);
+    }
+
+    const queryParams = {
+        q: q === AdvancedSearchStartText ? '' : q,
+        searchTerms: !isEmpty(searchTerms) ? JSON.stringify(searchTerms) : null
+    };
+
+    return queryParams;
 }

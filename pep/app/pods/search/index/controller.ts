@@ -1,3 +1,4 @@
+import ArrayProxy from '@ember/array/proxy';
 import Controller from '@ember/controller';
 import { action, setProperties } from '@ember/object';
 import { inject as service } from '@ember/service';
@@ -6,9 +7,10 @@ import { tracked } from '@glimmer/tracking';
 
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import NotificationService from 'ember-cli-notifications/services/notifications';
-import { didCancel, timeout } from 'ember-concurrency';
+import { didCancel, timeout, Yieldable } from 'ember-concurrency';
 import { restartableTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
+import DS from 'ember-data';
 import IntlService from 'ember-intl/services/intl';
 
 import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
@@ -16,15 +18,22 @@ import { QueryParamsObj } from '@gavant/ember-pagination/utils/query-params';
 
 import { SearchMetadata } from 'pep/api';
 import { DEFAULT_BASE_CONFIGURATION } from 'pep/constants/configuration';
+import { OpenUrlSearchKeys } from 'pep/constants/open-url';
 import { PreferenceKey } from 'pep/constants/preferences';
 import { TITLE_REGEX } from 'pep/constants/regex';
 import {
-    SEARCH_DEFAULT_VIEW_PERIOD, SEARCH_TYPE_ARTICLE, SearchFacetValue, SearchTermValue, SearchViews, SearchViewType,
+    SEARCH_DEFAULT_VIEW_PERIOD,
+    SEARCH_TYPE_ARTICLE,
+    SearchFacetValue,
+    SearchTermValue,
+    SearchViews,
+    SearchViewType,
     ViewPeriod
 } from 'pep/constants/search';
 import { GlossaryWidgetLocation, WIDGET } from 'pep/constants/sidebar';
 import Abstract from 'pep/pods/abstract/model';
 import Document from 'pep/pods/document/model';
+import SearchDocument from 'pep/pods/search-document/model';
 import AjaxService from 'pep/services/ajax';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
@@ -67,7 +76,8 @@ export default class SearchIndex extends Controller {
         'viewedCount',
         'viewedPeriod',
         { _facets: 'facets' },
-        'preview'
+        'preview',
+        ...OpenUrlSearchKeys
     ];
 
     /**
@@ -84,7 +94,7 @@ export default class SearchIndex extends Controller {
     @tracked citedCount: string = '';
     @tracked viewedCount: string = '';
     @tracked viewedPeriod: ViewPeriod = SEARCH_DEFAULT_VIEW_PERIOD;
-    @tracked paginator!: Pagination<Document>;
+    @tracked declare paginator: Pagination<Document, { fullCount: number; description: string }>;
 
     @tracked currentSmartSearchTerm: string = '';
     @tracked currentSearchTerms: SearchTermValue[] = [];
@@ -118,7 +128,7 @@ export default class SearchIndex extends Controller {
     //@see https://github.com/emberjs/ember.js/issues/18981
     @tracked _searchTerms: string | null = null;
 
-    get searchTerms() {
+    get searchTerms(): SearchTermValue[] {
         if (!this._searchTerms) {
             return [];
         } else {
@@ -292,7 +302,6 @@ export default class SearchIndex extends Controller {
                 meta: taskFor(this.updateRefineMetadata).perform(false, 0)
             });
             this.loadingBar.hide();
-            this.scrollable.recalculate('sidebar-left');
             return results.documents;
         } catch (err) {
             this.loadingBar.hide();
@@ -466,7 +475,16 @@ export default class SearchIndex extends Controller {
      * @returns {SearchMetadata | null}
      */
     @restartableTask
-    *updateRefineMetadata(showLoading: boolean = true, debounceTimeout = 250) {
+    *updateRefineMetadata(
+        showLoading: boolean = true,
+        debounceTimeout = 250
+    ): Generator<
+        | Yieldable<void>
+        | (DS.AdapterPopulatedRecordArray<SearchDocument> &
+              DS.PromiseArray<SearchDocument, ArrayProxy<SearchDocument>>),
+        SearchMetadata | null | undefined,
+        DS.AdapterPopulatedRecordArray<SearchDocument>
+    > {
         try {
             yield timeout(debounceTimeout);
 
@@ -503,7 +521,8 @@ export default class SearchIndex extends Controller {
                     location: GlossaryWidgetLocation.SEARCH
                 },
                 [WIDGET.RELATED_DOCUMENTS]: undefined,
-                [WIDGET.MORE_LIKE_THESE]: undefined
+                [WIDGET.MORE_LIKE_THESE]: undefined,
+                [WIDGET.WHO_CITED_THIS]: undefined
             });
 
             return this.resultsMeta;
@@ -549,7 +568,8 @@ export default class SearchIndex extends Controller {
             this.preview = result.id;
             this.sidebar.update({
                 [WIDGET.MORE_LIKE_THESE]: result,
-                [WIDGET.RELATED_DOCUMENTS]: result
+                [WIDGET.RELATED_DOCUMENTS]: result,
+                [WIDGET.WHO_CITED_THIS]: result
             });
         } else {
             this.transitionToRoute('search.read', result.id, {
@@ -567,7 +587,8 @@ export default class SearchIndex extends Controller {
         this.previewedResult = null;
         this.sidebar.update({
             [WIDGET.MORE_LIKE_THESE]: undefined,
-            [WIDGET.RELATED_DOCUMENTS]: undefined
+            [WIDGET.RELATED_DOCUMENTS]: undefined,
+            [WIDGET.WHO_CITED_THIS]: undefined
         });
     }
 

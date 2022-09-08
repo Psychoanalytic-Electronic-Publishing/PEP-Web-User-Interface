@@ -1,5 +1,9 @@
 import { getOwner } from '@ember/application';
 
+import FastbootService from 'ember-cli-fastboot/services/fastboot';
+
+import { EmberOwner } from 'global';
+
 /**
  * Annotates a class method to not execute its containing implementation
  * when running in FastBoot. This is useful for omitting DOM-related logic
@@ -12,7 +16,8 @@ import { getOwner } from '@ember/application';
 export function dontRunInFastboot(_target: any, _propertyKey: string, descriptor?: any) {
     const fn = descriptor.value;
     descriptor.value = function(...args: any[]) {
-        const isFastboot = getOwner(this).lookup(`service:fastboot`)?.isFastBoot;
+        const owner = getOwner(this) as EmberOwner;
+        const isFastboot = (owner.lookup(`service:fastboot`) as FastbootService)?.isFastBoot;
         if (!isFastboot) {
             fn.call(this, ...args);
         }

@@ -7,7 +7,7 @@ import Modifier from 'ember-modifier';
  * @class DidValueUpdateModifier
  * @extends {Modifier}
  */
-export default class DidValueUpdateModifier extends Modifier {
+export default class DidValueUpdateModifier extends Modifier<any> {
     previousValue: any = null;
 
     didReceiveArguments() {

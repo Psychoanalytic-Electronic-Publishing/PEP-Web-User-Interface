@@ -1,9 +1,9 @@
 import { action } from '@ember/object';
 import { next } from '@ember/runloop';
+import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
-import Component from '@glint/environment-ember-loose/glimmer-component';
-import { Dropdown } from 'ember-basic-dropdown/addon/components/basic-dropdown';
+import { BasicDropdownAPI as Dropdown } from 'ember-basic-dropdown/dropdown';
 import { timeout } from 'ember-concurrency';
 import { restartableTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';

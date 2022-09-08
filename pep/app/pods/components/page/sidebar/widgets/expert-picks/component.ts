@@ -1,8 +1,9 @@
+import ArrayProxy from '@ember/array/proxy';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
+import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
-import Component from '@glint/environment-ember-loose/glimmer-component';
 import { restartableTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
 import DS from 'ember-data';
@@ -35,7 +36,11 @@ export default class PageSidebarWidgetsExpertPicks extends Component<
      * Load the widget results data
      */
     @restartableTask
-    *loadResults() {
+    *loadResults(): Generator<
+        DS.AdapterPopulatedRecordArray<Document> & DS.PromiseArray<Document, ArrayProxy<Document>>,
+        void,
+        DS.AdapterPopulatedRecordArray<Document>
+    > {
         const queryItems = this.configuration.base.home.expertPicks.map((item) => {
             return {
                 id: SearchFacetId.ART_ID,

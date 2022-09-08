@@ -79,6 +79,7 @@ export interface BaseConfiguration {
             left: WidgetConfiguration[];
             right: WidgetConfiguration[];
         };
+        embargoDate: Date;
         searchHelpVideoUrl: string;
         notificationMessage?: string;
     };
@@ -240,10 +241,12 @@ export const DEFAULT_BASE_CONFIGURATION: BaseConfiguration = {
                 { widget: WIDGET.MORE_LIKE_THESE, open: false },
                 { widget: WIDGET.READ_LATER, open: false },
                 { widget: WIDGET.FAVORITES, open: false },
-                { widget: WIDGET.PUBLISHER_INFO, open: false }
+                { widget: WIDGET.PUBLISHER_INFO, open: false },
+                { widget: WIDGET.WHO_CITED_THIS, open: false }
             ]
         },
-        searchHelpVideoUrl: 'https://fb.watch/4634xBWSZF/'
+        searchHelpVideoUrl: 'https://fb.watch/4634xBWSZF/',
+        embargoDate: new Date('2022-01-22')
     },
     home: {
         expertPicksStartDate: '2019-01-07T15:14:29-0500',
@@ -389,8 +392,7 @@ export const DEFAULT_CONTENT_CONFIGURATION: ContentConfiguration = {
                 help: 'The most viewed documents throughout our system can be viewed here.'
             },
             [WIDGET.RELATED_DOCUMENTS]: {
-                help:
-                    'For documents which have related articles, the {faIcon} icon will show up next to listing, indicating that the article is part of a series or has follow up commentary in the journal.'
+                help: 'For documents which have related articles, the {faIcon} icon will show up next to listing, indicating that the article is part of a series or has follow up commentary in the journal.'
             },
             [WIDGET.EXPERT_PICKS]: {
                 help: 'Expert picks ...picked expertly for you.'
@@ -409,13 +411,15 @@ export const DEFAULT_CONTENT_CONFIGURATION: ContentConfiguration = {
             },
             [WIDGET.PUBLISHER_INFO]: {
                 help: 'Publisher information for the current document your viewing will appear here.'
+            },
+            [WIDGET.WHO_CITED_THIS]: {
+                help: 'List of documents who cited this document will appear here.'
             }
         },
         signInCard: {
             groupInformation:
                 'You have been granted full archive access to PEP because your institution has a valid subscription based on what is called a “Referral/Federated-OpenAthens/IP Address” logon. But to be able to alter the look and feel of the site, save papers, searches and favorites and many other things, you need to become a registered user (which is free). You do that once, then access this site direct using the personal login you create. (Every 90 days you need to come in via your university/institute to re-validate). If you already have a log-in on the PaDS system, use that.  Click <a href="http://support.pep-web.org/login-help" target="_blank">here</a> for more details.',
-            body:
-                'This is the Psychoanalytic Electronic Publishing Archive full text database. It is freely available for everyone to search, view tables of contents, and view abstracts and summaries. However you will need a paid subscription in order to view the full text of articles.<br><br>All users can register to get a username and access password that will let you save your application preferences, customize the information displayed by the interface, and save bookmarks and favorites. University, group, and federation users need to register to get an individual login to save their preferences as well.'
+            body: 'This is the Psychoanalytic Electronic Publishing Archive full text database. It is freely available for everyone to search, view tables of contents, and view abstracts and summaries. However you will need a paid subscription in order to view the full text of articles.<br><br>All users can register to get a username and access password that will let you save your application preferences, customize the information displayed by the interface, and save bookmarks and favorites. University, group, and federation users need to register to get an individual login to save their preferences as well.'
         },
         adminSpecifiedInformationItems: [],
         access: {
@@ -429,21 +433,17 @@ export const DEFAULT_CONTENT_CONFIGURATION: ContentConfiguration = {
     },
     home: {
         intro: {
-            left:
-                '<p>Your search starts here</p><p>Search all of the literature in PEP-WEB in seconds.</p><p class="card-text"><strong>Smart Search</strong> takes all kinds of search inputs:</p><ul><li>Find terms or keywords - to get the best search results, <strong>enter at least two terms at a time.</strong> <br>This will make the search more precise, returning only the most relevant results.</li><li>Paste a reference from an article</li><li>Journal name or part of a journal name</li><li>Author name</li><li>A title or part of a title (five or more words)</li><li>Year / Vol / Page #</li></ul>',
-            right:
-                '<p>Let PEP be your guide</p><p>PEP-WEB helps to guide you to important source material in your research, and provides numerous tools.</p><p class="card-text">While you <strong>research and explore</strong>, PEP:</p><ul><li>Helps find related publications</li><li>Expert guidance selects the most important related Psychoanalytic works</li><li>Find what\'s new and exciting in the field, what others are reading</li><li>What work is most cited by new publications</li><li>Links content to an integrated Psychoanalytic Glossary incluing Laplanche and Pontails</li></ul>'
+            left: '<p>Your search starts here</p><p>Search all of the literature in PEP-WEB in seconds.</p><p class="card-text"><strong>Smart Search</strong> takes all kinds of search inputs:</p><ul><li>Find terms or keywords - to get the best search results, <strong>enter at least two terms at a time.</strong> <br>This will make the search more precise, returning only the most relevant results.</li><li>Paste a reference from an article</li><li>Journal name or part of a journal name</li><li>Author name</li><li>A title or part of a title (five or more words)</li><li>Year / Vol / Page #</li></ul>',
+            right: '<p>Let PEP be your guide</p><p>PEP-WEB helps to guide you to important source material in your research, and provides numerous tools.</p><p class="card-text">While you <strong>research and explore</strong>, PEP:</p><ul><li>Helps find related publications</li><li>Expert guidance selects the most important related Psychoanalytic works</li><li>Find what\'s new and exciting in the field, what others are reading</li><li>What work is most cited by new publications</li><li>Links content to an integrated Psychoanalytic Glossary incluing Laplanche and Pontails</li></ul>'
         },
         newsAndInfo: {
             boxOne: {
                 heading: '77 Premier Psychoanalytic Journals',
-                body:
-                    'PEP-Web is the quintessential archive of psychoanalytic scholarship, with the full text of 77 premier journals dating back to 1912, cross-linked to each other, and where a multi-source psychoanalytic glossary is a click away for any psychoanalytic term. There are over 122 thousand articles totaling over one million printed pages.'
+                body: 'PEP-Web is the quintessential archive of psychoanalytic scholarship, with the full text of 77 premier journals dating back to 1912, cross-linked to each other, and where a multi-source psychoanalytic glossary is a click away for any psychoanalytic term. There are over 122 thousand articles totaling over one million printed pages.'
             },
             boxTwo: {
                 heading: '100 Classic Psychoanalytic Books',
-                body:
-                    'The PEP-Web Archive has the complete content of the Standard Edition of the Complete Psychological Works of Sigmund Freud and the 19 volume German Freud Standard Edition Gesammelte Werke, and includes a concordance between editions where corresponding paragraphs are cross-linked. The Archive also contains 100 classic psychoanalytic books, including classic authors such as Bion, Bowlby, Klein, Meltzer, Winnicott, and many more.'
+                body: 'The PEP-Web Archive has the complete content of the Standard Edition of the Complete Psychological Works of Sigmund Freud and the 19 volume German Freud Standard Edition Gesammelte Werke, and includes a concordance between editions where corresponding paragraphs are cross-linked. The Archive also contains 100 classic psychoanalytic books, including classic authors such as Bion, Bowlby, Klein, Meltzer, Winnicott, and many more.'
             }
         },
         expertPickOfTheDay: {
@@ -456,8 +456,7 @@ export const DEFAULT_CONTENT_CONFIGURATION: ContentConfiguration = {
                 "Enter at least two terms, additional criteria, and/or use the 'Refine' form below to increase search precision."
         },
         smartSearch: {
-            help:
-                'This field performs a SmartSearch, a search based on the semantics of what you enter. It can recognize an article citation (author and year) or a reference in APA standard form, a DOI, a year or volume and page number, or a PEP Article ID (Locator). Or if you enter words or phrases, it performs a words within paragraph or phrase search anywhere in the document, other than in abstracts and references (equivalent to an Article search).'
+            help: 'This field performs a SmartSearch, a search based on the semantics of what you enter. It can recognize an article citation (author and year) or a reference in APA standard form, a DOI, a year or volume and page number, or a PEP Article ID (Locator). Or if you enter words or phrases, it performs a words within paragraph or phrase search anywhere in the document, other than in abstracts and references (equivalent to an Article search).'
         },
         matchSynonyms: {
             help: 'Return results that contain synonyms or similar words for the entered search terms'
@@ -472,13 +471,11 @@ export const DEFAULT_CONTENT_CONFIGURATION: ContentConfiguration = {
             types: {
                 everywhere: {
                     prompt: 'Terms or phrase',
-                    help:
-                        'Search for words in the same paragraph, or phrases of anywhere in the document, including abstracts and references. Surround phrases with quotes.'
+                    help: 'Search for words in the same paragraph, or phrases of anywhere in the document, including abstracts and references. Surround phrases with quotes.'
                 },
                 author: {
                     prompt: "Author's name",
-                    help:
-                        'Search author names (e.g., Lastname, or Lastname, Firstname). Use * to search partial names.',
+                    help: 'Search author names (e.g., Lastname, or Lastname, Firstname). Use * to search partial names.',
                     wordWheelSearchType: WordWheelSearchType.TEXT
                 },
                 title: {
@@ -487,38 +484,31 @@ export const DEFAULT_CONTENT_CONFIGURATION: ContentConfiguration = {
                 },
                 dream: {
                     prompt: 'Terms or phrase',
-                    help:
-                        'Search for words in the same paragraph, or phrases, in areas of documents which are descriptions of dreams. Surround phrases with quotes.'
+                    help: 'Search for words in the same paragraph, or phrases, in areas of documents which are descriptions of dreams. Surround phrases with quotes.'
                 },
                 quote: {
                     prompt: 'Terms or phrase',
-                    help:
-                        'Search for words in the same paragraph, or phrases, in areas of documents which are quoted passages. Surround phrases with quotes.'
+                    help: 'Search for words in the same paragraph, or phrases, in areas of documents which are quoted passages. Surround phrases with quotes.'
                 },
                 reference: {
                     prompt: 'Terms or phrase',
-                    help:
-                        'Search for words in the same reference, or phrases, in the reference section (bibliographies) of documents. Surround phrases with quotes.'
+                    help: 'Search for words in the same reference, or phrases, in the reference section (bibliographies) of documents. Surround phrases with quotes.'
                 },
                 dialog: {
                     prompt: 'Terms or phrase',
-                    help:
-                        'Search for words in the same paragraph, or phrases, in areas of documents which are dialogs between people. Surround phrases with quotes.'
+                    help: 'Search for words in the same paragraph, or phrases, in areas of documents which are dialogs between people. Surround phrases with quotes.'
                 },
                 article: {
                     prompt: 'Terms or phrase',
-                    help:
-                        'Search for words in the same paragraph, or phrases, anywhere in the document EXCEPT in abstracts and references. Surround phrases with quotes.'
+                    help: 'Search for words in the same paragraph, or phrases, anywhere in the document EXCEPT in abstracts and references. Surround phrases with quotes.'
                 },
                 startYear: {
                     prompt: 'Publication year',
-                    help:
-                        'Find documents published on or before/after a year, or within a range of years (e.g, "1999", "<1999", ">1999", "1999-2010")'
+                    help: 'Find documents published on or before/after a year, or within a range of years (e.g, "1999", "<1999", ">1999", "1999-2010")'
                 },
                 endYear: {
                     prompt: 'Publication year',
-                    help:
-                        'Find documents published on or before/after a year, or within a range of years (e.g, "1999", "<1999", ">1999", "1999-2010")'
+                    help: 'Find documents published on or before/after a year, or within a range of years (e.g, "1999", "<1999", ">1999", "1999-2010")'
                 }
             }
         }

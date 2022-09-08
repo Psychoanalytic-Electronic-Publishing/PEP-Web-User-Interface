@@ -465,6 +465,11 @@
                 "title": "Vidéo thématique",
                 "help": "Découvrez ici la dernière vidéo thématique de notre système."
             },
+            "whoCitedThis": {
+                "title": "",
+                "noResults": "",
+                "help": ""
+            },
             "whatsNew": {
                 "title": "Quoi de neuf ?",
                 "issue": "Numéro {issueNum}, Vol {volNum} &bull; {updatedDate}",
@@ -874,6 +879,9 @@
                     "title": "",
                     "message": ""
                 },
+                "embargoDate": {
+                    "title": ""
+                },
                 "cards": {
                     "left": "Barre latérale gauche",
                     "right": "Barre latérale droite",
@@ -946,6 +954,7 @@
                 "cards": {
                     "viewPreview": "Widget d'aperçu vidéo",
                     "topicalVideoPreview": "Widget d'aperçu vidéo thématique",
+                    "whoCitedThis": "",
                     "whatsNew": "Widget Quoi de neuf",
                     "mostCited": "Widget Les plus cités",
                     "mostViewed": "Widget Les plus consultés",

@@ -1,8 +1,5 @@
-import { action } from '@ember/object';
-import { later } from '@ember/runloop';
 import { inject as service } from '@ember/service';
-
-import Component from '@glint/environment-ember-loose/glimmer-component';
+import Component from '@glimmer/component';
 
 import ScrollableService from 'pep/services/scrollable';
 import { fadeTransition } from 'pep/utils/animation';
@@ -27,17 +24,6 @@ export default class Alert extends Component<BaseGlimmerSignature<AlertArgs>> {
 
     get animateInitialInsert() {
         return this.args.animateInitialInsert ?? true;
-    }
-
-    /**
-     * Recalculates the alert's parent <Scrollable>'s scroll height on show/hide
-     * if a scrollable namespace is provided
-     */
-    @action
-    onIsShownUpdate() {
-        if (this.args.scrollableNamespace) {
-            later(() => this.scrollable.recalculate(this.args.scrollableNamespace), this.animateDuration);
-        }
     }
 }
 

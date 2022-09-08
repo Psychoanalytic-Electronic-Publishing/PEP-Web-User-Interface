@@ -1,7 +1,8 @@
-import Component from '@glint/environment-ember-loose/glimmer-component';
+import Component from '@glimmer/component';
+
 import { PowerSelectAPI } from 'ember-power-select/types/power-select-api';
 
-import { BaseGlimmerSignature, ModifyYields } from 'pep/utils/types';
+import { BaseGlimmerSignature, ModifyBlocks } from 'pep/utils/types';
 
 export interface PromiseProxy<T> extends Promise<T> {
     content: any;
@@ -50,14 +51,14 @@ interface PowerSelectArgs<T> {
     registerAPI?: (select: PowerSelectAPI<T>) => void;
 }
 
-interface PowerSelectYields<T> {
-    Yields: {
+interface PowerSelectBlocks<T> {
+    Blocks: {
         default: [T, PowerSelectAPI<T>];
     };
 }
 
 export declare class PowerSelectComponent<T> extends Component<
-    ModifyYields<BaseGlimmerSignature<PowerSelectArgs<T>>, PowerSelectYields<T>>
+    ModifyBlocks<BaseGlimmerSignature<PowerSelectArgs<T>>, PowerSelectBlocks<T>>
 > {}
 // export declare class PowerSelectComponent<T> extends Component<PowerSelectSignature<T>> {}
 declare module '@glint/environment-ember-loose/registry' {

@@ -1,6 +1,5 @@
 import { inject as service } from '@ember/service';
-
-import Component from '@glint/environment-ember-loose/glimmer-component';
+import Component from '@glimmer/component';
 
 import ENV from 'pep/config/environment';
 import PepSessionService from 'pep/services/pep-session';

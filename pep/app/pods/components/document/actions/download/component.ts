@@ -1,7 +1,6 @@
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-
-import Component from '@glint/environment-ember-loose/glimmer-component';
+import Component from '@glimmer/component';
 
 import { DOCUMENT_EPUB_BASE_URL, DOCUMENT_PDF_BASE_URL, DOCUMENT_PDFORIG_BASE_URL } from 'pep/constants/documents';
 import Document from 'pep/pods/document/model';
@@ -46,5 +45,11 @@ export default class DocumentActionsDownload extends Component<BaseGlimmerSignat
     @action
     async downloadDocument(url: string) {
         this.exports.downloadItem(`${url}?${this.session.downloadAuthParams}`, 'Document');
+    }
+}
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        'Document::Actions::Download': typeof DocumentActionsDownload;
     }
 }

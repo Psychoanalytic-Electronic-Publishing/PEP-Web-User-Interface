@@ -105,6 +105,7 @@ export default class SearchRead extends PageNav(Route) {
         this.sidebar.update({
             [WIDGET.RELATED_DOCUMENTS]: model,
             [WIDGET.MORE_LIKE_THESE]: model,
+            [WIDGET.WHO_CITED_THIS]: model,
             [WIDGET.GLOSSARY_TERMS]: {
                 terms: model?.meta?.facetCounts.facet_fields.glossary_group_terms,
                 location: GlossaryWidgetLocation.READ
@@ -160,9 +161,10 @@ export default class SearchRead extends PageNav(Route) {
                     processQueryParams: (params) => ({ ...params, ...searchParams })
                 });
 
-                const response = (await this.store.query('search-document', queryParams)) as RecordArrayWithMeta<
-                    SearchDocument
-                >;
+                const response = (await this.store.query(
+                    'search-document',
+                    queryParams
+                )) as RecordArrayWithMeta<SearchDocument>;
                 results = response.toArray();
                 resultsMeta = response.meta;
             }
@@ -204,7 +206,7 @@ export default class SearchRead extends PageNav(Route) {
         super.setupController(controller, model);
 
         copyToController(this.searchParams, controller);
-        controller.paginator = usePagination<Document, any>({
+        controller.paginator = usePagination<Document, { fullCount: number }>({
             context: controller,
             modelName: 'search-document',
             models: this.searchResults ?? [],
@@ -260,6 +262,7 @@ export default class SearchRead extends PageNav(Route) {
         this.sidebar.update({
             [WIDGET.RELATED_DOCUMENTS]: null,
             [WIDGET.MORE_LIKE_THESE]: null,
+            [WIDGET.WHO_CITED_THIS]: null,
             [WIDGET.GLOSSARY_TERMS]: null,
             [WIDGET.PUBLISHER_INFO]: null
         });

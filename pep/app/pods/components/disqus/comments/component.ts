@@ -1,7 +1,6 @@
 import { action } from '@ember/object';
 import { debounce } from '@ember/runloop';
-
-import Component from '@glint/environment-ember-loose/glimmer-component';
+import Component from '@glimmer/component';
 
 import ENV from 'pep/config/environment';
 

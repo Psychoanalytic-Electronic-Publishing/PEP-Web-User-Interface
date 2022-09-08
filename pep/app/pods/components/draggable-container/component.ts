@@ -3,9 +3,9 @@ import RouterService from '@ember/routing/router-service';
 import { next } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 import { htmlSafe } from '@ember/template';
+import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
-import Component from '@glint/environment-ember-loose/glimmer-component';
 import { DS } from 'ember-data';
 
 import ModalService from '@gavant/ember-modals/services/modal';
@@ -178,5 +178,11 @@ export default class DraggableContainer extends Component<BaseGlimmerSignature<D
         };
 
         this.args.onPanelChange?.(this.mode.id, this.adjustedFitHeight);
+    }
+}
+
+declare module '@glint/environment-ember-loose/registry' {
+    export default interface Registry {
+        DraggableContainer: typeof DraggableContainer;
     }
 }

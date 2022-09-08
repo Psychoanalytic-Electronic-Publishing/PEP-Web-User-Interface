@@ -1,7 +1,7 @@
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
+import Component from '@glimmer/component';
 
-import Component from '@glint/environment-ember-loose/glimmer-component';
 import IntlService from 'ember-intl/services/intl';
 
 import { ColumnValue } from '@gavant/ember-table';

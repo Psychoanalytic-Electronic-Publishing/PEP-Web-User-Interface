@@ -1,8 +1,9 @@
 import IntlService from 'ember-intl/services/intl';
 
 import { DocumentLinkTypes } from 'pep/constants/documents';
-import { groupCountsByRange, SearchFacetCounts } from 'pep/utils/search';
+import { groupCountsByRange, groupCountsByRanges, SearchFacetCounts } from 'pep/utils/search';
 
+export const AdvancedSearchStartText = 'adv::';
 /**
  * Accepted query param fields for the /v2/Database/Search endpoint
  * @export
@@ -72,7 +73,9 @@ export enum SearchTermId {
     CITED = 'cited',
     VIEWED = 'viewed',
     VOLUME = 'volume',
-    SOURCE_CODE = 'sourcecode'
+    SOURCE_CODE = 'sourcecode',
+    ISSUE = 'issue',
+    SOURCE_NAME = 'sourcename'
 }
 
 /**
@@ -305,6 +308,20 @@ export const SEARCH_TYPE_SOURCE_CODE: SearchTermType = {
     isTypeOption: false
 };
 
+export const SEARCH_TYPE_ISSUE: SearchTermType = {
+    id: SearchTermId.ISSUE,
+    param: 'issue',
+    label: 'search.terms.issue.label',
+    isTypeOption: false
+};
+
+export const SEARCH_TYPE_SOURCE_NAME: SearchTermType = {
+    id: SearchTermId.SOURCE_NAME,
+    param: 'sourcename',
+    label: 'search.terms.sourceName.label',
+    isTypeOption: false
+};
+
 // Note: not being used, only using startyear for now
 // export const SEARCH_TYPE_END_YEAR: SearchTermType = {
 //     id: SearchTermId.END_YEAR,
@@ -342,7 +359,9 @@ export const SEARCH_TYPES: SearchTermType[] = [
     SEARCH_TYPE_VIEWED,
     SEARCH_TYPE_START_YEAR,
     SEARCH_TYPE_VOLUME,
-    SEARCH_TYPE_SOURCE_CODE
+    SEARCH_TYPE_SOURCE_CODE,
+    SEARCH_TYPE_ISSUE,
+    SEARCH_TYPE_SOURCE_NAME
 ];
 
 /**
@@ -585,11 +604,15 @@ export const SEARCH_FACET_CITATION: SearchFacetType = {
     dynamicValues: true,
     prefixValues: true,
     values: [],
-    formatCounts: (counts: SearchFacetCounts) => groupCountsByRange(counts, 10, ' TO '),
-    formatOption: (opt: string, intl: IntlService) =>
-        intl.t('search.facets.art_cited_5.option', {
-            range: opt.replace('TO', '-').trim()
-        })
+    formatCounts: (counts: SearchFacetCounts) =>
+        groupCountsByRanges(counts, [0, [1, 5], [6, 9], [10, 25], [26, Infinity]], ' TO '),
+    formatOption: (opt: string, intl: IntlService) => {
+        const to = opt.replace('TO', '-');
+        const formatted = to.replace('-  *', '+');
+        return intl.t('search.facets.art_cited_5.option', {
+            range: formatted.trim()
+        });
+    }
 };
 
 export const SEARCH_FACET_VIEW: SearchFacetType = {

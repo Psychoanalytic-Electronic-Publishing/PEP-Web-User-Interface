@@ -10,7 +10,10 @@ import { ColumnValue } from '@gavant/ember-table';
 import createChangeset, { GenericChangeset } from '@gavant/ember-validations/utilities/create-changeset';
 
 import {
-    AdminSpecifiedInformation, ContentConfiguration, Publisher, TourConfiguration
+    AdminSpecifiedInformation,
+    ContentConfiguration,
+    Publisher,
+    TourConfiguration
 } from 'pep/constants/configuration';
 import { Language } from 'pep/constants/lang';
 import { TourStepId } from 'pep/constants/tour';

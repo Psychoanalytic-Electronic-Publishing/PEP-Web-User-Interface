@@ -1,4 +1,5 @@
-import Component from '@glint/environment-ember-loose/glimmer-component';
+import Component from '@glimmer/component';
+
 import { TransitionArgs } from 'ember-animated';
 import move from 'ember-animated/motions/move';
 

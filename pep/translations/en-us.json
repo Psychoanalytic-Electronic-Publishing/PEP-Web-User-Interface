@@ -465,6 +465,11 @@
                 "title": "Topical Video",
                 "help": "Check out the latest topical video in our system here."
             },
+            "whoCitedThis": {
+                "title": "Who Cited This",
+                "noResults": "This infocard shows other articles who have cited the one you are reading. If there are none, you will see this message.",
+                "help": "Who cited this document can be viewed here."
+            },
             "whatsNew": {
                 "title": "What's new?",
                 "issue": "Issue #{issueNum}, Vol {volNum} &bull; {updatedDate}",
@@ -874,6 +879,9 @@
                     "title": "Global Notifications",
                     "message": "Message"
                 },
+                "embargoDate": {
+                    "title": "Embargo Date"
+                },
                 "cards": {
                     "left": "Left Sidebar",
                     "right": "Right Sidebar",
@@ -946,6 +954,7 @@
                 "cards": {
                     "viewPreview": "Video preview widget",
                     "topicalVideoPreview": "Topical video preview widget",
+                    "whoCitedThis": "Who cited this widget",
                     "whatsNew": "Whats new widget",
                     "mostCited": "Most cited widget",
                     "mostViewed": "Most viewed widget",

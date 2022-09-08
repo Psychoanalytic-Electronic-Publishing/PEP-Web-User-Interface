@@ -1,8 +1,8 @@
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
+import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
-import Component from '@glint/environment-ember-loose/glimmer-component';
 import { restartableTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
 import DS from 'ember-data';
@@ -42,7 +42,7 @@ export default class PageSidebarWidgetsRelatedDocuments extends Component<
      * Load the widget results data
      */
     @restartableTask
-    *loadResults(relatedrx: string) {
+    *loadResults(relatedrx: string): Generator<Promise<unknown>, void, Document[]> {
         const queryParms = serializeQueryParams({
             relatedToThis: relatedrx
         });
@@ -53,7 +53,7 @@ export default class PageSidebarWidgetsRelatedDocuments extends Component<
         // @ts-ignore types are wrong here - this works
         const normalizedResponse = serializer.normalizeArrayResponse(this.store, modelClass, results, this.data.id);
 
-        const response = this.store.push(normalizedResponse);
+        const response = this.store.push(normalizedResponse) as Document[];
 
         this.results = response;
     }

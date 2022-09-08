@@ -1,9 +1,8 @@
 import { action } from '@ember/object';
 import RouterService from '@ember/routing/router-service';
 import { inject as service } from '@ember/service';
+import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-
-import Component from '@glint/environment-ember-loose/glimmer-component';
 
 import ModalService from '@gavant/ember-modals/services/modal';
 

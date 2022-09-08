@@ -1,8 +1,4 @@
 .scrollable {
-    overflow: hidden;
-
-    @include media-breakpoint-down(md) {
-        overflow: auto;
-        -webkit-overflow-scrolling: touch;
-    }
+    overflow: auto;
+    height: 100%;
 }

@@ -2,9 +2,9 @@ import { action, computed } from '@ember/object';
 import RouterService from '@ember/routing/router-service';
 import { next, run, scheduleOnce } from '@ember/runloop';
 import { inject as service } from '@ember/service';
+import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
-import Component from '@glint/environment-ember-loose/glimmer-component';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import { DS } from 'ember-data';
 import IntlService from 'ember-intl/services/intl';
@@ -52,6 +52,7 @@ interface DocumentTextArgs {
     };
     page?: string;
     searchHitNumber?: number;
+    hasWatermark?: boolean;
     onGlossaryItemClick: (term: string, termResults: GlossaryTerm[]) => void;
     viewSearch: (searchTerms: SearchQueryParams) => void;
     documentRendered: () => void;
@@ -179,7 +180,7 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
                 processor.setParameter('', 'imageUrl', DOCUMENT_IMG_BASE_URL);
                 processor.setParameter('', 'isBook', this.args.document.sourceType === SourceType.BOOK);
                 processor.importStylesheet(xslt);
-                const transformedDocument = (processor.transformToFragment(xml, document) as unknown) as XMLDocument;
+                const transformedDocument = processor.transformToFragment(xml, document) as unknown as XMLDocument;
                 return transformedDocument;
             }
             return reject(this.notifications.error(this.intl.t('document.text.error')));
@@ -257,9 +258,26 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
      */
     @action
     onDocumentClick(event: Event) {
-        const target = event.target as HTMLElement;
-        const attributes = target.attributes;
-        const type = this.getNodeType(target);
+        const eventTarget = event.target as HTMLElement;
+        const attributes = eventTarget.attributes;
+        let type = this.getNodeType(eventTarget);
+        let target = eventTarget;
+        // Safari will sometimes get a different target than chrome, so we try to find the closest data type or type data attribute and use that
+        if (!type) {
+            const dataTypeElement = eventTarget.querySelector('[data-type]') as HTMLElement;
+            const typeElement = eventTarget.querySelector('[type]') as HTMLElement;
+            if (dataTypeElement && typeElement) {
+                type = this.getNodeType(dataTypeElement);
+                target = dataTypeElement;
+            } else if (dataTypeElement) {
+                type = this.getNodeType(dataTypeElement);
+                target = dataTypeElement;
+            } else if (typeElement) {
+                type = this.getNodeType(typeElement);
+                target = typeElement;
+            }
+        }
+
         if (target.tagName !== 'SUMMARY' && type !== DocumentLinkTypes.WEB && type !== DocumentLinkTypes.DOI) {
             event.preventDefault();
         }

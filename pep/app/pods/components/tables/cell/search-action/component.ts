@@ -1,7 +1,7 @@
 import { action, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
+import Component from '@glimmer/component';
 
-import Component from '@glint/environment-ember-loose/glimmer-component';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import IntlService from 'ember-intl/services/intl';
 
@@ -88,6 +88,6 @@ export default class TablesCellSearchAction extends Component<BaseGlimmerSignatu
      * @memberof SearchItem
      */
     toggleDocument(key: PreferenceDocumentsKey, document: Document) {
-        return updateUserPreferencesDocument(this, key, document);
+        return updateUserPreferencesDocument(this as any, key, document);
     }
 }

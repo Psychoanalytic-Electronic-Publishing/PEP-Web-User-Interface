@@ -9,7 +9,7 @@ import {
     INVALID_ABSTRACT_PREVIEW_TAGS,
     INVALID_ABSTRACT_TAGS,
     SEARCH_STRING_REGEX,
-    SEARCH_STRING_TERMS_REGEX,
+    SEARCH_STRING_TERMS_REGEX
 } from 'pep/constants/regex';
 import SimilarityMatch from 'pep/pods/similarity-match/model';
 

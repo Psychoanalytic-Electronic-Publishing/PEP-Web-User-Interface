@@ -1,8 +1,8 @@
 import { action, computed, setProperties } from '@ember/object';
-import { later, next } from '@ember/runloop';
+import { next } from '@ember/runloop';
 import { inject as service } from '@ember/service';
+import Component from '@glimmer/component';
 
-import Component from '@glint/environment-ember-loose/glimmer-component';
 import IntlService from 'ember-intl/services/intl';
 
 import { SEARCH_TYPES, SearchTermId, SearchTermValue, VIEW_PERIODS, ViewPeriod } from 'pep/constants/search';
@@ -119,7 +119,6 @@ export default class SearchForm extends Component<BaseGlimmerSignature<SearchFor
                 type: SEARCH_TYPE_ARTICLE.id,
                 term: ''
             });
-            later(() => this.scrollable.recalculate('sidebar-left'), this.animateDuration);
         }
     }
 
@@ -129,7 +128,6 @@ export default class SearchForm extends Component<BaseGlimmerSignature<SearchFor
     @action
     removeSearchTerm(searchTerm: SearchTermValue) {
         this.args.removeSearchTerm(searchTerm);
-        later(() => this.scrollable.recalculate('sidebar-left'), this.animateDuration);
     }
 
     /**

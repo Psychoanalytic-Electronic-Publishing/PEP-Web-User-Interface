@@ -1,14 +1,16 @@
-import Component from '@glint/environment-ember-loose/ember-component';
+import Component from '@ember/component';
 
 import { TinymceEditorArgs } from '@gavant/ember-tinymce/components/tinymce-editor';
-import { BaseGlimmerSignature, ModifyYields } from '@gavant/glint-template-types/utils/types';
+import { BaseGlimmerSignature } from '@gavant/glint-template-types/utils/types';
 
-interface TinymceEditorYields {
-    Yields: {
+import { ModifyBlocks } from 'pep/utils/types';
+
+interface TinymceEditorBlocks {
+    Blocks: {
         loading: [];
     };
 }
 
 export default class TinymceEditor extends Component<
-    ModifyYields<BaseGlimmerSignature<TinymceEditorArgs>, TinymceEditorYields>
+    ModifyBlocks<BaseGlimmerSignature<TinymceEditorArgs>, TinymceEditorBlocks>
 > {}

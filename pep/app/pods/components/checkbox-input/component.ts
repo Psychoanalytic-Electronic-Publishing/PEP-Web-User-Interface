@@ -1,7 +1,6 @@
 import { action } from '@ember/object';
 import { guidFor } from '@ember/object/internals';
-
-import Component from '@glint/environment-ember-loose/glimmer-component';
+import Component from '@glimmer/component';
 
 import { cleanAndDasherize } from 'pep/utils/string';
 import { BaseGlimmerSignature } from 'pep/utils/types';

@@ -1,9 +1,9 @@
 import { action } from '@ember/object';
 import { isBlank } from '@ember/utils';
+import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
-import Component from '@glint/environment-ember-loose/glimmer-component';
-import { didCancel, timeout } from 'ember-concurrency';
+import { didCancel, timeout, Yieldable } from 'ember-concurrency';
 import { restartableTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
 
@@ -61,7 +61,7 @@ export default class PowerSelectInfinityWithSearch<T> extends Component<
      * @return any[]
      */
     @restartableTask
-    *searchTask(term: string | null) {
+    *searchTask(term: string | null): Generator<T[] | Yieldable<void>, any, unknown> {
         yield timeout(this.searchDebounceDelay);
         try {
             const results = yield this.args.search(term);

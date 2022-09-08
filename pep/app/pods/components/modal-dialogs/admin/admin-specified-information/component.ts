@@ -1,6 +1,6 @@
 import { action } from '@ember/object';
+import Component from '@glimmer/component';
 
-import Component from '@glint/environment-ember-loose/glimmer-component';
 import { Step } from 'ember-shepherd/services/tour';
 
 import { GenericChangeset } from '@gavant/ember-validations/utilities/create-changeset';

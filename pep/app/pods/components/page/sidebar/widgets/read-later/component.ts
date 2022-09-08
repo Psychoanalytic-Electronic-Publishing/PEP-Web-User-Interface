@@ -1,8 +1,9 @@
+import ArrayProxy from '@ember/array/proxy';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
+import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
-import Component from '@glint/environment-ember-loose/glimmer-component';
 import { restartableTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
 import DS from 'ember-data';
@@ -42,7 +43,11 @@ export default class PageSidebarWidgetsReadLater extends Component<
      * @memberof PageSidebarWidgetsReadLater
      */
     @restartableTask
-    *loadFromUserPreferences() {
+    *loadFromUserPreferences(): Generator<
+        DS.AdapterPopulatedRecordArray<Document> & DS.PromiseArray<Document, ArrayProxy<Document>>,
+        void,
+        DS.AdapterPopulatedRecordArray<Document>
+    > {
         const ids = this.currentUser.getPreferenceDocuments(PreferenceKey.READ_LATER);
         if (ids.length) {
             const queryItems = ids.map((id) => {
@@ -56,7 +61,7 @@ export default class PageSidebarWidgetsReadLater extends Component<
                 facetValues: queryItems
             });
             const results = yield this.store.query('document', params);
-            const resortedArrayByPreference = results.toArray().sort(function(a: Document, b: Document) {
+            const resortedArrayByPreference = results.toArray().sort(function (a: Document, b: Document) {
                 return ids.indexOf(a.id) - ids.indexOf(b.id);
             });
             this.results = resortedArrayByPreference;

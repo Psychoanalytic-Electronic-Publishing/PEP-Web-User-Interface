@@ -11,6 +11,7 @@ import { NEXT_ARTICLE, PREVIOUS_ARTICLE } from 'pep/constants/keyboard-shortcuts
 import { PreferenceKey, UserPreferences } from 'pep/constants/preferences';
 import { SearchView, SearchViews, SearchViewType } from 'pep/constants/search';
 import { KeyboardShortcut } from 'pep/modifiers/register-keyboard-shortcuts';
+import ReadRoute from 'pep/pods/browse/read/route';
 import Document from 'pep/pods/document/model';
 import CurrentUserService from 'pep/services/current-user';
 import LoadingBarService from 'pep/services/loading-bar';
@@ -18,13 +19,16 @@ import PepSessionService from 'pep/services/pep-session';
 import { SearchPreviewModeId } from 'pep/services/preview-pane';
 import { buildBrowseRelatedDocumentsParams, buildSearchQueryParams } from 'pep/utils/search';
 import { SearchSorts, transformSearchSortToAPI } from 'pep/utils/sort';
-import { guard } from 'pep/utils/types';
+import { guard, RouteModel } from 'pep/utils/types';
 import { reject } from 'rsvp';
 
 export default class BrowseRead extends Controller {
     @service declare loadingBar: LoadingBarService;
     @service declare currentUser: CurrentUserService;
     @service('pep-session') declare session: PepSessionService;
+
+    //@ts-ignore
+    declare model: RouteModel<ReadRoute>;
 
     tableView = SearchViewType.TABLE;
     searchViews = SearchViews;

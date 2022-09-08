@@ -1,3 +1,4 @@
+//@ts-nocheck
 import Controller from '@ember/controller';
 import { computed } from '@ember/object';
 import Route from '@ember/routing/route';

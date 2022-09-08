@@ -1,8 +1,9 @@
+import ArrayProxy from '@ember/array/proxy';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
+import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
-import Component from '@glint/environment-ember-loose/glimmer-component';
 import { didCancel } from 'ember-concurrency';
 import { restartableTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
@@ -39,7 +40,14 @@ export default class PowerSelectJournal extends Component<
      * @returns Journal[]
      */
     @restartableTask
-    *load(keyword?: string, offset: number = 0) {
+    *load(
+        keyword?: string,
+        offset: number = 0
+    ): Generator<
+        DS.AdapterPopulatedRecordArray<Journal> & DS.PromiseArray<Journal, ArrayProxy<Journal>>,
+        any,
+        DS.AdapterPopulatedRecordArray<Journal>
+    > {
         try {
             const params: JournalParams = {
                 limit: this.pageSize,

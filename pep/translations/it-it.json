@@ -465,6 +465,11 @@
                 "title": "Video sull'argomento",
                 "help": "Guarda l'ultimo video sull'argomento nel nostro sistema qui."
             },
+            "whoCitedThis": {
+                "title": "",
+                "noResults": "",
+                "help": ""
+            },
             "whatsNew": {
                 "title": "Che cosa c'è di nuovo?",
                 "issue": "Numero #{issueNum}, Vol {volNum} &bull; {updatedDate}",
@@ -874,6 +879,9 @@
                     "title": "",
                     "message": ""
                 },
+                "embargoDate": {
+                    "title": ""
+                },
                 "cards": {
                     "left": "Barra laterale sinistra",
                     "right": "Barra laterale destra",
@@ -946,6 +954,7 @@
                 "cards": {
                     "viewPreview": "Widget di anteprima video",
                     "topicalVideoPreview": "Widget di anteprima video sull'argomento",
+                    "whoCitedThis": "",
                     "whatsNew": "Widget delle novità",
                     "mostCited": "Widget dei più citati",
                     "mostViewed": "Widget dei più visti",

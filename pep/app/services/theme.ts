@@ -1,4 +1,3 @@
-import { later } from '@ember/runloop';
 import Service, { inject as service } from '@ember/service';
 
 import HeadDataService from 'ember-cli-head/services/head-data';
@@ -34,9 +33,6 @@ export default class ThemeService extends Service {
      * Sets the currently selected theme CSS in the page <head>. Only gets run in fastboot
      */
     setup() {
-        this.headData.set('onCSSLoad', () => {
-            later(() => this.scrollable.reinitialize(), 500);
-        });
         this.headData.set('themePath', this.currentTheme.cssPath);
     }
 

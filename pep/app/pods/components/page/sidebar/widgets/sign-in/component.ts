@@ -1,8 +1,8 @@
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
+import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
-import Component from '@glint/environment-ember-loose/glimmer-component';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import { restartableTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
@@ -59,7 +59,7 @@ export default class PageSidebarWidgetsSignIn extends Component<BaseGlimmerSigna
      * Load the widget login data
      */
     @restartableTask
-    *loadResults() {
+    *loadResults(): Generator<Promise<FederatedLoginResponse>, void, FederatedLoginResponse> {
         const session = this.session.isAuthenticated
             ? this.session.data?.authenticated?.SessionId
             : this.session.getUnauthenticatedSession()?.SessionId;

@@ -1,4 +1,4 @@
-import Component from '@glint/environment-ember-loose/glimmer-component';
+import Component from '@glimmer/component';
 
 import Document from 'pep/pods/document/model';
 import { BaseGlimmerSignature } from 'pep/utils/types';
@@ -8,7 +8,7 @@ interface DocumentSearchHitsArgs {
     searchHitNumber: number;
     viewNextSearchHit: () => void;
     viewPreviousSearchHit: () => void;
-    viewHitNumber: () => void;
+    viewHitNumber: Function;
 }
 
 export default class DocumentSearchHits extends Component<BaseGlimmerSignature<DocumentSearchHitsArgs>> {

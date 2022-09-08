@@ -1,7 +1,6 @@
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-
-import Component from '@glint/environment-ember-loose/glimmer-component';
+import Component from '@glimmer/component';
 
 import SourceVolume from 'pep/pods/source-volume/model';
 import BrowseSelection from 'pep/services/browse-selection';
@@ -22,7 +21,7 @@ export default class BrowseVolumeItem extends Component<BaseGlimmerSignature<Bro
      * @memberof TableCellCheckbox
      */
     get isRowSelected() {
-        return this.browseSelection.isSelected(this.args.item as SourceVolume);
+        return this.browseSelection.isSelected(this.args.item);
     }
 
     /**

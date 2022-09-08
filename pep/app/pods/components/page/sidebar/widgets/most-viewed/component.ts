@@ -1,9 +1,10 @@
+import ArrayProxy from '@ember/array/proxy';
 import { action } from '@ember/object';
 import { later } from '@ember/runloop';
 import { inject as service } from '@ember/service';
+import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
-import Component from '@glint/environment-ember-loose/glimmer-component';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import { restartableTask } from 'ember-concurrency-decorators';
 import { taskFor } from 'ember-concurrency-ts';
@@ -40,7 +41,11 @@ export default class PageSidebarWidgetsMostViewed extends Component<
      * Load the widget results data
      */
     @restartableTask
-    *loadResults() {
+    *loadResults(): Generator<
+        DS.AdapterPopulatedRecordArray<Document> & DS.PromiseArray<Document, ArrayProxy<Document>>,
+        void,
+        DS.AdapterPopulatedRecordArray<Document>
+    > {
         const results = yield this.store.query('document', {
             queryType: 'MostViewed',
             viewperiod: 2,

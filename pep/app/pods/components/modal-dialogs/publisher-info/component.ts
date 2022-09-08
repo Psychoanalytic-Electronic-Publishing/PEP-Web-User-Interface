@@ -1,4 +1,4 @@
-import Component from '@glint/environment-ember-loose/glimmer-component';
+import Component from '@glimmer/component';
 
 import { Publisher } from 'pep/constants/configuration';
 import { BaseGlimmerSignature } from 'pep/utils/types';

@@ -1,4 +1,5 @@
 import Controller from '@ember/controller';
+import { Route } from '@ember/routing';
 
 export type ConcreteSubclass<T> = new (...args: any[]) => T;
 export type ControllerInstance = ConcreteSubclass<Controller>;
@@ -62,19 +63,18 @@ export type GlintTemporaryTypeFix<T> = { [K in keyof T]: T[K] };
 export interface BaseGlimmerSignature<T> {
     Element: HTMLElement;
     Args: GlintTemporaryTypeFix<T>;
-    Yields: {
-        default?: [];
+    Blocks: {
+        default: [];
     };
 }
 /**
- * Helper to modify the yields property when the `BaseGlimmerSignature` wont work for you. Temporary until strict mode comes
+ * Helper to modify the blocks property when the `BaseGlimmerSignature` wont work for you. Temporary until strict mode comes
  *
  * @export
  * @interface BaseGlimmerSignature
  * @template T
  */
-export type ModifyYields<T, Y> = Omit<T, 'Yields'> & Y;
-
+export type ModifyBlocks<T, Y> = Omit<T, 'Blocks'> & Y;
 
 /**
  * Join concatenates two strings with a dot in the middle, unless the last string is empty
@@ -83,10 +83,11 @@ export type ModifyYields<T, Y> = Omit<T, 'Yields'> & Y;
  * @interface Join
  * @template K, P
  */
-export type Join<K, P> = K extends string | number ?
-    P extends string | number ?
-    `${K}${"" extends P ? "" : "."}${P}`
-    : never : never;
+export type Join<K, P> = K extends string | number
+    ? P extends string | number
+        ? `${K}${'' extends P ? '' : '.'}${P}`
+        : never
+    : never;
 
 /**
  * Workaround for the typescript instantiation depth limit of 50 as of 4.1
@@ -96,12 +97,13 @@ export type Join<K, P> = K extends string | number ?
  * @interface Recurse
  * @template T
  */
-type Recurse<T> =
-    T extends { __rec: never } ? never
-  : T extends { __rec: { __rec: infer U } } ? { __rec: Recurse<U> }
-  : T extends { __rec: infer U } ? U
-  : T;
-
+type Recurse<T> = T extends { __rec: never }
+    ? never
+    : T extends { __rec: { __rec: infer U } }
+    ? { __rec: Recurse<U> }
+    : T extends { __rec: infer U }
+    ? U
+    : T;
 
 /**
  * Workaround for the typescript instantiation depth limit of 50 as of 4.1
@@ -111,10 +113,7 @@ type Recurse<T> =
  * @interface ParseRecursionToken
  * @template T
  */
-type ParseRecursionToken<T> =
-  T extends { __rec: unknown }
-    ? Recurse<Recurse<T>>
-    : T;
+type ParseRecursionToken<T> = T extends { __rec: unknown } ? Recurse<Recurse<T>> : T;
 
 /**
  * Acts as a depth limiter for recursion
@@ -122,8 +121,7 @@ type ParseRecursionToken<T> =
  * @export
  * @interface Prev
  */
-type Prev = [never, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-    11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...0[]]
+type Prev = [never, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...0[]];
 
 /**
  * Type that recursively builds nested objects with the value of `__rec` being set as the path
@@ -132,12 +130,13 @@ type Prev = [never, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
  * @interface PathsRecursion
  * @template T, D
  */
-type PathsRecursion<T, D extends number = 10> = [D] extends [never] ?  never : T extends object ?
-    { [K in keyof T]-?: K extends string | number ?
-       { __rec: `${K}` |  Join<K, Paths<T[K], Prev[D]>>}
-        : never
-    }[keyof T] : ""
-
+type PathsRecursion<T, D extends number = 10> = [D] extends [never]
+    ? never
+    : T extends object
+    ? {
+          [K in keyof T]-?: K extends string | number ? { __rec: `${K}` | Join<K, Paths<T[K], Prev[D]>> } : never;
+      }[keyof T]
+    : '';
 
 /**
  * Recursively find the paths of object `T`. You may pass in a depth limiter `D` to stop the recursion
@@ -146,5 +145,13 @@ type PathsRecursion<T, D extends number = 10> = [D] extends [never] ?  never : T
  * @interface Paths
  * @template T, D
  */
-export type Paths<T, D extends number = 10> = ParseRecursionToken<PathsRecursion<T,D>>;
+export type Paths<T, D extends number = 10> = ParseRecursionToken<PathsRecursion<T, D>>;
 
+/**
+ * Use this to declare a model property on the controller that is based upon the passed in route.
+ * ```
+ * e.g.
+ * declare model: RouteModel<LoginRoute>;
+ * ```
+ */
+export type RouteModel<T extends Route> = Awaited<ReturnType<T['model']>>;
