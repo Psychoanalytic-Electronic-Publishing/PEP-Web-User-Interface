@@ -1,6 +1,6 @@
 {{#if @resultId}}
     <div
-        class="search-preview search-preview-{{this.mode.id}}{{if this.isDragResizing " is-drag-resizing"}}"
+        class="search-preview search-preview-{{this.mode.id}}{{if this.isDragResizing ' is-drag-resizing'}}"
         style={{this.styles}}
         ...attributes
     >
@@ -66,6 +66,7 @@
                                     @target="abstract"
                                     @onGlossaryItemClick={{this.viewGlossaryTerm}}
                                     @documentRendered={{this.documentRendered}}
+                                    @hasWatermark={{this.hasWatermark}}
                                 />
                             {{/if}}
                         </div>
@@ -93,7 +94,10 @@
                                     class="mr-2"
                                 />
 
-                                <Document::Actions::Download @document={{this.result}} @enabled={{this.result.canDownload}} />
+                                <Document::Actions::Download
+                                    @document={{this.result}}
+                                    @enabled={{this.result.canDownload}}
+                                />
                             {{/if}}
                         </div>
                     </div>
