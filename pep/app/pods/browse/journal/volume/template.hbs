@@ -99,7 +99,7 @@
 
                                             <ol class="list-unstyled">
                                                 {{#each issue.models as |model|}}
-                                                    {{#if model.newSectionName}}
+                                                    {{#if (journal-volume-group-title model.newSectionName)}}
                                                         <li>
                                                             {{model.newSectionName}}
                                                         </li>
@@ -111,9 +111,9 @@
                                                 {{/each}}
                                                 {{#each issue.groups as |mappedGroup|}}
                                                     {{#let (get-array-index mappedGroup 1) as |group|}}
-                                                        {{#if group.title}}
+                                                        {{#if (journal-volume-group-title group.title)}}
                                                             <h5>
-                                                                {{group.title}}
+                                                                {{journal-volume-group-title group.title}}
                                                             </h5>
                                                         {{/if}}
                                                         {{#each group.models as |model|}}
