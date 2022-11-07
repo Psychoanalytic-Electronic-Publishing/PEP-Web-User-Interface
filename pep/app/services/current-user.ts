@@ -36,6 +36,7 @@ import PepSessionService from 'pep/services/pep-session';
 import { addClass, removeClass } from 'pep/utils/dom';
 import { reject } from 'rsvp';
 import Result, { err, ok } from 'true-myth/result';
+import DisqusService from './disqus';
 
 export enum VIEW_DOCUMENT_FROM {
     SEARCH = 'search',
@@ -60,6 +61,7 @@ export default class CurrentUserService extends Service {
     @service intl!: IntlService;
     @service auth!: AuthService;
     @service informationBar!: InformationBarService;
+    @service disqus!: DisqusService;
     // @ts-ignore this does exist
     @service('-document') document!: any;
 
@@ -153,6 +155,7 @@ export default class CurrentUserService extends Service {
      * @memberof CurrentUserService
      */
     load(sessionId?: string): Promise<User | void> {
+        this.disqus.setup();
         return this.fetchUser(sessionId);
     }
 
@@ -196,6 +199,7 @@ export default class CurrentUserService extends Service {
         const lsPrefs = this.loadLocalStoragePrefs();
         const prefs = Object.assign({}, DEFAULT_USER_PREFERENCES, lsPrefs, cookiePrefs, userPrefs) as UserPreferences;
         this.preferences = prefs;
+
         return this.preferences;
     }
 
