@@ -15,6 +15,7 @@ import Journal from 'pep/pods/journal/model';
 import Video from 'pep/pods/video/model';
 import SidebarService from 'pep/services/sidebar';
 import { hash } from 'rsvp';
+import { next } from '@ember/runloop';
 
 export interface BrowseModel {
     gw: Document;
@@ -53,8 +54,6 @@ export default class Browse extends PageNav(Route) {
         controller.books = model.books.toArray() ?? [];
         controller.videos = model.videos.toArray().sortBy('displayTitle') ?? [];
 
-        if (this.media.isMobile) {
-            this.sidebar.toggleLeftSidebar();
-        }
+        next(this, () => this.sidebar.toggleLeftSidebar(true));
     }
 }
