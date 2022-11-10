@@ -3,43 +3,20 @@
     ...attributes
     {{register-keyboard-shortcuts shortcuts=this.shortcuts}}
 >
-    {{#if (or this.logoNavigationGoesHome)}}
-        <LinkTo @route="index" class="navbar-brand mr-auto d-flex">
-            <div class="navbar-brand-logo"></div>
-            <div class="ml-2">
-                <div>
-                    {{t "brand.nameFull.psychoanalytic"}}
-                </div>
-                <div>
-                    {{t "brand.nameFull.electronic"}}
-                </div>
-                <div>
-                    {{t "brand.nameFull.publishing"}}
-                </div>
+    <LinkTo @route="index" class="navbar-brand mr-auto d-flex">
+        <div class="navbar-brand-logo"></div>
+        <div class="ml-2">
+            <div>
+                {{t "brand.nameFull.psychoanalytic"}}
             </div>
-        </LinkTo>
-    {{else}}
-        <a
-            href={{this.supportUrl}}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="navbar-brand mr-auto d-flex"
-            title={{t "buttons.nav.support.support.name"}}
-        >
-            <div class="navbar-brand-logo"></div>
-            <div class="ml-2 navbar-text-container">
-                <div>
-                    {{t "brand.nameFull.psychoanalytic"}}
-                </div>
-                <div>
-                    {{t "brand.nameFull.electronic"}}
-                </div>
-                <div>
-                    {{t "brand.nameFull.publishing"}}
-                </div>
+            <div>
+                {{t "brand.nameFull.electronic"}}
             </div>
-        </a>
-    {{/if}}
+            <div>
+                {{t "brand.nameFull.publishing"}}
+            </div>
+        </div>
+    </LinkTo>
     <button
         type="button"
         class="navbar-toggler d-block d-md-none"
