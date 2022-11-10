@@ -50,6 +50,17 @@
                     {{t "nav.browse"}}
                 </LinkTo>
             </div>
+            <div class="nav-item">
+                <a
+                    href={{this.supportUrl}}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="nav-link"
+                    title={{t "buttons.nav.support.support.name"}}
+                >
+                    {{t "buttons.nav.support.support.name"}}
+                </a>
+            </div>
         </li>
         <li class="nav-item home">
             <LinkTo @route="index" class="nav-link" title={{t "buttons.nav.home.name"}}>
