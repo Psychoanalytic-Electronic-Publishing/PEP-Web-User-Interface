@@ -13,8 +13,7 @@ import {
     NAVIGATE_TO_READ,
     OPEN_LOGIN,
     OPEN_USER_MENU,
-    OPEN_USER_PREFERENCES,
-    SECRET_DAVE_CODE
+    OPEN_USER_PREFERENCES
 } from 'pep/constants/keyboard-shortcuts';
 import { Languages } from 'pep/constants/lang';
 import { PEP_FACEBOOK_URL, SUPPORT_URL } from 'pep/constants/urls';
@@ -41,16 +40,7 @@ export default class PageNav extends Component<BaseGlimmerSignature<PageNavArgs>
     @service router!: RouterService;
     @service notifications!: NotificationService;
 
-    @tracked logoNavigationGoesHome = false;
-
     @tracked shortcuts: KeyboardShortcut[] = [
-        {
-            keys: SECRET_DAVE_CODE,
-            shortcut: () => {
-                this.notifications.success('Dave mode entered');
-                this.logoNavigationGoesHome = true;
-            }
-        },
         {
             keys: NAVIGATE_TO_READ,
             shortcut: this.viewRead

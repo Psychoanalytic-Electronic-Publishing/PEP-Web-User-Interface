@@ -3,7 +3,7 @@
     ...attributes
     {{register-keyboard-shortcuts shortcuts=this.shortcuts}}
 >
-    {{#if (or this.logoNavigationGoesHome (is-development))}}
+    {{#if (or this.logoNavigationGoesHome)}}
         <LinkTo @route="index" class="navbar-brand mr-auto d-flex">
             <div class="navbar-brand-logo"></div>
             <div class="ml-2">
