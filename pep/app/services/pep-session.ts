@@ -129,7 +129,7 @@ export default class PepSessionService extends SessionService {
      */
     handleInvalidation(routeAfterInvalidation: string): void {
         this.cookies.write(SESSION_COOKIE_NAME, JSON.stringify({ authenticated: {} }), {});
-        this.cookies.write(DISQUS_SSO_SESSION_COOKIE_NAME, '');
+        this.cookies.clear(DISQUS_SSO_SESSION_COOKIE_NAME, {});
         this.cookies.write(HIDE_TOUR_COOKIE_NAME, 'true', {});
         if (this.redirectOnLogout) {
             super.handleInvalidation(routeAfterInvalidation);

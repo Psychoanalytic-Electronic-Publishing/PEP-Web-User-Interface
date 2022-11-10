@@ -97,7 +97,7 @@ export default class DisqusService extends Service.extend({}) {
     /**
      * Loads an existing Disqus SSO session from the browser cookies
      */
-    private loadExistingSession(): DisqusSSOSession | undefined {
+    private loadExistingSession(): undefined {
         const stringValue = this.cookies.read(DISQUS_SSO_SESSION_COOKIE_NAME);
 
         if (!stringValue) return undefined;
