@@ -9,7 +9,6 @@ import ModalService from '@gavant/ember-modals/services/modal';
 import { PEP_FACEBOOK_URL, SUPPORT_URL } from 'pep/constants/urls';
 import AuthService from 'pep/services/auth';
 import ConfigurationService from 'pep/services/configuration';
-import CurrentUserService, { VIEW_DOCUMENT_FROM } from 'pep/services/current-user';
 import DrawerService from 'pep/services/drawer';
 import PepSessionService from 'pep/services/pep-session';
 import { BaseGlimmerSignature } from 'pep/utils/types';
@@ -25,7 +24,6 @@ export default class PageDrawer extends Component<BaseGlimmerSignature<PageDrawe
     @service auth!: AuthService;
     @service modal!: ModalService;
     @service configuration!: ConfigurationService;
-    @service currentUser!: CurrentUserService;
     @service router!: RouterService;
 
     @tracked isUserMenuOpen = false;
@@ -40,10 +38,6 @@ export default class PageDrawer extends Component<BaseGlimmerSignature<PageDrawe
 
     get defaultSearchParams() {
         return this.configuration.defaultSearchParams;
-    }
-
-    get readDisabled() {
-        return !this.currentUser.lastViewedDocument?.id;
     }
 
     /**
@@ -115,22 +109,6 @@ export default class PageDrawer extends Component<BaseGlimmerSignature<PageDrawe
     @action
     openFeedbackModal() {
         return this.modal.open('help/feedback', {});
-    }
-
-    /**
-     * View the last read document
-     *
-     * @memberof PageDrawer
-     */
-    @action
-    viewRead() {
-        if (this.currentUser.lastViewedDocument) {
-            if (this.currentUser.lastViewedDocument.from === VIEW_DOCUMENT_FROM.SEARCH) {
-                this.router.transitionTo('search.read', this.currentUser.lastViewedDocument.id);
-            } else {
-                this.router.transitionTo('browse.read', this.currentUser.lastViewedDocument.id);
-            }
-        }
     }
 }
 

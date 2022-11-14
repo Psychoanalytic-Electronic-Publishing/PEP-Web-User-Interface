@@ -40,18 +40,6 @@
                             {{t "nav.search"}}
                         </LinkTo>
                     </Page::Drawer::NavItem>
-                    <Page::Drawer::NavItem class="mt-1">
-                        <Button
-                            @action={{this.viewRead}}
-                            @type="link"
-                            class="list-group-item list-group-item-action"
-                            @disabled={{this.readDisabled}}
-                            @icon="book-reader"
-                            @iconClass="mr-2"
-                        >
-                            {{t "nav.read"}}
-                        </Button>
-                    </Page::Drawer::NavItem>
 
                     <Page::Drawer::NavItem class="mt-1">
                         <LinkTo @route="browse" class="list-group-item list-group-item-action">
