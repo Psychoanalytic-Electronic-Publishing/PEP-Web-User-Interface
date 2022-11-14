@@ -8,19 +8,12 @@ import NotificationService from 'ember-cli-notifications/services/notifications'
 
 import ModalService from '@gavant/ember-modals/services/modal';
 
-import {
-    LOGOUT,
-    NAVIGATE_TO_READ,
-    OPEN_LOGIN,
-    OPEN_USER_MENU,
-    OPEN_USER_PREFERENCES
-} from 'pep/constants/keyboard-shortcuts';
+import { LOGOUT, OPEN_LOGIN, OPEN_USER_MENU, OPEN_USER_PREFERENCES } from 'pep/constants/keyboard-shortcuts';
 import { Languages } from 'pep/constants/lang';
 import { PEP_FACEBOOK_URL, SUPPORT_URL } from 'pep/constants/urls';
 import { KeyboardShortcut } from 'pep/modifiers/register-keyboard-shortcuts';
 import AuthService from 'pep/services/auth';
 import ConfigurationService from 'pep/services/configuration';
-import CurrentUserService, { VIEW_DOCUMENT_FROM } from 'pep/services/current-user';
 import DrawerService from 'pep/services/drawer';
 import PepSessionService from 'pep/services/pep-session';
 import { BaseGlimmerSignature } from 'pep/utils/types';
@@ -36,15 +29,10 @@ export default class PageNav extends Component<BaseGlimmerSignature<PageNavArgs>
     @service auth!: AuthService;
     @service drawer!: DrawerService;
     @service configuration!: ConfigurationService;
-    @service currentUser!: CurrentUserService;
     @service router!: RouterService;
     @service notifications!: NotificationService;
 
     @tracked shortcuts: KeyboardShortcut[] = [
-        {
-            keys: NAVIGATE_TO_READ,
-            shortcut: this.viewRead
-        },
         {
             keys: OPEN_USER_MENU,
             shortcut: this.openAccountInfoModal
@@ -69,10 +57,6 @@ export default class PageNav extends Component<BaseGlimmerSignature<PageNavArgs>
 
     get searchHelpVideoUrl() {
         return this.configuration.base.global.searchHelpVideoUrl;
-    }
-
-    get readDisabled() {
-        return !this.currentUser.lastViewedDocument?.id;
     }
 
     get readActive() {
@@ -138,22 +122,6 @@ export default class PageNav extends Component<BaseGlimmerSignature<PageNavArgs>
     @action
     openHelpModal() {
         return this.modal.open('help/preferences', {});
-    }
-
-    /**
-     *  View last read document
-     *
-     * @memberof PageNav
-     */
-    @action
-    viewRead() {
-        if (this.currentUser.lastViewedDocument?.id) {
-            if (this.currentUser.lastViewedDocument.from === VIEW_DOCUMENT_FROM.SEARCH) {
-                this.router.transitionTo('search.read', this.currentUser.lastViewedDocument.id);
-            } else {
-                this.router.transitionTo('browse.read', this.currentUser.lastViewedDocument.id);
-            }
-        }
     }
 
     /**

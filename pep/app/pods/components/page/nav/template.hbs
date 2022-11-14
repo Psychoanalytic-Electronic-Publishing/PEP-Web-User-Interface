@@ -35,17 +35,6 @@
                 </LinkTo>
             </div>
             <div class="nav-item">
-                <Button
-                    @action={{this.viewRead}}
-                    @type="link"
-                    class="nav-link"
-                    @disabled={{this.readDisabled}}
-                    @active={{this.readActive}}
-                >
-                    {{t "nav.read"}}
-                </Button>
-            </div>
-            <div class="nav-item">
                 <LinkTo @route="browse" @active={{this.browseActive}} class="nav-link">
                     {{t "nav.browse"}}
                 </LinkTo>
