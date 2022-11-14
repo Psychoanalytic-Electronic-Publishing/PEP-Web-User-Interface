@@ -1,4 +1,3 @@
-export const SECRET_DAVE_CODE = 'ArrowUp ArrowUp ArrowDown ArrowDown ArrowLeft ArrowRight ArrowLeft ArrowRight B A';
 export const QUICK_ACCESS: string = 'q';
 export const NAVIGATION: string = 'n';
 export const TOGGLE: string = 't';
