@@ -16,7 +16,7 @@ import Document from 'pep/pods/document/model';
 import SearchDocument from 'pep/pods/search-document/model';
 import SearchReadController from 'pep/pods/search/read/controller';
 import ConfigurationService from 'pep/services/configuration';
-import CurrentUserService, { VIEW_DOCUMENT_FROM } from 'pep/services/current-user';
+import CurrentUserService from 'pep/services/current-user';
 import ScrollableService from 'pep/services/scrollable';
 import SidebarService from 'pep/services/sidebar';
 import { buildSearchQueryParams, copyToController, hasSearchQuery } from 'pep/utils/search';
@@ -221,10 +221,7 @@ export default class SearchRead extends PageNav(Route) {
             onChangeSorting: controller.onChangeSorting,
             limit: controller.pagingLimit
         });
-        this.currentUser.lastViewedDocument = {
-            id: model.id,
-            from: VIEW_DOCUMENT_FROM.SEARCH
-        };
+
         controller.searchHitNumber = undefined;
         controller.document = model;
 

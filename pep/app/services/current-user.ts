@@ -66,12 +66,6 @@ export default class CurrentUserService extends Service {
     @tracked user: User | null = null;
     @tracked preferences?: UserPreferences;
 
-    @tracked lastViewedDocument?: {
-        id: string;
-        from: VIEW_DOCUMENT_FROM;
-        page?: string;
-    };
-
     /**
      * Available text justification options
      *

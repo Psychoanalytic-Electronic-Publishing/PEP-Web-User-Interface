@@ -9,7 +9,6 @@ export const OPEN_USER_MENU = `${QUICK_ACCESS} u`;
 export const OPEN_USER_PREFERENCES = `${QUICK_ACCESS} p`;
 export const OPEN_LOGIN = `${QUICK_ACCESS} l`;
 export const LOGOUT = `${QUICK_ACCESS} l o`;
-export const NAVIGATE_TO_READ = `${QUICK_ACCESS} r`;
 export const NAVIGATE_TO_SEARCH = `${QUICK_ACCESS} s`;
 export const NAVIGATE_TO_BROWSE = `${QUICK_ACCESS} b`;
 export const NAVIGATE_TO_HOME = `${QUICK_ACCESS} h`;
