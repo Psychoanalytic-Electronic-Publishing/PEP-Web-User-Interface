@@ -79,7 +79,11 @@
                                     </div>
                                     <div class="d-flex">
                                         <DropdownMenu @horizontalPosition="auto-right" as |DD|>
-                                            <DD.Trigger @htmlTag="a" class="p-1">
+                                            <DD.Trigger
+                                                @htmlTag="a"
+                                                class="p-1"
+                                                title={{t "search.preview.download.label"}}
+                                            >
                                                 <FaIcon @icon="download" @size="lg" @prefix="fas" />
                                             </DD.Trigger>
                                             <DD.Content class="dropdown-menu">

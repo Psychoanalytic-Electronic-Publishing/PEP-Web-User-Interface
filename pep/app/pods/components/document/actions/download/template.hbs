@@ -1,5 +1,5 @@
 <DropdownMenu @horizontalPosition="auto-right" @disabled={{not @enabled}} as |DD|>
-    <DD.Trigger @htmlTag="button" class="btn btn-link px-2">
+    <DD.Trigger @htmlTag="button" class="btn btn-link px-2" title={{if @enabled (t "search.preview.download.label")}}>
         <FaIcon @icon="download" @size="lg" @prefix="{{if @enabled 'fas' 'fal'}}" />
         {{#unless this.iconOnly}}
             {{t "search.preview.download.label"}}
