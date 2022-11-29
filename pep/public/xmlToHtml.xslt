@@ -203,6 +203,9 @@
     <xsl:variable name="artstartpg">
         <xsl:value-of select="substring-before(($artpgrg), '-')"/>
     </xsl:variable>
+        <xsl:variable name="latest-version-id">
+        <xsl:apply-templates select="//artinfo/@latest_version_id"/>
+    </xsl:variable>
 
     <xsl:template match="pepkbd3">
         <body>
@@ -269,6 +272,17 @@
                         <div class="section-title section-title border-bottom my-2">
                             <xsl:apply-templates mode="metadata" select="artsectinfo" />
                         </div>
+                    </xsl:if>
+                     <xsl:if test="$latest-version-id != ''">
+                        <p class="para mt-3 text-center">
+                            <a href="/browse/document/{$latest-version-id}"
+                               data-type="document-link"
+                               data-document-id="{$latest-version-id}"
+                            >
+                                &#128680;You are reading an older version of this article. Click here to view the latest revision&#128680;
+                            </a>
+                        </p>
+                  
                     </xsl:if>
                     <div class="art-title mt-3 text-center">
                         <span>
