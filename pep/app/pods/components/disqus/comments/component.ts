@@ -51,7 +51,11 @@ export default class DisqusComments extends Component<DisqusCommentsSignature> {
      */
     private resetDisqus() {
         const id = this.args.identifier.toLowerCase() ?? undefined;
-        const identifier = !this.args.url && id;
+
+        // Always use the first version of an article to persist comments across versions
+        // We could slice off the version entirely, but we need to maintain backawrds compatibiltiy for existing Disqus thread IDs
+        const identifier = !this.args.url && id.slice(0, -1) + 'a';
+
         const url = this.args.url || window.location.href;
         const title = this.args.title ?? undefined;
 
