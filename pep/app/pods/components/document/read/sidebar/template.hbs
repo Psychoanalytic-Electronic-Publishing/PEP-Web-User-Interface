@@ -32,7 +32,7 @@
                         </div>
                         <div class="d-flex align-items-center">
                             <DropdownMenu @horizontalPosition="auto-right" as |DD|>
-                                <DD.Trigger @htmlTag="a" class="p-1">
+                                <DD.Trigger @htmlTag="a" class="p-1" title={{t "search.preview.download.label"}}>
                                     <FaIcon @icon="download" @size="lg" />
                                 </DD.Trigger>
                                 <DD.Content class="dropdown-menu">
@@ -49,6 +49,7 @@
                                 @success={{this.clipboardSuccess}}
                                 @error={{this.clipboardFailure}}
                                 @clipboardText={{this.exportClipboard}}
+                                title={{t "search.exports.clipboard"}}
                             >
                                 <FaIcon @icon="clipboard" @size="lg" />
                             </CopyButton>
@@ -57,7 +58,7 @@
                                 @type="link"
                                 @icon="print"
                                 @iconSize="lg"
-                                @tooltip={{t "common.print"}}
+                                title={{t "common.print"}}
                                 class="p-1"
                             />
                         </div>
@@ -128,7 +129,8 @@
                             @renderAll={{this.fastboot.isFastBoot}}
                             @lastReached={{@paginator.loadMoreModels}}
                             @idForFirstItem={{@selectedDocument.id}}
-                            class="list-unstyled" as |result|
+                            class="list-unstyled"
+                            as |result|
                         >
                             <Search::Item::Bibliographic
                                 @item={{result}}

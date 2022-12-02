@@ -35,7 +35,7 @@
                     </div>
                     <div>
                         <DropdownMenu @horizontalPosition="auto-right" as |DD|>
-                            <DD.Trigger @htmlTag="a" class="p-1">
+                            <DD.Trigger @htmlTag="a" class="p-1" title={{t "search.preview.download.label"}}>
                                 <FaIcon @icon="download" @size="lg" @prefix="fas" />
                             </DD.Trigger>
                             <DD.Content class="dropdown-menu">
@@ -52,6 +52,7 @@
                             @success={{this.clipboardSuccess}}
                             @error={{this.clipboardFailure}}
                             @clipboardText={{this.exportClipboard}}
+                            title={{t "search.exports.clipboard"}}
                         >
                             <FaIcon @icon="clipboard" @size="lg" @prefix="fas" />
                         </CopyButton>
@@ -61,7 +62,7 @@
                             @icon="print"
                             @iconPrefix="fas"
                             @iconSize="lg"
-                            @tooltip={{t "common.print"}}
+                            title={{t "common.print"}}
                             class="p-1"
                         />
                     </div>

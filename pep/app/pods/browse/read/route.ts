@@ -15,7 +15,7 @@ import BrowseReadController from 'pep/pods/browse/read/controller';
 import Document from 'pep/pods/document/model';
 import SearchDocument from 'pep/pods/search-document/model';
 import ConfigurationService from 'pep/services/configuration';
-import CurrentUserService, { VIEW_DOCUMENT_FROM } from 'pep/services/current-user';
+import CurrentUserService from 'pep/services/current-user';
 import ScrollableService from 'pep/services/scrollable';
 import SidebarService from 'pep/services/sidebar';
 import { buildBrowseRelatedDocumentsParams, buildSearchQueryParams } from 'pep/utils/search';
@@ -79,9 +79,10 @@ export default class BrowseRead extends PageNav(Route) {
 
             processQueryParams: (params) => ({ ...params, ...searchParams })
         });
-        const response = (await this.store.query('search-document', queryParams)) as RecordArrayWithMeta<
-            SearchDocument
-        >;
+        const response = (await this.store.query(
+            'search-document',
+            queryParams
+        )) as RecordArrayWithMeta<SearchDocument>;
         const results = response.toArray();
         const resultsMeta = response.meta;
 
@@ -118,10 +119,6 @@ export default class BrowseRead extends PageNav(Route) {
             onChangeSorting: controller.onChangeSorting,
             limit: controller.pagingLimit
         });
-        this.currentUser.lastViewedDocument = {
-            id: model.id,
-            from: VIEW_DOCUMENT_FROM.OTHER
-        };
 
         controller.document = model;
         if (!this.fastboot.isFastBoot) {
