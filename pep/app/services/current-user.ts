@@ -148,9 +148,12 @@ export default class CurrentUserService extends Service {
      * @return {*}  {(Promise<User | void>)}
      * @memberof CurrentUserService
      */
-    load(sessionId?: string): Promise<User | void> {
-        this.disqus.setup();
-        return this.fetchUser(sessionId);
+    async load(sessionId?: string): Promise<User | void> {
+        const user = await this.fetchUser(sessionId);
+
+        if (user && user.hasIJPOpenSubscription) await this.disqus.setup();
+
+        return user;
     }
 
     /**
@@ -175,6 +178,9 @@ export default class CurrentUserService extends Service {
     async fetchUser(sessionId?: string): Promise<User | void> {
         const id = sessionId ?? this.session.sessionId;
         const user = await this.store.queryRecord('user', { SessionId: id ?? '' });
+
+        console.log('USER:', user);
+
         this.user = user;
         return user;
     }
