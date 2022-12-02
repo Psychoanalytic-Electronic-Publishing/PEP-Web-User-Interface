@@ -1,9 +1,9 @@
-<Button::WithTooltip
+<Button
     @action={{this.print}}
     @type="link"
     @icon="print"
     @iconSize="lg"
     @iconPrefix="{{if @enabled 'fas' 'fal'}}"
-    @tooltip={{if @enabled (t "common.print") (html-safe this.configuration.content.global.access.print.help)}}
+    title={{if @enabled (t "common.print") (html-safe this.configuration.content.global.access.print.help)}}
     class="p-1"
 />

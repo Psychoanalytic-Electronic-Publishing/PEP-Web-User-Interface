@@ -1,10 +1,10 @@
-<div class="page-drawer d-block d-md-none{{if this.drawer.isOpen " is-open"}}" ...attributes>
+<div class="page-drawer d-block d-md-none{{if this.drawer.isOpen ' is-open'}}" ...attributes>
     <Scrollable @namespace="page-drawer" class="page-drawer-scrollable d-flex flex-column">
         <div class="p-4 flex-shrink-0 d-flex align-items-center page-drawer-header">
             <button type="button" class="page-drawer-close" {{on "click" this.closeDrawer}}>
                 <FaIcon @icon="times-circle" @prefix="fas" @size="lg" />
             </button>
-            <a href={{this.supportUrl}} target="_blank" rel="noopener noreferrer" title={{t "buttons.nav.home.name"}}>
+            <LinkTo @route="index" class="navbar-brand mr-auto d-flex">
                 <div class="page-drawer-brand d-flex">
                     <div class="page-drawer-brand-logo"></div>
                     <div class="ml-2">
@@ -19,7 +19,7 @@
                         </div>
                     </div>
                 </div>
-            </a>
+            </LinkTo>
         </div>
         <div class="px-3 py-4 page-drawer-content">
             <div class="list-group">
@@ -39,18 +39,6 @@
                             <FaIcon @icon="search" @fixedWidth={{true}} class="mr-2" />
                             {{t "nav.search"}}
                         </LinkTo>
-                    </Page::Drawer::NavItem>
-                    <Page::Drawer::NavItem class="mt-1">
-                        <Button
-                            @action={{this.viewRead}}
-                            @type="link"
-                            class="list-group-item list-group-item-action"
-                            @disabled={{this.readDisabled}}
-                            @icon="book-reader"
-                            @iconClass="mr-2"
-                        >
-                            {{t "nav.read"}}
-                        </Button>
                     </Page::Drawer::NavItem>
 
                     <Page::Drawer::NavItem class="mt-1">
