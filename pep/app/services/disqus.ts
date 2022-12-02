@@ -9,6 +9,7 @@ import { later } from '@ember/runloop';
 import PepSessionService from './pep-session';
 import CookiesService from 'ember-cookies/services/cookies';
 import { DISQUS_SSO_SESSION_COOKIE_NAME } from 'pep/constants/cookies';
+import { serializeQueryParams } from 'pep/utils/url';
 
 // Used for testing
 // https://developer.squareup.com/blog/the-ember-run-loop-and-asynchronous-testing/
@@ -120,7 +121,7 @@ export default class DisqusService extends Service.extend({}) {
             SessionId: this.session.sessionId
         };
 
-        const queryString = new URLSearchParams(params).toString();
+        const queryString = serializeQueryParams(params);
         const SSOEndpoint = `${ENV.authBaseUrl}/Disqus?${queryString}`;
 
         const { Payload, PublicKey } = await this.ajax.request<DisqusSSOResponse>(SSOEndpoint);
