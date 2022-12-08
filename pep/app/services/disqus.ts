@@ -88,11 +88,14 @@ export default class DisqusService extends Service.extend({}) {
         });
     }
 
-    /**
+    /**;
      * Check if an existing Disqus SSO session is stored in the browser cookies
      */
     private existingSession(): boolean {
-        return this.cookies.exists(DISQUS_SSO_SESSION_COOKIE_NAME);
+        return (
+            this.cookies.exists(DISQUS_SSO_SESSION_COOKIE_NAME) === true &&
+            this.cookies.read(DISQUS_SSO_SESSION_COOKIE_NAME) !== ''
+        );
     }
 
     /**
