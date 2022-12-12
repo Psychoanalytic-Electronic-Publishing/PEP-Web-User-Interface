@@ -365,6 +365,12 @@
             </div>
         </xsl:for-each>
 
+        <xsl:for-each select="unit[@type='previousversions']">
+            <div class="manuscript-versions">
+                <xsl:call-template name="manuscript-version-history"/>
+            </div>
+        </xsl:for-each>
+
 
     </xsl:template>
 
@@ -557,6 +563,40 @@
                     <xsl:value-of select="."/>
                     <xsl:if test="position() != last()">
                         <xsl:text>, </xsl:text>
+                    </xsl:if>
+                </a>
+            </xsl:for-each>
+        </div>
+    </xsl:template>
+
+    <xsl:template name="manuscript-version-history" match="list[@type = 'BUL1']" mode="metadata">
+        <div class="artkwds mb-2">
+            <h2 class="mb-1">
+                PEP-Web Manuscript Version History:
+            </h2>
+            <xsl:for-each select="//impx[@type='RVDOC']">
+                <a class="manuscript-version d-block mb-2">
+                    <xsl:attribute name="data-type">
+                        <xsl:if test="position() != last()">
+                            <xsl:value-of select="@type"/>
+                        </xsl:if>
+
+                        <xsl:if test="position() = last()">document-link</xsl:if>
+                    </xsl:attribute>
+                    <xsl:attribute name="data-document-id">
+                        <xsl:value-of select="@rx"/>
+                    </xsl:attribute>
+
+                    <xsl:if test="@rx = $document-id">
+                        <xsl:attribute name="class">
+                            manuscript-version d-block mb-2 text-reset text-decoration-none
+                        </xsl:attribute>
+                    </xsl:if>
+                    
+                    <xsl:value-of select="."/>
+
+                    <xsl:if test="@rx = $document-id">
+                        <xsl:text> (viewing)</xsl:text>
                     </xsl:if>
                 </a>
             </xsl:for-each>
