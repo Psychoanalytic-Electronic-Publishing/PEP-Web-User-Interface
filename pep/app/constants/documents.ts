@@ -27,5 +27,6 @@ export enum DocumentLinkTypes {
     BANNER = 'document-banner',
     TITLE = 'document-title',
     TRANSLATION = 'GroupIDTrans',
-    KEYWORD = 'KEYWORD'
+    KEYWORD = 'KEYWORD',
+    MANUSCRIPT_VERSION = 'RVDOC'
 }
