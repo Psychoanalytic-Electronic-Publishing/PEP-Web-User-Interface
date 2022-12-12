@@ -36,6 +36,7 @@ import PepSessionService from 'pep/services/pep-session';
 import { addClass, removeClass } from 'pep/utils/dom';
 import { reject } from 'rsvp';
 import Result, { err, ok } from 'true-myth/result';
+import DisqusService from './disqus';
 
 export enum VIEW_DOCUMENT_FROM {
     SEARCH = 'search',
@@ -60,6 +61,7 @@ export default class CurrentUserService extends Service {
     @service intl!: IntlService;
     @service auth!: AuthService;
     @service informationBar!: InformationBarService;
+    @service disqus!: DisqusService;
     // @ts-ignore this does exist
     @service('-document') document!: any;
 
@@ -146,8 +148,12 @@ export default class CurrentUserService extends Service {
      * @return {*}  {(Promise<User | void>)}
      * @memberof CurrentUserService
      */
-    load(sessionId?: string): Promise<User | void> {
-        return this.fetchUser(sessionId);
+    async load(sessionId?: string): Promise<User | void> {
+        const user = await this.fetchUser(sessionId);
+
+        if (user && user.hasIJPOpenSubscription) await this.disqus.setup();
+
+        return user;
     }
 
     /**
@@ -172,6 +178,7 @@ export default class CurrentUserService extends Service {
     async fetchUser(sessionId?: string): Promise<User | void> {
         const id = sessionId ?? this.session.sessionId;
         const user = await this.store.queryRecord('user', { SessionId: id ?? '' });
+
         this.user = user;
         return user;
     }
@@ -190,6 +197,7 @@ export default class CurrentUserService extends Service {
         const lsPrefs = this.loadLocalStoragePrefs();
         const prefs = Object.assign({}, DEFAULT_USER_PREFERENCES, lsPrefs, cookiePrefs, userPrefs) as UserPreferences;
         this.preferences = prefs;
+
         return this.preferences;
     }
 

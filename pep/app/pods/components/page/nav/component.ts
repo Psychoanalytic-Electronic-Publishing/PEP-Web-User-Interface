@@ -17,6 +17,7 @@ import ConfigurationService from 'pep/services/configuration';
 import DrawerService from 'pep/services/drawer';
 import PepSessionService from 'pep/services/pep-session';
 import { BaseGlimmerSignature } from 'pep/utils/types';
+import CurrentUserService from 'pep/services/current-user';
 
 interface PageNavArgs {
     openAboutModal: () => Promise<void>;
@@ -31,6 +32,7 @@ export default class PageNav extends Component<BaseGlimmerSignature<PageNavArgs>
     @service configuration!: ConfigurationService;
     @service router!: RouterService;
     @service notifications!: NotificationService;
+    @service currentUser!: CurrentUserService;
 
     @tracked shortcuts: KeyboardShortcut[] = [
         {

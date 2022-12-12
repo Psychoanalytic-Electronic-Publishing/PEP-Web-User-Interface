@@ -1,8 +1,10 @@
 import { action } from '@ember/object';
 import { debounce } from '@ember/runloop';
+import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
 
 import ENV from 'pep/config/environment';
+import DisqusService from 'pep/services/disqus';
 
 interface DisqusCommentsArgs {
     identifier: string;
@@ -20,6 +22,8 @@ type WindowWithDisqus = Window &
     };
 
 export default class DisqusComments extends Component<DisqusCommentsSignature> {
+    @service disqus!: DisqusService;
+
     /**
      * Set up disqus. Loads the API if needed - otherwise just calls reset with the new identifier.
      *
@@ -54,6 +58,8 @@ export default class DisqusComments extends Component<DisqusCommentsSignature> {
         const identifier = !this.args.url && id;
         const url = this.args.url || window.location.href;
         const title = this.args.title ?? undefined;
+        const payload = this.disqus.payload;
+        const publicKey = this.disqus.publicKey;
 
         /** @ref https://help.disqus.com/customer/portal/articles/472107-using-disqus-on-ajax-sites */
 
@@ -63,6 +69,10 @@ export default class DisqusComments extends Component<DisqusCommentsSignature> {
                 this.page.identifier = identifier;
                 this.page.url = url;
                 this.page.title = title;
+
+                // SSO configuration
+                this.page.remote_auth_s3 = payload;
+                this.page.api_key = publicKey;
             }
         });
     }
