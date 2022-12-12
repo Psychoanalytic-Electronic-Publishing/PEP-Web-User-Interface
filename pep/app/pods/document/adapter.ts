@@ -6,7 +6,7 @@ import { pluralize } from 'ember-inflector';
 import ENV from 'pep/config/environment';
 import ApplicationAdapter, { SnapshotWithQuery } from 'pep/pods/application/adapter';
 
-export type SnapshotWithSearchQuery = SnapshotWithQuery & { adapterOptions: { searchQuery: any } };
+export type SnapshotWithSearchQuery = SnapshotWithQuery & { adapterOptions: { searchQuery: any; archive?: boolean } };
 export default class DocumentAdapter extends ApplicationAdapter {
     modelNameOverride?: string;
     newPathSegmentOverride?: string;
@@ -49,13 +49,16 @@ export default class DocumentAdapter extends ApplicationAdapter {
      * @returns {String}
      */
     urlForFindRecord<K extends string | number>(id: string, modelName: K, snapshot: DS.Snapshot<K>): string {
+        // always return XML version of documents
+        const snapshotWithQuery = snapshot as unknown as SnapshotWithSearchQuery;
+        const adapterOpts = snapshotWithQuery.adapterOptions ?? {};
+
         const modelNameStr = this.modelNameOverride ?? modelName.toString();
         const origPathSegment = pluralize(classify(modelNameStr));
-        const newPathSegment = this.newPathSegmentOverride ?? `${origPathSegment}/${classify(modelNameStr)}`;
+        const newPathSegment =
+            this.newPathSegmentOverride ??
+            `${origPathSegment}/${adapterOpts.archive ? 'Archival' : classify(modelNameStr)}`;
 
-        // always return XML version of documents
-        const snapshotWithQuery = (snapshot as unknown) as SnapshotWithSearchQuery;
-        const adapterOpts = snapshotWithQuery.adapterOptions ?? {};
         const query = adapterOpts.query ?? {};
         snapshotWithQuery.adapterOptions = { ...adapterOpts, query: { ...query, return_format: 'XML' } };
 
@@ -64,7 +67,10 @@ export default class DocumentAdapter extends ApplicationAdapter {
             url += `&${adapterOpts.searchQuery}`;
         }
 
-        return url.replace(`/${this.origPathSegmentOverride ?? origPathSegment}`, `/${newPathSegment}`);
+        url = url.replace(`/${this.origPathSegmentOverride ?? origPathSegment}`, `/${newPathSegment}`);
+        console.log(url);
+
+        return url;
     }
 }
 
