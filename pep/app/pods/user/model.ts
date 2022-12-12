@@ -99,6 +99,10 @@ export default class User extends DS.Model {
     @attr('string')
     userType!: UserType;
 
+    @alwaysSend
+    @attr('boolean')
+    hasIJPOpenSubscription!: boolean;
+
     /**
      * Is the user an individual login (not part of a group)
      *

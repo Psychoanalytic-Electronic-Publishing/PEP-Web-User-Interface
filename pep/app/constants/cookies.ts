@@ -3,6 +3,7 @@ export const SESSION_COOKIE_NAME = 'ember_simple_auth-session';
 export const UNAUTHENTICATED_SESSION_COOKIE_NAME = 'pepweb_unauthenticated_session';
 export const USER_PREFERENCES_COOKIE_NAME = 'pepweb_user_prefs';
 export const FASTBOOT_SESSION_WORKAROUND_COOKIE_NAME = 'pep_session_fastboot';
+export const DISQUS_SSO_SESSION_COOKIE_NAME = 'disqus_sso_session';
 export const COOKIE_PATH = '/';
 
 export const APPLICATION_COOKIE_NAMES = [
@@ -10,5 +11,6 @@ export const APPLICATION_COOKIE_NAMES = [
     SESSION_COOKIE_NAME,
     UNAUTHENTICATED_SESSION_COOKIE_NAME,
     USER_PREFERENCES_COOKIE_NAME,
-    FASTBOOT_SESSION_WORKAROUND_COOKIE_NAME
+    FASTBOOT_SESSION_WORKAROUND_COOKIE_NAME,
+    DISQUS_SSO_SESSION_COOKIE_NAME
 ];

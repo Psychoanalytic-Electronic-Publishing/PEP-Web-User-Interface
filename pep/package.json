@@ -28,7 +28,8 @@
         "express": "^4.17.1",
         "fastboot-express-middleware": "^3.0.0",
         "node-fetch": "^2.6.0",
-        "simple-dom": "^1.4.0"
+        "simple-dom": "^1.4.0",
+        "sinon": "^14.0.2"
     },
     "devDependencies": {
         "@ember/optional-features": "^1.3.0",
@@ -88,6 +89,7 @@
         "@types/papaparse": "^5.2.3",
         "@types/qunit": "^2.11.3",
         "@types/rsvp": "^4.0.4",
+        "@types/sinon": "^10.0.13",
         "@types/tether-shepherd": "^1.2.28",
         "@typescript-eslint/eslint-plugin": "^5.26.0",
         "@typescript-eslint/parser": "^5.26.0",
