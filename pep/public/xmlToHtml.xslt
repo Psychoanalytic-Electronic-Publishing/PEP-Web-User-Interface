@@ -571,7 +571,7 @@
 
     <xsl:template name="manuscript-version-history" match="list[@type = 'BUL1']" mode="metadata">
         <div class="artkwds mb-2">
-            <h2 class="mb-1">
+            <h2 class="mb-2">
                 PEP-Web Manuscript Version History:
             </h2>
             <xsl:for-each select="//impx[@type='RVDOC']">
