@@ -179,8 +179,6 @@ export default class CurrentUserService extends Service {
         const id = sessionId ?? this.session.sessionId;
         const user = await this.store.queryRecord('user', { SessionId: id ?? '' });
 
-        console.log('USER:', user);
-
         this.user = user;
         return user;
     }
