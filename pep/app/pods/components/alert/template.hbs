@@ -5,7 +5,12 @@
         duration=this.animateDuration
         initialInsertion=this.animateInitialInsert
     }}
-        <div class="alert alert-{{@type}}" role="alert" ...attributes>
+        <div class="alert alert-{{@type}} alert-dismissable" role="alert" ...attributes>
+            {{#if @dissmissable}}
+                <button onclick={{@onDismiss}} type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            {{/if}}
             {{#if (has-block)}}
                 {{yield}}
             {{else}}

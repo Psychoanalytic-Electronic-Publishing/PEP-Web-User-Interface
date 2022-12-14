@@ -19,6 +19,8 @@ import LoadingBarService from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
 import { clearSearch } from 'pep/utils/search';
 import { BaseGlimmerSignature } from 'pep/utils/types';
+import { tracked } from '@glimmer/tracking';
+import CookiesService from 'ember-cookies/services/cookies';
 
 interface DocumentReadArgs {
     model: Document;
@@ -38,9 +40,19 @@ export default class DocumentRead extends Component<BaseGlimmerSignature<Documen
     @service loadingBar!: LoadingBarService;
     @service store!: DS.Store;
     @service('pep-session') session!: PepSessionService;
+    @service cookies!: CookiesService;
 
     get hasWatermark() {
         return this.args.model.PEPCode === IJP_OPEN_CODE;
+    }
+
+    @tracked showIJPOpenBannerState = true;
+    get showIJPOpenBanner() {
+        if (this.args.model.PEPCode !== IJP_OPEN_CODE) return false;
+
+        if (this.cookies.read('IJPOpenBannerClosed') === '1') return false;
+
+        return this.showIJPOpenBannerState;
     }
 
     /**
@@ -88,6 +100,12 @@ export default class DocumentRead extends Component<BaseGlimmerSignature<Documen
     @action
     documentRendered() {
         this.args.documentRendered?.();
+    }
+
+    @action
+    dismissIJPOpenBanner() {
+        this.cookies.write('IJPOpenBannerClosed', '1', {});
+        this.showIJPOpenBannerState = false;
     }
 }
 
