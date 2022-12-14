@@ -14,6 +14,8 @@ interface AlertArgs {
     icon?: IconName;
     scrollableNamespace?: string;
     animateInitialInsert?: boolean;
+    dissmisable?: boolean;
+    onDismiss?: () => void;
 }
 
 export default class Alert extends Component<BaseGlimmerSignature<AlertArgs>> {

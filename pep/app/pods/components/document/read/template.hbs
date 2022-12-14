@@ -19,6 +19,22 @@
             </Alert>
             <div class="pep-document-content" id="read-document">
                 <ContentWithPlaceholder @placeholderInFastboot={{true}} @isLoading={{not @model}}>
+
+                    {{! IJP Open Banner }}
+                    <Alert
+                        @isShown={{this.showIJPOpenBanner}}
+                        @type="info"
+                        @dissmissable={{true}}
+                        @onDismiss={{this.dismissIJPOpenBanner}}
+                    >
+                        To comment on IJP Open, you have automatically been asigned a Disqus profile. You can view and
+                        contribute to article discussions by clicking on the comment icon (
+                        <FaIcon @icon="comments" @size="sm" />
+                        ) in the top right corner.
+
+                    </Alert>
+
+                    {{! Document contents }}
                     <Document::Text
                         @document={{@model}}
                         @onGlossaryItemClick={{this.viewGlossaryTerm}}
