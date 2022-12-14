@@ -55,11 +55,14 @@ export default class DisqusComments extends Component<DisqusCommentsSignature> {
      */
     private resetDisqus() {
         const id = this.args.identifier.toLowerCase() ?? undefined;
-        const identifier = !this.args.url && id;
         const url = this.args.url || window.location.href;
         const title = this.args.title ?? undefined;
         const payload = this.disqus.payload;
         const publicKey = this.disqus.publicKey;
+
+        // Always use the first version of an article to persist comments across versions
+        // We could slice off the version entirely, but we need to maintain backawrds compatibiltiy for existing Disqus thread IDs
+        const identifier = !this.args.url && id.slice(0, -1) + 'a';
 
         /** @ref https://help.disqus.com/customer/portal/articles/472107-using-disqus-on-ajax-sites */
 
