@@ -10,7 +10,8 @@ $document-paragraph-indent: 1.5rem;
             position: absolute;
         }
         &::before {
-            content: "";
+            pointer-events: none;
+            content: '';
             position: fixed;
             width: 36vw;
             height: 36vh;

@@ -297,6 +297,15 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
                     queryParams: this.args.readQueryParams
                 });
             }
+        } else if (type === DocumentLinkTypes.MANUSCRIPT_VERSION) {
+            const id = attributes.getNamedItem('data-document-id')?.nodeValue;
+            const isLatest = attributes.getNamedItem('data-latest');
+
+            if (id) {
+                this.router.transitionTo('browse.read', id, {
+                    queryParams: { ...this.args.readQueryParams, archive: isLatest ? undefined : 'true' }
+                });
+            }
         } else if (type === DocumentLinkTypes.PAGE) {
             let documentId = null;
             let pageOrTarget = null;

@@ -41,9 +41,11 @@ export default class BrowseRead extends Controller {
                 scope: 'controller'
             }
         },
-        'index'
+        'index',
+        'archive'
     ];
 
+    @tracked archive = undefined;
     @tracked selectedView = SearchViews[0];
     @tracked paginator!: Pagination<Document>;
     @tracked page: string | null = null;
