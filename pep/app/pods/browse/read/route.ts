@@ -53,24 +53,13 @@ export default class BrowseRead extends PageNav(Route) {
      * Fetch the requested document
      * @param {ReadDocumentParams} params
      */
-    async model(params: BrowseReadParams) {
-        const doc = await this.store.findRecord('document', params.document_id, {
+    model(params: BrowseReadParams) {
+        return this.store.findRecord('document', params.document_id, {
             reload: true,
             adapterOptions: {
                 archive: params.archive === 'true'
             }
         });
-
-        console.log('DOC', doc);
-
-        return doc;
-
-        // return this.store.findRecord('document', params.document_id, {
-        //     reload: true,
-        //     adapterOptions: {
-        //         archive: params.archive === 'true'
-        //     }
-        // });
     }
 
     /**
