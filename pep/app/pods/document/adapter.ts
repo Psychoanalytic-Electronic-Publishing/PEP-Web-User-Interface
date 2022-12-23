@@ -60,7 +60,10 @@ export default class DocumentAdapter extends ApplicationAdapter {
             `${origPathSegment}/${adapterOpts.archive ? 'Archival' : classify(modelNameStr)}`;
 
         const query = adapterOpts.query ?? {};
-        snapshotWithQuery.adapterOptions = { ...adapterOpts, query: { ...query, return_format: 'XML' } };
+        snapshotWithQuery.adapterOptions = {
+            ...adapterOpts,
+            query: { ...query, return_format: 'XML', specialoptions: '1' }
+        };
 
         let url = super.urlForFindRecord(id, modelName, snapshotWithQuery);
         if (adapterOpts.searchQuery) {
