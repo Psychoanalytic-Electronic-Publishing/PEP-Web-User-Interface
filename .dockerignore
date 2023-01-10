@@ -1,0 +1,6 @@
+pep/node_modules/
+pep/build/
+pep/dist/
+.dockerignore
+Dockerfile
+Dockerfile.prod
