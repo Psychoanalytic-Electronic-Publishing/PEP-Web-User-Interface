@@ -71,7 +71,6 @@ export default class DocumentAdapter extends ApplicationAdapter {
         }
 
         url = url.replace(`/${this.origPathSegmentOverride ?? origPathSegment}`, `/${newPathSegment}`);
-        console.log("HELLO");
 
         return url;
     }
