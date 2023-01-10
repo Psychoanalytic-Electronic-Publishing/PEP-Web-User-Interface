@@ -24,6 +24,3 @@ COPY .env-development ../
 
 # start ember app
 CMD ["yarn", "start", "--ssl=false"]
-
-
-# docker run -it --rm -v ${PWD}:/app -v /app/pep/node_modules -p 4200:4200 -e CHOKIDAR_USEPOLLING=true pep-web:dev
