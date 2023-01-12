@@ -1,0 +1,13 @@
+version: "3"
+services:
+  web:
+    build: .
+    ports: 
+      - "4200:4200"
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t
+    volumes:
+      - ./:/app
+      - /app/pep/node_modules
+    environment:
+      CHOKIDAR_USEPOLLING: true
