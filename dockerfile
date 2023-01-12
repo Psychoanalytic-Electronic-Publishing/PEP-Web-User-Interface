@@ -1,5 +1,5 @@
 # pull official base image
-FROM --platform=linux/amd64 node:12.22.0-alpine
+FROM node:12.22.0-alpine
 
 # set working directory
 WORKDIR /app/pep
