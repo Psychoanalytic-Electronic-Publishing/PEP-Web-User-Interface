@@ -20,5 +20,5 @@ variable "stack_name" {
 }
 
 locals {
-  assets_domain = "assets-stage.${var.domain_name}"
+  assets_domain = "stage-assets.${var.domain_name}"
 }
