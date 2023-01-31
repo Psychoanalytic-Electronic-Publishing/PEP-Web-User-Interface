@@ -5,7 +5,17 @@ variable "aws_region" {
 
 variable "domain_name" {
   description = "Domain name"
+  default     = "stage.pep-web.org"
+}
+
+variable "root_domain_name" {
+  description = "Root domain name"
   default     = "pep-web.org"
+}
+
+variable "assets_domain" {
+  description = "Domain mapped to assets bucket"
+  default     = "stage-assets.pep-web.org"
 }
 
 variable "env" {
@@ -17,8 +27,4 @@ variable "env" {
 variable "stack_name" {
   description = "Root name for the stack"
   default     = "pep-web"
-}
-
-locals {
-  assets_domain = "stage-assets.${var.domain_name}"
 }

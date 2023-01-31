@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "pep_web" {
-  bucket = local.assets_domain
+  bucket = var.assets_domain
   tags = {
     stage = var.env
     stack = var.stack_name
