@@ -15,8 +15,8 @@ module "fastboot_lambda" {
   }
 }
 
-resource "aws_lambda_permission" "allow_api_2" {
-  statement_id  = "${var.stack_name}-allow-api-${var.env}-temp"
+resource "aws_lambda_permission" "allow_api" {
+  statement_id  = "${var.stack_name}-allow-api-${var.env}"
   action        = "lambda:InvokeFunction"
   function_name = module.fastboot_lambda.lambda_function_name
   principal     = "apigateway.amazonaws.com"
