@@ -3,7 +3,7 @@ data "aws_lambda_function" "fastboot" {
 }
 
 resource "aws_lambda_permission" "allow_api" {
-  statement_id  = "AllowAPIgatewayInvokation"
+  statement_id  = "${var.stack_name}-allow-api}"
   action        = "lambda:InvokeFunction"
   function_name = data.aws_lambda_function.fastboot.function_name
   principal     = "apigateway.amazonaws.com"
