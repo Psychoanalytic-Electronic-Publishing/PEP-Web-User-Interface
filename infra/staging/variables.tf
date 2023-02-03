@@ -29,11 +29,6 @@ variable "stack_name" {
   default     = "pep-web"
 }
 
-variable "api_name" {
-  description = "Name of the API Gateway"
-  default     = "pep-web-api"
-}
-
 variable "api_description" {
   description = "Description of the API Gateway"
   default     = "API Gateway for PEP-Web"

@@ -1,5 +1,5 @@
 resource "aws_api_gateway_rest_api" "api_gateway" {
-  name        = var.api_name
+  name        = "${var.stack_name}-${var.env}-api"
   description = var.api_description
   tags = {
     stage = var.env

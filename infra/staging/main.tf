@@ -39,7 +39,6 @@ module "web_server" {
   env              = var.env
   domain_name      = var.domain_name
   certificate_arn  = module.certificate.arn
-  api_name         = var.api_name
   api_description  = var.api_description
   root_domain_name = var.root_domain_name
 }
