@@ -31,5 +31,11 @@ variable "stack_name" {
 
 variable "api_description" {
   description = "Description of the API Gateway"
-  default     = "API Gateway for PEP-Web"
+  default     = "API Gateway for PEP-Web staging"
+}
+
+variable "certificate_arn" {
+  description = "ARN of the certificate as output by infra/certificate"
+  type        = string
+  default     = "arn:aws:acm:us-east-1:547758924192:certificate/0ef7fa01-6a14-4342-a5cd-a3a55719b160"
 }

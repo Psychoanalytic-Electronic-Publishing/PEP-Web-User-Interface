@@ -17,20 +17,13 @@ provider "aws" {
   region = var.aws_region
 }
 
-module "certificate" {
-  source           = "../modules/certificate"
-  stack_name       = var.stack_name
-  env              = var.env
-  root_domain_name = var.root_domain_name
-}
-
 module "assets" {
   source           = "../modules/assets"
   stack_name       = var.stack_name
   env              = var.env
   assets_domain    = var.assets_domain
   root_domain_name = var.root_domain_name
-  certificate_arn  = module.certificate.arn
+  certificate_arn  = var.certificate_arn
 }
 
 module "web_server" {
@@ -38,7 +31,7 @@ module "web_server" {
   stack_name       = var.stack_name
   env              = var.env
   domain_name      = var.domain_name
-  certificate_arn  = module.certificate.arn
+  certificate_arn  = var.certificate_arn
   api_description  = var.api_description
   root_domain_name = var.root_domain_name
 }
