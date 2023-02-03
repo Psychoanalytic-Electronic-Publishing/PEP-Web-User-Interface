@@ -17,6 +17,12 @@ provider "aws" {
   region = var.aws_region
 }
 
+module "certificate" {
+  source           = "./modules/certificate"
+  stack_name       = var.stack_name
+  env              = var.env
+  root_domain_name = var.root_domain_name
+}
 
 module "assets" {
   source           = "./modules/assets"
@@ -24,7 +30,7 @@ module "assets" {
   env              = var.env
   assets_domain    = var.assets_domain
   root_domain_name = var.root_domain_name
-  certificate_arn  = aws_acm_certificate_validation.validation.certificate_arn
+  certificate_arn  = module.certificate.arn
 }
 
 module "web_server" {
@@ -32,7 +38,7 @@ module "web_server" {
   stack_name       = var.stack_name
   env              = var.env
   domain_name      = var.domain_name
-  certificate_arn  = aws_acm_certificate_validation.validation.certificate_arn
+  certificate_arn  = module.certificate.arn
   api_name         = var.api_name
   api_description  = var.api_description
   root_domain_name = var.root_domain_name
