@@ -1,13 +1,9 @@
-locals {
-  s3_origin_id = var.assets_domain
-}
-
 resource "aws_cloudfront_distribution" "s3_distribution" {
   comment = "S3 Distribution for ${var.assets_domain}"
 
   origin {
     domain_name = aws_s3_bucket.pep_web.bucket_regional_domain_name
-    origin_id   = local.s3_origin_id
+    origin_id   = var.assets_domain
   }
 
   enabled         = true
@@ -20,7 +16,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   default_cache_behavior {
     allowed_methods  = ["GET", "HEAD", "OPTIONS"]
     cached_methods   = ["GET", "HEAD", "OPTIONS"]
-    target_origin_id = local.s3_origin_id
+    target_origin_id = var.assets_domain
 
     compress = true
 
@@ -58,7 +54,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   }
 
   viewer_certificate {
-    acm_certificate_arn      = aws_acm_certificate_validation.validation.certificate_arn
+    acm_certificate_arn      = var.certificate_arn
     ssl_support_method       = "sni-only"
     minimum_protocol_version = "TLSv1.2_2019"
   }
