@@ -18,14 +18,14 @@ provider "aws" {
 }
 
 module "certificate" {
-  source           = "./modules/certificate"
+  source           = "../modules/certificate"
   stack_name       = var.stack_name
   env              = var.env
   root_domain_name = var.root_domain_name
 }
 
 module "assets" {
-  source           = "./modules/assets"
+  source           = "../modules/assets"
   stack_name       = var.stack_name
   env              = var.env
   assets_domain    = var.assets_domain
@@ -34,7 +34,7 @@ module "assets" {
 }
 
 module "web_server" {
-  source           = "./modules/web-server"
+  source           = "../modules/web-server"
   stack_name       = var.stack_name
   env              = var.env
   domain_name      = var.domain_name
