@@ -1,3 +1,9 @@
+data "aws_route53_zone" "pep_web" {
+  name         = var.root_domain_name
+  private_zone = false
+}
+
+
 resource "aws_acm_certificate" "cert" {
   domain_name               = "*.${var.root_domain_name}"
   subject_alternative_names = ["www.${var.root_domain_name}", var.root_domain_name]

@@ -3,6 +3,11 @@ variable "assets_domain" {
   default     = "stage-assets.pep-web.org"
 }
 
+variable "root_domain_name" {
+  description = "Root domain name"
+  default     = "pep-web.org"
+}
+
 variable "env" {
   description = "Environment name"
   type        = string
