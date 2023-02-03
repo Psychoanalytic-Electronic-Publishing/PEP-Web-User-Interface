@@ -3,6 +3,8 @@ locals {
 }
 
 resource "aws_cloudfront_distribution" "s3_distribution" {
+  comment = "S3 Distribution for ${var.assets_domain}"
+
   origin {
     domain_name = aws_s3_bucket.pep_web.bucket_regional_domain_name
     origin_id   = local.s3_origin_id
