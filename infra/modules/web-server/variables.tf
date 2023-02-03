@@ -23,7 +23,6 @@ variable "root_domain_name" {
   type        = string
 }
 
-variable "api_description" {
-  description = "Description of the API Gateway"
-  type        = string
+locals {
+  api_description = "API Gateway for ${var.stack_name} ${var.env}"
 }
