@@ -25,3 +25,11 @@ module "assets" {
   assets_domain   = var.assets_domain
   certificate_arn = aws_acm_certificate_validation.validation.certificate_arn
 }
+
+module "web_server" {
+  source          = "./modules/web-server"
+  stack_name      = var.stack_name
+  env             = var.env
+  domain_name     = var.domain_name
+  certificate_arn = aws_acm_certificate_validation.validation.certificate_arn
+}
