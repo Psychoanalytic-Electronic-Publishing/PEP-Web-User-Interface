@@ -1,12 +1,11 @@
 variable "env" {
   description = "Environment name"
   type        = string
-  default     = "staging"
 }
 
 variable "stack_name" {
   description = "Root name for the stack"
-  default     = "pep-web"
+  type        = string
 }
 
 variable "certificate_arn" {
@@ -16,20 +15,20 @@ variable "certificate_arn" {
 
 variable "api_name" {
   description = "Name of the API Gateway"
-  default     = "pep-web-api"
+  type        = string
 }
 
 variable "domain_name" {
   description = "Domain name"
-  default     = "stage.pep-web.org"
+  type        = string
 }
 
 variable "root_domain_name" {
   description = "Root domain name"
-  default     = "pep-web.org"
+  type        = string
 }
 
 variable "api_description" {
   description = "Description of the API Gateway"
-  default     = "API Gateway for PEP-Web"
+  type        = string
 }

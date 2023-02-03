@@ -1,22 +1,21 @@
 variable "assets_domain" {
   description = "Domain mapped to assets bucket"
-  default     = "stage-assets.pep-web.org"
+  type        = string
 }
 
 variable "root_domain_name" {
   description = "Root domain name"
-  default     = "pep-web.org"
+  type        = string
 }
 
 variable "env" {
   description = "Environment name"
   type        = string
-  default     = "staging"
 }
 
 variable "stack_name" {
   description = "Root name for the stack"
-  default     = "pep-web"
+  type        = string
 }
 
 variable "certificate_arn" {

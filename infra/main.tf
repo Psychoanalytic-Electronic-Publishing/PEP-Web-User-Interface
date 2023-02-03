@@ -19,17 +19,21 @@ provider "aws" {
 
 
 module "assets" {
-  source          = "./modules/assets"
-  stack_name      = var.stack_name
-  env             = var.env
-  assets_domain   = var.assets_domain
-  certificate_arn = aws_acm_certificate_validation.validation.certificate_arn
+  source           = "./modules/assets"
+  stack_name       = var.stack_name
+  env              = var.env
+  assets_domain    = var.assets_domain
+  root_domain_name = var.root_domain_name
+  certificate_arn  = aws_acm_certificate_validation.validation.certificate_arn
 }
 
 module "web_server" {
-  source          = "./modules/web-server"
-  stack_name      = var.stack_name
-  env             = var.env
-  domain_name     = var.domain_name
-  certificate_arn = aws_acm_certificate_validation.validation.certificate_arn
+  source           = "./modules/web-server"
+  stack_name       = var.stack_name
+  env              = var.env
+  domain_name      = var.domain_name
+  certificate_arn  = aws_acm_certificate_validation.validation.certificate_arn
+  api_name         = var.api_name
+  api_description  = var.api_description
+  root_domain_name = var.root_domain_name
 }
