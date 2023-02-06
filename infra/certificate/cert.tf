@@ -25,7 +25,7 @@ resource "aws_route53_record" "acm_cert" {
 
   name    = each.value.name
   records = [each.value.record]
-  ttl     = 300
+  ttl     = 60
   type    = each.value.type
   zone_id = data.aws_route53_zone.pep_web.zone_id
 }
