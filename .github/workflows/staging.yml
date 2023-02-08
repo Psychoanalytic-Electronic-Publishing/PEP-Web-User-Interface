@@ -12,7 +12,10 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    working-directory: pep
+    defaults:
+      run:
+        shell: bash
+        working-directory: pep
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
