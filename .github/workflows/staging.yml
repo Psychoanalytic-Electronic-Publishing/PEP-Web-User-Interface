@@ -29,6 +29,7 @@ jobs:
       - name: Run Tests
         run: yarn test:ember
   infrastructure:
+    needs: build
     uses: jordanallen-dev/reusable-terraform-workflow/.github/workflows/terraform.yml@main
     with:
       module-path: infra/staging
