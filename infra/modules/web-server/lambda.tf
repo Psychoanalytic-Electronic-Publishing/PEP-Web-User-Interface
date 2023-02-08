@@ -1,8 +1,17 @@
 module "fastboot_lambda" {
   source = "terraform-aws-modules/lambda/aws"
 
-  function_name          = "${var.stack_name}-handler-${var.env}"
-  source_path            = "../../pep/node"
+  function_name = "${var.stack_name}-handler-${var.env}"
+  source_path = [{
+    path = "../../pep/node"
+    commands = [
+      "yarn install",
+      "mv builds/dist/dist.zip .",
+      "unzip dist.zip",
+      "rm dist.zip",
+      ":zip"
+    ],
+  }]
   handler                = "lambda.handler"
   runtime                = "nodejs16.x"
   timeout                = 29

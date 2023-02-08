@@ -26,8 +26,16 @@ jobs:
           npm config set '@fortawesome:registry=https://npm.fontawesome.com/'
           npm config set '//npm.fontawesome.com/:_authToken' "${{ secrets.FONTAWESOME_NPM_AUTH_TOKEN }}"
           yarn install --frozen-lockfile
-      - name: Run Tests
-        run: yarn test:ember
+      - name: Build Deployment Package
+        run: DEPLOY_TYPE=staging-live ember build --environment=production --output-path=dist
+      - name: Zip Deployment Package
+        run: zip -rq dist.zip dist
+      - name: Upload Deployment Package
+        uses: actions/upload-artifact@v3
+        with:
+          name: deployment-package
+          path: dist.zip
+          retention-days: 5
   infrastructure:
     needs: build
     uses: jordanallen-dev/reusable-terraform-workflow/.github/workflows/terraform.yml@main
