@@ -23,6 +23,7 @@ jobs:
           node-version: "14"
       - name: Install Dependencies
         run: |
+          npm install -g ember-cli
           npm config set '@fortawesome:registry=https://npm.fontawesome.com/'
           npm config set '//npm.fontawesome.com/:_authToken' "${{ secrets.FONTAWESOME_NPM_AUTH_TOKEN }}"
           yarn install --frozen-lockfile
