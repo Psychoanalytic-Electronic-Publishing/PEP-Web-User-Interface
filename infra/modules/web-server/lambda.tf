@@ -12,6 +12,8 @@ resource "null_resource" "ember_build" {
   provisioner "local-exec" {
     working_dir = "../../pep"
     command     = <<-EOT
+      npm config set '@fortawesome:registry=https://npm.fontawesome.com/'
+      npm config set '//npm.fontawesome.com/:_authToken' "${var.font_awesome_token}"
       yarn install --frozen-lockfile
       npm install -g ember-cli
       DEPLOY_TYPE=staging-live ember build --environment=production --output-path=dist
