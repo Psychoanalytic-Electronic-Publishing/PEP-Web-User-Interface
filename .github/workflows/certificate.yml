@@ -13,6 +13,14 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  install-ember:
+    runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v2
+        - uses: actions/setup-node@v2
+          with:
+            node-version: "14"
+        - run: npm install -g ember-cli
   infrastructure:
     uses: jordanallen-dev/reusable-terraform-workflow/.github/workflows/terraform.yml@main
     with:
