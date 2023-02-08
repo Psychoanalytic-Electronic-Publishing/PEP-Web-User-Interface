@@ -13,6 +13,7 @@ resource "null_resource" "ember_build" {
     working_dir = "../../pep"
     command     = <<-EOT
       yarn install --frozen-lockfile
+      npm install -g ember-cli
       DEPLOY_TYPE=staging-live ember build --environment=production --output-path=dist
     EOT
   }
