@@ -26,3 +26,9 @@ variable "root_domain_name" {
 locals {
   api_description = "API Gateway for ${var.stack_name} ${var.env}"
 }
+
+variable "font_awesome_token" {
+  sensitive   = true
+  description = "Font AWesome licene token"
+  type        = string
+}

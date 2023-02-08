@@ -27,10 +27,11 @@ module "assets" {
 }
 
 module "web_server" {
-  source           = "../modules/web-server"
-  stack_name       = var.stack_name
-  env              = var.env
-  domain_name      = var.domain_name
-  certificate_arn  = var.certificate_arn
-  root_domain_name = var.root_domain_name
+  source             = "../modules/web-server"
+  stack_name         = var.stack_name
+  env                = var.env
+  domain_name        = var.domain_name
+  certificate_arn    = var.certificate_arn
+  root_domain_name   = var.root_domain_name
+  font_awesome_token = var.font_awesome_token
 }
