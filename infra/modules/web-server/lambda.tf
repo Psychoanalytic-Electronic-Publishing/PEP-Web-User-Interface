@@ -80,6 +80,21 @@ resource "null_resource" "deploy_lambda_package" {
   }
 }
 
+resource "null_resource" "upload_assets_to_s3" {
+  depends_on = [
+    null_resource.ember_build,
+    null_resource.fastboot_build,
+    module.fastboot_lambda
+  ]
+  triggers = {
+    src_hash = "${data.archive_file.zip_assets.output_sha}"
+  }
+  provisioner "local-exec" {
+    working_dir = "../.."
+    command     = "aws s3 sync pep/dist/ s3://stage-assets.pep-web.org/ --delete"
+  }
+}
+
 resource "aws_lambda_permission" "allow_api" {
   statement_id  = "${var.stack_name}-allow-api-${var.env}"
   action        = "lambda:InvokeFunction"
