@@ -16,39 +16,29 @@ resource "null_resource" "ember_build" {
       npm config set '//npm.fontawesome.com/:_authToken' "${var.font_awesome_token}"
       yarn install --frozen-lockfile
       npm install -g ember-cli
-      DEPLOY_TYPE=staging-live ember build --environment=production --output-path=dist
+      DEPLOY_TYPE=staging ember build --environment=production --output-path=dist
     EOT
-  }
-}
-
-resource "null_resource" "create_fastboot_env" {
-  triggers = {
-    src_hash = "${data.archive_file.zip_assets.output_sha}"
-  }
-  provisioner "local-exec" {
-    command = "echo '123'"
   }
 }
 
 resource "null_resource" "fastboot_build" {
   depends_on = [
-    null_resource.create_fastboot_env,
     null_resource.ember_build
   ]
   triggers = {
     src_hash = "${data.archive_file.zip_assets.output_sha}"
   }
   provisioner "local-exec" {
-    command = <<-EOT
-      cp -r ../../pep/node/ node/
-      cd node
+    working_dir = "../.."
+    command     = <<-EOT
+      cp -r pep/node/ infra/staging/node
+      cp -r pep/dist/ infra/staging/node/dist
+      cp .env-staging infra/staging/node/.env
+      cd infra/staging/node
       yarn install --frozen-lockfile
-      cd ..
-      cp -r ../../pep/dist/ node/dist
-      cd node
       zip -r package.zip *
-      mv package.zip ../node.zip
       cd ..
+      mv node/package.zip package.zip
       rm -rf node
     EOT
   }
@@ -57,13 +47,12 @@ resource "null_resource" "fastboot_build" {
 module "fastboot_lambda" {
   depends_on = [
     null_resource.ember_build,
-    null_resource.create_fastboot_env,
     null_resource.fastboot_build
   ]
   source                  = "terraform-aws-modules/lambda/aws"
   function_name           = "${var.stack_name}-handler-${var.env}"
   create_package          = false
-  local_existing_package  = "node.zip"
+  local_existing_package  = "package.zip"
   ignore_source_code_hash = true
   handler                 = "lambda.handler"
   runtime                 = "nodejs16.x"
@@ -80,7 +69,6 @@ module "fastboot_lambda" {
 resource "null_resource" "deploy_lambda_package" {
   depends_on = [
     null_resource.ember_build,
-    null_resource.create_fastboot_env,
     null_resource.fastboot_build,
     module.fastboot_lambda
   ]
@@ -88,7 +76,7 @@ resource "null_resource" "deploy_lambda_package" {
     src_hash = "${data.archive_file.zip_assets.output_sha}"
   }
   provisioner "local-exec" {
-    command = " aws lambda update-function-code --function-name ${module.fastboot_lambda.lambda_function_name} --zip-file fileb://node.zip"
+    command = "aws lambda update-function-code --function-name ${module.fastboot_lambda.lambda_function_name} --zip-file fileb://package.zip"
   }
 }
 
