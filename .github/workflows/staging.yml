@@ -15,7 +15,7 @@ jobs:
     with:
       module-path: infra/staging
       apply-environment: staging
-      node-version: 14
+      node-version: 14.17.3
     secrets:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
