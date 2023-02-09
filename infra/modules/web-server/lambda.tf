@@ -91,7 +91,7 @@ resource "null_resource" "upload_assets_to_s3" {
   }
   provisioner "local-exec" {
     working_dir = "../.."
-    command     = "aws s3 sync pep/dist/ s3://stage-assets.pep-web.org/ --delete"
+    command     = "aws s3 sync pep/dist/ s3://stage-assets.pep-web.org/ --delete --acl public-read"
   }
 }
 
