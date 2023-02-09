@@ -4,7 +4,7 @@
 
 const path = require('path');
 
-module.exports = function(env) {
+module.exports = function (env) {
     return {
         clientAllowedKeys: [
             'BUILD_VERSION',
