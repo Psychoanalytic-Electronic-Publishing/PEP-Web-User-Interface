@@ -6,7 +6,7 @@ const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '.env') });
 
 //path to the built production ember application distribution folder
-const emberDistPath = path.join(__dirname, '../dist');
+const emberDistPath = path.join(__dirname, 'dist');
 
 //@see https://github.com/awslabs/aws-serverless-express
 const awsServerlessExpress = require('aws-serverless-express');

@@ -1,0 +1,20 @@
+{
+    "name": "pep-web-fastboot",
+    "version": "0.0.0",
+    "private": true,
+    "license": "UNLICENSED",
+    "dependencies": {
+        "abortcontroller-polyfill": "^1.4.0",
+        "aws-serverless-express": "^3.3.6",
+        "dotenv": "^8.2.0",
+        "express": "^4.17.1",
+        "fastboot-express-middleware": "^3.0.0",
+        "node-fetch": "^2.6.7",
+        "simple-dom": "^1.4.0",
+        "sinon": "^14.0.2"
+    },
+    "fastbootDependencies": [
+        "node-fetch",
+        "moment"
+    ]
+}
