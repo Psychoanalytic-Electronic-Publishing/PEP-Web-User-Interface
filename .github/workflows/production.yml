@@ -1,0 +1,22 @@
+name: Plan and deploy PEP-Web to staging
+
+on:
+  pull_request:
+    branches:
+      - master
+
+concurrency:
+  group: ${{ github.ref }}-deploy
+  cancel-in-progress: true
+
+jobs:
+  infrastructure:
+    uses: jordanallen-dev/reusable-terraform-workflow/.github/workflows/terraform.yml@main
+    with:
+      module-path: infra/production
+      apply-environment: production
+      node-version: 14.17.3
+    secrets:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      ENV_VARS: TF_VAR_font_awesome_token=${{ secrets.FONTAWESOME_NPM_AUTH_TOKEN}}
