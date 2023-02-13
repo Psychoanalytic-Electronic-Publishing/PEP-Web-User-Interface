@@ -1,4 +1,4 @@
-name: Plan and deploy PEP-Web to staging
+name: Plan and deploy PEP-Web to production
 
 on:
   push:
