@@ -34,4 +34,5 @@ module "web_server" {
   certificate_arn    = var.certificate_arn
   root_domain_name   = var.root_domain_name
   font_awesome_token = var.font_awesome_token
+  assets_domain      = var.assets_domain
 }

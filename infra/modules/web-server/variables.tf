@@ -32,3 +32,8 @@ variable "font_awesome_token" {
   description = "Font AWesome licene token"
   type        = string
 }
+
+variable "assets_domain" {
+  description = "Domain mapped to assets bucket"
+  type        = string
+}
