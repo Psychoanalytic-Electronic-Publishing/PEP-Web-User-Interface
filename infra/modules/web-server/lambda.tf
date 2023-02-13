@@ -16,7 +16,7 @@ resource "null_resource" "ember_build" {
       npm config set '//npm.fontawesome.com/:_authToken' "${var.font_awesome_token}"
       yarn install --frozen-lockfile
       npm install -g ember-cli
-      DEPLOY_TYPE=staging ember build --environment=production --output-path=dist
+      DEPLOY_TYPE=${var.env} ember build --environment=production --output-path=dist
     EOT
   }
 }
@@ -31,10 +31,10 @@ resource "null_resource" "fastboot_build" {
   provisioner "local-exec" {
     working_dir = "../.."
     command     = <<-EOT
-      cp -r pep/node/ infra/staging/node
-      cp -r pep/dist/ infra/staging/node/dist
-      cp .env-staging infra/staging/node/.env
-      cd infra/staging/node
+      cp -r pep/node/ infra/${var.env}/node
+      cp -r pep/dist/ infra/${var.env}/node/dist
+      cp .env-${var.env} infra/${var.env}/node/.env
+      cd infra/${var.env}/node
       yarn install --frozen-lockfile
       zip -r package.zip *
       cd ..
