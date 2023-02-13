@@ -34,3 +34,9 @@ variable "certificate_arn" {
   type        = string
   default     = "arn:aws:acm:us-east-1:547758924192:certificate/0ef7fa01-6a14-4342-a5cd-a3a55719b160"
 }
+
+variable "font_awesome_token" {
+  sensitive   = true
+  description = "Font AWesome licene token"
+  type        = string
+}
