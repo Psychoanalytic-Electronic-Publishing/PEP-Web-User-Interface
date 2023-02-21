@@ -36,7 +36,7 @@ resource "null_resource" "fastboot_build" {
       cp .env-${var.env} infra/${var.env}/node/.env
       cd infra/${var.env}/node
       yarn install --frozen-lockfile
-      zip -r package.zip *
+      zip -r package.zip .
       cd ..
       mv node/package.zip package.zip
       rm -rf node
