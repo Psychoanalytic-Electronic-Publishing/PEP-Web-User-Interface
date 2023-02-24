@@ -292,9 +292,11 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
             }
         } else if (type === DocumentLinkTypes.BIBLIOGRAPHY_CF) {
             const id = attributes.getNamedItem('data-document-id')?.nodeValue;
-            const referenceText = target.previousElementSibling?.textContent;
+            const referenceText = target.parentElement?.firstElementChild?.textContent
+                ?.trim()
+                .replace(/(\r\n|\n|\r)/gm, '');
+
             if (id) {
-                console.log('transitioning to search', id);
                 this.router.transitionTo('search', {
                     queryParams: { q: `cf::${id}//${referenceText}//` }
                 });
