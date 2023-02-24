@@ -61,6 +61,19 @@ export default class BrowseJournalVolume extends Controller {
     queryParams = ['preview'];
 
     /**
+     * Generate an issue title
+     */
+    private generateIssueTitle(sourceVolume: SourceVolume) {
+        let issue = `Issue ${sourceVolume.issue}`;
+        if (sourceVolume.issueTitle) {
+            issue += ` - ${sourceVolume.issueTitle}`;
+        }
+        return issue;
+    }
+
+    readonly WITHOUT_ISSUES = 'withoutIssues';
+
+    /**
      * Organize the models by issue number
      *
      * @readonly
@@ -69,44 +82,31 @@ export default class BrowseJournalVolume extends Controller {
     @cached
     get sortedModels() {
         const models = this.model.reduce<Map<string, Issue>>((volumes, sourceVolume) => {
-            let issue = `Issue ${sourceVolume.issue}`;
-            if (sourceVolume.issueTitle) {
-                issue += ` - ${sourceVolume.issueTitle}`;
+            const issue = sourceVolume.issue || this.WITHOUT_ISSUES;
+
+            if (!volumes.has(issue)) {
+                volumes.set(issue, {
+                    title: issue !== this.WITHOUT_ISSUES ? this.generateIssueTitle(sourceVolume) : '',
+                    groups: new Map(),
+                    models: []
+                });
             }
-            const groupInIssue = sourceVolume.newSectionName;
-            if (sourceVolume.issue) {
-                // If we have no key for this issue yet, create it
-                if (issue && !volumes.has(issue)) {
-                    volumes.set(issue, {
-                        title: issue,
-                        groups: new Map(),
-                        models: []
-                    });
-                }
 
-                // If we have no key for this group in this issue yet, create it
-                if (groupInIssue && !volumes.get(issue)?.groups.has(groupInIssue)) {
-                    volumes.get(issue)?.groups.set(groupInIssue, {
-                        title: groupInIssue,
-                        models: []
-                    });
-                }
+            const volume = volumes.get(issue);
 
-                if (issue && groupInIssue) {
-                    volumes.get(issue)?.groups.get(groupInIssue)?.models.push(sourceVolume);
-                } else {
-                    volumes.get(issue)?.models.push(sourceVolume);
-                }
+            const sectionName = sourceVolume.newSectionName;
+
+            if (sectionName && !volume?.groups.has(sectionName)) {
+                volume?.groups.set(sectionName, {
+                    title: sectionName,
+                    models: []
+                });
+            }
+
+            if (sectionName) {
+                volume?.groups.get(sectionName)?.models.push(sourceVolume);
             } else {
-                if (volumes.has('withoutIssues')) {
-                    volumes.get('withoutIssues')?.models.push(sourceVolume);
-                } else {
-                    volumes.set('withoutIssues', {
-                        title: '',
-                        groups: new Map(),
-                        models: [sourceVolume]
-                    });
-                }
+                volume?.models.push(sourceVolume);
             }
 
             return volumes;
