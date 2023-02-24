@@ -1712,7 +1712,7 @@
                 </a>
             </xsl:if>
             <xsl:if test="@rxcf">
-                <a class="bibx pl-2" data-type="BIBX">
+                <a class="bibx pl-2" data-type="BIBX_CF">
                     <xsl:attribute name="data-document-id">
                         <xsl:value-of select="@rxcf"/>
                     </xsl:attribute>
@@ -1740,7 +1740,7 @@
                 </a>
             </xsl:if>
             <xsl:if test="@rxcf">
-                <a class="bibx pl-2" data-type="BIBX">
+                <a class="bibx pl-2" data-type="BIBX_CF">
                     <xsl:attribute name="data-document-id">
                         <xsl:value-of select="@rxcf"/>
                     </xsl:attribute>
