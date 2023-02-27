@@ -79,9 +79,41 @@ export default class BrowseJournalVolume extends Controller {
      * @readonly
      * @memberof BrowseJournalVolume
      */
-    @cached
+    // @cached
     get sortedModels() {
-        const models = this.model.reduce<Map<string, Issue>>((volumes, sourceVolume) => {
+        const sortWithRomanNumeralsFirst = (a: SourceVolume, b: SourceVolume) => {
+            const documentNumberA = a.documentID.split('.').pop();
+            const documentNumberB = b.documentID.split('.').pop();
+
+            if (!documentNumberA || !documentNumberB) {
+                return 0;
+            }
+
+            if (documentNumberA.includes('R') && !documentNumberB.includes('R')) {
+                // Roman numeral sections go first
+                return -1;
+            }
+
+            if (!documentNumberA.includes('R') && documentNumberB.includes('R')) {
+                // Roman numeral sections go first
+                return 1;
+            }
+
+            if (a.documentID < b.documentID) {
+                return -1;
+            }
+
+            if (a.documentID > b.documentID) {
+                return 1;
+            }
+
+            return 0;
+        };
+
+        const modelArray = this.model.toArray();
+        modelArray.sort(sortWithRomanNumeralsFirst);
+
+        const models = modelArray.reduce((volumes: any, sourceVolume: any) => {
             const issue = sourceVolume.issue || this.WITHOUT_ISSUES;
 
             if (!volumes.has(issue)) {
