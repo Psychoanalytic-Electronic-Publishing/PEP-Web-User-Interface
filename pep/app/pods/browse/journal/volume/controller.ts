@@ -79,7 +79,7 @@ export default class BrowseJournalVolume extends Controller {
      * @readonly
      * @memberof BrowseJournalVolume
      */
-    // @cached
+    @cached
     get sortedModels() {
         const sortWithRomanNumeralsFirst = (a: SourceVolume, b: SourceVolume) => {
             const documentNumberA = a.documentID.split('.').pop();
