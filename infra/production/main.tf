@@ -35,4 +35,5 @@ module "web_server" {
   root_domain_name   = var.root_domain_name
   font_awesome_token = var.font_awesome_token
   assets_domain      = var.assets_domain
+  build_version      = var.build_version
 }
