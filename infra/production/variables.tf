@@ -40,3 +40,8 @@ variable "font_awesome_token" {
   description = "Font AWesome licene token"
   type        = string
 }
+
+variable "build_version" {
+  description = "Build number"
+  type        = string
+}
