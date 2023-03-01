@@ -37,3 +37,8 @@ variable "assets_domain" {
   description = "Domain mapped to assets bucket"
   type        = string
 }
+
+variable "build_version" {
+  description = "Build number"
+  type        = string
+}
