@@ -31,7 +31,7 @@ resource "null_resource" "fastboot_build" {
   provisioner "local-exec" {
     working_dir = "../.."
     command     = <<-EOT
-      echo "BUILD_VERSION=${var.build_version}" >> .env-${var.env}
+      sed -i "s>BUILD_VERSION=>BUILD_VERSION=${var.build_version}>" .env-${var.env}
       cp -r pep/node/ infra/${var.env}/node
       cp -r pep/dist/ infra/${var.env}/node/dist
       cp .env-${var.env} infra/${var.env}/node/.env
