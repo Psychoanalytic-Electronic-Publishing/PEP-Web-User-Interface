@@ -31,11 +31,11 @@ resource "null_resource" "fastboot_build" {
   provisioner "local-exec" {
     working_dir = "../.."
     command     = <<-EOT
+      echo "BUILD_VERSION=${var.build_version}" >> .env-${var.env}
       cp -r pep/node/ infra/${var.env}/node
       cp -r pep/dist/ infra/${var.env}/node/dist
       cp .env-${var.env} infra/${var.env}/node/.env
       cd infra/${var.env}/node
-      echo "BUILD_VERSION=${var.build_version}" >> .env
       yarn install --frozen-lockfile
       zip -r package.zip .
       cd ..
