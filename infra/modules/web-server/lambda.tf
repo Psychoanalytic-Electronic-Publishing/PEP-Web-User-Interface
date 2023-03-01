@@ -12,6 +12,7 @@ resource "null_resource" "ember_build" {
   provisioner "local-exec" {
     working_dir = "../../pep"
     command     = <<-EOT
+      sed -i "s>BUILD_VERSION=>BUILD_VERSION=${var.build_version}>" .env-${var.env}
       npm config set '@fortawesome:registry=https://npm.fontawesome.com/'
       npm config set '//npm.fontawesome.com/:_authToken' "${var.font_awesome_token}"
       yarn install --frozen-lockfile
@@ -31,7 +32,6 @@ resource "null_resource" "fastboot_build" {
   provisioner "local-exec" {
     working_dir = "../.."
     command     = <<-EOT
-      sed -i "s>BUILD_VERSION=>BUILD_VERSION=${var.build_version}>" .env-${var.env}
       cp -r pep/node/ infra/${var.env}/node
       cp -r pep/dist/ infra/${var.env}/node/dist
       cp .env-${var.env} infra/${var.env}/node/.env
