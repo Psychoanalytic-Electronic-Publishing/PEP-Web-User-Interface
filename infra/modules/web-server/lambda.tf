@@ -35,6 +35,7 @@ resource "null_resource" "fastboot_build" {
       cp -r pep/dist/ infra/${var.env}/node/dist
       cp .env-${var.env} infra/${var.env}/node/.env
       cd infra/${var.env}/node
+      echo "BUILD_VERSION=${var.build_version}" >> .env
       yarn install --frozen-lockfile
       zip -r package.zip .
       cd ..
