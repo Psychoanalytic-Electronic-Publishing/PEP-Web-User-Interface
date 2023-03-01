@@ -61,6 +61,19 @@ export default class BrowseJournalVolume extends Controller {
     queryParams = ['preview'];
 
     /**
+     * Generate an issue title
+     */
+    private generateIssueTitle(sourceVolume: SourceVolume) {
+        let issue = `Issue ${sourceVolume.issue}`;
+        if (sourceVolume.issueTitle) {
+            issue += ` - ${sourceVolume.issueTitle}`;
+        }
+        return issue;
+    }
+
+    readonly WITHOUT_ISSUES = 'withoutIssues';
+
+    /**
      * Organize the models by issue number
      *
      * @readonly
@@ -68,45 +81,64 @@ export default class BrowseJournalVolume extends Controller {
      */
     @cached
     get sortedModels() {
-        const models = this.model.reduce<Map<string, Issue>>((volumes, sourceVolume) => {
-            let issue = `Issue ${sourceVolume.issue}`;
-            if (sourceVolume.issueTitle) {
-                issue += ` - ${sourceVolume.issueTitle}`;
+        const sortWithRomanNumeralsFirst = (a: SourceVolume, b: SourceVolume) => {
+            const documentNumberA = a.documentID.split('.').pop();
+            const documentNumberB = b.documentID.split('.').pop();
+
+            if (!documentNumberA || !documentNumberB) {
+                return 0;
             }
-            const groupInIssue = sourceVolume.newSectionName;
-            if (sourceVolume.issue) {
-                // If we have no key for this issue yet, create it
-                if (issue && !volumes.has(issue)) {
-                    volumes.set(issue, {
-                        title: issue,
-                        groups: new Map(),
-                        models: []
-                    });
-                }
 
-                // If we have no key for this group in this issue yet, create it
-                if (groupInIssue && !volumes.get(issue)?.groups.has(groupInIssue)) {
-                    volumes.get(issue)?.groups.set(groupInIssue, {
-                        title: groupInIssue,
-                        models: []
-                    });
-                }
+            if (documentNumberA.includes('R') && !documentNumberB.includes('R')) {
+                // Roman numeral sections go first
+                return -1;
+            }
 
-                if (issue && groupInIssue) {
-                    volumes.get(issue)?.groups.get(groupInIssue)?.models.push(sourceVolume);
-                } else {
-                    volumes.get(issue)?.models.push(sourceVolume);
-                }
+            if (!documentNumberA.includes('R') && documentNumberB.includes('R')) {
+                // Roman numeral sections go first
+                return 1;
+            }
+
+            if (a.documentID < b.documentID) {
+                return -1;
+            }
+
+            if (a.documentID > b.documentID) {
+                return 1;
+            }
+
+            return 0;
+        };
+
+        const modelArray = this.model.toArray();
+        modelArray.sort(sortWithRomanNumeralsFirst);
+
+        const models = modelArray.reduce((volumes: any, sourceVolume: any) => {
+            const issue = sourceVolume.issue || this.WITHOUT_ISSUES;
+
+            if (!volumes.has(issue)) {
+                volumes.set(issue, {
+                    title: issue !== this.WITHOUT_ISSUES ? this.generateIssueTitle(sourceVolume) : '',
+                    groups: new Map(),
+                    models: []
+                });
+            }
+
+            const volume = volumes.get(issue);
+
+            const sectionName = sourceVolume.newSectionName;
+
+            if (sectionName && !volume?.groups.has(sectionName)) {
+                volume?.groups.set(sectionName, {
+                    title: sectionName,
+                    models: []
+                });
+            }
+
+            if (sectionName) {
+                volume?.groups.get(sectionName)?.models.push(sourceVolume);
             } else {
-                if (volumes.has('withoutIssues')) {
-                    volumes.get('withoutIssues')?.models.push(sourceVolume);
-                } else {
-                    volumes.set('withoutIssues', {
-                        title: '',
-                        groups: new Map(),
-                        models: [sourceVolume]
-                    });
-                }
+                volume?.models.push(sourceVolume);
             }
 
             return volumes;
