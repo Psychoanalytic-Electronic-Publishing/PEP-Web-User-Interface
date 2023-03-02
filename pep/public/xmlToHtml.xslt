@@ -1713,6 +1713,9 @@
             </xsl:if>
             <xsl:if test="@rxcf">
                 <a class="bibx pl-2" data-type="BIBX_CF">
+                    <xsl:attribute name="href">
+                        /search?q=<xsl:value-of select="@rxcf"/><xsl:apply-templates/>
+                    </xsl:attribute>
                     <xsl:attribute name="data-document-id">
                         <xsl:value-of select="@rxcf"/>
                     </xsl:attribute>
@@ -1741,6 +1744,9 @@
             </xsl:if>
             <xsl:if test="@rxcf">
                 <a class="bibx pl-2" data-type="BIBX_CF">
+                  <xsl:attribute name="href">
+                        /search?q=cf::<xsl:value-of select="@rxcf"/>//<xsl:value-of select='normalize-space()'/>//
+                    </xsl:attribute>
                     <xsl:attribute name="data-document-id">
                         <xsl:value-of select="@rxcf"/>
                     </xsl:attribute>
