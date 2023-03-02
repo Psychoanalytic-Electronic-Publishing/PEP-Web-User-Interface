@@ -436,13 +436,13 @@
     </xsl:template>
 
 
-    <xsl:template match="url" mode="metadata">
-        <xsl:call-template name="metadata-labeled-entry">
-            <xsl:with-param name="label">URL</xsl:with-param>
-            <xsl:with-param name="contents">
-                <xsl:apply-templates select="."/>
-            </xsl:with-param>
-        </xsl:call-template>
+    <xsl:template match="url">
+        <a class="webx" data-type="web-link" target="_blank" href="{@url}">
+            <xsl:attribute name="href">
+                    <xsl:value-of select="."/>
+            </xsl:attribute>
+            <xsl:value-of select="."/>
+        </a>
     </xsl:template>
 
     <xsl:template match="grp" mode="metadata">
