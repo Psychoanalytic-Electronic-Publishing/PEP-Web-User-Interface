@@ -42,7 +42,11 @@ export default class BrowseJournalVolume extends Route {
         controller.journal = journal;
         controller.sourcecode = journalParams.pep_code;
         controller.meta = model.meta;
-        controller.volumeInformation = volumes.findBy('id', routeParams.volume_number);
+
+        const volumeId = routeParams.volume_number.replace(/[^0-9]/, '');
+        controller.volumeInformation = volumes.findBy('id', volumeId);
+
+        console.log('controller.volumeInformation', controller.volumeInformation);
 
         this.sidebar.update({
             [WIDGET.PUBLISHER_INFO]: journalParams.pep_code
