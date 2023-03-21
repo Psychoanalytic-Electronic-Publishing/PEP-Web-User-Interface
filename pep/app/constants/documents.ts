@@ -14,6 +14,7 @@ export const DOCUMENT_EPUB_BASE_URL = `${ENV.apiBaseUrl}/${ENV.apiNamespace}/Doc
 export enum DocumentLinkTypes {
     GLOSSARY_TERM = 'TERM2',
     BIBLIOGRAPHY = 'BIBX',
+    BIBLIOGRAPHY_CF = 'BIBX_CF',
     DOCUMENT = 'document-link',
     PAGE = 'pagelink',
     FIGURE = 'figure',

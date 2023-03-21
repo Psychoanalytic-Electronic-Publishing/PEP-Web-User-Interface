@@ -805,7 +805,7 @@
                 "author": "Click on the author name to view other articles by this author",
                 "journalBanner": "Click on the journal banner to see other volumes for this source"
             },
-            "relatedBibliography": "<p>This specific reference was not found to match any articles on PEP. However, using artificial intelligence, our software has found a reference which appears related, or may in some cases be a republication of the same article.</p> '<p class=\"text-muted small mt-2\">'Disclaimer: This link is provided with the intent of possibly providing a relevant match where none would otherwise be provided. As it is by nature imprecise, and we are still refining the matching methods, not all references may actually be a close enough match to meet your needs'</p>'",
+            "relatedBibliography": "<p>This specific reference was not found to directly match any articles on PEP. However, using artificial intelligence, our software has found references which appear related, or may in some cases be a republication of the same article.</p> '<p class=\"text-muted small mt-2\">'Disclaimer: This link is provided with the intent of possibly providing relevant matches where none would otherwise be provided. As it is by nature imprecise, and we are still refining the matching methods, not all references may actually be a close enough match to meet your needs'</p>'",
             "error": "Failed to load the document. Please contact a PEP administrator for assistance."
         }
     },

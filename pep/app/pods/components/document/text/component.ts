@@ -290,6 +290,17 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
                     queryParams: this.args.readQueryParams
                 });
             }
+        } else if (type === DocumentLinkTypes.BIBLIOGRAPHY_CF) {
+            const id = attributes.getNamedItem('data-document-id')?.nodeValue;
+            const referenceText = target.parentElement?.firstElementChild?.textContent
+                ?.trim()
+                .replace(/(\r\n|\n|\r)/gm, '');
+
+            if (id) {
+                this.router.transitionTo('search', {
+                    queryParams: { q: `cf::${id}//${referenceText}//` }
+                });
+            }
         } else if (type === DocumentLinkTypes.DOCUMENT) {
             const id = attributes.getNamedItem('data-document-id')?.nodeValue;
             if (id) {
