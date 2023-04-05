@@ -4,6 +4,8 @@ import Component from '@glimmer/component';
 import ConfigurationService from 'pep/services/configuration';
 import { BaseGlimmerSignature } from 'pep/utils/types';
 
+import xss from 'xss';
+
 interface InformationBarBarsAdminMessageArgs {
     close: () => void;
 }
@@ -13,9 +15,11 @@ export default class InformationBarBarsAdminMessage extends Component<
     @service declare configuration: ConfigurationService;
 
     get message() {
-        return this.configuration.content.global.notificationMessage
+        const m = this.configuration.content.global.notificationMessage
             ? this.configuration.content.global.notificationMessage
             : this.configuration.base.global.notificationMessage;
+
+        return xss(m || '');
     }
 }
 

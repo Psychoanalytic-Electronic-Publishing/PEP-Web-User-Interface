@@ -29,7 +29,8 @@
         "fastboot-express-middleware": "^3.0.0",
         "node-fetch": "^2.6.7",
         "simple-dom": "^1.4.0",
-        "sinon": "^14.0.2"
+        "sinon": "^14.0.2",
+        "xss": "^1.0.14"
     },
     "devDependencies": {
         "@ember/optional-features": "^1.3.0",
