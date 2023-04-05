@@ -16245,9 +16245,9 @@ tinykeys@^1.1.1:
   integrity sha512-YEA1TGMlkMabXI0NGddRFti+c1eMO2QP7wefwibSz0Pip8sA+d99yX5Pp7pK7wUeTKmrF4ys4XZVz44YydlTYg==
 
 tinymce@^5.7.0:
-  version "5.10.2"
-  resolved "https://registry.yarnpkg.com/tinymce/-/tinymce-5.10.2.tgz#cf1ff01025909be26c64348509e6de8e70d58e1d"
-  integrity sha512-5QhnZ6c8F28fYucLLc00MM37fZoAZ4g7QCYzwIl38i5TwJR5xGqzOv6YMideyLM4tytCzLCRwJoQen2LI66p5A==
+  version "5.10.7"
+  resolved "https://registry.yarnpkg.com/tinymce/-/tinymce-5.10.7.tgz#d89d446f1962f2a1df6b2b70018ce475ec7ffb80"
+  integrity sha512-9UUjaO0R7FxcFo0oxnd1lMs7H+D0Eh+dDVo5hKbVe1a+VB0nit97vOqlinj+YwgoBDt6/DSCUoWqAYlLI8BLYA==
 
 tippy.js@^6.2.7:
   version "6.2.7"
