@@ -1091,7 +1091,7 @@
 
     <xsl:template match="caption">
         <p class="figtitle caption">
-            <xsl:value-of select="."/>
+            <xsl:apply-templates />
         </p>
     </xsl:template>
 
