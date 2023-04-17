@@ -259,6 +259,14 @@ $document-paragraph-indent: 1.5rem;
             margin-top: 0px;
             margin-bottom: 3px;
         }
+        &.figtitle {
+            margin-top: 3px;
+            margin-bottom: 3px;
+            text-align: center;
+
+            font-size: 10px;
+            font-weight: bold;
+        }
     }
 
     div {

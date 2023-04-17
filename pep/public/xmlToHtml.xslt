@@ -1081,9 +1081,9 @@
     </xsl:template>
 
     <xsl:template match="caption">
-        <p class="figtitle caption">
+        <span class="figtitle caption">
             <xsl:apply-templates />
-        </p>
+        </span>
     </xsl:template>
 
     <xsl:template match="graphic">
