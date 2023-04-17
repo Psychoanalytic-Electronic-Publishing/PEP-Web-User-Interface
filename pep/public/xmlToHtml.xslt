@@ -868,18 +868,9 @@
     </xsl:template>
 
     <xsl:template match="webx">
-        <xsl:choose>
-            <xsl:when test="@type">
-                <a class="webx" data-type="{@type}" data-url="{@url}" target="_blank" href="{@url}">
-                    <xsl:value-of select="."/>
-                </a>
-            </xsl:when>
-            <xsl:otherwise>
-                <a class="webx" data-type="web-link" data-url="{@url}" target="_blank" href="{@url}">
-                    <xsl:value-of select="."/>
-                </a>
-            </xsl:otherwise>
-        </xsl:choose>
+        <a class="webx" data-type="web-link" data-url="{@url}" target="_blank" href="{@url}">
+            <xsl:value-of select="."/>
+        </a>
     </xsl:template>
 
     <xsl:template match="hdix">
@@ -1090,9 +1081,9 @@
     </xsl:template>
 
     <xsl:template match="caption">
-        <p class="figtitle caption">
-            <xsl:value-of select="."/>
-        </p>
+        <span class="figtitle caption">
+            <xsl:apply-templates />
+        </span>
     </xsl:template>
 
     <xsl:template match="graphic">
