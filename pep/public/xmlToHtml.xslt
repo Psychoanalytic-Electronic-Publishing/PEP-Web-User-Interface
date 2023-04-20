@@ -156,7 +156,16 @@
                 <!-- For padding the numbers - pick a string that is large enough that we will never need to pad that much (I think 5 characters would have been fine, but it doesn't hurt to have more) -->
                 <xsl:variable name="zero-string" select="'00000000000000000000000000000000000'" />
                 <!-- Select the next page number for the current page -->
-                <xsl:variable name="next-page-number-string" select="../following-sibling::pb/n/@nextpgnum" />
+                <xsl:variable name="next-page-number-string">
+                    <xsl:choose>
+                        <xsl:when test="../following-sibling::pb/n/@nextpgnum">
+                            <xsl:value-of select="../following-sibling::pb/n/@nextpgnum"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                           <xsl:value-of select="following-sibling::pb/n/@nextpgnum"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:variable>
                 <!-- Remove the numbers from it -ex. PR0004 becomes PR -->
                 <xsl:variable name="next-page-number-letters" select="translate($next-page-number-string, '0123456789', '')" />
                 <!-- Remove the letters from the next page string -ex. PR0004 becomes 0004 -->
