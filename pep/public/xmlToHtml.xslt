@@ -1521,6 +1521,11 @@
         </div>
     </xsl:template>
 
+    <xsl:template match="verse">
+        <br />
+        <xsl:apply-templates/>
+    </xsl:template>
+
     <xsl:template match="quote">
         <div class="quote">
             <xsl:call-template name="data-pagehelper"/>
