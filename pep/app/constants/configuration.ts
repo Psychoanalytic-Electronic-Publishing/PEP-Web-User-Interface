@@ -218,13 +218,13 @@ export const DEFAULT_BASE_CONFIGURATION: BaseConfiguration = {
             videoPreviews: [
                 {
                     aspectRatio: AspectRatio.SIXTEEN_BY_NINE,
-                    url: 'https://pep-web-video-previews.s3.amazonaws.com/peptopauthvs.001.0027a.preview.mp4'
+                    url: 'https://video.pep-web.org/peptopauthvs.001.0027a.preview.mp4'
                 }
             ],
             topicalVideoPreviews: [
                 {
                     aspectRatio: AspectRatio.SIXTEEN_BY_NINE,
-                    url: 'https://pep-web-video-previews.s3.amazonaws.com/peptopauthvs.001.0027a.preview.mp4'
+                    url: 'https://video.pep-web.org/peptopauthvs.001.0027a.preview.mp4'
                 }
             ],
             left: [
