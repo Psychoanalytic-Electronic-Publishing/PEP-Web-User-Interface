@@ -1,0 +1,24 @@
+name: Plan and deploy video infrastructure
+
+on:
+  pull_request:
+    branches:
+      - master
+  push:
+    branches:
+      - master
+
+concurrency:
+  group: ${{ github.ref }}-video
+  cancel-in-progress: true
+
+jobs:
+  infrastructure:
+    uses: jordanallen-dev/reusable-terraform-workflow/.github/workflows/terraform.yml@main
+    with:
+      module-path: infra/video
+      apply-environment: video
+      s3-cache-bucket: pep-terraform-build-cache
+    secrets:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
