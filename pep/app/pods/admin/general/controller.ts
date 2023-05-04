@@ -16,6 +16,7 @@ import Configuration from 'pep/pods/configuration/model';
 import { RouteModel } from 'pep/utils/types';
 import { CONFIGURATION_EXPERT_PICK_VALIDATIONS } from 'pep/validations/configuration/expert-pick';
 import { CONFIGURATION_VIDEO_VALIDATIONS } from 'pep/validations/configuration/video';
+import { WIDGET } from 'pep/constants/sidebar';
 
 export default class AdminGeneral extends Controller {
     @service intl!: IntlService;
@@ -152,6 +153,10 @@ export default class AdminGeneral extends Controller {
         const videos: VideoConfiguration[] = this.changeset?.get('configSettings.global.cards.videoPreviews');
         const newVideos = videos.filter((item) => item !== video);
         this.changeset?.set('configSettings.global.cards.videoPreviews', newVideos);
+
+        if (newVideos.length === 0) {
+            this.leftSidebarItems = this.leftSidebarItems.filter((item) => item.widget !== WIDGET.VIDEO_PREVIEW);
+        }
     }
 
     /**
@@ -165,6 +170,12 @@ export default class AdminGeneral extends Controller {
         const videos: VideoConfiguration[] = this.changeset?.get('configSettings.global.cards.topicalVideoPreviews');
         const newVideos = videos.filter((item) => item !== video);
         this.changeset?.set('configSettings.global.cards.topicalVideoPreviews', newVideos);
+
+        if (newVideos.length === 0) {
+            this.leftSidebarItems = this.leftSidebarItems.filter(
+                (item) => item.widget !== WIDGET.TOPICAL_VIDEO_PREVIEW
+            );
+        }
     }
 
     /**
