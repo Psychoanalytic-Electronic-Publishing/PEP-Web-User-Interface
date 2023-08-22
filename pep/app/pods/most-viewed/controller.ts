@@ -48,7 +48,7 @@ export default class MostViewed extends Controller {
     @tracked journal?: Journal;
     @tracked pubperiod: PossiblePubPeriodValues = PUBPERIOD_ALL_YEARS.value;
     @tracked sortPeriod?: SortPeriodValues = 'last1mos';
-    @tracked viewperiod?: ViewPeriodValues;
+    @tracked viewperiod?: ViewPeriodValues = '2';
     queryType = 'MostViewed';
 
     /**
