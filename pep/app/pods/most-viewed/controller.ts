@@ -20,6 +20,17 @@ import ScrollableService from 'pep/services/scrollable';
 import SidebarService from 'pep/services/sidebar';
 import { documentCSVUrl } from 'pep/utils/url';
 
+type SortPeriodValues = 'lastcalyear' | 'lastweek' | 'last1mos' | 'last6mos' | 'last12mos';
+type ViewPeriodValues = '0' | '1' | '2' | '3' | '4';
+
+const sortPeriodToViewPeriod: { [key in SortPeriodValues]: ViewPeriodValues } = {
+    lastcalyear: '0',
+    lastweek: '1',
+    last1mos: '2',
+    last6mos: '3',
+    last12mos: '4'
+};
+
 export default class MostViewed extends Controller {
     @service declare loadingBar: LoadingBarService;
     @service declare fastbootMedia: FastbootMediaService;
@@ -29,14 +40,15 @@ export default class MostViewed extends Controller {
     @service declare scrollable: ScrollableService;
     @service('pep-session') declare session: PepSessionService;
 
-    queryParams = ['author', 'title', 'sourcename', 'pubperiod', 'citeperiod'];
+    queryParams = ['author', 'title', 'sourcename', 'pubperiod', 'viewperiod', 'sortPeriod'];
     @tracked searchQueryParams!: QueryParams;
     @tracked paginator!: Pagination<Document>;
     @tracked author = '';
     @tracked title = '';
     @tracked journal?: Journal;
     @tracked pubperiod: PossiblePubPeriodValues = PUBPERIOD_ALL_YEARS.value;
-    @tracked citeperiod?: PossiblePeriodValues;
+    @tracked sortPeriod?: SortPeriodValues = 'last1mos';
+    @tracked viewperiod?: ViewPeriodValues;
     queryType = 'MostViewed';
 
     /**
@@ -64,12 +76,12 @@ export default class MostViewed extends Controller {
     }
 
     get tableSorts() {
-        const citePeriod = this.citeperiod;
-        if (citePeriod) {
+        const sortPeriod = this.sortPeriod;
+        if (sortPeriod) {
             return [
                 {
                     isAscending: false,
-                    valuePath: `stat.art_views_${citePeriod}`
+                    valuePath: `stat.art_views_${sortPeriod}`
                 }
             ];
         }
@@ -88,13 +100,15 @@ export default class MostViewed extends Controller {
         if (sorts?.length) {
             const sort = sorts[0];
             const splitSort = sort.split('_');
-            const newCitePeriod = splitSort[splitSort.length - 1] as PossiblePeriodValues;
-            if (newCitePeriod === this.citeperiod) {
-                this.citeperiod = undefined;
+            const newSortPeriod = splitSort[splitSort.length - 1] as SortPeriodValues;
+            if (newSortPeriod === this.sortPeriod) {
+                this.sortPeriod = undefined;
+                this.viewperiod = undefined;
                 return [];
             } else {
-                this.citeperiod = newCitePeriod;
-                return [this.citeperiod];
+                this.sortPeriod = newSortPeriod;
+                this.viewperiod = sortPeriodToViewPeriod[newSortPeriod];
+                return [this.sortPeriod];
             }
         } else {
             return [];
