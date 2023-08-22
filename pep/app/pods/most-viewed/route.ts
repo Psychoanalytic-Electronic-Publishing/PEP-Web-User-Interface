@@ -27,7 +27,7 @@ export default class MostViewed extends PageNav(Route) {
             context: this.controllerFor('most-viewed'),
             pagingRootKey: null,
             filterRootKey: null,
-            filterList: ['author', 'title', 'sourcename', 'pubperiod', 'queryType'],
+            filterList: ['author', 'title', 'sourcename', 'pubperiod', 'queryType', 'viewperiod'],
             processQueryParams: (params) => {
                 const newParams = {
                     ...params,
@@ -54,7 +54,7 @@ export default class MostViewed extends PageNav(Route) {
             modelName: 'document',
             models: model?.toArray() ?? [],
             metadata: model?.meta,
-            filterList: ['author', 'title', 'sourcename', 'pubperiod', 'queryType', 'citeperiod'],
+            filterList: ['author', 'title', 'sourcename', 'pubperiod', 'queryType', 'viewperiod'],
             pagingRootKey: null,
             filterRootKey: null,
             sorts: [''],
@@ -68,7 +68,7 @@ export default class MostViewed extends PageNav(Route) {
         });
         controller.searchQueryParams = useQueryParams({
             context: controller,
-            params: ['author', 'title', 'journal', 'pubperiod', 'citeperiod']
+            params: ['author', 'title', 'journal', 'pubperiod', 'viewperiod']
         });
     }
 }
