@@ -48,7 +48,7 @@ export default class PageSidebarWidgetsMostViewed extends Component<
     > {
         const results = yield this.store.query('document', {
             queryType: 'MostViewed',
-            viewperiod: 2,
+            viewperiod: 0,
             limit: this.configuration.base.global.cards.mostViewed.limit
         });
         this.results = results.toArray();

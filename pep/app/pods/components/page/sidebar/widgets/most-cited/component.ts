@@ -47,7 +47,7 @@ export default class PageSidebarWidgetsMostCited extends Component<
     > {
         const results = yield this.store.query('document', {
             queryType: 'MostCited',
-            period: 'all',
+            citeperiod: 'all',
             limit: this.configuration.base.global.cards.mostCited.limit
         });
         this.results = results.toArray();
