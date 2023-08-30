@@ -38,7 +38,7 @@ export default class MostCited extends Controller {
     @tracked title = '';
     @tracked journal?: Journal;
     @tracked pubperiod: PossiblePubPeriodValues = PUBPERIOD_ALL_YEARS.value;
-    @tracked citeperiod?: PossiblePeriodValues;
+    @tracked citeperiod?: PossiblePeriodValues = 'all';
 
     /**
      * GET/SET for sourcename. Ember requires the set if we are using it as a query param.
