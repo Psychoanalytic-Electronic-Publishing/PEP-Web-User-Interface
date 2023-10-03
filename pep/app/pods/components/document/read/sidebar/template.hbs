@@ -7,6 +7,13 @@
                 {{else}}
                     <div class="d-flex justify-content-between align-items-center mb-2">
                         <h5 class="mb-0 font-size-normal">
+
+                            {{#if this.isSearchMode}}
+                                <div class="mb-2">
+                                    {{t "read.sidebar.searchTitle"}}
+                                </div>
+                            {{/if}}
+
                             {{t
                                 "common.numResults"
                                 count=(format-number (or @paginator.metadata.fullCount 0))

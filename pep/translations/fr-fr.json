@@ -391,6 +391,9 @@
             },
             "searchHits": " {current} sur {total}"
         },
+        "sidebar": {
+            "searchTitle": "Your Search Results"
+        },
         "comments": ""
     },
     "relatedInfo": {
