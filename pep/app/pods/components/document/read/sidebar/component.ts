@@ -54,6 +54,10 @@ export default class DocumentReadSidebar extends Component<BaseGlimmerSignature<
         return /loading$/.test(this.router.currentRouteName);
     }
 
+    get isSearchMode(): boolean {
+        return this.router.currentRouteName === 'search.read';
+    }
+
     get showHitsInContext() {
         return this.currentUser.preferences?.searchHICEnabled ?? false;
     }
