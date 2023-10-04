@@ -11,6 +11,18 @@
                                 <div class="mb-2">
                                     {{t "read.sidebar.searchTitle"}}
                                 </div>
+                            {{else if (eq this.sourceType "journal")}}
+                                <div class="mb-2">
+                                    Volume Table of Contents
+                                </div>
+                            {{else if (eq this.sourceType "book")}}
+                                <div class="mb-2">
+                                    Book Sections
+                                </div>
+                            {{else if (eq this.sourceType "videostream")}}
+                                <div class="mb-2">
+                                    Video Catalogue
+                                </div>
                             {{/if}}
                             {{#if this.isSearchMode}}
                                 <div class="font-size-normal">
