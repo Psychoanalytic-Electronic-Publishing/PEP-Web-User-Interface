@@ -13,15 +13,15 @@
                                 </div>
                             {{else if (eq this.sourceType "journal")}}
                                 <div class="mb-2">
-                                    Volume Table of Contents
+                                    {{t "read.sidebar.journalTitle"}}
                                 </div>
                             {{else if (eq this.sourceType "book")}}
                                 <div class="mb-2">
-                                    Book Sections
+                                    {{t "read.sidebar.bookTitle"}}
                                 </div>
                             {{else if (eq this.sourceType "videostream")}}
                                 <div class="mb-2">
-                                    Video Catalogue
+                                    {{t "read.sidebar.videoTitle"}}
                                 </div>
                             {{/if}}
                             {{#if this.isSearchMode}}
