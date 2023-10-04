@@ -66,22 +66,26 @@ export default class BrowseRead extends Controller {
         }
     ];
 
+    get currentDocumentIndex(): number {
+        return this.paginator.models.findIndex((document) => document.id === this.document?.id);
+    }
+
+    get documentNumber(): number {
+        return this.currentDocumentIndex + 1;
+    }
+
     get nextDocumentInList(): Document | undefined {
-        const currentDocument = this.document;
         const loadedDocuments = this.paginator.models;
-        if (currentDocument) {
-            const currentDocumentIndex = loadedDocuments.findIndex((document) => document.id === currentDocument.id);
-            const nextDocument = loadedDocuments[currentDocumentIndex + 1];
+        if (this.currentDocumentIndex !== -1) {
+            const nextDocument = loadedDocuments[this.currentDocumentIndex + 1];
             return nextDocument;
         }
     }
 
     get previousDocumentInList(): Document | undefined {
-        const currentDocument = this.document;
         const loadedDocuments = this.paginator.models;
-        if (currentDocument) {
-            const currentDocumentIndex = loadedDocuments.findIndex((document) => document.id === currentDocument.id);
-            const nextDocument = loadedDocuments[currentDocumentIndex - 1];
+        if (this.currentDocumentIndex !== -1) {
+            const nextDocument = loadedDocuments[this.currentDocumentIndex - 1];
             return nextDocument;
         }
     }
