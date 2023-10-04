@@ -392,7 +392,11 @@
             "searchHits": " {current} von {total}"
         },
         "sidebar": {
-            "searchTitle": "Your Search Results"
+            "searchTitle": "Your Search Results",
+            
+            "bookTitle": "Book Sections",
+            "journalTitle": "Volume Table of Contents",
+            "videoTitle": "Video Catalogue"
         },
         "comments": ""
     },
