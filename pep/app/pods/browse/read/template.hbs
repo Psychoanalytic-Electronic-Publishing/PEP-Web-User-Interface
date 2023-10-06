@@ -10,6 +10,25 @@
         <Scrollable @namespace="page-content" class="page-content-inner pb-3 px-4">
             <div class="sticky-top bg-body py-2">
                 <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <Button
+                            @type="link"
+                            @disabled={{not this.previousDocumentInList}}
+                            @action={{fn this.loadPreviousDocumentInListIfAvailable}}
+                            @icon="chevron-left"
+                            @iconOnly={{true}}
+                        />
+                        <span class="mx-2">
+                            {{this.documentNumber}}
+                        </span>
+                        <Button
+                            @type="link"
+                            @disabled={{not this.nextDocumentInList}}
+                            @action={{fn this.loadNextDocumentInListIfAvailable}}
+                            @icon="chevron-right"
+                            @iconOnly={{true}}
+                        />
+                    </div>
                     <p class="small text-muted {{if this.document.accessLimited ' mb-2' ' mb-0'}} flex-grow-1">
                         {{this.document.documentRef}}
                     </p>
