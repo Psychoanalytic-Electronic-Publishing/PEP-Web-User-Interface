@@ -1457,6 +1457,18 @@
         </div>
     </xsl:template>
 
+    <xsl:template match="redacted">
+        <div class="redacted card">
+            <xsl:choose>
+                <xsl:when test="@start = @end">
+                    Page <xsl:value-of select="@start"/> is not part of the preview.
+                </xsl:when>
+                <xsl:otherwise>
+                    Pages <xsl:value-of select="@start"/> to <xsl:value-of select="@end"/> are not part of the preview.
+                </xsl:otherwise>
+            </xsl:choose>
+        </div>
+    </xsl:template>
 
     <xsl:template match="bx">
         <span class="peppopup bibtip text-nowrap" data-type="velcro" data-element="{@r}" data-maxwidth="300" data-direction="southeast">

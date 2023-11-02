@@ -407,4 +407,11 @@ $document-paragraph-indent: 1.5rem;
     .figuretip {
         color: $document-link-figure;
     }
+
+    .redacted {
+        background-color: #d2e3fc;
+        text-align: center;
+        padding: 12px 16px;
+        margin: 16px 0;
+    }
 }
