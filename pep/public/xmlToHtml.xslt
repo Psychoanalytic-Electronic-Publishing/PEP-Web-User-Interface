@@ -1457,8 +1457,20 @@
         </div>
     </xsl:template>
 
+    <xsl:template match="purchase">
+        <div class="notice card">
+            <span>This is a preview document. To purchase the full version, <a data-type="doi">
+                <xsl:attribute name="href">
+                    <xsl:value-of select="concat('https://doi.org/', @doi)"/>
+                </xsl:attribute>
+                please click here.
+            </a>
+            </span>
+        </div>
+    </xsl:template>
+
     <xsl:template match="redacted">
-        <div class="redacted card">
+        <div class="notice card">
             <xsl:choose>
                 <xsl:when test="@start = @end">
                     Page <xsl:value-of select="@start"/> is not part of the preview.

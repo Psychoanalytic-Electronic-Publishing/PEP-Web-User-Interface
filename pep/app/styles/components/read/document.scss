@@ -408,8 +408,11 @@ $document-paragraph-indent: 1.5rem;
         color: $document-link-figure;
     }
 
-    .redacted {
-        background-color: #d2e3fc;
+    .notice {
+        > a {
+            display: inline-block;
+        }
+        background-color: #e9eef1;
         text-align: center;
         padding: 12px 16px;
         margin: 16px 0;
