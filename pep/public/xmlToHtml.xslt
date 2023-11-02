@@ -1459,7 +1459,14 @@
 
     <xsl:template match="redacted">
         <div class="redacted card">
-            Pages <xsl:value-of select="@start"/> to <xsl:value-of select="@end"/> are not part of the preview.
+            <xsl:choose>
+                <xsl:when test="@start = @end">
+                    Page <xsl:value-of select="@start"/> is not part of the preview.
+                </xsl:when>
+                <xsl:otherwise>
+                    Pages <xsl:value-of select="@start"/> to <xsl:value-of select="@end"/> are not part of the preview.
+                </xsl:otherwise>
+            </xsl:choose>
         </div>
     </xsl:template>
 
