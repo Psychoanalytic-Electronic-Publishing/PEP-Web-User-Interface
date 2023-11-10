@@ -91,7 +91,11 @@ export default class FlTypeahead extends Component<BaseGlimmerSignature<FlTypeah
      */
     @action
     onInputKeyDown(dropdown: Dropdown, event: HTMLElementKeyboardEvent<HTMLInputElement>) {
-        this.lastCaretPosition = getCaretPosition(event.target);
+        if (event.key === 'Backspace') {
+            this.lastCaretPosition = Math.max(0, this.lastCaretPosition - 1);
+        } else {
+            this.lastCaretPosition = getCaretPosition(event.target);
+        }
 
         // close dropdown on ESC or tabbing away
         if ([KEYCODE_ESCAPE, KEYCODE_TAB].includes(event.keyCode)) {
