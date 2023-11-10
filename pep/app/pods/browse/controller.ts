@@ -40,7 +40,7 @@ export default class Browse extends Controller {
         const filter = this.filter;
         const books = this.books.reduce<SortedBooks>(
             (books, book) => {
-                if (!filter || book.title.toLowerCase().includes(filter.toLowerCase())) {
+                if (!filter || book.displayTitle.toLowerCase().includes(filter.toLowerCase())) {
                     if (book.bookCode === FREUD_GW_CODE) {
                         books.freudsCollectedWorks.GW.books.push(book);
                     } else if (book.bookCode === FREUD_SE_CODE) {
@@ -108,7 +108,7 @@ export default class Browse extends Controller {
     get filteredVideos() {
         return !this.filter
             ? this.videos
-            : this.videos.filter((item) => item.title.toLowerCase().includes(this.filter.toLowerCase()));
+            : this.videos.filter((item) => item.displayTitle.toLowerCase().includes(this.filter.toLowerCase()));
     }
 
     /**
