@@ -158,11 +158,11 @@
                 <!-- Select the next page number for the current page -->
                 <xsl:variable name="next-page-number-string">
                     <xsl:choose>
-                        <xsl:when test="../following-sibling::pb/n/@nextpgnum">
-                            <xsl:value-of select="../following-sibling::pb/n/@nextpgnum"/>
+                        <xsl:when test="following-sibling::pb/n/@nextpgnum">
+                            <xsl:value-of select="following-sibling::pb/n/@nextpgnum"/>
                         </xsl:when>
                         <xsl:otherwise>
-                           <xsl:value-of select="following-sibling::pb/n/@nextpgnum"/>
+                           <xsl:value-of select="../following-sibling::pb/n/@nextpgnum"/>
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:variable>
