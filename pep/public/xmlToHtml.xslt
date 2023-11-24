@@ -1471,6 +1471,9 @@
 
     <xsl:template match="redacted">
         <div class="notice card">
+            <xsl:attribute name="pages">
+                <xsl:value-of select="@pages"/>
+            </xsl:attribute>
             <xsl:choose>
                 <xsl:when test="@start = @end">
                     Page <xsl:value-of select="@start"/> is not part of the preview.
