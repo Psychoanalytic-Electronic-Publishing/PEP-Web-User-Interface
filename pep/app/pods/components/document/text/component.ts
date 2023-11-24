@@ -334,12 +334,12 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
 
             if (documentId === this.args.document.id && pageOrTarget) {
                 //scroll to page number
-                this.scrollToPageOrTarget(pageOrTarget);
+                this.scrollToPageOrTarget(eventTarget.innerText);
             } else if (documentId) {
                 //transition to a different document with a specific page
                 this.router.transitionTo('browse.read', documentId, {
                     queryParams: {
-                        page: pageOrTarget
+                        page: eventTarget.innerText
                     }
                 });
             }
@@ -459,31 +459,24 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
         element?.classList.add('search-hit-selected');
     }
 
-    intToRoman(num: number): string {
-        const numeralMap = [
-            { value: 1000, numeral: 'M' },
-            { value: 900, numeral: 'CM' },
-            { value: 500, numeral: 'D' },
-            { value: 400, numeral: 'CD' },
-            { value: 100, numeral: 'C' },
-            { value: 90, numeral: 'XC' },
-            { value: 50, numeral: 'L' },
-            { value: 40, numeral: 'XL' },
-            { value: 10, numeral: 'X' },
-            { value: 9, numeral: 'IX' },
-            { value: 5, numeral: 'V' },
-            { value: 4, numeral: 'IV' },
-            { value: 1, numeral: 'I' }
-        ];
-
-        let result = '';
-        for (const { value, numeral } of numeralMap) {
-            while (num >= value) {
-                result += numeral;
-                num -= value;
+    findPreviousH1(element: HTMLElement): HTMLElement | null {
+        // Define a filter function
+        const nodeFilter = {
+            acceptNode: (node: Node) => {
+                return node instanceof HTMLElement && node.tagName === 'H1'
+                    ? NodeFilter.FILTER_ACCEPT
+                    : NodeFilter.FILTER_SKIP;
             }
-        }
-        return result;
+        };
+
+        // Create a TreeWalker with the filter
+        let walker = document.createTreeWalker(document.body, NodeFilter.SHOW_ELEMENT, nodeFilter as NodeFilter);
+
+        // Set the current node of the walker to the element
+        walker.currentNode = element;
+
+        // Move backwards in the DOM and return the first h1 element found
+        return walker.previousNode() as HTMLElement | null;
     }
 
     /**
@@ -494,38 +487,14 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
      */
 
     async scrollToPageOrTarget(pageOrTarget: string) {
-        let element =
-            this.containerElement?.querySelector(`[data-page-start='${pageOrTarget}']`) ??
-            this.containerElement?.querySelector(`#${pageOrTarget}`);
+        console.log(pageOrTarget);
 
-        console.log(this.args.document.accessClassification);
+        const pageEnd = this.containerElement?.querySelector(`[data-pgnum='${pageOrTarget}']`) as HTMLElement;
+        const previousHeader = this.findPreviousH1(pageEnd);
 
-        if (!element && this.args.document.accessClassification === 'preview') {
-            const trimmedPageOrTarget = pageOrTarget.replace(/^0+/, '');
-            let pageNumber: string | number = parseInt(trimmedPageOrTarget.slice(2), 10);
-
-            if (trimmedPageOrTarget.startsWith('PR')) {
-                pageNumber = this.intToRoman(pageNumber).toUpperCase();
-            }
-
-            const notices = this.containerElement?.querySelectorAll('.notice');
-            if (notices) {
-                for (const notice of notices) {
-                    const pages = notice.getAttribute('pages');
-                    console.log(pages);
-                    if (pages && pages.includes(pageNumber.toString().toLowerCase())) {
-                        element = notice;
-                        break;
-                    }
-                }
-            }
-        }
-
-        if (element) {
-            this.pageTracking = false;
-            await this.animateScrollToElement(element);
-            this.pageTracking = true;
-        }
+        this.pageTracking = false;
+        await this.animateScrollToElement(previousHeader || pageEnd);
+        this.pageTracking = true;
     }
 
     /**
