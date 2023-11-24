@@ -459,16 +459,68 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
         element?.classList.add('search-hit-selected');
     }
 
+    intToRoman(num: number): string {
+        const numeralMap = [
+            { value: 1000, numeral: 'M' },
+            { value: 900, numeral: 'CM' },
+            { value: 500, numeral: 'D' },
+            { value: 400, numeral: 'CD' },
+            { value: 100, numeral: 'C' },
+            { value: 90, numeral: 'XC' },
+            { value: 50, numeral: 'L' },
+            { value: 40, numeral: 'XL' },
+            { value: 10, numeral: 'X' },
+            { value: 9, numeral: 'IX' },
+            { value: 5, numeral: 'V' },
+            { value: 4, numeral: 'IV' },
+            { value: 1, numeral: 'I' }
+        ];
+
+        let result = '';
+        for (const { value, numeral } of numeralMap) {
+            while (num >= value) {
+                result += numeral;
+                num -= value;
+            }
+        }
+        return result;
+    }
+
     /**
      * Scroll to a specific page in the document (by scrolling to a specific page element)
      *
      * @param {number} pageOrTarget
      * @memberof DocumentText
      */
+
     async scrollToPageOrTarget(pageOrTarget: string) {
-        const element =
+        let element =
             this.containerElement?.querySelector(`[data-page-start='${pageOrTarget}']`) ??
             this.containerElement?.querySelector(`#${pageOrTarget}`);
+
+        console.log(this.args.document.accessClassification);
+
+        if (!element && this.args.document.accessClassification === 'preview') {
+            const trimmedPageOrTarget = pageOrTarget.replace(/^0+/, '');
+            let pageNumber: string | number = parseInt(trimmedPageOrTarget.slice(2), 10);
+
+            if (trimmedPageOrTarget.startsWith('PR')) {
+                pageNumber = this.intToRoman(pageNumber).toUpperCase();
+            }
+
+            const notices = this.containerElement?.querySelectorAll('.notice');
+            if (notices) {
+                for (const notice of notices) {
+                    const pages = notice.getAttribute('pages');
+                    console.log(pages);
+                    if (pages && pages.includes(pageNumber.toString().toLowerCase())) {
+                        element = notice;
+                        break;
+                    }
+                }
+            }
+        }
+
         if (element) {
             this.pageTracking = false;
             await this.animateScrollToElement(element);
