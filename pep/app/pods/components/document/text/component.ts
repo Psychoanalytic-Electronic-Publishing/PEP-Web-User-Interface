@@ -486,8 +486,6 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
      */
 
     async scrollToPageOrTarget(pageOrTarget: string) {
-        console.log(pageOrTarget);
-
         let element = this.containerElement?.querySelector(`[data-pgnum='${pageOrTarget}']`);
 
         if (element) {
@@ -499,7 +497,6 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
             if (notices) {
                 for (const notice of notices) {
                     const pages = notice.getAttribute('pages');
-                    console.log(pages);
                     if (pages && pages.includes(pageOrTarget.toString().toLowerCase())) {
                         element = notice as HTMLElement;
                         break;
@@ -509,7 +506,6 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
         }
 
         if (!element) {
-            console.log('!');
             return;
         }
 
