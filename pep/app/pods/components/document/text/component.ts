@@ -459,33 +459,6 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
         element?.classList.add('search-hit-selected');
     }
 
-    intToRoman(num: number): string {
-        const numeralMap = [
-            { value: 1000, numeral: 'M' },
-            { value: 900, numeral: 'CM' },
-            { value: 500, numeral: 'D' },
-            { value: 400, numeral: 'CD' },
-            { value: 100, numeral: 'C' },
-            { value: 90, numeral: 'XC' },
-            { value: 50, numeral: 'L' },
-            { value: 40, numeral: 'XL' },
-            { value: 10, numeral: 'X' },
-            { value: 9, numeral: 'IX' },
-            { value: 5, numeral: 'V' },
-            { value: 4, numeral: 'IV' },
-            { value: 1, numeral: 'I' }
-        ];
-
-        let result = '';
-        for (const { value, numeral } of numeralMap) {
-            while (num >= value) {
-                result += numeral;
-                num -= value;
-            }
-        }
-        return result;
-    }
-
     findPreviousHeading(element: HTMLElement): HTMLElement | null {
         // Create a TreeWalker with a filter that accepts any heading element
         let walker = document.createTreeWalker(document.body, NodeFilter.SHOW_ELEMENT, {
@@ -522,19 +495,12 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
         }
 
         if (!element && this.args.document.accessClassification === 'preview') {
-            const trimmedPageOrTarget = pageOrTarget.replace(/^0+/, '');
-            let pageNumber: string | number = parseInt(trimmedPageOrTarget.slice(2), 10);
-
-            if (trimmedPageOrTarget.startsWith('PR')) {
-                pageNumber = this.intToRoman(pageNumber).toUpperCase();
-            }
-
             const notices = this.containerElement?.querySelectorAll('.notice');
             if (notices) {
                 for (const notice of notices) {
                     const pages = notice.getAttribute('pages');
                     console.log(pages);
-                    if (pages && pages.includes(pageNumber.toString().toLowerCase())) {
+                    if (pages && pages.includes(pageOrTarget.toString().toLowerCase())) {
                         element = notice as HTMLElement;
                         break;
                     }
@@ -543,6 +509,7 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
         }
 
         if (!element) {
+            console.log('!');
             return;
         }
 
