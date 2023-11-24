@@ -515,10 +515,11 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
     async scrollToPageOrTarget(pageOrTarget: string) {
         console.log(pageOrTarget);
 
-        const pageEnd = this.containerElement?.querySelector(`[data-pgnum='${pageOrTarget}']`) as HTMLElement;
-        const previousHeader = this.findPreviousHeading(pageEnd);
+        let element = this.containerElement?.querySelector(`[data-pgnum='${pageOrTarget}']`);
 
-        let element = previousHeader || pageEnd;
+        if (element) {
+            element = this.findPreviousHeading(element as HTMLElement);
+        }
 
         if (!element && this.args.document.accessClassification === 'preview') {
             const trimmedPageOrTarget = pageOrTarget.replace(/^0+/, '');
@@ -539,6 +540,10 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
                     }
                 }
             }
+        }
+
+        if (!element) {
+            return;
         }
 
         this.pageTracking = false;
