@@ -486,23 +486,22 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
         return result;
     }
 
-    findPreviousH1(element: HTMLElement): HTMLElement | null {
-        // Define a filter function
-        const nodeFilter = {
+    findPreviousHeading(element: HTMLElement): HTMLElement | null {
+        // Create a TreeWalker with a filter that accepts any heading element
+        let walker = document.createTreeWalker(document.body, NodeFilter.SHOW_ELEMENT, {
             acceptNode: (node: Node) => {
-                return node instanceof HTMLElement && node.tagName === 'H1'
-                    ? NodeFilter.FILTER_ACCEPT
-                    : NodeFilter.FILTER_SKIP;
+                if (node instanceof HTMLElement) {
+                    // Check if the node is one of the heading elements
+                    return /^(H[1-6])$/.test(node.tagName) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP;
+                }
+                return NodeFilter.FILTER_SKIP;
             }
-        };
-
-        // Create a TreeWalker with the filter
-        let walker = document.createTreeWalker(document.body, NodeFilter.SHOW_ELEMENT, nodeFilter as NodeFilter);
+        } as NodeFilter);
 
         // Set the current node of the walker to the element
         walker.currentNode = element;
 
-        // Move backwards in the DOM and return the first h1 element found
+        // Move backwards in the DOM and return the first heading element found
         return walker.previousNode() as HTMLElement | null;
     }
 
@@ -517,7 +516,7 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
         console.log(pageOrTarget);
 
         const pageEnd = this.containerElement?.querySelector(`[data-pgnum='${pageOrTarget}']`) as HTMLElement;
-        const previousHeader = this.findPreviousH1(pageEnd);
+        const previousHeader = this.findPreviousHeading(pageEnd);
 
         let element = previousHeader || pageEnd;
 
