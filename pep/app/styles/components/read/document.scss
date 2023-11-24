@@ -412,7 +412,7 @@ $document-paragraph-indent: 1.5rem;
         > a {
             display: inline-block;
         }
-        background-color: #e9eef1;
+        background-color: $preview-notice-bg;
         text-align: center;
         padding: 12px 16px;
         margin: 16px 0;
