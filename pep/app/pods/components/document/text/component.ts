@@ -521,7 +521,7 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
 
         let element = previousHeader || pageEnd;
 
-        if (!pageEnd && !previousHeader && this.args.document.accessClassification === 'preview') {
+        if (!element && this.args.document.accessClassification === 'preview') {
             const trimmedPageOrTarget = pageOrTarget.replace(/^0+/, '');
             let pageNumber: string | number = parseInt(trimmedPageOrTarget.slice(2), 10);
 
