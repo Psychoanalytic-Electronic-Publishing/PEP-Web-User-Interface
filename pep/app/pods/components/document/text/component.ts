@@ -52,7 +52,7 @@ interface DocumentTextArgs {
     };
     page?: string;
     searchHitNumber?: number;
-    hasWatermark?: boolean;
+    watermark?: boolean;
     onGlossaryItemClick: (term: string, termResults: GlossaryTerm[]) => void;
     viewSearch: (searchTerms: SearchQueryParams) => void;
     documentRendered: () => void;

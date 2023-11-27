@@ -5,7 +5,8 @@
         {{@document.sourceType}}
         {{if this.currentUser.preferences.glossaryFormattingEnabled 'glossary-highlight'}}
         {{this.currentUser.textJustification.class}}
-        {{if @hasWatermark 'has-watermark'}}"
+        {{if @watermark 'has-watermark'}}
+        {{if @watermark (concat 'has-watermark-' @watermark)}}"
     {{on "click" this.onDocumentClick}}
     {{did-insert this.parseDocument}}
     {{did-update this.setupListeners this.text}}

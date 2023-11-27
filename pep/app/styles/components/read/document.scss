@@ -19,12 +19,23 @@ $document-paragraph-indent: 1.5rem;
             left: 50%;
             margin-left: -18vw;
             margin-top: -18vh;
-            background-image: url(/assets/images/watermark.png);
             transform: rotate(-45deg);
             background-size: contain;
             background-position: center;
             background-repeat: no-repeat;
             opacity: 0.4;
+        }
+    }
+
+    &.has-watermark-ijpopen {
+        &::before {
+            background-image: url(/assets/images/watermark-ijpopen.png);
+        }
+    }
+
+    &.has-watermark-preview {
+        &::before {
+            background-image: url(/assets/images/watermark-preview.png);
         }
     }
 
