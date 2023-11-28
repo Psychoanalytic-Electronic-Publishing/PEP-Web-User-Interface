@@ -1459,7 +1459,7 @@
 
     <xsl:template match="purchase">
         <div class="notice card">
-            <span>This is a preview document. To purchase the full version, <a data-type="doi">
+            <span>This is a preview document. The total pages displayed will be limited. To purchase the full version, <a data-type="doi">
                 <xsl:attribute name="href">
                     <xsl:value-of select="concat('https://doi.org/', @doi)"/>
                 </xsl:attribute>
@@ -1476,10 +1476,10 @@
             </xsl:attribute>
             <xsl:choose>
                 <xsl:when test="@start = @end">
-                    Page <xsl:value-of select="@start"/> is not part of the preview.
+                    Page <xsl:value-of select="@start"/> is not shown in this preview.
                 </xsl:when>
                 <xsl:otherwise>
-                    Pages <xsl:value-of select="@start"/> to <xsl:value-of select="@end"/> are not part of the preview.
+                    Pages <xsl:value-of select="@start"/> to <xsl:value-of select="@end"/> are not shown in this preview.
                 </xsl:otherwise>
             </xsl:choose>
         </div>
