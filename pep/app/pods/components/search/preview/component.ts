@@ -73,8 +73,16 @@ export default class SearchPreview extends Component<BaseGlimmerSignature<Search
         return Math.min(this.fitHeight, this.args.maxHeight ?? this.fitHeight);
     }
 
-    get hasWatermark() {
-        return this.result?.PEPCode === IJP_OPEN_CODE;
+    get watermark() {
+        if (this.result?.PEPCode === IJP_OPEN_CODE) {
+            return IJP_OPEN_CODE.toLowerCase();
+        }
+
+        if (this.result?.accessClassification === 'preview') {
+            return 'preview';
+        }
+
+        return '';
     }
 
     /**

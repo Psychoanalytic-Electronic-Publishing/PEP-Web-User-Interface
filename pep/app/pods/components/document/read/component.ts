@@ -42,8 +42,16 @@ export default class DocumentRead extends Component<BaseGlimmerSignature<Documen
     @service('pep-session') session!: PepSessionService;
     @service cookies!: CookiesService;
 
-    get hasWatermark() {
-        return this.args.model.PEPCode === IJP_OPEN_CODE;
+    get watermark() {
+        if (this.args.model.PEPCode === IJP_OPEN_CODE) {
+            return IJP_OPEN_CODE.toLowerCase();
+        }
+
+        if (this.args.model.accessClassification === 'preview') {
+            return 'preview';
+        }
+
+        return '';
     }
 
     @tracked showIJPOpenBannerState = true;
