@@ -1,25 +1,41 @@
 <ModalDialog @onClose={{@onClose}} @size="md" @clickOutsideToClose={{false}} as |Modal|>
-    <Modal.header @title="Warning!" />
+    <Modal.header @title="Placeholder title" />
     <Modal.body>
         <div class="mb-2">
-            <h5>
-                Your PEP-Web access may be at risk!
-            </h5>
             {{#if this.session.isAuthenticated}}
-                <p class="text-muted font-size-secondary mb-0">
-                    Blah blah blah blahh... explanation as to what is going on with SID and why you should click
-                    "Register on PaDS" to create your own account at a preferential rate.
+                <p>
+                    L’accesso all’archivio PEP-Web è consentito grazie all’abbonamento annuale sottoscritto dalla
+                    Società Psicoanalitica Italiana (SPI).
                 </p>
 
-                <p class="text-muted font-size-secondary mb-0">
-                    You can close this pop-up, but we'll continue to pester you until you comply.
+                <p>
+                    Vi informiamo che al momento il rinnovo dell&#39;abbonamento della SPI è in discussione. Se non si
+                    dovesse trovare una soluzione entro la mezzanotte del sabato 23 dicembre 2023, quando
+                    l&#39;abbonamento scadrà, l&#39;accesso a PEP-Web sarà interrotto e non sarà collegarsi
+                    all&#39;archivio attraverso il link appena utilizzato.
+                </p>
+
+                <p>
+                    Visto il breve termine di questa scadenza e l’impegno del PEP di non interrompere l’accesso, stiamo
+                    studiando, in prima istanza, le modalità per prolungare almeno temporaneamente l&#39;accesso. Per
+                    poter usufruire di questa eventuale proroga, è necessario disporre di un account PEP personale.
+                </p>
+
+                <p>
+                    Visto il breve termine di questa scadenza e l’impegno del PEP di non interrompere l’accesso, stiamo
+                    studiando, in prima istanza, le modalità per prolungare almeno temporaneamente l&#39;accesso. Per
+                    poter usufruire di questa eventuale proroga, è necessario disporre di un account PEP personale.
+                </p>
+
+                <p>
+                    Registrare un account personale è facile e gratuito, compilando il seguente modulo. Questo comporta
+                    altri vantaggi nell&#39;utilizzo di PEP, come la possibilità di personalizzare i risultati delle
+                    ricerche o di leggere le pagine d’assistenza in italiano.
                 </p>
             {{/if}}
         </div>
     </Modal.body>
     <Modal.footer>
-        {{#if this.currentUser.user.paDSHomeURL}}
-            <Button @type="primary" @label="Register on PaDS" @action={{this.openPadsTab}} />
-        {{/if}}
+        <Button @type="primary" @label="Clicca qui per registrarti" @action={{this.openPadsTab}} />
     </Modal.footer>
 </ModalDialog>
