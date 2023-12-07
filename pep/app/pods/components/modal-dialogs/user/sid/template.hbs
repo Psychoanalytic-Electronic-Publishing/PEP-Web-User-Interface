@@ -1,0 +1,44 @@
+<ModalDialog @onClose={{@onClose}} @size="md" @clickOutsideToClose={{false}} as |Modal|>
+    <Modal.header @title="Warning!" />
+    <Modal.body>
+        <div class="mb-2">
+            <h5>
+                Your PEP-Web access may be at risk!
+            </h5>
+            {{#if this.session.isAuthenticated}}
+                <p class="text-muted font-size-secondary mb-0">
+                    Blah blah blah blahh... explanation as to what is going on with SID and why you should click
+                    "Register on PaDS" to create your own account at a preferential rate.
+                </p>
+
+                <p class="text-muted font-size-secondary mb-0">
+                    You can close this pop-up, but we'll continue to pester you until you comply.
+                </p>
+            {{/if}}
+        </div>
+        {{#if this.currentUser.user.activeSubscriptionsJSON.length}}
+            <div class="mb-2">
+                <h5>
+                    {{t "accountInfo.activeSubscriptions.title"}}
+                </h5>
+                <div class="mb-3">
+                    {{#each this.currentUser.user.activeSubscriptionsJSON as |subscription|}}
+                        <p class="text-muted font-size-secondary mb-0">
+                            {{t
+                                "accountInfo.activeSubscriptions.subscription"
+                                product=subscription.ProductName
+                                start=subscription.RecurringSubscriptionStartDate
+                                end=subscription.RecurringSubscriptionEndDate
+                            }}
+                        </p>
+                    {{/each}}
+                </div>
+            </div>
+        {{/if}}
+    </Modal.body>
+    <Modal.footer>
+        {{#if this.currentUser.user.paDSHomeURL}}
+            <Button @type="primary" @label="Register on PaDS" @action={{this.openPadsTab}} />
+        {{/if}}
+    </Modal.footer>
+</ModalDialog>
