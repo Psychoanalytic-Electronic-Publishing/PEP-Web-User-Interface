@@ -111,7 +111,8 @@ export default class CurrentUserService extends Service {
             (sub) => sub.OrderedViaName === 'Societa Psicoanalitica Italiana - SPI'
         );
 
-        const isReferral = this.user?.loggedInMethod === LoginMethod.REFERRER;
+        const isReferral =
+            this.user?.loggedInMethod === LoginMethod.REFERRER || this.user?.loggedInMethod === LoginMethod.IP;
 
         return isSidSubscriber && isReferral;
     }

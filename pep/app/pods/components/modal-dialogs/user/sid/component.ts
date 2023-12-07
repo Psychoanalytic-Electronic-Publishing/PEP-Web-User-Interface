@@ -9,6 +9,7 @@ import AuthService, { FederatedLoginResponse } from 'pep/services/auth';
 import { BaseGlimmerSignature } from 'pep/utils/types';
 import { serializeQueryParams } from 'pep/utils/url';
 import AjaxService from 'pep/services/ajax';
+import ModalService from '@gavant/ember-modals/services/modal';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import LoadingBarService from 'pep/services/loading-bar';
 
@@ -23,38 +24,19 @@ export default class ModalDialogsUserInfo extends Component<BaseGlimmerSignature
     @service ajax!: AjaxService;
     @service notifications!: NotificationService;
     @service loadingBar!: LoadingBarService;
+    @service modal!: ModalService;
+
+    @action openSignIn() {
+        this.modal.close();
+        return this.auth.openLoginModal();
+    }
 
     /**
      * Open the PaDS home-site using the user's generated
      * link in a new tab.
      */
     @action
-    async openPadsTab() {
-        try {
-            this.loadingBar.show();
-
-            const session = this.session.isAuthenticated
-                ? this.session.data?.authenticated?.SessionId
-                : this.session.getUnauthenticatedSession()?.SessionId;
-            const params = serializeQueryParams({
-                sessionId: session ?? ''
-            });
-            const federatedLogins = await this.ajax.request<FederatedLoginResponse>(
-                `${ENV.federatedLoginUrl}?${params}`,
-                {
-                    appendTrailingSlash: false
-                }
-            );
-
-            if (!federatedLogins.PaDSRegisterUserURL) {
-                throw new Error('Could not find PaDS registration URL. Please try again later or contact support.');
-            }
-
-            window.location.href = federatedLogins.PaDSRegisterUserURL;
-        } catch (errors) {
-            this.notifications.error(errors);
-        } finally {
-            this.loadingBar.hide();
-        }
+    openPadsTab() {
+        return this.auth.redirectToRegistration();
     }
 }
