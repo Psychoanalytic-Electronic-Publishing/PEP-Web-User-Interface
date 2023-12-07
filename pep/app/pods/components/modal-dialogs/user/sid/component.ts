@@ -50,7 +50,7 @@ export default class ModalDialogsUserInfo extends Component<BaseGlimmerSignature
                 throw new Error('Could not find PaDS registration URL. Please try again later or contact support.');
             }
 
-            window.open(federatedLogins.PaDSRegisterUserURL, '_blank');
+            window.location.href = federatedLogins.PaDSRegisterUserURL;
         } catch (errors) {
             this.notifications.error(errors);
         } finally {
