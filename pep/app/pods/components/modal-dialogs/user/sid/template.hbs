@@ -16,25 +16,6 @@
                 </p>
             {{/if}}
         </div>
-        {{#if this.currentUser.user.activeSubscriptionsJSON.length}}
-            <div class="mb-2">
-                <h5>
-                    {{t "accountInfo.activeSubscriptions.title"}}
-                </h5>
-                <div class="mb-3">
-                    {{#each this.currentUser.user.activeSubscriptionsJSON as |subscription|}}
-                        <p class="text-muted font-size-secondary mb-0">
-                            {{t
-                                "accountInfo.activeSubscriptions.subscription"
-                                product=subscription.ProductName
-                                start=subscription.RecurringSubscriptionStartDate
-                                end=subscription.RecurringSubscriptionEndDate
-                            }}
-                        </p>
-                    {{/each}}
-                </div>
-            </div>
-        {{/if}}
     </Modal.body>
     <Modal.footer>
         {{#if this.currentUser.user.paDSHomeURL}}
