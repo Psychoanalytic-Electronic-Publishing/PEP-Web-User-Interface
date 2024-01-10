@@ -49,7 +49,10 @@ export default class PageSidebarWidgetsWhatsNew extends Component<
             days_back: 30,
             limit: this.configuration.base.global.cards.whatsNew.limit
         });
-        this.results = results.toArray();
+
+        this.results = results.toArray().sort((a, b) => {
+            return b.updated.getTime() - a.updated.getTime();
+        });
     }
 
     /**
