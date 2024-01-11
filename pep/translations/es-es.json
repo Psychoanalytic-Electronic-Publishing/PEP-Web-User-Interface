@@ -472,7 +472,7 @@
                 "help": "Vea el último vídeo de actualidad en nuestro sistema aquí."
             },
             "whoCitedThis": {
-                "title": "",
+                "title": "¿Quién citó eso?",
                 "noResults": "",
                 "help": ""
             },
