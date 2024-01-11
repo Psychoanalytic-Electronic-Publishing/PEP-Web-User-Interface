@@ -479,7 +479,7 @@
             "whatsNew": {
                 "title": "¿Qué hay de nuevo?",
                 "issue": "Número de edición {issueNum}, vol. {volNum} • {updatedDate}",
-                "signUp": "Ahora puede registrarse para recibir una notificación cuando se añada contenido nuevo introduciendo su correo electrónico a continuación. Cuando se añada contenido nuevo, automáticamente le enviaremos un correo electrónico con una lista de lo que se ha añadido, ¡con enlaces en PEP-Web!",
+                "signUp": "Para recibir actualizaciones periódicas de los nuevos contenidos añadidos a PEP- Web, seleccione sus preferencias con las casillas de verificación que aparecen a continuación. Para cancelar la suscripción, simplemente desmarque el tipo de contenido para el que no desea recibir una notificación.",
                 "emailAddress": "Dirección de correo electrónico",
                 "update": "Notificaciones de actualización",
                 "help": "Las últimas incorporaciones a nuestro sistema se pueden ver aquí.",

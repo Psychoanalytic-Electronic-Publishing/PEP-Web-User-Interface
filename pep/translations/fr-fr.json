@@ -479,7 +479,7 @@
             "whatsNew": {
                 "title": "Quoi de neuf ?",
                 "issue": "Numéro {issueNum}, Vol {volNum} &bull; {updatedDate}",
-                "signUp": "Vous pouvez maintenant vous inscrire pour être averti lorsqu'un nouveau contenu est ajouté : entrez votre e-mail ci-dessous. Lorsqu'un nouveau contenu sera ajouté, nous vous enverrons automatiquement un e-mail avec une liste des ajouts et des liens pour les consulter sur PEP-Web !",
+                "signUp": "Pour recevoir des mises à jour régulières des nouveaux contenus ajoutés à PEP- Web, veuillez sélectionner vos préférences en cochant les cases ci-dessous. Pour vous désabonner, il vous suffit de décocher le type de contenu pour lequel vous ne souhaitez pas recevoir de notification.",
                 "emailAddress": "Adresse e-mail",
                 "update": "Notifications de mise à jour",
                 "help": "Les derniers ajouts à notre système peuvent être consultés ici.",
