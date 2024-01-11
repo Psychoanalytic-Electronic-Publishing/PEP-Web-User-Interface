@@ -441,7 +441,7 @@
                 "help": "Your past searches that you have made are saved here, for easy access."
             },
             "publisherInfo": {
-                "title": "Publisher Info",
+                "title": "Publisher info",
                 "view": "View information for {publisher}",
                 "noResults": "You must view a document to see the document's publisher information.",
                 "help": "Publisher information for the current document your viewing will appear here."
@@ -455,7 +455,7 @@
                 "help": "Save items you want to read later and view them here."
             },
             "relatedDocuments": {
-                "title": "Related Documents",
+                "title": "Related documents",
                 "noResults": "This infocard shows articles directly related to the one you are reading. For example, follow up commentaries or responses. Or other parts in a related issue series. If there are none, you will see this message.",
                 "help": "For documents which have related articles, the {faIcon} icon will show up next to listing, indicating that the article is part of a series or has follow up commentary in the journal."
             },
@@ -472,7 +472,7 @@
                 "help": "Check out the latest topical video in our system here."
             },
             "whoCitedThis": {
-                "title": "Who Cited This",
+                "title": "Who cited this?",
                 "noResults": "This infocard shows other articles who have cited the one you are reading. If there are none, you will see this message.",
                 "help": "Who cited this document can be viewed here."
             },
