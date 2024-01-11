@@ -473,14 +473,14 @@
                 "help": "Sehen Sie sich hier das neueste thematische Video in unserem System an."
             },
             "whoCitedThis": {
-                "title": "",
+                "title": "Wer hat das zitiert?",
                 "noResults": "",
                 "help": ""
             },
             "whatsNew": {
                 "title": "Was ist neu?",
                 "issue": "Ausgabe Nr.{issueNum}, Band {volNum} • {updatedDate}",
-                "signUp": "Sie können sich jetzt registrieren, um benachrichtigt zu werden, wenn neue Inhalte hinzugefügt werden, indem Sie unten Ihre E-Mail-Adresse eingeben. Wenn neue Inhalte hinzugefügt werden, senden wir Ihnen automatisch eine E-Mail mit einer Liste der hinzugefügten Inhalte und Links dazu auf PEP-Web!",
+                "signUp": "Um regelmäßige Updates über neue Inhalte zu erhalten, die zu PEP-Web hinzugefügt wurden, wählen Sie bitte Ihre Präferenzen mit den untenstehenden  Kontrollkästchen aus. Um sich abzumelden, deaktivieren Sie einfach den Inhaltstyp, für den Sie keine Benachrichtigung erhalten möchten.",
                 "emailAddress": "E-Mail-Adresse",
                 "update": "Update-Benachrichtigungen",
                 "help": "Die neuesten Ergänzungen zu unserem System können hier eingesehen werden.",
