@@ -2,8 +2,8 @@ import ENV from 'pep/config/environment';
 import Application from 'pep/pods/application/adapter';
 
 export default class Biblio extends Application {
-    urlForFindRecord(id: string) {
-        return `${ENV.apiBaseUrl}/v2/Database/Biblio/${id}`;
+    urlForQuery(query: any) {
+        return `${ENV.apiBaseUrl}/v2/Database/Biblio/${query.id}`;
     }
 }
 

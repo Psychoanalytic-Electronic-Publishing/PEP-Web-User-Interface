@@ -1,36 +1,28 @@
-import JSONSerializer from '@ember-data/serializer/json';
-import Store from '@ember-data/store';
-import Model from '@ember-data/model';
+import DS from 'ember-data';
 
-export default class BiblioSerializer extends JSONSerializer {
-    normalizeResponse(
-        store: Store,
-        primaryModelClass: Model,
-        payload: any,
-        id: string | number | null,
-        requestType: string
-    ): any {
-        if (id === null) return;
-
-        payload = {
-            id,
-            data: payload.map((item: any) => ({
-                type: 'biblio',
-                attributes: {
-                    refLocalId: item.ref_local_id,
-                    refRx: item.ref_rx,
-                    refRxcf: item.ref_rxcf
-                }
-            }))
-        };
-
-        return super.normalizeResponse(store, primaryModelClass, payload, id, requestType);
+export default class BiblioSerializer extends DS.JSONAPISerializer {
+    keyForAttribute(attr: string) {
+        return attr;
     }
-}
 
-// TypeScript registry
-declare module 'ember-data/types/registries/serializer' {
-    export default interface SerializerRegistry {
-        biblio: BiblioSerializer;
+    normalizeResponse(
+        store: DS.Store,
+        primaryModelClass: ModelWithName,
+        payload: any,
+        id: string | number,
+        requestType: string
+    ) {
+        const data = payload.map((item: any) => ({
+            id: item.ref_local_id,
+            type: primaryModelClass.modelName,
+            attributes: {
+                artId: item.art_id,
+                refLocalId: item.ref_local_id,
+                refRx: item.ref_rx || null,
+                refRxcf: item.ref_rxcf || null
+            }
+        }));
+
+        return super.normalizeResponse(store, primaryModelClass, { data }, id, requestType);
     }
 }
