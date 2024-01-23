@@ -83,18 +83,21 @@ export default class BrowseRead extends PageNav(Route) {
                 controller.selectedView.id === controller.tableView
                     ? ['']
                     : [this.currentUser.preferences?.searchSortType.id ?? ''],
-
             processQueryParams: (params) => ({ ...params, ...searchParams })
         });
-        const response = (await this.store.query(
-            'search-document',
-            queryParams
-        )) as RecordArrayWithMeta<SearchDocument>;
-        const results = response.toArray();
-        const resultsMeta = response.meta;
 
+        // Fetch both search-document and bibliography data simultaneously
+        const [searchResponse, bibliographyData] = await Promise.all([
+            this.store.query('search-document', queryParams) as unknown as Promise<RecordArrayWithMeta<SearchDocument>>,
+            this.store.query('biblio', { id: model.id })
+        ]);
+
+        // Set search results and bibliography data
+        const results = searchResponse.toArray();
+        const resultsMeta = searchResponse.meta;
         this.relatedDocuments = results;
         this.relatedDocumentsMeta = resultsMeta;
+        model.set('bibliography', bibliographyData);
     }
 
     /**
