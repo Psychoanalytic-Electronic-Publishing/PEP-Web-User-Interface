@@ -2,7 +2,7 @@ import DS from 'ember-data';
 import attr from 'ember-data/attr';
 
 export default class Biblio extends DS.Model {
-    @attr('string') artId!: string;
+    @attr('string') refText!: string;
     @attr('string') refLocalId!: string;
     @attr('string') refRx!: string;
     @attr('string') refRxcf!: string;

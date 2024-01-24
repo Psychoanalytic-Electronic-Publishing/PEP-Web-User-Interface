@@ -16,7 +16,7 @@ export default class BiblioSerializer extends DS.JSONAPISerializer {
             id: item.ref_local_id,
             type: primaryModelClass.modelName,
             attributes: {
-                artId: item.art_id,
+                refText: item.ref_text,
                 refLocalId: item.ref_local_id,
                 refRx: item.ref_rx || null,
                 refRxcf: item.ref_rxcf || null
