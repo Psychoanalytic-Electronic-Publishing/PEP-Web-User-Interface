@@ -1,7 +1,7 @@
-{{#if @data.length}}
+{{#if this.bibliographyData.length}}
     <div class="biblio">
         <h1>REFERENCES</h1>
-        {{#each @data as |item|}}
+        {{#each this.bibliographyData as |item|}}
             <p class="bibentry" id={{item.refLocalId}}>
                 <span class="ref-content cell">
                     {{item.refText}}

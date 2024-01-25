@@ -15,5 +15,5 @@
     {{did-update (fn this.scrollToSearchHit @searchHitNumber) @searchHitNumber}}
 >
     {{html-safe this.text}}
-    <Bibliography @data={{@document.bibliography}} />
+    <Bibliography @documentId={{@document.PEPCode}} />
 </div>
