@@ -12,6 +12,8 @@ import {
     SEARCH_STRING_TERMS_REGEX
 } from 'pep/constants/regex';
 import SimilarityMatch from 'pep/pods/similarity-match/model';
+import Biblio from '../biblio/model';
+import { hasMany } from '@ember-data/model';
 
 export default class Document extends DS.Model {
     // attributes
@@ -59,6 +61,7 @@ export default class Document extends DS.Model {
     @attr('date') updated!: Date;
     @attr('string') vol!: string;
     @attr('string') year!: string;
+    @hasMany('biblio') bibliography!: Biblio[];
 
     // Doing this to allow metadata on find record calls - which ember data currently doesn't handle
     // properly
