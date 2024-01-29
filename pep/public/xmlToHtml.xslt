@@ -1735,28 +1735,6 @@
                 <xsl:apply-templates/>
             </span>
             <!--matched reference id-->
-            <xsl:if test="@rx">
-                <a class="bibx pl-2" data-type="BIBX">
-                    <xsl:attribute name="data-document-id">
-                        <xsl:value-of select="@rx"/>
-                    </xsl:attribute>
-                    <xsl:copy-of select="$fa-right-arrow" />
-                </a>
-            </xsl:if>
-            <xsl:if test="@rxcf">
-                <a class="bibx pl-2" data-type="BIBX_CF">
-                    <xsl:attribute name="href">
-                        /search?q=<xsl:value-of select="@rxcf"/><xsl:apply-templates/>
-                    </xsl:attribute>
-                    <xsl:attribute name="data-document-id">
-                        <xsl:value-of select="@rxcf"/>
-                    </xsl:attribute>
-                    <xsl:copy-of select="$fa-link" />
-                </a>
-                <span class="bibx-related-info ml-1">
-                    <xsl:copy-of select="$fa-question" />
-                </span>
-            </xsl:if>
         </span>
     </xsl:template>
 
@@ -1766,28 +1744,6 @@
                 <xsl:apply-templates/>
             </span>
             <!--matched reference id-->
-            <xsl:if test="@rx">
-                <a class="bibx pl-2" data-type="BIBX">
-                    <xsl:attribute name="data-document-id">
-                        <xsl:value-of select="@rx"/>
-                    </xsl:attribute>
-                    <xsl:copy-of select="$fa-right-arrow" />
-                </a>
-            </xsl:if>
-            <xsl:if test="@rxcf">
-                <a class="bibx pl-2" data-type="BIBX_CF">
-                  <xsl:attribute name="href">
-                        /search?q=cf::<xsl:value-of select="@rxcf"/>//<xsl:value-of select='normalize-space()'/>//
-                    </xsl:attribute>
-                    <xsl:attribute name="data-document-id">
-                        <xsl:value-of select="@rxcf"/>
-                    </xsl:attribute>
-                    <xsl:copy-of select="$fa-link" />
-                </a>
-                <span class="bibx-related-info ml-1">
-                    <xsl:copy-of select="$fa-question" />
-                </span>
-            </xsl:if>
         </p>
     </xsl:template>
 
