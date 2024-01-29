@@ -619,12 +619,18 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
     }
 
     async afterRender() {
-        await this.insertBiblioLinks();
+        if (this.args.document.document && !this.args.document.accessLimited) {
+            await this.insertBiblioLinks();
+        }
         this.attachTooltips();
     }
 
     async insertBiblioLinks() {
-        const bibliographyData = await this.store.query('biblio', { id: this.args.document.id });
+        const bibliographyData = await this.store.query('biblio', {
+            id: this.args.document.id,
+            documentYear: this.args.document.year
+        });
+
         bibliographyData.forEach((biblio) => {
             const biblioElement = this.containerElement?.querySelector(`[id="${biblio.refLocalId}"]`);
             if (!biblioElement) return;

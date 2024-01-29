@@ -5,7 +5,7 @@ import { inject as service } from '@ember/service';
 
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 
-import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hooks/pagination';
+import usePagination from '@gavant/ember-pagination/hooks/pagination';
 import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
 
 import { GlossaryWidgetLocation, WIDGET } from 'pep/constants/sidebar';
@@ -13,7 +13,6 @@ import { PageNav } from 'pep/mixins/page-layout';
 import { ApiServerErrorResponse } from 'pep/pods/application/adapter';
 import BrowseReadController from 'pep/pods/browse/read/controller';
 import Document from 'pep/pods/document/model';
-import SearchDocument from 'pep/pods/search-document/model';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
 import ScrollableService from 'pep/services/scrollable';
@@ -86,18 +85,13 @@ export default class BrowseRead extends PageNav(Route) {
             processQueryParams: (params) => ({ ...params, ...searchParams })
         });
 
-        // Fetch both search-document and bibliography data simultaneously
-        const [searchResponse, bibliographyData] = await Promise.all([
-            this.store.query('search-document', queryParams) as unknown as Promise<RecordArrayWithMeta<SearchDocument>>,
-            this.store.query('biblio', { id: model.id })
-        ]);
+        const searchResponse = await this.store.query('search-document', queryParams);
 
         // Set search results and bibliography data
         const results = searchResponse.toArray();
         const resultsMeta = searchResponse.meta;
         this.relatedDocuments = results;
         this.relatedDocumentsMeta = resultsMeta;
-        model.set('bibliography', bibliographyData);
     }
 
     /**
