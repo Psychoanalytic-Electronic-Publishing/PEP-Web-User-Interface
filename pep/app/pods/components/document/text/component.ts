@@ -333,14 +333,16 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
                 pageOrTarget = referenceArray[1];
             }
 
-            if (documentId === this.args.document.id && pageOrTarget) {
+            pageOrTarget = pageOrTarget?.substring(0, 1) === 'P' ? eventTarget.innerText : pageOrTarget;
+
+            if (documentId === this.args.document.id && pageOrTarget && this.args.target !== 'abstract') {
                 //scroll to page number
-                this.scrollToPageOrTarget(eventTarget.innerText);
+                this.scrollToPageOrTarget(pageOrTarget);
             } else if (documentId) {
                 //transition to a different document with a specific page
                 this.router.transitionTo('browse.read', documentId, {
                     queryParams: {
-                        page: eventTarget.innerText
+                        page: pageOrTarget
                     }
                 });
             }
@@ -504,6 +506,12 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
                     }
                 }
             }
+        }
+
+        if (!element) {
+            element =
+                this.containerElement?.querySelector(`[data-page-start='${pageOrTarget}']`) ??
+                this.containerElement?.querySelector(`#${pageOrTarget}`);
         }
 
         if (!element) {
