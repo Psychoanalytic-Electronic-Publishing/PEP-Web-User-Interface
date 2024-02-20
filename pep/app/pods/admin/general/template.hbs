@@ -426,6 +426,27 @@
                         </div>
                     </div>
                 </div>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="col-12">
+                                <h4 class="d-flex justify-content-between align-items-center border-bottom mb-3 pb-1">
+                                    Status
+                                    <CopyButton
+                                        class="p-1 btn btn-link"
+                                        @success={{this.clipboardSuccess}}
+                                        @error={{this.clipboardFailure}}
+                                        @clipboardText={{this.model.status}}
+                                        title={{t "search.exports.clipboard"}}
+                                    >
+                                        <FaIcon @icon="clipboard" @size="lg" />
+                                    </CopyButton>
+                                </h4>
+                                <pre style="max-height: 512px;"><code>{{this.model.status}}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </FormValidator>
