@@ -8,6 +8,7 @@ import { BASE_CONFIG_NAME, BaseConfiguration, DEFAULT_BASE_CONFIGURATION } from 
 import { SearchTermId } from 'pep/constants/search';
 import AdminGeneralController from 'pep/pods/admin/general/controller';
 import Configuration from 'pep/pods/configuration/model';
+import Status from 'pep/pods/status/model';
 import { mergingCustomizer } from 'pep/utils/admin';
 import { CONFIGURATION_GENERAL_VALIDATIONS } from 'pep/validations/configuration/general';
 
@@ -25,6 +26,12 @@ export default class AdminGeneral extends Route {
      */
     model(): Promise<Configuration> {
         return this.store.queryRecord('configuration', { configname: BASE_CONFIG_NAME });
+    }
+
+    afterModel(model: Configuration & { status: Status }) {
+        this.store.queryRecord('status', {}).then((status) => {
+            model.set('status', JSON.stringify(status, null, 2));
+        });
     }
 
     /**

@@ -17,10 +17,12 @@ import { RouteModel } from 'pep/utils/types';
 import { CONFIGURATION_EXPERT_PICK_VALIDATIONS } from 'pep/validations/configuration/expert-pick';
 import { CONFIGURATION_VIDEO_VALIDATIONS } from 'pep/validations/configuration/video';
 import { WIDGET } from 'pep/constants/sidebar';
+import NotificationService from 'ember-cli-notifications/services/notifications';
 
 export default class AdminGeneral extends Controller {
     @service intl!: IntlService;
     @service modal!: ModalService;
+    @service notifications!: NotificationService;
 
     declare model: RouteModel<AdminGeneralRoute>;
 
@@ -45,6 +47,29 @@ export default class AdminGeneral extends Controller {
     get embargoDate() {
         return new Date(this.changeset?.configSettings.global.embargoDate);
     }
+
+    /**
+     * Show success message for clipboard
+     *
+     * @memberof DocumentReadSidebar
+     */
+    @action
+    clipboardSuccess() {
+        const translation = this.intl.t('exports.clipboard.success');
+
+        this.notifications.success(translation);
+    }
+
+    /**
+     * Show failure message for clipboard
+     *
+     * @memberof DocumentReadSidebar
+     */
+    @action
+    clipboardFailure() {
+        this.notifications.success(this.intl.t('exports.clipboard.failure'));
+    }
+
     /**
      * Open the expert pick modal
      *
