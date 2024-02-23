@@ -1,0 +1,12 @@
+<Page::Content>
+    <div class="py-3 px-4">
+        <h1 class="text-2xl font-bold">Previews</h1>
+        {{#each @model as |document|}}
+            <p>
+                <LinkTo @route="browse.read" @model={{document.id}}>
+                    {{document.documentRef}}
+                </LinkTo>
+            </p>
+        {{/each}}
+    </div>
+</Page::Content>
