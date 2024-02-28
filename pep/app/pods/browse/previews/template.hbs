@@ -9,29 +9,36 @@
                 fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
                 deserunt mollit anim id est laborum.
             </p>
-            <div class="row">
+            <div style="display: grid;grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));grid-gap:16px">
                 {{#each @model as |document|}}
-                    <div class="col-6 col-md-4 col-xl-3 mb-4">
-                        <LinkTo @route="browse.read" @model={{document.id}}>
-                            <Image
-                                @source="https://pep-web-gui.s3.amazonaws.com/bookPlaceholder.webp"
-                                alt={{t "alt.brandingImageUrl"}}
-                                class="w-100 mb-1"
-                            />
-                            <span
-                                class="mb-1"
-                                style="display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;"
+                    <LinkTo @route="browse.read" @model={{document.id}}>
+                        <div style="display:flex;border: 1px solid hsl(202, 20%, 85%);border-radius:0.25rem;">
+                            <div
+                                style="width:calc(.41667 * (100% - 8px));background:hsl(202, 20%, 85%);text-align:center;border-radius-top-left:0.25rem;border-radius-bottom-left:0.25rem"
+                                class="mr-2 p-2"
                             >
-                                {{document.title}}
-                            </span>
-                            <span
-                                style="display: -webkit-box;-webkit-line-clamp: 1;-webkit-box-orient: vertical;overflow: hidden;"
-                            >
-                                {{document.authorMast}}
-                            </span>
-                        </LinkTo>
-                    </div>
-
+                                <Image
+                                    @source="https://pep-web-gui.s3.amazonaws.com/bookPlaceholder.webp"
+                                    alt={{t "alt.brandingImageUrl"}}
+                                    style="max-height:200px;max-width:100%;"
+                                />
+                            </div>
+                            <div class="p-2" style="width:calc(.58333 * (100% - 8px));">
+                                <span
+                                    class="mb-2"
+                                    style="display: -webkit-box;-webkit-line-clamp: 4;-webkit-box-orient: vertical;overflow: hidden;"
+                                >
+                                    {{document.title}}
+                                </span>
+                                <span
+                                    class="text-muted"
+                                    style="display: -webkit-box;-webkit-line-clamp: 1;-webkit-box-orient: vertical;overflow: hidden;;"
+                                >
+                                    {{document.authorMast}}
+                                </span>
+                            </div>
+                        </div>
+                    </LinkTo>
                 {{/each}}
             </div>
         </div>
