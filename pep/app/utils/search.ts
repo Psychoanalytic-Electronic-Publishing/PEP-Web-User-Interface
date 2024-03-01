@@ -67,6 +67,7 @@ interface SearchQueryParams extends SearchQueryStrParams {
     synonyms: boolean;
     abstract: boolean;
     highlightlimit?: number;
+    sort?: string;
 }
 
 export interface SearchFacetCounts {
@@ -87,6 +88,7 @@ type BuildSearchQueryParams = {
     facetMinCount?: number | null;
     highlightlimit?: number;
     abstract?: boolean;
+    sort?: string;
 };
 
 export type SearchController = {
@@ -124,7 +126,8 @@ export function buildSearchQueryParams(searchQueryParams: BuildSearchQueryParams
         facetLimit = null,
         facetMinCount = null,
         highlightlimit,
-        abstract
+        abstract,
+        sort
     } = searchQueryParams;
 
     const queryParams: SearchQueryParams = {
@@ -138,7 +141,8 @@ export function buildSearchQueryParams(searchQueryParams: BuildSearchQueryParams
         viewperiod: `${!isNone(viewedPeriod) && !isEmpty(viewedCount) ? viewedPeriod : ''}`,
         abstract: abstract ?? true,
         highlightlimit,
-        synonyms
+        synonyms,
+        sort
     };
 
     const nonEmptyTerms = searchTerms?.filter((t) => !!t.term);
