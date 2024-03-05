@@ -16,6 +16,16 @@ export default class PageSidebarRight extends Component<BaseGlimmerSignature<Pag
     @service('pep-session') session!: PepSessionService;
     @service currentUser!: CurrentUserService;
 
+    get showPreviewsWidget() {
+        if (this.args.data.publisherInfo && this.args.data.publisherInfo.accessClassification === 'preview') {
+            return true;
+        }
+
+        if (window.location.href.includes('/browse/previews')) return true;
+
+        return false;
+    }
+
     get rightSidebarWidgets() {
         return this.configuration.base.global.cards.right;
     }
