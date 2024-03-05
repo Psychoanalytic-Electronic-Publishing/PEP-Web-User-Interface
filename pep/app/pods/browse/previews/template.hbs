@@ -18,8 +18,8 @@
                                 class="mr-2 p-2"
                             >
                                 <Image
-                                    @source="https://pep-web-gui.s3.amazonaws.com/bookPlaceholder.webp"
-                                    alt={{t "alt.brandingImageUrl"}}
+                                    @source="https://stage-api.pep-web.org/v2/Documents/Image/{{document.PEPCode}}.{{document.vol}}.THUMBNAIL"
+                                    alt="Thumbnail for {{document.title}}"
                                     style="max-height:200px;max-width:100%;"
                                 />
                             </div>
