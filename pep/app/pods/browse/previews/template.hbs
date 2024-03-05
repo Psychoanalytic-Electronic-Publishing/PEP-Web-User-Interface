@@ -20,7 +20,7 @@
                                 class="mr-2 p-2"
                             >
                                 <Image
-                                    @source="https://stage-api.pep-web.org/v2/Documents/Image/{{document.PEPCode}}.{{document.vol}}.THUMBNAIL"
+                                    @source="{{this.imageUrl}}/{{document.PEPCode}}.{{document.vol}}.THUMBNAIL"
                                     alt="Thumbnail for {{document.title}}"
                                     style="max-height:200px;max-width:100%;"
                                 />
