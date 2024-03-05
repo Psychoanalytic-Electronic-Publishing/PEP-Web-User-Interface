@@ -12,9 +12,11 @@
             <div style="display: grid;grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));grid-gap:16px">
                 {{#each @model as |document|}}
                     <LinkTo @route="browse.read" @model={{document.id}}>
-                        <div style="display:flex;border: 1px solid hsl(202, 20%, 85%);border-radius:0.25rem;">
+                        <div
+                            style="display:flex;border: 1px solid hsl(202, 20%, 85%);border-radius:0.25rem;height:100%"
+                        >
                             <div
-                                style="width:calc(.41667 * (100% - 8px));background:hsl(202, 20%, 85%);text-align:center;border-radius-top-left:0.25rem;border-radius-bottom-left:0.25rem"
+                                style="display: flex;justify-content:center;align-items:center;width:calc(.41667 * (100% - 8px));background:hsl(202, 20%, 85%);text-align:center;border-radius-top-left:0.25rem;border-radius-bottom-left:0.25rem"
                                 class="mr-2 p-2"
                             >
                                 <Image
