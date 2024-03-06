@@ -10,23 +10,17 @@
                     cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
                     culpa qui officia deserunt mollit anim id est laborum.
                 </p>
-                <div style="display: grid;grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));grid-gap:16px">
+                <div class="grid-layout">
                     {{#each @model as |document|}}
                         <LinkTo @route="browse.read" @model={{document.id}}>
-                            <div
-                                style="display:flex;border: 1px solid hsl(202, 20%, 85%);border-radius:0.25rem;height:100%"
-                            >
-                                <div
-                                    style="display: flex;justify-content:center;align-items:center;width:calc(.41667 * (100% - 8px));text-align:center;border-radius-top-left:0.25rem;border-radius-bottom-left:0.25rem"
-                                    class="image-container mr-2 p-2"
-                                >
+                            <div class="browse-preview-card">
+                                <div class="image-container">
                                     <Image
                                         @source="{{this.imageUrl}}/{{document.PEPCode}}.{{document.vol}}.THUMBNAIL"
                                         alt="Thumbnail for {{document.title}}"
-                                        style="max-height:200px;max-width:100%;"
                                     />
                                 </div>
-                                <div class="p-2" style="width:calc(.58333 * (100% - 8px));">
+                                <div class="text-content-container">
                                     <span
                                         class="mb-2"
                                         style="display: -webkit-box;-webkit-line-clamp: 4;-webkit-box-orient: vertical;overflow: hidden;"

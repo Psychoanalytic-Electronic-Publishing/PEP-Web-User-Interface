@@ -1,0 +1,34 @@
+.grid-layout {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-gap: 16px;
+}
+
+.image-container {
+    background: $preview-notice-bg;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: calc(0.41667 * (100% - 8px));
+    text-align: center;
+    border-radius: 0.25rem 0 0 0.25rem;
+    margin-right: 0.5rem;
+    padding: 0.5rem;
+
+    img {
+        max-height: 200px;
+        max-width: 100%;
+    }
+}
+
+.text-content-container {
+    padding: 0.5rem;
+    width: calc(0.58333 * (100% - 8px));
+}
+
+.browse-preview-card {
+    display: flex;
+    border: 1px solid $preview-notice-bg;
+    border-radius: 0.25rem;
+    height: 100%;
+}
