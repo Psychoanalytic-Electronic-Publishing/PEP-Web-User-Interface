@@ -1,3 +1,4 @@
+import RouterService from '@ember/routing/router-service';
 import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
 
@@ -15,15 +16,13 @@ export default class PageSidebarRight extends Component<BaseGlimmerSignature<Pag
     @service configuration!: ConfigurationService;
     @service('pep-session') session!: PepSessionService;
     @service currentUser!: CurrentUserService;
+    @service router!: RouterService;
 
     get showPreviewsWidget() {
-        if (this.args.data.publisherInfo && this.args.data.publisherInfo.accessClassification === 'preview') {
-            return true;
-        }
+        const isPreviewAccess = this.args.data.publisherInfo?.accessClassification === 'preview';
+        const isBrowsePreviewsRoute = this.router.currentRouteName === 'browse.previews';
 
-        if (window.location.href.includes('/browse/previews')) return true;
-
-        return false;
+        return isPreviewAccess || isBrowsePreviewsRoute;
     }
 
     get rightSidebarWidgets() {
