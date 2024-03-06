@@ -46,7 +46,8 @@ $document-link-figure: #71697a;
 $document-link-external: #a98743;
 $document-link-web-external: #f7c548;
 $document-link-web-internal: #305252;
-$preview-notice-bg: $color-backdrop;
+
+$preview-notice-bg: darken($color-backdrop, 10%);
 
 // Bootstrap overrides
 // ---------------------------
