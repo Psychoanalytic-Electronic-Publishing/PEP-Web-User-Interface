@@ -913,7 +913,8 @@
                         "searchLimit": "Glossary limit when searching",
                         "readLimit": "Glossary limit when reading"
                     }
-                }
+                },
+                "statusTitle": "Status"
             },
             "home": {
                 "expertPicks": {

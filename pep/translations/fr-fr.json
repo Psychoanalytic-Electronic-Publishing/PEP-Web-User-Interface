@@ -913,7 +913,8 @@
                         "searchLimit": "Limite du glossaire lors de la recherche",
                         "readLimit": "Limite du glossaire lors de la lecture"
                     }
-                }
+                },
+                "statusTitle": "Status"
             },
             "home": {
                 "expertPicks": {

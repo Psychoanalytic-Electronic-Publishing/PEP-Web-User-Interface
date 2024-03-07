@@ -914,7 +914,8 @@
                         "searchLimit": "Max. Anzahl der Glossareinträge bei der Suche",
                         "readLimit": "Max. Anzahl der Glossareinträge beim Lesen"
                     }
-                }
+                },
+                "statusTitle": "Status"
             },
             "home": {
                 "expertPicks": {
