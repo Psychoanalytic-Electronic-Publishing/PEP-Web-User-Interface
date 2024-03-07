@@ -1459,31 +1459,36 @@
 
     <xsl:template match="purchase">
         <div class="notice card">
-            <span>This is a preview document. The total pages displayed will be limited. To purchase the full version, <a data-type="doi">
+            <span data-i18n-key="browse.previews.noticeText"><a data-type="doi" data-i18n-key="browse.previews.noticeLink">
                 <xsl:attribute name="href">
                     <xsl:value-of select="concat('https://doi.org/', @doi)"/>
                 </xsl:attribute>
-                please click here.
             </a>
             </span>
         </div>
     </xsl:template>
 
+
     <xsl:template match="redacted">
-        <div class="notice card">
-            <xsl:attribute name="pages">
-                <xsl:value-of select="@pages"/>
-            </xsl:attribute>
-            <xsl:choose>
-                <xsl:when test="@start = @end">
-                    Page <xsl:value-of select="@start"/> is not shown in this preview.
-                </xsl:when>
-                <xsl:otherwise>
-                    Pages <xsl:value-of select="@start"/> to <xsl:value-of select="@end"/> are not shown in this preview.
-                </xsl:otherwise>
-            </xsl:choose>
-        </div>
-    </xsl:template>
+    <xsl:choose>
+        <xsl:when test="@start = @end">
+            <div class="notice card" data-i18n-key="browse.previews.redacted.singlePageNotice" data-i18n-param-page="{@start}">
+                <xsl:attribute name="pages">
+                    <xsl:value-of select="@pages"/>
+                </xsl:attribute>
+            </div>
+        </xsl:when>
+        
+        <xsl:otherwise>
+            <div class="notice card" data-i18n-key="browse.previews.redacted.multiplePagesNotice" data-i18n-param-start="{@start}" data-i18n-param-end="{@end}">
+                <xsl:attribute name="pages">
+                    <xsl:value-of select="@pages"/>
+                </xsl:attribute>
+            </div>
+        </xsl:otherwise>
+    </xsl:choose>
+</xsl:template>
+
 
     <xsl:template match="bx">
         <span class="peppopup bibtip text-nowrap" data-type="velcro" data-element="{@r}" data-maxwidth="300" data-direction="southeast">

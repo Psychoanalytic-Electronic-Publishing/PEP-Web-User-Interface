@@ -383,7 +383,13 @@
             "sidebarTitle": "Preview Title Placeholder",
             "sidebarLink": "Click here to view our book previews",
             "copyrightTitle": "Preview title",
-            "copyrightDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"
+            "copyrightDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor",
+            "noticeText": "This is a preview document. The total pages displayed will be limited. To purchase the full version, ",
+            "noticeLink": "please click here.",
+            "redacted": {
+                "singlePageNotice": "Page {start} is not shown in this preview.",
+                "multiplePagesNotice": "Pages {start} to {end} are not shown in this preview."
+            }
         }
     },
     "read": {

@@ -627,10 +627,37 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
     }
 
     async afterRender() {
+        this.processTranslations();
         if (this.args.document.document && !this.args.document.accessLimited) {
             await this.insertBiblioLinks();
         }
         this.attachTooltips();
+    }
+
+    async processTranslations() {
+        const elements = this.containerElement?.querySelectorAll('[data-i18n-key]');
+        elements?.forEach((element) => {
+            const key = element.getAttribute('data-i18n-key');
+            if (!key) return;
+
+            let params: { [key: string]: string } = {};
+
+            Array.from(element.attributes).forEach((attr) => {
+                if (attr.name.startsWith('data-i18n-param-')) {
+                    const paramName = attr.name.substring('data-i18n-param-'.length);
+                    params[paramName] = attr.value;
+                }
+            });
+
+            const translation = this.intl.t(key, params);
+
+            if (element.childNodes.length === 0 || element.childNodes[0].nodeType !== Node.TEXT_NODE) {
+                const textNode = document.createTextNode(translation);
+                element.prepend(textNode);
+            } else {
+                element.childNodes[0].nodeValue = translation;
+            }
+        });
     }
 
     async insertBiblioLinks() {
