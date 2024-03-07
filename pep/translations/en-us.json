@@ -82,7 +82,8 @@
             "read": "Read",
             "loginAndRead": "Login and read",
             "graphicFromTheArticle": "Graphic from the article: {title}"
-        }
+        },
+        "videoCollectionTitle": "Video Collection"
     },
     "search": {
         "title": "Search",

@@ -82,7 +82,8 @@
             "read": "Lire",
             "loginAndRead": "Connectez-vous et lisez",
             "graphicFromTheArticle": "Graphique issu de l'article : {title}"
-        }
+        },
+        "videoCollectionTitle": "Video Collection"
     },
     "search": {
         "title": "Rechercher",
