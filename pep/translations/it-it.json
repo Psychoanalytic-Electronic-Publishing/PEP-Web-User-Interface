@@ -397,7 +397,8 @@
             "journalTitle": "Table of Contents",
             "videoTitle": "Video Catalogue"
         },
-        "comments": ""
+        "comments": "",
+        "ijpOpenBanner": "To comment on IJP Open, you have automatically been asigned a Disqus profile. You can view and contribute to article discussions by clicking on the comment icon in the top right corner."
     },
     "relatedInfo": {
         "title": "Informazioni correlate",
