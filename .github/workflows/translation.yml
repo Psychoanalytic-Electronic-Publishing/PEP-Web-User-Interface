@@ -1,4 +1,4 @@
-name: Translation source change Notification with Amazon SES
+name: Translation source change notification
 
 on:
   push:
@@ -14,14 +14,12 @@ jobs:
     runs-on: ubuntu-latest
     environment: production-vars
     outputs:
-      translation_email_sender: ${{ steps.set-outputs.outputs.translation_email_sender}}
-      translation_email_recipients: ${{ steps.set-outputs.outputs.translation_email_recipients}}
+      sns_topic_arn: ${{ steps.set-outputs.outputs.sns_topic_arn}}
     steps:
       - name: Set output
         id: set-outputs
         run: |
-          echo "translation_email_sender=${{ vars.TRANSLATION_EMAIL_SENDER }}" >> $GITHUB_OUTPUT
-          echo "translation_email_recipients=${{ vars.TRANSLATION_EMAIL_RECIPIENTS }}" >> $GITHUB_OUTPUT
+          echo "sns_topic_arn=${{ vars.SNS_TOPIC_ARN }}" >> $GITHUB_OUTPUT
 
   notify-on-change:
     needs: [env]
@@ -47,11 +45,11 @@ jobs:
           aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      - name: Send notification via Amazon SES
+      - name: Send notification via Amazon SNS
         if: env.FILE_CHANGED == 'true'
         run: |
           FILE_URL="https://github.com/${{ github.repository }}/blob/${{ github.sha }}/pep/translations/en-us.json"
-          aws ses send-email \
-            --from "${{ needs.env.outputs.translation_email_sender }}" \
-            --destination "ToAddresses=${{ needs.env.outputs.translation_email_recipients }}" \
-            --message "Subject={Data=Your file was changed,Charset=utf8},Body={Text={Data=The specific file you are monitoring was changed. View the file at: $FILE_URL ,Charset=utf8}}"
+          MESSAGE="The specific file you are monitoring was changed. View the file at: $FILE_URL"
+          aws sns publish \
+            --topic-arn ${{ needs.env.outputs.sns_topic_arn }} \
+            --message "$MESSAGE"
