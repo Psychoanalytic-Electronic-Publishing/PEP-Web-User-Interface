@@ -49,8 +49,9 @@ jobs:
       - name: Send notification via Amazon SNS
         if: env.FILE_CHANGED == 'true'
         run: |
+          DIFF_URL="https://github.com/${{ github.repository }}/compare/${{ github.event.before }}...${{ github.sha }}"
           FILE_URL="https://github.com/${{ github.repository }}/blob/${{ github.sha }}/pep/translations/en-us.json"
-          MESSAGE="The specific file you are monitoring was changed. View the file at: $FILE_URL"
+          MESSAGE="The specific file you are monitoring was changed.\nView the file at: $FILE_URL\nView the changes: $DIFF_URL"
           aws sns publish \
             --topic-arn ${{ needs.env.outputs.sns_topic_arn }} \
             --message "$MESSAGE"
