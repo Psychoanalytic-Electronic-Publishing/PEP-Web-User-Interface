@@ -51,7 +51,7 @@ jobs:
         run: |
           DIFF_URL="https://github.com/${{ github.repository }}/compare/${{ github.event.before }}...${{ github.sha }}"
           FILE_URL="https://github.com/${{ github.repository }}/blob/${{ github.sha }}/pep/translations/en-us.json"
-          MESSAGE=$'The source translation file has been updated.\n\nView the file at: '"$FILE_URL"$'\n\nView the changes: '"$DIFF_URL"
+          MESSAGE=$'The translation source file has been updated.\n\nView the file at: '"$FILE_URL"$'\n\nView the changes: '"$DIFF_URL"
           aws sns publish \
             --topic-arn ${{ needs.env.outputs.sns_topic_arn }} \
             --message "$MESSAGE" \
