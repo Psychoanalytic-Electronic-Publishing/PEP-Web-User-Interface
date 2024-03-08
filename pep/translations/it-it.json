@@ -82,7 +82,8 @@
             "read": "Leggi",
             "loginAndRead": "Accedi e leggi",
             "graphicFromTheArticle": "Grafiche nell'articolo: {title}"
-        }
+        },
+        "videoCollectionTitle": "Video Collection"
     },
     "search": {
         "title": "Cerca",
@@ -397,7 +398,8 @@
             "journalTitle": "Table of Contents",
             "videoTitle": "Video Catalogue"
         },
-        "comments": ""
+        "comments": "",
+        "ijpOpenBanner": "To comment on IJP Open, you have automatically been asigned a Disqus profile. You can view and contribute to article discussions by clicking on the comment icon in the top right corner."
     },
     "relatedInfo": {
         "title": "Informazioni correlate",
@@ -912,7 +914,8 @@
                         "searchLimit": "Limite dei termini di glossario durante la ricerca",
                         "readLimit": "Limite dei termini di glossario durante la lettura"
                     }
-                }
+                },
+                "statusTitle": "Status"
             },
             "home": {
                 "expertPicks": {
