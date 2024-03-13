@@ -1,0 +1,57 @@
+name: Translation source change notification
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - "pep/translations/en-us.json"
+
+jobs:
+  env:
+    name: "Setup dynamic environment variables"
+    runs-on: ubuntu-latest
+    environment: production-vars
+    outputs:
+      sns_topic_arn: ${{ steps.set-outputs.outputs.sns_topic_arn}}
+    steps:
+      - name: Set output
+        id: set-outputs
+        run: |
+          echo "sns_topic_arn=${{ vars.SNS_TOPIC_ARN }}" >> $GITHUB_OUTPUT
+
+  notify-on-change:
+    needs: [env]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+
+      - name: Check for file changes
+        id: file-check
+        run: |
+          echo "FILE_CHANGED=false" > $GITHUB_ENV
+          if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -q 'pep/translations/en-us.json'; then
+            echo "FILE_CHANGED=true" > $GITHUB_ENV
+          fi
+
+      - name: Setup AWS CLI
+        if: env.FILE_CHANGED == 'true'
+        run: |
+          sudo apt-get update
+          sudo apt-get install awscli -y
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws configure set region us-east-1
+
+      - name: Send notification via Amazon SNS
+        if: env.FILE_CHANGED == 'true'
+        run: |
+          DIFF_URL="https://github.com/${{ github.repository }}/compare/${{ github.event.before }}...${{ github.sha }}"
+          FILE_URL="https://github.com/${{ github.repository }}/blob/${{ github.sha }}/pep/translations/en-us.json"
+          MESSAGE=$'The translation source file has been updated.\n\nView the file at: '"$FILE_URL"$'\n\nView the changes: '"$DIFF_URL"
+          aws sns publish \
+            --topic-arn ${{ needs.env.outputs.sns_topic_arn }} \
+            --message "$MESSAGE" \
+            --subject "Translation source file updated"
