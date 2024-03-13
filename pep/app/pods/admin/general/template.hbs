@@ -447,6 +447,23 @@
                         </div>
                     </div>
                 </div>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="col-12">
+                                <h4 class="d-flex justify-content-between align-items-center border-bottom mb-3 pb-1">
+                                    {{t "admin.common.global.reportTitle"}}
+                                </h4>
+                                <ButtonSpinner
+                                    @type="primary"
+                                    @label={{t "exports.report.generate"}}
+                                    @wide={{true}}
+                                    @action={{this.downloadReport}}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </FormValidator>
