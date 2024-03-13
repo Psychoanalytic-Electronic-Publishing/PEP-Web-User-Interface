@@ -804,6 +804,10 @@
         "clipboard": {
             "success": "Copied to the clipboard",
             "failure": "There was an issue copying to the clipboard. Please try again later."
+        },
+        "report": {
+            "success": "Report generated successfully",
+            "failure": "There was an issue generating the report. Please try again later."
         }
     },
     "document": {

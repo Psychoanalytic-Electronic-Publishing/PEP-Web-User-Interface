@@ -804,6 +804,10 @@
         "clipboard": {
             "success": "Copiato negli appunti",
             "failure": "Si è verificato un problema durante la copia negli appunti. Riprova più tardi."
+        },
+        "report": {
+            "success": "Report generated successfully",
+            "failure": "There was an issue generating the report. Please try again later."
         }
     },
     "document": {

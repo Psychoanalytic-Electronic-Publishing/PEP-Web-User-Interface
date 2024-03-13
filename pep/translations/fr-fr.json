@@ -804,6 +804,10 @@
         "clipboard": {
             "success": "Copié dans le presse-papiers",
             "failure": "Un incident est survenu lors de la copie dans le presse-papiers. Veuillez réessayer plus tard."
+        },
+        "report": {
+            "success": "Report generated successfully",
+            "failure": "There was an issue generating the report. Please try again later."
         }
     },
     "document": {

@@ -804,6 +804,10 @@
         "clipboard": {
             "success": "Copiado al portapapeles",
             "failure": "Hubo un problema al copiar al portapapeles. Inténtelo de nuevo más tarde."
+        },
+        "report": {
+            "success": "Report generated successfully",
+            "failure": "There was an issue generating the report. Please try again later."
         }
     },
     "document": {
