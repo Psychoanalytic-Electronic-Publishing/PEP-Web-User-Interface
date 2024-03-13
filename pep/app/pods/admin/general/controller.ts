@@ -21,6 +21,7 @@ import NotificationService from 'ember-cli-notifications/services/notifications'
 import { getOwner } from '@ember/application';
 import ReportAdapter from 'pep/pods/report/adapter';
 import ExportsService, { ExportType } from 'pep/services/exports';
+import Papa from 'papaparse';
 
 export default class AdminGeneral extends Controller {
     @service intl!: IntlService;
@@ -73,14 +74,12 @@ export default class AdminGeneral extends Controller {
             const reportType = 'Character-Count-Report';
             const reportText = await adapter.downloadReport(reportType);
 
-            const lines = reportText.split('\n');
-            const fields = lines[0].split(',');
-            const data = lines.slice(1).map((row) => row.split(','));
+            const parsedCsv = Papa.parse(reportText);
 
             const timestamp = new Date().toISOString().replace(/[:]/g, '-').split('.')[0];
             const fileName = `${reportType}_${timestamp}.csv`;
 
-            this.exports.export(ExportType.CSV, fileName, { fields, data });
+            this.exports.export(ExportType.CSV, fileName, parsedCsv.data);
 
             this.notifications.success(this.intl.t('exports.report.success'));
         } catch (error) {
