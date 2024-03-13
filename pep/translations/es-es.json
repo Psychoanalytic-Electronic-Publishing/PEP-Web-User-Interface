@@ -807,7 +807,8 @@
         },
         "report": {
             "success": "Report generated successfully",
-            "failure": "There was an issue generating the report. Please try again later."
+            "failure": "There was an issue generating the report. Please try again later.",
+            "reportTitle": "Reports"
         }
     },
     "document": {
