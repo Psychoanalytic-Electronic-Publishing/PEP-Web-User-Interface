@@ -102,7 +102,7 @@ export default class AdminGeneral extends Controller {
      */
     @action
     clipboardFailure() {
-        this.notifications.success(this.intl.t('exports.clipboard.failure'));
+        this.notifications.error(this.intl.t('exports.clipboard.failure'));
     }
 
     /**
