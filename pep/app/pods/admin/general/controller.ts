@@ -21,14 +21,12 @@ import NotificationService from 'ember-cli-notifications/services/notifications'
 import { getOwner } from '@ember/application';
 import ReportAdapter from 'pep/pods/report/adapter';
 import ExportsService, { ExportType } from 'pep/services/exports';
-import LoadingBarService from 'pep/services/loading-bar';
 
 export default class AdminGeneral extends Controller {
     @service intl!: IntlService;
     @service modal!: ModalService;
     @service notifications!: NotificationService;
     @service exports!: ExportsService;
-    @service loadingBar!: LoadingBarService;
 
     declare model: RouteModel<AdminGeneralRoute>;
 
@@ -69,8 +67,6 @@ export default class AdminGeneral extends Controller {
     @action
     async downloadReport() {
         try {
-            this.loadingBar.show();
-
             const owner = getOwner(this) as any;
             const adapter = owner.lookup('adapter:report') as ReportAdapter;
 
@@ -90,8 +86,6 @@ export default class AdminGeneral extends Controller {
         } catch (error) {
             console.log(error);
             this.notifications.error(this.intl.t('exports.report.failure'));
-        } finally {
-            this.loadingBar.hide();
         }
     }
 
