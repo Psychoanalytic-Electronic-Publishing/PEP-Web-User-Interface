@@ -37,6 +37,8 @@ export default class AdminGeneral extends Controller {
     @tracked leftSidebarItems: WidgetConfiguration[] = [];
     @tracked rightSidebarItems: WidgetConfiguration[] = [];
     @tracked calendarCenterDate?: Date;
+    @tracked selectedReport: string = 'Character-Count-Report';
+
     mirrorOptions = {
         constrainDimensions: true
     };
@@ -66,18 +68,22 @@ export default class AdminGeneral extends Controller {
     }
 
     @action
+    updateSelectedReport(reportType: string) {
+        this.selectedReport = reportType;
+    }
+
+    @action
     async downloadReport() {
         try {
             const owner = getOwner(this) as any;
             const adapter = owner.lookup('adapter:report') as ReportAdapter;
 
-            const reportType = 'Character-Count-Report';
-            const reportText = await adapter.downloadReport(reportType);
+            const reportText = await adapter.downloadReport(this.selectedReport);
 
             const parsedCsv = Papa.parse(reportText);
 
             const timestamp = new Date().toISOString().replace(/[:]/g, '-').split('.')[0];
-            const fileName = `${reportType}_${timestamp}.csv`;
+            const fileName = `${this.selectedReport}_${timestamp}.csv`;
 
             this.exports.export(ExportType.CSV, fileName, parsedCsv.data);
 

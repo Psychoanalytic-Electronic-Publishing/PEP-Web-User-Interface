@@ -454,6 +454,60 @@
                                 <h4 class="d-flex justify-content-between align-items-center border-bottom mb-3 pb-1">
                                     {{t "admin.common.global.reportTitle"}}
                                 </h4>
+                                <fieldset class="mb-4">
+                                    <legend class="text-muted mb-2 radio-input-legend">
+                                        {{t "preferences.search.preview.label"}}
+                                    </legend>
+                                    <RadioInput
+                                        @label={{t "exports.report.options.characterCountBookReport"}}
+                                        @checked={{eq this.selectedReport "Character-Count-Report"}}
+                                        @value="Character-Count-Report"
+                                        @onChange={{fn this.updateSelectedReport}}
+                                        @name={{t "preferences.search.preview.labelName"}}
+                                        class="mb-1"
+                                    />
+                                    <RadioInput
+                                        @label={{t "exports.report.options.characterCountDetailsBookReport"}}
+                                        @value="Character-Count-Details-Book-Report"
+                                        @onChange={{fn this.updateSelectedReport}}
+                                        @name={{t "preferences.search.preview.labelName"}}
+                                        class="mb-1"
+                                    />
+                                    <RadioInput
+                                        @label={{t "exports.report.options.characterCountDetailsReport"}}
+                                        @value="Character-Count-Details-Report"
+                                        @onChange={{fn this.updateSelectedReport}}
+                                        @name={{t "preferences.search.preview.labelName"}}
+                                        class="mb-1"
+                                    />
+                                    <RadioInput
+                                        @label={{t "exports.report.options.documentViewLog"}}
+                                        @value="Document-View-Log"
+                                        @onChange={{fn this.updateSelectedReport}}
+                                        @name={{t "preferences.search.preview.labelName"}}
+                                        class="mb-1"
+                                    />
+                                    <RadioInput
+                                        @label={{t "exports.report.options.documentViewStat"}}
+                                        @value="Document-View-Stat"
+                                        @onChange={{fn this.updateSelectedReport}}
+                                        @name={{t "preferences.search.preview.labelName"}}
+                                        class="mb-1"
+                                    />
+                                    <RadioInput
+                                        @label={{t "exports.report.options.userSearches"}}
+                                        @value="User-Searches"
+                                        @onChange={{fn this.updateSelectedReport}}
+                                        @name={{t "preferences.search.preview.labelName"}}
+                                        class="mb-1"
+                                    />
+                                    <RadioInput
+                                        @label={{t "exports.report.options.sessionLog"}}
+                                        @value="Session-Log"
+                                        @onChange={{fn this.updateSelectedReport}}
+                                        @name={{t "preferences.search.preview.labelName"}}
+                                    />
+                                </fieldset>
                                 <ButtonSpinner
                                     @type="primary"
                                     @label={{t "exports.report.generate"}}
