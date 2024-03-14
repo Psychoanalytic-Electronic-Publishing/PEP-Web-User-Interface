@@ -808,7 +808,17 @@
         "report": {
             "success": "Report generated successfully",
             "failure": "There was an issue generating the report. Please try again later.",
-            "generate": "Generate Report"
+            "generate": "Generate Report",
+            "options": {
+                "characterCountReport": "Character Count (Standard)",
+                "characterCountDetailsBookReport": "Character Count (Books)",
+                "characterCountDetailsReport": "Character Count (Detailed)",
+                "documentViewLog": "Document View Log",
+                "documentViewStat": "Document View Stats",
+                "userSearches": "User Searches",
+                "sessionLog": "Session Log",
+                "legend": "Select a report to generate"
+            }
         }
     },
     "document": {
