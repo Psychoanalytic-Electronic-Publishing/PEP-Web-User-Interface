@@ -818,6 +818,11 @@
                 "userSearches": "User Searches",
                 "sessionLog": "Session Log",
                 "legend": "Select a report to generate"
+            },
+            "config": {
+                "legend": "Report configuration",
+                "limit": "Result limit",
+                "offset": "Result offset"
             }
         }
     },
