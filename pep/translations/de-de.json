@@ -805,6 +805,26 @@
         "clipboard": {
             "success": "In die Zwischenablage kopiert",
             "failure": "Beim Kopieren in die Zwischenablage ist ein Problem aufgetreten. Bitte versuchen Sie es später noch einmal."
+        },
+        "report": {
+            "success": "Report generated successfully",
+            "failure": "There was an issue generating the report. Please try again later.",
+            "reportTitle": "Reports",
+            "options": {
+                "characterCountReport": "Character Count (Standard)",
+                "characterCountDetailsBookReport": "Character Count (Books)",
+                "characterCountDetailsReport": "Character Count (Detailed)",
+                "documentViewLog": "Document View Log",
+                "documentViewStat": "Document View Stats",
+                "userSearches": "User Searches",
+                "sessionLog": "Session Log",
+                "legend": "Select a report to generate"
+            },
+            "config": {
+                "legend": "Report configuration",
+                "limit": "Result limit",
+                "offset": "Result offset"
+            }
         }
     },
     "document": {

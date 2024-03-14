@@ -18,11 +18,16 @@ import { CONFIGURATION_EXPERT_PICK_VALIDATIONS } from 'pep/validations/configura
 import { CONFIGURATION_VIDEO_VALIDATIONS } from 'pep/validations/configuration/video';
 import { WIDGET } from 'pep/constants/sidebar';
 import NotificationService from 'ember-cli-notifications/services/notifications';
+import { getOwner } from '@ember/application';
+import ReportAdapter from 'pep/pods/report/adapter';
+import ExportsService, { ExportType } from 'pep/services/exports';
+import Papa from 'papaparse';
 
 export default class AdminGeneral extends Controller {
     @service intl!: IntlService;
     @service modal!: ModalService;
     @service notifications!: NotificationService;
+    @service exports!: ExportsService;
 
     declare model: RouteModel<AdminGeneralRoute>;
 
@@ -32,6 +37,10 @@ export default class AdminGeneral extends Controller {
     @tracked leftSidebarItems: WidgetConfiguration[] = [];
     @tracked rightSidebarItems: WidgetConfiguration[] = [];
     @tracked calendarCenterDate?: Date;
+    @tracked selectedReport: string = 'Character-Count-Report';
+    @tracked reportLimit: string = '1000';
+    @tracked reportOffset: string = '0';
+
     mirrorOptions = {
         constrainDimensions: true
     };
@@ -60,6 +69,33 @@ export default class AdminGeneral extends Controller {
         this.notifications.success(translation);
     }
 
+    @action
+    updateSelectedReport(reportType: string) {
+        this.selectedReport = reportType;
+    }
+
+    @action
+    async downloadReport() {
+        try {
+            const owner = getOwner(this) as any;
+            const adapter = owner.lookup('adapter:report') as ReportAdapter;
+
+            const reportText = await adapter.downloadReport(this.selectedReport, this.reportLimit, this.reportOffset);
+
+            const parsedCsv = Papa.parse(reportText);
+
+            const timestamp = new Date().toISOString().replace(/[:]/g, '-').split('.')[0];
+            const fileName = `${this.selectedReport}_${timestamp}.csv`;
+
+            this.exports.export(ExportType.CSV, fileName, parsedCsv.data);
+
+            this.notifications.success(this.intl.t('exports.report.success'));
+        } catch (error) {
+            console.log(error);
+            this.notifications.error(this.intl.t('exports.report.failure'));
+        }
+    }
+
     /**
      * Show failure message for clipboard
      *
@@ -67,7 +103,7 @@ export default class AdminGeneral extends Controller {
      */
     @action
     clipboardFailure() {
-        this.notifications.success(this.intl.t('exports.clipboard.failure'));
+        this.notifications.error(this.intl.t('exports.clipboard.failure'));
     }
 
     /**
