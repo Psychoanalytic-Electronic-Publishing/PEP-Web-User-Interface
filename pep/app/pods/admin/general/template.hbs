@@ -507,6 +507,20 @@
                                         @onChange={{fn this.updateSelectedReport}}
                                     />
                                 </fieldset>
+                                <fieldset class="mb-4">
+                                    <legend class="text-muted mb-3 radio-input-legend">
+                                        {{t "exports.report.config.legend"}}
+                                    </legend>
+                                    <FlInput
+                                        @value={{this.reportLimit}}
+                                        @placeholder={{t "exports.report.config.limit"}}
+                                        class="mb-2"
+                                    />
+                                    <FlInput
+                                        @value={{this.reportOffset}}
+                                        @placeholder={{t "exports.report.config.offset"}}
+                                    />
+                                </fieldset>
                                 <ButtonSpinner
                                     @type="primary"
                                     @label={{t "exports.report.generate"}}

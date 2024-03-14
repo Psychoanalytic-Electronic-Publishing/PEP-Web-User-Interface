@@ -38,6 +38,8 @@ export default class AdminGeneral extends Controller {
     @tracked rightSidebarItems: WidgetConfiguration[] = [];
     @tracked calendarCenterDate?: Date;
     @tracked selectedReport: string = 'Character-Count-Report';
+    @tracked reportLimit: string = '1000';
+    @tracked reportOffset: string = '0';
 
     mirrorOptions = {
         constrainDimensions: true
@@ -78,7 +80,7 @@ export default class AdminGeneral extends Controller {
             const owner = getOwner(this) as any;
             const adapter = owner.lookup('adapter:report') as ReportAdapter;
 
-            const reportText = await adapter.downloadReport(this.selectedReport);
+            const reportText = await adapter.downloadReport(this.selectedReport, this.reportLimit, this.reportOffset);
 
             const parsedCsv = Papa.parse(reportText);
 
