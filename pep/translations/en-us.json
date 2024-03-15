@@ -819,6 +819,26 @@
         "clipboard": {
             "success": "Copied to the clipboard",
             "failure": "There was an issue copying to the clipboard. Please try again later."
+        },
+        "report": {
+            "success": "Report generated successfully",
+            "failure": "There was an issue generating the report. Please try again later.",
+            "generate": "Generate Report",
+            "options": {
+                "characterCountReport": "Character Count (Standard)",
+                "characterCountDetailsBookReport": "Character Count (Books)",
+                "characterCountDetailsReport": "Character Count (Detailed)",
+                "documentViewLog": "Document View Log",
+                "documentViewStat": "Document View Stats",
+                "userSearches": "User Searches",
+                "sessionLog": "Session Log",
+                "legend": "Select a report to generate"
+            },
+            "config": {
+                "legend": "Report configuration",
+                "limit": "Result limit",
+                "offset": "Result offset"
+            }
         }
     },
     "document": {
@@ -930,7 +950,8 @@
                         "readLimit": "Glossary limit when reading"
                     }
                 },
-                "statusTitle": "Status"
+                "statusTitle": "Status",
+                "reportTitle": "Reports"
             },
             "home": {
                 "expertPicks": {
