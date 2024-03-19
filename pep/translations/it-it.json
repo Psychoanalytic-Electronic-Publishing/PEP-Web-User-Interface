@@ -2,9 +2,9 @@
     "brand": {
         "name": "PEP",
         "nameFull": {
-            "psychoanalytic": "Editoria",
-            "electronic": "Elettronica",
-            "publishing": "Psicoanalitica"
+            "psychoanalytic": "Psychoanalytic",
+            "electronic": "Electronic",
+            "publishing": "Publishing"
         },
         "copyWrite": "Copyright &copy; {year}, Psychoanalytic Electronic Publishing, ISSN 2472-6982",
         "slogan": "Una biblioteca psicoanalitica a portata di mano"
