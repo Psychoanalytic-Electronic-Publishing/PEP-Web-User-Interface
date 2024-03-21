@@ -75,23 +75,23 @@
     },
     "home": {
         "title": "Psychoanalytic Electronic Publishing",
-        "heading": "PEP - Editoria elettronica psicoanalitica",
+        "heading": "PEP - Psychoanalytic Electronic Publishing",
         "searchForDocs": "Cerca documenti",
         "expertPick": {
-            "heading": "Scelta del giorno da parte degli esperti",
+            "heading": "Articoli selezionati dagli esperti",
             "read": "Leggi",
             "loginAndRead": "Accedi e leggi",
-            "graphicFromTheArticle": "Grafiche nell'articolo: {title}"
+            "graphicFromTheArticle": "Immagine tratta dall'articolo: {title}"
         },
-        "videoCollectionTitle": "Video Collection"
+        "videoCollectionTitle": "Raccolta Video"
     },
     "search": {
-        "title": "Cerca",
+        "title": "Ricerca",
         "new": "Inizia una nuova ricerca",
         "description": "- {description}",
         "exports": {
-            "csv": "Valori separati da virgola (CSV)",
-            "ris": "Formato con tag standard (RIS)",
+            "csv": "Comma Separated Values (CSV)",
+            "ris": "Standard Tagged Format (RIS)",
             "clipboard": "Appunti",
             "title": "Esporta"
         },
@@ -101,13 +101,13 @@
             "title": "Titolo",
             "source": "Fonte",
             "kwicList": {
-                "empty": "Nessun elemento di corrispondenza contestuale trovato"
+                "empty": "Nessun risultato della ricerca in contesto"
             }
         },
         "hitsInContext": {
             "label": {
-                "short": "Corrispondenze",
-                "full": "Corrispondenze contestuali"
+                "short": "Risultati",
+                "full": "Risultati della ricerca in contesto"
             }
         },
         "sort": {
@@ -115,9 +115,9 @@
             "year": "Anno"
         },
         "item": {
-            "relatedDocuments": "Sono presenti altri documenti correlati a questo",
-            "addToFavorites": "Aggiungi a Preferiti",
-            "removeFromFavorites": "Rimuovi da Preferiti",
+            "relatedDocuments": "Sono presenti documenti correlati a questo",
+            "addToFavorites": "Aggiungi ai Preferiti",
+            "removeFromFavorites": "Rimuovi dai Preferiti",
             "addToReadLater": "Aggiungi a Leggi più tardi",
             "removeFromReadLater": "Rimuovi da Leggi più tardi",
             "notifications": {
@@ -129,7 +129,7 @@
                 },
                 "failure": {
                     "favorites": "Si è verificato un errore durante l'aggiornamento dei Preferiti",
-                    "readLater": "Si è verificato un errore durante l'aggiornamento dell'elenco Leggi più tardi"
+                    "readLater": "Si è verificato un errore durante l'aggiornamento della lista Leggi più tardi"
                 }
             }
         },
@@ -139,11 +139,11 @@
         },
         "empty": {
             "heading": "La tua ricerca inizia qui",
-            "instructions": "Utilizza il modulo a sinistra per inserire termini o frasi e cercare nel nostro database di pubblicazioni.",
+            "instructions": "Utilizza il modulo a sinistra inserendo parole o frasi per avviare la ricerca nel nostro database di pubblicazioni.",
             "tips": {
                 "heading": "Suggerimenti per la ricerca",
-                "instructions": "La Ricerca intelligente accetta tutti i tipi di input di ricerca:",
-                "tip1": "Trova termini o parole chiave: per ottenere i migliori risultati di ricerca, '<strong>'inserisci almeno due termini alla volta.'</strong>\"<br>'Ciò renderà la ricerca più precisa, restituendo solo i risultati più pertinenti.",
+                "instructions": "Smart Search accetta tutti i tipi di input di ricerca:",
+                "tip1": "Trova termini o parole chiave: per ottenere i migliori risultati di ricerca, '<strong>'inserisci almeno due termini.'</strong>\"<br>'Ciò renderà la ricerca più precisa, restituendo solo risultati pertinenti.",
                 "tip2": "Incolla un riferimento tratto da un articolo",
                 "tip3": "Utilizza un nome di rivista o parte di esso",
                 "tip4": "Cerca per nome dell'autore (o più autori)",
