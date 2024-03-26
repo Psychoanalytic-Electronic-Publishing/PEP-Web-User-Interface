@@ -12,7 +12,7 @@
     "common": {
         "save": "Salva",
         "submit": "Invia",
-        "search": "Cerca",
+        "search": "Ricerca",
         "cancel": "Annulla",
         "close": "Chiudi",
         "remove": "Rimuovi",
@@ -21,12 +21,12 @@
         "export": "Esporta",
         "print": "Stampa",
         "numResults": "{count} {count, plural, =1 {'<span class=\"text-muted \">'risultato'</span>'} other {'<span class=\"text-muted\">'risultati'</span>'}}",
-        "noResults": "Nessun risultato trovato",
+        "noResults": "Nessun risultato",
         "loadingResults": "Caricamento risultati…",
         "loading": "Caricamento...",
         "filter": "Filtra",
-        "viewAll": "Visualizza tutto",
-        "help": "Guida",
+        "viewAll": "Visualizza tutti",
+        "help": "Aiuto",
         "find": "Trova",
         "more": "Più risultati",
         "saving": "Salvataggio in corso...",
@@ -36,19 +36,19 @@
         "asterixFieldsRequired": "I campi contrassegnati con un asterisco (*) sono obbligatori."
     },
     "serverErrors": {
-        "heading": "Il seguente o seguenti {count, plural, =1 {error} other {errors}} si è o si sono verificati durante il tentativo di elaborare la tua richiesta.",
-        "undefined": "Siamo spiacenti, si è verificato un errore inaspettato.",
+        "heading": "Si è verificato il seguente {count, plural, =1 {error} other {errors}} durante il tentativo di elaborare la richiesta.",
+        "undefined": "Ci dispiace, si è verificato un errore inaspettato.",
         "unknown": {
-            "unexpected": "Siamo spiacenti, si è verificato un errore inaspettato."
+            "unexpected": "Ci dispiace, si è verificato un errore inaspettato."
         }
     },
     "nav": {
         "toggle": "Navigazione Toggle",
         "home": "Home",
-        "search": "Cerca",
-        "browse": "Sfoglia",
+        "search": "Ricerca",
+        "browse": "Esplora",
         "read": "Leggi",
-        "help": "Guida",
+        "help": "Aiuto",
         "user": {
             "about": "Chi siamo",
             "account": "Il mio account",
@@ -56,13 +56,13 @@
             "login": "Accedi",
             "logout": "Esci",
             "accountInfo": "Informazioni account",
-            "loggedInViaIP": "Accesso tramite IP",
+            "loggedInViaIP": "Accesso effettuato tramite IP",
             "aboutPepWeb": "Informazioni su PEP-Web"
         },
         "support": {
-            "link": "Supporto",
+            "link": "Assistenza",
             "reportDataError": "Segnala un errore nei dati",
-            "preferences": "Preferenze guida",
+            "preferences": "Preferenze assistenza",
             "provideFeedback": "Lascia un commento",
             "browserData": "Dati di navigazione",
             "showIntroTour": "Tour delle funzionalità",
