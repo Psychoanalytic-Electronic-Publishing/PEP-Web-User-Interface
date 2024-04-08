@@ -82,7 +82,8 @@
             "read": "Read",
             "loginAndRead": "Login and read",
             "graphicFromTheArticle": "Graphic from the article: {title}"
-        }
+        },
+        "videoCollectionTitle": "Video Collection"
     },
     "search": {
         "title": "Search",
@@ -412,7 +413,8 @@
             "journalTitle": "Table of Contents",
             "videoTitle": "Video Catalogue"
         },
-        "comments": "Comments"
+        "comments": "Comments",
+        "ijpOpenBanner": "To comment on IJP Open, you have automatically been asigned a Disqus profile. You can view and contribute to article discussions by clicking on the comment icon in the top right corner."
     },
     "relatedInfo": {
         "title": "Related Info",
@@ -817,6 +819,27 @@
         "clipboard": {
             "success": "Copied to the clipboard",
             "failure": "There was an issue copying to the clipboard. Please try again later."
+        },
+        "report": {
+            "success": "Report generated successfully",
+            "failure": "There was an issue generating the report. Please try again later.",
+            "generate": "Generate Report",
+            "options": {
+                "characterCountReport": "Character Count (Standard)",
+                "characterCountDetailsBookReport": "Character Count (Books)",
+                "characterCountDetailsReport": "Character Count (Detailed)",
+                "documentViewLog": "Document View Log",
+                "documentViewStat": "Document View Stats",
+                "userSearches": "User Searches",
+                "sessionLog": "Session Log",
+                "productTable": "Product Table",
+                "legend": "Select a report to generate"
+            },
+            "config": {
+                "legend": "Report configuration",
+                "limit": "Result limit",
+                "offset": "Result offset"
+            }
         }
     },
     "document": {
@@ -927,7 +950,9 @@
                         "searchLimit": "Glossary limit when searching",
                         "readLimit": "Glossary limit when reading"
                     }
-                }
+                },
+                "statusTitle": "Status",
+                "reportTitle": "Reports"
             },
             "home": {
                 "expertPicks": {

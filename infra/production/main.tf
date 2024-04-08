@@ -37,3 +37,7 @@ module "web_server" {
   assets_domain      = var.assets_domain
   build_version      = var.build_version
 }
+
+resource "aws_sns_topic" "translation_updates" {
+  name = "${var.stack_name}-translation-updates-${var.env}"
+}

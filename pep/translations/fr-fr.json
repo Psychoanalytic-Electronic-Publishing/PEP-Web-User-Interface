@@ -82,7 +82,8 @@
             "read": "Lire",
             "loginAndRead": "Connectez-vous et lisez",
             "graphicFromTheArticle": "Graphique issu de l'article : {title}"
-        }
+        },
+        "videoCollectionTitle": "Video Collection"
     },
     "search": {
         "title": "Rechercher",
@@ -397,7 +398,8 @@
             "journalTitle": "Table of Contents",
             "videoTitle": "Video Catalogue"
         },
-        "comments": ""
+        "comments": "",
+        "ijpOpenBanner": "To comment on IJP Open, you have automatically been asigned a Disqus profile. You can view and contribute to article discussions by clicking on the comment icon in the top right corner."
     },
     "relatedInfo": {
         "title": "Informations connexes",
@@ -802,6 +804,27 @@
         "clipboard": {
             "success": "Copié dans le presse-papiers",
             "failure": "Un incident est survenu lors de la copie dans le presse-papiers. Veuillez réessayer plus tard."
+        },
+        "report": {
+            "success": "Report generated successfully",
+            "failure": "There was an issue generating the report. Please try again later.",
+            "reportTitle": "Reports",
+            "options": {
+                "characterCountReport": "Character Count (Standard)",
+                "characterCountDetailsBookReport": "Character Count (Books)",
+                "characterCountDetailsReport": "Character Count (Detailed)",
+                "documentViewLog": "Document View Log",
+                "documentViewStat": "Document View Stats",
+                "userSearches": "User Searches",
+                "sessionLog": "Session Log",
+                "productTable": "Product Table",
+                "legend": "Select a report to generate"
+            },
+            "config": {
+                "legend": "Report configuration",
+                "limit": "Result limit",
+                "offset": "Result offset"
+            }
         }
     },
     "document": {
@@ -912,7 +935,8 @@
                         "searchLimit": "Limite du glossaire lors de la recherche",
                         "readLimit": "Limite du glossaire lors de la lecture"
                     }
-                }
+                },
+                "statusTitle": "Status"
             },
             "home": {
                 "expertPicks": {
