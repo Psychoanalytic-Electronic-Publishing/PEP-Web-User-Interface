@@ -376,6 +376,23 @@
         },
         "se": {
             "volumes": "Strachey, J. (a cura di) The Standard Edition of the Complete Psychological Works of Sigmund Freud"
+        },
+        "previews": {
+            "title": "Book Previews",
+            "description": "PEP Preview is an exciting new books feature which aims to showcase a wide collection of digitized titles from major publishers. PEP Preview enables users to explore key titles and authors from within the field of psychoanalysis, including some of the most recent publications.",
+            "subtitle": "How it works",
+            "subtitleDescription": "Books in the Preview collection are fully integrated into the PEP archive. On entering your search terms, PEP Preview titles containing a match will be linked in your search results. A significant portion of each book is available to view, and if you find a book you like, there are direct links to the publishers where you can purchase a copy.",
+            "alt": "Thumbnail for {title}",
+            "sidebarTitle": "Book Previews",
+            "sidebarLink": "Preview Books Collection",
+            "copyrightTitle": "PEP Preview Books",
+            "copyrightDescription": "PEP is publishing only limited excerpts of this book in line with copyright restrictions.",
+            "noticeText": "This is a preview document. The total pages displayed will be limited. To purchase the full version, ",
+            "noticeLink": "please click here.",
+            "redacted": {
+                "singlePageNotice": "Page {start} is not shown in this preview.",
+                "multiplePagesNotice": "Pages {start} to {end} are not shown in this preview."
+            }
         }
     },
     "read": {
