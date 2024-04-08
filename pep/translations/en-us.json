@@ -832,6 +832,7 @@
                 "documentViewStat": "Document View Stats",
                 "userSearches": "User Searches",
                 "sessionLog": "Session Log",
+                "productTable": "Product Table",
                 "legend": "Select a report to generate"
             },
             "config": {

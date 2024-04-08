@@ -505,6 +505,14 @@
                                         @checked={{eq this.selectedReport "Session-Log"}}
                                         @value="Session-Log"
                                         @onChange={{fn this.updateSelectedReport}}
+                                        @onChange={{fn this.updateSelectedReport}}
+                                        class="mb-1"
+                                    />
+                                    <RadioInput
+                                        @label={{t "exports.report.options.productTable"}}
+                                        @checked={{eq this.selectedReport "Product-Table"}}
+                                        @value="Product-Table"
+                                        @onChange={{fn this.updateSelectedReport}}
                                     />
                                 </fieldset>
                                 <fieldset class="mb-4">

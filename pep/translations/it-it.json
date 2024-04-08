@@ -2,9 +2,9 @@
     "brand": {
         "name": "PEP",
         "nameFull": {
-            "psychoanalytic": "Editoria",
-            "electronic": "Elettronica",
-            "publishing": "Psicoanalitica"
+            "psychoanalytic": "Psychoanalytic",
+            "electronic": "Electronic",
+            "publishing": "Publishing"
         },
         "copyWrite": "Copyright &copy; {year}, Psychoanalytic Electronic Publishing, ISSN 2472-6982",
         "slogan": "Una biblioteca psicoanalitica a portata di mano"
@@ -12,7 +12,7 @@
     "common": {
         "save": "Salva",
         "submit": "Invia",
-        "search": "Cerca",
+        "search": "Ricerca",
         "cancel": "Annulla",
         "close": "Chiudi",
         "remove": "Rimuovi",
@@ -21,12 +21,12 @@
         "export": "Esporta",
         "print": "Stampa",
         "numResults": "{count} {count, plural, =1 {'<span class=\"text-muted \">'risultato'</span>'} other {'<span class=\"text-muted\">'risultati'</span>'}}",
-        "noResults": "Nessun risultato trovato",
+        "noResults": "Nessun risultato",
         "loadingResults": "Caricamento risultati…",
         "loading": "Caricamento...",
         "filter": "Filtra",
-        "viewAll": "Visualizza tutto",
-        "help": "Guida",
+        "viewAll": "Visualizza tutti",
+        "help": "Aiuto",
         "find": "Trova",
         "more": "Più risultati",
         "saving": "Salvataggio in corso...",
@@ -36,19 +36,19 @@
         "asterixFieldsRequired": "I campi contrassegnati con un asterisco (*) sono obbligatori."
     },
     "serverErrors": {
-        "heading": "Il seguente o seguenti {count, plural, =1 {error} other {errors}} si è o si sono verificati durante il tentativo di elaborare la tua richiesta.",
-        "undefined": "Siamo spiacenti, si è verificato un errore inaspettato.",
+        "heading": "Si è verificato il seguente {count, plural, =1 {error} other {errors}} durante il tentativo di elaborare la richiesta.",
+        "undefined": "Ci dispiace, si è verificato un errore inaspettato.",
         "unknown": {
-            "unexpected": "Siamo spiacenti, si è verificato un errore inaspettato."
+            "unexpected": "Ci dispiace, si è verificato un errore inaspettato."
         }
     },
     "nav": {
         "toggle": "Navigazione Toggle",
         "home": "Home",
-        "search": "Cerca",
-        "browse": "Sfoglia",
+        "search": "Ricerca",
+        "browse": "Esplora",
         "read": "Leggi",
-        "help": "Guida",
+        "help": "Aiuto",
         "user": {
             "about": "Chi siamo",
             "account": "Il mio account",
@@ -56,13 +56,13 @@
             "login": "Accedi",
             "logout": "Esci",
             "accountInfo": "Informazioni account",
-            "loggedInViaIP": "Accesso tramite IP",
+            "loggedInViaIP": "Accesso effettuato tramite IP",
             "aboutPepWeb": "Informazioni su PEP-Web"
         },
         "support": {
-            "link": "Supporto",
+            "link": "Assistenza",
             "reportDataError": "Segnala un errore nei dati",
-            "preferences": "Preferenze guida",
+            "preferences": "Preferenze assistenza",
             "provideFeedback": "Lascia un commento",
             "browserData": "Dati di navigazione",
             "showIntroTour": "Tour delle funzionalità",
@@ -75,23 +75,23 @@
     },
     "home": {
         "title": "Psychoanalytic Electronic Publishing",
-        "heading": "PEP - Editoria elettronica psicoanalitica",
+        "heading": "PEP - Psychoanalytic Electronic Publishing",
         "searchForDocs": "Cerca documenti",
         "expertPick": {
-            "heading": "Scelta del giorno da parte degli esperti",
+            "heading": "Articoli selezionati dagli esperti",
             "read": "Leggi",
             "loginAndRead": "Accedi e leggi",
-            "graphicFromTheArticle": "Grafiche nell'articolo: {title}"
+            "graphicFromTheArticle": "Immagine tratta dall'articolo: {title}"
         },
-        "videoCollectionTitle": "Video Collection"
+        "videoCollectionTitle": "Raccolta Video"
     },
     "search": {
-        "title": "Cerca",
+        "title": "Ricerca",
         "new": "Inizia una nuova ricerca",
         "description": "- {description}",
         "exports": {
-            "csv": "Valori separati da virgola (CSV)",
-            "ris": "Formato con tag standard (RIS)",
+            "csv": "Comma Separated Values (CSV)",
+            "ris": "Standard Tagged Format (RIS)",
             "clipboard": "Appunti",
             "title": "Esporta"
         },
@@ -101,13 +101,13 @@
             "title": "Titolo",
             "source": "Fonte",
             "kwicList": {
-                "empty": "Nessun elemento di corrispondenza contestuale trovato"
+                "empty": "Nessun risultato della ricerca in contesto"
             }
         },
         "hitsInContext": {
             "label": {
-                "short": "Corrispondenze",
-                "full": "Corrispondenze contestuali"
+                "short": "Risultati",
+                "full": "Risultati della ricerca in contesto"
             }
         },
         "sort": {
@@ -115,9 +115,9 @@
             "year": "Anno"
         },
         "item": {
-            "relatedDocuments": "Sono presenti altri documenti correlati a questo",
-            "addToFavorites": "Aggiungi a Preferiti",
-            "removeFromFavorites": "Rimuovi da Preferiti",
+            "relatedDocuments": "Sono presenti documenti correlati a questo",
+            "addToFavorites": "Aggiungi ai Preferiti",
+            "removeFromFavorites": "Rimuovi dai Preferiti",
             "addToReadLater": "Aggiungi a Leggi più tardi",
             "removeFromReadLater": "Rimuovi da Leggi più tardi",
             "notifications": {
@@ -129,7 +129,7 @@
                 },
                 "failure": {
                     "favorites": "Si è verificato un errore durante l'aggiornamento dei Preferiti",
-                    "readLater": "Si è verificato un errore durante l'aggiornamento dell'elenco Leggi più tardi"
+                    "readLater": "Si è verificato un errore durante l'aggiornamento della lista Leggi più tardi"
                 }
             }
         },
@@ -139,11 +139,11 @@
         },
         "empty": {
             "heading": "La tua ricerca inizia qui",
-            "instructions": "Utilizza il modulo a sinistra per inserire termini o frasi e cercare nel nostro database di pubblicazioni.",
+            "instructions": "Utilizza il modulo a sinistra inserendo parole o frasi per avviare la ricerca nel nostro database di pubblicazioni.",
             "tips": {
                 "heading": "Suggerimenti per la ricerca",
-                "instructions": "La Ricerca intelligente accetta tutti i tipi di input di ricerca:",
-                "tip1": "Trova termini o parole chiave: per ottenere i migliori risultati di ricerca, '<strong>'inserisci almeno due termini alla volta.'</strong>\"<br>'Ciò renderà la ricerca più precisa, restituendo solo i risultati più pertinenti.",
+                "instructions": "Smart Search accetta tutti i tipi di input di ricerca:",
+                "tip1": "Trova termini o parole chiave: per ottenere i migliori risultati di ricerca, '<strong>'inserisci almeno due termini.'</strong>\"<br>'Ciò renderà la ricerca più precisa, restituendo solo risultati pertinenti.",
                 "tip2": "Incolla un riferimento tratto da un articolo",
                 "tip3": "Utilizza un nome di rivista o parte di esso",
                 "tip4": "Cerca per nome dell'autore (o più autori)",
@@ -817,6 +817,7 @@
                 "documentViewStat": "Document View Stats",
                 "userSearches": "User Searches",
                 "sessionLog": "Session Log",
+                "productTable": "Product Table",
                 "legend": "Select a report to generate"
             },
             "config": {
