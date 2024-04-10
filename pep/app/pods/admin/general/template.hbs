@@ -546,17 +546,17 @@
                         <div class="form-row">
                             <div class="col-12">
                                 <h4 class="d-flex justify-content-between align-items-center border-bottom mb-3 pb-1">
-                                    Update Product Table
+                                    {{t "admin.productbase.title"}}
                                 </h4>
                                 <fieldset class="mb-4">
                                     <legend class="text-muted mb-3 radio-input-legend">
-                                        Select a CSV file to upload
+                                        {{t "admin.productbase.legend"}}
                                     </legend>
                                     <input type="file" id="productbaseInput" name="productbaseFile" accept=".csv" />
                                 </fieldset>
                                 <ButtonSpinner
                                     @type="primary"
-                                    @label="Update"
+                                    @label={{t "admin.productbase.button"}}
                                     @wide={{true}}
                                     @action={{this.uploadProductbaseFile}}
                                 />
