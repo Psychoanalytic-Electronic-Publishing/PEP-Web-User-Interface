@@ -96,6 +96,25 @@ export default class AdminGeneral extends Controller {
         }
     }
 
+    @action
+    async uploadProductbaseFile() {
+        const fileInput = document.getElementById('productbaseInput') as HTMLInputElement;
+
+        if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
+            this.notifications.error('Please select a file to upload');
+            return;
+        }
+
+        const file = fileInput.files[0];
+        try {
+            await this.store.adapterFor('productbase').updateTable(file);
+            this.notifications.success('Product table updated successfully');
+        } catch (error) {
+            console.log(error);
+            this.notifications.error('There was an error updating the product table');
+        }
+    }
+
     /**
      * Show failure message for clipboard
      *
