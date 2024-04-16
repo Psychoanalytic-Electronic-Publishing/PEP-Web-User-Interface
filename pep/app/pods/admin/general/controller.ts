@@ -111,7 +111,7 @@ export default class AdminGeneral extends Controller {
             this.notifications.success('Product table updated successfully');
         } catch (error) {
             console.log(error);
-            this.notifications.error('There was an error updating the product table');
+            this.notifications.error(error);
         }
     }
 

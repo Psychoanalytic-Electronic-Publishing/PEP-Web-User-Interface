@@ -19,7 +19,8 @@ export default class ProductbaseAdapter extends Application {
         });
 
         if (!response.ok) {
-            throw new Error('Network response was not ok');
+            const jsonResp = await response.json();
+            throw new Error(jsonResp.detail || 'An error occurred while updating the productbase');
         }
 
         await response.text();
