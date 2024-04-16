@@ -888,6 +888,11 @@
             "id": "ID",
             "value": "Value"
         },
+        "productbase": {
+            "title": "Update Product Table",
+            "legend": "Select a CSV file to upload",
+            "button": "Update"
+        },
         "common": {
             "title": "General",
             "search": {
