@@ -2,13 +2,15 @@ import ENV from 'pep/config/environment';
 import Application from 'pep/pods/application/adapter';
 
 export default class ReportAdapter extends Application {
-    async downloadReport(reportType: string, limit: string, offset: string) {
+    async downloadReport(reportType: string, limit: string, offset: string, matchstr: string = '') {
+        alert('Downloading report... ' + matchstr);
         let url = `${ENV.apiBaseUrl}/v2/Admin/Reports/${reportType}?`;
         const params = new URLSearchParams({
             download: 'true',
             sortorder: 'ASC',
             limit,
-            offset
+            offset,
+            matchstr
         });
 
         const response = await fetch(url + params, {
