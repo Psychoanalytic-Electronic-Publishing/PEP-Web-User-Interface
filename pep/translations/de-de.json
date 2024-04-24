@@ -819,12 +819,14 @@
                 "userSearches": "User Searches",
                 "sessionLog": "Session Log",
                 "productTable": "Product Table",
+                "documentReferences": "Document References",
                 "legend": "Select a report to generate"
             },
             "config": {
                 "legend": "Report configuration",
                 "limit": "Result limit",
-                "offset": "Result offset"
+                "offset": "Result offset",
+                "documentId": "Document ID"
             }
         }
     },

@@ -40,6 +40,7 @@ export default class AdminGeneral extends Controller {
     @tracked selectedReport: string = 'Character-Count-Report';
     @tracked reportLimit: string = '1000';
     @tracked reportOffset: string = '0';
+    @tracked reportDocumentId: string = '';
 
     mirrorOptions = {
         constrainDimensions: true
@@ -80,7 +81,12 @@ export default class AdminGeneral extends Controller {
             const owner = getOwner(this) as any;
             const adapter = owner.lookup('adapter:report') as ReportAdapter;
 
-            const reportText = await adapter.downloadReport(this.selectedReport, this.reportLimit, this.reportOffset);
+            const reportText = await adapter.downloadReport(
+                this.selectedReport,
+                this.reportLimit,
+                this.reportOffset,
+                this.reportDocumentId
+            );
 
             const parsedCsv = Papa.parse(reportText);
 

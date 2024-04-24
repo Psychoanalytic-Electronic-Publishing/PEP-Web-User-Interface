@@ -513,6 +513,13 @@
                                         @checked={{eq this.selectedReport "Product-Table"}}
                                         @value="Product-Table"
                                         @onChange={{fn this.updateSelectedReport}}
+                                        class="mb-1"
+                                    />
+                                    <RadioInput
+                                        @label={{t "exports.report.options.documentReferences"}}
+                                        @checked={{eq this.selectedReport "Document-References"}}
+                                        @value="Document-References"
+                                        @onChange={{fn this.updateSelectedReport}}
                                     />
                                 </fieldset>
                                 <fieldset class="mb-4">
@@ -530,6 +537,15 @@
                                         @placeholder={{t "exports.report.config.offset"}}
                                         style="max-width:320px;"
                                     />
+                                    {{#if (eq this.selectedReport "Document-References")}}
+                                        <FlInput
+                                            @value={{this.reportDocumentId}}
+                                            @placeholder={{t "exports.report.config.documentId"}}
+                                            class="mt-2"
+                                            style="max-width:320px;"
+                                        />
+                                    {{/if}}
+
                                 </fieldset>
                                 <ButtonSpinner
                                     @type="primary"
