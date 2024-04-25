@@ -21,6 +21,12 @@
     }
 }
 
+.banner-image {
+    height: 61px;
+    width: 141px;
+    background: $preview-notice-bg;
+}
+
 .text-content-container {
     padding: 0.5rem;
     width: calc(0.58333 * (100% - 8px));

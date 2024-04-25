@@ -2,6 +2,15 @@
     <div class="py-3 px-4">
         <div class="card">
             <div class="card-body">
+                <div class="d-flex justify-content-center align-items-center mb-4">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <Image
+                            class="banner-image"
+                            @source="{{this.imageUrl}}/bannerPEPPREVIEWlogo"
+                            alt="{{t 'browse.previews.alt' title=document.title}}"
+                        />
+                    </div>
+                </div>
                 <h2 class="text-2xl font-bold mb-3">{{t "browse.previews.title"}}</h2>
                 <p class="mb-4">{{t "browse.previews.description"}}</p>
                 <h3 class="text-2xl font-bold mb-3">{{t "browse.previews.subtitle"}}</h3>
