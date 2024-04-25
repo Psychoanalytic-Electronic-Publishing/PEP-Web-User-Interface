@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   infrastructure:
-    uses: jordanallen-dev/reusable-terraform-workflow/.github/workflows/terraform.yml@main
+    uses: Psychoanalytic-Electronic-Publishing/reusable-terraform-workflow/.github/workflows/terraform.yml@main
     with:
       module-path: infra/video
       apply-environment: video

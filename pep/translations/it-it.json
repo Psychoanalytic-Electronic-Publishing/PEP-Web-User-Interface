@@ -835,12 +835,14 @@
                 "userSearches": "User Searches",
                 "sessionLog": "Session Log",
                 "productTable": "Product Table",
+                "documentReferences": "Document References",
                 "legend": "Select a report to generate"
             },
             "config": {
                 "legend": "Report configuration",
                 "limit": "Result limit",
-                "offset": "Result offset"
+                "offset": "Result offset",
+                "documentId": "Document ID"
             }
         }
     },
@@ -904,6 +906,11 @@
             "title": "Informazioni specificate dall'amministratore",
             "id": "ID",
             "value": "Valore"
+        },
+        "productbase": {
+            "title": "Update Product Table",
+            "legend": "Select a CSV file to upload",
+            "button": "Update"
         },
         "common": {
             "title": "Generale",

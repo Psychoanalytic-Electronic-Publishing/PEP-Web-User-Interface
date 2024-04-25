@@ -40,6 +40,7 @@ export default class AdminGeneral extends Controller {
     @tracked selectedReport: string = 'Character-Count-Report';
     @tracked reportLimit: string = '1000';
     @tracked reportOffset: string = '0';
+    @tracked reportDocumentId: string = '';
 
     mirrorOptions = {
         constrainDimensions: true
@@ -80,7 +81,12 @@ export default class AdminGeneral extends Controller {
             const owner = getOwner(this) as any;
             const adapter = owner.lookup('adapter:report') as ReportAdapter;
 
-            const reportText = await adapter.downloadReport(this.selectedReport, this.reportLimit, this.reportOffset);
+            const reportText = await adapter.downloadReport(
+                this.selectedReport,
+                this.reportLimit,
+                this.reportOffset,
+                this.reportDocumentId
+            );
 
             const parsedCsv = Papa.parse(reportText);
 
@@ -93,6 +99,25 @@ export default class AdminGeneral extends Controller {
         } catch (error) {
             console.log(error);
             this.notifications.error(this.intl.t('exports.report.failure'));
+        }
+    }
+
+    @action
+    async uploadProductbaseFile() {
+        const fileInput = document.getElementById('productbaseInput') as HTMLInputElement;
+
+        if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
+            this.notifications.error('Please select a file to upload');
+            return;
+        }
+
+        const file = fileInput.files[0];
+        try {
+            await this.store.adapterFor('productbase').updateTable(file);
+            this.notifications.success('Product table updated successfully');
+        } catch (error) {
+            console.log(error);
+            this.notifications.error(error);
         }
     }
 
