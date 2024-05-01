@@ -47,10 +47,6 @@ export default class DocumentRead extends Component<BaseGlimmerSignature<Documen
             return IJP_OPEN_CODE.toLowerCase();
         }
 
-        if (this.args.model.accessClassification === 'preview') {
-            return 'preview';
-        }
-
         return '';
     }
 

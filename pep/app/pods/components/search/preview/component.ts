@@ -78,10 +78,6 @@ export default class SearchPreview extends Component<BaseGlimmerSignature<Search
             return IJP_OPEN_CODE.toLowerCase();
         }
 
-        if (this.result?.accessClassification === 'preview') {
-            return 'preview';
-        }
-
         return '';
     }
 
