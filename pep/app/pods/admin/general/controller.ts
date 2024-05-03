@@ -113,7 +113,7 @@ export default class AdminGeneral extends Controller {
 
         const file = fileInput.files[0];
         try {
-            await this.store.adapterFor('productbase').updateTable(file);
+            await this.store.adapterFor('csv-import').updateTable(file, 'Product-Table');
             this.notifications.success('Product table updated successfully');
         } catch (error) {
             console.log(error);
