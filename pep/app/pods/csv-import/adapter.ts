@@ -1,7 +1,7 @@
 import ENV from 'pep/config/environment';
 import Application from 'pep/pods/application/adapter';
 
-type DocumentType = 'Product-Table' | 'Document-References';
+export type DocumentType = 'Product-Table' | 'Document-References';
 
 export default class CsvImportAdapter extends Application {
     async updateTable(file: File, documentType: DocumentType) {
