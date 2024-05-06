@@ -819,7 +819,7 @@
                 "sessionLog": "Session Log",
                 "productTable": "Product Table",
                 "documentReferences": "Document References",
-                "legend": "Select a report to generate"
+                "legend": "Select document type"
             },
             "config": {
                 "legend": "Report configuration",
@@ -891,9 +891,9 @@
             "value": "Value"
         },
         "productbase": {
-            "title": "Update Product Table",
+            "title": "Upload CSV File",
             "legend": "Select a CSV file to upload",
-            "button": "Update"
+            "button": "Upload"
         },
         "common": {
             "title": "General",

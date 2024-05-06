@@ -394,7 +394,7 @@
         },
         "sidebar": {
             "searchTitle": "Your Search Results",
-            
+
             "bookTitle": "Book Sections",
             "journalTitle": "Table of Contents",
             "videoTitle": "Video Catalogue"
@@ -820,7 +820,7 @@
                 "sessionLog": "Session Log",
                 "productTable": "Product Table",
                 "documentReferences": "Document References",
-                "legend": "Select a report to generate"
+                "legend": "Select document type"
             },
             "config": {
                 "legend": "Report configuration",
@@ -892,9 +892,9 @@
             "value": "Wert"
         },
         "productbase": {
-            "title": "Update Product Table",
+            "title": "Upload CSV File",
             "legend": "Select a CSV file to upload",
-            "button": "Update"
+            "button": "Upload"
         },
         "common": {
             "title": "Allgemein",
