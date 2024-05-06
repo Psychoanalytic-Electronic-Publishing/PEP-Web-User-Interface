@@ -565,7 +565,25 @@
                                     {{t "admin.productbase.title"}}
                                 </h4>
                                 <fieldset class="mb-4">
-                                    <legend class="text-muted mb-3 radio-input-legend">
+                                    <legend class="text-muted mb-2 radio-input-legend">
+                                        {{t "exports.report.options.legend"}}
+                                    </legend>
+                                    <RadioInput
+                                        @label={{t "exports.report.options.productTable"}}
+                                        @checked={{eq this.importType "Product-Table"}}
+                                        @value="Product-Table"
+                                        @onChange={{fn this.updateImportType}}
+                                        class="mb-1"
+                                    />
+                                    <RadioInput
+                                        @label={{t "exports.report.options.documentReferences"}}
+                                        @checked={{eq this.importType "Document-References"}}
+                                        @value="Document-References"
+                                        @onChange={{fn this.updateImportType}}
+                                    />
+                                </fieldset>
+                                <fieldset class="mb-4">
+                                    <legend class="text-muted mb-2 radio-input-legend">
                                         {{t "admin.productbase.legend"}}
                                     </legend>
                                     <input type="file" id="productbaseInput" name="productbaseFile" accept=".csv" />
