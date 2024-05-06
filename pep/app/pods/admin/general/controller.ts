@@ -22,6 +22,7 @@ import { getOwner } from '@ember/application';
 import ReportAdapter from 'pep/pods/report/adapter';
 import ExportsService, { ExportType } from 'pep/services/exports';
 import Papa from 'papaparse';
+import { DocumentType } from 'pep/pods/csv-import/adapter';
 
 export default class AdminGeneral extends Controller {
     @service intl!: IntlService;
@@ -38,6 +39,7 @@ export default class AdminGeneral extends Controller {
     @tracked rightSidebarItems: WidgetConfiguration[] = [];
     @tracked calendarCenterDate?: Date;
     @tracked selectedReport: string = 'Character-Count-Report';
+    @tracked importType: DocumentType = 'Product-Table';
     @tracked reportLimit: string = '1000';
     @tracked reportOffset: string = '0';
     @tracked reportDocumentId: string = '';
@@ -73,6 +75,11 @@ export default class AdminGeneral extends Controller {
     @action
     updateSelectedReport(reportType: string) {
         this.selectedReport = reportType;
+    }
+
+    @action
+    updateImportType(importType: DocumentType) {
+        this.importType = importType;
     }
 
     @action
@@ -113,7 +120,7 @@ export default class AdminGeneral extends Controller {
 
         const file = fileInput.files[0];
         try {
-            await this.store.adapterFor('productbase').updateTable(file);
+            await this.store.adapterFor('csv-import').updateTable(file, this.importType);
             this.notifications.success('Product table updated successfully');
         } catch (error) {
             console.log(error);
