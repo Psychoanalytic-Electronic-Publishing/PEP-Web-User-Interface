@@ -9,7 +9,8 @@ export default class BrowsePreviews extends Route {
     model() {
         const queryParams = buildSearchQueryParams({
             smartSearchTerm: 'file_classification:preview',
-            sort: 'authors asc'
+            sort: 'authors asc',
+            limit: 50
         });
 
         return this.store.query('search-document', queryParams, {

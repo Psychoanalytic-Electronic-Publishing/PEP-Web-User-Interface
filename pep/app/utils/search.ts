@@ -66,6 +66,7 @@ interface SearchQueryParams extends SearchQueryStrParams {
     facetmincount?: number | null;
     synonyms: boolean;
     abstract: boolean;
+    limit: number;
     highlightlimit?: number;
     sort?: string;
 }
@@ -86,6 +87,7 @@ type BuildSearchQueryParams = {
     joinOp?: 'AND' | 'OR';
     facetLimit?: number | null;
     facetMinCount?: number | null;
+    limit?: number;
     highlightlimit?: number;
     abstract?: boolean;
     sort?: string;
@@ -125,6 +127,7 @@ export function buildSearchQueryParams(searchQueryParams: BuildSearchQueryParams
         joinOp = 'AND',
         facetLimit = null,
         facetMinCount = null,
+        limit = 15,
         highlightlimit,
         abstract,
         sort
@@ -140,6 +143,7 @@ export function buildSearchQueryParams(searchQueryParams: BuildSearchQueryParams
         viewcount: viewedCount,
         viewperiod: `${!isNone(viewedPeriod) && !isEmpty(viewedCount) ? viewedPeriod : ''}`,
         abstract: abstract ?? true,
+        limit,
         highlightlimit,
         synonyms,
         sort
