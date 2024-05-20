@@ -1460,8 +1460,15 @@
     <xsl:template match="purchase">
         <div class="notice card">
             <span data-i18n-key="browse.previews.noticeText"><a data-type="doi" data-i18n-key="browse.previews.noticeLink">
-                <xsl:attribute name="href">
-                    <xsl:value-of select="concat('https://doi.org/', @doi)"/>
+              <xsl:attribute name="href">
+                    <xsl:choose>
+                        <xsl:when test="contains(@doi, 'https://')">
+                            <xsl:value-of select="@doi"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:value-of select="concat('https://doi.org/', @doi)"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
                 </xsl:attribute>
             </a>
             </span>
