@@ -4,6 +4,7 @@ import { inject as service } from '@ember/service';
 import { cached, tracked } from '@glimmer/tracking';
 
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
+import RouterService from '@ember/routing/router-service';
 
 import { FREUD_GW_CODE, FREUD_SE_CODE, PEP_GLOSSARY_ID } from 'pep/constants/books';
 import Book from 'pep/pods/book/model';
@@ -19,6 +20,7 @@ export enum BrowseTabs {
 
 export default class Browse extends Controller {
     @service fastboot!: FastbootService;
+    @service router!: RouterService; // Inject the router service
 
     @tracked tab = BrowseTabs.JOURNALS;
     @tracked journals!: Journal[];
@@ -27,6 +29,19 @@ export default class Browse extends Controller {
     @tracked filter = '';
 
     tabs = BrowseTabs;
+
+    constructor() {
+        super(...arguments);
+        this.router.on('routeDidChange', this.setTabFromRoute.bind(this));
+    }
+
+    setTabFromRoute() {
+        const currentURL = this.router.currentURL;
+
+        if (currentURL === '/browse/previews') {
+            this.changeTab(BrowseTabs.BOOKS);
+        }
+    }
 
     /**
      * Filtered Books - Takes the all the books, and separates them by if the are freud (GW or SE book code),

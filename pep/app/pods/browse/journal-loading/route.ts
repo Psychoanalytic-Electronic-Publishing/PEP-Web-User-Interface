@@ -1,3 +1,3 @@
 import Route from '@ember/routing/route';
 
-export default class BrowseJournalLoading extends Route {}
+export default class BrowsePreviewsLoading extends Route {}

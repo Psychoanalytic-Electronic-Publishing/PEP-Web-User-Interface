@@ -33,12 +33,6 @@ $document-paragraph-indent: 1.5rem;
         }
     }
 
-    &.has-watermark-preview {
-        &::before {
-            background-image: url(/assets/images/watermark-preview.png);
-        }
-    }
-
     &.book {
         .banner {
             a {

@@ -44,7 +44,8 @@
                                 @containerSelector=".sidebar-content"
                                 @class="list-unstyled"
                                 @estimateHeight={{100}}
-                                @renderAll={{this.fastboot.isFastBoot}} as |result|
+                                @renderAll={{this.fastboot.isFastBoot}}
+                                as |result|
                             >
                                 <Browse::SidebarItem @item={{result}} @route="browse.journal">
                                     {{result.srcTitle}}
@@ -64,65 +65,88 @@
                         @isLoading={{not this.books}}
                         @options={{hash numLines=10}}
                     >
-                        <h5>
-                            {{t "browse.selection.books.freud"}}
-                        </h5>
-                        {{#if
-                            (or
-                                this.filteredBooks.freudsCollectedWorks.GW.books
-                                this.filteredBooks.freudsCollectedWorks.SE.books
-                            )
-                        }}
-                            {{#if this.filteredBooks.freudsCollectedWorks.GW.books}}
-                                <LinkTo
-                                    @route="browse.book.gw"
-                                    @activeClass="bg-backdrop"
-                                    @class="d-flex align-items-center justify-content-between p-1"
-                                >
-                                    <span class="small w-90">
-                                        {{this.filteredBooks.freudsCollectedWorks.GW.title}}
-                                    </span>
-                                </LinkTo>
-                            {{/if}}
-                            {{#if this.filteredBooks.freudsCollectedWorks.SE.books}}
-                                <LinkTo
-                                    @route="browse.book.se"
-                                    @activeClass="bg-backdrop"
-                                    @class="d-flex align-items-center justify-content-between p-1"
-                                >
-                                    <span class="small w-90">
-                                        {{this.filteredBooks.freudsCollectedWorks.SE.title}}
-                                    </span>
-                                </LinkTo>
-                            {{/if}}
-                        {{else}}
-                            <div class="text-muted small">
-                                {{t "browse.selection.search.noResults" term=this.filter}}
-                            </div>
-                        {{/if}}
-                        <h5>
-                            {{t "browse.selection.books.other"}}
-                        </h5>
-                        {{#if this.filteredBooks.others}}
-                            <VerticalCollection
-                                @items={{this.filteredBooks.others}}
-                                @tagName="ul"
-                                @containerSelector=".sidebar-content"
-                                @class="list-unstyled"
-                                @estimateHeight={{100}}
-                                @renderAll={{this.fastboot.isFastBoot}} as |result|
+                        <div class="mb-3">
+                            <h5>
+                                {{t "browse.previews.sidebarTitle"}}
+                            </h5>
+                            <LinkTo
+                                @route="browse.previews"
+                                @activeClass="bg-backdrop"
+                                @class="d-flex align-items-center justify-content-between p-1"
                             >
-                                <li class="p-1">
-                                    <Browse::SidebarItem @item={{result}} @route="browse.read">
-                                        {{result.authors}} ({{result.pub_year}}) {{result.title}}
-                                    </Browse::SidebarItem>
-                                </li>
-                            </VerticalCollection>
-                        {{else}}
-                            <div class="text-muted small">
-                                {{t "browse.selection.search.noResults" term=this.filter}}
-                            </div>
-                        {{/if}}
+                                <span class="small w-90">
+                                    {{t "browse.previews.sidebarLink"}}
+                                </span>
+                            </LinkTo>
+                        </div>
+
+                        <div class="mb-3">
+                            <h5>
+                                {{t "browse.selection.books.freud"}}
+                            </h5>
+                            {{#if
+                                (or
+                                    this.filteredBooks.freudsCollectedWorks.GW.books
+                                    this.filteredBooks.freudsCollectedWorks.SE.books
+                                )
+                            }}
+                                {{#if this.filteredBooks.freudsCollectedWorks.GW.books}}
+                                    <LinkTo
+                                        @route="browse.book.gw"
+                                        @activeClass="bg-backdrop"
+                                        @class="d-flex align-items-center justify-content-between p-1"
+                                    >
+                                        <span class="small w-90">
+                                            {{this.filteredBooks.freudsCollectedWorks.GW.title}}
+                                        </span>
+                                    </LinkTo>
+                                {{/if}}
+                                {{#if this.filteredBooks.freudsCollectedWorks.SE.books}}
+                                    <LinkTo
+                                        @route="browse.book.se"
+                                        @activeClass="bg-backdrop"
+                                        @class="d-flex align-items-center justify-content-between p-1"
+                                    >
+                                        <span class="small w-90">
+                                            {{this.filteredBooks.freudsCollectedWorks.SE.title}}
+                                        </span>
+                                    </LinkTo>
+                                {{/if}}
+                            {{else}}
+                                <div class="text-muted small">
+                                    {{t "browse.selection.search.noResults" term=this.filter}}
+                                </div>
+                            {{/if}}
+                        </div>
+
+                        <div class="mb-3">
+                            <h5>
+                                {{t "browse.selection.books.other"}}
+                            </h5>
+                            {{#if this.filteredBooks.others}}
+                                <VerticalCollection
+                                    @items={{this.filteredBooks.others}}
+                                    @tagName="ul"
+                                    @containerSelector=".sidebar-content"
+                                    @class="list-unstyled"
+                                    @estimateHeight={{100}}
+                                    @renderAll={{this.fastboot.isFastBoot}}
+                                    as |result|
+                                >
+                                    <li class="p-1">
+                                        <Browse::SidebarItem @item={{result}} @route="browse.read">
+                                            {{result.authors}}
+                                            ({{result.pub_year}})
+                                            {{result.title}}
+                                        </Browse::SidebarItem>
+                                    </li>
+                                </VerticalCollection>
+                            {{else}}
+                                <div class="text-muted small">
+                                    {{t "browse.selection.search.noResults" term=this.filter}}
+                                </div>
+                            {{/if}}
+                        </div>
                     </ContentWithPlaceholder>
                 </tabs.panel>
 
@@ -139,7 +163,8 @@
                                 @containerSelector=".sidebar-content"
                                 @class="list-unstyled"
                                 @estimateHeight={{100}}
-                                @renderAll={{this.fastboot.isFastBoot}} as |result|
+                                @renderAll={{this.fastboot.isFastBoot}}
+                                as |result|
                             >
                                 <Browse::SidebarItem @item={{result}} @route="browse.read" class="video-sidebar-item">
                                     {{html-safe result.displayTitle}}

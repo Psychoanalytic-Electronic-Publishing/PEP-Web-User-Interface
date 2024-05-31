@@ -1,5 +1,14 @@
 <Page::Sidebar @side="right">
     <Page::Sidebar::Content @scrollableNamespace="sidebar-right">
+        {{#if this.showPreviewsWidget}}
+            <div class="px-2 pt-3 mb-3">
+                <div class="bg-white p-3">
+                    <h5>{{t "browse.previews.copyrightTitle"}}</h5>
+                    <p>{{t "browse.previews.copyrightDescription"}}</p>
+                </div>
+            </div>
+
+        {{/if}}
         {{#if this.showLoginWidget}}
             <div class="px-2 pt-3">
                 <Page::Sidebar::Widgets::SignIn />
