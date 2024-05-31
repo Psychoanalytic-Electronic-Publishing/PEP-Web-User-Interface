@@ -15,7 +15,9 @@ import ModalService from '@gavant/ember-modals/services/modal';
 
 import { PepSecureAuthenticatedData } from 'pep/api';
 import {
-    FASTBOOT_SESSION_WORKAROUND_COOKIE_NAME, HIDE_TOUR_COOKIE_NAME, SESSION_COOKIE_NAME
+    FASTBOOT_SESSION_WORKAROUND_COOKIE_NAME,
+    HIDE_TOUR_COOKIE_NAME,
+    SESSION_COOKIE_NAME
 } from 'pep/constants/cookies';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import PageLayout from 'pep/mixins/page-layout';
@@ -149,6 +151,8 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
         super.setupController(controller, model, transition);
         const hideTour = this.cookies.read(HIDE_TOUR_COOKIE_NAME);
 
+        const hidePreviewPop = this.cookies.read('hidePreviewPop'); // Remove this after PEP Preview notice is no longer needed
+
         if (this.currentUser.preferences?.tourEnabled && !hideTour) {
             this.introTour.show();
         }
@@ -162,6 +166,17 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
             if (valueFromConfig) {
                 this.modal.open('admin-specified-information', { information: valueFromConfig });
                 controller.information = null;
+            }
+        }
+
+        // Remove this after PEP Preview notice is no longer needed
+        if (!hidePreviewPop) {
+            const valueFromConfig = this.configuration.content.global.adminSpecifiedInformationItems.find(
+                (item) => item.id === 'interimrelease2024'
+            );
+            if (valueFromConfig) {
+                this.modal.open('admin-specified-information', { information: valueFromConfig });
+                this.cookies.write('hidePreviewPop', 'true', {});
             }
         }
     }
