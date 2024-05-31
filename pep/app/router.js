@@ -8,18 +8,19 @@ export default class Router extends EmberRouter {
     rootURL = config.routerRootURL;
 }
 
-Router.map(function() {
+Router.map(function () {
     this.route('login');
-    this.route('search', function() {
+    this.route('search', function () {
         this.route('read', { path: '/document/:document_id' });
     });
-    this.route('browse', function() {
+    this.route('browse', function () {
+        this.route('previews');
         this.route('videos');
-        this.route('journal', { path: '/:pep_code/volumes' }, function() {
+        this.route('journal', { path: '/:pep_code/volumes' }, function () {
             this.route('volume', { path: '/:volume_number' });
         });
 
-        this.route('book', function() {
+        this.route('book', function () {
             this.route('gw');
             this.route('se');
         });
@@ -28,7 +29,7 @@ Router.map(function() {
 
     this.route('most-cited');
     this.route('most-viewed');
-    this.route('admin', function() {
+    this.route('admin', function () {
         this.route('language', { path: '/language/:lang_code' });
         this.route('general');
     });

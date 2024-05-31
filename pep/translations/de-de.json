@@ -82,7 +82,8 @@
             "read": "Lesen",
             "loginAndRead": "Anmelden und lesen",
             "graphicFromTheArticle": "Abbildung aus dem Artikel: {title}"
-        }
+        },
+        "videoCollectionTitle": "Video Collection"
     },
     "search": {
         "title": "Suche",
@@ -375,6 +376,23 @@
         },
         "se": {
             "volumes": "Strachey, J. (Hrsg.) Die Standardausgabe der vollständigen psychologischen Werke von Sigmund Freud"
+        },
+        "previews": {
+            "title": "Book Previews",
+            "description": "PEP Preview is an exciting new books feature which aims to showcase a wide collection of digitized titles from major publishers. PEP Preview enables users to explore key titles and authors from within the field of psychoanalysis, including some of the most recent publications.",
+            "subtitle": "How it works",
+            "subtitleDescription": "Books in the Preview collection are fully integrated into the PEP archive. On entering your search terms, PEP Preview titles containing a match will be linked in your search results. A significant portion of each book is available to view, and if you find a book you like, there are direct links to the publishers where you can purchase a copy.",
+            "alt": "Thumbnail for {title}",
+            "sidebarTitle": "Book Previews",
+            "sidebarLink": "Preview Books Collection",
+            "copyrightTitle": "PEP Preview Books",
+            "copyrightDescription": "PEP publishes only limited excerpts of preview books in line with copyright restrictions.",
+            "noticeText": "This is a preview document. The total pages displayed will be limited. To purchase the full version, ",
+            "noticeLink": "please click here.",
+            "redacted": {
+                "singlePageNotice": "Page {start} is not shown in this preview.",
+                "multiplePagesNotice": "Pages {start} to {end} are not shown in this preview."
+            }
         }
     },
     "read": {
@@ -393,12 +411,13 @@
         },
         "sidebar": {
             "searchTitle": "Your Search Results",
-            
+
             "bookTitle": "Book Sections",
             "journalTitle": "Table of Contents",
             "videoTitle": "Video Catalogue"
         },
-        "comments": ""
+        "comments": "",
+        "ijpOpenBanner": "To comment on IJP Open, you have automatically been asigned a Disqus profile. You can view and contribute to article discussions by clicking on the comment icon in the top right corner."
     },
     "relatedInfo": {
         "title": "Zugehörige Informationen",
@@ -473,14 +492,14 @@
                 "help": "Sehen Sie sich hier das neueste thematische Video in unserem System an."
             },
             "whoCitedThis": {
-                "title": "",
+                "title": "Wer hat das zitiert?",
                 "noResults": "",
                 "help": ""
             },
             "whatsNew": {
                 "title": "Was ist neu?",
                 "issue": "Ausgabe Nr.{issueNum}, Band {volNum} • {updatedDate}",
-                "signUp": "Sie können sich jetzt registrieren, um benachrichtigt zu werden, wenn neue Inhalte hinzugefügt werden, indem Sie unten Ihre E-Mail-Adresse eingeben. Wenn neue Inhalte hinzugefügt werden, senden wir Ihnen automatisch eine E-Mail mit einer Liste der hinzugefügten Inhalte und Links dazu auf PEP-Web!",
+                "signUp": "Um regelmäßige Updates über neue Inhalte zu erhalten, die zu PEP-Web hinzugefügt wurden, wählen Sie bitte Ihre Präferenzen mit den untenstehenden  Kontrollkästchen aus. Um sich abzumelden, deaktivieren Sie einfach den Inhaltstyp, für den Sie keine Benachrichtigung erhalten möchten.",
                 "emailAddress": "E-Mail-Adresse",
                 "update": "Update-Benachrichtigungen",
                 "help": "Die neuesten Ergänzungen zu unserem System können hier eingesehen werden.",
@@ -803,6 +822,29 @@
         "clipboard": {
             "success": "In die Zwischenablage kopiert",
             "failure": "Beim Kopieren in die Zwischenablage ist ein Problem aufgetreten. Bitte versuchen Sie es später noch einmal."
+        },
+        "report": {
+            "success": "Report generated successfully",
+            "failure": "There was an issue generating the report. Please try again later.",
+            "reportTitle": "Reports",
+            "options": {
+                "characterCountReport": "Character Count (Standard)",
+                "characterCountDetailsBookReport": "Character Count (Books)",
+                "characterCountDetailsReport": "Character Count (Detailed)",
+                "documentViewLog": "Document View Log",
+                "documentViewStat": "Document View Stats",
+                "userSearches": "User Searches",
+                "sessionLog": "Session Log",
+                "productTable": "Product Table",
+                "documentReferences": "Document References",
+                "legend": "Select document type"
+            },
+            "config": {
+                "legend": "Report configuration",
+                "limit": "Result limit",
+                "offset": "Result offset",
+                "documentId": "Document ID"
+            }
         }
     },
     "document": {
@@ -866,6 +908,11 @@
             "id": "ID",
             "value": "Wert"
         },
+        "productbase": {
+            "title": "Upload CSV File",
+            "legend": "Select a CSV file to upload",
+            "button": "Upload"
+        },
         "common": {
             "title": "Allgemein",
             "search": {
@@ -913,7 +960,8 @@
                         "searchLimit": "Max. Anzahl der Glossareinträge bei der Suche",
                         "readLimit": "Max. Anzahl der Glossareinträge beim Lesen"
                     }
-                }
+                },
+                "statusTitle": "Status"
             },
             "home": {
                 "expertPicks": {

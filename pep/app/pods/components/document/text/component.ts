@@ -38,6 +38,7 @@ import { buildJumpToHitsHTML, loadXSLT, parseXML } from 'pep/utils/dom';
 import { BaseGlimmerSignature } from 'pep/utils/types';
 import { reject } from 'rsvp';
 import tippy, { Instance, Props } from 'tippy.js';
+import { arrow, link, tooltip } from './svg';
 
 interface DocumentTextArgs {
     document: Document;
@@ -332,14 +333,16 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
                 pageOrTarget = referenceArray[1];
             }
 
-            if (documentId === this.args.document.id && pageOrTarget) {
+            pageOrTarget = pageOrTarget?.substring(0, 1) === 'P' ? eventTarget.innerText : pageOrTarget;
+
+            if (documentId === this.args.document.id && pageOrTarget && this.args.target !== 'abstract') {
                 //scroll to page number
-                this.scrollToPageOrTarget(eventTarget.innerText);
+                this.scrollToPageOrTarget(pageOrTarget);
             } else if (documentId) {
                 //transition to a different document with a specific page
                 this.router.transitionTo('browse.read', documentId, {
                     queryParams: {
-                        page: eventTarget.innerText
+                        page: pageOrTarget
                     }
                 });
             }
@@ -506,6 +509,12 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
         }
 
         if (!element) {
+            element =
+                this.containerElement?.querySelector(`[data-page-start='${pageOrTarget}']`) ??
+                this.containerElement?.querySelector(`#${pageOrTarget}`);
+        }
+
+        if (!element) {
             return;
         }
 
@@ -578,7 +587,7 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
     async setupListeners(element: HTMLElement): Promise<void> {
         this.containerElement = element;
         this.scrollableElement = this.containerElement?.closest('.page-content-inner');
-        scheduleOnce('afterRender', this, this.attachTooltips);
+        scheduleOnce('afterRender', this, this.afterRender);
         const observer = new IntersectionObserver(
             (entries) => {
                 if (this.pageTracking) {
@@ -615,6 +624,86 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
             this.visiblePages = newVisiblePages;
             this.args.viewablePageUpdate?.(this.visiblePages[0]);
         }
+    }
+
+    async afterRender() {
+        this.processTranslations();
+        if (this.args.document.document && !this.args.document.accessLimited) {
+            await this.insertBiblioLinks();
+        }
+        this.attachTooltips();
+    }
+
+    async processTranslations() {
+        const elements = this.containerElement?.querySelectorAll('[data-i18n-key]');
+        elements?.forEach((element) => {
+            const key = element.getAttribute('data-i18n-key');
+            if (!key) return;
+
+            let params: { [key: string]: string } = {};
+
+            Array.from(element.attributes).forEach((attr) => {
+                if (attr.name.startsWith('data-i18n-param-')) {
+                    const paramName = attr.name.substring('data-i18n-param-'.length);
+                    params[paramName] = attr.value;
+                }
+            });
+
+            const translation = this.intl.t(key, params);
+
+            if (element.childNodes.length === 0 || element.childNodes[0].nodeType !== Node.TEXT_NODE) {
+                const textNode = document.createTextNode(translation);
+                element.prepend(textNode);
+            } else {
+                element.childNodes[0].nodeValue = translation;
+            }
+        });
+    }
+
+    async insertBiblioLinks() {
+        const bibliographyData = await this.store.query('biblio', {
+            id: this.args.document.id,
+            documentYear: this.args.document.year
+        });
+
+        bibliographyData.forEach((biblio) => {
+            const biblioElement = this.containerElement?.querySelector(`[id="${biblio.refLocalId}"]`);
+            if (!biblioElement) return;
+
+            // TEMPORARY UNTIL FULl REBUILD REMOVES LINKS FROM XML
+            const bibxElements = biblioElement.querySelectorAll('[class^="bibx"]');
+            bibxElements.forEach((element) => element.remove());
+            // END TEMPORARY CODE
+
+            if (biblio.refRx) {
+                const anchorElement = document.createElement('a');
+                anchorElement.setAttribute('class', 'bibx pl-2');
+                anchorElement.setAttribute('data-type', 'BIBX');
+                anchorElement.setAttribute('data-document-id', biblio.refRx);
+
+                const arrowElement = new DOMParser().parseFromString(arrow, 'text/html').body.firstChild as SVGElement;
+                anchorElement.appendChild(arrowElement);
+
+                biblioElement.appendChild(anchorElement);
+            } else if (biblio.refRxcf) {
+                const anchorElement = document.createElement('a');
+                anchorElement.setAttribute('class', 'bibx pl-2');
+                anchorElement.setAttribute('data-type', 'BIBX_CF');
+                anchorElement.setAttribute('data-document-id', biblio.refRxcf);
+
+                const linkElement = new DOMParser().parseFromString(link, 'text/html').body.firstChild as SVGElement;
+                anchorElement.appendChild(linkElement);
+                biblioElement.appendChild(anchorElement);
+                const spanElement = document.createElement('span');
+                spanElement.setAttribute('class', 'bibx-related-info ml-1');
+
+                const tooltipElement = new DOMParser().parseFromString(tooltip, 'text/html').body
+                    .firstChild as SVGElement;
+                spanElement.appendChild(tooltipElement);
+
+                biblioElement.appendChild(spanElement);
+            }
+        });
     }
 
     /**

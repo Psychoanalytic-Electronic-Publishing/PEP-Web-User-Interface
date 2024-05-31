@@ -82,7 +82,8 @@
             "read": "Lire",
             "loginAndRead": "Connectez-vous et lisez",
             "graphicFromTheArticle": "Graphique issu de l'article : {title}"
-        }
+        },
+        "videoCollectionTitle": "Video Collection"
     },
     "search": {
         "title": "Rechercher",
@@ -375,6 +376,23 @@
         },
         "se": {
             "volumes": "Strachey, J. (éd.) The Standard Edition of the Complete Psychological Works of Sigmund Freud"
+        },
+        "previews": {
+            "title": "Book Previews",
+            "description": "PEP Preview is an exciting new books feature which aims to showcase a wide collection of digitized titles from major publishers. PEP Preview enables users to explore key titles and authors from within the field of psychoanalysis, including some of the most recent publications.",
+            "subtitle": "How it works",
+            "subtitleDescription": "Books in the Preview collection are fully integrated into the PEP archive. On entering your search terms, PEP Preview titles containing a match will be linked in your search results. A significant portion of each book is available to view, and if you find a book you like, there are direct links to the publishers where you can purchase a copy.",
+            "alt": "Thumbnail for {title}",
+            "sidebarTitle": "Book Previews",
+            "sidebarLink": "Preview Books Collection",
+            "copyrightTitle": "PEP Preview Books",
+            "copyrightDescription": "PEP publishes only limited excerpts of preview books in line with copyright restrictions.",
+            "noticeText": "This is a preview document. The total pages displayed will be limited. To purchase the full version, ",
+            "noticeLink": "please click here.",
+            "redacted": {
+                "singlePageNotice": "Page {start} is not shown in this preview.",
+                "multiplePagesNotice": "Pages {start} to {end} are not shown in this preview."
+            }
         }
     },
     "read": {
@@ -397,7 +415,8 @@
             "journalTitle": "Table of Contents",
             "videoTitle": "Video Catalogue"
         },
-        "comments": ""
+        "comments": "",
+        "ijpOpenBanner": "To comment on IJP Open, you have automatically been asigned a Disqus profile. You can view and contribute to article discussions by clicking on the comment icon in the top right corner."
     },
     "relatedInfo": {
         "title": "Informations connexes",
@@ -472,14 +491,14 @@
                 "help": "Découvrez ici la dernière vidéo thématique de notre système."
             },
             "whoCitedThis": {
-                "title": "",
+                "title": "Qui a cité cela?",
                 "noResults": "",
                 "help": ""
             },
             "whatsNew": {
                 "title": "Quoi de neuf ?",
                 "issue": "Numéro {issueNum}, Vol {volNum} &bull; {updatedDate}",
-                "signUp": "Vous pouvez maintenant vous inscrire pour être averti lorsqu'un nouveau contenu est ajouté : entrez votre e-mail ci-dessous. Lorsqu'un nouveau contenu sera ajouté, nous vous enverrons automatiquement un e-mail avec une liste des ajouts et des liens pour les consulter sur PEP-Web !",
+                "signUp": "Pour recevoir des mises à jour régulières des nouveaux contenus ajoutés à PEP- Web, veuillez sélectionner vos préférences en cochant les cases ci-dessous. Pour vous désabonner, il vous suffit de décocher le type de contenu pour lequel vous ne souhaitez pas recevoir de notification.",
                 "emailAddress": "Adresse e-mail",
                 "update": "Notifications de mise à jour",
                 "help": "Les derniers ajouts à notre système peuvent être consultés ici.",
@@ -802,6 +821,29 @@
         "clipboard": {
             "success": "Copié dans le presse-papiers",
             "failure": "Un incident est survenu lors de la copie dans le presse-papiers. Veuillez réessayer plus tard."
+        },
+        "report": {
+            "success": "Report generated successfully",
+            "failure": "There was an issue generating the report. Please try again later.",
+            "reportTitle": "Reports",
+            "options": {
+                "characterCountReport": "Character Count (Standard)",
+                "characterCountDetailsBookReport": "Character Count (Books)",
+                "characterCountDetailsReport": "Character Count (Detailed)",
+                "documentViewLog": "Document View Log",
+                "documentViewStat": "Document View Stats",
+                "userSearches": "User Searches",
+                "sessionLog": "Session Log",
+                "productTable": "Product Table",
+                "documentReferences": "Document References",
+                "legend": "Select document type"
+            },
+            "config": {
+                "legend": "Report configuration",
+                "limit": "Result limit",
+                "offset": "Result offset",
+                "documentId": "Document ID"
+            }
         }
     },
     "document": {
@@ -865,6 +907,11 @@
             "id": "ID",
             "value": "Valeur"
         },
+        "productbase": {
+            "title": "Upload CSV File",
+            "legend": "Select a CSV file to upload",
+            "button": "Upload"
+        },
         "common": {
             "title": "Général",
             "search": {
@@ -912,7 +959,8 @@
                         "searchLimit": "Limite du glossaire lors de la recherche",
                         "readLimit": "Limite du glossaire lors de la lecture"
                     }
-                }
+                },
+                "statusTitle": "Status"
             },
             "home": {
                 "expertPicks": {

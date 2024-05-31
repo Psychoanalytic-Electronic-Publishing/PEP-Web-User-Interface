@@ -5,7 +5,7 @@ import { inject as service } from '@ember/service';
 
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 
-import usePagination, { RecordArrayWithMeta } from '@gavant/ember-pagination/hooks/pagination';
+import usePagination from '@gavant/ember-pagination/hooks/pagination';
 import { buildQueryParams } from '@gavant/ember-pagination/utils/query-params';
 
 import { GlossaryWidgetLocation, WIDGET } from 'pep/constants/sidebar';
@@ -13,7 +13,6 @@ import { PageNav } from 'pep/mixins/page-layout';
 import { ApiServerErrorResponse } from 'pep/pods/application/adapter';
 import BrowseReadController from 'pep/pods/browse/read/controller';
 import Document from 'pep/pods/document/model';
-import SearchDocument from 'pep/pods/search-document/model';
 import ConfigurationService from 'pep/services/configuration';
 import CurrentUserService from 'pep/services/current-user';
 import ScrollableService from 'pep/services/scrollable';
@@ -83,16 +82,14 @@ export default class BrowseRead extends PageNav(Route) {
                 controller.selectedView.id === controller.tableView
                     ? ['']
                     : [this.currentUser.preferences?.searchSortType.id ?? ''],
-
             processQueryParams: (params) => ({ ...params, ...searchParams })
         });
-        const response = (await this.store.query(
-            'search-document',
-            queryParams
-        )) as RecordArrayWithMeta<SearchDocument>;
-        const results = response.toArray();
-        const resultsMeta = response.meta;
 
+        const searchResponse = await this.store.query('search-document', queryParams);
+
+        // Set search results and bibliography data
+        const results = searchResponse.toArray();
+        const resultsMeta = searchResponse.meta;
         this.relatedDocuments = results;
         this.relatedDocumentsMeta = resultsMeta;
     }

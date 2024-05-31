@@ -426,6 +426,178 @@
                         </div>
                     </div>
                 </div>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="col-12">
+                                <h4 class="d-flex justify-content-between align-items-center border-bottom mb-3 pb-1">
+                                    {{t "admin.common.global.statusTitle"}}
+                                    <CopyButton
+                                        class="p-1 btn btn-link"
+                                        @success={{this.clipboardSuccess}}
+                                        @error={{this.clipboardFailure}}
+                                        @clipboardText={{this.model.status}}
+                                        title={{t "search.exports.clipboard"}}
+                                    >
+                                        <FaIcon @icon="clipboard" @size="lg" />
+                                    </CopyButton>
+                                </h4>
+                                <pre style="max-height: 512px;"><code>{{this.model.status}}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="col-12">
+                                <h4 class="d-flex justify-content-between align-items-center border-bottom mb-3 pb-1">
+                                    {{t "admin.common.global.reportTitle"}}
+                                </h4>
+                                <fieldset class="mb-4">
+                                    <legend class="text-muted mb-2 radio-input-legend">
+                                        {{t "exports.report.options.legend"}}
+                                    </legend>
+                                    <RadioInput
+                                        @label={{t "exports.report.options.characterCountReport"}}
+                                        @checked={{eq this.selectedReport "Character-Count-Report"}}
+                                        @value="Character-Count-Report"
+                                        @onChange={{fn this.updateSelectedReport}}
+                                        class="mb-1"
+                                    />
+                                    <RadioInput
+                                        @label={{t "exports.report.options.characterCountDetailsBookReport"}}
+                                        @checked={{eq this.selectedReport "Character-Count-Details-Book-Report"}}
+                                        @value="Character-Count-Details-Book-Report"
+                                        @onChange={{fn this.updateSelectedReport}}
+                                        class="mb-1"
+                                    />
+                                    <RadioInput
+                                        @label={{t "exports.report.options.characterCountDetailsReport"}}
+                                        @checked={{eq this.selectedReport "Character-Count-Details-Report"}}
+                                        @value="Character-Count-Details-Report"
+                                        @onChange={{fn this.updateSelectedReport}}
+                                        class="mb-1"
+                                    />
+                                    <RadioInput
+                                        @label={{t "exports.report.options.documentViewLog"}}
+                                        @checked={{eq this.selectedReport "Document-View-Log"}}
+                                        @value="Document-View-Log"
+                                        @onChange={{fn this.updateSelectedReport}}
+                                        class="mb-1"
+                                    />
+                                    <RadioInput
+                                        @label={{t "exports.report.options.documentViewStat"}}
+                                        @checked={{eq this.selectedReport "Document-View-Stat"}}
+                                        @value="Document-View-Stat"
+                                        @onChange={{fn this.updateSelectedReport}}
+                                        class="mb-1"
+                                    />
+                                    <RadioInput
+                                        @label={{t "exports.report.options.userSearches"}}
+                                        @checked={{eq this.selectedReport "User-Searches"}}
+                                        @value="User-Searches"
+                                        @onChange={{fn this.updateSelectedReport}}
+                                        class="mb-1"
+                                    />
+                                    <RadioInput
+                                        @label={{t "exports.report.options.sessionLog"}}
+                                        @checked={{eq this.selectedReport "Session-Log"}}
+                                        @value="Session-Log"
+                                        @onChange={{fn this.updateSelectedReport}}
+                                        @onChange={{fn this.updateSelectedReport}}
+                                        class="mb-1"
+                                    />
+                                    <RadioInput
+                                        @label={{t "exports.report.options.productTable"}}
+                                        @checked={{eq this.selectedReport "Product-Table"}}
+                                        @value="Product-Table"
+                                        @onChange={{fn this.updateSelectedReport}}
+                                        class="mb-1"
+                                    />
+                                    <RadioInput
+                                        @label={{t "exports.report.options.documentReferences"}}
+                                        @checked={{eq this.selectedReport "Document-References"}}
+                                        @value="Document-References"
+                                        @onChange={{fn this.updateSelectedReport}}
+                                    />
+                                </fieldset>
+                                <fieldset class="mb-4">
+                                    <legend class="text-muted mb-3 radio-input-legend">
+                                        {{t "exports.report.config.legend"}}
+                                    </legend>
+                                    <FlInput
+                                        @value={{this.reportLimit}}
+                                        @placeholder={{t "exports.report.config.limit"}}
+                                        class="mb-2"
+                                        style="max-width:320px;"
+                                    />
+                                    <FlInput
+                                        @value={{this.reportOffset}}
+                                        @placeholder={{t "exports.report.config.offset"}}
+                                        style="max-width:320px;"
+                                    />
+                                    {{#if (eq this.selectedReport "Document-References")}}
+                                        <FlInput
+                                            @value={{this.reportDocumentId}}
+                                            @placeholder={{t "exports.report.config.documentId"}}
+                                            class="mt-2"
+                                            style="max-width:320px;"
+                                        />
+                                    {{/if}}
+
+                                </fieldset>
+                                <ButtonSpinner
+                                    @type="primary"
+                                    @label={{t "exports.report.generate"}}
+                                    @wide={{true}}
+                                    @action={{this.downloadReport}}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="col-12">
+                                <h4 class="d-flex justify-content-between align-items-center border-bottom mb-3 pb-1">
+                                    {{t "admin.productbase.title"}}
+                                </h4>
+                                <fieldset class="mb-4">
+                                    <legend class="text-muted mb-2 radio-input-legend">
+                                        {{t "exports.report.options.legend"}}
+                                    </legend>
+                                    <RadioInput
+                                        @label={{t "exports.report.options.productTable"}}
+                                        @checked={{eq this.importType "Product-Table"}}
+                                        @value="Product-Table"
+                                        @onChange={{fn this.updateImportType}}
+                                        class="mb-1"
+                                    />
+                                    <RadioInput
+                                        @label={{t "exports.report.options.documentReferences"}}
+                                        @checked={{eq this.importType "Document-References"}}
+                                        @value="Document-References"
+                                        @onChange={{fn this.updateImportType}}
+                                    />
+                                </fieldset>
+                                <fieldset class="mb-4">
+                                    <legend class="text-muted mb-2 radio-input-legend">
+                                        {{t "admin.productbase.legend"}}
+                                    </legend>
+                                    <input type="file" id="productbaseInput" name="productbaseFile" accept=".csv" />
+                                </fieldset>
+                                <ButtonSpinner
+                                    @type="primary"
+                                    @label={{t "admin.productbase.button"}}
+                                    @wide={{true}}
+                                    @action={{this.uploadProductbaseFile}}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </FormValidator>

@@ -17,10 +17,18 @@ import { RouteModel } from 'pep/utils/types';
 import { CONFIGURATION_EXPERT_PICK_VALIDATIONS } from 'pep/validations/configuration/expert-pick';
 import { CONFIGURATION_VIDEO_VALIDATIONS } from 'pep/validations/configuration/video';
 import { WIDGET } from 'pep/constants/sidebar';
+import NotificationService from 'ember-cli-notifications/services/notifications';
+import { getOwner } from '@ember/application';
+import ReportAdapter from 'pep/pods/report/adapter';
+import ExportsService, { ExportType } from 'pep/services/exports';
+import Papa from 'papaparse';
+import { DocumentType } from 'pep/pods/csv-import/adapter';
 
 export default class AdminGeneral extends Controller {
     @service intl!: IntlService;
     @service modal!: ModalService;
+    @service notifications!: NotificationService;
+    @service exports!: ExportsService;
 
     declare model: RouteModel<AdminGeneralRoute>;
 
@@ -30,6 +38,12 @@ export default class AdminGeneral extends Controller {
     @tracked leftSidebarItems: WidgetConfiguration[] = [];
     @tracked rightSidebarItems: WidgetConfiguration[] = [];
     @tracked calendarCenterDate?: Date;
+    @tracked selectedReport: string = 'Character-Count-Report';
+    @tracked importType: DocumentType = 'Product-Table';
+    @tracked reportLimit: string = '1000';
+    @tracked reportOffset: string = '0';
+    @tracked reportDocumentId: string = '';
+
     mirrorOptions = {
         constrainDimensions: true
     };
@@ -45,6 +59,85 @@ export default class AdminGeneral extends Controller {
     get embargoDate() {
         return new Date(this.changeset?.configSettings.global.embargoDate);
     }
+
+    /**
+     * Show success message for clipboard
+     *
+     * @memberof DocumentReadSidebar
+     */
+    @action
+    clipboardSuccess() {
+        const translation = this.intl.t('exports.clipboard.success');
+
+        this.notifications.success(translation);
+    }
+
+    @action
+    updateSelectedReport(reportType: string) {
+        this.selectedReport = reportType;
+    }
+
+    @action
+    updateImportType(importType: DocumentType) {
+        this.importType = importType;
+    }
+
+    @action
+    async downloadReport() {
+        try {
+            const owner = getOwner(this) as any;
+            const adapter = owner.lookup('adapter:report') as ReportAdapter;
+
+            const reportText = await adapter.downloadReport(
+                this.selectedReport,
+                this.reportLimit,
+                this.reportOffset,
+                this.reportDocumentId
+            );
+
+            const parsedCsv = Papa.parse(reportText);
+
+            const timestamp = new Date().toISOString().replace(/[:]/g, '-').split('.')[0];
+            const fileName = `${this.selectedReport}_${timestamp}.csv`;
+
+            this.exports.export(ExportType.CSV, fileName, parsedCsv.data);
+
+            this.notifications.success(this.intl.t('exports.report.success'));
+        } catch (error) {
+            console.log(error);
+            this.notifications.error(this.intl.t('exports.report.failure'));
+        }
+    }
+
+    @action
+    async uploadProductbaseFile() {
+        const fileInput = document.getElementById('productbaseInput') as HTMLInputElement;
+
+        if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
+            this.notifications.error('Please select a file to upload');
+            return;
+        }
+
+        const file = fileInput.files[0];
+        try {
+            await this.store.adapterFor('csv-import').updateTable(file, this.importType);
+            this.notifications.success('CSV file processed successfully');
+        } catch (error) {
+            console.log(error);
+            this.notifications.error(error);
+        }
+    }
+
+    /**
+     * Show failure message for clipboard
+     *
+     * @memberof DocumentReadSidebar
+     */
+    @action
+    clipboardFailure() {
+        this.notifications.error(this.intl.t('exports.clipboard.failure'));
+    }
+
     /**
      * Open the expert pick modal
      *

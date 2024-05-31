@@ -6,7 +6,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 4.16"
+      version = "5.33.0"
     }
   }
 
@@ -36,4 +36,8 @@ module "web_server" {
   font_awesome_token = var.font_awesome_token
   assets_domain      = var.assets_domain
   build_version      = var.build_version
+}
+
+resource "aws_sns_topic" "translation_updates" {
+  name = "${var.stack_name}-translation-updates-${var.env}"
 }

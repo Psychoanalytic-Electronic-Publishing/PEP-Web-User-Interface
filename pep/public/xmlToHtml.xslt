@@ -1459,31 +1459,36 @@
 
     <xsl:template match="purchase">
         <div class="notice card">
-            <span>This is a preview document. The total pages displayed will be limited. To purchase the full version, <a data-type="doi">
-                <xsl:attribute name="href">
-                    <xsl:value-of select="concat('https://doi.org/', @doi)"/>
+            <span data-i18n-key="browse.previews.noticeText"><a data-type="doi" data-i18n-key="browse.previews.noticeLink">
+              <xsl:attribute name="href">
+                    <xsl:value-of select="concat('', @href)"/>
                 </xsl:attribute>
-                please click here.
             </a>
             </span>
         </div>
     </xsl:template>
 
+
     <xsl:template match="redacted">
-        <div class="notice card">
-            <xsl:attribute name="pages">
-                <xsl:value-of select="@pages"/>
-            </xsl:attribute>
-            <xsl:choose>
-                <xsl:when test="@start = @end">
-                    Page <xsl:value-of select="@start"/> is not shown in this preview.
-                </xsl:when>
-                <xsl:otherwise>
-                    Pages <xsl:value-of select="@start"/> to <xsl:value-of select="@end"/> are not shown in this preview.
-                </xsl:otherwise>
-            </xsl:choose>
-        </div>
-    </xsl:template>
+    <xsl:choose>
+        <xsl:when test="@start = @end">
+            <div class="notice card" data-i18n-key="browse.previews.redacted.singlePageNotice" data-i18n-param-page="{@start}">
+                <xsl:attribute name="pages">
+                    <xsl:value-of select="@pages"/>
+                </xsl:attribute>
+            </div>
+        </xsl:when>
+        
+        <xsl:otherwise>
+            <div class="notice card" data-i18n-key="browse.previews.redacted.multiplePagesNotice" data-i18n-param-start="{@start}" data-i18n-param-end="{@end}">
+                <xsl:attribute name="pages">
+                    <xsl:value-of select="@pages"/>
+                </xsl:attribute>
+            </div>
+        </xsl:otherwise>
+    </xsl:choose>
+</xsl:template>
+
 
     <xsl:template match="bx">
         <span class="peppopup bibtip text-nowrap" data-type="velcro" data-element="{@r}" data-maxwidth="300" data-direction="southeast">
@@ -1735,28 +1740,6 @@
                 <xsl:apply-templates/>
             </span>
             <!--matched reference id-->
-            <xsl:if test="@rx">
-                <a class="bibx pl-2" data-type="BIBX">
-                    <xsl:attribute name="data-document-id">
-                        <xsl:value-of select="@rx"/>
-                    </xsl:attribute>
-                    <xsl:copy-of select="$fa-right-arrow" />
-                </a>
-            </xsl:if>
-            <xsl:if test="@rxcf">
-                <a class="bibx pl-2" data-type="BIBX_CF">
-                    <xsl:attribute name="href">
-                        /search?q=<xsl:value-of select="@rxcf"/><xsl:apply-templates/>
-                    </xsl:attribute>
-                    <xsl:attribute name="data-document-id">
-                        <xsl:value-of select="@rxcf"/>
-                    </xsl:attribute>
-                    <xsl:copy-of select="$fa-link" />
-                </a>
-                <span class="bibx-related-info ml-1">
-                    <xsl:copy-of select="$fa-question" />
-                </span>
-            </xsl:if>
         </span>
     </xsl:template>
 
@@ -1766,28 +1749,6 @@
                 <xsl:apply-templates/>
             </span>
             <!--matched reference id-->
-            <xsl:if test="@rx">
-                <a class="bibx pl-2" data-type="BIBX">
-                    <xsl:attribute name="data-document-id">
-                        <xsl:value-of select="@rx"/>
-                    </xsl:attribute>
-                    <xsl:copy-of select="$fa-right-arrow" />
-                </a>
-            </xsl:if>
-            <xsl:if test="@rxcf">
-                <a class="bibx pl-2" data-type="BIBX_CF">
-                  <xsl:attribute name="href">
-                        /search?q=cf::<xsl:value-of select="@rxcf"/>//<xsl:value-of select='normalize-space()'/>//
-                    </xsl:attribute>
-                    <xsl:attribute name="data-document-id">
-                        <xsl:value-of select="@rxcf"/>
-                    </xsl:attribute>
-                    <xsl:copy-of select="$fa-link" />
-                </a>
-                <span class="bibx-related-info ml-1">
-                    <xsl:copy-of select="$fa-question" />
-                </span>
-            </xsl:if>
         </p>
     </xsl:template>
 
