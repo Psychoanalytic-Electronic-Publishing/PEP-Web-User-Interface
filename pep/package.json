@@ -143,7 +143,7 @@
         "ember-intl": "^5.6.2",
         "ember-load-initializers": "^2.1.1",
         "ember-maybe-import-regenerator": "^0.1.6",
-        "ember-metrics": "^1.0.0",
+        "ember-metrics": "^1.5.2",
         "ember-modifier": "^3.2.7",
         "ember-moment": "^8.0.0",
         "ember-named-blocks-polyfill": "^0.2.4",
