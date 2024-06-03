@@ -7,7 +7,7 @@ import { inject as service } from '@ember/service';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import CookiesService from 'ember-cookies/services/cookies';
-import MetricService from 'ember-metrics/services/metrics';
+// import MetricService from 'ember-metrics/services/metrics';
 import MediaService from 'ember-responsive/services/media';
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 
@@ -15,7 +15,9 @@ import ModalService from '@gavant/ember-modals/services/modal';
 
 import { PepSecureAuthenticatedData } from 'pep/api';
 import {
-    FASTBOOT_SESSION_WORKAROUND_COOKIE_NAME, HIDE_TOUR_COOKIE_NAME, SESSION_COOKIE_NAME
+    FASTBOOT_SESSION_WORKAROUND_COOKIE_NAME,
+    HIDE_TOUR_COOKIE_NAME,
+    SESSION_COOKIE_NAME
 } from 'pep/constants/cookies';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import PageLayout from 'pep/mixins/page-layout';
@@ -44,7 +46,7 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
     routeAfterAuthentication = 'index';
 
     @service router!: RouterService;
-    @service metrics!: MetricService;
+    // @service metrics!: MetricService;
     @service('pep-session') session!: PepSessionService;
     @service fastboot!: FastbootService;
     @service media!: MediaService;
@@ -70,7 +72,7 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
             const page = router.currentURL;
             const title = router.currentRouteName || 'unknown';
 
-            this.metrics.trackPage({ page, title });
+            // this.metrics.trackPage({ page, title });
         });
     }
 

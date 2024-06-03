@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function(environment) {
+module.exports = function (environment) {
     let ENV = {
         modulePrefix: 'pep',
         podModulePrefix: 'pep/pods',
@@ -27,23 +27,23 @@ module.exports = function(environment) {
             // when it is created
         },
 
-        metricsAdapters: [
-            {
-                name: 'GoogleAnalytics',
-                environments: ['development', 'production'],
-                config: {
-                    id: process.env.GOOGLE_ANALYTICS_ID,
-                    // Use `analytics_debug.js` in development
-                    debug: process.env.GOOGLE_ANALYTICS_ENVIRONMENT === 'development',
-                    // Use verbose tracing of GA events
-                    trace: process.env.GOOGLE_ANALYTICS_ENVIRONMENT === 'development',
-                    // Ensure development env hits aren't sent to GA
-                    sendHitTask: process.env.GOOGLE_ANALYTICS_ENVIRONMENT !== 'development'
-                    // Specify Google Analytics plugins
-                    // require: ['ecommerce']
-                }
-            }
-        ],
+        // metricsAdapters: [
+        //     {
+        //         name: 'GoogleAnalytics',
+        //         environments: ['development', 'production'],
+        //         config: {
+        //             id: process.env.GOOGLE_ANALYTICS_ID,
+        //             // Use `analytics_debug.js` in development
+        //             debug: process.env.GOOGLE_ANALYTICS_ENVIRONMENT === 'development',
+        //             // Use verbose tracing of GA events
+        //             trace: process.env.GOOGLE_ANALYTICS_ENVIRONMENT === 'development',
+        //             // Ensure development env hits aren't sent to GA
+        //             sendHitTask: process.env.GOOGLE_ANALYTICS_ENVIRONMENT !== 'development'
+        //             // Specify Google Analytics plugins
+        //             // require: ['ecommerce']
+        //         }
+        //     }
+        // ],
 
         fontawesome: {
             defaultPrefix: 'fal'
