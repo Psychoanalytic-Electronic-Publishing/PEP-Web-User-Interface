@@ -5,9 +5,15 @@ data "archive_file" "zip_assets" {
   output_path = "pep.zip"
 }
 
+locals {
+  env_sha1 = filesha1("../../.env-${var.env}")
+}
+
+
 resource "null_resource" "ember_build" {
   triggers = {
     src_hash = "${data.archive_file.zip_assets.output_sha}"
+    env_hash = local.env_sha1
   }
   provisioner "local-exec" {
     working_dir = "../../pep"
@@ -28,6 +34,7 @@ resource "null_resource" "fastboot_build" {
   ]
   triggers = {
     src_hash = "${data.archive_file.zip_assets.output_sha}"
+    env_hash = local.env_sha1
   }
   provisioner "local-exec" {
     working_dir = "../.."
@@ -75,6 +82,7 @@ resource "null_resource" "deploy_lambda_package" {
   ]
   triggers = {
     src_hash = "${data.archive_file.zip_assets.output_sha}"
+    env_hash = local.env_sha1
   }
   provisioner "local-exec" {
     command = "aws lambda update-function-code --function-name ${module.fastboot_lambda.lambda_function_name} --zip-file fileb://package.zip"
@@ -89,6 +97,7 @@ resource "null_resource" "upload_assets_to_s3" {
   ]
   triggers = {
     src_hash = "${data.archive_file.zip_assets.output_sha}"
+    env_hash = local.env_sha1
   }
   provisioner "local-exec" {
     working_dir = "../.."
