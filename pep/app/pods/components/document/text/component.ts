@@ -32,7 +32,6 @@ import AjaxService from 'pep/services/ajax';
 import CurrentUserService from 'pep/services/current-user';
 import LoadingBarService from 'pep/services/loading-bar';
 import PepSessionService from 'pep/services/pep-session';
-import MetricService from 'ember-metrics/services/metrics';
 import ScrollableService from 'pep/services/scrollable';
 import ThemeService from 'pep/services/theme';
 import { buildJumpToHitsHTML, loadXSLT, parseXML } from 'pep/utils/dom';
@@ -97,7 +96,6 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
     @service('pep-session') session!: PepSessionService;
     @service ajax!: AjaxService;
     @service scrollable!: ScrollableService;
-    @service metrics!: MetricService;
 
     @tracked xml?: XMLDocument;
     @tracked visiblePages: string[] = [];
@@ -281,23 +279,9 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
             }
         }
 
-        console.log('type', type, 'target', target);
-
         if (target.tagName !== 'SUMMARY' && type !== DocumentLinkTypes.WEB && type !== DocumentLinkTypes.DOI) {
             event.preventDefault();
         }
-
-        if (type === DocumentLinkTypes.DOI) {
-            event.preventDefault();
-            this.metrics.trackEvent({
-                event: 'click',
-                category: 'external',
-                label: 'DOI',
-                value: target.href
-            });
-            window.open(target.href);
-        }
-
         if (type === DocumentLinkTypes.GLOSSARY_TERM) {
             this.viewGlossaryTermFromElement(target);
         } else if (type === DocumentLinkTypes.BIBLIOGRAPHY) {
