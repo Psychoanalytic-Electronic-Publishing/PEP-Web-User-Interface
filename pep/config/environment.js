@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function(environment) {
+module.exports = function (environment) {
     let ENV = {
         modulePrefix: 'pep',
         podModulePrefix: 'pep/pods',
@@ -23,27 +23,8 @@ module.exports = function(environment) {
         },
 
         APP: {
-            // Here you can pass flags/options to your application instance
-            // when it is created
+            googleAnalytics: process.env.GOOGLE_ANALYTICS_ID || ''
         },
-
-        metricsAdapters: [
-            {
-                name: 'GoogleAnalytics',
-                environments: ['development', 'production'],
-                config: {
-                    id: process.env.GOOGLE_ANALYTICS_ID,
-                    // Use `analytics_debug.js` in development
-                    debug: process.env.GOOGLE_ANALYTICS_ENVIRONMENT === 'development',
-                    // Use verbose tracing of GA events
-                    trace: process.env.GOOGLE_ANALYTICS_ENVIRONMENT === 'development',
-                    // Ensure development env hits aren't sent to GA
-                    sendHitTask: process.env.GOOGLE_ANALYTICS_ENVIRONMENT !== 'development'
-                    // Specify Google Analytics plugins
-                    // require: ['ecommerce']
-                }
-            }
-        ],
 
         fontawesome: {
             defaultPrefix: 'fal'
@@ -126,15 +107,6 @@ module.exports = function(environment) {
 
         ENV.APP.rootElement = '#ember-testing';
         ENV.APP.autoboot = false;
-    }
-
-    if (environment === 'production') {
-        // here you can enable a production-specific feature
-        //error logging
-        // ENV['ember-error-tracker'].consumers.console = false;
-        // ENV['ember-error-tracker'].consumers.api = {
-        //     endPoint: `${process.env.API_BASE_URL}/${process.env.API_ERRORS_ENDPOINT}`
-        // };
     }
 
     return ENV;
