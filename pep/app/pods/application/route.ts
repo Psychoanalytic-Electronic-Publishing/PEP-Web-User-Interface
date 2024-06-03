@@ -66,14 +66,6 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
 
     constructor() {
         super(...arguments);
-
-        const router = this.router;
-        router.on('routeDidChange', () => {
-            const page = router.currentURL;
-            const title = router.currentRouteName || 'unknown';
-
-            // this.metrics.trackPage({ page, title });
-        });
     }
 
     /**
