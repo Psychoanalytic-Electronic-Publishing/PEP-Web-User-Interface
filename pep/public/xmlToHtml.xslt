@@ -1459,9 +1459,9 @@
 
     <xsl:template match="purchase">
         <div class="notice card">
-            <span data-i18n-key="browse.previews.noticeText"><a data-type="doi" data-i18n-key="browse.previews.noticeLink">
+            <span data-i18n-key="browse.previews.noticeText"><a data-type="preview-purchase-link" data-i18n-key="browse.previews.noticeLink">
               <xsl:attribute name="href">
-                    <xsl:value-of select="concat('', @href)"/>
+                    <xsl:value-of select="concat('https://www.doi.org/10.1176/ajp.89.6.1165', @href)"/>
                 </xsl:attribute>
             </a>
             </span>

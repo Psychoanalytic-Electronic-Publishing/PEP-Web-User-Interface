@@ -279,9 +279,23 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
             }
         }
 
-        if (target.tagName !== 'SUMMARY' && type !== DocumentLinkTypes.WEB && type !== DocumentLinkTypes.DOI) {
+        if (target.tagName !== 'SUMMARY' && type !== DocumentLinkTypes.WEB) {
             event.preventDefault();
         }
+
+        if (type === DocumentLinkTypes.PREVIEW_PURCHASE_LINK) {
+            const href = eventTarget.getAttribute('href') ?? '';
+
+            // @ts-ignore
+            gtag('event', 'click', {
+                event_category: 'external',
+                event_label: 'preview_purchase_link',
+                value: href
+            });
+
+            window.open(href, '_blank');
+        }
+
         if (type === DocumentLinkTypes.GLOSSARY_TERM) {
             this.viewGlossaryTermFromElement(target);
         } else if (type === DocumentLinkTypes.BIBLIOGRAPHY) {
