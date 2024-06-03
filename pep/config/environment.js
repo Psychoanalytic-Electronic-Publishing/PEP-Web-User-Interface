@@ -9,6 +9,7 @@ module.exports = function (environment) {
         rootURL: '/',
         routerRootURL: process.env.ROOT_URL,
         locationType: 'auto',
+        googleAnalyticsId: process.env.GOOGLE_ANALYTICS_ID,
 
         EmberENV: {
             LOG_STACKTRACE_ON_DEPRECATION: false,
@@ -109,8 +110,6 @@ module.exports = function (environment) {
         ENV.APP.rootElement = '#ember-testing';
         ENV.APP.autoboot = false;
     }
-
-    ENV.APP.googleAnalytics = process.env.GOOGLE_ANALYTICS_ID;
 
     return ENV;
 };
