@@ -12,7 +12,7 @@
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
 
-            gtag('config', '{{googleAnalyticsId}}');
+            gtag('config', process.env.GOOGLE_ANALYTICS_ID);
         </script>
 
         <link integrity="" rel="stylesheet" href="{{rootURL}}assets/vendor.css" />
