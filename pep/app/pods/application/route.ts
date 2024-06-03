@@ -7,7 +7,6 @@ import { inject as service } from '@ember/service';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import NotificationService from 'ember-cli-notifications/services/notifications';
 import CookiesService from 'ember-cookies/services/cookies';
-// import MetricService from 'ember-metrics/services/metrics';
 import MediaService from 'ember-responsive/services/media';
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 
