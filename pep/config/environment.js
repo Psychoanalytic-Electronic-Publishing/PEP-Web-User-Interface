@@ -110,9 +110,7 @@ module.exports = function (environment) {
         ENV.APP.autoboot = false;
     }
 
-    if (environment === 'production') {
-        ENV.APP.googleAnalytics = process.env.GOOGLE_ANALYTICS_ID;
-    }
+    ENV.APP.googleAnalytics = process.env.GOOGLE_ANALYTICS_ID;
 
     return ENV;
 };
