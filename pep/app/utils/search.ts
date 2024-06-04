@@ -66,7 +66,7 @@ interface SearchQueryParams extends SearchQueryStrParams {
     facetmincount?: number | null;
     synonyms: boolean;
     abstract: boolean;
-    limit: number;
+    limit: number | null;
     highlightlimit?: number;
     sort?: string;
 }
@@ -127,7 +127,7 @@ export function buildSearchQueryParams(searchQueryParams: BuildSearchQueryParams
         joinOp = 'AND',
         facetLimit = null,
         facetMinCount = null,
-        limit = 15,
+        limit = null,
         highlightlimit,
         abstract,
         sort
