@@ -1,62 +1,76 @@
 {
-    "compilerOptions": {
-      "target": "es2020",
-      "allowJs": true,
-      "moduleResolution": "node",
-      "allowSyntheticDefaultImports": true,
-      "noImplicitAny": true,
-      "noImplicitThis": true,
-      "alwaysStrict": true,
-      "strictNullChecks": true,
-      "strictPropertyInitialization": true,
-      "noFallthroughCasesInSwitch": true,
-      "noUnusedLocals": true,
-      "noUnusedParameters": true,
-      "noImplicitReturns": false,
-      "noEmitOnError": false,
-      "noEmit": true,
-      "inlineSourceMap": true,
-      "inlineSources": true,
-      "strictFunctionTypes": false,
-      "baseUrl": ".",
-      "module": "es6",
-      "experimentalDecorators": true,
-      "paths": {
-        "pep/tests/*": [
-          "tests/*"
-        ],
-        "pep/*": [
-          "app/*",
-          "lib/tippy/app/*"
-        ],
-        "*": [
-          "types/*"
-        ],
-        "fetch": [
-          "node_modules/ember-fetch"
-        ],
-        "tippy": [
-          "lib/tippy/addon"
-        ],
-        "tippy/*": [
-          "lib/tippy/addon/*"
-        ],
-        "tippy/test-support": [
-          "lib/tippy/addon-test-support"
-        ],
-        "tippy/test-support/*": [
-          "lib/tippy/addon-test-support/*"
-        ],
-        "@glimmer/tracking": [
-          "node_modules/ember-cached-decorator-polyfill",
-          "node_modules/@glimmer/tracking/dist/types"
-        ]
-      }
-    },
-    "include": [
-      "app/**/*",
-      "tests/**/*",
-      "types/**/*",
-      "lib/tippy"
-    ]
-  }
+  "compilerOptions": {
+    "target": "es2020",
+    "allowJs": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "strictNullChecks": true,
+    "strictPropertyInitialization": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": false,
+    "noEmitOnError": false,
+    "noEmit": true,
+    "inlineSourceMap": true,
+    "inlineSources": true,
+    "strictFunctionTypes": false,
+    "baseUrl": ".",
+    "module": "es6",
+    "experimentalDecorators": true,
+    "paths": {
+      "pep/tests/*": [
+        "tests/*"
+      ],
+      "pep/*": [
+        "app/*",
+        "lib/tippy/app/*",
+        "lib/analytics/app/*"
+      ],
+      "*": [
+        "types/*"
+      ],
+      "fetch": [
+        "node_modules/ember-fetch"
+      ],
+      "tippy": [
+        "lib/tippy/addon"
+      ],
+      "tippy/*": [
+        "lib/tippy/addon/*"
+      ],
+      "tippy/test-support": [
+        "lib/tippy/addon-test-support"
+      ],
+      "tippy/test-support/*": [
+        "lib/tippy/addon-test-support/*"
+      ],
+      "@glimmer/tracking": [
+        "node_modules/ember-cached-decorator-polyfill",
+        "node_modules/@glimmer/tracking/dist/types"
+      ],
+      "analytics": [
+        "lib/analytics/addon"
+      ],
+      "analytics/*": [
+        "lib/analytics/addon/*"
+      ],
+      "analytics/test-support": [
+        "lib/analytics/addon-test-support"
+      ],
+      "analytics/test-support/*": [
+        "lib/analytics/addon-test-support/*"
+      ]
+    }
+  },
+  "include": [
+    "app/**/*",
+    "tests/**/*",
+    "types/**/*",
+    "lib/tippy",
+    "lib/analytics"
+  ]
+}

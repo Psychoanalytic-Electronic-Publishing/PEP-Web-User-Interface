@@ -29,5 +29,6 @@ export enum DocumentLinkTypes {
     TITLE = 'document-title',
     TRANSLATION = 'GroupIDTrans',
     KEYWORD = 'KEYWORD',
-    MANUSCRIPT_VERSION = 'RVDOC'
+    MANUSCRIPT_VERSION = 'RVDOC',
+    PREVIEW_PURCHASE_LINK = 'preview-purchase-link'
 }
