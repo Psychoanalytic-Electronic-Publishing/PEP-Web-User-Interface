@@ -286,6 +286,8 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
         if (type === DocumentLinkTypes.PREVIEW_PURCHASE_LINK) {
             const href = eventTarget.getAttribute('href') ?? '';
 
+            if (!href) return;
+
             // @ts-ignore
             gtag('event', 'click', {
                 event_category: 'external',
