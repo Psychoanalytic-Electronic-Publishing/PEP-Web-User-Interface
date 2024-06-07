@@ -66,6 +66,14 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
     constructor() {
         super(...arguments);
 
+        let lastURL = '';
+
+        const urlWithoutPageQuery = (url: string) => {
+            const urlObj = new URL(url, window.location.origin);
+            urlObj.searchParams.delete('page');
+            return urlObj.toString();
+        };
+
         const router = this.router;
         router.on('routeDidChange', () => {
             const page = router.currentURL;
@@ -75,6 +83,15 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
             if (typeof gtag != 'function') {
                 return;
             }
+
+            const currentURLWithoutPageQuery = urlWithoutPageQuery(page);
+            const lastURLWithoutPageQuery = urlWithoutPageQuery(lastURL);
+
+            if (currentURLWithoutPageQuery === lastURLWithoutPageQuery) {
+                return;
+            }
+
+            lastURL = page;
 
             // @ts-ignore
             gtag('event', 'page_view', {
@@ -87,7 +104,7 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
     /**
      * App setup and configuration tasks
      * Runs on initial app boot, and also after the user logs in
-     * So that any user session-specific preferences are applied
+     * So that any user session-specific preferences are aspplied
      * @return {*}  {Promise<void>}
      * @memberof Application
      */
