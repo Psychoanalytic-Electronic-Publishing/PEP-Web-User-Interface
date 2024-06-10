@@ -292,7 +292,8 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
             gtag('event', 'click', {
                 event_category: 'external',
                 event_label: 'preview_purchase_link',
-                link_url: href
+                link_url: href,
+                document_title: this.args.document.title
             });
 
             window.open(href, '_blank');
