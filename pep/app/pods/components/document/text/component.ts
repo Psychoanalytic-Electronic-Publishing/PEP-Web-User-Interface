@@ -687,38 +687,33 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
             const biblioElement = this.containerElement?.querySelector(`[id="${biblio.refLocalId}"]`);
             if (!biblioElement) return;
 
-            // TEMPORARY UNTIL FULl REBUILD REMOVES LINKS FROM XML
-            const bibxElements = biblioElement.querySelectorAll('[class^="bibx"]');
-            bibxElements.forEach((element) => element.remove());
-            // END TEMPORARY CODE
+            // Remove existing bibx elements - temporary until rebuild removes old XML
+            biblioElement.querySelectorAll('[class^="bibx"]').forEach((element) => element.remove());
+
+            const createAnchorElement = (type: string, documentId: string, svgContent: string) => {
+                const anchorElement = document.createElement('a');
+                anchorElement.setAttribute('class', 'bibx pl-2');
+                anchorElement.setAttribute('data-type', type);
+                anchorElement.setAttribute('data-document-id', documentId);
+                const svgElement = new DOMParser().parseFromString(svgContent, 'text/html').body
+                    .firstChild as SVGElement;
+                anchorElement.appendChild(svgElement);
+                return anchorElement;
+            };
 
             if (biblio.refRx) {
-                const anchorElement = document.createElement('a');
-                anchorElement.setAttribute('class', 'bibx pl-2');
-                anchorElement.setAttribute('data-type', 'BIBX');
-                anchorElement.setAttribute('data-document-id', biblio.refRx);
-
-                const arrowElement = new DOMParser().parseFromString(arrow, 'text/html').body.firstChild as SVGElement;
-                anchorElement.appendChild(arrowElement);
-
-                biblioElement.appendChild(anchorElement);
+                biblioElement.appendChild(createAnchorElement('BIBX', biblio.refRx, arrow));
             } else if (biblio.refRxcf) {
-                const anchorElement = document.createElement('a');
-                anchorElement.setAttribute('class', 'bibx pl-2');
-                anchorElement.setAttribute('data-type', 'BIBX_CF');
-                anchorElement.setAttribute('data-document-id', biblio.refRxcf);
+                biblioElement.appendChild(createAnchorElement('BIBX_CF', biblio.refRxcf, link));
 
-                const linkElement = new DOMParser().parseFromString(link, 'text/html').body.firstChild as SVGElement;
-                anchorElement.appendChild(linkElement);
-                biblioElement.appendChild(anchorElement);
                 const spanElement = document.createElement('span');
                 spanElement.setAttribute('class', 'bibx-related-info ml-1');
-
                 const tooltipElement = new DOMParser().parseFromString(tooltip, 'text/html').body
                     .firstChild as SVGElement;
                 spanElement.appendChild(tooltipElement);
-
                 biblioElement.appendChild(spanElement);
+            } else if (biblio.refDoi) {
+                biblioElement.appendChild(createAnchorElement('BIBX-DOI', biblio.refDoi, link));
             }
         });
     }
