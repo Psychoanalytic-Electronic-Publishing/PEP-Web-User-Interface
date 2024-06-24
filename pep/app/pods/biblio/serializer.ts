@@ -19,7 +19,9 @@ export default class BiblioSerializer extends DS.JSONAPISerializer {
                 refText: item.ref_text,
                 refLocalId: item.ref_local_id,
                 refRx: item.ref_rx || null,
-                refRxcf: item.ref_rxcf || null
+                refRxcf: item.ref_rxcf || null,
+                refDoi: item.ref_doi || null,
+                refLinkSource: item.ref_link_source || null
             }
         }));
 

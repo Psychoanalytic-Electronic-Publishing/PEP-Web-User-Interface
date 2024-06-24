@@ -6,6 +6,8 @@ export default class Biblio extends DS.Model {
     @attr('string') refLocalId!: string;
     @attr('string') refRx!: string;
     @attr('string') refRxcf!: string;
+    @attr('string') refDoi!: string;
+    @attr('string') refLinkSource!: string;
 }
 
 // DO NOT DELETE: this is how TypeScript knows how to look up your models.
