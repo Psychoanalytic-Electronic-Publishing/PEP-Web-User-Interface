@@ -38,7 +38,7 @@ import { buildJumpToHitsHTML, loadXSLT, parseXML } from 'pep/utils/dom';
 import { BaseGlimmerSignature } from 'pep/utils/types';
 import { reject } from 'rsvp';
 import tippy, { Instance, Props } from 'tippy.js';
-import { arrow, link, tooltip } from './svg';
+import { arrow, link, tooltip, open } from './svg';
 
 interface DocumentTextArgs {
     document: Document;
@@ -279,7 +279,7 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
             }
         }
 
-        if (target.tagName !== 'SUMMARY' && type !== DocumentLinkTypes.WEB && type !== DocumentLinkTypes.DOI) {
+        if (target.tagName == 'SUMMARY' && type !== DocumentLinkTypes.WEB && type !== DocumentLinkTypes.DOI) {
             event.preventDefault();
         }
 
@@ -297,9 +297,7 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
             });
 
             window.open(href, '_blank');
-        }
-
-        if (type === DocumentLinkTypes.GLOSSARY_TERM) {
+        } else if (type === DocumentLinkTypes.GLOSSARY_TERM) {
             this.viewGlossaryTermFromElement(target);
         } else if (type === DocumentLinkTypes.BIBLIOGRAPHY) {
             const id = attributes.getNamedItem('data-document-id')?.nodeValue;
@@ -680,7 +678,8 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
     async insertBiblioLinks() {
         const bibliographyData = await this.store.query('biblio', {
             id: this.args.document.id,
-            documentYear: this.args.document.year
+            documentYear: this.args.document.year,
+            include_external: 'True'
         });
 
         bibliographyData.forEach((biblio) => {
@@ -690,11 +689,15 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
             // Remove existing bibx elements - temporary until rebuild removes old XML
             biblioElement.querySelectorAll('[class^="bibx"]').forEach((element) => element.remove());
 
-            const createAnchorElement = (type: string, documentId: string, svgContent: string) => {
+            const createAnchorElement = (type: string, documentId: string, svgContent: string, href?: string) => {
                 const anchorElement = document.createElement('a');
                 anchorElement.setAttribute('class', 'bibx pl-2');
                 anchorElement.setAttribute('data-type', type);
                 anchorElement.setAttribute('data-document-id', documentId);
+                if (href) {
+                    anchorElement.setAttribute('href', href);
+                    anchorElement.setAttribute('target', '_blank');
+                }
                 const svgElement = new DOMParser().parseFromString(svgContent, 'text/html').body
                     .firstChild as SVGElement;
                 anchorElement.appendChild(svgElement);
@@ -712,8 +715,12 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
                     .firstChild as SVGElement;
                 spanElement.appendChild(tooltipElement);
                 biblioElement.appendChild(spanElement);
-            } else if (biblio.refDoi) {
-                biblioElement.appendChild(createAnchorElement('BIBX-DOI', biblio.refDoi, link));
+            } else if (biblio.refExternal.length > 0) {
+                const mostRelevantLink = biblio.refExternal.reduce((prev, current) =>
+                    prev.relevanceScore > current.relevanceScore ? prev : current
+                );
+                const externalLink = mostRelevantLink.extRefUrl;
+                biblioElement.appendChild(createAnchorElement('DOI', externalLink, open, externalLink));
             }
         });
     }
