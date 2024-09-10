@@ -279,7 +279,7 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
             }
         }
 
-        if (target.tagName == 'SUMMARY' && type !== DocumentLinkTypes.WEB && type !== DocumentLinkTypes.DOI) {
+        if (target.tagName !== 'SUMMARY' && type !== DocumentLinkTypes.WEB && type !== DocumentLinkTypes.DOI) {
             event.preventDefault();
         }
 
