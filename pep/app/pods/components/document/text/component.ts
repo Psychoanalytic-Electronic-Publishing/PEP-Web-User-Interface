@@ -644,36 +644,11 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
     }
 
     async afterRender() {
-        this.setupVideoAspectRatio();
         this.processTranslations();
         if (this.args.document.document && !this.args.document.accessLimited) {
             await this.insertBiblioLinks();
         }
         this.attachTooltips();
-    }
-
-    async setupVideoAspectRatio() {
-        const iframe = document.getElementById('wistia-iframe');
-        const videoWrapper = document.getElementById('wistia-video');
-
-        if (!iframe || !videoWrapper) {
-            return;
-        }
-
-        iframe.addEventListener('load', function () {
-            const video = iframe.querySelector('video') as HTMLVideoElement;
-
-            if (!video) return;
-
-            const videoWidth = video.videoWidth;
-            const videoHeight = video.videoHeight;
-
-            if (videoWidth && videoHeight) {
-                const aspectRatio = (videoHeight / videoWidth) * 100;
-
-                videoWrapper.style.paddingTop = aspectRatio + '%';
-            }
-        });
     }
 
     async processTranslations() {

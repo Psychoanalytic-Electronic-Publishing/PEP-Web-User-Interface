@@ -930,10 +930,20 @@
     </xsl:template>
 
     <xsl:template match="videoplayer">
+        <!-- Determine the aspect ratio -->
+        <xsl:variable name="aspectPadding">
+            <xsl:choose>
+                <xsl:when test="@aspectRatio">
+                    <xsl:value-of select="substring-after(@aspectRatio, ':') * 100 div substring-before(@aspectRatio, ':')" />
+                </xsl:when>
+                <xsl:otherwise>56.25</xsl:otherwise> <!-- Default to 16:9 (56.25%) -->
+            </xsl:choose>
+        </xsl:variable>
+
         <script src="https://fast.wistia.net/assets/external/E-v1.js" async="async"></script>
 
         <div style="padding-left: 10%; padding-right: 10%; margin-bottom: 20px;">
-            <div id="wistia-video" class="wistia_responsive_padding" style="padding-top:56.25%; position:relative;">
+            <div class="wistia_responsive_padding" style="padding-top:{$aspectPadding}%; position:relative;">
                 <div class="wistia_responsive_wrapper" style="position:absolute; top:0; left:0; width:100%; height:100%;">
                     <iframe src="https://fast.wistia.net/embed/iframe/{@videoid}?videoFoam=true" 
                             allowtransparency="true" frameborder="0" scrolling="no" 
@@ -943,8 +953,7 @@
                             webkitallowfullscreen="webkitallowfullscreen" 
                             oallowfullscreen="oallowfullscreen" 
                             msallowfullscreen="msallowfullscreen" 
-                            style="position:absolute; top:0; left:0;"
-                            id="wistia-iframe">
+                            style="position:absolute; top:0; left:0;">
                     </iframe>
                 </div>
             </div>
