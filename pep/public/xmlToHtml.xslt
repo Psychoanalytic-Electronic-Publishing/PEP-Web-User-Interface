@@ -933,8 +933,8 @@
         <!-- Determine the aspect ratio -->
         <xsl:variable name="aspectPadding">
             <xsl:choose>
-                <xsl:when test="@aspect-ratio">
-                    <xsl:value-of select="substring-after(@aspect-ratio, ':') * 100 div substring-before(@aspect-ratio, ':')" />
+                <xsl:when test="@aspectRatio">
+                    <xsl:value-of select="substring-after(@aspectRatio, ':') * 100 div substring-before(@aspectRatio, ':')" />
                 </xsl:when>
                 <xsl:otherwise>56.25</xsl:otherwise> <!-- Default to 16:9 (56.25%) -->
             </xsl:choose>
