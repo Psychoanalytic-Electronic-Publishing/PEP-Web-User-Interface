@@ -930,22 +930,34 @@
     </xsl:template>
 
     <xsl:template match="videoplayer">
-        <xsl:if test="'1'='1'">
-            <!--This is the new Wistia player-\-it allows seeking in the transcript, press the arrow on the captions, or use the "Search Video" on the cc menu.
-                 This works for old and new videos!
-            -->
+        <!-- Determine the aspect ratio -->
+        <xsl:variable name="aspectPadding">
+            <xsl:choose>
+                <xsl:when test="@aspect-ratio">
+                    <xsl:value-of select="substring-after(@aspect-ratio, ':') * 100 div substring-before(@aspect-ratio, ':')" />
+                </xsl:when>
+                <xsl:otherwise>56.25</xsl:otherwise> <!-- Default to 16:9 (56.25%) -->
+            </xsl:choose>
+        </xsl:variable>
 
-            <script src="https://fast.wistia.net/assets/external/E-v1.js" async="async"></script>
-            <div style="padding-left: 10%; padding-right: 10%; margin-bottom: 20px;">
-                <div class="wistia_responsive_padding" style="padding:56.25% 0 0 0;position:relative;">
-                    <div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;">
-                        <iframe src="https://fast.wistia.net/embed/iframe/{@videoid}?videoFoam=true" allowtransparency="true" frameborder="0" scrolling="no" class="wistia_embed test" name="wistia_embed" width="100%" height="100%" allowfullscreen="allowfullscreen" mozallowfullscreen="mozallowfullscreen" webkitallowfullscreen="webkitallowfullscreen" oallowfullscreen="oallowfullscreen" msallowfullscreen="msallowfullscreen" style="position:relative;"></iframe>
-                    </div>
+        <script src="https://fast.wistia.net/assets/external/E-v1.js" async="async"></script>
+
+        <div style="padding-left: 10%; padding-right: 10%; margin-bottom: 20px;">
+            <div class="wistia_responsive_padding" style="padding-top:{$aspectPadding}%; position:relative;">
+                <div class="wistia_responsive_wrapper" style="position:absolute; top:0; left:0; width:100%; height:100%;">
+                    <iframe src="https://fast.wistia.net/embed/iframe/{@videoid}?videoFoam=true" 
+                            allowtransparency="true" frameborder="0" scrolling="no" 
+                            class="wistia_embed test" width="100%" height="100%" 
+                            allowfullscreen="allowfullscreen" 
+                            mozallowfullscreen="mozallowfullscreen" 
+                            webkitallowfullscreen="webkitallowfullscreen" 
+                            oallowfullscreen="oallowfullscreen" 
+                            msallowfullscreen="msallowfullscreen" 
+                            style="position:absolute; top:0; left:0;">
+                    </iframe>
                 </div>
             </div>
-
-
-        </xsl:if>
+        </div>
     </xsl:template>
 
     <xsl:template match="pgx">
