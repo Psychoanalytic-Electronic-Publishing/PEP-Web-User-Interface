@@ -50,13 +50,20 @@ export default class BrowseJournalIndex extends Route {
     ) {
         super.setupController(controller, model, transition);
 
+        const sorted = model.toArray().sort((a, b) => {
+            let intA = parseInt(a.get('vol'), 10);
+            let intB = parseInt(b.get('vol'), 10);
+
+            return intA - intB;
+        });
+
         controller.sourcecode = this.sourceCode;
         controller.journal = this.modelFor('browse.journal') as Journal;
         controller.paginator = usePagination<Source>({
             context: controller,
             modelName: 'volume',
             filterList: ['sourcecode'],
-            models: model.toArray() ?? [],
+            models: sorted,
             metadata: model.meta,
             pagingRootKey: null,
             filterRootKey: null,
