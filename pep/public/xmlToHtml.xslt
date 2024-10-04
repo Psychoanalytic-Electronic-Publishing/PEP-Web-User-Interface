@@ -291,6 +291,7 @@
                                 <xsl:apply-templates mode="metadata" select="artsub"/>
                             </a>
                             <xsl:apply-templates select="arttitle/ftnx" />
+                            <xsl:apply-templates select="arttitle/notex" />
                             <xsl:apply-templates select="artsub/ftnx" />
                         </span>
 
@@ -518,7 +519,8 @@
         <span class="title pointer-events-none">
             <xsl:choose>
                 <xsl:when test="text()">
-                    <xsl:apply-templates select="(node())[not(self::ftnx)]"/>
+                    <xsl:apply-templates select="(node())[not(self::ftnx or self::notex)]"/>
+
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:apply-templates/>
@@ -1660,7 +1662,7 @@
     </xsl:template>
 
     <xsl:template match="notex">
-        <span class="peppopup notetip" >
+        <span class="peppopup notetip">
             <a href="#note-information">
                 <sup>
                     <xsl:apply-templates/>
