@@ -626,7 +626,7 @@
     </xsl:template>
 
     <xsl:template match="autaff" mode="metadata">
-        <div data-class="autaff">
+        <div data-class="autaff A">
             <xsl:if test="@affid">
                 <xsl:attribute name="data-affid">
                     <xsl:value-of select="@affid"/>
@@ -643,7 +643,6 @@
          RFP.053.1405A [1 author, 1 autaff, no affid] = show 1 author and 1 autaff
     -->
     <xsl:template match="artauth/aut" mode="metadata">
-
         <div class="author-grouping" data-grouping="{@role}">
             <xsl:if test="@role != 'author'">
                 <div>
@@ -791,70 +790,68 @@
                 <xsl:text>&#13;</xsl:text>
             </xsl:for-each>
 
+ 
             <xsl:choose>
                 <xsl:when test="current()[@affid!=''] or current()/nbio" >
-                    <xsl:text> </xsl:text>
+                    <xsl:text></xsl:text>
                     <a class="peppopup authortip" href="#author-information">
                         <xsl:copy-of select="$fa-information" />
                         <xsl:text></xsl:text>
                         <br></br>
-                        <div class="peppopuptext" hidden="True" role="dialog">
-                            <div class="autcontent">
-                                <xsl:for-each select="key('role', @role)">
-                                    <div class="author-information">
-                                        <p class="autaffname">
-                                            <xsl:apply-templates mode="metadata" select="nfirst"/>
-                                            <xsl:apply-templates mode="metadata" select="nlast"/>
-                                        </p>
-                                        <xsl:apply-templates mode="metadata" select="../autaff[@affid=current()/@affid]"/>
-                                        <xsl:apply-templates mode="metadata" select="nbio"/>
-                                    </div>
-                                </xsl:for-each>
-                            </div>
-                        </div>
                     </a>
+                    <div class="peppopuptext" hidden="True" role="dialog">
+                        <div class="autcontent">
+                            <xsl:for-each select="key('role', @role)">
+                                <div class="author-information">
+                                    <p class="autaffname">
+                                        <xsl:apply-templates mode="metadata" select="nfirst"/>
+                                        <xsl:apply-templates mode="metadata" select="nlast"/>
+                                    </p>
+                                    <xsl:apply-templates mode="metadata" select="../autaff[@affid=current()/@affid]"/>
+                                    <xsl:apply-templates mode="metadata" select="nbio"/>
+                                </div>
+                            </xsl:for-each>
+                        </div>
+                    </div>
                 </xsl:when>
-
                 <xsl:when test="count(../autaff) = 1">
-                    <xsl:text> </xsl:text>
+                    <xsl:text></xsl:text>
                     <a class="peppopup authortip" href="#author-information">
                         <xsl:copy-of select="$fa-information" />
                         <xsl:text></xsl:text>
                         <br></br>
-
-                        <div class="peppopuptext" hidden="True" role="dialog">
-
-                            <div class="autcontent">
-                                <xsl:for-each select="key('role', @role)">
-                                    <div class="author-information">
-                                        <p class="autaffname">
-                                            <xsl:apply-templates mode="metadata" select="nfirst"/>
-                                            <xsl:apply-templates mode="metadata" select="nlast"/>
-                                        </p>
-                                        <xsl:apply-templates mode="metadata" select="nbio"/>
-                                    </div>
-                                </xsl:for-each>
-                                <xsl:apply-templates mode="metadata" select="../autaff"/>
-                            </div>
-                        </div>
                     </a>
+                    <div class="peppopuptext" hidden="True" role="dialog">
+                        <div class="autcontent">
+                            <xsl:for-each select="key('role', @role)">
+                                <div class="author-information A">
+                                    <p class="autaffname A">
+                                        <xsl:apply-templates mode="metadata" select="nfirst"/>
+                                        <xsl:apply-templates mode="metadata" select="nlast"/>
+                                    </p>
+                                    <xsl:apply-templates mode="metadata" select="nbio"/>
+                                </div>
+                            </xsl:for-each>
+                            <xsl:apply-templates mode="metadata" select="../autaff"/>
+                        </div>
+                    </div>
                 </xsl:when>
                 <xsl:when test="@role = 'author'">
-                    <xsl:text> </xsl:text>
+                    <xsl:text></xsl:text>
                     <a class="peppopup newauthortip" href="#new-author-information">
                         <xsl:copy-of select="$fa-information" />
                         <br></br>
                         <xsl:text>&#xa;</xsl:text>
-                        <div class="peppopuptext" id="autaffinfo" hidden="True" role="dialog">
-                            <div id="autcontent" class="autcontent">
-                                <p class="autaffname">
-                                    <xsl:apply-templates mode="metadata" select="nfirst"/>
-                                    <xsl:apply-templates mode="metadata" select="nlast"/>
-                                </p>
-                                <xsl:apply-templates mode="metadata" select="nbio"/>
-                            </div>
-                        </div>
                     </a>
+                    <div class="peppopuptext" id="autaffinfo" hidden="True" role="dialog">
+                        <div id="autcontent" class="autcontent">
+                            <p class="autaffname">
+                                <xsl:apply-templates mode="metadata" select="nfirst"/>
+                                <xsl:apply-templates mode="metadata" select="nlast"/>
+                            </p>
+                            <xsl:apply-templates mode="metadata" select="nbio"/>
+                        </div>
+                    </div>
                 </xsl:when>
             </xsl:choose>
         </div>
@@ -867,7 +864,7 @@
     </xsl:template>
 
     <xsl:template match="addr" mode="metadata">
-        <p class="autaffaddr" data-class="addr">
+        <p class="autaffaddr A" data-class="addr">
             <xsl:apply-templates mode="metadata"/>
         </p>
     </xsl:template>
