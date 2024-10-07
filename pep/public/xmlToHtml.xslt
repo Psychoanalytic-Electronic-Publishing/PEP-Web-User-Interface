@@ -797,8 +797,8 @@
                     <a class="peppopup authortip" href="#author-information">
                         <xsl:copy-of select="$fa-information" />
                         <xsl:text></xsl:text>
-                        <br></br>
                     </a>
+
                     <div class="peppopuptext" hidden="True" role="dialog">
                         <div class="autcontent">
                             <xsl:for-each select="key('role', @role)">
@@ -819,8 +819,7 @@
                     <a class="peppopup authortip" href="#author-information">
                         <xsl:copy-of select="$fa-information" />
                         <xsl:text></xsl:text>
-                        <br></br>
-                    </a>
+                    </a>   
                     <div class="peppopuptext" hidden="True" role="dialog">
                         <div class="autcontent">
                             <xsl:for-each select="key('role', @role)">
@@ -840,8 +839,6 @@
                     <xsl:text></xsl:text>
                     <a class="peppopup newauthortip" href="#new-author-information">
                         <xsl:copy-of select="$fa-information" />
-                        <br></br>
-                        <xsl:text>&#xa;</xsl:text>
                     </a>
                     <div class="peppopuptext" id="autaffinfo" hidden="True" role="dialog">
                         <div id="autcontent" class="autcontent">
@@ -854,6 +851,8 @@
                     </div>
                 </xsl:when>
             </xsl:choose>
+
+            <xsl:apply-templates select="notex"/>
         </div>
     </xsl:template>
 
