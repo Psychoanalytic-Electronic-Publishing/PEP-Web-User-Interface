@@ -1646,15 +1646,21 @@
     </xsl:template>
 
     <xsl:template match="note">
-        <div class="note" id='{@id}'>
+        <div class="note" id="{@id}">
             <xsl:call-template name="data-pagehelper"/>
-            <xsl:if test="@label">
-                <xsl:attribute name="label">
-                    <xsl:value-of select="@label"/>
-                </xsl:attribute>
-            </xsl:if>
             <xsl:apply-templates/>
         </div>
+    </xsl:template>
+
+    <xsl:template match="note/p">
+        <span class="para" id="{@id}">
+            <xsl:if test="not(preceding-sibling::p)">
+                <xsl:number level="any" count="note[not(ancestor::front)]"
+                            from="article | sub-article | response"/>
+                <xsl:text>. </xsl:text>
+            </xsl:if>
+            <xsl:apply-templates select="node()"/>
+        </span>
     </xsl:template>
 
     <xsl:template match="notex">
