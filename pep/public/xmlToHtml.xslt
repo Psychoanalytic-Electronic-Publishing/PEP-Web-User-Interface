@@ -1653,7 +1653,7 @@
     </xsl:template>
 
     <xsl:template match="note/p">
-        <span class="para" id="{@id}">
+        <span class="para">
             <xsl:if test="not(preceding-sibling::p)">
                 <xsl:number level="any" count="note[not(ancestor::front)]"
                             from="article | sub-article | response"/>
@@ -1665,11 +1665,11 @@
 
     <xsl:template match="notex">
         <span class="peppopup notetip">
-            <a href="#note-information">
-                <sup>
+            <sup>
+                <a href="#{@r}" data-type="web-link">
                     <xsl:apply-templates/>
-                </sup>
-            </a>
+                </a>
+            </sup>
             <xsl:text></xsl:text>
             <br></br>
             <span class="peppopuptext" hidden="True" role="dialog">
