@@ -853,6 +853,7 @@
             </xsl:choose>
 
             <xsl:apply-templates select="notex"/>
+            <xsl:apply-templates select="ftnx"/>
         </div>
     </xsl:template>
 
