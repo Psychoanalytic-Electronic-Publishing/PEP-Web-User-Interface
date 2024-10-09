@@ -113,19 +113,19 @@ export default class BrowseJournalVolume extends Controller {
         const modelArray = this.model.toArray();
         modelArray.sort(sortWithRomanNumeralsFirst);
 
-        const models = modelArray.reduce((volumes: any, sourceVolume: any) => {
+        const volumesMap = new Map();
+        modelArray.forEach((sourceVolume: any) => {
             const issue = sourceVolume.issue || this.WITHOUT_ISSUES;
 
-            if (!volumes.has(issue)) {
-                volumes.set(issue, {
+            if (!volumesMap.has(issue)) {
+                volumesMap.set(issue, {
                     title: issue !== this.WITHOUT_ISSUES ? this.generateIssueTitle(sourceVolume) : '',
                     groups: new Map(),
                     models: []
                 });
             }
 
-            const volume = volumes.get(issue);
-
+            const volume = volumesMap.get(issue);
             const sectionName = sourceVolume.newSectionName;
 
             if (sectionName && !volume?.groups.has(sectionName)) {
@@ -140,9 +140,14 @@ export default class BrowseJournalVolume extends Controller {
             } else {
                 volume?.models.push(sourceVolume);
             }
+        });
 
-            return volumes;
-        }, new Map());
+        // Sort by issue number
+        const models = new Map(
+            [...volumesMap.entries()].sort((a, b) => {
+                return parseInt(a[0]) - parseInt(b[0]);
+            })
+        );
 
         return models;
     }
