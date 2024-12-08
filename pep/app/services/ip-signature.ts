@@ -3,7 +3,7 @@ import { inject as service } from '@ember/service';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 
 // @ts-ignore
-import AWS from 'aws-sdk';
+const AWS = require('aws-sdk');
 import { createHmac } from 'crypto';
 
 let cachedSecret: string | null = null;
