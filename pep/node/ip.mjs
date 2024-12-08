@@ -1,4 +1,4 @@
-import { SecretsManagerClient, GetSecretValueCommand } from '@aws-sdk/client-secrets-manager';
+import AWS from 'aws-sdk';
 import { createHmac } from 'crypto';
 
 class IpSignatureManager {
@@ -6,20 +6,20 @@ class IpSignatureManager {
     #secretsClient;
 
     constructor() {
-        this.#secretsClient = new SecretsManagerClient();
+        this.#secretsClient = new AWS.SecretsManager();
     }
 
     async getHmacSecret() {
         if (!this.#hmacSecret) {
             console.log('Fetching secret from Secrets Manager');
 
-            const command = new GetSecretValueCommand({
-                SecretId: process.env.IP_HMAC_SECRET_ARN
-            });
+            const response = await this.#secretsClient
+                .getSecretValue({
+                    SecretId: process.env.IP_HMAC_SECRET_ARN
+                })
+                .promise();
 
-            const response = await this.#secretsClient.send(command);
             this.#hmacSecret = JSON.parse(response.SecretString).secret;
-
             console.log('Secret fetched and cached');
         }
         return this.#hmacSecret;
