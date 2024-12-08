@@ -17,6 +17,13 @@ export const handler = async (event, context) => {
         event.headers = event.headers || {};
         event.headers['x-client-ip'] = sourceIp;
         event.headers['x-client-ip-signature'] = await ipSignatureManager.generateSignature(sourceIp);
+
+        console.log('IP Headers added:', {
+            sourceIp: event.headers['x-client-ip'],
+            signature: event.headers['x-client-ip-signature']
+        });
+    } else {
+        console.log('No source IP found in event');
     }
 
     return awsServerlessExpress.proxy(server, event, context);
