@@ -1,5 +1,5 @@
-import AWS from 'aws-sdk';
-import { createHmac } from 'crypto';
+const AWS = require('aws-sdk');
+const { createHmac } = require('crypto');
 
 class IpSignatureManager {
     #hmacSecret = null;
@@ -36,4 +36,4 @@ class IpSignatureManager {
 const instance = new IpSignatureManager();
 Object.freeze(instance);
 
-export default instance;
+module.exports = instance;

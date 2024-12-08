@@ -1,16 +1,13 @@
-import path from 'path';
-import { fileURLToPath } from 'url';
-import 'dotenv/config';
-import awsServerlessExpress from 'aws-serverless-express';
-import expressServer from './server.js';
-import ipSignatureManager from './ip.mjs';
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '.env') });
+const awsServerlessExpress = require('aws-serverless-express');
+const expressServer = require('./server.js');
+const ipSignatureManager = require('./ip.js');
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 const emberDistPath = path.join(__dirname, 'dist');
 const server = awsServerlessExpress.createServer(expressServer(emberDistPath));
 
-export const handler = async (event, context) => {
+exports.handler = async (event, context) => {
     const sourceIp = event.requestContext?.identity?.sourceIp;
 
     if (sourceIp) {
