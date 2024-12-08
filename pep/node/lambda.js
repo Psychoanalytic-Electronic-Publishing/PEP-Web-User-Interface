@@ -5,9 +5,16 @@ const expressServer = require('./server.js');
 const ipSignatureManager = require('./ip.js');
 
 const emberDistPath = path.join(__dirname, 'dist');
-const server = awsServerlessExpress.createServer(expressServer(emberDistPath));
+let serverlessExpressInstance;
 
-exports.handler = async (event, context) => {
+const setupServer = async (event, context) => {
+    const server = awsServerlessExpress.createServer(expressServer(emberDistPath));
+    serverlessExpressInstance = (e, c) => awsServerlessExpress.proxy(server, e, c);
+
+    return handleRequest(event, context);
+};
+
+const handleRequest = async (event, context) => {
     const sourceIp = event.requestContext?.identity?.sourceIp;
 
     if (sourceIp) {
@@ -23,5 +30,14 @@ exports.handler = async (event, context) => {
         console.log('No source IP found in event');
     }
 
-    return awsServerlessExpress.proxy(server, event, context);
+    return serverlessExpressInstance(event, context);
+};
+
+// Using async setup pattern
+// https://github.com/CodeGenieApp/serverless-express/blob/mainline/README.md#async-setup-lambda-handler
+exports.handler = (event, context) => {
+    if (serverlessExpressInstance) {
+        return handleRequest(event, context);
+    }
+    return setupServer(event, context);
 };
