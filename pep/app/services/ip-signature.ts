@@ -4,7 +4,7 @@ import FastbootService from 'ember-cli-fastboot/services/fastboot';
 
 // @ts-ignore
 const AWS = require('aws-sdk');
-import { createHmac } from 'crypto';
+const { createHmac } = require('crypto');
 
 let cachedSecret: string | null = null;
 
@@ -33,6 +33,7 @@ export default class IpSignatureService extends Service {
     }
 
     async generateIpSignature(ip: string): Promise<string> {
+        console.log('Generating IP signature for IP:', ip);
         const secret = await this.getIpHmacSecret();
         const hmac = createHmac('sha256', secret);
         hmac.update(ip);
