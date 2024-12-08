@@ -1,4 +1,4 @@
-import { computed, setProperties } from '@ember/object';
+import { computed } from '@ember/object';
 import Service, { inject as service } from '@ember/service';
 
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
@@ -10,14 +10,14 @@ import PepSessionService from 'pep/services/pep-session';
 import { guard } from 'pep/utils/types';
 import { appendTrailingSlash } from 'pep/utils/url';
 import { reject } from 'rsvp';
-import ServerSecretsService from './ip-signature';
+import IpSignatureService from './ip-signature';
 
 export type RequestInitWithSlash = RequestInit & { appendTrailingSlash?: boolean };
 
 export default class AjaxService extends Service {
     @service('pep-session') session!: PepSessionService;
     @service fastboot!: FastbootService;
-    @service serverSecrets!: ServerSecretsService;
+    @service ipSignature!: IpSignatureService;
 
     host: string = ENV.apiBaseUrl;
     namespace: string = ENV.apiNamespace;
@@ -89,7 +89,7 @@ export default class AjaxService extends Service {
 
         if (this.fastboot.isFastBoot && this.sourceIp) {
             requestHeaders['x-client-ip'] = this.sourceIp;
-            requestHeaders['x-client-ip-signature'] = await this.serverSecrets.generateIpSignature(this.sourceIp);
+            requestHeaders['x-client-ip-signature'] = await this.ipSignature.generateIpSignature(this.sourceIp);
         }
 
         const baseUrl = /^https?\:\/\//.test(url) ? '' : `${this.host}/${this.namespace}/`;

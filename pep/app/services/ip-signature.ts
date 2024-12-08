@@ -8,7 +8,7 @@ import { createHmac } from 'crypto';
 
 let cachedSecret: string | null = null;
 
-export default class ServerSecretsService extends Service {
+export default class IpSignatureService extends Service {
     @service fastboot!: FastbootService;
 
     async getIpHmacSecret(): Promise<string> {
@@ -37,5 +37,12 @@ export default class ServerSecretsService extends Service {
         const hmac = createHmac('sha256', secret);
         hmac.update(ip);
         return hmac.digest('hex');
+    }
+}
+
+// DO NOT DELETE: this is how TypeScript knows how to look up your services.
+declare module '@ember/service' {
+    interface Registry {
+        'ip-signature': IpSignatureService;
     }
 }
