@@ -28,9 +28,11 @@ declare const config: {
     cookieSecure: boolean;
     cookieSameSite: string;
     reportsBaseUrl: string;
-    AWS_SESSION_TOKEN: string;
-    IP_HMAC_SECRET_ARN: string;
-    PARAMETERS_SECRETS_EXTENSION_HTTP_PORT: string;
+    sig: {
+        AWS_SESSION_TOKEN: string;
+        IP_HMAC_SECRET_ARN: string;
+        PARAMETERS_SECRETS_EXTENSION_HTTP_PORT: string;
+    };
     fastboot: {
         hostWhitelist: Array<string | RegExp>;
     };
