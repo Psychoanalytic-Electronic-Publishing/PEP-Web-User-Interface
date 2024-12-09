@@ -3,8 +3,10 @@
 const fastbootMiddleware = require('fastboot-express-middleware');
 const express = require('express');
 const server = express();
+const FastBoot = require('fastboot');
+const { createHmac } = require('crypto');
 
-module.exports = function(emberDistPath) {
+module.exports = function (emberDistPath) {
     // Uncomment to run locally
     // server.all('/translations/*', function(req, res, next) {
     //     res.sendFile(`${emberDistPath}${req.url}`);
@@ -43,12 +45,30 @@ module.exports = function(emberDistPath) {
     //     res.sendFile(`${emberDistPath}/index.html`);
     // });
 
+    const fastboot = new FastBoot({
+        distPath: emberDistPath,
+        resilient: true, // swallow rendering errors
+
+        // Required params for signature generation
+        buildSandboxGlobals(defaultGlobals) {
+            return Object.assign({}, defaultGlobals, {
+                process: {
+                    env: {
+                        AWS_SESSION_TOKEN: process.env.AWS_SESSION_TOKEN,
+                        IP_HMAC_SECRET_ARN: process.env.IP_HMAC_SECRET_ARN,
+                        PARAMETERS_SECRETS_EXTENSION_HTTP_PORT:
+                            process.env.PARAMETERS_SECRETS_EXTENSION_HTTP_PORT || 2773
+                    }
+                },
+                createHmac
+            });
+        }
+    });
+
     server.all(
         '/*',
         fastbootMiddleware({
-            distPath: emberDistPath,
-            //resilient mode = true swallows rendering errors and returns a 200 w/the default index.html
-            resilient: true
+            fastboot
         })
     );
 
