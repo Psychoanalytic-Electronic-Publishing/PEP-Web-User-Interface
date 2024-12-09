@@ -1,9 +1,6 @@
 'use strict';
 
 module.exports = function (environment) {
-    console.log('environment:', environment);
-    console.log('process.env:', process.env);
-
     let ENV = {
         modulePrefix: 'pep',
         podModulePrefix: 'pep/pods',
@@ -89,12 +86,7 @@ module.exports = function (environment) {
         cookieSecure: Number(process.env.COOKIE_SECURE) === 1,
         cookieSameSite: process.env.COOKIE_SAME_SITE,
         federatedLoginUrl: process.env.FEDERATED_LOGIN_URL,
-        reportsBaseUrl: process.env.REPORTS_API,
-
-        // For HMAC authentication
-        AWS_SESSION_TOKEN: process.env.AWS_SESSION_TOKEN,
-        IP_HMAC_SECRET_ARN: process.env.IP_HMAC_SECRET_ARN,
-        PARAMETERS_SECRETS_EXTENSION_HTTP_PORT: process.env.PARAMETERS_SECRETS_EXTENSION_HTTP_PORT
+        reportsBaseUrl: process.env.REPORTS_API
     };
 
     if (environment === 'development') {
