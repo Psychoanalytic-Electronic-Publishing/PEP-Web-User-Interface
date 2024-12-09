@@ -44,17 +44,17 @@ module.exports = function (emberDistPath) {
     //     res.sendFile(`${emberDistPath}/index.html`);
     // });
 
-    console.log('Process env: ', process.env);
-
     const fastboot = new FastBoot({
         distPath: emberDistPath,
         resilient: true, // swallow rendering errors
 
         // Required params for signature generation
-        sandboxGlobals: {
-            AWS_SESSION_TOKEN: process.env.AWS_SESSION_TOKEN,
-            IP_HMAC_SECRET_ARN: process.env.IP_HMAC_SECRET_ARN,
-            PARAMETERS_SECRETS_EXTENSION_HTTP_PORT: process.env.PARAMETERS_SECRETS_EXTENSION_HTTP_PORT || 2773
+        buildSandboxGlobals(defaultGlobals) {
+            return Object.assign({}, defaultGlobals, {
+                AWS_SESSION_TOKEN: process.env.AWS_SESSION_TOKEN,
+                IP_HMAC_SECRET_ARN: process.env.IP_HMAC_SECRET_ARN,
+                PARAMETERS_SECRETS_EXTENSION_HTTP_PORT: process.env.PARAMETERS_SECRETS_EXTENSION_HTTP_PORT || 2773
+            });
         }
     });
 
