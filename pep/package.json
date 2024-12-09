@@ -193,8 +193,7 @@
     },
     "fastbootDependencies": [
         "node-fetch",
-        "moment",
-        "crypto"
+        "moment"
     ],
     "volta": {
         "node": "12.22.0"

@@ -4,6 +4,7 @@ const fastbootMiddleware = require('fastboot-express-middleware');
 const express = require('express');
 const server = express();
 const FastBoot = require('fastboot');
+const { createHmac } = require('crypto');
 
 module.exports = function (emberDistPath) {
     // Uncomment to run locally
@@ -58,7 +59,8 @@ module.exports = function (emberDistPath) {
                         PARAMETERS_SECRETS_EXTENSION_HTTP_PORT:
                             process.env.PARAMETERS_SECRETS_EXTENSION_HTTP_PORT || 2773
                     }
-                }
+                },
+                createHmac
             });
         }
     });

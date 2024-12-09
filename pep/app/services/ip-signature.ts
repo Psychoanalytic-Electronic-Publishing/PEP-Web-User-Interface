@@ -45,10 +45,13 @@ export default class IpSignatureService extends Service {
     }
 
     async generateIpSignature(ip: string): Promise<string> {
+        if (!this.fastboot.isFastBoot) {
+            throw new Error('ServerSecretsService can only be used in FastBoot');
+        }
+
         console.log('Gen1');
         const secret = await this.getIpHmacSecret();
         console.log('Gen2');
-        const { createHmac } = require('crypto');
         console.log('Gen3');
         const hmac = createHmac('sha256', secret);
         hmac.update(ip);
