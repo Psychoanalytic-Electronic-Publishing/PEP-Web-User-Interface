@@ -43,8 +43,6 @@ export default class IpSignatureService extends Service {
     }
 
     async generateIpSignature(ip: string): Promise<string> {
-        console.log('Generating IP signature for IP:', ip);
-
         const secret = await this.getIpHmacSecret();
 
         const { createHmac } = require('crypto');
