@@ -51,9 +51,14 @@ module.exports = function (emberDistPath) {
         // Required params for signature generation
         buildSandboxGlobals(defaultGlobals) {
             return Object.assign({}, defaultGlobals, {
-                AWS_SESSION_TOKEN: process.env.AWS_SESSION_TOKEN,
-                IP_HMAC_SECRET_ARN: process.env.IP_HMAC_SECRET_ARN,
-                PARAMETERS_SECRETS_EXTENSION_HTTP_PORT: process.env.PARAMETERS_SECRETS_EXTENSION_HTTP_PORT || 2773
+                process: {
+                    env: {
+                        AWS_SESSION_TOKEN: process.env.AWS_SESSION_TOKEN,
+                        IP_HMAC_SECRET_ARN: process.env.IP_HMAC_SECRET_ARN,
+                        PARAMETERS_SECRETS_EXTENSION_HTTP_PORT:
+                            process.env.PARAMETERS_SECRETS_EXTENSION_HTTP_PORT || 2773
+                    }
+                }
             });
         }
     });

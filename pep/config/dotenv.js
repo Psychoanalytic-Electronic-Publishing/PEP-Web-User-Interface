@@ -50,10 +50,7 @@ module.exports = function (env) {
             'GOOGLE_ANALYTICS_ID',
             'GOOGLE_ANALYTICS_ENVIRONMENT',
             'REPORTS_API',
-            'DISQUS_SHORTNAME',
-            'AWS_SESSION_TOKEN',
-            'IP_HMAC_SECRET_ARN',
-            'PARAMETERS_SECRETS_EXTENSION_HTTP_PORT'
+            'DISQUS_SHORTNAME'
         ],
         failOnMissingKey: false,
         path: path.join(path.dirname(__dirname), `../.env-${process.env.DEPLOY_TYPE || env}`)

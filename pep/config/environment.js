@@ -86,13 +86,7 @@ module.exports = function (environment) {
         cookieSecure: Number(process.env.COOKIE_SECURE) === 1,
         cookieSameSite: process.env.COOKIE_SAME_SITE,
         federatedLoginUrl: process.env.FEDERATED_LOGIN_URL,
-        reportsBaseUrl: process.env.REPORTS_API,
-
-        sig: {
-            awsSessionToken: process.env.AWS_SESSION_TOKEN,
-            ipHmacSecretArn: process.env.IP_HMAC_SECRET_ARN,
-            parametersSecretsExtensionHttpPort: process.env.PARAMETERS_SECRETS_EXTENSION_HTTP_PORT
-        }
+        reportsBaseUrl: process.env.REPORTS_API
     };
 
     if (environment === 'development') {

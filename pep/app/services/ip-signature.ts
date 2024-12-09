@@ -2,7 +2,6 @@ import Service from '@ember/service';
 import { inject as service } from '@ember/service';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import fetch from 'fetch';
-import ENV from 'pep/config/environment';
 
 let cachedSecret: string | null = null;
 
@@ -19,17 +18,15 @@ export default class IpSignatureService extends Service {
             return cachedSecret;
         }
 
-        console.log('ENV', ENV);
-
-        const extensionPort = ENV.sig.PARAMETERS_SECRETS_EXTENSION_HTTP_PORT || 2773;
-        const sessionToken = ENV.sig.AWS_SESSION_TOKEN;
+        const extensionPort = process.env.PARAMETERS_SECRETS_EXTENSION_HTTP_PORT || 2773;
+        const sessionToken = process.env.AWS_SESSION_TOKEN;
 
         if (!sessionToken) {
             throw new Error('AWS_SESSION_TOKEN is required for secrets extension');
         }
 
         const response = await fetch(
-            `http://localhost:${extensionPort}/secretsmanager/get?secretId=${ENV.sig.IP_HMAC_SECRET_ARN}`,
+            `http://localhost:${extensionPort}/secretsmanager/get?secretId=${process.env.IP_HMAC_SECRET_ARN}`,
             {
                 headers: {
                     'X-Aws-Parameters-Secrets-Token': sessionToken
