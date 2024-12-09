@@ -3,8 +3,6 @@ import { inject as service } from '@ember/service';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import fetch from 'fetch';
 
-const { createHmac } = require('crypto');
-
 let cachedSecret: string | null = null;
 
 export default class IpSignatureService extends Service {
@@ -46,7 +44,11 @@ export default class IpSignatureService extends Service {
 
     async generateIpSignature(ip: string): Promise<string> {
         console.log('Generating IP signature for IP:', ip);
+
         const secret = await this.getIpHmacSecret();
+
+        const { createHmac } = require('crypto');
+
         const hmac = createHmac('sha256', secret);
         hmac.update(ip);
         return hmac.digest('hex');
