@@ -1,6 +1,9 @@
 'use strict';
 
 module.exports = function (environment) {
+    console.log('environment:', environment);
+    console.log('process.env:', process.env);
+
     let ENV = {
         modulePrefix: 'pep',
         podModulePrefix: 'pep/pods',
