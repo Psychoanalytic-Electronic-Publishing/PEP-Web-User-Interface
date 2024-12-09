@@ -88,8 +88,8 @@ export default class AjaxService extends Service {
         const requestHeaders = { ...this.headers, ...(options.headers || {}) };
 
         if (this.fastboot.isFastBoot && this.sourceIp) {
-            requestHeaders['x-client-ip'] = this.sourceIp;
-            requestHeaders['x-client-ip-signature'] = await this.ipSignature.generateIpSignature(this.sourceIp);
+            requestHeaders['client-ip'] = this.sourceIp;
+            requestHeaders['client-ip-signature'] = await this.ipSignature.generateIpSignature(this.sourceIp);
 
             console.log('Request Headers: ', requestHeaders);
         }
