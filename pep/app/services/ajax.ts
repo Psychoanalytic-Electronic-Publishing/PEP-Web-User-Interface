@@ -10,26 +10,15 @@ import PepSessionService from 'pep/services/pep-session';
 import { guard } from 'pep/utils/types';
 import { appendTrailingSlash } from 'pep/utils/url';
 import { reject } from 'rsvp';
-import IpSignatureService from './ip-signature';
 
 export type RequestInitWithSlash = RequestInit & { appendTrailingSlash?: boolean };
 
 export default class AjaxService extends Service {
     @service('pep-session') session!: PepSessionService;
     @service fastboot!: FastbootService;
-    @service ipSignature!: IpSignatureService;
 
     host: string = ENV.apiBaseUrl;
     namespace: string = ENV.apiNamespace;
-
-    @computed('fastboot.isFastBoot', 'fastboot.request.headers')
-    get sourceIp(): string | null {
-        if (!this.fastboot.isFastBoot) {
-            return null;
-        }
-
-        return this.fastboot.request.headers.get('client-ip') || null;
-    }
 
     /**
      * Add the oauth token authorization header to all requests
@@ -86,17 +75,6 @@ export default class AjaxService extends Service {
      */
     async request<T>(url: string, options: RequestInitWithSlash = { appendTrailingSlash: true }): Promise<T> {
         const requestHeaders = { ...this.headers, ...(options.headers || {}) };
-
-        if (this.fastboot.isFastBoot && this.sourceIp) {
-            try {
-                requestHeaders['client-ip'] = this.sourceIp;
-                requestHeaders['client-ip-signature'] = await this.ipSignature.generateIpSignature(this.sourceIp);
-            } catch (error) {
-                console.error('Error generating IP signature: ', error);
-            }
-        }
-
-        console.log('Request headers:', requestHeaders);
 
         setProperties(options, {
             credentials: 'include',
