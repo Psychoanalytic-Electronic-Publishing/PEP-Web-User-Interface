@@ -28,7 +28,7 @@ export default class AjaxService extends Service {
             return null;
         }
 
-        return this.fastboot.request.headers.get('client-ip') || '193.60.231.0';
+        return this.fastboot.request.headers.get('client-ip') || null;
     }
 
     /**
@@ -90,8 +90,8 @@ export default class AjaxService extends Service {
         if (this.fastboot.isFastBoot && this.sourceIp) {
             try {
                 console.log('Source IP: ', this.sourceIp);
-                requestHeaders['client-ip'] = this.sourceIp;
-                requestHeaders['client-ip-signature'] = await this.ipSignature.generateIpSignature(this.sourceIp);
+                requestHeaders['client-ip'] = '193.60.231.0';
+                requestHeaders['client-ip-signature'] = await this.ipSignature.generateIpSignature('193.60.231.0');
 
                 console.log('Request Headers: ', requestHeaders);
             } catch (error) {
