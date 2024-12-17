@@ -1,4 +1,4 @@
-import { computed } from '@ember/object';
+import { computed, setProperties } from '@ember/object';
 import Service, { inject as service } from '@ember/service';
 
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
@@ -98,6 +98,11 @@ export default class AjaxService extends Service {
                 console.error('Error generating IP signature: ', error);
             }
         }
+
+        setProperties(options, {
+            credentials: 'include',
+            headers: requestHeaders
+        });
 
         const baseUrl = /^https?\:\/\//.test(url) ? '' : `${this.host}/${this.namespace}/`;
         let requestUrl = `${baseUrl}${url.replace(/^\//, '')}`;
