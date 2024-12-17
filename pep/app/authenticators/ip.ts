@@ -45,15 +45,12 @@ export default class IpAuthenticator extends CredentialsAuthenticator {
 
             if (this.sourceIp) {
                 try {
-                    headers['client-ip'] = '193.60.231.0';
-                    headers['client-ip-signature'] = await this.ipSignature.generateIpSignature('193.60.231.0');
+                    headers['client-ip'] = this.sourceIp;
+                    headers['client-ip-signature'] = await this.ipSignature.generateIpSignature(this.sourceIp);
                 } catch (error) {
-                    console.log(error);
                     console.error('Error generating IP signature: ', error);
                 }
             }
-
-            console.log('Headers: ', headers);
         }
 
         return new RSVP.Promise((resolve, reject) => {
@@ -78,7 +75,6 @@ export default class IpAuthenticator extends CredentialsAuthenticator {
                     })
                     .then(
                         (response) => {
-                            console.log('IpAuthenticator.authenticate response', response);
                             run(() => {
                                 if (response.IsValidLogon) {
                                     this.session.clearUnauthenticatedSession();
