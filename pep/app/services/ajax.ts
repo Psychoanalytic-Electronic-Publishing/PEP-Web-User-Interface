@@ -96,6 +96,8 @@ export default class AjaxService extends Service {
             }
         }
 
+        console.log('Request headers:', requestHeaders);
+
         setProperties(options, {
             credentials: 'include',
             headers: requestHeaders
