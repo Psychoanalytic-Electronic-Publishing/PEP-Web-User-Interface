@@ -42,3 +42,8 @@ variable "build_version" {
   description = "Build number"
   type        = string
 }
+
+variable "kms_key_arn" {
+  description = "ARN of the KMS key to use for secret encryption"
+  type        = string
+}
