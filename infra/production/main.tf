@@ -36,6 +36,7 @@ module "web_server" {
   font_awesome_token = var.font_awesome_token
   assets_domain      = var.assets_domain
   build_version      = var.build_version
+  kms_key_arn        = "arn:aws:kms:us-east-1:547758924192:key/7b802a2f-38b3-40af-bca1-cdbc45ad8ceb"
 }
 
 resource "aws_sns_topic" "translation_updates" {

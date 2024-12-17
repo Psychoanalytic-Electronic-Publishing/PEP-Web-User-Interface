@@ -74,9 +74,11 @@ export default class AjaxService extends Service {
      * @returns {Promise}
      */
     async request<T>(url: string, options: RequestInitWithSlash = { appendTrailingSlash: true }): Promise<T> {
+        const requestHeaders = { ...this.headers, ...(options.headers || {}) };
+
         setProperties(options, {
             credentials: 'include',
-            headers: { ...this.headers, ...(options.headers || {}) }
+            headers: requestHeaders
         });
 
         const baseUrl = /^https?\:\/\//.test(url) ? '' : `${this.host}/${this.namespace}/`;
