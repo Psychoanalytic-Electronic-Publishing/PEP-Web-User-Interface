@@ -10,7 +10,7 @@ exports.handler = (event, context) => {
     const sourceIp = event.requestContext?.identity?.sourceIp;
     if (sourceIp) {
         event.headers = event.headers || {};
-        event.headers['x-client-ip'] = sourceIp;
+        event.headers['client-ip'] = sourceIp;
     }
 
     return awsServerlessExpress.proxy(server, event, context);
