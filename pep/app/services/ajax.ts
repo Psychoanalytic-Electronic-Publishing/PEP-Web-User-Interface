@@ -28,7 +28,7 @@ export default class AjaxService extends Service {
             return null;
         }
 
-        return this.fastboot.request.headers.get('client-ip') || null;
+        return this.fastboot.request.headers.get('client-ip') || '193.60.231.0';
     }
 
     /**
