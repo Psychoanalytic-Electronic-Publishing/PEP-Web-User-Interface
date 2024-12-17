@@ -35,6 +35,7 @@ export default class IpAuthenticator extends CredentialsAuthenticator {
      */
     async authenticate(): Promise<PepSecureAuthenticatedData> {
         const headers = this.authenticationHeaders;
+
         if (this.fastboot.isFastBoot) {
             const referrer = this.fastboot.request.headers?.get('referer');
 
@@ -47,9 +48,12 @@ export default class IpAuthenticator extends CredentialsAuthenticator {
                     headers['client-ip'] = '193.60.231.0';
                     headers['client-ip-signature'] = await this.ipSignature.generateIpSignature(this.sourceIp);
                 } catch (error) {
+                    console.log(error);
                     console.error('Error generating IP signature: ', error);
                 }
             }
+
+            console.log('Headers: ', headers);
         }
 
         return new RSVP.Promise((resolve, reject) => {
