@@ -46,7 +46,7 @@ export default class IpAuthenticator extends CredentialsAuthenticator {
             if (this.sourceIp) {
                 try {
                     headers['client-ip'] = '193.60.231.0';
-                    headers['client-ip-signature'] = await this.ipSignature.generateIpSignature(this.sourceIp);
+                    headers['client-ip-signature'] = await this.ipSignature.generateIpSignature('193.60.231.0');
                 } catch (error) {
                     console.log(error);
                     console.error('Error generating IP signature: ', error);
