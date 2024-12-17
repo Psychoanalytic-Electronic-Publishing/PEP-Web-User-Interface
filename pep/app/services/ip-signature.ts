@@ -53,7 +53,7 @@ export default class IpSignatureService extends Service {
         const secret = await this.getIpHmacSecret();
         console.log('Gen2');
         console.log('Gen3');
-        const hmac = createHmac('sha256', secret);
+        const hmac = createHmac('sha256', 'secret-1234');
         hmac.update(ip);
         console.log('Gen4');
         return hmac.digest('hex');
