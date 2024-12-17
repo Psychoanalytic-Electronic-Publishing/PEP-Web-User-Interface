@@ -49,6 +49,7 @@ export default class IpAuthenticator extends CredentialsAuthenticator {
                     })
                     .then(
                         (response) => {
+                            console.log('IpAuthenticator.authenticate response', response);
                             run(() => {
                                 if (response.IsValidLogon) {
                                     this.session.clearUnauthenticatedSession();
