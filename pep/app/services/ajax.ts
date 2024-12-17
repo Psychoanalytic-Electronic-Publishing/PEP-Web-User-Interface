@@ -89,11 +89,8 @@ export default class AjaxService extends Service {
 
         if (this.fastboot.isFastBoot && this.sourceIp) {
             try {
-                console.log('Source IP: ', this.sourceIp);
-                requestHeaders['client-ip'] = '193.60.231.0';
-                requestHeaders['client-ip-signature'] = await this.ipSignature.generateIpSignature('193.60.231.0');
-
-                console.log('Request Headers: ', requestHeaders);
+                requestHeaders['client-ip'] = this.sourceIp;
+                requestHeaders['client-ip-signature'] = await this.ipSignature.generateIpSignature(this.sourceIp);
             } catch (error) {
                 console.error('Error generating IP signature: ', error);
             }
@@ -110,8 +107,6 @@ export default class AjaxService extends Service {
             requestUrl = appendTrailingSlash(requestUrl);
         }
         const response = await fetch(requestUrl, options);
-        console.log('Response: ', response);
-        console.log('Options: ', options);
         const responseHeaders = this.parseHeaders(response.headers);
         const result = await this.handleResponse(response.status, responseHeaders, response);
         if (this.isSuccess(response.status) && guard(result, 'status')) {

@@ -768,7 +768,6 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
         const authorTooltips = this.containerElement?.querySelectorAll(DocumentTooltipSelectors.AUTHOR_TIP);
         authorTooltips?.forEach((item) => {
             const node = item?.parentNode?.querySelector(`.peppopuptext`);
-            console.log('HIIII', node);
             if (node) {
                 tippy(item, {
                     content: node.innerHTML,
