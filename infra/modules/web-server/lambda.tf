@@ -68,6 +68,12 @@ module "fastboot_lambda" {
   memory_size             = 1024
   ephemeral_storage_size  = 512
 
+  layers = ["arn:aws:lambda:us-east-1:177933569100:layer:AWS-Parameters-and-Secrets-Lambda-Extension:12"]
+  environment_variables = {
+    PARAMETERS_SECRETS_EXTENSION_HTTP_PORT = "2773"
+    IP_HMAC_SECRET_ARN                     = aws_secretsmanager_secret.ip_hmac_secret.arn
+  }
+
   tags = {
     stage = var.env
     stack = var.stack_name
@@ -105,10 +111,3 @@ resource "null_resource" "upload_assets_to_s3" {
   }
 }
 
-resource "aws_lambda_permission" "allow_api" {
-  statement_id  = "${var.stack_name}-allow-api-${var.env}"
-  action        = "lambda:InvokeFunction"
-  function_name = module.fastboot_lambda.lambda_function_name
-  principal     = "apigateway.amazonaws.com"
-  source_arn    = "${aws_api_gateway_rest_api.api_gateway.execution_arn}/*/*/*"
-}
