@@ -8,7 +8,7 @@ export default class RowSelection<T> extends Service {
     @tracked totalRecordCount: number = 0;
 
     /**
-     * Returns a count of all selected rows
+     * Returns a count of all selected row
      *
      * @returns
      * @memberof RowSelectionService
