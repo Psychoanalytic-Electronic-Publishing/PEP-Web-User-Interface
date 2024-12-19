@@ -43,14 +43,14 @@ export default class IpAuthenticator extends CredentialsAuthenticator {
                 headers['ReferrerURL-For-PEP'] = referrer;
             }
 
-            if (this.sourceIp) {
-                try {
-                    headers['client-ip'] = this.sourceIp;
-                    headers['client-ip-signature'] = await this.ipSignature.generateIpSignature(this.sourceIp);
-                } catch (error) {
-                    console.error('Error generating IP signature: ', error);
-                }
-            }
+            // if (this.sourceIp) {
+            //     try {
+            //         headers['client-ip'] = this.sourceIp;
+            //         headers['client-ip-signature'] = await this.ipSignature.generateIpSignature(this.sourceIp);
+            //     } catch (error) {
+            //         console.error('Error generating IP signature: ', error);
+            //     }
+            // }
         }
 
         return new RSVP.Promise((resolve, reject) => {
