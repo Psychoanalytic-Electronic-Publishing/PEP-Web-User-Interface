@@ -53,6 +53,8 @@ export default class IpAuthenticator extends CredentialsAuthenticator {
             }
         }
 
+        console.log('IpAuthenticator authenticate headers', headers);
+
         return new RSVP.Promise((resolve, reject) => {
             try {
                 const sessionData = this.session.getUnauthenticatedSession();

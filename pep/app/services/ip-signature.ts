@@ -9,11 +9,14 @@ export default class IpSignatureService extends Service {
     @service fastboot!: FastbootService;
 
     async getIpHmacSecret(): Promise<string> {
+        console.log('getIpHmacSecret fastboot.isFastBoot', this.fastboot.isFastBoot);
+
         if (!this.fastboot.isFastBoot) {
             throw new Error('ServerSecretsService can only be used in FastBoot');
         }
 
         if (cachedSecret) {
+            console.log('getIpHmacSecret cachedSecret', cachedSecret);
             return cachedSecret;
         }
 
@@ -32,6 +35,7 @@ export default class IpSignatureService extends Service {
                 }
             }
         );
+
         if (!response.ok) {
             throw new Error(`Failed to fetch secret: ${response.statusText}`);
         }
@@ -39,10 +43,14 @@ export default class IpSignatureService extends Service {
         const data = await response.json();
         cachedSecret = data.SecretString as string;
 
+        console.log('getIpHmacSecret fetchedSecret', cachedSecret);
+
         return cachedSecret;
     }
 
     async generateIpSignature(ip: string): Promise<string> {
+        console.log('generateIpSignature fastboot.isFastBoot', this.fastboot.isFastBoot);
+
         if (!this.fastboot.isFastBoot) {
             throw new Error('ServerSecretsService can only be used in FastBoot');
         }
@@ -50,6 +58,8 @@ export default class IpSignatureService extends Service {
         const secret = await this.getIpHmacSecret();
         const hmac = createHmac('sha256', secret);
         hmac.update(ip);
+
+        console.log('generateIpSignature hmac', hmac);
         return hmac.digest('hex');
     }
 }
