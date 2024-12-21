@@ -5,6 +5,15 @@ import fetch from 'fetch';
 
 let cachedSecret: string | null = null;
 
+function sleep(delay: number, valueToResolveWith: any = null): Promise<any> {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            console.log(`Slept for ${delay}ms`);
+            resolve(valueToResolveWith); // Resolve the Promise after the delay
+        }, delay);
+    });
+}
+
 export default class IpSignatureService extends Service {
     @service fastboot!: FastbootService;
 
@@ -50,6 +59,9 @@ export default class IpSignatureService extends Service {
         const secret = await this.getIpHmacSecret();
         const hmac = createHmac('sha256', secret);
         hmac.update(ip);
+
+        await sleep(2000);
+
         return hmac.digest('hex');
     }
 }
