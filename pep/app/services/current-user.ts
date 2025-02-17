@@ -28,9 +28,10 @@ import {
     TextJustificationId,
     TextJustifications
 } from 'pep/constants/text';
-import USER_LOGIN_METHODS from 'pep/constants/user';
+import USER_LOGIN_METHODS, { LoginMethod } from 'pep/constants/user';
 import User, { UserType } from 'pep/pods/user/model';
 import AuthService from 'pep/services/auth';
+import ModalService from '@gavant/ember-modals/services/modal';
 import InformationBarService from 'pep/services/information-bar';
 import PepSessionService from 'pep/services/pep-session';
 import { addClass, removeClass } from 'pep/utils/dom';
@@ -54,6 +55,7 @@ export interface UserPreferenceError {
 }
 
 export default class CurrentUserService extends Service {
+    @service modal!: ModalService;
     @service store!: DS.Store;
     @service('pep-session') session!: PepSessionService;
     @service fastboot!: FastbootService;
@@ -104,6 +106,17 @@ export default class CurrentUserService extends Service {
         }));
     }
 
+    get showSidRegistrationModal() {
+        const isSidSubscriber = this.user?.activeSubscriptionsJSON?.some(
+            (sub) => sub.OrderedViaName === 'Societa Psicoanalitica Italiana - SPI'
+        );
+
+        const isReferral =
+            this.user?.loggedInMethod === LoginMethod.REFERRER || this.user?.loggedInMethod === LoginMethod.IP;
+
+        return isSidSubscriber && isReferral;
+    }
+
     /**
      * Get the current font size
      *
@@ -152,6 +165,8 @@ export default class CurrentUserService extends Service {
         const user = await this.fetchUser(sessionId);
 
         if (user && user.hasIJPOpenSubscription) await this.disqus.setup();
+
+        if (this.showSidRegistrationModal) this.modal.open('user/sid', {});
 
         return user;
     }
