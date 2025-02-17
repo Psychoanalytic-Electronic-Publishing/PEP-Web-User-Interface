@@ -38,7 +38,7 @@ import { buildJumpToHitsHTML, loadXSLT, parseXML } from 'pep/utils/dom';
 import { BaseGlimmerSignature } from 'pep/utils/types';
 import { reject } from 'rsvp';
 import tippy, { Instance, Props } from 'tippy.js';
-import { arrow, link, tooltip } from './svg';
+import { arrow, link, tooltip, open } from './svg';
 
 interface DocumentTextArgs {
     document: Document;
@@ -297,9 +297,7 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
             });
 
             window.open(href, '_blank');
-        }
-
-        if (type === DocumentLinkTypes.GLOSSARY_TERM) {
+        } else if (type === DocumentLinkTypes.GLOSSARY_TERM) {
             this.viewGlossaryTermFromElement(target);
         } else if (type === DocumentLinkTypes.BIBLIOGRAPHY) {
             const id = attributes.getNamedItem('data-document-id')?.nodeValue;
@@ -680,45 +678,49 @@ export default class DocumentText extends Component<BaseGlimmerSignature<Documen
     async insertBiblioLinks() {
         const bibliographyData = await this.store.query('biblio', {
             id: this.args.document.id,
-            documentYear: this.args.document.year
+            documentYear: this.args.document.year,
+            include_external: 'True'
         });
 
         bibliographyData.forEach((biblio) => {
             const biblioElement = this.containerElement?.querySelector(`[id="${biblio.refLocalId}"]`);
             if (!biblioElement) return;
 
-            // TEMPORARY UNTIL FULl REBUILD REMOVES LINKS FROM XML
-            const bibxElements = biblioElement.querySelectorAll('[class^="bibx"]');
-            bibxElements.forEach((element) => element.remove());
-            // END TEMPORARY CODE
+            // Remove existing bibx elements - temporary until rebuild removes old XML
+            biblioElement.querySelectorAll('[class^="bibx"]').forEach((element) => element.remove());
+
+            const createAnchorElement = (type: string, documentId: string, svgContent: string, href?: string) => {
+                const anchorElement = document.createElement('a');
+                anchorElement.setAttribute('class', 'bibx pl-2');
+                anchorElement.setAttribute('data-type', type);
+                anchorElement.setAttribute('data-document-id', documentId);
+                if (href) {
+                    anchorElement.setAttribute('href', href);
+                    anchorElement.setAttribute('target', '_blank');
+                }
+                const svgElement = new DOMParser().parseFromString(svgContent, 'text/html').body
+                    .firstChild as SVGElement;
+                anchorElement.appendChild(svgElement);
+                return anchorElement;
+            };
 
             if (biblio.refRx) {
-                const anchorElement = document.createElement('a');
-                anchorElement.setAttribute('class', 'bibx pl-2');
-                anchorElement.setAttribute('data-type', 'BIBX');
-                anchorElement.setAttribute('data-document-id', biblio.refRx);
-
-                const arrowElement = new DOMParser().parseFromString(arrow, 'text/html').body.firstChild as SVGElement;
-                anchorElement.appendChild(arrowElement);
-
-                biblioElement.appendChild(anchorElement);
+                biblioElement.appendChild(createAnchorElement('BIBX', biblio.refRx, arrow));
             } else if (biblio.refRxcf) {
-                const anchorElement = document.createElement('a');
-                anchorElement.setAttribute('class', 'bibx pl-2');
-                anchorElement.setAttribute('data-type', 'BIBX_CF');
-                anchorElement.setAttribute('data-document-id', biblio.refRxcf);
+                biblioElement.appendChild(createAnchorElement('BIBX_CF', biblio.refRxcf, link));
 
-                const linkElement = new DOMParser().parseFromString(link, 'text/html').body.firstChild as SVGElement;
-                anchorElement.appendChild(linkElement);
-                biblioElement.appendChild(anchorElement);
                 const spanElement = document.createElement('span');
                 spanElement.setAttribute('class', 'bibx-related-info ml-1');
-
                 const tooltipElement = new DOMParser().parseFromString(tooltip, 'text/html').body
                     .firstChild as SVGElement;
                 spanElement.appendChild(tooltipElement);
-
                 biblioElement.appendChild(spanElement);
+            } else if (biblio.refExternal.length > 0) {
+                const mostRelevantLink = biblio.refExternal.reduce((prev, current) =>
+                    prev.relevanceScore > current.relevanceScore ? prev : current
+                );
+                const externalLink = mostRelevantLink.extRefUrl;
+                biblioElement.appendChild(createAnchorElement('DOI', externalLink, open, externalLink));
             }
         });
     }
