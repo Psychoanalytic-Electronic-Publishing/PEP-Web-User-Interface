@@ -63,7 +63,6 @@ export default class AjaxService extends Service {
         return headers;
     }
 
-    @computed('fastboot.isFastBoot')
     get fetchImplementation() {
         // Use regular fetch in Fastboot, AWS WAF fetch on client
         // @ts-expect-error
