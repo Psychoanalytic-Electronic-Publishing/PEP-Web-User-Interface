@@ -45,6 +45,7 @@ export default class AjaxService extends Service {
             const fastbootHeaders = this.fastboot.request.headers;
             const xForwardedFor = (fastbootHeaders.get('X-Forwarded-For') as string) ?? '';
             headers['X-Forwarded-For-PEP'] = xForwardedFor.split(',')[0];
+            headers['PEP-WAF-Key'] = process.env.PEP_WAF_KEY;
         }
         return headers;
     }
