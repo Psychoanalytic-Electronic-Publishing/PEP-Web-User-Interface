@@ -56,6 +56,7 @@ module.exports = function (emberDistPath) {
                     env: {
                         AWS_SESSION_TOKEN: process.env.AWS_SESSION_TOKEN,
                         IP_HMAC_SECRET_ARN: process.env.IP_HMAC_SECRET_ARN,
+                        PEP_WAF_KEY: process.env.PEP_WAF_KEY,
                         PARAMETERS_SECRETS_EXTENSION_HTTP_PORT:
                             process.env.PARAMETERS_SECRETS_EXTENSION_HTTP_PORT || 2773
                     }
