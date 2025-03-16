@@ -45,3 +45,8 @@ variable "build_version" {
   description = "Build number"
   type        = string
 }
+
+variable "pep_waf_key" {
+  description = "WAF secret key"
+  type        = string
+}

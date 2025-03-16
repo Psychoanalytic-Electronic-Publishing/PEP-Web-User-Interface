@@ -72,6 +72,7 @@ module "fastboot_lambda" {
   environment_variables = {
     PARAMETERS_SECRETS_EXTENSION_HTTP_PORT = "2773"
     IP_HMAC_SECRET_ARN                     = aws_secretsmanager_secret.ip_hmac_secret.arn
+    PEP_WAF_KEY                            = var.pep_waf_key
   }
 
   tags = {

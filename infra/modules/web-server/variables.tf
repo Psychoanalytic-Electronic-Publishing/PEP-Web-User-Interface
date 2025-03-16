@@ -47,3 +47,8 @@ variable "kms_key_arn" {
   description = "ARN of the KMS key to use for secret encryption"
   type        = string
 }
+
+variable "pep_waf_key" {
+  description = "WAF secret key"
+  type        = string
+}
