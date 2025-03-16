@@ -63,6 +63,13 @@ export default class AjaxService extends Service {
         return headers;
     }
 
+    @computed('fastboot.isFastBoot')
+    get fetchImplementation() {
+        // Use regular fetch in Fastboot, AWS WAF fetch on client
+        // @ts-expect-error
+        return this.fastboot.isFastBoot ? fetch : window.AwsWafIntegration?.fetch || fetch;
+    }
+
     /**
      * Usage example:
      * const response = await this.ajax.request('some-endpoint', {
@@ -86,7 +93,10 @@ export default class AjaxService extends Service {
         if (options.appendTrailingSlash) {
             requestUrl = appendTrailingSlash(requestUrl);
         }
-        const response = await fetch(requestUrl, options);
+
+        const fetchImpl = this.fetchImplementation;
+        const response = await fetchImpl(requestUrl, options);
+
         const responseHeaders = this.parseHeaders(response.headers);
         const result = await this.handleResponse(response.status, responseHeaders, response);
         if (this.isSuccess(response.status) && guard(result, 'status')) {
