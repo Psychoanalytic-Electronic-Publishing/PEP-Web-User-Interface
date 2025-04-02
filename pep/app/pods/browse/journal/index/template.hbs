@@ -47,6 +47,13 @@
                         </div>
                     </ContentWithPlaceholder>
                     <div class="small text-muted">
+                        {{#if
+                            (and this.showEmbargoInformation this.publisherInformation.embargoYears this.isTFJournal)
+                        }}
+                            <p>
+                                {{t "publisherInfo.tfPromo" url="https://pep-web.org" htmlSafe=true}}
+                            </p>
+                        {{/if}}
                         {{#if (and this.showEmbargoInformation this.publisherInformation.embargoYears)}}
                             <p>
                                 {{t

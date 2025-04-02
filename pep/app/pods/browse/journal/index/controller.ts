@@ -18,6 +18,12 @@ export default class BrowseJournalIndex extends Controller {
         return this.configuration.base.global.embargoDate;
     }
 
+    get isTFJournal() {
+        return ['IJPSPPSC', 'JICAP', 'JCPTX', 'NP', 'PAQ', 'PD', 'PI', 'PSC', 'PSW', 'SGS', 'SPR'].find(
+            (code) => code === this.sourcecode?.toUpperCase()
+        );
+    }
+
     get publisherInformation() {
         const code = this.sourcecode;
         return this.configuration.content.global.publishers.find((publisher) => publisher.sourceCode === code);
