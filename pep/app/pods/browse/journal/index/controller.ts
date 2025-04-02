@@ -7,6 +7,7 @@ import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
 import Journal from 'pep/pods/journal/model';
 import Source from 'pep/pods/source/model';
 import ConfigurationService from 'pep/services/configuration';
+import { TFJournals } from 'pep/constants/documents';
 
 export default class BrowseJournalIndex extends Controller {
     @service configuration!: ConfigurationService;
@@ -19,9 +20,7 @@ export default class BrowseJournalIndex extends Controller {
     }
 
     get isTFJournal() {
-        return ['IJPSPPSC', 'JICAP', 'JCPTX', 'NP', 'PAQ', 'PD', 'PI', 'PSC', 'PSW', 'SGS', 'SPR'].find(
-            (code) => code === this.sourcecode?.toUpperCase()
-        );
+        return TFJournals.find((code) => code === this.sourcecode?.toUpperCase());
     }
 
     get publisherInformation() {

@@ -21,6 +21,7 @@ import { clearSearch } from 'pep/utils/search';
 import { BaseGlimmerSignature } from 'pep/utils/types';
 import { tracked } from '@glimmer/tracking';
 import CookiesService from 'ember-cookies/services/cookies';
+import { TFJournals } from 'pep/constants/documents';
 
 interface DocumentReadArgs {
     model: Document;
@@ -51,9 +52,7 @@ export default class DocumentRead extends Component<BaseGlimmerSignature<Documen
     }
 
     get isTFJournal() {
-        return ['IJPSPPSC', 'JICAP', 'JCPTX', 'NP', 'PAQ', 'PD', 'PI', 'PSC', 'PSW', 'SGS', 'SPR'].find(
-            (code) => code === this.args.model.PEPCode?.toUpperCase()
-        );
+        return TFJournals.find((code) => code === this.args.model.PEPCode?.toUpperCase());
     }
 
     @tracked showIJPOpenBannerState = true;

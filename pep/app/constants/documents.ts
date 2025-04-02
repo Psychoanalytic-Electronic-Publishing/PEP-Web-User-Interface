@@ -32,3 +32,5 @@ export enum DocumentLinkTypes {
     MANUSCRIPT_VERSION = 'RVDOC',
     PREVIEW_PURCHASE_LINK = 'preview-purchase-link'
 }
+
+export const TFJournals = ['IJPSPPSC', 'JICAP', 'JCPTX', 'NP', 'PAQ', 'PD', 'PI', 'PSC', 'PSW', 'SGS', 'SPR'];
