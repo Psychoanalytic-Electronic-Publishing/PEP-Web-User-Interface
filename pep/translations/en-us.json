@@ -555,6 +555,7 @@
     },
     "publisherInfo": {
         "title": "Publisher Information",
+        "tfPromo": "Based on your PEP subscription, you may be eligible to purchase a 12-month subscription to this journal, which enables access to recent issues on PEP-Web. For further information <a target='_blank' href={url}>click here</a>.",
         "description": "The PEP Archive contains the full-text content of all of the volumes above. Due to contracts with the publishers, there is a three year moving wall (embargo of current articles) for most journals. You can browse the tables of contents up through the current issue, and searches include the complete text of the articles, but only the titles and abstracts (or summaries) will be displayed for articles from {year} and newer. For details on how to read the full text of {year} and more current articles see the publishers official website <a target='_blank' href={url}>here</a>."
     },
     "glossary": {

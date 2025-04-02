@@ -555,6 +555,7 @@
     },
     "publisherInfo": {
         "title": "Informazioni sul'editore",
+        "tfPromo": "Based on your PEP subscription, you may be eligible to purchase a 12-month subscription to this journal, which enables access to recent issues on PEP-Web. For further information <a target='_blank' href={url}>click here</a>.",
         "description": "L'Archivio PEP include l'intero contenuto di tutti i volumi di cui sopra. A causa dei contratti con gli editori, c'è un muro mobile di tre anni (divieto di divulgazione degli articoli attuali) per la maggior parte delle riviste. Puoi sfogliare gli indici fino al numero corrente e le ricerche includono il testo completo degli articoli, ma solo i titoli e gli abstract (o riassunti) verranno visualizzati per gli articoli pubblicati dal {year} in poi. Per avere più informazioni su come leggere il testo completo degli articoli pubblicati dal {year} in poi, consulta il sito web ufficiale degli editori <a target='_blank' href={url}>qui</a>."
     },
     "glossary": {

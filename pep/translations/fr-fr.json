@@ -555,6 +555,7 @@
     },
     "publisherInfo": {
         "title": "Informations sur l'éditeur",
+        "tfPromo": "Based on your PEP subscription, you may be eligible to purchase a 12-month subscription to this journal, which enables access to recent issues on PEP-Web. For further information <a target='_blank' href={url}>click here</a>.",
         "description": "L'archive PEP contient le contenu en texte intégral de tous les volumes ci-dessus. En raison des contrats avec les éditeurs, il existe un mur glissant de trois ans (restrictions sur les articles actuels) pour la plupart des revues. Vous pouvez parcourir les tables des matières jusqu'au numéro actuel et les recherches s'effectuent sur le texte complet des articles, mais seuls les titres et les sommaires (ou résumés) seront affichés pour les articles de {year} ou plus récents. Pour plus d'information sur la lecture du texte intégral de {year} et des articles plus récents, référez-vous au site Web officiel des éditeurs <a target='_blank' href={url}>ici</a>."
     },
     "glossary": {

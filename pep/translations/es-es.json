@@ -555,6 +555,7 @@
     },
     "publisherInfo": {
         "title": "Información del editor",
+        "tfPromo": "Based on your PEP subscription, you may be eligible to purchase a 12-month subscription to this journal, which enables access to recent issues on PEP-Web. For further information <a target='_blank' href={url}>click here</a>.",
         "description": "El archivo PEP contiene el contenido de texto completo de todos los volúmenes anteriores. Debido a los contratos con los editores, existe un bloqueo durante tres años (embargo de artículos actuales) para la mayoría de las revistas. Puede navegar por las tablas de contenido hasta el número actual. Las búsquedas incluyen el texto completo de los artículos, pero solo se mostrarán los títulos y resúmenes de los artículos del {year} y más recientes. Para obtener detalles sobre cómo leer el texto completo del {year} y los artículos más actuales, consulte el sitio web oficial de los editores <a target='_blank' href={url}>aquí</a>."
     },
     "glossary": {

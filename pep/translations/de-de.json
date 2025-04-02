@@ -556,6 +556,7 @@
     },
     "publisherInfo": {
         "title": "Informationen zum Herausgeber",
+        "tfPromo": "Based on your PEP subscription, you may be eligible to purchase a 12-month subscription to this journal, which enables access to recent issues on PEP-Web. For further information <a target='_blank' href={url}>click here</a>.",
         "description": "Das PEP-Archiv enthält den Volltextinhalt aller oben genannten Bände. Aufgrund von Verträgen mit den Herausgebern gibt es für die meisten Fachzeitschriften eine dreijährige bewegliche Blockade (Embargo für aktuelle Artikel). Sie können die Inhaltsverzeichnisse in der aktuellen Ausgabe durchsuchen. Die Suche umfasst den vollständigen Text der Artikel. Für Artikel ab {year} und neuer werden jedoch nur die Titel und Abstracts (oder Zusammenfassungen) angezeigt. Einzelheiten zum Lesen des vollständigen Textes aus {year} und zu aktuelleren Artikeln finden Sie <a target='_blank' href={url}>hier</a> auf der offiziellen Website des Herausgebers."
     },
     "glossary": {
