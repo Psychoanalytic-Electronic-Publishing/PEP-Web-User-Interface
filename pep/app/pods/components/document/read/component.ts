@@ -50,6 +50,12 @@ export default class DocumentRead extends Component<BaseGlimmerSignature<Documen
         return '';
     }
 
+    get isTFJournal() {
+        return ['IJPSPPSC', 'JICAP', 'JCPTX', 'NP', 'PAQ', 'PD', 'PI', 'PSC', 'PSW', 'SGS', 'SPR'].find(
+            (code) => code === this.args.model.PEPCode?.toUpperCase()
+        );
+    }
+
     @tracked showIJPOpenBannerState = true;
     get showIJPOpenBanner() {
         if (this.args.model.PEPCode !== IJP_OPEN_CODE) return false;
