@@ -51,8 +51,11 @@ export default class DocumentRead extends Component<BaseGlimmerSignature<Documen
         return '';
     }
 
-    get isTFJournal() {
-        return TFJournals.find((code) => code === this.args.model.PEPCode?.toUpperCase());
+    get displayTFPromo() {
+        const isTFJournal = TFJournals.find((code) => code === this.args.model.PEPCode?.toUpperCase());
+        const isEmbargoed = this.args.model.accessLimited && this.args.model.accessClassification === 'current';
+
+        return isTFJournal && isEmbargoed;
     }
 
     @tracked showIJPOpenBannerState = true;
