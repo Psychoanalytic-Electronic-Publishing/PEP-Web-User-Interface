@@ -6,17 +6,11 @@
                     <p class={{if this.session.isAuthenticated "mb-0"}}>
                         {{html-safe @model.noAccessMessage}}
                     </p>
-
-                {{#if this.displayTFPromo}}
-                    <p>
-                        {{t "publisherInfo.tfPromo" url="https://pep-web.org" htmlSafe=true}}
-                    </p>
-                {{/if}}
-                {{/if}}
-                {{#else if @model.accessLimited}}
-                    <p class="mb-0">
-                        {{t "read.document.accessLimited"}}
-                    </p>
+                    {{#if this.displayTFPromo}}
+                        <p>
+                            {{t "publisherInfo.tfPromo" url="https://pep-web.org" htmlSafe=true}}
+                        </p>
+                    {{/if}}
                 {{/if}}
                 {{#unless this.session.isAuthenticated}}
                     <p class="mb-0">
