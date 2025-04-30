@@ -555,8 +555,16 @@
     },
     "publisherInfo": {
         "title": "Informazioni sul'editore",
-        "tfPromo": "Based on your PEP subscription, you may be eligible to purchase a 12-month subscription to this journal, which enables access to recent issues on PEP-Web. For further information <a target='_blank' href={url}>click here</a>.",
         "description": "L'Archivio PEP include l'intero contenuto di tutti i volumi di cui sopra. A causa dei contratti con gli editori, c'è un muro mobile di tre anni (divieto di divulgazione degli articoli attuali) per la maggior parte delle riviste. Puoi sfogliare gli indici fino al numero corrente e le ricerche includono il testo completo degli articoli, ma solo i titoli e gli abstract (o riassunti) verranno visualizzati per gli articoli pubblicati dal {year} in poi. Per avere più informazioni su come leggere il testo completo degli articoli pubblicati dal {year} in poi, consulta il sito web ufficiale degli editori <a target='_blank' href={url}>qui</a>."
+    },
+    "tfPromo": {
+        "publisherInfo": "Based on your PEP subscription, you may be eligible to purchase a 12-month subscription to this journal, which enables access to recent issues on PEP-Web. For further information <a target='_blank' href={url}>click here</a>.",
+        "modal": {
+            "title": "New! - Taylor & Francis Journal Subscriptions on PEP-Web",
+            "body": "PEP and Taylor & Francis (T&F) are pleased to offer a new range of digital journal subscriptions allowing PEP subscribers extended access to the most recent articles beyond the publisher copyright <a target='_blank' href={embargoSupportUrl}>embargo</a>.",
+            "body2": "Enjoy full-text content for all volumes of the leading psychoanalytic journals on PEP-Web, including <a target='_blank' href={psychQuarterlyUrl}>Psychoanalytic Quarterly</a>, the <a target='_blank' href={childPsychUrl}>Journal of Child Psychotherapy</a>, and <a target='_blank' href={psychDialogueUrl}>Psychoanalytic Dialogues</a>, among many others!",
+            "body3": "Find out more and <a target='_blank' href={subscribeUrl}>subscribe here</a>."
+        }
     },
     "glossary": {
         "title": "Glossario",
