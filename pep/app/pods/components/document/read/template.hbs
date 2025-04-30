@@ -5,12 +5,14 @@
                 {{#if @model.noAccessMessage}}
                     <p class={{if this.session.isAuthenticated "mb-0"}}>
                         {{html-safe @model.noAccessMessage}}
+                        {{#if this.displayTFPromo}}
+                            {{t
+                                "tfPromo.publisherInfo"
+                                url="https://support.pep-web.org/taylor-francis-journal-subscriptions-on-pep-web/"
+                                htmlSafe=true
+                            }}
+                        {{/if}}
                     </p>
-                    {{#if this.displayTFPromo}}
-                        <p>
-                            {{t "publisherInfo.tfPromo" url="https://pep-web.org" htmlSafe=true}}
-                        </p>
-                    {{/if}}
                 {{/if}}
                 {{#unless this.session.isAuthenticated}}
                     <p class="mb-0">
