@@ -14,8 +14,10 @@ import ModalService from '@gavant/ember-modals/services/modal';
 
 import { PepSecureAuthenticatedData } from 'pep/api';
 import {
+    COOKIE_PATH,
     FASTBOOT_SESSION_WORKAROUND_COOKIE_NAME,
     HIDE_TOUR_COOKIE_NAME,
+    HIDE_TF_PROMO_COOKIE_NAME,
     SESSION_COOKIE_NAME
 } from 'pep/constants/cookies';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
@@ -175,6 +177,7 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
     async setupController(controller: ApplicationController, model: any, transition: Transition): Promise<void> {
         super.setupController(controller, model, transition);
         const hideTour = this.cookies.read(HIDE_TOUR_COOKIE_NAME);
+        const hideTfPromo = this.cookies.read(HIDE_TF_PROMO_COOKIE_NAME);
 
         if (this.currentUser.preferences?.tourEnabled && !hideTour) {
             this.introTour.show();
@@ -190,6 +193,10 @@ export default class Application extends PageLayout(Route.extend(ApplicationRout
                 this.modal.open('admin-specified-information', { information: valueFromConfig });
                 controller.information = null;
             }
+        }
+
+        if (!hideTfPromo) {
+            this.modal.open('taylor-francis-subscription', {});
         }
     }
 
