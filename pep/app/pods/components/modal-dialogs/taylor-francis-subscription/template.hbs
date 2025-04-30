@@ -1,0 +1,27 @@
+<ModalDialog @onClose={{this.close}} @size="md" @clickOutsideToClose={{false}} as |Modal|>
+    <Modal.header @title={{t "tfPromo.modal.title"}} />
+    <Modal.body>
+        <p>
+            {{t "tfPromo.modal.body" embargoSupportUrl="https://support.pep-web.org/embargoed-content/" htmlSafe=true}}
+        </p>
+        <p>
+            {{t
+                "tfPromo.modal.body2"
+                psychQuarterlyUrl="http://www.pep-web.org/toc.php?journal=paq"
+                childPsychUrl="http://www.pep-web.org/toc.php?journal=jcptx"
+                psychDialogueUrl="http://www.pep-web.org/toc.php?journal=pd"
+                htmlSafe=true
+            }}
+        </p>
+        <p>
+            {{t
+                "tfPromo.modal.body3"
+                subscribeUrl="https://support.pep-web.org/taylor-francis-journal-subscriptions-on-pep-web/"
+                htmlSafe=true
+            }}
+        </p>
+    </Modal.body>
+    <Modal.footer>
+        <Button @type="primary" @label={{t "common.close"}} @action={{this.close}} />
+    </Modal.footer>
+</ModalDialog>
