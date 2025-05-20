@@ -74,6 +74,13 @@
                             {{#if this.result.accessLimited}}
                                 <Alert @isShown={{this.session.isAuthenticated}} @type="warning">
                                     {{html-safe (or this.result.noAccessMessage (t "search.preview.accessLimited"))}}
+                                    {{#if this.displayTFPromo}}
+                                        {{t
+                                            "tfPromo.publisherInfo"
+                                            url="https://support.pep-web.org/taylor-francis-journal-subscriptions-on-pep-web/"
+                                            htmlSafe=true
+                                        }}
+                                    {{/if}}
                                 </Alert>
                                 {{#unless this.session.isAuthenticated}}
                                     <p class="p-3 bg-primary-well rounded">
