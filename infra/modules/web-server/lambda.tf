@@ -90,6 +90,12 @@ resource "aws_lambda_alias" "live" {
   function_version = module.fastboot_lambda.lambda_function_version
 }
 
+# Output Lambda alias invoke ARN for API Gateway
+output "lambda_alias_invoke_arn" {
+  description = "Invoke ARN of the Lambda alias for API Gateway integration"
+  value       = aws_lambda_alias.live.invoke_arn
+}
+
 resource "null_resource" "upload_assets_to_s3" {
   depends_on = [
     null_resource.ember_build,
