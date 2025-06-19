@@ -82,12 +82,34 @@ module "fastboot_lambda" {
   }
 }
 
+resource "null_resource" "deploy_lambda_package" {
+  depends_on = [
+    null_resource.ember_build,
+    null_resource.fastboot_build,
+    module.fastboot_lambda
+  ]
+  triggers = {
+    src_hash = "${data.archive_file.zip_assets.output_sha}"
+    env_hash = local.env_sha1
+  }
+  provisioner "local-exec" {
+    command = "aws lambda update-function-code --function-name ${module.fastboot_lambda.lambda_function_name} --zip-file fileb://package.zip --publish"
+  }
+}
+
+# Get latest version after deployment
+data "aws_lambda_function" "current" {
+  depends_on = [null_resource.deploy_lambda_package]
+  function_name = module.fastboot_lambda.lambda_function_name
+}
+
 # Lambda alias for immutable deployments
 resource "aws_lambda_alias" "live" {
+  depends_on = [null_resource.deploy_lambda_package]
   name             = "live"
   description      = "Live alias for ${var.stack_name}-handler-${var.env}"
   function_name    = module.fastboot_lambda.lambda_function_name
-  function_version = module.fastboot_lambda.lambda_function_version
+  function_version = data.aws_lambda_function.current.version
 }
 
 # Output Lambda alias invoke ARN for API Gateway
@@ -108,7 +130,7 @@ resource "null_resource" "upload_assets_to_s3" {
   }
   provisioner "local-exec" {
     working_dir = "../.."
-    command     = "aws s3 sync pep/dist/ s3://${var.assets_domain}/ --delete --acl public-read"
+    command     = "aws s3 sync pep/dist/ s3://${var.assets_domain}/ --acl public-read"
   }
 }
 
