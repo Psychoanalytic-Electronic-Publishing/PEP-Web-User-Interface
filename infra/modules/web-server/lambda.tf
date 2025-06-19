@@ -67,6 +67,7 @@ module "fastboot_lambda" {
   timeout                 = 29
   memory_size             = 1024
   ephemeral_storage_size  = 512
+  publish                 = true
 
   layers = ["arn:aws:lambda:us-east-1:177933569100:layer:AWS-Parameters-and-Secrets-Lambda-Extension:12"]
   environment_variables = {
@@ -92,8 +93,21 @@ resource "null_resource" "deploy_lambda_package" {
     env_hash = local.env_sha1
   }
   provisioner "local-exec" {
-    command = "aws lambda update-function-code --function-name ${module.fastboot_lambda.lambda_function_name} --zip-file fileb://package.zip"
+    command = "aws lambda update-function-code --function-name ${module.fastboot_lambda.lambda_function_name} --zip-file fileb://package.zip --publish"
   }
+}
+
+data "aws_lambda_function" "current" {
+  depends_on    = [null_resource.deploy_lambda_package]
+  function_name = module.fastboot_lambda.lambda_function_name
+}
+
+resource "aws_lambda_alias" "live" {
+  depends_on       = [null_resource.deploy_lambda_package]
+  name             = "live"
+  description      = "Live alias for ${var.stack_name}-handler-${var.env}"
+  function_name    = module.fastboot_lambda.lambda_function_name
+  function_version = data.aws_lambda_function.current.version
 }
 
 resource "null_resource" "upload_assets_to_s3" {
@@ -108,7 +122,7 @@ resource "null_resource" "upload_assets_to_s3" {
   }
   provisioner "local-exec" {
     working_dir = "../.."
-    command     = "aws s3 sync pep/dist/ s3://${var.assets_domain}/ --delete --acl public-read"
+    command     = "aws s3 sync pep/dist/ s3://${var.assets_domain}/ --acl public-read"
   }
 }
 
