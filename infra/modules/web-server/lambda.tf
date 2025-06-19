@@ -67,6 +67,7 @@ module "fastboot_lambda" {
   timeout                 = 29
   memory_size             = 1024
   ephemeral_storage_size  = 512
+  publish                 = true
 
   layers = ["arn:aws:lambda:us-east-1:177933569100:layer:AWS-Parameters-and-Secrets-Lambda-Extension:12"]
   environment_variables = {
@@ -81,19 +82,15 @@ module "fastboot_lambda" {
   }
 }
 
-resource "null_resource" "deploy_lambda_package" {
+resource "aws_lambda_alias" "live" {
   depends_on = [
-    null_resource.ember_build,
-    null_resource.fastboot_build,
     module.fastboot_lambda
   ]
-  triggers = {
-    src_hash = "${data.archive_file.zip_assets.output_sha}"
-    env_hash = local.env_sha1
-  }
-  provisioner "local-exec" {
-    command = "aws lambda update-function-code --function-name ${module.fastboot_lambda.lambda_function_name} --zip-file fileb://package.zip"
-  }
+
+  name             = "live"
+  description      = "Live alias for ${var.stack_name}-handler-${var.env}"
+  function_name    = module.fastboot_lambda.lambda_function_name
+  function_version = module.fastboot_lambda.lambda_function_version
 }
 
 resource "null_resource" "upload_assets_to_s3" {

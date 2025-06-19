@@ -18,7 +18,7 @@ resource "aws_api_gateway_rest_api" "api_gateway" {
             httpMethod           = "POST"
             payloadFormatVersion = "1.0"
             type                 = "AWS_PROXY"
-            uri                  = module.fastboot_lambda.lambda_function_invoke_arn
+            uri                  = aws_lambda_alias.live.invoke_arn
           }
         }
       }
@@ -28,7 +28,7 @@ resource "aws_api_gateway_rest_api" "api_gateway" {
             httpMethod           = "POST"
             payloadFormatVersion = "1.0"
             type                 = "AWS_PROXY"
-            uri                  = module.fastboot_lambda.lambda_function_invoke_arn
+            uri                  = aws_lambda_alias.live.invoke_arn
           }
         }
       }
