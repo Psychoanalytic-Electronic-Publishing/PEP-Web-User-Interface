@@ -97,25 +97,17 @@ resource "null_resource" "deploy_lambda_package" {
   }
 }
 
-# Get latest version after deployment
 data "aws_lambda_function" "current" {
-  depends_on = [null_resource.deploy_lambda_package]
+  depends_on    = [null_resource.deploy_lambda_package]
   function_name = module.fastboot_lambda.lambda_function_name
 }
 
-# Lambda alias for immutable deployments
 resource "aws_lambda_alias" "live" {
-  depends_on = [null_resource.deploy_lambda_package]
+  depends_on       = [null_resource.deploy_lambda_package]
   name             = "live"
   description      = "Live alias for ${var.stack_name}-handler-${var.env}"
   function_name    = module.fastboot_lambda.lambda_function_name
   function_version = data.aws_lambda_function.current.version
-}
-
-# Output Lambda alias invoke ARN for API Gateway
-output "lambda_alias_invoke_arn" {
-  description = "Invoke ARN of the Lambda alias for API Gateway integration"
-  value       = aws_lambda_alias.live.invoke_arn
 }
 
 resource "null_resource" "upload_assets_to_s3" {
