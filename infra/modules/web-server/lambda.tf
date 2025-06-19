@@ -80,17 +80,6 @@ module "fastboot_lambda" {
     stage = var.env
     stack = var.stack_name
   }
-  
-  # Ignore changes made by our AWS CLI versioning
-  lambda_function_lifecycle_config = {
-    ignore_changes = [
-      "last_modified",
-      "qualified_arn", 
-      "qualified_invoke_arn",
-      "source_code_size",
-      "version"
-    ]
-  }
 }
 
 resource "null_resource" "deploy_lambda_package" {
