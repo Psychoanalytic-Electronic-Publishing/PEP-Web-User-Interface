@@ -59,6 +59,13 @@
                                 }}
                             </p>
                         {{/if}}
+                        {{#if
+                            (and this.showEmbargoInformation this.publisherInformation.embargoYears this.isTFJournal)
+                        }}
+                            <p>
+                                <strong>{{t "tfPromo.publisherInfo" url="https://support.pep-web.org/taylor-francis-journal-subscriptions-on-pep-web/" htmlSafe=true}}</strong>
+                            </p>
+                        {{/if}}
                         <p>
                             {{html-safe this.publisherInformation.fullHTML}}
                         </p>

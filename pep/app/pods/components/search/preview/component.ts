@@ -11,6 +11,7 @@ import { DS } from 'ember-data';
 import ModalService from '@gavant/ember-modals/services/modal';
 
 import { IJP_OPEN_CODE } from 'pep/constants/books';
+import { TFJournals } from 'pep/constants/documents';
 import { dontRunInFastboot } from 'pep/decorators/fastboot';
 import Abstract from 'pep/pods/abstract/model';
 import GlossaryTerm from 'pep/pods/glossary-term/model';
@@ -79,6 +80,13 @@ export default class SearchPreview extends Component<BaseGlimmerSignature<Search
         }
 
         return '';
+    }
+    
+    get displayTFPromo() {
+        const isTFJournal = TFJournals.find((code) => code === this.result?.PEPCode?.toUpperCase());
+        const isEmbargoed = this.result?.accessLimited && this.result?.accessClassification === 'current';
+        
+        return isTFJournal && isEmbargoed;
     }
 
     /**

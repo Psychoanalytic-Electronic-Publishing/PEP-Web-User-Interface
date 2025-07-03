@@ -7,6 +7,7 @@ import { Pagination } from '@gavant/ember-pagination/hooks/pagination';
 import Journal from 'pep/pods/journal/model';
 import Source from 'pep/pods/source/model';
 import ConfigurationService from 'pep/services/configuration';
+import { TFJournals } from 'pep/constants/documents';
 
 export default class BrowseJournalIndex extends Controller {
     @service configuration!: ConfigurationService;
@@ -16,6 +17,10 @@ export default class BrowseJournalIndex extends Controller {
 
     get embargoPublicationDate() {
         return this.configuration.base.global.embargoDate;
+    }
+
+    get isTFJournal() {
+        return TFJournals.find((code) => code === this.sourcecode?.toUpperCase());
     }
 
     get publisherInformation() {
