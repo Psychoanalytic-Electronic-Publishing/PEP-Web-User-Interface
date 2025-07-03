@@ -18,7 +18,7 @@ resource "aws_api_gateway_rest_api" "api_gateway" {
             httpMethod           = "POST"
             payloadFormatVersion = "1.0"
             type                 = "AWS_PROXY"
-            uri                  = module.fastboot_lambda.lambda_function_invoke_arn
+            uri                  = aws_lambda_alias.live.invoke_arn
           }
         }
       }
@@ -28,7 +28,7 @@ resource "aws_api_gateway_rest_api" "api_gateway" {
             httpMethod           = "POST"
             payloadFormatVersion = "1.0"
             type                 = "AWS_PROXY"
-            uri                  = module.fastboot_lambda.lambda_function_invoke_arn
+            uri                  = aws_lambda_alias.live.invoke_arn
           }
         }
       }
@@ -44,5 +44,10 @@ resource "aws_api_gateway_deployment" "api_deployment" {
   lifecycle {
     create_before_destroy = true
   }
-  stage_name = "v1"
+}
+
+resource "aws_api_gateway_stage" "api_stage" {
+  deployment_id = aws_api_gateway_deployment.api_deployment.id
+  rest_api_id   = aws_api_gateway_rest_api.api_gateway.id
+  stage_name    = "v1"
 }

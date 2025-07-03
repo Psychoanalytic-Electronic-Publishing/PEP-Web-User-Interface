@@ -37,8 +37,5 @@ terraform.rc
 build/
 builds/
 
-# Ignore lock files
-.terraform.lock.hcl
-
 pep.zip
 package.zip
