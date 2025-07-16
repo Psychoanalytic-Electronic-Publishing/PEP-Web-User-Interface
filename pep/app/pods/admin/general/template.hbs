@@ -520,6 +520,20 @@
                                         @checked={{eq this.selectedReport "Document-References"}}
                                         @value="Document-References"
                                         @onChange={{fn this.updateSelectedReport}}
+                                        class="mb-1"
+                                    />
+                                    <RadioInput
+                                        @label={{t "exports.report.options.royaltyCharCountsJournals"}}
+                                        @checked={{eq this.selectedReport "Royalty-Char-Counts-Journals"}}
+                                        @value="Royalty-Char-Counts-Journals"
+                                        @onChange={{fn this.updateSelectedReport}}
+                                        class="mb-1"
+                                    />
+                                    <RadioInput
+                                        @label={{t "exports.report.options.royaltyCharCountsBooks"}}
+                                        @checked={{eq this.selectedReport "Royalty-Char-Counts-Books"}}
+                                        @value="Royalty-Char-Counts-Books"
+                                        @onChange={{fn this.updateSelectedReport}}
                                     />
                                 </fieldset>
                                 <fieldset class="mb-4">
