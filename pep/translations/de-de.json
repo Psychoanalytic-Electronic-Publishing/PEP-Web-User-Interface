@@ -354,6 +354,7 @@
             "books": {
                 "title": "Bücher",
                 "freud": "Freuds gesammelte Werke",
+                "bion": "Bions gesammelte Werke",
                 "glossaries": "Glossare und Wörterbücher",
                 "other": "Andere klassische Bücher"
             },

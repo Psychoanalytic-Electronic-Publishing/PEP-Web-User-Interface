@@ -354,6 +354,7 @@
             "books": {
                 "title": "Libri",
                 "freud": "Opere raccolte di Freud",
+                "bion": "Opere raccolte di Bion",
                 "glossaries": "Glossari e dizionari",
                 "other": "Altri libri classici"
             },

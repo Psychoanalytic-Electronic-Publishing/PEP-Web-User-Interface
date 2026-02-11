@@ -14,8 +14,15 @@ import Video from 'pep/pods/video/model';
 export interface FilteredBookCollection {
     books: Book[];
     bookCode: string;
+    fallbackTitle: string;
     route: string;
+    sidebarSectionHeadingTranslationKey: string;
     title: string;
+}
+
+export interface FilteredBookCollectionSection {
+    headingTranslationKey: string;
+    collections: FilteredBookCollection[];
 }
 
 export interface FilteredBooks {
@@ -67,7 +74,9 @@ export default class Browse extends Controller {
             memo[item.bookCode] = {
                 books: [],
                 bookCode: item.bookCode,
+                fallbackTitle: item.bookCode,
                 route: `browse.book.${item.routeSegment}`,
+                sidebarSectionHeadingTranslationKey: item.sidebarSectionHeadingTranslationKey,
                 title: ''
             };
             return memo;
@@ -88,7 +97,13 @@ export default class Browse extends Controller {
             const collection = collectedWorksByCode[item.bookCode];
             collection.title = `${collection?.books[0]?.authors ?? ''} ${collection?.books[0]?.title ?? ''}`.trim();
             return collection;
-        }).filter((item) => item.books.length > 0);
+        }).filter((item) => {
+            if (!filter) {
+                return true;
+            }
+            const label = item.title || item.fallbackTitle;
+            return item.books.length > 0 || label.toLowerCase().includes(filter);
+        });
 
         return {
             collectedWorks,
@@ -100,6 +115,22 @@ export default class Browse extends Controller {
         return this.filteredBooks.collectedWorks.reduce((total, item) => {
             return total + item.books.length;
         }, 0);
+    }
+
+    get filteredCollectedWorkSections(): FilteredBookCollectionSection[] {
+        const sections = this.filteredBooks.collectedWorks.reduce<FilteredBookCollectionSection[]>((memo, item) => {
+            const existing = memo.find((section) => section.headingTranslationKey === item.sidebarSectionHeadingTranslationKey);
+            if (existing) {
+                existing.collections.push(item);
+            } else {
+                memo.push({
+                    headingTranslationKey: item.sidebarSectionHeadingTranslationKey,
+                    collections: [item]
+                });
+            }
+            return memo;
+        }, []);
+        return sections;
     }
 
     /**
