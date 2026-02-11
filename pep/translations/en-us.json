@@ -848,6 +848,8 @@
                 "sessionLog": "Session Log",
                 "productTable": "Product Table",
                 "documentReferences": "Document References",
+                "royaltyCharCountsJournals": "Royalty Report (Journals)",
+                "royaltyCharCountsBooks": "Royalty Report (Books)",
                 "legend": "Select document type"
             },
             "config": {
