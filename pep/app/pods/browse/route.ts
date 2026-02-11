@@ -10,7 +10,6 @@ import { buildQueryParams, removeEmptyQueryParams } from '@gavant/ember-paginati
 import { PageNav } from 'pep/mixins/page-layout';
 import Book from 'pep/pods/book/model';
 import BrowseController from 'pep/pods/browse/controller';
-import Document from 'pep/pods/document/model';
 import Journal from 'pep/pods/journal/model';
 import Video from 'pep/pods/video/model';
 import SidebarService from 'pep/services/sidebar';
@@ -18,8 +17,6 @@ import { hash } from 'rsvp';
 import { next } from '@ember/runloop';
 
 export interface BrowseModel {
-    gw: Document;
-    se: Document;
     videos: ArrayProxy<Video>;
     books: ArrayProxy<Book>;
     journals: ArrayProxy<Journal>;

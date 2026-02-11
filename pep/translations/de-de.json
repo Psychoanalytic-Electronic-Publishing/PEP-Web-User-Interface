@@ -377,6 +377,9 @@
         "se": {
             "volumes": "Strachey, J. (Hrsg.) Die Standardausgabe der vollständigen psychologischen Werke von Sigmund Freud"
         },
+        "cwb": {
+            "volumes": "Bion, W. R. Collected Works of Wilfred R. Bion"
+        },
         "previews": {
             "title": "Book Previews",
             "description": "PEP Preview is an exciting new books feature which aims to showcase a wide collection of digitized titles from major publishers. PEP Preview enables users to explore key titles and authors from within the field of psychoanalysis, including some of the most recent publications.",
@@ -901,7 +904,8 @@
     "alt": {
         "brandingImageUrl": "Markenbild",
         "gw": "Gesammelte Werke",
-        "se": "Standard Edition"
+        "se": "Standard Edition",
+        "cwb": "Collected Works of Bion"
     },
     "admin": {
         "title": "Administrator",

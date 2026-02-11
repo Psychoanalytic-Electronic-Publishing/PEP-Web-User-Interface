@@ -1,7 +1,46 @@
 export const PEP_GLOSSARY_ID = 'ZBK.069.0000A';
-export const FREUD_GW_CODE = 'GW';
-export const FREUD_SE_CODE = 'SE';
-
-export const GW_VOLUME_DOCUMENT_ID = 'GW.000.0000A';
-export const SE_VOLUME_DOCUMENT_ID = 'SE.000.0000A';
 export const IJP_OPEN_CODE = 'IJPOPEN';
+
+export interface BookCollectionConfig {
+    altTranslationKey: string;
+    bookCode: string;
+    routeSegment: string;
+    trimLeadingRows: number;
+    volumeDocumentId: string;
+    volumeHeadingTranslationKey: string;
+}
+
+export const BOOK_COLLECTIONS: readonly BookCollectionConfig[] = [
+    {
+        altTranslationKey: 'alt.gw',
+        bookCode: 'GW',
+        routeSegment: 'gw',
+        trimLeadingRows: 1,
+        volumeDocumentId: 'GW.000.0000A',
+        volumeHeadingTranslationKey: 'browse.gw.volumes'
+    },
+    {
+        altTranslationKey: 'alt.se',
+        bookCode: 'SE',
+        routeSegment: 'se',
+        trimLeadingRows: 2,
+        volumeDocumentId: 'SE.000.0000A',
+        volumeHeadingTranslationKey: 'browse.se.volumes'
+    },
+    {
+        altTranslationKey: 'alt.cwb',
+        bookCode: 'CWB',
+        routeSegment: 'cwb',
+        trimLeadingRows: 0,
+        volumeDocumentId: 'CWB.000.0000A',
+        volumeHeadingTranslationKey: 'browse.cwb.volumes'
+    }
+];
+
+export const BOOK_COLLECTIONS_BY_ROUTE_SEGMENT = BOOK_COLLECTIONS.reduce<Record<string, BookCollectionConfig>>(
+    (memo, item) => {
+        memo[item.routeSegment] = item;
+        return memo;
+    },
+    {}
+);

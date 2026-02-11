@@ -6,11 +6,22 @@ import { cached, tracked } from '@glimmer/tracking';
 import FastbootService from 'ember-cli-fastboot/services/fastboot';
 import RouterService from '@ember/routing/router-service';
 
-import { FREUD_GW_CODE, FREUD_SE_CODE, PEP_GLOSSARY_ID } from 'pep/constants/books';
+import { BOOK_COLLECTIONS, PEP_GLOSSARY_ID } from 'pep/constants/books';
 import Book from 'pep/pods/book/model';
 import Journal from 'pep/pods/journal/model';
 import Video from 'pep/pods/video/model';
-import { SortedBooks } from 'pep/utils/browse';
+
+export interface FilteredBookCollection {
+    books: Book[];
+    bookCode: string;
+    route: string;
+    title: string;
+}
+
+export interface FilteredBooks {
+    collectedWorks: FilteredBookCollection[];
+    others: Book[];
+}
 
 export enum BrowseTabs {
     JOURNALS = 'journals',
@@ -44,48 +55,51 @@ export default class Browse extends Controller {
     }
 
     /**
-     * Filtered Books - Takes the all the books, and separates them by if the are freud (GW or SE book code),
-     * as well as if the have specific document ID's (glossary items)
+     * Filter books into configured collected-works groups and "others".
      *
      * @readonly
      * @memberof Browse
      */
     @cached
-    get filteredBooks() {
-        const filter = this.filter;
-        const books = this.books.reduce<SortedBooks>(
-            (books, book) => {
-                if (!filter || book.displayTitle.toLowerCase().includes(filter.toLowerCase())) {
-                    if (book.bookCode === FREUD_GW_CODE) {
-                        books.freudsCollectedWorks.GW.books.push(book);
-                    } else if (book.bookCode === FREUD_SE_CODE) {
-                        books.freudsCollectedWorks.SE.books.push(book);
-                    } else if (book.id !== PEP_GLOSSARY_ID) {
-                        books.others.push(book);
-                    }
-                }
-                return books;
-            },
-            {
-                freudsCollectedWorks: {
-                    GW: {
-                        title: '',
-                        books: [],
-                        volumes: []
-                    },
-                    SE: {
-                        title: '',
-                        books: [],
-                        volumes: []
-                    }
-                },
-                others: []
+    get filteredBooks(): FilteredBooks {
+        const filter = this.filter.trim().toLowerCase();
+        const collectedWorksByCode = BOOK_COLLECTIONS.reduce<Record<string, FilteredBookCollection>>((memo, item) => {
+            memo[item.bookCode] = {
+                books: [],
+                bookCode: item.bookCode,
+                route: `browse.book.${item.routeSegment}`,
+                title: ''
+            };
+            return memo;
+        }, {});
+        const others = this.books.reduce<Book[]>((memo, book) => {
+            if (filter && !book.displayTitle.toLowerCase().includes(filter)) {
+                return memo;
             }
-        );
-        books.freudsCollectedWorks.GW.title = `${books.freudsCollectedWorks.GW?.books[0]?.authors} ${books.freudsCollectedWorks.GW?.books[0]?.title}`;
-        books.freudsCollectedWorks.SE.title = `${books.freudsCollectedWorks.SE?.books[0]?.authors} ${books.freudsCollectedWorks.SE?.books[0]?.title}`;
-        books.others = books.others.sortBy('authors');
-        return books;
+            const collection = collectedWorksByCode[book.bookCode];
+            if (collection) {
+                collection.books.push(book);
+            } else if (book.id !== PEP_GLOSSARY_ID) {
+                memo.push(book);
+            }
+            return memo;
+        }, []);
+        const collectedWorks = BOOK_COLLECTIONS.map((item) => {
+            const collection = collectedWorksByCode[item.bookCode];
+            collection.title = `${collection?.books[0]?.authors ?? ''} ${collection?.books[0]?.title ?? ''}`.trim();
+            return collection;
+        }).filter((item) => item.books.length > 0);
+
+        return {
+            collectedWorks,
+            others: others.sortBy('authors')
+        };
+    }
+
+    get filteredCollectedBookCount() {
+        return this.filteredBooks.collectedWorks.reduce((total, item) => {
+            return total + item.books.length;
+        }, 0);
     }
 
     /**
@@ -95,11 +109,7 @@ export default class Browse extends Controller {
      * @memberof Browse
      */
     get filteredBookCounts() {
-        return (
-            this.filteredBooks.others.length +
-            this.filteredBooks.freudsCollectedWorks.GW.books.length +
-            this.filteredBooks.freudsCollectedWorks.SE.books.length
-        );
+        return this.filteredBooks.others.length + this.filteredCollectedBookCount;
     }
 
     /**
