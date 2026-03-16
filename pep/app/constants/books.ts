@@ -35,7 +35,7 @@ export const BOOK_COLLECTIONS: readonly BookCollectionConfig[] = [
         bookCode: 'CWB',
         routeSegment: 'cwb',
         sidebarSectionHeadingTranslationKey: 'browse.selection.books.bion',
-        trimLeadingRows: 0,
+        trimLeadingRows: 1,
         volumeDocumentId: 'CWB.000.0000A',
         volumeHeadingTranslationKey: 'browse.cwb.volumes'
     }
