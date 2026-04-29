@@ -38,6 +38,8 @@ module "web_server" {
   build_version      = var.build_version
   kms_key_arn        = "arn:aws:kms:us-east-1:547758924192:key/7b802a2f-38b3-40af-bca1-cdbc45ad8ceb"
   pep_waf_key        = var.pep_waf_key
+  # Disabled while prod.pep-web.org is managed by an infra POC in another repo.
+  enable_custom_domain = false
 }
 
 resource "aws_sns_topic" "translation_updates" {
