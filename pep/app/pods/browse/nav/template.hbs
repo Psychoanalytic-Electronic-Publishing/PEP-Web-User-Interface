@@ -80,44 +80,32 @@
                             </LinkTo>
                         </div>
 
-                        <div class="mb-3">
-                            <h5>
-                                {{t "browse.selection.books.freud"}}
-                            </h5>
-                            {{#if
-                                (or
-                                    this.filteredBooks.freudsCollectedWorks.GW.books
-                                    this.filteredBooks.freudsCollectedWorks.SE.books
-                                )
-                            }}
-                                {{#if this.filteredBooks.freudsCollectedWorks.GW.books}}
-                                    <LinkTo
-                                        @route="browse.book.gw"
-                                        @activeClass="bg-backdrop"
-                                        @class="d-flex align-items-center justify-content-between p-1"
-                                    >
-                                        <span class="small w-90">
-                                            {{this.filteredBooks.freudsCollectedWorks.GW.title}}
-                                        </span>
-                                    </LinkTo>
-                                {{/if}}
-                                {{#if this.filteredBooks.freudsCollectedWorks.SE.books}}
-                                    <LinkTo
-                                        @route="browse.book.se"
-                                        @activeClass="bg-backdrop"
-                                        @class="d-flex align-items-center justify-content-between p-1"
-                                    >
-                                        <span class="small w-90">
-                                            {{this.filteredBooks.freudsCollectedWorks.SE.title}}
-                                        </span>
-                                    </LinkTo>
-                                {{/if}}
-                            {{else}}
+                        {{#if this.filteredCollectedWorkSections.length}}
+                            {{#each this.filteredCollectedWorkSections as |section|}}
+                                <div class="mb-3">
+                                    <h5>
+                                        {{t section.headingTranslationKey}}
+                                    </h5>
+                                    {{#each section.collections as |collection|}}
+                                        <LinkTo
+                                            @route={{collection.route}}
+                                            @activeClass="bg-backdrop"
+                                            @class="d-flex align-items-center justify-content-between p-1"
+                                        >
+                                            <span class="small w-90">
+                                                {{if collection.title collection.title collection.fallbackTitle}}
+                                            </span>
+                                        </LinkTo>
+                                    {{/each}}
+                                </div>
+                            {{/each}}
+                        {{else}}
+                            <div class="mb-3">
                                 <div class="text-muted small">
                                     {{t "browse.selection.search.noResults" term=this.filter}}
                                 </div>
-                            {{/if}}
-                        </div>
+                            </div>
+                        {{/if}}
 
                         <div class="mb-3">
                             <h5>

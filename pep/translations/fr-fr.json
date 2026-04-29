@@ -354,6 +354,7 @@
             "books": {
                 "title": "Livres",
                 "freud": "Œuvres complètes de Freud",
+                "bion": "Œuvres complètes de Bion",
                 "glossaries": "Glossaires et dictionnaires",
                 "other": "Autres ouvrages de référence"
             },
@@ -376,6 +377,9 @@
         },
         "se": {
             "volumes": "Strachey, J. (éd.) The Standard Edition of the Complete Psychological Works of Sigmund Freud"
+        },
+        "cwb": {
+            "volumes": "Bion, W. R., and Mawson, C., Bion, F. (Eds.) (2014). The Complete Works of W. R. Bion."
         },
         "previews": {
             "title": "Book Previews",
@@ -902,7 +906,8 @@
     "alt": {
         "brandingImageUrl": "Image de marque",
         "gw": "Gesammelte Werke",
-        "se": "Édition standard"
+        "se": "Édition standard",
+        "cwb": "Collected Works of Bion"
     },
     "admin": {
         "title": "Admin",

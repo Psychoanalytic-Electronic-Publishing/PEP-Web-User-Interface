@@ -1,62 +1,18 @@
-import Book from 'pep/pods/book/model';
 import { parseXML } from 'pep/utils/dom';
 
-export interface FreudVolume {
+export interface BookVolume {
     volume: string;
     title: string;
     id: string;
 }
 
-export interface SortedBooks {
-    freudsCollectedWorks: {
-        GW: {
-            title: string;
-            books: Book[];
-            volumes: FreudVolume[];
-        };
-        SE: {
-            title: string;
-            books: Book[];
-            volumes: FreudVolume[];
-        };
-    };
-    others: Book[];
-}
-
 /**
- * Get volume information from the SE document
+ * Parse a collection volume document into [{ volume, title, id }]
  *
- * @export
  * @param {string} document
- * @return {FreudVolume[]}
+ * @return {BookVolume[]}
  */
-export function getFreudSEVolumes(document: string) {
-    const volumes = getVolumesFromFreudDocument(document);
-    volumes.splice(0, 2);
-    return volumes;
-}
-
-/**
- * Get volume information from the GW document
- *
- * @export
- * @param {string} document
- * @return {FreudVolume[]}
- */
-export function getFreudGWVolumes(document: string) {
-    const volumes = getVolumesFromFreudDocument(document);
-    volumes.shift();
-    return volumes;
-}
-
-/**
- * Get volumes from a freud document (of which there are two SE or GW). This is the method that does the heavy lifting and parsing of the doc
- *
- * @export
- * @param {string} document
- * @return {FreudVolume[]}
- */
-export function getVolumesFromFreudDocument(document: string) {
+export function parseCollectionVolumes(document: string) {
     const xml = parseXML(document);
     if (!(xml instanceof Error)) {
         const volumeNodes = xml.getElementsByTagName('row');
@@ -70,9 +26,24 @@ export function getVolumesFromFreudDocument(document: string) {
                 volume,
                 title,
                 id
-            } as FreudVolume;
+            } as BookVolume;
         });
     } else {
         return [];
     }
+}
+
+/**
+ * Parse collection volumes and drop top rows when the source document includes header rows.
+ *
+ * @param {string} document
+ * @param {number} trimLeadingRows
+ * @return {BookVolume[]}
+ */
+export function getCollectionVolumes(document: string, trimLeadingRows = 0) {
+    const volumes = parseCollectionVolumes(document);
+    if (trimLeadingRows <= 0) {
+        return volumes;
+    }
+    return volumes.slice(trimLeadingRows);
 }

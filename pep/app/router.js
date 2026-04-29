@@ -23,6 +23,7 @@ Router.map(function () {
         this.route('book', function () {
             this.route('gw');
             this.route('se');
+            this.route('cwb');
         });
         this.route('read', { path: '/document/:document_id' });
     });
