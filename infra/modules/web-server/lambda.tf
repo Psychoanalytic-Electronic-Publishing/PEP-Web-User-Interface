@@ -58,6 +58,7 @@ module "fastboot_lambda" {
     null_resource.fastboot_build
   ]
   source                  = "terraform-aws-modules/lambda/aws"
+  version                 = "8.0.1"
   function_name           = "${var.stack_name}-handler-${var.env}"
   create_package          = false
   local_existing_package  = "package.zip"
@@ -125,4 +126,3 @@ resource "null_resource" "upload_assets_to_s3" {
     command     = "aws s3 sync pep/dist/ s3://${var.assets_domain}/ --acl public-read"
   }
 }
-
