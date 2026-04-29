@@ -4,13 +4,15 @@ data "aws_route53_zone" "pep_web" {
 }
 
 resource "aws_route53_record" "web_alias" {
+  count = var.enable_custom_domain ? 1 : 0
+
   zone_id = data.aws_route53_zone.pep_web.zone_id
   name    = var.domain_name
   type    = "A"
 
   alias {
-    name                   = aws_api_gateway_domain_name.pep_web.cloudfront_domain_name
-    zone_id                = aws_api_gateway_domain_name.pep_web.cloudfront_zone_id
+    name                   = aws_api_gateway_domain_name.pep_web[0].cloudfront_domain_name
+    zone_id                = aws_api_gateway_domain_name.pep_web[0].cloudfront_zone_id
     evaluate_target_health = false
   }
 }

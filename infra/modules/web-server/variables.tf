@@ -23,6 +23,12 @@ variable "root_domain_name" {
   type        = string
 }
 
+variable "enable_custom_domain" {
+  description = "Whether to create the API Gateway custom domain and Route53 alias"
+  type        = bool
+  default     = true
+}
+
 locals {
   api_description = "API Gateway for ${var.stack_name} ${var.env}"
 }
