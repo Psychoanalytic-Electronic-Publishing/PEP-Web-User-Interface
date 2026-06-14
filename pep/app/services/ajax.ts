@@ -64,10 +64,62 @@ export default class AjaxService extends Service {
         return headers;
     }
 
-    get fetchImplementation() {
-        // Use regular fetch in Fastboot, AWS WAF fetch on client
-        // @ts-expect-error
-        return this.fastboot.isFastBoot ? fetch : window.AwsWafIntegration?.fetch || fetch;
+    /**
+     * Maximum time to wait for AWS WAF Integration to load (in milliseconds)
+     */
+    private readonly WAF_LOAD_TIMEOUT = 5000; // 5 seconds
+
+    /**
+     * Gets the appropriate fetch implementation, waiting for AWS WAF if needed
+     */
+    private async getFetchImplementation(): Promise<typeof fetch> {
+        if (this.fastboot.isFastBoot) {
+            return fetch;
+        } else {
+            // Use a runtime check that TypeScript won't optimize away
+            // @ts-ignore - We need to check at runtime if this global exists
+            if (window.AwsWafIntegration?.fetch) {
+                // @ts-ignore - Access the global object
+                return window.AwsWafIntegration.fetch;
+            }
+
+            // Wait for AWS WAF Integration to load
+            try {
+                await this.waitForAwsWafIntegration();
+                // @ts-ignore - Access the global object after waiting
+                return window.AwsWafIntegration.fetch;
+            } catch (error) {
+                console.warn('AWS WAF Integration failed to load, falling back to standard fetch:', error);
+                return fetch;
+            }
+        }
+    }
+
+    /**
+     * Waits for AWS WAF Integration to become available
+     */
+    private waitForAwsWafIntegration(): Promise<void> {
+        return new Promise((resolve, reject) => {
+            const startTime = Date.now();
+
+            const checkAvailability = () => {
+                // Use window to access the global and optional chaining for safety
+                // @ts-ignore - We need to check at runtime if this global exists
+                if (window.AwsWafIntegration?.fetch) {
+                    return resolve();
+                }
+
+                // Check if we've exceeded the timeout
+                if (Date.now() - startTime > this.WAF_LOAD_TIMEOUT) {
+                    return reject(new Error('Timeout waiting for AWS WAF Integration to load'));
+                }
+
+                // Check again soon
+                setTimeout(checkAvailability, 50);
+            };
+
+            checkAvailability();
+        });
     }
 
     /**
@@ -94,7 +146,7 @@ export default class AjaxService extends Service {
             requestUrl = appendTrailingSlash(requestUrl);
         }
 
-        const fetchImpl = this.fetchImplementation;
+        const fetchImpl = await this.getFetchImplementation();
         const response = await fetchImpl(requestUrl, options);
 
         const responseHeaders = this.parseHeaders(response.headers);
