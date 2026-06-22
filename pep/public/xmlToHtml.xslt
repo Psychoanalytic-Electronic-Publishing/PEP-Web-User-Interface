@@ -1509,8 +1509,15 @@
         </span>
     </xsl:template>
 
+    <xsl:template match="impx">
+        <xsl:call-template name="render-impx"/>
+    </xsl:template>
 
-    <xsl:template match="impx"> <!--when not in metadata mode -->
+    <xsl:template match="impx" mode="table-copy">
+        <xsl:call-template name="render-impx"/>
+    </xsl:template>
+
+    <xsl:template name="render-impx">
         <xsl:choose>
             <xsl:when test="@rx"> <!-- for the generated links -->
                 <a href="/search/document/{@rx}?glossary={@grpanme}" class="peppopup glosstip impx text-nowrap" data-type="{@type}" data-doc-id="{@rx}" data-grpname="{@grpname}">
