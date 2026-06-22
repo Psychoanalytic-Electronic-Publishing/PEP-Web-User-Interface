@@ -52,17 +52,10 @@ export default class AuthService extends Service {
 
     dontRedirectOnLogin = false;
 
-    /**
-     * Opens the login modal dialog and loads the forgot password URL (along with federated login information)
-     * @param {Boolean} dontRedirectOnLogin
-     * @param {Object} modalOptions
-     */
-    async openLoginModal(dontRedirectOnLogin = false, modalOptions: ModalOptions = {}) {
+    async fetchFederatedLogins() {
         try {
             this.loadingBar.show();
-            const model: LoginForm = { username: null, password: null };
-            const changeset = createChangeset<LoginForm>(model, LoginValidations);
-            this.dontRedirectOnLogin = dontRedirectOnLogin;
+
             const session = this.session.isAuthenticated
                 ? this.session.data?.authenticated?.SessionId
                 : this.session.getUnauthenticatedSession()?.SessionId;
@@ -75,6 +68,39 @@ export default class AuthService extends Service {
                     appendTrailingSlash: false
                 }
             );
+
+            if (!federatedLogins.PaDSRegisterUserURL) {
+                throw new Error('Could not find PaDS registration URL. Please try again later or contact support.');
+            }
+
+            return federatedLogins;
+        } catch (errors) {
+            this.notifications.error(errors);
+        } finally {
+            this.loadingBar.hide();
+        }
+    }
+
+    /**
+     * Opens the login modal dialog and loads the forgot password URL (along with federated login information)
+     * @param {Boolean} dontRedirectOnLogin
+     * @param {Object} modalOptions
+     */
+    async openLoginModal(dontRedirectOnLogin = false, modalOptions: ModalOptions = {}) {
+        try {
+            this.loadingBar.show();
+            const model: LoginForm = { username: null, password: null };
+            const changeset = createChangeset<LoginForm>(model, LoginValidations);
+            this.dontRedirectOnLogin = dontRedirectOnLogin;
+
+            const federatedLogins = await this.fetchFederatedLogins();
+
+            if (!federatedLogins) {
+                throw new Error(
+                    'Could not find federated login information. Please try again later or contact support.'
+                );
+            }
+
             this.modal.open('user/login', {
                 ...modalOptions,
                 changeset,
@@ -92,6 +118,16 @@ export default class AuthService extends Service {
         } finally {
             this.loadingBar.hide();
         }
+    }
+
+    async redirectToRegistration() {
+        const federatedLogins = await this.fetchFederatedLogins();
+
+        if (!federatedLogins) {
+            throw new Error('Could not find federated login information. Please try again later or contact support.');
+        }
+
+        window.location.href = federatedLogins.PaDSRegisterUserURL;
     }
 }
 
